@@ -1,0 +1,29 @@
+cartography:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Longitud: "Longitude"
+        Latitud: "Latitude"
+        Picture: "Image"
+        Language: "Langue"
+        Theme: "Thème"
+        State: "Etat"
+        Licence: "Licence"
+        PseudoUsed: "Pseudo utilisé"
+        WritingDate: "Date de rédaction"
+        LinkGMaps: "Lien GMaps"
+    index:
+        SectionIndex: "Cartographie des phénomènes insolites et paranormaux"
+        Cartography: "Cartographie"
+        Title: "Titre"
+        Longitud: "Longitude"
+        Latitud: "Latitude"
+        Theme: "Thème"
+        Picture: "Image"
+    show:
+        MoreDetails: "Plus de détails"
+        Longitud: "Longitude :"
+        Latitud: "Latitude :"
+        SeeOnGMaps: "Voir sur la carte"
+    world:
+        WorldCartography: "Cartographie multilingue"

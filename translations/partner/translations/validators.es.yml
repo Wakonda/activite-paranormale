@@ -1,0 +1,10 @@
+partner:
+    index:
+        Partner: "Socio"
+        Inactive: "Inactivo"
+    admin:
+        Title: "Titulo"
+        Link: "Link"
+        Logo: "Logo"
+        Language: "Lengua"
+        Active: "Activo"

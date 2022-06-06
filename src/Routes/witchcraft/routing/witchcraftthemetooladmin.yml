@@ -1,0 +1,37 @@
+WitchcraftThemeTool_Admin_Index:
+    path:  /
+    controller: App\Controller\WitchcraftThemeToolAdminController::indexAction
+
+WitchcraftThemeTool_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\WitchcraftThemeToolAdminController::showAction
+
+WitchcraftThemeTool_Admin_New:
+    path:  /new
+    controller: App\Controller\WitchcraftThemeToolAdminController::newAction
+
+WitchcraftThemeTool_Admin_Create:
+    path:  /create
+    controller: App\Controller\WitchcraftThemeToolAdminController::createAction
+    requirements:
+        _method: post
+
+WitchcraftThemeTool_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\WitchcraftThemeToolAdminController::editAction
+
+WitchcraftThemeTool_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\WitchcraftThemeToolAdminController::updateAction
+    requirements:
+        _method: post
+
+WitchcraftThemeTool_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\WitchcraftThemeToolAdminController::deleteAction
+
+WitchcraftThemeTool_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\WitchcraftThemeToolAdminController::indexDatatablesAction
+    requirements:
+        _method: get

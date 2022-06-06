@@ -1,0 +1,43 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "store.index.Store"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Store"/></span>{{ "store.index.Store"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	{% if app.request.query.has("category") %}
+	<p class="image">{{ (app.request.query.get("category") ~ ".jpg")|imgsize(550, 'extended/photo/store/category/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+	{% else %}
+	<p class="image">{{ "store_woman.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+	{% endif %}
+	
+	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', {'internationalName' : 'book'})) }}
+	
+	<h3>{{ "store.search.SearchSort"|trans([], "validators") }}</h3>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('Store_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "store.search.Category"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-right mt-3">{{ "store.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+	<br>
+	<br>
+	{% for entity in pagination.items %}
+		{% include "store/Store/_product.html.twig" with { entity: entity } %}
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger font-italic text-center">{{ "store.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+	
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

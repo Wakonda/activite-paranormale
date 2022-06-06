@@ -1,0 +1,36 @@
+<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/jquery.dataTables.css') }}" type="text/css" media="screen" />
+<script>
+	$(function()
+	{
+		$("a.file_link").click(function()
+		{
+		console.log($(this).text())
+			parent.$("input.music_piece_file").val("");
+			parent.$("input.existing_music_colorbox").val($(this).text());
+			$('.selectMusicFileModal').modal('hide');
+			return false;
+		});
+
+		$('table.index_admin').dataTable({
+			"bFilter": false,
+			"bInfo": false,
+			"bPaginate": false,
+		});
+	}); 
+</script>
+<h2 class="title"><b>Choose an existing file</b></h2>
+<table class="table table-striped table-bordered index_admin">
+	<thead>
+		<tr>
+			<th>File</th>
+		</tr>
+	</thead>
+	<tbody>
+		{% for file in filesArray %}
+			<tr>
+				<td><a href="" alt="file" class="file_link">{{ file }}</a></td>
+			</tr>
+		{% endfor %}
+	</tbody>
+</table>

@@ -1,0 +1,37 @@
+DocumentFamily_Admin_Index:
+    path:  /
+    controller: App\Controller\DocumentFamilyAdminController::indexAction
+
+DocumentFamily_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\DocumentFamilyAdminController::showAction
+
+DocumentFamily_Admin_New:
+    path:  /new
+    controller: App\Controller\DocumentFamilyAdminController::newAction
+
+DocumentFamily_Admin_Create:
+    path:  /create
+    controller: App\Controller\DocumentFamilyAdminController::createAction
+    requirements:
+        _method: post
+
+DocumentFamily_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\DocumentFamilyAdminController::editAction
+
+DocumentFamily_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\DocumentFamilyAdminController::updateAction
+    requirements:
+        _method: post
+
+DocumentFamily_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\DocumentFamilyAdminController::deleteAction
+
+DocumentFamily_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\DocumentFamilyAdminController::indexDatatablesAction
+    requirements:
+        _method: get

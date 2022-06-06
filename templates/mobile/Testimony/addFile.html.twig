@@ -1,0 +1,73 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
+{% block page_title%}{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
+
+{% block body_content %}
+	<div class="error_message">
+	
+	</div>
+	<form action="{{ path('FileManagement_UploadfileDropzone', {idClassName: entity.id, className: 'Testimony' }) }}" class="dropzone" id="my-awesome-dropzone">
+		<div class="fallback">
+			<input name="uploadFile" type="file" multiple />
+		</div>
+	</form>
+	<br>
+	<div class="text-right">
+		<button id="validate_file" class="btn submitcomment">{{ "testimony.addFile.Finish"|trans([], "validators") }}</button>
+	</div>
+{% endblock %}
+
+{% block additional_javascript %}
+	<script src="{{ asset('extended/js/dropzone-master/src/dropzone.js') }}"></script>
+	
+	
+	<script>
+	$(function() {
+		$("#validate_file").click(function() {
+			var myDropzone = Dropzone.forElement(".dropzone");
+			myDropzone.processQueue();
+			
+		});
+	});
+	var previewTemplate =
+	'<div class="dz-preview dz-file-preview">' +
+    '<div class="dz-image"><img data-dz-thumbnail /></div>' +
+    '<div class="dz-details">' +
+        '<div class="dz-size"><span data-dz-size></span></div>' +
+        '<div class="dz-filename"><span data-dz-name></span></div>' +
+    '</div>' +
+    '<div class="dz-progress"><span class="dz-upload" data-dz-uploadprogress></span></div>' +
+    '<div class="dz-error-message"><span data-dz-errormessage></span></div>' +
+    '<input type="text" placeholder="{{ "file.add.Title"|trans([], "validators") }}" class="form-control">' +
+	'</div>';
+
+	Dropzone.options.myAwesomeDropzone = {
+		maxFilesize: 2,
+		previewTemplate: previewTemplate,
+		acceptedFiles: ".jpg,.png,.pdf,.doc,.jpeg,.mp4,.mp3,.flv,.ogg,.gif,.wmv,.ppt,.pptx,.docx",
+		addRemoveLinks: true,
+		autoProcessQueue: false,
+		sending: function(file, xhr, formData){
+			formData.append('title', $(file.previewElement).find("input").val());
+		},
+		error: function(result, responseStatus, errorThrown){
+			alert("erreur")
+			$("div.error_message").html("");
+			$("div.error_message").append('<div class="alert alert-danger">' + responseStatus + '</div>');
+		},
+		queuecomplete: function(file, res){
+			if (this.files[0].status != Dropzone.SUCCESS)
+				return false;
+
+			window.location = "{{ path('ap_testimonymobile_validatefile') }}";
+		},
+	};
+	</script>
+	<script src="{{ asset('extended/js/dropzone-master/language/dropzone.'~app.request.locale~'.js') }}"></script>
+{% endblock %}
+
+{% block header_mobile_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/dropzone-master/src/dropzone.css') }}" type="text/css" />
+	<link rel="stylesheet" href="{{ asset('extended/css/dropzone.css') }}" type="text/css" />
+{% endblock %}

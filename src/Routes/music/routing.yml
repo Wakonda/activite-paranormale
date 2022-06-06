@@ -1,0 +1,44 @@
+Music_Index:
+    path:  /music
+    controller: App\Controller\MusicController::indexAction
+
+Music_Album:
+    path:  /music/album/{id}/{title_slug}
+    controller: App\Controller\MusicController::albumAction
+
+Music_Listen:
+    path:  /music/listen/{id}/{artist}/{artistId}/{album}
+    controller: App\Controller\MusicController::listenAction
+
+Music_Genre:
+    path:  /music/genre/{genreId}/{genreTitle}
+    controller: App\Controller\MusicController::musicGenreAction
+
+Music_Music:
+    path:  /music/piece/{album}/{albumId}/{music}/{id}
+    controller: App\Controller\MusicController::musicAction
+
+Music_Download:
+    path:  /music/download/{id}
+    controller: App\Controller\MusicController::downloadAction
+
+Music_ListDatatables:
+    path: /music/listdatatables
+    controller: App\Controller\MusicController::listDatatablesAction
+
+# Administration
+Artist_Admin:
+    resource: "routing/artistadmin.yml"
+    prefix:   /admin/artist
+
+Music_Admin:
+    resource: "routing/musicadmin.yml"
+    prefix:   /admin/music
+
+Album_Admin:
+    resource: "routing/albumadmin.yml"
+    prefix:   /admin/album
+
+MusicGenre_Admin:
+    resource: "routing/musicgenreadmin.yml"
+    prefix:   /admin/musicgenre

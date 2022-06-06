@@ -1,0 +1,97 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "history.show.History"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ "history.show.History"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
+
+	<script>
+		$(function() {
+			var table = toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
+			table.order( [ 0, 'desc' ] ).draw();
+			$('.show_history_link').click(function(e)
+			{
+				$('#displayHistory').modal('show');
+				$('#displayHistory .modal-body .history-details').html($(this).data("diff"));
+				e.preventDefault();
+			});
+		});
+	</script>
+	
+	<style>
+	.pl-md {
+		color: #b31d28;
+		background-color: #ffeef0;
+	}
+	.pl-mi1 {
+		color: #22863a;
+		background-color: #f0fff4;
+	}
+	.pl-mdr {
+		font-weight: 700;
+		color: #6f42c1;
+	}
+	</style>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<div class="modal black_modal fade" tabindex="-1" role="dialog" id="displayHistory">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header text-center">
+			<h4 class="modal-title w-100">{{ "history.show.History"|trans([], "validators") }}</h4>
+		  </div>
+		  <div class="modal-body text-prewrap">
+			<div class="alert alert-success font-weight-bold mb-0 w-40 float-right">+++ New</div>
+			<div class="alert alert-danger font-weight-bold mb-0 w-40 float-left">--- Original</div>
+			<div class="clearfix"></div>
+			<hr>
+			<div class="history-details"></div>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/historic.jpg') }}" width="550" alt="Heaven's gate apocalypse" /></p>
+	<hr />
+	<div class="alert alert-info">
+		<i class="fas fa-info-circle"></i> {{ "history.show.RevisionHistory"|trans([], "validators") }} « <i><a href="{{ path }}" class="alert-link font-weight-bold">{{ titleEntity }}</a></i> ».
+	</div>
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "history.show.Date"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "history.show.Author"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "history.show.Diff"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in entities %}
+				<tr class="trGene">
+					<td class="tdGene">{{ entity.modificationDateTime|dodate(true, app.request.locale) }}</td>
+					<td class="tdGene"><b>{{ entity.user }}</b><br>(<i>{{ entity.ipAddress }}</i>)</td>
+					<td class="tdGene">{% if entity.diffText is not empty %}<button class="btn submitcomment show_history_link text-left text-dark font-weight-bold" data-diff="{{ format_history(entity.diffText|join('<hr>')) }}"><i class="fas fa-history"></i></button>{% endif %}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "history.show.Date"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "history.show.Author"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "history.show.Diff"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

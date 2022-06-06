@@ -1,0 +1,160 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "artist.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "artist.admin.Genre"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.website, "artist.admin.Website"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.website) }}{{ form_widget(form.website, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "artist.admin.Image"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">
+	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
+		<div class="input-group-append">
+			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.biography, "artist.admin.Biography"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.biography.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.biography) }}{{ form_widget(form.biography) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "artist.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'}} ) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "artist.admin.Country"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'}} ) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.artistBiographies, "biographies.admin.Biographies"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+    <ul id="biography-fields-list"
+        data-prototype="{{ form_widget(form.artistBiographies.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.artistBiographies|length }}"
+		class="list-unstyled">
+		{% for artistBiographyField in form.artistBiographies %}
+			<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
+				<div data-wikidata="{{ artistBiographyField.vars.value.biography.wikidata }}" data-title="{{ artistBiographyField.vars.value.biography.title }}" data-international-name="{{ artistBiographyField.vars.value.biography.internationalName }}">
+					{{ form_errors(artistBiographyField) }}
+					
+					{{ form_label(artistBiographyField.biography, "biographies.admin.Biography"|trans([], "validators")) }}
+					{{ form_widget(artistBiographyField.biography) }}
+					
+					{{ form_label(artistBiographyField.occupation, "biographies.admin.Occupation"|trans([], "validators")) }}
+					{{ form_widget(artistBiographyField.occupation) }}
+					
+					{{ form_label(artistBiographyField.role, "biographies.admin.StageName"|trans([], "validators")) }}
+					{{ form_widget(artistBiographyField.role) }}
+					
+					{{ form_label(artistBiographyField.startYear, "biographies.admin.StartYear"|trans([], "validators")) }}
+					{{ form_widget(artistBiographyField.startYear) }}
+					
+					{{ form_label(artistBiographyField.endYear, "biographies.admin.EndYear"|trans([], "validators")) }}
+					{{ form_widget(artistBiographyField.endYear) }}
+					
+					{{ form_widget(artistBiographyField.internationalName) }}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+	
+    <button type="button"
+        class="add-another-collection-widget btn btn-success float-right"
+        data-list-selector="#biography-fields-list"><i class="fas fa-plus"></i></button>
+		
+	<div class="d-none">
+	{% if entity.id is null and not form.artistBiographies.isRendered() %}
+		{{ form_widget(form.artistBiographies) }}
+	{% endif %}
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "artist.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
+
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector("#wikidata .fa-sync").classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+				
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("url_{{ form.biography.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.biography.vars.id }}").dispatchEvent(new Event("change"));
+				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
+				
+				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
+
+				let i = 0;
+
+				for(wikidata in data.person.member) {
+					document.querySelector(".add-another-collection-widget").click();
+
+					document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_role").parentNode.style.display = "none";
+
+					var $newOption = $("<option selected='selected'></option>").val("__" + data.person.member[wikidata].title).text(data.person.member[wikidata].title + " (+)");
+
+					document.getElementById("{{ form.artistBiographies.vars.id }}_" + i).setAttribute("data-wikidata", wikidata);
+					document.getElementById("{{ form.artistBiographies.vars.id }}_" + i).setAttribute("data-title", data.person.member[wikidata].title);
+
+					if(data.person.member[wikidata].start != null) {
+						let dateArray = data.person.member[wikidata].start.split("T")[0].substr(1).split("-");
+
+						if(dateArray[2] != "00")
+							document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_startYear_day").value = dateArray[2];
+
+						if(dateArray[1] != "00")
+							document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_startYear_month").value = dateArray[1];
+
+						if(dateArray[0] != "0000")
+							document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_startYear_year").value = dateArray[0];
+					}
+
+					if(data.person.member[wikidata].end != null) {
+						let dateArray = data.person.member[wikidata].end.split("T")[0].substr(1).split("-");
+
+						if(dateArray[2] != "00")
+							document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_endYear_day").value = dateArray[2];
+
+						if(dateArray[1] != "00")
+							document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_endYear_month").value = dateArray[1];
+
+						if(dateArray[0] != "0000")
+							document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_endYear_year").value = dateArray[0];
+					}
+
+					addBiographyValidationFormDisplayLink(document.getElementById("{{ form.artistBiographies.vars.id }}_" + i).parentNode, data.person.member[wikidata].objects.length);
+					
+					$("#{{ form.artistBiographies.vars.id }}_" + i + "_biography").append($newOption).trigger('change');
+					i++;
+				}
+			}
+		}
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('Artist_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

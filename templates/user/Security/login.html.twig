@@ -1,0 +1,36 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "user.index.Login"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/connectYou.png') }}"  width="25" class="mt-1" /></span>{{ "user.index.Login"|trans([], "validators") }}</h2>{% endblock %}
+{% block APBlog_body %}
+	{% block fos_user_content %}
+		<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/login.jpg') }}" alt="Ange" /></p>
+		<div class="text-center">
+			{% if error %}
+				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+			{% endif %}
+
+			<form action="{{ path("Security_Login") }}" method="post" class="mb-2">
+				<div class="form-table form-table-4cols form-table-collapse mb-3">
+					<div class="form-table-cell form-table-cell-head"><label for="username">{{ "user.index.Username"|trans([], "validators") }}</label></div>
+					<div class="form-table-cell"><input type="text" class="form-control" id="username" name="_username" value="{{ last_username }}" /></div>
+					<div class="form-table-cell form-table-cell-head"><label for="password">{{ "user.index.Password"|trans([], "validators") }}</label></div>
+					<div class="form-table-cell"><input type="password" class="form-control" id="password" name="_password" /></div>
+				</div>
+				<input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+				<label for="remember_me">{{ "user.index.RememberMe"|trans([], "validators") }}</label>
+				<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+				<input class="submitcomment btn" type="submit" id="_submit" name="_submit" value="{{ 'user.index.Connexion'|trans([], 'validators') }}" />
+			</form>
+			<a href="{{ path('Resetting_Request') }}">{{ "user.index.ForgottenPassword"|trans([], "validators") }}</a>
+			
+			{% if last_user is not empty and last_user.isEnabled == false %}
+				<a href="{{ path('Registration_ResendEmailConfirmation', {id: last_user.id}) }}">{{ "user.index.CheckEmailAddress"|trans([], "validators") }}</a>
+			{% endif %}
+		</div>
+	{% endblock fos_user_content %}
+	
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

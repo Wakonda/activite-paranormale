@@ -1,0 +1,60 @@
+Quotation_ListQuotation:
+    path:  /quotation
+    controller: App\Controller\QuotationController::listQuotationAction
+
+Quotation_listQuotationDatatables:
+    path:  /listquotationdatatables
+    controller: App\Controller\QuotationController::listQuotationDatatablesAction
+
+Quotation_ReadQuotation:
+    path:  /quotation/read/{id}
+    controller: App\Controller\QuotationController::readQuotationAction
+    requirements:
+        id: \d+
+
+Quotation_quotationsServerSide:
+    path:  /quotation_server_side/{authorId}/{page}
+    controller: App\Controller\QuotationController::quotationsServerSideAction
+    defaults:
+        page: 1
+    requirements:
+        authorId: \d+
+
+Biography_Index:
+    path: /biography
+    controller: App\Controller\BiographyController::indexAction
+
+Biography_Show:
+    path: /biography/{id}/{title}
+    controller: App\Controller\BiographyController::readAction
+    defaults:
+        title: null
+    requirements:
+        id: \d+
+
+Biography_ListDatatables:
+    path: /biograpgy/listdatatables
+    controller: App\Controller\BiographyController::listDatatablesAction
+
+Biography_World:
+    path: /biography/world/{language}
+    controller: App\Controller\BiographyController::worldAction
+    defaults:
+        language: all
+    requirements:
+        theme: ".+"
+
+Biography_WorldDatatables:
+    path: /biography/worlddatatables/{language}
+    controller: App\Controller\BiographyController::worldDatatablesAction
+    defaults:
+        language: all
+
+# Administration
+Quotation_Admin:
+    resource: "routing/quotationadmin.yml"
+    prefix:   /admin/quotation
+
+Biography_Admin:
+    resource: "routing/biographyadmin.yml"
+    prefix:   /admin/biography

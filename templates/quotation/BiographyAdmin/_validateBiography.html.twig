@@ -1,0 +1,45 @@
+<script>
+	function selectBiography() {
+		document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = event.target.dataset.internationalName;
+		$("#validateBiographyModal").modal("hide");
+	}
+</script>
+
+<div class="container-fluid">
+	{% if entities is not empty %}
+    <div class="row">
+		{% for entity in entities %}
+			<div class="col-12 mt-3">
+				<div class="card">
+					{% if entity.illustration is not empty %}
+						<div class="img-square-wrapper">
+							{{ entity.illustration|imgsize(550, path, true, {"class": "mx-auto d-block img-fluid"})|raw }}
+						</div>
+					{% endif %}
+                    <div class="card-body">
+                        <h4 class="card-title">{{ entity.title }}</h4>
+                        {% if entity.birthDate is not empty %} 
+							<p class="card-text"><b>{{ "biography.admin.BirthDate"|trans([], "validators") }}</b> {{ entity.birthDate|doPartialDate(app.request.locale) }}</p>
+						{% endif %}
+						{% if entity.deathDate is not empty %} 
+							<p class="card-text"><b>{{ "biography.admin.DeathDate"|trans([], "validators") }}</b> {{ entity.deathDate|doPartialDate(app.request.locale) }}</p>
+						{% endif %}
+						{% if entity.nationality is not empty %} 
+							<p class="card-text"><b>{{ "biography.admin.Nationality"|trans([], "validators") }}</b> {{ entity.nationality }}</p>
+						{% endif %}
+						{% if entity.languages is not empty %} 
+							<p class="card-text"><b>{{ "biography.admin.Language"|trans([], "validators") }}</b> {{ (entity.languages|split("#"))|join(", ") }}</p>
+						{% endif %}
+						</p>
+                    </div>
+					<div class="card-footer">
+						<a href="#" class="btn btn-success select-biography" data-international-name="{{ entity.internationalName }}" onclick="event.preventDefault();selectBiography();">{{ "biography.admin.Select"|trans([], "validators") }}</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+    </div>
+	{% else %}
+		<div class="alert alert-info">{{ "biography.admin.NonExistentBiography"|trans([], "validators") }}</div>
+	{% endif %}
+</div>

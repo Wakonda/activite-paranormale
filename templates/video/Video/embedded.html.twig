@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>Activité-Paranormal + Vidéo</title>
+		<style>
+			html {
+				height: 100%;
+				overflow: hidden; /* Hides scrollbar in IE */
+				background-color: black;
+			}
+
+			body {
+				height: 100%;
+				margin: 0;
+				padding: 0;
+			}
+
+			object, video {
+				height: 92%;
+				width: 100%;
+			}
+
+			div {
+				text-align: center;
+			}
+
+			a:link, a:visited {
+				color: #B9C322;
+				text-decoration: none;
+				font-weight: normal;
+			}
+
+			a:active, a:hover { color: #FFCC00; text-decoration: underline; }
+		</style>
+    </head>
+    <body>
+		<video controls="controls">
+			<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
+		</video>
+		<div><a href="{{ url('Video_Read', { 'id' : entity.id, 'title_slug' : entity.getUrlSlug() }) }}" alt="" target="_blank">{{ entity.title }}</a></div>
+    </body>
+</html>

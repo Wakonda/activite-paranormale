@@ -1,0 +1,37 @@
+Banner_Admin_Index:
+    path:  /
+    controller: App\Controller\BannerAdminController::indexAction
+
+Banner_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\BannerAdminController::showAction
+
+Banner_Admin_New:
+    path:  /new
+    controller: App\Controller\BannerAdminController::newAction
+
+Banner_Admin_Create:
+    path:  /create
+    controller: App\Controller\BannerAdminController::createAction
+    requirements:
+        _method: post
+
+Banner_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\BannerAdminController::editAction
+
+Banner_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\BannerAdminController::updateAction
+    requirements:
+        _method: post
+
+Banner_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\BannerAdminController::deleteAction
+
+Banner_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\BannerAdminController::indexDatatablesAction
+    requirements:
+        _method: get

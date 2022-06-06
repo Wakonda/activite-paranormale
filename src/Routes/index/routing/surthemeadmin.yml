@@ -1,0 +1,41 @@
+SurTheme_Admin_Index:
+    path:  /
+    controller: App\Controller\SurThemeAdminController::indexAction
+
+SurTheme_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\SurThemeAdminController::showAction
+
+SurTheme_Admin_New:
+    path:  /new
+    controller: App\Controller\SurThemeAdminController::newAction
+
+SurTheme_Admin_Create:
+    path:  /create
+    controller: App\Controller\SurThemeAdminController::createAction
+    requirements:
+        _method: post
+
+SurTheme_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\SurThemeAdminController::editAction
+
+SurTheme_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\SurThemeAdminController::updateAction
+    requirements:
+        _method: post
+
+SurTheme_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\SurThemeAdminController::deleteAction
+
+SurTheme_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\SurThemeAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+SurTheme_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\SurThemeAdminController::internationalizationAction

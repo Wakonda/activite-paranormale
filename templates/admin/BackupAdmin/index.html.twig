@@ -1,0 +1,29 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Backup"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('Backup_Admin_Generate') }}{% endblock %}
+
+{% block body_main %}
+	<table class="index_directories table table-striped table-bordered dt-responsive">
+		<thead>
+			<th>{{ 'backup.index.File'|trans([], "validators") }}</th>
+			<th>{{ 'backup.index.Actions'|trans([], "validators") }}</th>
+		</thead>
+		<tbody>
+			{% for file in files %}
+				<tr>
+					<td>{{ file }}</td>
+					<td>
+						<a href="{{ path('Backup_Admin_Download', {'filename': file}) }}" class="btn btn-success btn-sm"><i class="fas fa-download" aria-hidden="true"></i></a>
+						<a href="{{ path('Backup_Admin_Delete', {'filename': file}) }}" class="btn btn-danger btn-sm"><i class="fas fa-trash" aria-hidden="true"></i></a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td class="text-center" colspan="2">{{ 'backup.index.No'|trans }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}

@@ -1,0 +1,3 @@
+Search_Query:
+    path:  /search_query
+    controller: App\Controller\SearchController::searchAction

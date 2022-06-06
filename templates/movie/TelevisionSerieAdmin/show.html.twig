@@ -1,0 +1,80 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.TelevisionSerie"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('TelevisionSerie_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('TelevisionSerie_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('TelevisionSerie_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('TelevisionSerie_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block archive_admin_route %}{{ path('TelevisionSerie_Admin_Archive', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Introduction"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.introduction|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Theme"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.theme.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Country"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.country.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.State"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.state }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Genre"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.genre|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biographies.admin.Biographies"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% for televisionSerieBiography in entity.televisionSerieBiographies %}
+			<p><a href="{{ path('Biography_Admin_Show', {id: televisionSerieBiography.biography.id}) }}" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: televisionSerieBiography.biography.id}) }}" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> <b>{{ televisionSerieBiography.biography.title }}</b> - {{ ("biographies.admin."~televisionSerieBiography.occupation|capitalize)|trans([], "validators") }}{{ (televisionSerieBiography.role is not empty ? " (<i>"~televisionSerieBiography.role~"</i>)" : "")|raw }}</p>
+		{% endfor %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "televisionSerie.admin.Sources"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ get_tags(entity) }}</div>
+
+	<div class="d-flex flex-row mt-3">
+		<div><a href="{{ path('TelevisionSerie_Show', { 'id' : entity.id, 'title_slug' : entity.urlSlug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>
+		<div class="ml-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::TELEVISION_SERIE_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>
+	</div>
+{% endblock %}
+
+{% block data_bottom %}
+	<div class="mb-3">
+		{{ render(controller('App\\Controller\\EpisodeTelevisionSerieAdminController::indexAction', {televisionSerieId: entity.id})) }}
+	</div>
+	<hr>
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "TelevisionSerie_Admin_Internationalization", "showRoute": "TelevisionSerie_Admin_Show", "editRoute": "TelevisionSerie_Admin_Edit"})) }}
+	
+	{% if entity.state.isStateDisplayed() %}
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+		{% if entity.archive == false %}
+			{{ macro_index.twitter_form(entity) }}
+		{% endif %}
+	{% endif %}
+{% endblock %}

@@ -1,0 +1,5 @@
+search:
+    index:
+        Search: "Search"
+        NoResult: "Your search did not match any documents"
+        Results: "results"

@@ -1,0 +1,527 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Welcome"|trans([], "validators") }}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Phpinfo') }}"><i class="fas fa-exclamation-circle"></i> PHP Info</a></li>
+	<li class="nav-item"><a class="nav-link" href="{{ path('api_entrypoint') }}"><i class="fas fa-plug"></i> A.P.I.</a></li>
+	<li class="nav-item"><a class="nav-link" href="https://bug.wakonda.guru/"><i class="fas fa-bug"></i> Bug Tracker</a></li>
+{% endblock %}
+
+{% block style_edit %}
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block body_main %}
+	<div class="panel-group" id="accordion">
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseInfo">
+					<i class="far fa-file-alt text-danger"></i> {{ "admin.index.InfoGene"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseInfo" class="panel-collapse collapse show">
+				<div class="card-body">
+					<table class="table table-striped table-bordered index_admin dt-responsive">
+						<thead>
+							<tr>
+								<th>{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th>{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('News_Admin_Index') }}">{{ "admin.index.News"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('News_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('WebDirectory_Admin_Index') }}">{{ "admin.index.Directory"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('WebDirectory_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('WebDirectorySEO_Admin_Index') }}">{{ "admin.index.SEODirectory"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('WebDirectorySEO_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Biography_Admin_Index') }}">{{ "admin.index.Biography"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Biography_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "admin.index.Quotation"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Document_Admin_Index') }}">{{ "admin.index.Doc"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Document_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Cartography_Admin_Index') }}">{{ "admin.index.Cartography"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Cartography_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Video_Admin_Index') }}">{{ "admin.index.Video"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Video_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Blog_Admin_Index') }}">{{ "admin.index.Blog"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Blog_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Photo_Admin_Index') }}">{{ "admin.index.Photo"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Photo_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Testimony_Admin_Index') }}">{{ "admin.index.Testimony"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Testimony_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('EventMessage_Admin_Index') }}">{{ "admin.index.EventMessage"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('EventMessage_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseWitchcraft">
+					<i class="fas fa-hat-wizard text-danger"></i> {{ "witchcraft.admin.Witchcraft"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseWitchcraft" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Grimoire_Admin_Index') }}">{{ "admin.index.MagicBook"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Grimoire_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('WitchcraftTool_Admin_Index') }}">{{ "admin.index.WitchcraftTool"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('WitchcraftTool_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('WitchcraftThemeTool_Admin_Index') }}">{{ "admin.index.WitchcraftThemeTool"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('WitchcraftThemeTool_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('SurThemeGrimoire_Admin_Index') }}">{{ "admin.index.MagicBookTheme"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('SurThemeGrimoire_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('MenuGrimoire_Admin_Index') }}">{{ "admin.index.MagicBookMenu"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('MenuGrimoire_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseBook">
+					<i class="fas fa-book text-danger"></i> {{ "book.admin.Book"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseBook" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Book_Admin_Index') }}">{{ "admin.index.Book"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Book_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Publisher_Admin_Index') }}">{{ "admin.index.Publisher"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Publisher_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseMovie">
+					<i class="fas fa-film text-danger"></i> {{ "movie.admin.Movie"|trans([], "validators") }} / {{ "televisionSerie.admin.TelevisionSerie"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseMovie" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Movie_Admin_Index') }}">{{ "admin.index.Movie"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Movie_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('GenreAudiovisual_Admin_Index') }}">{{ "admin.index.GenreAudiovisual"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('GenreAudiovisual_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('TelevisionSerie_Admin_Index') }}">{{ "admin.index.TelevisionSerie"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('TelevisionSerie_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseMusic">
+					<i class="fas fa-music text-danger"></i> {{ "music.admin.Music"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseMusic" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Artist_Admin_Index') }}">{{ "admin.index.Artist"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Artist_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Music_Admin_Index') }}">{{ "admin.index.Music"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Music_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Album_Admin_Index') }}">{{ "admin.index.Album"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Album_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('MusicGenre_Admin_Index') }}">{{ "admin.index.MusicGenre"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('MusicGenre_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseAdmin">
+					<i class="fas fa-cog text-danger"></i> {{ "admin.index.AdministrativeInfo"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseAdmin" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Country_Admin_Index') }}">{{ "admin.index.Country"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Country_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('DocumentFamily_Admin_Index') }}">{{ "admin.index.DocFamily"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('DocumentFamily_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Language_Admin_Index') }}">{{ "admin.index.Language"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Language_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Licence_Admin_Index') }}">{{ "admin.index.Licence"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Licence_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Page_Admin_Index') }}">{{ "admin.index.Page"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Page_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('State_Admin_Index') }}">{{ "admin.index.State"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('State_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('SurTheme_Admin_Index') }}">{{ "admin.index.SurTheme"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('SurTheme_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Theme_Admin_Index') }}">{{ "admin.index.GeneralTheme"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Theme_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Banner_Admin_Index') }}">{{ "admin.index.Banner"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Banner_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Logo_Admin_Index') }}">{{ "admin.index.Logo"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Logo_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Backup_Admin_Index') }}">{{ "admin.index.Backup"|trans([], "validators") }}</a></td>
+								<td><span class="badge badge-pill badge-info">{{ render(controller('App\\Controller\\BackupAdminController::countAction')) }}</span></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Partner_Admin_Index') }}">{{ "admin.index.Partner"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Partner_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('President_Admin_Index') }}">{{ "admin.index.WordOfPresident"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('President_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('TagWord_Admin_Index') }}">{{ "admin.index.TagWord"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('TagWord_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseMember">
+					<i class="fas fa-user-tie text-danger"></i> {{ "admin.index.Member"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseMember" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('RoleUser_Admin_Index') }}">{{ "admin.index.UserRole"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('RoleUser_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('apadminuser') }}">{{ "admin.index.Member"|trans([], "validators") }}</a></td>
+								<td><a href=''><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseStore">
+					<i class="fas fa-cash-register text-danger"></i></i> {{ "admin.index.Store"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseStore" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Store_Admin_Index', { type: constant('App\\Entity\\Stores\\Store::BOOK_CATEGORY')|ucfirst }) }}">{{ ("store.admin."~(constant('App\\Entity\\Stores\\Store::BOOK_CATEGORY')|ucfirst))|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Store_Admin_New', { category: constant('App\\Entity\\Stores\\Store::BOOK_CATEGORY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Store_Admin_Index') }}">{{ "store.admin.Product"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Store_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Store_Admin_Index', { type: constant('App\\Entity\\Stores\\Store::ALBUM_CATEGORY')|ucfirst }) }}">{{ ("store.admin."~(constant('App\\Entity\\Stores\\Store::ALBUM_CATEGORY')|ucfirst))|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Store_Admin_New', { category: constant('App\\Entity\\Stores\\Store::ALBUM_CATEGORY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Store_Admin_Index', { type: constant('App\\Entity\\Stores\\Store::MOVIE_CATEGORY')|ucfirst }) }}">{{ ("store.admin."~(constant('App\\Entity\\Stores\\Store::MOVIE_CATEGORY')|ucfirst))|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Store_Admin_New', { category: constant('App\\Entity\\Stores\\Store::MOVIE_CATEGORY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Store_Admin_Index', { type: constant('App\\Entity\\Stores\\Store::TELEVISION_SERIE_CATEGORY')|ucfirst }) }}">{{ ("store.admin."~(constant('App\\Entity\\Stores\\Store::TELEVISION_SERIE_CATEGORY')|ucfirst))|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Store_Admin_New', { category: constant('App\\Entity\\Stores\\Store::TELEVISION_SERIE_CATEGORY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Store_Admin_Index', { type: constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY')|ucfirst }) }}">{{ ("store.admin."~(constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY')|ucfirst))|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Store_Admin_New', { category: constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseModeration">
+					<i class="fas fa-chess text-danger"></i> {{ "admin.index.Moderation"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseModeration" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{ "admin.moderation.NewsToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('News_Admin_State', {'state':'Waiting'}) }}" alt="" >{{ render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('News_Admin_State', {'state':'Warned'}) }}" alt="" >{{ render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Warned'})) }}</a>]
+								</td>
+							</tr>
+							<tr>
+								<td>{{ "admin.moderation.RitualsToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Grimoire_Admin_State', {'state':'Waiting'}) }}" alt="" >{{ render(controller('App\\Controller\\GrimoireAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
+								</td>
+							</tr>
+							<tr>
+								<td>{{ "admin.moderation.EventsToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('EventMessage_Admin_State', {'state':'Waiting'}) }}" alt="" >{{ render(controller('App\\Controller\\EventMessageAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
+								</td>
+							</tr>
+							<tr>
+								<td>{{ "admin.index.Comment"|trans([], "validators") }}</td>
+								<td><strong><em>{{ "admin.moderation.CommentsToModerate"|trans([], "validators") }} </em></strong>[<a href="{{ path('Comment_Admin_Index') }}" alt="">{{ render(controller("App\\Controller\\CommentAdminController::countToModerateCommentsAction")) }}</a>]</td>
+							</tr>
+							<tr>
+								<td>{{ "admin.moderation.MessagesReceived"|trans([], "validators") }}</td>
+								<td><strong><em>{{ "admin.moderation.UnreadPosts"|trans([], "validators") }} </em></strong>[<a href='{{ path("Contact_Admin_Index") }}'>{{ render(controller("App\\Controller\\ContactAdminController::countNonReadAction")) }}</a>]</td>
+							</tr>
+							<tr>
+								<td>{{ "admin.moderation.TestimoniesToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Testimony_Admin_Index', {'state': 'Waiting', 'page' : 1}) }}" alt="" >{{ render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('Testimony_Admin_Index', {'state': 'Warned', 'page' : 1}) }}" alt="" >{{ render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Warned'})) }}</a>]
+								</td>
+							</tr>
+							<tr>
+								<td>{{ "file.admin.MediaManagement"|trans([], "validators") }}</td>
+								<td><a href="{{ path('FileManagement_Admin_ListFiles') }}" alt="">{{ "admin.general.Display"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseExternalResource">
+					<i class="fas fa-spider text-danger"></i> {{ "admin.index.ExternalResource"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseExternalResource" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Management"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('UsefulLink_Admin_Index') }}">{{ "admin.index.UsefulLink"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('UsefulLink_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td>Amazon</td>
+								<td>
+									<a href='https://partenaires.amazon.fr/' alt="Club Partenaire Amazon"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a>
+									-
+									<a href='{{ path("UsefulLink_Admin_GenerateLinkStore") }}' alt=""><i class="fas fa-link" aria-hidden="true"></i> {{ "usefullink.admin.GenerateLinkProduct"|trans([], "validators") }}</a>
+									</td>
+							</tr>
+							<tr>
+								<td>Google Adsense</td>
+								<td><a href='https://www.google.com/adsense/v3/app?hl=fr#home' alt="Google Adsense"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td>Google Analytics</td>
+								<td><a href='https://www.google.com/intl/fr/analytics/' alt="Google Analytics"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td>Google Search</td>
+								<td><a href='https://www.google.com/cse/all' alt="Google Search"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td>Google Webmaster Tools</td>
+								<td><a href='https://www.google.com/webmasters/tools/home?hl=fr' alt="Google Webmasters Tools"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block js_edit %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			$('table.index_admin').dataTable({
+				"bFilter": false,
+				"bInfo": false,
+				"bPaginate": false,
+			});
+		});
+	</script>
+{% endblock %}

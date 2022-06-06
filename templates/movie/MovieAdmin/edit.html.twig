@@ -1,0 +1,31 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Movie"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('Movie_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Movie_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Movie_Admin_Index') }}{% endblock %}
+
+{% block update_admin_route %}{{ path('Movie_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block js_specific %}
+	{% import "movie/MovieAdmin/macro_movie.html.twig" as macro_movie %}
+
+	<script>
+		$(function()
+		{
+			{{ macro_movie.updateListForm(form) }}
+		});
+	</script>
+	
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+	{{ macro_index.tinymce_light_js(form.introduction.vars.id) }}
+	{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'movie/MovieAdmin/_form.html.twig' %}
+{% endblock %}

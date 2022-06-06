@@ -1,0 +1,68 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Biography"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Biography_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Biography_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Biography_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Biography_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.BirthDate"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.birthDate|doPartialDate(app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.DeathDate"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.deathDate|doPartialDate(app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Nationality"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.nationality is not empty %}<img src="{{ asset(entity.nationality.getAssetImagePath()) }}{{ entity.nationality.flag }}" alt="" width="20px" height="13px" />{% endif %}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Kind"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ ("biography.form."~entity.kind)|trans([], "validators") }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.InternationalName"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.internationalName }}</div>
+
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Source"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+
+	{% if entity.links is not null %}
+		{% set linkArray = json_decode(entity.links) %}
+		{% for sn in linkArray %}
+			<div class="form-table-cell form-table-cell-head">{{ ("biography.link."~sn.label)|trans([], "validators") }}</div>
+			<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+		{% endfor %}
+	{% endif %}
+	
+	<a href="{{ path('Biography_Show', { 'id' : entity.id, 'title' : entity.title }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Biography_Admin_Internationalization", "showRoute": "Biography_Admin_Show", "editRoute": "Biography_Admin_Edit"})) }}
+{% endblock %}

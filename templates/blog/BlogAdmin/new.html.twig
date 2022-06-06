@@ -1,0 +1,17 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Blog"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Blog_Admin_Index') }}{% endblock %}
+
+{% block create_admin_route %}{{ path('Blog_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'blog/BlogAdmin/_form.html.twig' %}
+{% endblock %}

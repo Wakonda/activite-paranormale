@@ -1,0 +1,159 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/folder.png') }}" width="25" class="mt-1" alt="Folder"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block header_plus %}
+	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
+	<script>
+		$(function() {
+			// Document embedded
+			var iframe = $($("#embedded_document").val());
+			var clipboard = new Clipboard('.clip_button');
+			
+			clipboard.on('success', function(e) {
+				$("#success_copy").addClass("success");
+				$("#success_copy span").text("{{ 'document.abstract.CodeCopiedWithSuccess'|trans([], 'validators') }}");
+				setTimeout(fade_out, 5000);
+			});
+
+			var default_width = iframe.attr("width");
+			var default_height = iframe.attr("height");
+			
+			$("input.size_embedded").keyup(function(event)
+			{
+				var new_width;
+				var new_height;
+
+				if(isInt($(this).val()))
+				{
+					if($(this).attr("id") == "custom_width")
+					{
+						new_width = $(this).val();
+						new_height = Math.ceil((default_height * new_width) / default_width);
+	
+						$("input#custom_height").val(new_height);
+					}
+					else if($(this).attr("id") == "custom_height")
+					{
+						new_height = $(this).val();
+						new_width = Math.ceil((default_width * new_height) / default_height);
+						
+						$("input#custom_width").val(new_width);
+					}
+
+					iframe.attr('width', new_width); 
+					iframe.attr('height', new_height); 
+				
+					$("#embedded_document").val(iframe[0].outerHTML);
+				}
+			});
+			
+			function isInt(data)
+			{
+				if (data == parseInt(data, 10))
+					return true;
+				else
+					return false;
+			}
+
+			var fade_out = function() {
+				$("#success_copy").removeClass("success");
+				$("#success_copy span").empty();
+			}
+			
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/document-abstract.jpg') }}" alt="Girl - Monster" /></p>
+	<hr />
+	<div class="tabs">
+		<h3>{{ "document.abstract.Abstract"|trans([], "validators") }}</h3>
+		{% if entity.text|strip_tags is not empty %}
+			{{ entity.text|raw }}
+		{% else %}
+			<div class="alert alert-danger"><i>{{ "document.abstract.NoAbstract"|trans([], "validators") }}</i></div>
+		{% endif %}
+		<h3>{{ "document.abstract.Details"|trans([], "validators") }}</h3>
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Title"|trans([], "validators") }}</div>
+			<div class="form-table-cell">{{ entity.title }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Author"|trans([], "validators") }}</div>
+			<div class="form-table-cell">
+				{% for authorDocumentBiography in entity.authorDocumentBiographies %}
+					{% set correctBio = biography_correct_language(authorDocumentBiography) %}
+					{% if correctBio is not null %}
+						<p><a href="{{ path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title}) }}" alt="">{{ correctBio.title }}</a></p>
+					{% else %}
+						<p>{{ authorDocumentBiography.title }}</p>
+					{% endif %}
+				{% endfor %}
+			</div>
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Date"|trans([], "validators") }}</div>
+			<div class="form-table-cell">{{ entity.releaseDateOfDocument is empty ? entity.releaseDateOfDocumentText|trans([], "validators") : entity.releaseDateOfDocument|doPartialDate(app.request.locale) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Category"|trans([], "validators") }}</div>
+			<div class="form-table-cell">{{ entity.documentFamily|getDocumentFamilyRealName(app.request.locale) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Language"|trans([], "validators") }}</div>
+			<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt=""width="20" height="13" /></div>
+
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Extension"|trans([], "validators") }}</div>
+			<div class="form-table-cell">{{ mime_content_type(asset(entity.getAssetImagePath()) ~ entity.pdfDoc) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Size"|trans([], "validators") }}</div>
+			<div class="form-table-cell">{{ filesize(asset(entity.getAssetImagePath()) ~ entity.pdfDoc) }}</div>
+		</div>
+		<hr>
+		<p>
+			<img src="{{ asset('extended/photo/abstract-download-document.svg') }}" alt="Download file icon" class="align-middle" width="40"/>
+			<a href="{{ path('DocumentBundle_DownloadDocument', {'id' : entity.id}) }}">{{ "document.abstract.DownloadFile"|trans([], "validators") }}</a>
+		</p>
+		<p>
+			<img src="{{ asset('extended/photo/abstract-read-document.svg') }}" alt="Read file icon" class="align-middle" width="40" />
+			<a href="{{ path('DocumentBundle_ReadDocument', {'id' : entity.id, 'title_slug' : entity.getUrlSlug()}) }}">{{ "document.abstract.ReadFile"|trans([], "validators") }}</a>
+		</p>
+		
+		{{ getTagsByEntityForDisplay(entity) }}
+		
+		<h3>{{ "document.abstract.Share"|trans([], "validators") }}</h3>
+		<div id="success_copy"><span></span></div>
+		<textarea id="embedded_document" class="generation bg-light text-muted form-control" readonly cols="65" rows="3"><iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe></textarea>
+		
+		<div class="form-group mt-2">
+			<span>{{ "document.abstract.DocumentSize"|trans([], "validators") }} </span>
+			<div class="input-group">
+				<input type="integer" id="custom_width" class="size_embedded form-control">
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text"><i class="fas fa-times"></i></span>
+				</div>
+				<input type="integer" id="custom_height" class="size_embedded form-control">
+			</div>
+		</div>
+		
+		<button type="button" id="copy-button" class="submitcomment btn clip_button"  data-clipboard-action="copy" data-clipboard-target="#embedded_document" title="Click to copy me.">{{ "document.abstract.CopyToClipboard"|trans([], "validators") }}</button>
+	</div>
+	<div style="clear: both;"></div>
+	
+	<hr class="hr2"/>
+	<p>
+		{% if entity.theme is not empty %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+	
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':entity} %}
+	
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Document' })) }}
+{% endblock %}

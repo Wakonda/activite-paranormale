@@ -1,0 +1,12 @@
+<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption, true, true)|raw }}</p>
+<br />
+{% set dir = entity.language.direction %}
+<div dir="{{ dir }}">{{ (entity.text|displayPrivateFile)|raw }}</div>
+
+{% if entity.source is not empty %}
+	<br>
+	<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
+	<a href="{{ entity.source }}" target="_blank">{{ entity.source|urlclean }}</a>
+{% endif %}
+
+{{ getTagsByEntityForDisplay(entity) }}

@@ -1,0 +1,64 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/witchcrafttools-read.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<br />
+	<table class="table">
+		<tbody>
+			<tr>
+				<td class="td_form_table">{{ "witchcraftTool.read.Theme"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.witchcraftThemeTool.title }}</td>
+			</tr>
+			<tr>
+				<td class="td_form_table">{{ "witchcraftTool.read.PublishedOn"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.publicationDate|dodate(false, app.request.locale) }}</td>
+			</tr>
+		</tbody>
+	</table>
+	<h3>{{ "witchcraftTool.read.Description"|trans([], "validators") }}</h3>
+	<div class="book_description">
+		{{ entity.text|raw }}
+	</div>
+
+	{% set datas = get_store_by_entity(entity, "witchcraftTool", "WitchcraftToolStore") %}
+	
+	{% if datas|length > 0 %}
+		<h3>{{ "store.index.Store"|trans([], "validators") }}</h3>
+	{% endif %}
+
+	{% for data in datas %}
+		{% include "store/Store/_product.html.twig" with { entity: data } %}
+	{% endfor %}
+	
+	{% if entity.source is not empty %}
+		<h3>{{ "witchcraftTool.index.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source) }}
+	{% endif %}
+
+	<hr class="hr2"/>
+	<p>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('WitchcraftTool_Index', { themeId: entity.witchcraftThemeTool.id }) }}">{{ entity.witchcraftThemeTool.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} {% if entity.licence is not null %}- <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}		
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'WitchcraftTool' })) }}
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'WitchcraftTool' })) }}
+{% endblock %}

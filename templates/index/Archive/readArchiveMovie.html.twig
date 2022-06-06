@@ -1,0 +1,82 @@
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<br>
+	
+	<h3>{{ "movie.read.Datasheet"|trans([], "validators") }}</h3>
+	
+	{% set biographyDatas = movie_biographies_by_occupation(entity) %}
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<td class="td_form_table">{{ "movie.read.Duration"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.duration|default("-") }} {{ 'movie.index.Minute'|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</td>
+			</tr>
+			<tr>
+				<td class="td_form_table">{{ "movie.read.ReleaseYear"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.releaseYear|default("-") }}</td>
+			</tr>
+			<tr>
+				<td class="td_form_table">{{ "movie.read.Genre"|trans([], "validators") }}</td>
+				<td class="tdGene"><a href="{{ path('ByGenreMovie_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.title}) }}">{{ entity.genre }}</a></td>
+			</tr>
+			<tr>
+				<td class="td_form_table">{{ "movie.read.Country"|trans([], "validators") }}</td>
+				<td class="tdGene">{% if entity.country is not null %}<img id="flagC" src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" /> - {{ entity.country.title }}{% endif %}</td>
+			</tr>
+			{% for occupation, biographies in biographyDatas %}
+				{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
+				<tr>
+					<td class="td_form_table">{{ (("movie.read."~(occupation)|capitalize)~"By")|trans([], "validators") }}</td>
+					<td class="tdGene">
+						{% set persons = [] %}
+						{% for biography in biographies %}
+							{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+						{% endfor %}
+						{{ (persons|join(", "))|raw }}
+					</td>
+				</tr>
+				{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	<h3>{{ "movie.read.Trailer"|trans([], "validators") }}</h3>
+	{{ entity.trailer|raw }}
+	
+	<h3 class="mt-2">{{ "movie.read.Text"|trans([], "validators") }}</h3>
+	{{ entity.text|raw }}
+	
+	{% if biographyDatas|length > 0 %}
+	<h3>{{ "movie.read.Cast"|trans([], "validators") }}</h3>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>{{ "movie.read.Actor"|trans([], "validators") }}</th>
+				<th>{{ "movie.read.Role"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for occupation, biographies in biographyDatas %}
+				{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
+					{% for biography in biographies %}
+						<tr>
+							<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+							<td>{{ biography.role }}</td>
+						</tr>
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</tbody>
+	</table>
+	{% endif %}
+
+	<hr class="hr2">
+	<p>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} {% if entity.licence is not null %}- <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+
+	{{ getTagsByEntityForDisplay(entity) }}
+
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Movie' })) }}

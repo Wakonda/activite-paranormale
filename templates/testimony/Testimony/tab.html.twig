@@ -1,0 +1,50 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/superman.png') }}" width="25" class="mt-1" alt="Monster"/></span>{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			var dt = toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
+			dt.page.len( 10 ).order( [ 2, 'desc' ] ).draw();
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/testimony-tab.jpg') }}" alt="Strange man" width="550" /></p>
+	<hr />
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "testimony.tab.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "testimony.tab.Language"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "testimony.tab.PublicationDate"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in entities %}
+				<tr class="trGene">
+					<td class="tdGene"><a href="{{ path('Testimony_Show', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}" >{{ entity.title }}</a></td>
+					<td class="tdGene"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></td>
+					<td class="tdGene" data-order="{{ entity.writingDate|date("U") }}">{{ entity.writingDate|dodate(false, app.request.locale) }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "testimony.tab.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "testimony.tab.Language"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "testimony.tab.PublicationDate"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+{% endblock %}

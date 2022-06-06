@@ -1,0 +1,40 @@
+{% macro generate_image_quotation_form(entity, imageGeneratorForm) %}
+	<div class="accordion mb-2" id="accordionParentGenerateImage">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingGenerateImage">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseGenerateImage" aria-expanded="true" aria-controls="collapseGenerateImage">
+				<i class="fab fa-twitter-square" aria-hidden="true"></i> {{ "quotation.imageGenerator.Generate"|trans([], "validators") }}
+				</a>
+				</span>
+			</div>
+			<div id="collapseGenerateImage" class="collapse" aria-labelledby="headingGenerateImage" data-parent="#accordionParentGenerateImage">
+				<div class="card-body">
+					{{ form_start(imageGeneratorForm, { 'action': path('Quotation_Admin_GenerateImage', {'id': entity.id})}) }}
+						<div class="form-group row">
+							{{ form_label(imageGeneratorForm.image, "quotation.imageGenerator.Image"|trans([], "validators"), {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+							<div class="col-sm-10">
+								{{ form_widget(imageGeneratorForm.image, {'attr': {'class': 'form-control'}}) }}
+							</div>
+						</div>
+						<div class="form-group row">
+							{{ form_label(imageGeneratorForm.font_size, "quotation.imageGenerator.FontSize"|trans([], "validators"), {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+							<div class="col-sm-10">
+								{{ form_widget(imageGeneratorForm.font_size, {'attr': {'class': 'form-control'}}) }}
+							</div>
+						</div>
+						<div class="form-group row">
+							{{ form_label(imageGeneratorForm.invert_colors, "quotation.imageGenerator.InvertColors"|trans([], "validators"), {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
+							<div class="col-sm-10">
+								{{ form_widget(imageGeneratorForm.invert_colors) }}
+							</div>
+						</div>
+						<div class="text-right">
+						{{ form_row(imageGeneratorForm.save, {'label': "admin.general.Create"|trans([], "validators")}) }}
+						</div>
+					{{ form_end(imageGeneratorForm) }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}

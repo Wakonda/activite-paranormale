@@ -1,0 +1,38 @@
+{% set version = 'v2' %}
+
+{% if app.session.has('v') and app.session.get('v') == 'v3' %}
+	{% set version = 'v3' %}
+{% endif %}
+
+{% extends "layout_"~version~".html.twig" %}
+
+{% block title %}{% endblock %}
+
+{% block content %}
+	{{ parent() }}
+	<div class="content">
+		{% block APBlog_body %}
+		{% endblock %}
+	</div>
+	
+	{% block APBlog_commentaire %}
+	{% endblock %}
+{% endblock %}
+
+{## V3 ##
+{% extends "layout_v3.html.twig" %}
+
+{% block h2_title %}{% endblock %}
+{% block title %}{% endblock %}
+
+{% block content %}
+	{{ parent() }}
+	<div class="content">
+		{% block APBlog_body %}
+		{% endblock %}
+	</div>
+	
+	{% block APBlog_commentaire %}
+	{% endblock %}
+{% endblock %}
+## END_V3 ##}

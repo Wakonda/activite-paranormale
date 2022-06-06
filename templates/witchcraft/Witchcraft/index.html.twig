@@ -1,0 +1,43 @@
+{% extends "content_layout.html.twig" %}
+
+{% block magie %}
+	{{ parent() }}
+{% endblock %}
+{% block title %}{{ "witchcraft.index.Witchcraft"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="mt-1" alt="Skull"/></span>{{ "witchcraft.index.MagicPrayer"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block APBlog_body %}
+	{% for MG in menuGrimoire %}
+		<h3>{{ MG.title }}</h3>
+		<p class="image">{{ MG.photo|imgsize(550, MG.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		<hr>
+		{{ MG.text|raw }}
+		<ul class="fa-ul">
+		{% for surThemeGrimoire in surThemeGrimoires %}
+			{% if MG.id == surThemeGrimoire.menuGrimoire.id %}
+				<li>
+					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+					<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': MG.title, 'id': surThemeGrimoire.id, 'theme' : surThemeGrimoire.title })}}">{{ surThemeGrimoire.title }}</a>
+					[{{ render(controller("App\\Controller\\WitchcraftController::countRitualAction", {'id': surThemeGrimoire.id })) }}]
+				</li>
+			{% endif %}
+		{% endfor %}
+		</ul>
+	{% endfor %}
+	
+	<div class="mb-3">
+		<h3>{{ ("witchcraft.index.MoonPhase"|trans({'%date%' : "now"|dodate(false, app.request.locale) }, "validators"))|raw }}</h3>
+		{{ include("@WakondaMoonPhase/widget.html.twig") }}
+	</div>
+	
+	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', { 'internationalName' : "prayer", 'isTitle': true })) }}
+
+	<div class="text-center">
+		<a class="btn witchcraft" href="{{ path('WitchcraftTool_Index') }}">
+			<span class="mr-2"><img src="{{ asset('extended/photo/witchcraftStore.png') }}" width="25" height="25"/></span>
+			<b class="align-text-top">{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</b>
+		</a>
+	</div>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

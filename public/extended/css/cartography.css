@@ -1,0 +1,25 @@
+div.infowindow {
+	height:250px;
+	width:300px;
+	overflow-y:auto;
+	color: black;
+	text-align: justify;
+	font-family: 'Times New Roman', Arial, serial;
+}
+
+p.infowindow_title
+{
+	font-size: 16px;
+	text-align: center;
+}
+
+div.infowindow_text
+{
+	padding-right: 8px;
+	font-family: 'Times New Roman', Arial, serial;
+}
+
+a.link_map
+{
+	font-family: 'Times New Roman', Arial, serial;
+}

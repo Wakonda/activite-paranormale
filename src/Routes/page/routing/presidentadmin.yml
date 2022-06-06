@@ -1,0 +1,45 @@
+President_Admin_Index:
+    path: /
+    controller: App\Controller\PresidentAdminController::indexAction
+
+President_Admin_Show:
+    path: /{id}/show
+    controller: App\Controller\PresidentAdminController::showAction
+
+President_Admin_New:
+    path:  /new
+    controller: App\Controller\PresidentAdminController::newAction
+
+President_Admin_Create:
+    path: /create
+    controller: App\Controller\PresidentAdminController::createAction
+    requirements:
+        _method: post
+
+President_Admin_Edit:
+    path: /{id}/edit
+    controller: App\Controller\PresidentAdminController::editAction
+
+President_Admin_Update:
+    path: /{id}/update
+    controller: App\Controller\PresidentAdminController::updateAction
+    requirements:
+        _method: post
+
+President_Admin_Delete:
+    path: /{id}/delete
+    controller: App\Controller\PresidentAdminController::deleteAction
+
+President_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\PresidentAdminController::showImageSelectorColorboxAction
+
+President_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\PresidentAdminController::loadImageSelectorColorboxAction
+
+President_Admin_IndexDatatables:
+    path: /datatables
+    controller: App\Controller\PresidentAdminController::indexDatatablesAction
+    requirements:
+        _method: get

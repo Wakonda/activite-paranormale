@@ -1,0 +1,106 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/witchcrafttools-index.svg') }}" width="27" class="mt-1" alt="Witchcraft Tool"/></span>{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		$(document).ready(function(){
+			$(".select_theme").click(function(event)
+			{
+				event.preventDefault();
+				$('.searchWitchcraftTool')[0].reset();
+				$("#{{ form.witchcraftThemeTool.vars.id }}").val($(this).data("theme"));
+				$('.searchWitchcraftTool').submit();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	<div id="carouselWitchcraftToolTheme" class="carousel slide" data-ride="carousel">
+		<ol class="carousel-indicators">
+		{% set i = 0 %}
+		{% for theme in themes %}
+			<li data-target="#carouselWitchcraftToolTheme" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}></li>
+			{% set i = i + 1 %}
+		{% endfor %}
+		</ol>
+		<div class="carousel-inner">
+			{% set i = 0 %}
+			{% for theme in themes %}
+				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+					<div class="d-block mb-5">
+					<h3>{{ theme.title }}</h3>
+					{{ theme.photo|imgsize(null, theme.getAssetImagePath())|raw }}
+					<p class="mt-2"><i class="fas fa-arrow-right"></i> <a data-theme="{{ theme.id }}" href="{{ path('WitchcraftTool_Index') }}" class="select_theme">{{ "witchcraftTool.search.MoreDetails"|trans([], "validators") }}</a></p> 
+					</div>
+				</div>
+				{% set i = i + 1 %}
+			{% endfor %}
+		</div>
+
+		<a class="carousel-control-prev" href="#carouselWitchcraftToolTheme" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+		</a>
+		<a class="carousel-control-next" href="#carouselWitchcraftToolTheme" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+		</a>
+	</div>
+	<h3>{{ "witchcraftTool.search.SearchSort"|trans([], "validators") }}</h3>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('WitchcraftTool_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal searchWitchcraftTool', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.keywords, "witchcraftTool.search.Keywords"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.keywords) }}{{ form_widget(form.keywords, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.witchcraftThemeTool, "witchcraftTool.search.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.witchcraftThemeTool) }}{{ form_widget(form.witchcraftThemeTool, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "witchcraftTool.search.Sort"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-right mt-3">{{ "witchcraftTool.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+	<br>
+	<br>
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row no-gutters">
+				<div class="col-md-4 align-self-center text-center">
+					{{ entity.photo|imgsize(null, entity.getAssetImagePath())|raw }}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body">
+						<h5 class="card-title text-center">{{ entity.title }}</h5>
+						<hr>
+						<p class="text-center"><i class="fas fa-hat-wizard"></i> <a href="#" class="select_theme" data-theme="{{ entity.witchcraftThemeTool.id }}">{{ entity.witchcraftThemeTool.title }}</a></p>
+						<hr>
+					</div>
+					<div class="card-footer text-center">
+						<a class="btn read" href="{{ path('WitchcraftTool_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
+							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger font-italic text-center">{{ "witchcraftTool.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+	
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

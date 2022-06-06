@@ -1,0 +1,98 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<link href='{{ asset('extended/js/fullcalendar/packages/core/main.css') }}' rel='stylesheet' />
+	<link href='{{ asset('extended/js/fullcalendar/packages/list/main.css') }}' rel='stylesheet' />
+	<link href='{{ asset('extended/js/fullcalendar/packages/daygrid/main.css') }}' rel='stylesheet' />
+	<link href='{{ asset('extended/js/fullcalendar/packages/bootstrap/main.css') }}' rel='stylesheet' />
+
+	<script src="{{ asset('extended/js/fullcalendar/packages/core/main.js') }}"></script>
+	<script src="{{ asset('extended/js/fullcalendar/packages/core/locales-all.js') }}"></script>
+	<script src="{{ asset('extended/js/fullcalendar/packages/list/main.js') }}"></script>
+	<script src="{{ asset('extended/js/fullcalendar/packages/daygrid/main.js') }}"></script>
+	<script src="{{ asset('extended/js/fullcalendar/packages/bootstrap/main.js') }}"></script>
+
+	<style>
+		.fc-button-primary {
+			background-color: #000;
+			color: rgb(187, 196, 45);
+			border-color: rgb(187, 196, 45);
+		}
+		.fc-button-group > .fc-button:not(:last-child) {
+			background-color: #000;
+			color: rgb(187, 196, 45);
+		}
+		.fc-button-group > .fc-button:hover, .fc-button-primary:hover, .fc-button-primary:not(:disabled):active, .fc-button-primary:not(:disabled).fc-button-active {
+			color: #000;
+			background-color: rgb(187, 196, 45);
+			border-color: rgb(187, 196, 45);
+		}
+		.fc-button-primary:disabled {
+			color: #000;
+			background-color: rgb(187, 196, 45);
+			border-color: rgb(187, 196, 45);
+			cursor: not-allowed !important;
+		}
+		.fc-unthemed td.fc-today, .fc-unthemed .fc-list-heading td {
+			background: #002700;
+		}
+		.fc-unthemed .fc-list-view, .fc-unthemed .fc-list-heading td {
+			border-color: rgb(187, 196, 45) !important;
+		}
+		.fc-content-skeleton .fc-unthemed td {
+			border-color: #ddd !important;
+		}
+		.fc-unthemed .fc-list-heading td {
+			border-bottom: 1px solid rgb(187, 196, 45) !important;
+		}
+		.fc-unthemed .fc-list-item:hover td {
+			background-color: #252525 !important;
+		}
+		 a.fc-event:link, a.fc-event:visited {
+			color: white;
+		}
+		a.fc-day-number:active, a.fc-day-number:hover {
+			color: #fc0 !important;
+			text-decoration: underline !important;
+		}
+		fc-unthemed .fc-list-empty {
+			color: #0c5460;
+			background-color: #d1ecf1;
+			border-color: #bee5eb;
+		}
+	</style>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+			locale: '{{ app.request.locale }}',
+			plugins: [ 'dayGrid', 'list' ],
+			events: '{{ path("EventMessage_Calendar_Events") }}',
+			header: {
+				left: 'prev,next today',
+				center: 'title',
+				right: 'dayGridMonth,listWeek'
+			},
+			views: {
+				listWeek: { buttonText: '{{ "eventMessage.calendar.List"|trans([], "validators") }}' }
+			},
+			navLinks: true, // can click day/week names to navigate views
+			editable: false,
+			displayEventTime: false,
+			eventLimit: false, // allow "more" link when too many events*/
+        });
+		calendar.render();
+        });
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	<div id='calendar'></div>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

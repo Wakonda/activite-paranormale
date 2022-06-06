@@ -1,0 +1,95 @@
+grimoire:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Theme: "Theme"
+        WritingDate: "Writing date"
+        Source: "Source"
+        State: "State"
+        Language: "Language"
+        Photo: "Photo"
+        Author: "Author"
+        Validate: "Validate"
+        Refuse: "Refuse"
+        RitualPublished: "Ritual published"
+        RitualRefused: "Ritual refused"
+magicbookmenu:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Picture: "Picture"
+        Language: "Language"
+        InternationalName: "International name"
+magicbooktheme:
+    admin:
+        Title: "Title"
+        Theme: "Theme"
+        Definition: "Definition"
+        Picture: "Picture"
+        Language: "Language"
+        InternationalName: "International name"
+        WitchcraftMenu: "Witchcraft menu"
+witchcraft:
+    admin:
+        Witchcraft: "Witchcraft"
+    index:
+        Witchcraft: "Witchcraft"
+        MagicPrayer: "Magic - Prayer"
+        MoonPhase: "Moon phase on %date%"
+    tabGrimoire:
+        Title: "Title"
+        Source: "Source"
+        Language: "Language"
+        Photo: "Photo"
+    read:
+        Source: "Source"
+    new:
+        AddRitual: "Suggest a ritual"
+        Title: "Title"
+        Text: "Text"
+        Theme: "Theme"
+        Pseudo: "Pseudo"
+        IsAnonymous: "Publish anonymously?"
+        Validate: "Validate"
+        PublishedAnonymously: "Published anonymously"
+        PostedWithMyUserAccount: "Posted with my user account"
+        AnonymousMessage: "By posting anonymously, your ritual will not appear in your user account when it will be approved by our moderators."
+    validate:
+        Validation: "Validation"
+        ThankForYourParticipation: "Thank you for your participation!"
+        ThankForYourParticipationText: "Your news has been transmitted to us. It will be published on our website as soon as a moderator's approval."
+witchcraftTool:
+    index:
+        WitchcraftTool: "Witchcraft tool"
+        Sources: "Sources"
+    admin:
+        Title: "Title"
+        Photo: "Photo"
+        Text: "Text"
+        PublicationDate: "Publication date"
+        WitchcraftThemeTool: "Theme"
+        Language: "Language"
+        State: "State"
+        Source: "Source"
+    search:
+        SearchSort: "Search / Sort"
+        Keywords: "Keywords"
+        Theme: "Theme"
+        PublicationDate: "Publication date"
+        PublicationDateUp: "Publication date ↑"
+        PublicationDateDown: "Publication date ↓"
+        Sort: "Sort by"
+        Validate: "Validate"
+        Read: "Read"
+        NoMatchingRecordsFound: "No matching records found"
+        MoreDetails: "Plus de détails"
+    read:
+        Theme: "Category"
+        Description: "Description"
+        PublishedOn: "Published on"
+witchcraftThemeTool:
+    admin:
+        Title: "Title"
+        Photo: "Photo"
+        InternationalName: "International name"
+        Language: "Language"

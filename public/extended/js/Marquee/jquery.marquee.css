@@ -1,0 +1,34 @@
+ul.marquee {
+	/* required styles */
+	display: block;
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	line-height: 1;
+	position: relative;
+	overflow: hidden;
+
+	/* optional styles for appearance */
+	width: 540px;
+	height: 22px; /* height should be included to reserve visual space for the marquee */
+	background-color: black;
+}
+
+ul.marquee li {
+	/* required styles */
+	position: absolute;
+	top: -999em;
+	left: 0;
+	display: block;
+	white-space: nowrap; /* keep all text on a single line */
+
+	/* optional styles for appearance */
+	font: 14px "Times New Roman", Arial, Helvetica, sans-serif;
+	padding: 3px 5px;
+}
+
+.marquee-container{
+	border: 2px solid #cfea2b;
+	padding:5px;
+	border-radius:5px;
+}

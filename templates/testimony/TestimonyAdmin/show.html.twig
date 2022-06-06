@@ -1,0 +1,56 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Testimony"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Testimony_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Testimony_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Testimony_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Testimony_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block archive_admin_route %}{{ path('Testimony_Admin_Archive', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Theme"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.theme.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.State"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.state.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.WritingDate"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.writingDate|dodate(false, app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.PublicationDate"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.publicationDate|dodate(false, app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.PseudoUsed"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.pseudoUsed }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.EmailAuthor"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.emailAuthor }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ get_tags(entity) }}</div>
+	
+	{% if entity.state.isStateDisplayed() %}
+		<a href="{{ path('Testimony_Show', { 'id' : entity.id, 'title_slug': entity.urlSlug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+	{% endif %}
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller("App\\Controller\\FileManagementAdminController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+	{% if entity.state.isWaiting() %}
+		<a href="{{ path('Testimony_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "testimony.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('Testimony_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "testimony.admin.Refuse"|trans([], "validators") }}</a>
+	{% endif %}
+{% endblock %}

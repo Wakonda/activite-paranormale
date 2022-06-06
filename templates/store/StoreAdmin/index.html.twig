@@ -1,0 +1,22 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Store"|trans([], "validators") }}{% if app.request.get('type') is not empty %} - {{ ("store.admin."~app.request.get('type'))|trans([], "validators") }}{% endif %}{% endblock %}
+
+{% block new_admin_route %}{{ path('Store_Admin_New', {category: app.request.get('category')}) }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('Store_Admin_IndexDatatables', {type: app.request.get('type')}) }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "store.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "store.admin.Platform"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "store.admin.Category"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "store.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "store.admin.Platform"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "store.admin.Category"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

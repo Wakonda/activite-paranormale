@@ -1,0 +1,49 @@
+MusicGenre_Admin_Index:
+    path:  /
+    controller: App\Controller\MusicGenreAdminController::indexAction
+
+MusicGenre_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\MusicGenreAdminController::showAction
+
+MusicGenre_Admin_New:
+    path:  /new
+    controller: App\Controller\MusicGenreAdminController::newAction
+
+MusicGenre_Admin_Create:
+    path:  /create
+    controller: App\Controller\MusicGenreAdminController::createAction
+    requirements:
+        _method: post
+
+MusicGenre_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\MusicGenreAdminController::editAction
+
+MusicGenre_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\MusicGenreAdminController::updateAction
+    requirements:
+        _method: post
+
+MusicGenre_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\MusicGenreAdminController::deleteAction
+
+MusicGenre_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\MusicGenreAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+MusicGenre_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\MusicGenreAdminController::showImageSelectorColorboxAction
+
+MusicGenre_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\MusicGenreAdminController::loadImageSelectorColorboxAction
+
+MusicGenre_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\MusicGenreAdminController::internationalizationAction

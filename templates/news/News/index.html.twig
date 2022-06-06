@@ -1,0 +1,79 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}
+	{{ "news.index.Actualite"|trans([], "validators") }}
+	{% if app.request.attributes.get('theme') != "" %}
+		{{ (" - "~app.request.attributes.get('theme')) }}
+	{% endif %}
+{% endblock %}
+
+{% block meta_plus %}
+<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_newsmobile_index', {'page': page, 'theme': app.request.attributes.get('theme')}) }}">
+{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span>
+		{{ "news.index.Actualite"|trans([], "validators") }}
+		{% if app.request.attributes.get('theme') != "" %}
+			{{ (" - "~app.request.attributes.get('theme')) }}
+		{% endif %}</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<script>
+		$(function ()
+		{
+			$('select.selected_theme_news').change(function()
+			{
+				var DATA = $("#choose_theme_news").serialize();
+				$.ajax(
+				{
+					type: "POST",
+					url: "{{ path('News_SelectThemeForIndexNew') }}",
+					data: DATA,
+					cache: false,
+					success: function(data)
+					{
+						document.location.href = data;
+					}
+				});
+				return false;
+			});
+		});
+	</script>
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.select_list_theme(themes, 'News_Index', 'news.index.ViewAll') }}
+	<hr class="hr2">
+	{% set i = 0 %}
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row no-gutters">
+				<div class="col-md-4 align-self-center text-center">
+					{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body p-2 pl-3">
+						<h5 class="card-title text-center">{{ entity.title }}</h5>
+						<hr>
+						<p class="card-text mb-0 text-center">{{ entity.Theme.title }} - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
+						<p class="card-text mb-0 text-center"><b>{{ "comment.index.Comments"|trans([], "validators") }}:</b> {{ entity|count_comments_by_article }}</p>
+						<p class="card-text text-center"><b>{{ "vote.index.AverageScore"|trans([], "validators") }}</b> {{ entity|average_rating_by_news }}</p>
+						<hr>
+						<p class="card-text text-center"><a href="{{ path('News_ReadNews_New', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}">{{ "news.index.PlusDInformations"|trans([], "validators") }}</a></p>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger" role="alert">
+			{{ "news.index.NoData"|trans([], "validators") }}
+		</div>
+	{% endfor %}
+
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	{{ "google"|advertisement|raw }}
+{% endblock %}

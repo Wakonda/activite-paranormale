@@ -1,0 +1,66 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ themeDisplay }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/chaudron.png') }}" width="25" class="mt-1" alt="Cauldron"/></span>{{ themeDisplay }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			$('table.doc_datatables').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": {{ total_line_display }},
+				"bProcessing": true,
+				"bServerSide": true,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"aaSorting": [[ 1, "desc" ]],
+				"sAjaxSource": "{{ path('Witchcraft_TabGrimoireDatatables', { 'themeId' : themeId }) }}"
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image">{{ fob.photo|imgsize(550, fob.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<hr>
+	{{ fob.text|raw }}
+	<br>
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th>{{ "witchcraft.tabGrimoire.Photo"|trans([], "validators") }}</th>
+				<th>{{ "witchcraft.tabGrimoire.Title"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th>{{ "witchcraft.tabGrimoire.Photo"|trans([], "validators") }}</th>
+				<th>{{ "witchcraft.tabGrimoire.Title"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

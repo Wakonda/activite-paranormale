@@ -1,0 +1,87 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "user.showProfile.Contribution"|trans([], "validators") }} - {{ entityName }} - {{ user.username }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/contribution_user_icon.png') }}" width="25" class="mt-1" alt="Alien"/></span>{{ "user.showProfile.Contribution"|trans([], "validators") }} - {{ entityName }} - {{ user.username }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			oTable = $('table.doc_datatables').dataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bLengthChange": true,
+				"aaSorting": [[ 3, "desc" ]],
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": 35,
+				"bProcessing": true,
+				"bServerSide": true,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"sAjaxSource": "{{ path('APUserBunble_contributionuserdatatables', { 'id' : id, 'bundleClassName' : bundleClassName, 'displayState' : displayState }) }}",
+				"aoColumns": [
+				  { "sClass": "longType" },
+				  null,
+				  null,
+				  null
+				]
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	{% if "user.contributionUser.Published"|trans([], "validators") == title %}
+		<div class="alert alert-success text-center" role="alert">
+			{{ title }}
+		</div>
+	{% elseif "user.contributionUser.WorkInProgress"|trans([], "validators") == title %}
+		<div class="alert alert-info text-center" role="alert">
+			{{ title }}
+		</div>
+	{% elseif "user.contributionUser.Unpublished"|trans([], "validators") == title %}
+		<div class="alert alert-danger text-center" role="alert">
+			{{ title }}
+		</div>
+	{% endif %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/contribution-user.jpg') }}" alt="Yoga girl magic" width="550" /></p>
+	<hr>
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "user.contributionUser.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "user.contributionUser.State"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "user.contributionUser.Language"|trans([], "validators") }}</th>
+				<th class="label_form">
+					{% if displayState == 0 %}
+						{{ "user.contributionUser.WritingDate"|trans([], "validators") }}
+					{% else %}
+						{{ "user.contributionUser.PublicationDate"|trans([], "validators") }}
+					{% endif %}
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+		</tfoot>
+	</table>
+	<br>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

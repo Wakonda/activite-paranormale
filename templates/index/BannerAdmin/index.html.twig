@@ -1,0 +1,24 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Banner"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('Banner_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('Banner_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "banner.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "banner.admin.Image"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "banner.admin.Display"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "banner.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "banner.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "banner.admin.Image"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "banner.admin.Display"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "banner.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

@@ -1,0 +1,94 @@
+<?php
+
+namespace App\Command;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+
+use App\Service\SearchEngine;
+
+use App\Entity\Interfaces\SearchEngineInterface;
+
+class SearchEngineCommand extends Command
+{
+    private $em;
+	private $searchEngine;
+	private $container;
+
+    public function __construct(EntityManagerInterface $em, SearchEngine $searchEngine, ContainerInterface $container)
+    {
+		parent::__construct();
+        $this->em = $em;
+        $this->searchEngine = $searchEngine;
+		$this->container = $container;
+    }
+
+    // the name of the command (the part after "bin/console")
+    protected static $defaultName = 'app:search-engine';
+
+    protected function configure()
+    {
+        // ...
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+		$output->writeln("Start Search engine indexation");
+		
+		$entities = array();
+		
+		$filename = $this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR."ap.index";
+
+		$this->searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $filename, null);
+
+		$this->searchEngine->init($filename);
+
+		$meta = $this->em->getMetadataFactory()->getAllMetadata();
+		foreach ($meta as $m) {
+			$c = $m->getName();
+
+			if(new $c() instanceof SearchEngineInterface) {
+				$qb = $this->em->createQueryBuilder();
+
+				$reflectionClass = new \ReflectionClass($c);
+				$annotationReader = new \Doctrine\Common\Annotations\AnnotationReader();
+
+				$anno = array_map(function($e) { return get_class($e); }, $annotationReader->getClassAnnotations($reflectionClass));
+
+				if (in_array(\Doctrine\ORM\Mapping\MappedSuperclass::class, $anno))
+					continue;
+
+				$datas = $qb->select("e")
+				   ->from($m->getName(), "e")
+				   ->join("e.state", "s")
+				   ->where("s.displayState = 1")
+				   ->andWhere("e.archive = false")
+				   ->getQuery()->getResult();
+
+				foreach($datas as $data) {
+					$classname = $this->em->getClassMetadata(get_class($data))->getTableName();
+					
+					$query = "SELECT n.id, l.abbreviation AS language, n.title, n.text 
+					FROM ${classname} n
+					INNER JOIN language l ON n.language_id = l.id
+					WHERE n.id = {$data->getId()}";
+					
+					$this->searchEngine->run($filename, $query, $classname);
+					
+					$query = "SELECT n.id, l.abbreviation AS language, i.realNameFile, n.text 
+					FROM ${classname} n
+					INNER JOIN language l ON n.language_id = l.id
+					INNER JOIN filemanagement i ON n.illustration_id = i.id
+					WHERE n.id = {$data->getId()}";
+
+					$this->searchEngine->runImage($filename, $query, $classname);
+				}
+			}
+		}
+
+        return 0;
+    }
+}

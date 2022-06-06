@@ -1,0 +1,37 @@
+canvas {
+	background-color: white;
+	display : block;
+	margin : auto;
+	position: relative;
+	cursor: move !important;
+}
+
+span.degree {
+	border: rgb(231, 229, 229) 1px solid;
+	font-size: 20px;
+	display: inline-block;
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	border-radius: 50%;
+	margin-left: 8px;
+}
+
+span.degree:hover {
+	background-color: #110054;
+}
+
+span.degree a {
+	display: inline-block;
+	margin-top: 10px;
+}
+
+span.degree a:hover {
+	text-decoration: none;
+}
+
+#rotate_container {
+	text-align: center;
+	padding-bottom: 20px;
+	
+}

@@ -1,0 +1,41 @@
+services:
+    # ap.twig.ap_extension:
+        # class: App\Twig\APExtension
+        # public: true
+
+    app.locale_listener:
+        class: App\Service\LocaleListener
+        arguments: ['%kernel.default_locale%']
+        tags:
+            - { name: kernel.event_subscriber }
+        public: true
+
+    future_publication.listener:
+        class: App\Listener\FuturePublicationListener
+        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@router"]
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+        public: true
+
+    history.listener:
+        class: App\Listener\HistoryListener
+        arguments: ["@request_stack", "@security.token_storage", "@security.authorization_checker"]
+        tags:
+            - { name: doctrine.event_listener, event: postUpdate  }
+            - { name: doctrine.event_listener, event: postPersist  }
+        public: true
+
+    saving_common_data.listener:
+        class: App\Listener\SavingCommonData
+        arguments: ["@service_container"]
+        tags:
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: postRemove }
+        public: true
+
+    App\EventListener\LoginListener:
+        tags:
+            - { name: 'kernel.event_listener', event: 'security.interactive_login' }

@@ -1,0 +1,139 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "movie.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "movie.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head">
+{{ form_label(form.introduction, "movie.admin.Introduction"|trans([], "validators")) }}
+</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.introduction.vars.id) }}
+	{{ form_errors(form.introduction) }}{{ form_widget(form.introduction) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "movie.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "movie.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "movie.admin.State"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "movie.admin.Theme"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">
+	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
+		<div class="input-group-append">
+			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "movie.admin.Country"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "movie.admin.Genre"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.televisionSerieBiographies, "biographies.admin.Biographies"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+    <ul id="biography-fields-list"
+        data-prototype="{{ form_widget(form.televisionSerieBiographies.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.televisionSerieBiographies|length }}"
+		class="list-unstyled">
+		{% for movieBiographyField in form.televisionSerieBiographies %}
+			<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
+				<div data-wikidata="{{ movieBiographyField.vars.value.biography.wikidata }}" data-title="{{ movieBiographyField.vars.value.biography.title }}" data-international-name="{{ movieBiographyField.vars.value.biography.internationalName }}">
+					{{ form_errors(movieBiographyField) }}
+					
+					{{ form_label(movieBiographyField.biography, "biographies.admin.Biography"|trans([], "validators")) }}
+					{{ form_widget(movieBiographyField.biography) }}
+					
+					{{ form_label(movieBiographyField.occupation, "biographies.admin.Occupation"|trans([], "validators")) }}
+					{{ form_widget(movieBiographyField.occupation) }}
+					
+					{{ form_label(movieBiographyField.role, "biographies.admin.Role"|trans([], "validators")) }}
+					{{ form_widget(movieBiographyField.role) }}
+					
+					{{ form_widget(artistBiographyField.internationalName) }}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+	
+    <button type="button"
+        class="add-another-collection-widget btn btn-success float-right"
+        data-list-selector="#biography-fields-list"><i class="fas fa-plus"></i></button>
+		
+	<div class="d-none">
+	{% if entity.id is null and not form.televisionSerieBiographies.isRendered() %}
+		{{ form_widget(form.televisionSerieBiographies) }}
+	{% endif %}
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "movie.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
+
+<script>
+	$(function() {
+		$(".container-form-biography select.list-occupation").each(function() {
+			$(this).parent().children(".role-biography").show();
+			if($(this).val() != "{{ constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') }}")
+				$(this).parent().children(".role-biography").hide();
+		});
+		$(document).on("change", ".container-form-biography select.list-occupation", function() {
+			$(this).closest(".container-form-biography").find(".role-biography").show();
+
+			if($(this).val() != "{{ constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') }}")
+				$(this).closest(".container-form-biography").find(".role-biography").hide();
+		});
+	});
+
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector("#wikidata .fa-sync").classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+				
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
+				document.getElementById("{{ form.episode.vars.id }}").value = JSON.stringify(data.episodes);
+				
+				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
+			}
+		}
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('TelevisionSerie_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

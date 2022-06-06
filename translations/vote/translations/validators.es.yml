@@ -1,0 +1,8 @@
+vote:
+    edit:
+        Vote: "Voto"
+        Votes: "Votos"
+        VoteSubmit: "Votar"
+        AverageScore: "Nota media :"
+    index:
+        AverageScore: "Nota media :"

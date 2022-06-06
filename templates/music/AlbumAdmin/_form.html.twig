@@ -1,0 +1,76 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "album.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "album.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.artist, "album.admin.Artist"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.artist) }}{{ form_widget(form.artist, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.releaseYear, "album.admin.ReleaseYear"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.releaseYear) }}{{ form_widget(form.releaseYear, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "album.admin.Image"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "album.admin.Licence"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">
+	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
+		<div class="input-group-append">
+			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "album.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "album.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
+{{ form_widget(form.tracklist, { 'attr': {'class': 'form-control'} }) }}
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector("#wikidata .fa-sync").classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+				
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+
+				document.getElementById("{{ form.releaseYear.year.vars.id }}").value = data.publicationDate.year;
+				document.getElementById("{{ form.releaseYear.day.vars.id }}").value = data.publicationDate.day;
+				document.getElementById("{{ form.releaseYear.month.vars.id }}").value = data.publicationDate.month;
+				
+				document.getElementById("{{ form.tracklist.vars.id }}").value = JSON.stringify(data.tracklist);
+				
+				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
+			}
+		}
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('Album_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

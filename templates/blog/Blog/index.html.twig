@@ -1,0 +1,43 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}Blog{% endblock %}
+
+{% block h2_title %}
+	<h2>
+		<span class="float-left"><img src="{{ asset('extended/photo/alien-blog.png') }}" width="25" class="mt-1" alt="Blog icon"/></span>
+		Blog
+	</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	{% for blog in blogs %}
+		<h3>{{ blog.title }}</h3>
+		<p class="image">
+		{% if blog.isActive %}
+			{{ blog.banner|imgsize(550, blog.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
+		{% else %}
+			{{ blog.banner|imgsize(550, blog.getAssetImagePath(), true, { 'class' : 'mx-auto d-block img-fluid inactive' })|raw }}
+		{% endif %}
+		</p>
+		{{ blog.text|raw }}
+		<ul class="fa-ul">
+			<li>
+				<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+				{% if blog.isActive %}
+					<a href="{{ blog.link }}" target="_blank">{{ "blog.index.VisitThisBlog"|trans([], "validators") }}</a>
+				{% else %}
+					{{ "blog.index.Inactive"|trans([], "validators") }}
+				{% endif %}
+			</li>
+			{% if blog.rss is not null and blog.isActive %}
+			<li>
+				<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+				<a href="{{ blog.rss }}" target="_blank">{{ "blog.index.RSSFeed"|trans([], "validators") }}</a>
+			</li>
+			{% endif %}
+		</ul>
+		<br />
+	{% endfor %}
+	<br />
+	{{ "google"|advertisement|raw }}
+{% endblock %}

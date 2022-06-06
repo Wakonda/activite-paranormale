@@ -1,0 +1,22 @@
+<h1>Contact edit</h1>
+
+{{ form_start(form, {'action': path('contact_update', { 'id': entity.id }), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+    {{ form_widget(form) }}
+    <p>
+        <button type="submit">Edit</button>
+    </p>
+{{ form_end(form) }}
+
+<ul class="record_actions">
+    <li>
+        <a href="{{ path('contact') }}">
+            Back to the list
+        </a>
+    </li>
+    <li>
+		{{ form_start(delete_form, {'action': path('contact_delete', { 'id': entity.id }), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+            {{ form_widget(delete_form) }}
+            <button type="submit">Delete</button>
+        {{ form_end(delete_form) }}
+    </li>
+</ul>

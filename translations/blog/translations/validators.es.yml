@@ -1,0 +1,15 @@
+blog:
+    index:
+        VisitThisBlog: "Visite este blog"
+        Inactive: "Inactivo"
+        RSSFeed: "Canal RSS"
+    admin:
+        Title: "Título"
+        Banner: "Estandarte"
+        Link: "Link"
+        Rss: "RSS"
+        Text: "Texto"
+        Language: "Lengua"
+        LanguageOfBlog: "Lengua del blog"
+        WritingDate: "Fecha de redacción"
+        Active: "Activo"

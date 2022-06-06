@@ -1,0 +1,26 @@
+	.dropzone {
+		border: 3px dotted rgba(0, 0, 0, 0.3);
+	}
+	
+	.dropzone img {
+		width: 100%;
+	}
+	
+	.dropzone .dz-preview .dz-image {
+		width: auto;
+		height: auto;
+		border-radius: 5px;
+		margin-bottom: 5px;
+	}
+	
+	.dropzone a.dz-remove {
+		color: red;
+	}
+	
+	.dropzone .dz-image-preview {
+		text-align: center;
+		border: 1px solid #aaa;
+		padding: 5px;
+		border-radius: 5px;
+		box-shadow: 3px 3px 12px #aaa;
+	}

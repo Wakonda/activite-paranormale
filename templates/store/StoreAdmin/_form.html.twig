@@ -1,0 +1,134 @@
+{% if form.book is defined %}
+	<div class="form-table-cell form-table-cell-head">{{ form_label(form.book, "store.admin.Book"|trans([], "validators")) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.book) }}{{ form_widget(form.book, { 'attr': {'class': 'form-control'} }) }}</div>
+{% endif %}
+
+{% if form.album is defined %}
+	<div class="form-table-cell form-table-cell-head">{{ form_label(form.album, "store.admin.Album"|trans([], "validators")) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.album) }}{{ form_widget(form.album, { 'attr': {'class': 'form-control'} }) }}</div>
+{% endif %}
+
+{% if form.televisionSerie is defined %}
+	<div class="form-table-cell form-table-cell-head">{{ form_label(form.televisionSerie, "store.admin.TelevisionSerie"|trans([], "validators")) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.televisionSerie) }}{{ form_widget(form.televisionSerie, { 'attr': {'class': 'form-control'} }) }}</div>
+{% endif %}
+
+{% if form.witchcraftTool is defined %}
+	<div class="form-table-cell form-table-cell-head">{{ form_label(form.witchcraftTool, "store.admin.WitchcraftTool"|trans([], "validators")) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.witchcraftTool) }}{{ form_widget(form.witchcraftTool, { 'attr': {'class': 'form-control'} }) }}</div>
+{% endif %}
+
+{% if form.movie is defined %}
+	<div class="form-table-cell form-table-cell-head">{{ form_label(form.movie, "store.admin.Movie"|trans([], "validators")) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.movie) }}{{ form_widget(form.movie, { 'attr': {'class': 'form-control'} }) }}</div>
+{% endif %}
+
+{% if form.category is defined %}
+	<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "store.admin.Category"|trans([], "validators")) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}</div>
+{% endif %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "store.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "store.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.imageEmbeddedCode, "store.admin.ImageEmbeddedCode"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.imageEmbeddedCode) }}{{ form_widget(form.imageEmbeddedCode, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "store.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.admin.Platform"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head urlContainer">{{ form_label(form.url, "store.admin.Url"|trans([], "validators")) }}</div>
+<div class="form-table-cell urlContainer">{{ form_errors(form.url) }}{{ form_widget(form.url, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head amazonCodeContainer">{{ form_label(form.amazonCode, "store.admin.AmazonCode"|trans([], "validators")) }}</div>
+<div class="form-table-cell amazonCodeContainer">{{ form_errors(form.amazonCode) }}{{ form_widget(form.amazonCode, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.price, "store.admin.Price"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.price) }}
+	<div class="form-group-inline">
+		<div class="row">
+			<div class="col-md-6">
+				{{ form_widget(form.price, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_widget(form.currencyPrice, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% if form.characteristic is defined %}
+	{% for characteristic in form.characteristic.children %}
+		<div class="form-table-cell form-table-cell-head">{{ form_label(characteristic) }}</div>
+		<div class="form-table-cell">{{ form_errors(characteristic) }}{{ form_widget(characteristic, { 'attr': {'class': 'form-control'} }) }}</div>
+	{% endfor %}
+{% endif %}
+
+<script>
+	document.querySelector("#{{ form.platform.vars.id }}").addEventListener("change", (event) => {
+		amazonCodeDisplay(event.target.value);
+		urlDisplay(event.target.value);
+	});
+	
+	{% if form.book is defined %}
+		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
+	
+		$('#{{ form.book.vars.id }}').on('select2:select', function (e) {
+			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.title;
+		});
+	{% elseif form.album is defined %}
+		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
+	
+		$('#{{ form.album.vars.id }}').on('select2:select', function (e) {
+			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
+		});
+	{% elseif form.televisionSerie is defined %}
+		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
+	
+		$('#{{ form.televisionSerie.vars.id }}').on('select2:select', function (e) {
+			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
+		});
+	{% elseif form.witchcraftTool is defined %}
+		$('#{{ form.witchcraftTool.vars.id }}').on('select2:select', function (e) {
+			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
+		});
+	{% elseif form.movie is defined %}
+		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
+	
+		$('#{{ form.movie.vars.id }}').on('select2:select', function (e) {
+			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
+		});
+	{% endif %}
+	
+	amazonCodeDisplay(document.querySelector("#{{ form.platform.vars.id }}").value);
+	urlDisplay(document.querySelector("#{{ form.platform.vars.id }}").value)
+	
+	function amazonCodeDisplay(value) {
+		let amazonCodeContainer = document.querySelectorAll(".amazonCodeContainer");
+		
+		for (const elem of amazonCodeContainer)
+			elem.style.display = "none";
+		
+		if(value == "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}")
+			for (const elem of amazonCodeContainer)
+				elem.style.display = "block";
+	}
+	
+	function urlDisplay(value) {
+		let urlContainer = document.querySelectorAll(".urlContainer");
+		
+		for(const elem of urlContainer)
+			elem.style.display = "none";
+			
+		if(value == "{{ constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') }}")
+			for (const elem of urlContainer)
+				elem.style.display = "block";
+	}
+</script>

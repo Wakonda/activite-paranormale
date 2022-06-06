@@ -1,0 +1,132 @@
+page:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        InternationalName: "International name"
+        Language: "Language"
+        WritingDate: "Writing date"
+        PublicationDate: "Publication date"
+        Licence: "Licence"
+        State: "State"
+        PseudoUsed: "Pseudo used"
+president:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Photo: "Photo"
+        Language: "Language"
+        Licence: "Licence"
+        State: "State"
+        PseudoUsed: "Pseudo used"
+        WritingDate: "Writing date"
+        PublicationDate: "Publication date"
+        NumberOfDays: "Number of days"
+    index:
+        ArchivedMessages: "Archived messages"
+    tab:
+        Title: "Title"
+        PublicationDate: "Publication date"
+        ArchivedMessage: "Archived message"
+eventMessage:
+    menu:
+        Events: "Events"
+        Calendar: "Calendar"
+    calendar:
+        Events: "Events"
+        List: "List"
+    index:
+        Event: "Event"
+    tab:
+        Photo: "Photo"
+        Title: "Title"
+        Date: "Date"
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Language: "Language"
+        DateFrom: "Start date"
+        DateTo: "End date"
+        PseudoUsed: "Pseudo used"
+        Licence: "Licence"
+        State: "State"
+        Photo: "Photo"
+        Thumbnail: "Thumbnail"
+        Theme: "Theme"
+        Longitude: "Longitude"
+        Latitude: "Latitude"
+        Validate: "Validate"
+        Refuse: "Refuse"
+    slider:
+        MoreInformation: "More information"
+    new:
+        AddEvents: "Suggest an Event"
+        Title: "Title"
+        Text: "Text"
+        Photo: "Photo"
+        Pseudo: "Pseudo"
+        DateFrom: "Start date"
+        DateTo: "End date"
+        Location: "Location"
+        FileSizeLimit: "File size limit"
+        AcceptedFormat: "Accepted format"
+        IsAnonymous: "Publish anonymously?"
+        Validate: "Validate"
+        ClickHereToLocateOnMap: "Click on the map to locate the place of the event"
+        PublishedAnonymously: "Published anonymously"
+        PostedWithMyUserAccount: "Posted with my user account"
+        AnonymousMessage: "By posting anonymously, your item will not appear in your user account when it will be approved by our moderators."
+    error:
+        FileSizeError: "The file is too large"
+        FileFormat: "The mime type of the file is invalid"
+        StartDateSuperiorEndDate: "The start date can not be greater than the end date"
+    waiting:
+        Edit: "Edit"
+        Validate: "Validate"
+    validate:
+        Validation: "Validation"
+        ThankForYourParticipation: "Thank you for your participation!"
+        ThankForYourParticipationText: "Your event has been transmitted to us. It will be published on our website as soon as a moderator's approval."
+    world:
+        WorldEventMessage: "Multilingual event"
+logo:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Alt: "Alt"
+        Language: "Language"
+        PublishedAt: "Published at"
+        Image: "Image"
+        Folder: "Folder"
+        IsActive: "Active"
+rssFeed:
+    menu:
+        RSSFeeds: "RSS Feeds"
+        SubscribeToRSSFeeds: "Subscribe to RSS Feeds"
+    index:
+        SubscribeToRSSFeeds: "Subscribe to RSS Feeds"
+        WhatIsItTitle: "What is it?"
+        WhatIsItText: "Subscribing to our website RSS removes your need to manually check the web site for new content. Instead, their browser constantly monitors our site and informs you of any updates!"
+        CustomizeYourRSSFeed: "Customize your RSS Feed"
+        RSSFeedCreatedTitle: "RSS Feed creado"
+        RSSFeedCreatedText: "To subscribe to RSS feeds, copy the link below and paste it into your favorite reader!"
+        Category: "Category"
+        Language: "Language"
+        Number: "Number"
+        News: "News"
+        Document: "Document"
+        Photo: "Photo"
+        Testimony: "Testimony"
+        Video: "Video"
+        French: "Français"
+        English: "English"
+        Spanish: "Español"
+    read:
+        CopyToClipboard: "Copy to clipboard"
+        CodeCopiedWithSuccess: "The code has been copied successfully"
+copyright:
+    table:
+        UsedPhotos: "Photos used"
+        Photo: "Photo"
+        License: "License"
+        Author: "Author"
+        Link: "Link"

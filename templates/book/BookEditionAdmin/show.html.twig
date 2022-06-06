@@ -1,0 +1,60 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.BookEdition"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('BookEdition_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('BookEdition_Admin_New', { 'bookId': entity.book.id }) }}{% endblock %}
+{% block delete_admin_route %}{{ path('BookEdition_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.Subtitle"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.subtitle }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><a href="{{ path('Book_Admin_Show', { id: entity.book.id }) }}">{{ entity.book.title }}</a></div>
+	
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"}, null, true, entity.book.archive)|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.BackCover"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.backCover|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">ISBN-10</div>
+	<div class="form-table-cell">{{ entity.isbn10 }}</div>
+
+	<div class="form-table-cell form-table-cell-head">ISBN-13</div>
+	<div class="form-table-cell">{{ entity.isbn13 }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.NumberPage"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.numberPage }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.Format"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ ("bookEdition.admin."~entity.format|capitalize)|trans([], "validators") }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.PublicationDate"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.publicationDate|dodate(false, app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.Biographies"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+	{% for author in entity.biographies %}
+		<p><a href="{{ path('Biography_Admin_Show', {id: author.biography.id}) }}" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: author.biography.id}) }}" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> <b>{{ author.biography.title }}</b> - {{ ("biographies.admin."~author.occupation|capitalize)|trans([], "validators") }}{{ (author.role is not empty ? " (<i>"~author.role~"</i>)" : "")|raw }}</p>
+	{% endfor %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.Publisher"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.publisher.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.WholeBook"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.wholeBook }}</div>
+	
+	<a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::BOOK_CATEGORY'), id: entity.id}) }}" class="btn btn-info mt-3"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a>
+{% endblock %}

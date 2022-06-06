@@ -1,0 +1,55 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{% if entity is not empty %}{{ entity.title }}{% endif %}{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/creative-commons-icon.png') }}" width="25" class="mt-1" alt="Law"/></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
+{% endblock h2_title %}
+
+{% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			$('table.index_copyright').dataTable({
+				"bFilter": false,
+				"bInfo": false,
+				"bPaginate": true,
+				"bLength": false
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% if entity is not empty %}{{ entity.text|raw }}{% endif %}
+	<h3>{{ "copyright.table.UsedPhotos"|trans([], "validators") }}</h3>
+	<table class="table table-striped table-bordered index_copyright dt-responsive">
+		<thead>
+			<tr>
+				<th>{{ "copyright.table.Photo"|trans([], "validators") }}</th>
+				<th>{{ "copyright.table.License"|trans([], "validators") }}</th>
+				<th>{{ "copyright.table.Author"|trans([], "validators") }}</th>
+				<th>{{ "copyright.table.Link"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		{% set i = 0 %}
+			{% for image in images %}
+				<tr>
+					<td>{{ (image.filename|imgsize(250, 'extended/photo/'))|raw }}</td>
+					<td>{{ image.license|raw }}</td>
+					<td>{{ image.author|raw }}</td>
+					<td><a href="{{ image.url }}">{{ "copyright.table.Link"|trans([], "validators") }}</a></td>
+				</tr>
+				{% set i = i + 1 %}
+			{% endfor %}
+		</tbody>
+	</table>
+	
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

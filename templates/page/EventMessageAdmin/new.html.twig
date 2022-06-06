@@ -1,0 +1,24 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.EventMessage"|trans([], "validators") }}{% endblock %}
+
+{% block create_admin_route %}{{ path('EventMessage_Admin_Create') }}{% endblock %}
+{% block index_admin_route %}{{ path('EventMessage_Admin_Index') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "page/EventMessageAdmin/macro_event_message.html.twig" as macro_event_message %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id, path('Page_Admin_WYSIWYG_UploadFile')) }}
+	
+	<script>
+		$(function()
+		{
+			{{ macro_event_message.updateListForm(form) }}
+		});
+	</script>
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'page/EventMessageAdmin/_form.html.twig' %}
+{% endblock %}

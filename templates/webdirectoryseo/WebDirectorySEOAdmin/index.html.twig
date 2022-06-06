@@ -1,0 +1,20 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.SEODirectory"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('WebDirectorySEO_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('WebDirectorySEO_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th>Id</th>
+	<th>{{ "directorySEO.admin.Title"|trans([], "validators") }}</th>
+	<th>{{ "directorySEO.admin.Language"|trans([], "validators") }}</th>
+	<th>{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th>Id</th>
+	<th>{{ "directorySEO.admin.Title"|trans([], "validators") }}</th>
+	<th>{{ "directorySEO.admin.Language"|trans([], "validators") }}</th>
+	<th>{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

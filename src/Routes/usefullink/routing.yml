@@ -1,0 +1,4 @@
+# Administration
+UsefulLink_Admin:
+    resource: "routing/usefullinkadmin.yml"
+    prefix:   /admin/usefullink

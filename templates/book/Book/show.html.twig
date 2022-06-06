@@ -1,0 +1,185 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/book-read.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+
+	{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
+	{% if dataStore is not empty %}
+		<p class="text-center">{{ dataStore|raw }}</p>
+	{% else %}
+		<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	{% endif %}
+	<br>
+	<table class="table">
+		<tbody>
+			<tr>
+				<td class="td_form_table">{{ "book.read.Authors"|trans([], "validators") }}</td>
+				<td class="tdGene">
+					{% set authorsArray = [] %}
+					{% for author in entity.authors %}
+						{% set correctBio = biography_correct_language(author) %}
+						
+						{% if correctBio is null %}
+							{% set correctBio = author %}
+						{% endif %}
+						{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {id: correctBio.id, title: correctBio.title})~"'>"~author.title~"</a>"]) %}
+					{% endfor %}
+					{{ (authorsArray|join(", "))|raw }}
+				</td>
+			</tr>
+			
+			<tr>
+				<td class="td_form_table">{{ "book.read.Theme"|trans([], "validators") }}</td>
+				<td class="tdGene"><a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></td>
+			</tr>
+		</tbody>
+	</table>
+
+	{% if entity.text is not empty %}
+		<br>
+		<h3>{{ "book.read.Description"|trans([], "validators") }}</h3>
+		<div class="book_description">
+			{{ entity.text|raw }}
+		</div>
+	{% endif %}
+
+	{% if entity.bookEditions is not empty %}
+	<h3>{{ "book.read.BookEditions"|trans([], "validators") }}</h3>	
+	<div class="accordion" id="accordionBookEdition">
+		{% for bookEdition in entity.bookEditions %}
+			<div class="card border-0 mb-1">
+				<div class="card-header" id="heading_{{ bookEdition.id }}">
+					<h5><button class="btn btn-block text-left collapsed py-0" type="button" data-toggle="collapse" data-target="#collapse_{{ bookEdition.id }}" aria-expanded="false" aria-controls="collapse_{{ bookEdition.id }}"><i class="fas fa-space-shuttle"></i> {{ bookEdition.publisher.title }}</button></h5>
+				</div>
+				
+				<div id="collapse_{{ bookEdition.id }}" class="collapse" aria-labelledby="heading_{{ bookEdition.id }}" data-parent="#accordionBookEdition">
+					<table class="table">
+						<tbody>
+							{% if bookEdition.subtitle is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Subtitle"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ bookEdition.subtitle }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.illustration is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Photo"|trans([], "validators") }}</td>
+								<td class="tdGene"><p class="image">{{ bookEdition.photoIllustrationFilename|imgsize(550, bookEdition.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, bookEdition.photoIllustrationCaption)|raw }}</p></td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.isbn10 is not empty %}
+							<tr>
+								<td class="td_form_table">ISBN-10</td>
+								<td class="tdGene">{{ bookEdition.isbn10 }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.isbn13 is not empty %}
+							<tr>
+								<td class="td_form_table">ISBN-13</td>
+								<td class="tdGene">{{ bookEdition.isbn13 }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.numberPage is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.NumberPage"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ bookEdition.numberPage }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.publicationDate is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.PublishedOn"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ entity.publicationDate|dodate(false, app.request.locale) }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.format is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Format"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ ("bookEdition.generic."~(bookEdition.format|capitalize))|trans([], "validators") }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.publisher is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Publisher"|trans([], "validators") }}</td>
+								<td class="tdGene">
+									{% set img = bookEdition.publisher.photo|imgsize(200, bookEdition.publisher.getAssetImagePath(), true, null, null, false) %}
+									<a href="{{ path('ByPublisherBook_Index', {'idPublisher': bookEdition.publisher.id, 'titlePublisher': bookEdition.publisher.title}) }}">{% if img is not empty %}{{ img|raw }}{% else %}{{ bookEdition.publisher.title }}{% endif %}</a>
+								</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.backCover is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.BackCover"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ bookEdition.backCover|raw }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.wholeBook is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.WholeBook"|trans([], "validators") }}</td>
+								<td class="tdGene">
+									<form action="{{ path('BookEdition_Save', {id: bookEdition.id, title_slug: entity.urlSlug}) }}">
+										<input class="submitcomment btn" type="submit" name="Search" value="{{ "generality.pdf.SavePrint"|trans([], "validators") }}" title="Search"> 
+									</form>
+								</td>
+							</tr>
+							{% endif %}
+							
+							{% for occupation, biographies in book_edition_biographies_by_occupation(bookEdition) %}
+								<tr>
+									<td class="td_form_table">{{ (("bookEdition.read."~(occupation)|capitalize))|trans([], "validators") }}</td>
+									<td class="tdGene">
+										{% set persons = [] %}
+										{% for biography in biographies %}
+											{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+										{% endfor %}
+										{{ (persons|join(", "))|raw }}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	{% if entity.source is not empty %}
+		<br>
+		<h3>{{ "book.read.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source) }}
+	{% endif %}
+	<br>
+	<hr class="hr2">
+	<p>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} {% if entity.licence is not null %}- <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
+		{% if is_current_languages(entity.language.abbreviation) == false %}
+			- <a href="{{ path('Book_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+		{% endif %}
+		
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+	
+	{{ getTagsByEntityForDisplay(entity) }}
+	
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Book' })) }}
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Book' })) }}
+{% endblock %}

@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Form\Type;
+
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Isbn;
+
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
+use App\Entity\Book;
+use App\Entity\BookEditionBiography;
+use App\Form\Field\DatePartialType;
+
+class BookEditionAdminType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+		$language = $options['locale'];
+
+        $builder
+            ->add('subtitle', TextType::class, array('required' => false))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => null))
+            ->add('backCover', TextareaType::class, array('required' => false))
+			->add('isbn10', TextType::class, array('required' => false, 'constraints' => array(new Isbn("isbn10"))))
+			->add('isbn13', TextType::class, array('required' => false, 'constraints' => array(new Isbn("isbn13"))))
+			->add('numberPage', IntegerType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+			->add('publicationDate', DatePartialType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('biographies', CollectionType::class, ["required" => false])
+            ->add('wholeBook', FileType::class, array('data_class' => null, 'required' => false))
+            ->add('format', ChoiceType::class, array('choices' => array('bookEdition.admin.Paperback' => 'paperback', 'bookEdition.admin.Hardcover' => 'hardcover', 'bookEdition.admin.Audiobook' => 'audiobook', 'bookEdition.admin.Ebook' => 'ebook'), 'expanded' => false, 'multiple' => false, 'required' =>true, 'constraints' => array(new NotBlank()), 'translation_domain' => 'validators'))
+			->add('publisher', EntityType::class, array('class'=>'App\Entity\Publisher',
+				'choice_label'=>'title',
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(\App\Repository\PublisherRepository $repository) { return $repository->createQueryBuilder("p")->orderBy("p.title", "ASC");}))
+			->add('biographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => BiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => BookEditionBiography::class, "role_field" => false, "language" => $language, "query_parameters" => ["locale" => $language]]))
+		;
+    }
+
+    public function getBlockPrefix()
+    {
+        return 'ap_book_bookextensionadmintype';
+    }
+
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults(array(
+			'data_class' => 'App\Entity\BookEdition',
+			'locale' => 'fr'
+		));
+	}
+}

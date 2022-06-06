@@ -1,0 +1,16 @@
+Contact_Index:
+    path:  /contact
+    controller: App\Controller\ContactController::indexAction
+
+Contact_Send:
+    path:  /contact/send
+    controller: App\Controller\ContactController::sendAction
+
+Contact_OfferLink:
+    path:  /contact/offer_link
+    controller: App\Controller\ContactController::offerLinkAction
+
+# Administration
+Contact_Admin:
+    resource: "routing/contactadmin.yml"
+    prefix:   /admin/contact

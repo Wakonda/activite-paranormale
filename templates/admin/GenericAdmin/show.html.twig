@@ -1,0 +1,81 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Index') }}" title="Index"><i class="fas fa-home" aria-hidden="true"></i> Index</a></li>
+
+	{% if block('archive_admin_route') %}
+		{% if method_exists(entity, "getArchive") %}
+			{% if entity.archive %}
+				<li class="nav-item"><a class="nav-link" href="{% block archive_admin_route %}{% endblock %}"><i class="fas fa-archive" aria-hidden="true"></i> {{ "admin.general.Recover"|trans([], "validators") }}</a></li>
+			{% else %}
+				<li class="nav-item"><a class="nav-link" href="{{ block('archive_admin_route') }}"><i class="fas fa-archive" aria-hidden="true"></i> {{ "admin.general.Archive"|trans([], "validators") }}</a></li>
+	
+				{% if block("edit_admin_route") %}
+					<li class="nav-item"><a class="nav-link" href="{% block edit_admin_route %}{% endblock %}" title="Edit"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a></li>
+				{% endif %}
+			{% endif %}
+		{% endif %}
+	{% else %}
+		{% if block("edit_admin_route") %}
+			<li class="nav-item"><a class="nav-link" href="{{ block('edit_admin_route') }}" title="Edit"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a></li>
+		{% endif %}
+	{% endif %}
+
+	{% if block('delete_admin_route') %}
+		<li class="nav-item"><a class="nav-link" href="{{ block('delete_admin_route') }}" title="Delete" id="delete_entry" onClick="if(!confirm('{{ "admin.show.ReallyWantRemoveDatas"|trans([], 'validators') }}')) return false;"><i class="fas fa-times" aria-hidden="true"></i> {{ "admin.general.Delete"|trans([], "validators") }}</a></li>
+	{% endif %}
+	
+	{% if block("internalization_admin_route") is defined %}
+		<li class="nav-item dropdown">
+			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-flag" aria-hidden="true"></i> {{ "admin.general.CreateIn"|trans([], "validators") }} <b class="caret"></b></a>
+			<div class="dropdown-menu">
+				{% for language in allAvailableLanguages() %}
+					<a class="dropdown-item" href="{{ path(block('internalization_admin_route'), {'id': entity.id, 'locale': language.abbreviation})}}"> <img src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" class="rounded-circle" alt="" width="20" height="13" /> {{ language.title }}</a>
+				{% endfor %}
+			</div>
+		</li>
+	{% endif %}
+
+	{% if block("new_admin_route") != "" %}<li class="nav-item"><a class="nav-link" href="{% block new_admin_route %}{% endblock %}" title="New"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}</a></li>{% endif %}
+	
+	{% block additional_new_entry %}
+	{% endblock %}
+	
+	{% if block("index_admin_route") != "" %}
+		<li class="nav-item"><a class="nav-link" href="{% block index_admin_route %}{% endblock %}" title="Index"><i class="far fa-list-alt" aria-hidden="true"></i> {{ "admin.general.List"|trans([], "validators") }}</a></li>
+	{% endif %}
+{% endblock %}
+
+{% block body_main %}
+	{% for flashMessage in app.session.flashbag.get('success') %}
+		<div class="alert alert-success text-center">
+			{{ flashMessage|raw }}
+		</div>
+	{% endfor %}
+	{% for flashMessage in app.session.flashbag.get('error') %}
+		<div class="alert alert-danger text-center">
+			{{ flashMessage|raw }}
+		</div>
+	{% endfor %}
+	{% if method_exists(entity, "getArchive") and entity.archive %}
+		<div class="alert alert-danger text-center">
+			Cette entrée a été archivée !
+		</div>
+	{% endif %}
+	<div class="form-table form-table-4cols form-table-collapse mb-3">
+		{% block tbody_admin_table %}{% endblock %}
+	</div>
+	{% block data_bottom %}{% endblock %}
+{% endblock %}
+
+{% block style_edit %}
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('extended/css/bootstrap/plugins/bootstrap-select/bootstrap-select.css') }}">
+{% endblock %}
+
+{% block js_edit %}
+	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-select/bootstrap-select.js') }}"></script>
+	{% block js_specific %}
+	{% endblock %}
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.EventMessage"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('EventMessage_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('EventMessage_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('EventMessage_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('EventMessage_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block archive_admin_route %}{{ path('EventMessage_Admin_Archive', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Licence"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.licence }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.State"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.state }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.PseudoUsed"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.PseudoUsed }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.DateTo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.dateTo|dodate(false, app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.DateFrom"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.dateFrom|dodate(false, app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Thumbnail"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.thumbnail is not empty %}{{ entity.thumbnail|imgsize(200, entity.getAssetImagePath())|raw }}{% endif %}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Latitude"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.latitude }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Longitude"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.longitude }}</div>
+
+	<a href="{{ path('EventMessage_Read', { 'id' : entity.id, 'title_slug': entity.urlSlug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+{% endblock %}
+
+{% block data_bottom %}
+	{% if entity.state.isWaiting() %}
+		<a href="{{ path('EventMessage_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "eventMessage.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('EventMessage_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "eventMessage.admin.Refuse"|trans([], "validators") }}</a>
+	{% endif %}
+{% endblock %}

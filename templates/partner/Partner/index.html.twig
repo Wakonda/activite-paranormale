@@ -1,0 +1,37 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "partner.index.Partner"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/red-monster.png') }}" width="25" class="mt-1" alt="Red monster"/></span>{{ "partner.index.Partner"|trans([], "validators") }}</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	{% for partner in pagination.items %}
+		<h3>{{ partner.title }}</h3>
+		<p class="image">
+		{% if partner.isActive == false %}
+			{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class' : 'inactive mx-auto d-block img-fluid' })|raw }}
+		{% else %}
+			<a href="{{ partner.link }}" target="_blank" >{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</a>
+		{% endif %}
+		</p>
+		{% if partner.isActive == false %}
+			<ul class="fa-ul">
+				<li>
+					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+					{{ "partner.index.Inactive"|trans([], "validators") }}
+				</li>
+			</ul>
+		{% endif %}
+	{% endfor %}
+	<hr class="hr2"/>
+	<br>
+	
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+	
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

@@ -1,0 +1,128 @@
+	<!-- jQuery UI -->
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.core.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.widget.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.mouse.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.draggable.1.10.3.min.js') }}"></script>
+
+	<!-- wColorPicker -->
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/wPaint-master/lib/wColorPicker.min.css') }}" />
+	<script src="{{ asset('extended/js/wPaint-master/lib/wColorPicker.min.js') }}"></script>
+	
+	<!-- wPaint -->
+	<link rel="Stylesheet" type="text/css" href="{{ asset('extended/js/wPaint-master/wPaint.min.css') }}" />
+	<script src="{{ asset('extended/js/wPaint-master/wPaint.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/main/wPaint.menu.main.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/text/wPaint.menu.text.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/shapes/wPaint.menu.main.shapes.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/file/wPaint.menu.main.file.min.js') }}"></script>
+	
+	<script>
+		$(function() {
+			$('.doc_datatables_drawing').dataTable({
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
+				},
+				"bPaginate": false,
+				"bLengthChange": false,
+				"bFilter": false,
+				"bSort": true,
+				"bInfo": false,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"bAutoWidth": false
+			});
+			
+			$(".displayInColorboxDrawing").click(function(event)
+			{
+				$('#displayDrawing p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
+				$('#displayDrawing .modal-title').html($(this).data("title"));
+				$('#displayDrawing').modal('show');
+				event.preventDefault();
+			});
+		
+			$('#wPaint').wPaint({
+				path: "{{ asset('extended/js/wPaint-master/') }}",
+				menuOrientation: 'horizontal',
+				menuHandle: false, 
+				saveImg: saveImg,
+				bg: "#ffffff",
+				strokeStyle:   '#000000'
+			});
+			
+			function saveImg(image)
+			{
+				var _this = this;
+
+				$.ajax({
+					type: 'POST',
+					url: '{{ path("FileManagement_SaveImagePaint", { "idClassName" : idClassName, "className" : className }) }}',
+					data: {image: image},
+					success: function (data)
+					{
+						$('#drawing_management_control').html(data);
+						$("#add_drawing_section").show();
+					}
+				});
+			}
+			
+			$(".add_draw_testimony").click(function(e) {
+				e.preventDefault();
+				$('.wPaint-menu-icon-name-save').click();
+			});
+			
+			if($("#add_drawing_section_button").hasClass("active") == false)
+				$("div#add_drawing_section").hide();
+		});
+	</script>
+	<div class="modal fade" tabindex="-1" role="dialog" id="displayDrawing">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title"></h5>
+		  </div>
+		  <div class="modal-body">
+			<p class='image'></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+	
+	<div id="drawing_management_control">
+		<div id="wPaint" style="position:relative; width: 100%; height:300px; background-color:#7a7a7a; margin:30px auto 20px auto;"></div>
+		<button class="submitcomment add_draw_testimony btn" type="button">Enregistrer le dessin</button>
+		<br>
+		<br>
+		<table class="doc_datatables_drawing dt-responsive w-100">
+			<thead>
+				<tr>
+					<th class="label_form">{{ "file.add.Title"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "file.add.Display"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "file.add.Delete"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for entity in entities %}
+					<tr>
+						<td>{{ entity.titleFile }}</td>
+						<td><a class="show" href="" alt="View"><span class="displayInColorboxDrawing" data-title="{{ entity.titleFile }}" id="{{ asset(entity.getFileManagementPath()~entity.realNameFile) }}">{{ "file.add.Display"|trans([], "validators") }}</span></a></td>
+						<td><a href="" id="{{ entity.id }}" class="remove" alt="Delete">{{ "file.add.Delete"|trans([], "validators") }}</a></td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th class="label_form">{{ "file.add.Title"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "file.add.Display"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "file.add.Delete"|trans([], "validators") }}</th>
+				</tr>
+			</tfoot>
+		</table>
+	</div>

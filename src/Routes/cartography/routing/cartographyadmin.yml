@@ -1,0 +1,59 @@
+Cartography_Admin_Index:
+    path:  /
+    controller: App\Controller\CartographyAdminController::indexAction
+
+Cartography_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\CartographyAdminController::showAction
+
+Cartography_Admin_New:
+    path:  /new
+    controller: App\Controller\CartographyAdminController::newAction
+
+Cartography_Admin_Create:
+    path:  /create
+    controller: App\Controller\CartographyAdminController::createAction
+    requirements:
+        _method: post
+
+Cartography_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\CartographyAdminController::editAction
+
+Cartography_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\CartographyAdminController::updateAction
+    requirements:
+        _method: post
+
+Cartography_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\CartographyAdminController::deleteAction
+
+Cartography_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\CartographyAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Cartography_Admin_ReloadListsByLanguage:
+    path:  /reloadlistsbylanguage
+    controller: App\Controller\CartographyAdminController::reloadListsByLanguageAction
+
+Cartography_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\CartographyAdminController::internationalizationAction
+
+Cartography_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\CartographyAdminController::showImageSelectorColorboxAction
+
+Cartography_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\CartographyAdminController::loadImageSelectorColorboxAction
+
+Cartography_Admin_Archive:
+    path: /archive/{id}
+    controller: App\Controller\CartographyAdminController::archiveAction
+    requirements:
+        id: \d+

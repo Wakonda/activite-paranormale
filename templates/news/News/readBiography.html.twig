@@ -1,0 +1,12 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}Biographie{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/dracula-icon.png') }}" width="25" class="mt-1" alt="Dracula"/></span>{{ entity }}</h2>{% endblock h2_title %}
+{% block APBlog_body %}
+	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<hr>
+	<br>
+	{{ entity.text }}
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

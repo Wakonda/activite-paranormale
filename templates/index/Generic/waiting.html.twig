@@ -1,0 +1,57 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{% endblock %}
+{% block h2_title %}{% endblock h2_title %}
+{% block meta_description %}{% endblock %}
+
+{% block APBlog_body %}
+	{% if entity.state.isWaiting %}
+		<div class="alert alert-success" role="alert">
+			<p class="font-weight-bold cursor-pointer mb-0"  data-toggle="collapse" data-target="#collapseWaiting" aria-expanded="true" aria-controls="collapseWaiting"><i class="fab fa-sticker-mule"></i> {{ entity.state.title }}</p>
+			{% if entity.state.text is not empty %}
+				<div id="collapseWaiting" class="collapse">
+					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
+				</div>
+			{% endif %}
+		</div>
+	{% elseif entity.state.isDraft %}
+		<div class="alert alert-info">
+			<p class="font-weight-bold cursor-pointer mb-0"  data-toggle="collapse" data-target="#collapseDraft" aria-expanded="true" aria-controls="collapseDraft"><i class="fas fa-drafting-compass"></i> {{ entity.state.title }}</p>
+			{% if entity.state.text is not empty %}
+				<div id="collapseDraft" class="collapse">
+					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
+				</div>
+			{% endif %}
+		</div>
+	{% elseif entity.state.isPreview %}
+		<div class="alert alert-primary" role="alert">
+			<p class="font-weight-bold cursor-pointer mb-0"  data-toggle="collapse" data-target="#collapsePreview" aria-expanded="true" aria-controls="collapsePreview"><i class="fas fa-binoculars"></i> {{ entity.state.title }}</p>
+			{% if entity.state.text is not empty %}
+				<div id="collapsePreview" class="collapse">
+					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
+				</div>
+			{% endif %}
+		</div>
+	{% elseif entity.state.isWriting %}
+		<div class="alert alert-dark" role="alert">
+			<p class="font-weight-bold cursor-pointer mb-0"  data-toggle="collapse" data-target="#collapseWriting" aria-expanded="true" aria-controls="collapseWriting"><i class="fas fa-highlighter"></i> {{ entity.state.title }}</p>
+			{% if entity.state.text is not empty %}
+				<div id="collapseWriting" class="collapse">
+					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
+				</div>
+			{% endif %}
+		</div>
+	{% endif %}
+	
+	{% block content_waiting %}{% endblock %}
+
+	{% if entity.state.isDuplicateValues == false and entity.state.isStateDisplayed == false and entity.state.isRefused == false and entity.state.isWaiting == false %}
+		{% if entity.state.isPreview or entity.state.isDraft or entity.state.isWriting %}
+			{% block button_edit %}{% endblock %}
+			{% block button_validate %}{% endblock %}
+		{% endif %}
+	{% endif %}
+	
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

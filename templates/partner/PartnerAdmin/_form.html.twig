@@ -1,0 +1,20 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "partner.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.link, "partner.admin.Link"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.link) }}{{ form_widget(form.link, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "partner.admin.Logo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.photo is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.photo }}
+		<br>
+	{% endif %}
+	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "partner.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.active, "partner.admin.Active"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.active) }}{{ form_widget(form.active, { 'attr': {'class': 'form-control'} }) }}</div>

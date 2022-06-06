@@ -1,0 +1,44 @@
+Document_Index:
+    path:  /document/{themeId}/{theme}
+    controller: App\Controller\DocumentController::indexAction
+    defaults:
+        themeId: 0
+        theme: null
+    requirements:
+        themeId: \d+
+        theme: ".+"
+
+DocumentBundle_AbstractDocument:
+    path:  /document/abstract/{id}/{title_slug}
+    controller: App\Controller\DocumentController::abstractDocumentAction
+    defaults:
+        title_slug: null
+    requirements:
+        id: \d+
+
+DocumentBundle_ReadDocument:
+    path:  /document/read/{id}/{title_slug}
+    controller: App\Controller\DocumentController::readDocumentAction
+    defaults:
+        title_slug: null
+    requirements:
+        id: \d+
+
+DocumentBundle_DownloadDocument:
+    path:  /document/download/{id}
+    controller: App\Controller\DocumentController::downloadDocumentAction
+    requirements:
+        id: \d+
+
+Document_ListDatatables:
+    path: /document/listdatatables
+    controller: App\Controller\DocumentController::listDatatablesAction
+
+# Administration
+Document_Admin:
+    resource: "routing/documentadmin.yml"
+    prefix:   /admin/document
+
+DocumentFamily_Admin:
+    resource: "routing/documentfamilyadmin.yml"
+    prefix:   /admin/documentfamily

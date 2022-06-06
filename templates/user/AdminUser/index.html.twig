@@ -1,0 +1,22 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+{% block h2_title %}{{ "admin.index.Member"|trans([], "validators") }}{% endblock %}
+
+{% block indexdatatables_admin_route %}{{ path('User_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form small_size">Id</th>
+	<th class="label_form">{{ "user.index.Username"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "user.index.Email"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "user.index.Role"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "user.admin.Active"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form small_size">Id</th>
+	<th class="label_form">{{ "user.index.Username"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "user.index.Email"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "user.index.Role"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "user.admin.Active"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

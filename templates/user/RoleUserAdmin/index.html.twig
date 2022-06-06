@@ -1,0 +1,20 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.UserRole"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('RoleUser_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('RoleUser_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "role.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "role.admin.InternationalName"|trans([], "validators") }}</th>
+	<th class="label_form">Actions</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "role.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "role.admin.InternationalName"|trans([], "validators") }}</th>
+	<th class="label_form">Actions</th>
+{% endblock %}

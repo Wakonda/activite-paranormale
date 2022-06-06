@@ -1,0 +1,748 @@
+<?php
+
+namespace App\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+
+use App\Entity\Language;
+use App\Service\APImgSize;
+use App\Service\APParseHTML;
+use App\Service\APDate;
+use App\Service\TwitterAPI;
+use App\Service\PinterestAPI;
+use App\Service\TumblrAPI;
+use App\Service\GoogleBlogger;
+use App\Service\Shopify;
+use App\Service\TheDailyTruth;
+use App\Service\FunctionsLibrary;
+
+class AdminController extends AbstractController
+{
+    public function indexAction(\Swift_Mailer $mailer)
+    {
+        return $this->render('admin/Admin/index.html.twig');
+    }
+
+	public function selectLanguageAction(Request $request, SessionInterface $session, $language)
+    {
+		$request->setLocale($language);
+		$session->set('_locale', $language);
+		
+		return $this->redirect($this->generateUrl('Admin_Index'));
+    }
+	
+	public function phpinfoAction()
+	{
+		phpinfo();
+		return new Response();
+	}
+	
+	public function internationalizationSelectGenericAction($entity, String $route, String $showRoute, String $editRoute)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$locales = [];
+
+		if(method_exists($entity, "getInternationalName")) {
+			$entities = $em->getRepository(get_class($entity))->findBy(["internationalName" => $entity->getInternationalName()]);
+
+			foreach($entities as $e)
+				$locales[] = $e->getLanguage()->getAbbreviation();
+		}
+		
+		$form = $this->createForm(\App\Form\Type\InternationalizationAdminType::class, null, ["locales" => $locales]);
+
+		return $this->render("admin/Admin/internationalization.html.twig", [
+			"entity" => $entity,
+			"form" => $form->createView(),
+			"route" => $this->generateUrl($route, ["id" => $entity->getId()]),
+			"showRoute" => $showRoute,
+			"editRoute" => $editRoute
+		]);
+	}
+	
+	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $wikipedia)
+	{
+		$wikipedia->setUrl($request->query->get("url"));
+		
+		$res = [];
+		
+		$res[] = ["id" => 0, "text" => $translator->trans('admin.wikipedia.Header', [], 'validators', $request->getLocale())];
+		
+		foreach($wikipedia->getSections() as $text => $id)
+			$res[] = ["id" => $id, "text" => $text];
+
+		return new JsonResponse($res);
+	}
+	
+	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $wikipedia)
+	{
+		$wikipedia->setUrl($request->request->get("url"));
+		$sections = $request->request->get("sections", []);
+		$source = ["author" => "", "title" => "", "url" => $request->request->get("url"), "type" => "url"];
+
+		return new JsonResponse(["content" => $wikipedia->getContentBySections($sections), "source" => $source]);
+	}
+
+	// Blogger
+	public function bloggerAction(Request $request, GoogleBlogger $blogger, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type)
+	{
+		$session = $request->getSession();
+		$session->set("id_blogger", $id);
+		
+		$path = urldecode($path);
+		$session->set("path_blogger", $path);
+		$session->set("routeToRedirect_blogger", $routeToRedirect);
+		
+		$tags = $request->request->get('blogger_tags');
+		$session->set("tags_blogger", json_encode((empty($tags)) ? [] : $tags));
+
+		$session->set("type_blogger", $type);
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($path)->find($id);
+		$redirectURL = $router->generate("Admin_BloggerPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$blogName = $blogger->getCorrectBlog($type);
+		$response = $blogger->getPostInfos($blogName);
+
+		$code = $blogger->getCode($redirectURL);
+
+		return new Response();
+	}
+
+	public function bloggerPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, GoogleBlogger $blogger, TranslatorInterface $translator, UrlGeneratorInterface $router)
+	{
+		$code = $request->query->get("code");
+		
+		$session = $request->getSession();
+
+		$id = $session->get("id_blogger");
+		$path = $session->get("path_blogger");
+		$tags = $session->get("tags_blogger");
+		$type = $session->get("type_blogger");
+		$routeToRedirect = $session->get("routeToRedirect_blogger");
+
+		$redirectURL = $router->generate("Admin_BloggerPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
+		$accessToken = $blogger->getOauth2Token($code, "online", $redirectURL);
+		$blogName = $blogger->getCorrectBlog($type);
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($path)->find($id);
+
+		$text = "";
+		$imgProperty = "";
+
+		switch($entity->getRealClass())
+		{
+			case "Photo":
+				$imgProperty = $entity->getPhotoIllustrationFilename();
+				$img = $entity->getAssetImagePath().$imgProperty;
+				$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
+				$text = $entity->getText();
+				$text .= "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>";
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "News":
+				$imgProperty = $entity->getPhotoIllustrationFilename();
+				$img = $entity->getAssetImagePath().$imgProperty;
+				$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
+				$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Video":
+				$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
+				if(!empty($entity->getMediaVideo()))
+					$video = $parser->getVideoResponsive('<video width="550" height="309" controls><source src="'.$request->getSchemeAndHttpHost().'/'.$entity->getAssetVideoPath().'/'.$entity->getMediaVideo().'" type="video/mp4"></video>');
+				
+				$imgProperty = $entity->getPhoto();
+				$img = $entity->getAssetImagePath().$imgProperty;
+				$text = $entity->getText()."<br>".$video;
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Grimoire":
+				$imgProperty = $entity->getPhoto();
+				$img = $entity->getAssetImagePath().$imgProperty;
+				$text = $entity->getText();
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath()."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Cartography":
+				$imgProperty = $entity->getPhoto();
+				$img = $entity->getAssetImagePath().$imgProperty;
+				$text = $entity->getText();
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Book":
+				$imgProperty = $entity->getTheme()->getPhoto();
+				$img = $entity->getTheme()->getAssetImagePath().$imgProperty;
+				$twig = $this->get("twig");
+				$text = $entity->getText()."<br>";
+				$text .= $twig->getExtensions()["App\Twig\APStoreExtension"]->getImageEmbeddedCodeByEntity($entity->getBookEditions()->first(), "book", "BookStore")."<br>";
+				$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getAuthors()->getValues()))."<br>";
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				break;
+			case "Store":
+				$imgProperty = strtolower($entity->getCategory()).".jpg";
+				$img = $entity->getAssetImagePath()."category/".$imgProperty;
+				$text = $entity->getText()."<br>";
+				$text .= $entity->getImageEmbeddedCode()."<br>";
+				break;
+			case "BookStore":
+				if(!empty($d = $entity->getBook()->getPhotoIllustrationFilename())) {
+					$imgProperty = $d;
+					$img = $entity->getBook()->getAssetImagePath().$imgProperty;
+				} elseif(!empty($d = $entity->getBook()->getBook()->getPhoto())) {
+					$imgProperty = $d;
+					$img = $entity->getBook()->getBook()->getAssetImagePath().$imgProperty;
+				} else {
+					$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
+					$img = $imgProperty;
+				}
+				$twig = $this->get("twig");
+				$text = $entity->getText()."<br>";
+				$language = $entity->getBook()->getBook()->getLanguage()->getAbbreviation();
+				$text .= (!empty($d = $entity->getBook()->getBackCover()) ? "<b>".$translator->trans('bookEdition.admin.BackCover', [], 'validators', $language)."</b><br>".$d."<br>" : "");
+				$text .= (!empty($d = $entity->getBook()->getBook()->getText()) ? "<b>".$translator->trans('book.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
+				$text .= $entity->getImageEmbeddedCode()."<br><br>";
+				$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getBook()->getBook()->getAuthors()->getValues()))."<br>";
+				$text .= (!empty($d = $entity->getBook()->getIsbn10()) ? "<b>ISBN 10 : </b>".$d."<br>" : "");
+				$text .= (!empty($d = $entity->getBook()->getIsbn13()) ? "<b>ISBN 13 : </b>".$d."<br>" : "");
+				$text .= (!empty($d = $entity->getBook()->getNumberPage()) ? "<b>".$translator->trans('bookEdition.admin.NumberPage', [], 'validators', $language)." : </b>".$d."<br>" : "");
+				$text .= (!empty($d = $entity->getBook()->getPublisher()->getTitle()) ? "<b>".$translator->trans('bookEdition.admin.Publisher', [], 'validators', $language)." : </b>".$d."<br>" : "");
+				$text .= (!empty($d = $entity->getBook()->getPublicationDate()) ? "<b>".$translator->trans('bookEdition.admin.PublicationDate', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."<br>" : "");
+				$text .= "<br>Plus de livres sur <a href='https://templededelphes.netlify.app/'>Temple de Delphe</a>";
+				$text .= !empty($entity->getBook()->getBook()->getSource()) ? "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getBook()->getBook()->getSource(), $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</span>" : "";
+				$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
+				break;
+			case "AlbumStore":
+				if(!empty($d = $entity->getAlbum()->getPhotoIllustrationFilename())) {
+					$imgProperty = $d;
+					$img = $entity->getAlbum()->getAssetImagePath().$imgProperty;
+				} elseif(!empty($d = $entity->getAlbum()->getArtist()->getPhotoIllustrationFilename())) {
+					$imgProperty = $d;
+					$img = $entity->getAlbum()->getArtist()->getAssetImagePath().$imgProperty;
+				} else {
+					$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
+					$img = $imgProperty;
+				}
+				$language = $entity->getAlbum()->getLanguage()->getAbbreviation();
+				$twig = $this->get("twig");
+				$text = $entity->getText()."<br>";
+				$text .= $entity->getImageEmbeddedCode()."<br><br>";
+				$text .= (!empty($d = $entity->getAlbum()->getArtist()) ? "<b>".$translator->trans('album.admin.Artist', [], 'validators', $language)." : </b>".$d->getTitle()."<br>" : "");
+				$text .= (!empty($d = $entity->getAlbum()->getReleaseYear()) ? "<b>".$translator->trans('album.admin.ReleaseYear', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getAlbum()->getLanguage()->getAbbreviation())."<br>" : "");
+				$text .= (!empty($d = $entity->getAlbum()->getArtist()->getGenre()) ? "<b>".$translator->trans('artist.admin.Sound', [], 'validators', $language)." : </b>".$d->getTitle()."<br>" : "");
+				$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
+				break;
+			case "MovieStore":
+				if(!empty($d = $entity->getMovie()->getPhotoIllustrationFilename())) {
+					$imgProperty = $d;
+					$img = $entity->getMovie()->getAssetImagePath().$imgProperty;
+				} else {
+					$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
+					$img = $imgProperty;
+				}
+				$language = $entity->getMovie()->getLanguage()->getAbbreviation();
+				$twig = $this->get("twig");
+				$text = $entity->getText()."<br>";
+				$text .= (!empty($d = $entity->getMovie()->getText()) ? "<b>>".$translator->trans('movie.admin.Text', [], 'validators', $language)."</b>".$d."<br>" : "");
+				$text .= $entity->getImageEmbeddedCode()."<br><br>";
+				$text .= (!empty($d = $entity->getMovie()->getDuration()) ? "<b>".$translator->trans('movie.admin.Duration', [], 'validators', $language)." :</b>".$d." minutes<br>" : "");
+				$text .= (!empty($d = $entity->getMovie()->getGenre()) ? "<b>".$translator->trans('movie.admin.Genre', [], 'validators', $language)." :</b>".$d."<br>" : "");
+				$text .= (!empty($d = $entity->getMovie()->getReleaseYear()) ? "<b>".$translator->trans('movie.admin.ReleaseYear', [], 'validators', $language)." :</b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getMovie()->getLanguage()->getAbbreviation())."<br>" : "");
+				$text .= (!empty($d = $entity->getMovie()->getTrailer()) ? "<b>".$translator->trans('movie.admin.Trailer', [], 'validators', $language)."</b><br>".$d."<br>" : "");
+				
+				$actorArray = [];
+				
+				$biographyDatas = $twig->getExtensions()["App\Twig\APMovieExtension"]->getMovieBiographiesByOccupation($entity->getMovie());
+				
+				foreach($biographyDatas as $occupation => $biographies) {
+					if ($occupation == \App\Entity\Movies\MediaInterface::ACTOR_OCCUPATION) {
+						foreach($biographies as $biography) {
+							$actorArray[] = $biography["title"].(!empty($r = $biography["role"]) ? " (".$r.")" : "");
+						}
+					}
+				}
+				$text .= (!empty($actorArray) ? "<b>".$translator->trans('biographies.admin.Actor', [], 'validators', $language)." : </b>".implode(", ", $actorArray)."<br>" : "");
+				$text .= !empty($entity->getMovie()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getMovie()->getLanguage()->getAbbreviation())."</b><span>".(new FunctionsLibrary())->sourceString($entity->getMovie()->getSource(), $entity->getMovie()->getLanguage()->getAbbreviation())."</span>" : "";
+				$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
+				break;
+			case "TelevisionSerieStore":
+				if(!empty($d = $entity->getTelevisionSerie()->getPhotoIllustrationFilename())) {
+					$imgProperty = $d;
+					$img = $entity->getTelevisionSerie()->getAssetImagePath().$imgProperty;
+				} else {
+					$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
+					$img = $imgProperty;
+				}
+				
+				$language = $entity->getTelevisionSerie()->getLanguage()->getAbbreviation();
+				$twig = $this->get("twig");
+				$text = $entity->getText()."<br>";
+				$text .= (!empty($d = $entity->getTelevisionSerie()->getText()) ? "<b>".$translator->trans('televisionSerie.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
+				$text .= $entity->getImageEmbeddedCode()."<br><br>";
+				$text .= (!empty($d = $entity->getTelevisionSerie()->getGenre()) ? "<b>".$translator->trans('televisionSerie.admin.Genre', [], 'validators', $language)." :</b>".$d."<br>" : "");
+
+				$actorArray = [];
+				
+				$biographyDatas = $twig->getExtensions()["App\Twig\APMovieExtension"]->getTelevisionSerieBiographiesByOccupation($entity->getTelevisionSerie());
+				
+				foreach($biographyDatas as $occupation => $biographies) {
+					if ($occupation == \App\Entity\Movies\MediaInterface::ACTOR_OCCUPATION) {
+						foreach($biographies as $biography) {
+							$actorArray[] = $biography["title"].(!empty($r = $biography["role"]) ? " (".$r.")" : "");
+						}
+					}
+				}
+				$text .= (!empty($actorArray) ? "<b>".$translator->trans('biographies.admin.Actor', [], 'validators', $language)." : </b>".implode(", ", $actorArray)."<br>" : "");
+				$text .= !empty($entity->getTelevisionSerie()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getTelevisionSerie()->getLanguage()->getAbbreviation())."</b><span>".(new FunctionsLibrary())->sourceString($entity->getTelevisionSerie()->getSource(), $entity->getTelevisionSerie()->getLanguage()->getAbbreviation())."</span>" : "";
+				$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
+				break;
+			case "WitchcraftToolStore":
+				$language = $entity->getWitchcraftTool()->getLanguage()->getAbbreviation();
+				if(!empty($d = $entity->getWitchcraftTool()->getPhotoIllustrationFilename())) {
+					$imgProperty = $d;
+					$img = $entity->getWitchcraftTool()->getAssetImagePath().$imgProperty;
+				} else {
+					$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
+					$img = $imgProperty;
+				}
+				$text = $entity->getText()."<br>";
+				$text .= (!empty($d = $entity->getWitchcraftTool()->getText()) ? $d."<br>" : "");
+				$text .= $entity->getImageEmbeddedCode()."<br><br>";
+				$text .= !empty($entity->getWitchcraftTool()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $language)."</b><span>".(new FunctionsLibrary())->sourceString($entity->getWitchcraftTool()->getSource(), $entity->getWitchcraftTool()->getLanguage()->getAbbreviation())."</span>" : "";
+				$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
+				break;
+		}
+
+		if(in_array(\App\Entity\Stores\Store::class, [get_class($entity), get_parent_class($entity)])) {
+			$language = $entity->getLanguage()->getAbbreviation();
+			$text .= "<hr>";
+			if(\App\Entity\Stores\Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
+				$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #E52F20; padding: 0.375rem 0.75rem;background-color: #E52F20;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
+			else
+				$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
+		}
+
+		$img = $imgSize->adaptImageSize(550, $img);
+		
+		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+		
+		$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
+
+		$response = $blogger->addPost($blogName, $accessToken, $entity->getTitle(), (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
+		$obj = json_decode($response["response"]);
+		
+		if($response["http_code"] == Response::HTTP_OK) {
+			$url = "<br><a href='".$obj->url."' target='_blank'>".$obj->url."</a>";
+			$session->getFlashBag()->add('success', $translator->trans('admin.blogger.Success', [], 'validators').$url);
+			
+			switch($entity->getRealClass()) {
+				case "Grimoire":
+					$entity->setSource($obj->url);
+					$em->persist($entity);
+					$em->flush();
+					break;
+			}
+		}
+		else
+			$session->getFlashBag()->add('error', $translator->trans('admin.blogger.Error', array("%code%" => $response["http_code"]), 'validators'));
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+
+	// Shopify
+	public function shopifyAction(Request $request, Shopify $shopify, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type)
+	{
+		$session = $request->getSession();
+		$session->set("id_shopify", $id);
+		
+		$path = urldecode($path);
+		$session->set("path_shopify", $path);
+		$session->set("routeToRedirect_shopify", $routeToRedirect);
+		
+		$tags = $request->request->get('shopify_tags');
+		$session->set("tags_shopify", json_encode((empty($tags)) ? [] : $tags));
+
+		$session->set("type_shopify", $type);
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($path)->find($id);
+		$redirectURL = $router->generate("Admin_ShopifyPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$code = $shopify->getCode($redirectURL);
+
+		return new Response();
+	}
+
+	public function shopifyPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, Shopify $shopify, TranslatorInterface $translator, UrlGeneratorInterface $router)
+	{
+		$code = $request->query->get("code");
+		
+		$session = $request->getSession();
+
+		$id = $session->get("id_shopify");
+		$path = $session->get("path_shopify");
+		$tags = $session->get("tags_shopify");
+		$type = $session->get("type_shopify");
+		$routeToRedirect = $session->get("routeToRedirect_shopify");
+
+		$blogName = $shopify->getCorrectBlog($type);
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($path)->find($id);
+		
+		$text = "";
+		$imgProperty = "";
+
+		switch($entity->getRealClass())
+		{
+			case "Photo":
+				$imgProperty = $entity->getPhotoIllustrationFilename();
+				$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
+				$text = $entity->getText();
+				$text .= "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators')."</b><br>".$imgCaption."</div>";
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "News":
+				$imgProperty = $entity->getPhotoIllustrationFilename();
+				$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
+				$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators')."</b>".$imgCaption."</div><br><b>".$translator->trans('news.index.Sources', [], 'validators')."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Video":
+				$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
+				if(!empty($entity->getMediaVideo()))
+					$video = $parser->getVideoResponsive('<video width="550" height="309" controls><source src="'.$request->getSchemeAndHttpHost().'/'.$entity->getAssetVideoPath().'/'.$entity->getMediaVideo().'" type="video/mp4"></video>');
+				
+				$imgProperty = $entity->getPhoto();
+				$text = $entity->getText()."<br>".$video;
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Grimoire":
+				$imgProperty = $entity->getPhoto();
+				$text = $entity->getText();
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Cartography":
+				$imgProperty = $entity->getPhoto();
+				$text = $entity->getText();
+				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+		}
+		
+		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+		$img = null;
+
+		if(!empty($imgProperty)) {
+			$img = $request->getSchemeAndHttpHost().'/'.$entity->getAssetImagePath().$imgProperty;
+			$img = $baseurl."/".$entity->getAssetImagePath().$imgProperty;
+		}
+		
+		$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
+
+		$response = $shopify->addPost($blogName, $request->query, $entity->getTitle(), $text, $img, $tags, new \DateTime(), $entity->authorToString());
+
+		if($response["http_code"] == Response::HTTP_CREATED) {
+			$urlStr = $shopify->getArticleUrl($blogName, $response["handle"]);
+			$url = "<br><a href='".$urlStr."' target='_blank'>".$urlStr."</a>";
+			$session->getFlashBag()->add('success', $translator->trans('admin.shopify.Success', [], 'validators').$url);
+			
+			switch($entity->getRealClass()) {
+				case "Grimoire":
+					$entity->setSource($urlStr);
+					$em->persist($entity);
+					$em->flush();
+					break;
+			}
+		}
+		else
+			$session->getFlashBag()->add('error', $translator->trans('admin.shopify.Error', array("%code%" => $response["http_code"]), 'validators'));
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+	
+	// Pinterest
+	public function pinterestAction(Request $request, PinterestAPI $pinterest, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$requestParams = $request->request;
+
+		$entity = $em->getRepository(urldecode($path))->find($id);
+		
+		$currentURL = $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$image = $this->getImageName($request, $entity, false);
+		
+		$image = $request->getUriForPath($entity->getAssetImagePath().$image);
+
+		$res = $pinterest->send($entity, $image, $currentURL);
+		
+		if($res == "success")
+			$session->getFlashBag()->add('success', $translator->trans('admin.pinterest.Success', [], 'validators'));
+		else
+			$session->getFlashBag()->add('error', $res);
+
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
+	}
+	
+	// Twitter
+	public function twitterAction(Request $request, TwitterAPI $twitterAPI, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$requestParams = $request->request;
+		
+		$path = urldecode($path);
+		
+		$entity = $em->getRepository($path)->find($id);
+		$image = false;
+		$url = $requestParams->get("twitter_url", null);
+
+		if($requestParams->get("add_image") == 'on')
+			$image = $this->getImageName($request, $entity, false);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
+		$twitterAPI->sendTweet($requestParams->get("twitter_area")." ".$currentURL, $image);
+		$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
+	}
+	
+	// The Daily Truth
+	public function thedailytruthAction(Request $request, int $id, string $path, string $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$entity = $em->getRepository(urldecode($path))->find($id);
+		
+		$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
+
+		$data = [
+			"title" => $entity->getTitle(),
+			"text" => '<div id="abstract">'.$entity->getAbstractText().'</div>'.$entity->getText(),
+			"slug" => $entity->getSlug(),
+			"source" => $entity->getSource(),
+			"tags" => json_encode($request->request->get("thedailytruth_tags")),
+			"media" => json_encode(["content" => base64_encode(file_get_contents($path)), "caption" => $entity->getIllustration()->getCaption(), "name" => $entity->getIllustration()->getRealNameFile()]),
+		];
+		
+		$api = new TheDailyTruth();
+		$api->addPost($data, $api->getOauth2Token());
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
+	}
+	
+	// Tumblr
+	public function tumblrAction(Request $request, TumblrAPI $tumblr, $id, $path, $routeToRedirect)
+	{
+		$session = $request->getSession();
+		$session->set("id_tumblr", $id);
+		$session->set("path_tumblr", urldecode($path));
+		$session->set("routeToRedirect_tumblr", $routeToRedirect);
+		
+		$tags = $request->request->get('tumblr_tags');
+		$session->set("tumblr_tags", json_encode((empty($tags)) ? [] : $tags));
+
+		$tumblr->connect();
+
+		exit();
+	}
+	
+	public function tumblrPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, TumblrAPI $tumblr, TranslatorInterface $translator)
+	{
+		$session = $request->getSession();
+
+		$id = $session->get("id_tumblr");
+		$path = $session->get("path_tumblr");
+		$tags = implode(",", json_decode($session->get("tumblr_tags")));
+		$routeToRedirect = $session->get("routeToRedirect_tumblr");
+
+		$em = $this->getDoctrine()->getManager();
+		
+		$entity = $em->getRepository($path)->find($id);
+		
+		$img = $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
+		$imgCaption = null;
+		
+		if(method_exists($entity, "getPhotoIllustrationCaption"))
+			$imgCaption = "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators')."</b><br>".$imgCaption."</div>";
+		
+		$img = $imgSize->adaptImageSize(550, $img);
+		
+		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+
+		$title = $entity->getTitle();
+
+		switch($entity->getRealClass())
+		{
+			case "Cartography":
+			case "Photo":
+				$body = "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p><br>".$entity->getText().$imgCaption;
+				$body .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$body = $parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+			case "Video":
+				$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
+				if(!empty($entity->getMediaVideo()))
+					$video = $parser->getVideoResponsive('<video width="550" height="309" controls><source src="'.$request->getSchemeAndHttpHost().'/'.$entity->getAssetVideoPath().'/'.$entity->getMediaVideo().'" type="video/mp4"></video>');
+				$body = "<p><img src='".$baseurl."/".$img[2]."' width='".$img[0]."' height='".$img[1]."' alt='' /></p><br>".$entity->getText()."<br>".$video;
+				$body .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+				$body = $parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
+				break;
+		}
+		
+		// Fix Tumblr bugs 
+		$body = str_replace(array("\r\n", "\n", "\t", "\r"), ' ', $body);
+		$tumblr->addPost($title, $body, $tags);
+		
+		$session->getFlashBag()->add('success', $translator->trans('admin.tumblr.Success', [], 'validators'));
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+	
+	// Facebook
+	public function facebookAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(urldecode($path))->find($id);
+		$fb = new \Facebook\Facebook([
+			'app_id' => "435607197859748",//"c38e98d236ca748cd971c1568a29ab60"; //getenv("FACEBOOK_APP_ID"),
+			'app_secret' => "c38e98d236ca748cd971c1568a29ab60", //getenv("FACEBOOK_APP_SECRET"),
+			'default_graph_version' => 'v2.6'
+		]);
+		
+		$pageId = "2283443385078223";
+		$helper = $fb->getRedirectLoginHelper();
+		// $helper->getPersistentDataHandler()->set("state", $request->query->get("state"));
+		
+$accessToken = "EAAGMLrRKP6QBAKluIWAgLvJBfHP7eQOoUs4PBZChiMPBupfWO4ZCZBy63DQ5lfJxrEJbney3EmVQ6oV4ilz97IydD3Vov8L67y55SpA1wux4HEkgjv05mmZClbXYssgXdkZCc5Y5TJFEZCDrIniCgZBgJXNZANgRtaaC3W5w824jpAzdX6KmLdvXNo7bZANX8iDZAC6uJjZAU1lSEquBQOC5Gbu";
+/*$secretKey = "c38e98d236ca748cd971c1568a29ab60";
+$appId =  "435607197859748";
+$userId = "751376615255146";
+$graphApiToken = "v2.11";
+
+$longLiveToken = json_decode(file_get_contents("https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=${appId}&client_secret=${secretKey}&fb_exchange_token=${accessToken}"));
+
+$longLivedUserAccessToken = $longLiveToken->access_token;
+
+$accessTokenTest = $appId.'|'.$secretKey;
+
+$url = json_decode(file_get_contents("https://graph.facebook.com/${graphApiToken}/${appId}/accounts?access_token=${accessTokenTest}"), true);
+
+$longLivedUserAccessToken = $url["data"][0]["access_token"];*/
+//Post property to Facebook
+
+
+$accessToken = "EAAGMLrRKP6QBAObqkz1Rcis1mXjnER1bZB4hLhmbX60pY5kurVNKSyeEg98BUMTwyZAGOTRWDknfqTBWfwVqdpHxSOWhhyrsA84ZCOqXRgK9ZAldytAJjiTYIJzkovLZAJhyKLLOLovZB0GqOzjISfpH9wVT2k8AgmDZBtqxvCGj7igf4fUicGwrAdbHr8r9XueFtxn9rVsBTQcZCW2n5xkF";
+
+$linkData = [
+ 'link' => 'www.yoururl.com',
+ 'message' => 'Your message here'
+];
+
+
+try {
+ $response = $fb->post('/me/feed', $linkData, $accessToken);
+} catch(Facebook\Exceptions\FacebookResponseException $e) {
+ echo 'Graph returned an error: '.$e->getMessage();
+ exit;
+} catch(Facebook\Exceptions\FacebookSDKException $e) {
+ echo 'Facebook SDK returned an error: '.$e->getMessage();
+ exit;
+}
+$graphNode = $response->getGraphNode();
+		dd($graphNode);
+/*
+		$accessToken = $helper->getAccessToken();
+		$res = [];
+dd($accessToken, $helper, $request->query->get("state"));*/
+		if(empty($accessToken))
+		{
+			$permissions = ['email', 'user_likes', 'user_birthday', 'manage_pages ', 'user_photos', 'publish_actions', 'publish_pages' ];
+			$loginUrl = $helper->getLoginUrl($this->generateUrl("Admin_Facebook", ["id" => $id, "path" => $path, "routeToRedirect" => $routeToRedirect], UrlGeneratorInterface::ABSOLUTE_URL));
+			return $this->redirect($loginUrl);
+		}
+		else
+		{
+			try {
+				$accessToken = $accessToken->getValue();
+				
+				$response = $fb->get('/'.$pageId.'?fields=access_token', (string)$accessToken);
+				$accessTokenPage = json_decode($response->getBody())->access_token;
+				$currentURL = $this->router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+
+				if($request->request->get("facebook_media") == "photo_media")
+				{
+					$photoData = [
+						'message' => $entity->getTitle(),
+						'source' => $fb->fileToUpload($this->getImageName($request, $entity))
+					];
+
+					$response = $fb->post('/'.$pageId.'/photos', $photoData, $accessTokenPage);
+				}
+				else
+				{
+					$linkData = [
+						'link' => $currentURL,
+						'message' => $entity->getTitle(),
+						// 'from' => '220184531706758'
+					];
+
+					$response = $fb->post('/'.$pageId.'/feed', $linkData, $accessTokenPage);
+				}
+				// $response = $fb->get('/me', $accessToken);
+				// $response = $fb->get('/me/accounts', $accessToken);
+				$message = ($response->isError()) ? ['state' => 'error', 'message' => ''] : ['state' => 'success', 'message' => 'Post published with success!'];
+			}
+			catch(\Facebook\Exceptions\FacebookResponseException $e) {
+				$message = ['state' => 'error', 'message' => $e->getMessage()];
+			}
+			catch(\Facebook\Exceptions\FacebookSDKException $e) {
+				$message = ['state' => 'error', 'message' => $e->getMessage()];
+			}
+		}
+		
+		$session->getFlashBag()->add($message['state'], $message['message']);
+
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+	
+	private function getImageName(Request $request, $entity, $url = true)
+	{
+		$imageName = null;
+
+		switch($entity->getRealClass())
+		{
+			case "Cartography":
+			case "Video":
+			case "Book":
+				$imageName = $entity->getPhoto();
+				break;
+			case "Photo":
+			case "News":
+				$imageName = $entity->getPhotoIllustrationFilename();
+				break;
+			default:
+				$imageName = null;
+		}
+
+		if(!empty($imageName)) {
+			$path = $entity->getAssetImagePath().$imageName;
+			return ($url) ? $request->getUriForPath('/'.$path) : $path;	
+		}
+
+		return null;
+	}
+}

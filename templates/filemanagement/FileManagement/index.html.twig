@@ -1,0 +1,182 @@
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+
+	<script>
+		$(function ()
+		{
+			$('.doc_datatables').dataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
+				},
+				"bPaginate": false,
+				"bLengthChange": false,
+				"bFilter": false,
+				"bSort": true,
+				"bInfo": false,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"bAutoWidth": false
+			});
+			
+			$(".displayInColorbox").click(function()
+			{
+				$('#displayPicture p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
+				$('#displayPicture .modal-title').html($(this).data("title"));
+				$('#displayPicture').modal('show');
+				event.preventDefault();
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+
+	<div class="modal fade" tabindex="-1" role="dialog" id="displayPicture">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title"></h5>
+		  </div>
+		  <div class="modal-body">
+			<p class='image'></p>
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	<div id="errorFile" class="mt-3"></div>
+	<div id="file_management_control" class="mt-3">
+	<h3>{{ "file.add.AttachFile"|trans([], "validators") }}</h3>
+	{{ form_start(form, {'action': path('FileManagement_Create', {'idClassName':idClassName, 'className':className}), 'attr':{'class' : 'form-horizontal', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.titleFile, "file.add.Title"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_widget(form.titleFile, {'attr':{'class' : 'form-control'}}) }}</div>
+			{{ form_rest(form) }}
+			{{ form_errors(form) }}
+		</div>
+	{{ form_end(form) }}
+	<div id="uploadDiv">
+		<form id="uploadForm" enctype="multipart/form-data" action="{{ path('FileManagement_Uploadfile', {'idClassName' : idClassName, 'className' : className}) }}" target="uploadFrame" onsubmit="uploadRun();" method="post">
+			<div class="form-table form-table-4cols form-table-collapse">
+				<div class="form-table-cell form-table-cell-head">{{ "file.add.File"|trans([], "validators") }}</div>
+				<div class="form-table-cell"><input id="uploadFile" name="uploadFile" type="file" /></div>
+			</div>
+			<input class="submitcomment btn mt-3" id="uploadSubmit" type="submit" value="{{ 'file.add.Upload'|trans([], 'validators') }}" />
+			<span id="uploadStatus">{{ "file.add.NoFile"|trans([], "validators") }}</span>
+			<input type="text" value="fichierURL" name="typeFile" style="display: none;" />
+		</form>
+		<iframe id="uploadFrame" name="uploadFrame" style="display: none;"></iframe> 
+	</div>
+	<br />
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "file.add.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "file.add.Display"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "file.add.Delete"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in entities %}
+				<tr>
+					<td><div style="max-width: 350px;overflow: hidden;text-overflow: ellipsis;">{{ entity.titleFile }}</div></td>
+					<td><a class="show" href="" alt="View"><span class="displayInColorbox" data-title="{{ entity.titleFile }}" id="{{ asset(entity.getFileManagementPath()~entity.realNameFile) }}">{{ "file.add.Display"|trans([], "validators") }}</span></a></td>
+					<td><a href="" id="{{ entity.id }}" class="remove" alt="Delete">{{ "file.add.Delete"|trans([], "validators") }}</a></td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "file.add.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "file.add.Display"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "file.add.Delete"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+
+	<script>
+		$(document).ready(function (){
+		    $(document).on('click', '.remove', function()
+			{
+				var obj = $(this);
+				$.ajax({
+					type: "POST",
+					url: "{{ path('FileManagement_Delete') }}",
+					data: "&selectedId=" + $(this).attr("id"),
+					processData: false,
+					cache: false,
+					success: function(){ 
+						if ($('#extra_file tbody tr').length == 1 ){
+							obj.parent().parent().html('<td colspan="3">{{ 'file.uploadFile.NoFile'|trans([], 'validators') }}</td>')
+						} else {
+							obj.parent().parent().fadeOut("slow").remove();
+						}
+					}
+				});
+				return false;
+			});
+
+			$('#{{ form.vars.id }}').submit(function(){
+				var DATA = $("#{{ form.vars['id'] }}").serialize();
+				$.ajax({
+					type: "POST",
+					url: "{{ path('FileManagement_Create', {'idClassName':idClassName, 'className':className}) }}",
+					data: DATA,
+					processData: false,
+					cache: false,
+					success: function(data){alert("kkk");
+						$('#file_management_control').html(data);
+					}
+				});
+				
+				return false;
+			});
+		});
+		function uploadRun()
+		{
+			if($("#uploadFile").val() != "")
+			{
+				document.getElementById("uploadSubmit").disabled = true;
+				return true;
+			}
+			else
+				return false;
+		}
+
+		function uploadEnd(sError, sPath)
+		{
+			if(sError == 'OK')
+			{
+				document.getElementById("ap_filemanagement_filemanagementtype_realNameFile").value = sPath;
+				if(document.getElementById("ap_filemanagement_filemanagementtype_titleFile").value == "")
+					document.getElementById("ap_filemanagement_filemanagementtype_titleFile").value = sPath;
+				var DATA = $("#{{ form.vars['id'] }}").serialize();
+				$.ajax({
+					type: "POST",
+					url: "{{ path('FileManagement_Create', {'idClassName':idClassName, 'className':className}) }}",
+					data: DATA,
+					processData: false,
+					cache: false,
+					success: function(data){
+						$('#file_management_control').html(data);
+						document.getElementById("errorFile").innerHTML = "<div class='alert alert-success'>{{ 'file.uploadFile.FileAddedWithSuccess'|trans([], 'validators') }}</div>";
+					}
+				});
+			}
+			else
+			{
+				document.getElementById("errorFile").innerHTML = "<ul class='error'><li>"+sError+"</li></ul>";
+				document.getElementById("uploadSubmit").disabled = false;
+			}
+		}
+	  </script>
+</div>

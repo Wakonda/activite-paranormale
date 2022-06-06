@@ -1,0 +1,71 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "televisionSerie.index.TelevisionSerie"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ "televisionSerie.index.TelevisionSerie"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ "televisionSerie.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+
+	<h3>{{ "televisionSerie.search.SearchSort"|trans([], "validators") }}</h3>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('TelevisionSerie_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.keywords, "televisionSerie.search.Keywords"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.keywords) }}{{ form_widget(form.keywords, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "televisionSerie.search.Genre"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "televisionSerie.search.Sort"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-right">{{ "televisionSerie.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+	<br>
+	<br>
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="card-body">
+				<div class="row no-gutters">
+					{% if entity.illustration is not empty %}
+						<div class="col-md-4 align-self-center text-center">
+							{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
+						</div>
+					{% endif %}
+					<div class="col-md-{% if entity.illustration is not empty %}8{% else %}12{% endif %}">
+						<div{% if entity.illustration is not empty %} class="pl-3"{% endif %}>
+							<h5 class="card-title text-center"><a href="{{ path('TelevisionSerie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">{{ entity.title }}</a></h5>
+							<hr>
+							<div class="d-flex justify-content-around">
+								<div class="p-2"><i class="fas fa-film"></i> <a href="{{ path('ByGenreTelevisionSerie_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.title}) }}">{{ entity.genre }}</a></div>
+							</div>
+
+							<p class="card-text mb-0 text-center my-3"></p>
+							<hr>
+							<div class="text-right">
+								<a class="btn read text-left" href="{{ path('TelevisionSerie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">
+									<span class="mr-2"><i class="fas fa-ticket-alt fa-fw"></i></span>
+									<b class="align-middle">{{ "televisionSerie.index.Read"|trans([], "validators") }}</b>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger font-italic text-center">{{ "televisionSerie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

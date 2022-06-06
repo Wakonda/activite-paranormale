@@ -1,0 +1,60 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Index') }}" title="Index"><i class="fas fa-home" aria-hidden="true"></i> Index</a></li>
+	{% if block("new_admin_route") != "" %}<li><a href="{% block new_admin_route %}{% endblock %}" title="Index"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}</a></li>{% endif %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('UsefulLink_Admin_Index') }}" title="Index"><i class="far fa-list-alt" aria-hidden="true"></i> {{ "admin.general.List"|trans([], "validators") }}</a></li>
+{% endblock %}
+
+{% block body_main %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="panel panel-default">
+			<div id="success_copy"><span></span></div>
+			<table class="table table-bordered">
+				<tbody>
+					<tr>
+						<th class="label_form">{{ form_label(form.asin) }}</th>
+						<td class="input_form">{{ form_errors(form.asin) }}{{ form_widget(form.asin, { 'attr': {'class': 'form-control'} }) }}</td>
+					</tr>
+					<tr>
+						<th class="label_form">{{ form_label(form.asinUrl) }}</th>
+						<td class="input_form" id="asin">{{ form_errors(form.asinUrl) }}{{ form_widget(form.asinUrl, { 'attr': {'class': 'form-control'} }) }}</td>
+					</tr>
+				</tbody>
+			</table>
+			{{ form_rest(form) }}
+		</div>
+		<p>
+			<button data-clipboard-action="copy" data-clipboard-target="#asin" class="btn btn-success clip_button" type="button">{{ "admin.general.Create"|trans([], "validators") }}</button>
+		</p>
+	{{ form_end(form) }}
+{% endblock %}
+
+{% block js_edit %}
+	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
+	
+	<script>
+		$(function()
+		{
+			$("#{{ form.asin.vars.id }}").change(function() {
+				$("#{{ form.asinUrl.vars.id }}").val("https://www.amazon.fr/dp/" + $(this).val() + "/ref=nosim?tag=" + "{{ partnerId }}");
+			});
+			
+			var clipboard = new Clipboard('.clip_button');
+
+			clipboard.on('success', function(e) {
+				$("#success_copy").addClass("success");
+				$("#success_copy span").text("{{ 'book.read.CodeCopiedWithSuccess'|trans([], 'validators') }}");
+				setTimeout(fade_out, 5000);
+			});
+
+			var fade_out = function() {
+				$("#success_copy").removeClass("success");
+				$("#success_copy span").empty();
+			}
+		});
+	</script>
+{% endblock %}

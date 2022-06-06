@@ -1,0 +1,33 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		$(function() {
+			function isSVGSupported() {
+				return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+			}
+			
+			if($("p.image object").length == 1 && !isSVGSupported())
+			{
+				$("p.image object").remove();
+				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
+			}
+			
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Archive/readArchive'~className~'.html.twig' %}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': className })) }}
+{% endblock %}

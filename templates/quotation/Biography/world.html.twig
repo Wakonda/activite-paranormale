@@ -1,0 +1,20 @@
+{% extends "index/Generic/world.html.twig" %}
+
+{% block title %}{{ "biography.world.WorldBiography"|trans([], "validators") }}{% endblock %}
+
+{% block world_datatables %}{{ path('Biography_WorldDatatables', { 'language' : app.request.attributes.get('language') }) }}{% endblock %}
+
+{% block world_flag %}Biography_World{% endblock %}
+{% block select_theme_for_index_world %}{% endblock %}
+
+{% block thead_table %}
+	<th class="label_form">{{ "news.world.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.world.Photo"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.world.Title"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoottable %}
+	<th class="label_form">{{ "news.world.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.world.Photo"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.world.Title"|trans([], "validators") }}</th>
+{% endblock %}

@@ -1,0 +1,16 @@
+<form action="{{ path('Resetting_Reset', {'token': token}) }}" method="POST" class="resetting_reset">
+	<table class="table">
+		<tr>
+			<td class="tdGene td_form_table">{{ form_label(form.password, "user.index.Password"|trans([], "validators")) }}</td>
+			<td class="tdGene">{{ form_errors(form.password.first) }}{{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}</td>
+		</tr>
+		<tr>
+			<td class="tdGene td_form_table">{{ "user.index.ConfirmPassword"|trans([], "validators") }}</td>
+			<td class="tdGene">{{ form_errors(form.password.second) }}{{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}</td>
+		</tr>
+	</table>
+    {{ form_widget(form) }}
+    <div>
+        <input type="submit" value="{{ 'resetting.reset.submit'|trans({}, 'FOSUserBundle') }}" class="submitcomment btn" />
+    </div>
+</form>

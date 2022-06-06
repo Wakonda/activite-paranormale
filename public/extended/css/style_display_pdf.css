@@ -1,0 +1,36 @@
+body, html { margin:0; padding:0; height:100%; }
+iframe { display:block; width:100%; border:none; }
+body
+{
+	background-color: black;
+	font-family: "Times New Roman", Arial, Helvetica, sans-serif;
+}
+#header
+{
+	background-color: #bdc62b !important;
+}
+div#footer
+{
+	background-color: black;
+}
+span.icon
+{
+	float: left;
+	margin-top: 2px;
+	margin-left: 15px;
+}
+
+span.icon a {
+	color: black;
+}
+
+span.icon a:hover {
+	text-decoration: none;
+	color: #484848;
+}
+
+p {
+	margin: 0 0 0px !important;
+}
+
+#footer { height: 39px; }

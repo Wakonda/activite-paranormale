@@ -1,0 +1,44 @@
+{% if sameTopics is not empty %}
+	<script >
+		$(function() {
+			$('#carousel-same-topics-index').carousel({
+				interval: false
+			}).on('slide.bs.carousel', function (e) {
+				var nextH = $(e.relatedTarget).height();
+				$(this).find('.active.carousel-item').parent().animate({
+					height: nextH
+				}, 500);
+			});
+		});
+	</script>
+{% endif %}
+
+<div class="card main_column_section mt-3">
+	<div class="card-header">
+		<h2><span class="float-left"><img src="{{ asset('extended/photo/same-topics.png') }}" width="25" class="mt-1" alt="Same topics"/></span>{{ "generality.read.OnTheSameTopic"|trans([], "validators") }}</h2>
+	</div>
+	<div class="card-body">
+		{% if sameTopics is not empty %}
+			<div id="carousel-same-topics-index" class="content carousel-pagination carousel slide" data-interval="false">
+				<!-- Indicators -->
+				<ol class="carousel-indicators carousel-indicators-numbers pagination">
+				{% set i = 0 %}
+				{% set j = 1 %}
+				{% for entity in sameTopics %}
+					<li data-target="#carousel-same-topics-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+					{% set i = i + 1 %}
+					{% set j = j + 1 %}
+				{% endfor %}
+				</ol>
+				<div class="carousel-inner" role="listbox">
+					{% block content %}
+					{% endblock %}
+				</div>
+			</div>
+		{% else %}
+			<div class="alert alert-danger text-center">
+				{{ "generality.read.NoMatchingRecordsFound"|trans([], "validators") }}
+			</div>
+		{% endif %}
+	</div>
+</div>

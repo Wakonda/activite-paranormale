@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ app.request.locale }}">
+	<head>
+		<title>{{ entity.title }}</title>
+		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
+		<link rel="stylesheet" href="{{ asset('extended/css/bootstrap/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="screen" />
+		<link rel="stylesheet" href="{{ asset('extended/css/style_display_pdf.css') }}" type="text/css" media="screen" />
+		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/fontawesome.min.css') }}" type="text/css" media="screen" />
+		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/brands.min.css') }}" type="text/css" media="screen" />
+		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/regular.min.css') }}" type="text/css" media="screen" />
+		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/solid.min.css') }}" type="text/css" media="screen" />
+		<script src="{{ asset('extended/js/jquery.js') }}"></script>
+	
+		{% if is_mobile() or is_tablet() %}
+			<script src="{{ asset('extended/js/pdf.js') }}"></script>
+		{% endif %}
+	
+		{% if entity.text is not empty %}
+			<meta name="description" content="{{ entity.text|striptags }}">
+		{% endif %}
+	</head>
+	<body>
+		<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a href="{{ path('Index_Index') }}" class="nav-link"><i class="fas fa-home" aria-hidden="true"></i> {{ "document.read.Home"|trans([], "validators") }}</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{ path('DocumentBundle_DownloadDocument', {'id' : entity.id}) }}" class="nav-link"><i class="fas fa-download" aria-hidden="true"></i> {{ "document.read.Download"|trans([], "validators") }}</a>
+					</li>
+					<li class="nav-item">
+						<a href="{{ path('DocumentBundle_AbstractDocument', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() }) }}" class="nav-link"><i class="far fa-hand-point-left" aria-hidden="true"></i> {{ "document.read.Back"|trans([], "validators") }}</a>
+					</li>
+				</ul>
+			</div>
+		</nav>
+
+		{% if is_mobile() or is_tablet() %}
+			<div id="pdf-canvas-action" class="text-center">
+				<div class="btn-toolbar my-2 d-inline-flex">
+					<div class="mr-2">
+						<button id="prev" class="btn btn-light btn-sm"><i class="fas fa-arrow-left"></i></button>
+						<button id="next" class="btn btn-light btn-sm"><i class="fas fa-arrow-right"></i></button>
+					</div>
+					<div class="input-group input-group-sm">
+						<input type="number" class="form-control" id="page_num_input" min="1" max="1">
+						<div class="input-group-append">
+							<span class="input-group-text" id="basic-addon2">/&nbsp;<span id="page_count"></span></span>
+						</div>
+					</div>
+					<div class="ml-2">
+						<button id="zoominbutton" type="button" class="btn btn-light btn-sm"><i class="fas fa-plus"></i></button>
+						<button id="zoomoutbutton" type="button" class="btn btn-light btn-sm"><i class="fas fa-minus"></i></button>
+					</div>
+				</div>
+			</div>
+
+			<div id="pdf-canvas-container" style="max-width: 85%; overflow: auto" class="m-auto d-block bg-dark">
+				<canvas id="pdf-canvas" class="m-auto d-block"></canvas>
+			</div>
+		{% else %}
+			<iframe src="{{ asset(entity.getAssetImagePath()) }}{{ entity.pdfDoc }}" width="100%" height="100%" scrolling="no" marginheight="0" marginwidth="0" frameborder="0"></iframe>
+		{% endif %}
+
+		<div id="footer" class="pt-1 mt-2">
+			<span class="mt-2 text-light ml-3"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</span>
+			<div class="float-right mr-3">
+				<i class="fas fa-tags text-danger"></i> {{ getTagsByEntityForDisplayDocument(entity) }}
+			</div>
+		</div>
+		
+		<script>
+			{% if is_mobile() or is_tablet() %}#}
+				function resizeIframe()
+				{
+					var heightBody = $("body").height();
+					var heightfooter = $("#footer").height();
+					var heightHeader = $("#header").height();
+					
+					var heightContainer = 0;
+					{% if is_mobile() or is_tablet() %}
+						var heightContainer = $("#pdf-canvas-action").height();
+					{% endif %}
+					var paddingTopFooter = parseInt($("#footer").css("paddingTop")) + parseInt($("#footer").css("marginTop"));
+					var paddingTopHeader = parseInt($("#header").css("paddingBottom")) + parseInt($("#header").css("paddingTop"));
+
+					$("div#pdf-canvas-container").height(heightBody - heightfooter - heightHeader - paddingTopFooter - paddingTopHeader - heightContainer);
+				}
+
+				var url = '{{ asset(entity.getAssetImagePath()) }}{{ entity.pdfDoc }}';
+				var pdfjsLib = window['pdfjs-dist/build/pdf'];
+
+				pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+
+				var loadingTask = pdfjsLib.getDocument(url);
+				loadingTask.promise.then(function(pdf) {
+					console.log('PDF loaded');
+
+					var pageRendering = false;
+					var pageNumPending = null;
+					var pageNumber = 1;
+					var totalPage = 0;
+					var pdfScale = 1;
+
+					function renderPage(pageNumber) {
+						pdf.getPage(pageNumber).then(function(page) {
+							console.log('Page loaded');
+
+							var viewport = page.getViewport({scale: pdfScale});
+
+							// Prepare canvas using PDF page dimensions
+							var canvas = document.getElementById('pdf-canvas');
+							var context = canvas.getContext('2d');
+							canvas.height = viewport.height;
+							canvas.width = viewport.width;
+
+							// Render PDF page into canvas context
+							var renderContext = {
+								canvasContext: context,
+								viewport: viewport
+							};
+							var renderTask = page.render(renderContext);
+							renderTask.promise.then(function () {
+							console.log('Page rendered');
+							resizeIframe();
+							totalPage = pdf._pdfInfo.numPages
+
+							document.getElementById('page_num_input').setAttribute("max", totalPage);
+							document.getElementById('page_num_input').value = pageNumber;
+							document.getElementById('page_count').textContent = totalPage;
+							pageRendering = false;
+	
+							if (pageNumPending !== null) {
+								// New page rendering is pending
+								renderPage(pageNumPending);
+								pageNumPending = null;
+							}
+							});
+						});
+					}
+
+					renderPage(pageNumber);
+
+					function queueRenderPage(pageNumber) {
+						if (pageRendering) {
+							pageNumPending = pageNumber;
+						} else {
+							renderPage(pageNumber);
+						}
+					}
+
+					/**
+					* Displays previous page.
+					*/
+					function onPrevPage() {
+						if (pageNumber <= 1)
+							return;
+
+						pageNumber--;
+						queueRenderPage(pageNumber);
+					}
+
+					function onNextPage() {
+						if (pageNumber >= pdf.numPages)
+						return;
+
+						pageNumber++;
+						queueRenderPage(pageNumber);
+					}
+
+					document.getElementById("zoominbutton").onclick = function() {
+						pdfScale = pdfScale + 0.25;
+						renderPage(pageNumber);
+					}
+
+					document.getElementById("zoomoutbutton").onclick = function() {
+						if (pdfScale <= 0.25)
+							return;
+
+						pdfScale = pdfScale - 0.25;
+						renderPage(pageNumber);
+					}
+
+					document.getElementById("page_num_input").addEventListener("change", function(event) {
+						if(this.value > totalPage || this.value <= 0) {
+							this.value = pageNumber;
+							return;
+						}
+
+						pageNumber = this.value
+						queueRenderPage(parseInt(this.value));
+					});
+
+					document.getElementById("page_num_input").addEventListener("keyup", function(event) {
+						if (event.keyCode === 13) {
+							event.preventDefault();
+
+							if(this.value > totalPage || this.value <= 0) {
+								this.value = pageNumber;
+								return;
+							}
+
+							pageNumber = this.value;
+						}
+					});
+
+					document.getElementById('prev').addEventListener('click', onPrevPage);
+					document.getElementById('next').addEventListener('click', onNextPage);
+
+
+				}, function (reason) {
+					// PDF loading error
+					console.error(reason);
+				});
+
+				$(function() {
+					$(window).resize(function() {
+						resizeIframe();
+					});
+				});
+			{% else %}
+				$(function() {
+					function resizeIframe()
+					{
+						var heightBody = $("body").height();
+						var heightfooter = $("#footer").height();
+						var heightHeader = $("#header").height();
+						var paddingTopFooter = parseInt($("#footer").css("paddingTop")) + parseInt($("#footer").css("marginTop"));
+						var paddingTopHeader = parseInt($("#header").css("paddingBottom")) + parseInt($("#header").css("paddingTop"));
+
+						$("iframe").height(heightBody - heightfooter - heightHeader - paddingTopFooter - paddingTopHeader);
+					}
+					
+					resizeIframe();
+
+					$(window).resize(function() {
+						resizeIframe();
+					});
+				});
+			{% endif %}
+		</script>
+	</body>
+</html>

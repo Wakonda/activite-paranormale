@@ -1,0 +1,22 @@
+tag:
+    search:
+        ArticleTagged: >-
+            {number, plural,
+                one   {article taggé}
+                other {articles taggés}
+            }
+        Section: "Rubrique"
+        Title: "Titre"
+        Theme: "Thème"
+        PublicationDate: "Date de publication"
+        Sources: "Sources"
+    admin:
+        Tags: "Tags"
+tagWord:
+    admin:
+        Title: "Titre"
+        Language: "Langue"
+        InternationalName: "Nom international"
+        Text: "Texte"
+        Photo: "Photo"
+        Sources: "Sources"

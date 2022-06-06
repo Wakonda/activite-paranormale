@@ -1,0 +1,114 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}
+	{{ "document.index.Document"|trans([], "validators") }}
+	{% if app.request.attributes.get('theme') != "" %}
+		{{ (" - "~app.request.attributes.get('theme')) }}
+	{% endif %}
+{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/folder.png') }}" width="25" class="mt-1" alt="Folder"/></span>
+		{{ "document.index.Document"|trans([], "validators") }}
+		{% if app.request.attributes.get('theme') != "" %}
+			{{ (" - "~app.request.attributes.get('theme')) }}
+		{% endif %}
+	</h2>
+{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			oTable = $('table.document_datatables').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": {{ total_line_display }},
+				"bProcessing": true,
+				"bServerSide": true,
+				"aaSorting": [[ 0, "asc" ]],
+				"ajax": {
+					"url": "{{ path('Document_ListDatatables') }}",
+					"type": "GET",
+					"data": function(d) {
+						d.form = $("#{{ form.vars.id }}").serialize()
+					}
+				},
+				"preDrawCallback": function( settings ) {
+					document.getElementById("count_document").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+				},
+				"drawCallback": function( settings ) {
+					document.getElementById("count_document").innerHTML = settings.json.iTotalRecords;
+				}
+			});
+		
+			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", function(e) {
+				e.preventDefault();
+				oTable.ajax.reload();
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/document.jpg') }}" alt="Skull and Book" /></p>
+	<hr>
+	{{ "document.index.TotalNumberArticles"|trans([], "validators") }}<span class="badge badge-danger" id="count_document"></span>
+	<hr>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'method': 'POST', 'attr': {id: form.vars.id, 'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "document.search.Title"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.documentFamily, "document.search.Category"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.documentFamily) }}{{ form_widget(form.documentFamily, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "document.search.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-right">{{ "document.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+	<hr>
+	<br>
+	<table class="document_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "document.index.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Author"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Date"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Category"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Language"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "document.index.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Author"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Date"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Category"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "document.index.Language"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+
+	<div style="clear: both;"></div>
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

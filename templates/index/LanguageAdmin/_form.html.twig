@@ -1,0 +1,17 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "language.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.abbreviation, "language.admin.Abbreviation"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.abbreviation) }}{{ form_widget(form.abbreviation, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.logo, "language.admin.Flag"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.logo is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.logo }}
+		<br />
+	{% endif %}
+	{{ form_errors(form.logo) }}{{ form_widget(form.logo) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.direction, "language.admin.Direction"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.direction) }}{{ form_widget(form.direction) }}</div>

@@ -1,0 +1,85 @@
+{# src/AP/UserBundle/Resources/view/Security/login.html.twig #}
+{% extends "content_layout.html.twig" %}
+{% block title %}{{ "user.otherProfile.AccountOf"|trans([], "validators") }}{{ user.username }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/voodoo-doll-icon.png') }}" width="28" class="mt-1" alt="Voodoo doll"/></span>{{ "user.otherProfile.AccountOf"|trans([], "validators") }} {{ user.username }}</h2>{% endblock h2_title %}
+	
+{% block APBlog_body %}
+	{% block fos_user_content %}
+		<div class="fos_user_user_show">
+			<p style="color: #b3ff00; font-size:2.0em;font-weight:bold; text-align:center;">{{ user.username }}</p>
+			<p class="image">{{ user.avatar|imgsize(550, user.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+
+			<h3>{{ "user.otherProfile.PublicData"|trans([], "validators") }}</h3>
+			<div class="form-table form-table-4cols form-table-collapse">
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.Pseudo"|trans([], "validators") }}</div><div class="form-table-cell">{{ user.username }}</div>
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.RegistrationDate"|trans([], "validators") }}</div><div class="form-table-cell">{{ user.inscriptionDate|dodate(true, app.request.locale) }}</div>
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.BirthDate"|trans([], "validators") }}</div><div class="form-table-cell">{{ user.birthDate|dodate(false, app.request.locale) }}</div>
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.Civility"|trans([], "validators") }}</div>
+				<div class="form-table-cell">
+					{% if user.civility == "man" %}
+						<i class="fas fa-mars text-primary"></i> {{ "user.register.Man"|trans([], "validators") }}
+					{% elseif  user.civility == "woman" %}
+						<i class="fas fa-venus text-danger"></i> {{ "user.register.Woman"|trans([], "validators") }}
+					{% else %}
+						<i class="fas fa-genderless text-warning"></i> {{ "user.register.Other"|trans([], "validators") }}
+					{% endif %}
+				</div>
+				
+				{% if user.country is not null %}
+					<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.Country"|trans([], "validators") }}</div>
+					<div class="form-table-cell">{% if user.country is not null %}<img id="flagC" src="{{ asset(user.country.getAssetImagePath()) }}{{ user.country.flag }}" alt="" width="20" height="13" /> - {{ user.country.title }}{% endif %}</div>
+				{% endif %}
+				
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.City"|trans([], "validators") }}</div><div class="form-table-cell">{{ user.city|default('-') }}</div>
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.WebSite"|trans([], "validators") }}</div><div class="form-table-cell"><a href="{{ user.siteWeb }}" alt="{{ user.username }}" target="_rank" >{{ user.siteWeb|default('-') }}</a></div>
+				<div class="form-table-cell form-table-cell-head">{{ "user.showProfile.Blog"|trans([], "validators") }}</div><div class="form-table-cell"><a href="{{ user.blog }}" alt="{{ user.username }}" target="_rank" >{{ user.blog|default('-') }}</a></div>
+			</div>
+			
+			{% if user.presentation is not empty %}
+			<br>
+			<div class="form-table form-table-4cols form-table-collapse">
+				<div class="form-table-cell form-table-cell-head text-center">{{ "user.otherProfile.Presentation"|trans([], "validators") }}</div>
+				<div class="form-table-cell w-100">{{ user.presentation|raw }}</div>
+			</div>
+			{% endif %}
+	
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") == false or user is null or user.id != app.user.id %}
+				<br>
+				<h3>{{ "user.donation.RewardThisAuthor"|trans([], "validators") }}</h3>
+				<p>{{ "user.donation.RewardThisAuthorSentence"|trans([], "validators") }}</p>
+				<div class="text-center">
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#donationModal">{{ "user.donation.DonateToThisAuthor"|trans([], "validators") }}</button>
+				</div>
+				<div class="modal fade black_modal" id="donationModal" tabindex="-1" role="dialog" aria-labelledby="donationModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="donationModalLabel"><i class="fas fa-heart text-danger"></i> {{ "user.donation.Donate"|trans([], "validators") }}</h5>
+							</div>
+							<div class="modal-body">
+								{{ render(controller('App\\Controller\\UserController::donationUser', {user: user})) }}
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+			
+			<br>
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+				{% if user.id == app.user.id %}
+					<h3>{{ "user.otherProfile.PrivateData"|trans([], "validators") }}</h3>
+					<div class="form-table form-table-4cols form-table-collapse">
+						<div class="form-table-cell form-table-cell-head">{{ "user.otherProfile.Email"|trans([], "validators") }}</div><div class="form-table-cell">{{ user.email }}</div>
+					</div>
+				{% endif %}
+			{% endif %}
+		</div>
+	{% endblock fos_user_content %}
+{% endblock %}
+
+{% block sub_content %}
+	{% include "user/AdminUser/contribution.html.twig" with { 'contributionsArray' : contributionsArray, 'contributionsInProgressArray' : contributionsInProgressArray, 'user' : user } %}
+{% endblock %}

@@ -1,0 +1,52 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "testimony.addFile.NewTestimony"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "testimony.addFile.NewTestimony"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+<script>
+	$(function()
+	{
+		$('#submit').click(function()
+		{
+			$('#form_testimony').attr("action", "{{ path('Testimony_Postcreate') }}");
+			$('#form_testimony').submit();
+		});
+		
+		$('.add_file_testimony').click(function()
+		{
+			window.location = "{{ path('Testimony_Postcreate', {'id':entity.id}) }}";
+		});
+
+		$("div#tab_resources span").click(function()
+		{
+			$("div#tab_resources span").removeClass("active");
+			$(this).addClass("active");
+			
+			$("div#tab_content > div").hide();
+			$("div#tab_content div#" + $(this).data('id')).show();
+		});
+	});
+</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	<div id="tab_resources">
+		<span data-id="add_file_section" class="active">{{ "testimony.addFile.AddAFile"|trans([], "validators") }}</span> <span id="add_drawing_section_button" data-id="add_drawing_section">{{ "testimony.addFile.Draw"|trans([], "validators") }}</span>
+	</div>
+	<div id="tab_content">
+		<div id="add_file_section">
+			{{ render(controller("App\\Controller\\FileManagementController::indexAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+		</div>
+		<div id="add_drawing_section">
+			{{ render(controller("App\\Controller\\FileManagementController::drawingPaintAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+		</div>
+	</div>
+	
+	<div class="text-right mt-3">
+		<button class="submitcomment add_file_testimony btn" type="button">{{ "testimony.addFile.Finish"|trans([], "validators") }}</button>
+	</div>
+	
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

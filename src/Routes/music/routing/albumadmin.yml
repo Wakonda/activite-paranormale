@@ -1,0 +1,59 @@
+Album_Admin_Index:
+    path:  /
+    controller: App\Controller\AlbumAdminController::indexAction
+
+Album_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\AlbumAdminController::showAction
+
+Album_Admin_New:
+    path:  /new
+    controller: App\Controller\AlbumAdminController::newAction
+
+Album_Admin_Create:
+    path:  /create
+    controller: App\Controller\AlbumAdminController::createAction
+    requirements:
+        _method: post
+
+Album_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\AlbumAdminController::editAction
+
+Album_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\AlbumAdminController::updateAction
+    requirements:
+        _method: post
+
+Album_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\AlbumAdminController::deleteAction
+
+Album_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\AlbumAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Album_Admin_Autocomplete:
+    path:  /autocomplete
+    controller: App\Controller\AlbumAdminController::autocompleteAction
+
+Album_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\AlbumAdminController::showImageSelectorColorboxAction
+
+Album_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\AlbumAdminController::loadImageSelectorColorboxAction
+
+Album_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\AlbumAdminController::wikidataAction
+
+Album_Admin_IndexByArtistDatatables:
+    path: /datatables/{artistId}
+    controller: App\Controller\AlbumAdminController::indexByArtistDatatablesAction
+    requirements:
+        _method: get

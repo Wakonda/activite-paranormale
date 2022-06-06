@@ -1,0 +1,61 @@
+Artist_Admin_Index:
+    path:  /
+    controller: App\Controller\ArtistAdminController::indexAction
+
+Artist_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\ArtistAdminController::showAction
+
+Artist_Admin_New:
+    path:  /new
+    controller: App\Controller\ArtistAdminController::newAction
+
+Artist_Admin_Create:
+    path:  /create
+    controller: App\Controller\ArtistAdminController::createAction
+    requirements:
+        _method: post
+
+Artist_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\ArtistAdminController::editAction
+
+Artist_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\ArtistAdminController::updateAction
+    requirements:
+        _method: post
+
+Artist_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\ArtistAdminController::deleteAction
+
+Artist_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\ArtistAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Artist_Admin_Autocomplete:
+    path:  /autocomplete
+    controller: App\Controller\ArtistAdminController::autocompleteAction
+
+Artist_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\ArtistAdminController::showImageSelectorColorboxAction
+
+Artist_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\ArtistAdminController::loadImageSelectorColorboxAction
+
+Artist_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\ArtistAdminController::internationalizationAction
+
+Artist_Admin_ReloadByLanguage:
+    path: /reload_by_language
+    controller: App\Controller\ArtistAdminController::reloadByLanguageAction
+
+Artist_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\ArtistAdminController::wikidataAction

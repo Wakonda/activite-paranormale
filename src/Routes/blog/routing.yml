@@ -1,0 +1,12 @@
+Blog_Index:
+    path: /blog/{page}
+    controller: App\Controller\BlogController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+# Administration
+Blog_Admin:
+    resource: "routing/blogadmin.yml"
+    prefix: /admin/blog

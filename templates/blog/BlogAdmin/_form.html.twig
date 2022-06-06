@@ -1,0 +1,29 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "blog.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.banner, "blog.admin.Banner"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.banner is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.banner }}
+		<br />
+	{% endif %}
+	{{ form_errors(form.banner) }}{{ form_widget(form.banner) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.link, "blog.admin.Link"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.link) }}{{ form_widget(form.link, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.rss, "blog.admin.Rss"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.rss) }}{{ form_widget(form.rss, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "blog.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "blog.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.languageOfBlog, "blog.admin.LanguageOfBlog"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.languageOfBlog) }}{{ form_widget(form.languageOfBlog, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.active, "blog.admin.Active"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.active) }}{{ form_widget(form.active, { 'attr': {'class': 'form-control'} }) }}</div>

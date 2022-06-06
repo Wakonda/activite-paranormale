@@ -1,0 +1,320 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="{{ app.request.locale }}">
+	<head>
+		<meta charset="utf-8">
+		<meta name="author" content="Wakonda">
+		<meta name="keywords" content="{{ render(controller('App\\Controller\\PageController::keywordsMetaTagAction')) }}">
+		<meta name="description" content="{% block meta_description %}{{ render(controller('App\\Controller\\PageController::descriptionMetaTagAction')) }}{% endblock %}">
+		<meta name="msvalidate.01" content="FB19BE8A55C1B235B4389DE2169412FA" />
+		{% block meta_plus %}{% endblock %}
+
+		<title>{% block title %}Activité-Paranormale{% endblock %}</title>
+		
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app_v2') }}
+        {% endblock %}
+		
+		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print" />
+		
+		{{ encore_entry_script_tags('app_v2') }}
+
+		<script src="{{ asset('extended/js/cookiechoices/cookiechoices.min.js') }}"></script>
+		
+		<script>
+		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		  ga('create', 'UA-12307735-3', 'activite-paranormale.net');
+		  ga('send', 'pageview');
+		  
+			$(function() {
+				cookieChoices.showCookieBar({
+					linkHref: '{{ path("Page_Cookie") }}',
+					language: 'fr'
+				});
+			});
+		</script>
+		
+		{% block header_plus %}{% endblock %}
+		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
+	</head>
+	<body>
+		<div id="header_print" class="invisible">
+			<p class="center"><span id="main_logo_text">Activité-Paranormale</span></p>
+			<hr>
+		</div>
+		<div id="templatemo_container_wrapper">
+			<div id="templatemo_container">
+				<div id="templatemo_banner">
+					<div id="site_title">
+						{% if is_mobile() == false %}
+							{{ render(controller('App\\Controller\\LogoController::displayLogoAction')) }}
+						{% endif %}
+
+						<h1><a href="{{ path('Index_Index') }}" title="index">Activité-Paranormale</a></h1>
+						<div id="flag">
+						<p><span><a href="{{ path('Index_SelectLanguage', {'lang':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/frenchFlag.png') }}" alt="fr" /></a></span>
+						<span><a href="{{ path('Index_SelectLanguage', {'lang':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/englishFlag.png') }}" alt="en" /></a></span>
+						<span><a href="{{ path('Index_SelectLanguage', {'lang':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/spanishFlag.png') }}" alt="es" /></a></span></p>
+						</div>
+					</div>
+					<div id="templatemo_menu">
+						<ul>
+							<li><a class="{{ 'index'|linkfollow(app.request.attributes.get('_route')) }}" href="{{ path('Index_Index') }}">{{ "index.mainMenu.Welcome"|trans([], "validators") }}</a></li>
+							<li><a class="{{ 'news'|linkfollow(app.request.attributes.get('_route')) }}" href="{{ url('News_Index', {'page' : 1 }) }}">{{ "index.mainMenu.New"|trans([], "validators") }}</a></li>
+							<li><a class="{{ 'witchcraft'|linkfollow(app.request.attributes.get('_route')) }}" href="{{ path('Witchcraft_Index') }}">{{ "index.mainMenu.Witchcraft"|trans([], "validators") }}</a></li>
+							<li><a class="{{ 'blog'|linkfollow(app.request.attributes.get('_route')) }}" href="{{ path('Blog_Index', {'page':'1' }) }}">{{ "index.mainMenu.Blog"|trans([], "validators") }}</a></li>
+							<li><a class="{{ 'store'|linkfollow(app.request.attributes.get('_route')) }}" href="{{ path('Store_Index') }}">{{ "index.mainMenu.Store"|trans([], "validators") }}</a></li>
+						</ul>
+					</div>
+				</div>
+				<div id="templatemo_content">
+					<div id="side_column">
+						<div class="side_column_box">
+							<h2>
+								<span class="icone">
+									<img src="{{ asset('extended/photo/horror.png') }}" width="30" class="mt-1" alt="Red devil"/>
+								</span>{{ "index.leftMenu.Information"|trans([], "validators") }}
+							</h2>
+							<div class="side_column_box_content">
+								<div class="news_section">
+									<div>
+										<h3 class="cursor-pointer" data-toggle="collapse" data-target="#collapseAccountMenu" aria-expanded="false" aria-controls="collapseAccountMenu">
+										{% if (app.user.lastlogin is defined) and (is_granted("IS_AUTHENTICATED_FULLY")) %}
+											{{ "index.leftMenu.Account"|trans([], "validators") }}
+										{% else %}
+											{{ "index.leftMenu.CreateAccount"|trans([], "validators") }}
+										{% endif %}
+										</h3>
+										<div id="collapseAccountMenu" class="collapse">
+											<ul class="menuRightUL">
+												{% if (app.user.lastlogin is defined) and (is_granted("IS_AUTHENTICATED_FULLY")) %}
+													{% if app.user.lastlogin != "" %}
+														<li class="menuRightLI"><a class="sideMenu" href="{{ path('Profile_Show') }}">{{ "index.leftMenu.YourAccount"|trans([], "validators") }}</a></li>
+														<li class="menuRightLI"><a class="sideMenu" href="{{ path('apuser_edit') }}">{{ "index.leftMenu.ModifyAccount"|trans([], "validators") }}</a></li>
+														<li class="menuRightLI"><a class="sideMenu" href="{{ path('Profile_Change_Password') }}">{{ "index.leftMenu.ModifyPassword"|trans([], "validators") }}</a></li>
+														<li class="menuRightLI"><a href="{{ path('Security_Logout') }}">{{ "index.leftMenu.Logout"|trans([], "validators") }}</a></li>
+													{% else %}
+														<li class="menuRightLI"><a class="sideMenu" href="{{ path('Security_Login') }}">{{ "index.leftMenu.Login"|trans([], "validators") }}</a></li>
+														<li class="menuRightLI"><a class="sideMenu" href="{{ path('Registration_Register') }}">{{ "index.leftMenu.CreateAccount"|trans([], "validators") }}</a></li>
+													{% endif %}
+												{% else %}
+													<li class="menuRightLI"><a class="sideMenu" href="{{ path('Security_Login') }}">{{ "index.leftMenu.Login"|trans([], "validators") }}</a></li>
+													<li class="menuRightLI"><a class="sideMenu" href="{{ path('Registration_Register') }}">{{ "index.leftMenu.CreateAccount"|trans([], "validators") }}</a></li>
+												{% endif %}
+												{% if app.user.lastlogin is defined and is_granted('ROLE_ADMIN') %}
+													<li class="menuRightLI"><a class="sideMenu" href="{{ path('Admin_Index') }}">{{ "index.leftMenu.Management"|trans([], "validators") }}</a></li>
+												{% endif %}
+											</ul>
+										</div>
+									</div>
+									<h3>{{ "index.leftMenu.Section"|trans([], "validators") }}</h3>
+									<ul class="menuRightUL">
+										<li class="menuRightLI"><a href="{{ path('Archive_Index') }}">{{ "index.leftMenu.Archive"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\ArchiveController::nbrArchiveAction', {'lang' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('News_World') }}">{{ "index.leftMenu.World"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\NewsController::countWorldNewsAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Biography_Index') }}">{{ "index.leftMenu.Biography"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\BiographyController::countAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Cartography_Index') }}">{{ "index.leftMenu.Cartography"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\CartographyController::nbrGMapByLangAction', { 'lang' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Quotation_ListQuotation') }}" title="All quotations">{{ "index.leftMenu.Quotation"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\QuotationController::countQuotationAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Document_Index') }}">{{ "index.leftMenu.Document"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\DocumentController::countDocumentAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\MovieController::countAction', {'language' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Book_Index') }}">{{ "index.leftMenu.Book"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\BookController::countAction', {'language' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a class="sideMenu" href="{{ path('apadminuser_listUser') }}">{{ "index.leftMenu.Members"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\UserController:countUserAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Music_Index') }}">{{ "index.leftMenu.Music"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\MusicController::countMusiqueAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Photo_Index') }}">{{ "index.leftMenu.Photo"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\PhotoController::nbrPictureAction', { 'lang' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\TelevisionSerieController::countAction', { 'language' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Testimony_Index') }}">{{ "index.leftMenu.Testimony"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\TestimonyController:countAllTestimoniesAction')) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Theme_Index') }}">{{ "index.leftMenu.Theme"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\ThemeController::countThemeByLangAction', { 'lang' : app.request.locale })) }}</span></li>
+										<li class="menuRightLI"><a href="{{ path('Video_Index') }}">{{ "index.leftMenu.Video"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\VideoController::countVideoAction', {'lang' : app.request.locale })) }}</span></li>
+									</ul>
+									<h3>{{ "index.leftMenu.Participate"|trans([], "validators") }}</h3>
+									<ul class="menuRightUL">
+										<li class="menuRightLI"><a href="{{ path('News_New') }}" title="News">{{ "index.leftMenu.AddNews"|trans([], "validators") }}</a></li>
+										<li class="menuRightLI"><a href="{{ path('EventMessage_New') }}" title="Event">{{ "index.leftMenu.AddEvent"|trans([], "validators") }}</a></li>
+										<li class="menuRightLI"><a href="{{ path('Witchcraft_New') }}" title="Testimony">{{ "index.leftMenu.AddRitual"|trans([], "validators") }}</a></li>
+										<li class="menuRightLI"><a href="{{ path('Testimony_New') }}" title="Testimony">{{ "index.leftMenu.Testify"|trans([], "validators") }}</a></li>
+										{#<li class="menuRightLI"><a href="{{ path('Contact_OfferLink') }}" title="Offer link">{{ "index.leftMenu.OfferLink"|trans([], "validators") }}</a></li>#}
+									</ul>								
+								</div>
+								<div id="publicity_right_menu" class="news_section">
+									<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
+									<script>
+										google_ad_client = "ca-pub-1951906303386196";
+										google_ad_slot = "0150773125";
+										google_ad_width = 200;
+										google_ad_height = 200;
+									</script>
+									<!-- AP_Menu -->
+									<script
+									src="//pagead2.googlesyndication.com/pagead/show_ads.js">
+									</script>
+								</div>
+								<div class="news_section">
+									<h3>{{ "index.leftMenu.Partner"|trans([], "validators") }}</h3>
+									<ul>
+										<li><a href="https://muse.wakonda.guru" target="_blank">Muse</a></li>
+										<li><a href="https://classifiedads.activite-paranormale.com/" target="_blank">{{ "index.leftMenu.ClassifiedAds"|trans([], "validators") }}</a></li>
+									</ul>
+								</div>
+								<div id="search_right_menu" class="news_section">
+									<h3>{{ "index.leftMenu.Search"|trans([], "validators") }}</h3>
+									<form name="ap_search_searchenginetype" action="{{ path('Search_Query') }}" method="post">
+										<div class="input-group mb-3">
+											<input type="text" name="ap_search_searchenginetype[query]" value="" placeholder="{{ 'index.leftMenu.Search'|trans([], 'validators') }}" />
+											<div class="input-group-append">
+												<button type="submit" name="Search" title="Search" class="submitcomment bouton border-0"><i class="fas fa-search"></i></button>
+											</div>
+										</div>
+									</form>
+								</div>
+								<div id="donate_right_menu" class="news_section">
+									<h3>{{ "index.leftMenu.HelpUs"|trans([], "validators") }}</h3>
+									<div class="text-center">
+									{% if app.request.locale == "fr" %}
+										<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+										<input type="hidden" name="cmd" value="_s-xclick" />
+										<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+										" />
+										<input type="image" src="https://www.paypalobjects.com/fr_FR/FR/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal - la solution de paiement en ligne la plus simple et la plus sécurisée !" />
+										<img alt="" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+										</form>
+									{% elseif app.request.locale == "en" %}
+										<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+										<input type="hidden" name="cmd" value="_s-xclick" />
+										<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+										" />
+										<input type="image" src="https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal - The safer, easier way to pay online!" />
+										<img alt="" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+										</form>
+									{% elseif app.request.locale == "es" %}
+										<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+										<input type="hidden" name="cmd" value="_s-xclick" />
+										<input type="hidden" name="encrypted" value="-----BEGIN PKCS7-----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-----END PKCS7-----
+										" />
+										<input type="image" src="https://www.paypalobjects.com/es_ES/ES/i/btn/btn_donateCC_LG.gif" name="submit" alt="PayPal. La forma rápida y segura de pagar en Internet." />
+										<img alt="" src="https://www.paypalobjects.com/fr_FR/i/scr/pixel.gif" width="1" height="1" />
+										</form>
+									{% endif %}
+										<div class="mt-1">
+										<a href="https://wakonda.guru/help_us#make-donation" target="_blank" class="btn btn-warning mb-3"><i class="fab fa-bitcoin" aria-hidden="true"></i> Bitcoin</a>
+										</div>
+									</div>
+								</div>
+								{% if is_mobile() == false %}
+									<div class="news_section">
+										<h3>{{ "index.leftMenu.Visitors"|trans([], "validators") }}</h3>
+										<script src="//ri.revolvermaps.com/0/0/6.js?i=9mxbzahlca0&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;f=times_new_roman&amp;l=0" async="async"></script>
+									</div>
+								{% endif %}
+								<div id="quotation_right_menu" class="news_section">
+									<h3>{{ "index.leftMenu.Quotations"|trans([], "validators") }}</h3>
+									<img class="image_wrapper" src="{{ asset('extended/photo/quotation-random.jpg') }}" alt="Random quotation" width="200" />
+									{{ render(controller('App\\Controller\\QuotationController::randomQuoteAction')) }}
+								</div>
+								<div id="feedrss_right_menu" class="news_section">
+									<h3>{{ "rssFeed.menu.RSSFeeds"|trans([], "validators") }}</h3>
+									<p><img width="25" class="align-middle" src="{{ asset('extended/photo/feedrss_index.png') }}" alt="Feed RSS" /> <a href="{{ path('Page_IndexRSSFeed') }}">{{ "rssFeed.menu.SubscribeToRSSFeeds"|trans([], "validators") }}</a></p>
+								</div>
+								<div id="event_right_menu" class="news_section">
+									<h3>{{ "eventMessage.menu.Events"|trans([], "validators") }}</h3>
+									<p><img width="25" class="align-middle" src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="Event" /> <a href="{{ path('EventMessage_Calendar') }}">{{ "eventMessage.menu.Calendar"|trans([], "validators") }}</a></p>
+								</div>
+								<div id="validate_right_menu" class="news_section">
+									<h3>{{ "index.leftMenu.Validation"|trans([], "validators") }}</h3>
+									<p>
+										<a href="https://validator.w3.org/check?uri={{ app.request.uri }}"><img
+										src="https://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" /></a>
+
+										<a href="https://jigsaw.w3.org/css-validator/validator?uri={{ app.request.uri }}">
+										<img style="border:0;width:88px;height:31px"
+										src="https://jigsaw.w3.org/css-validator/images/vcss"
+										alt="Valid CSS!" />
+										</a>
+									</p>
+								</div>
+								<div class="button_01"><a href="{{ path('WebDirectory_Index') }}">{{ "index.leftMenu.More"|trans([], "validators") }}</a></div>
+							</div>
+							<div class="bottom"></div>
+						</div>
+						<div class="side_column_box">
+							<h2><span class="float-left"><img src="{{ asset('extended/photo/crystal_ball.png') }}" width="25" class="mt-1" alt="Crystal ball"/></span>{{ "index.leftMenu.Horoscope"|trans([], "validators") }}</h2>
+							<div class="side_column_box_content">
+								<script>
+									$(function (){
+										$(".horoscope_iframe").attr('marginwidth', '0');
+										$(".horoscope_iframe").attr('marginheight', '0');
+										$(".horoscope_iframe").attr('frameborder', '0');
+										$(".horoscope_iframe").attr('border', '0');
+									});
+								</script>
+								{% if app.request.locale == 'fr' %}
+									<div style="width:200px;text-align:right;line-height:11px;">
+									<iframe class="horoscope_iframe" src="https://signes.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
+									 width="200" height="250" style="border:0; margin:0; padding:0;"></iframe>
+									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://signes.horoscope999.com/">Horoscope</a> &nbsp;</div>
+									</div>
+								{% elseif app.request.locale == 'en' %}
+									<div style="width:200px;text-align:right;line-height:11px;">
+									<iframe class="horoscope_iframe" src="https://horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
+									width="200" height="250" style="border:0;margin:0;padding:0;"></iframe>
+									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscope999.com/">Horoscopes</a> &nbsp;</div></div>
+								{% else %}
+									<div style="width:200px;text-align:right;line-height:11px;">
+									<iframe class="horoscope_iframe" src="https://horoscopo.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
+									width="200" height="250" style="border:0;margin:0;padding:0;"></iframe>
+									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscopo.horoscope999.com/">Horoscopo</a> &nbsp;</div></div>
+								{% endif %}
+							</div>
+							<div class="bottom"></div>
+						</div>
+						<div id="twitter_right_menu" class="side_column_box">
+							<h2><span class="icone"><img src="{{ asset('extended/photo/twitter_bird.png') }}" width="25" class="mt-1" alt="Blue bird - Twitter"/></span>{{ "index.leftMenu.FollowUsOn"|trans([], "validators") }}</h2>
+							<div class="side_column_box_content">
+								{% include 'index/FollowUs/widgetMenu.html.twig' %}
+							</div>
+							<div class="bottom"></div>
+						</div>
+					</div>
+					<div id="main_column">
+						<div class="main_column_section">
+							{% block content %}
+								{% block h2_title %}{% endblock %}
+							{% endblock %}
+							<div class="cleaner"></div>
+							<div class="bottom"></div>
+						</div>
+
+						{% block sub_content %}
+						{% endblock %}
+						<div class="cleaner"></div>
+					</div>
+					<div class="cleaner"></div>
+				</div>
+
+				<div id="templatemo_footer">
+					<div id="templatemo_footer_bar">
+						<ul class="footer_menu">
+							{% if is_mobile() == false %}
+								<li><a href="{{ path('Partner_Index', {'page':1}) }}" title="Follow us">{{ "index.footerMenu.FollowUs"|trans([], "validators") }}</a></li>
+							{% endif %}
+							{% if app.request.locale == "fr" %}
+								<li><a href="//forum-fr.activite-paranormale.com/" title="Forum">Forum</a></li>
+							{% elseif app.request.locale == "es" %}
+								<li><a href="//forum-es.activite-paranormale.com/" title="Forum">Forum</a></li>
+							{% else %}
+								<li><a href="//forum-en.activite-paranormale.com/" title="Forum">Forum</a></li>
+							{% endif %}
+
+							<li><a href="{{ path('Page_PrivacyPolicy') }}" title="About">{{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a></li>
+							<li><a href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></li>
+							<li><a href="{{ path('Contact_Index') }}">{{ "index.footerMenu.Contact"|trans([], "validators") }}</a></li>
+							<li class="last_menu"><a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" title="{{ "index.footerMenu.MobileView"|trans([], "validators") }}">{{ "index.footerMenu.MobileView"|trans([], "validators") }}</a></li>
+						</ul>
+						Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }} <a href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a> | <a href="{{ path('Page_About') }}" title="About">{{ "index.footerMenu.About"|trans([], "validators") }}</a> | <a href="{{ path('WebDirectorySEO_Index', {'page':1}) }}" title="SEO directory">{{ "index.footerMenu.Directory"|trans([], "validators") }}</a> | <a href="https://wakonda.guru" target="_parent">Wakonda.Guru</a> by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

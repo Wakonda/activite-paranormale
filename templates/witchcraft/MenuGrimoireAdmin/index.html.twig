@@ -1,0 +1,22 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.MagicBookMenu"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('MenuGrimoire_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('MenuGrimoire_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th>Id</th>
+	<th>{{ "magicbookmenu.admin.Title"|trans([], "validators") }}</th>
+	<th>{{ "magicbookmenu.admin.Picture"|trans([], "validators") }}</th>
+	<th>{{ "magicbookmenu.admin.Language"|trans([], "validators") }}</th>
+	<th>{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th>Id</th>
+	<th>{{ "magicbookmenu.admin.Title"|trans([], "validators") }}</th>
+	<th>{{ "magicbookmenu.admin.Picture"|trans([], "validators") }}</th>
+	<th>{{ "magicbookmenu.admin.Language"|trans([], "validators") }}</th>
+	<th>{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

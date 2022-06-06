@@ -1,0 +1,9 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    form_themes:
+        - 'index/Form/fields.html.twig'
+        - '@TetranzSelect2Entity/Form/fields.html.twig'
+    globals:
+        total_line_display: "%env(TOTAL_LINE_DISPLAY)%"

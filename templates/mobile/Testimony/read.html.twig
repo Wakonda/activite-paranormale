@@ -1,0 +1,48 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block page_title%}{{ entity.title }}{% endblock %}
+
+{% block meta_plus %}
+	<link rel="canonical" href="{{ url('Testimony_Show', {'id' : entity.id, 'title_slug' : entity.getUrlSlug()}) }}">
+{% endblock %}
+
+{% block body_content %}
+	<div class="read-content">
+		{% if files|length > 0 %}
+			<div id="carousel-testimony" class="carousel slide" data-ride="carousel">
+				<div class="carousel-inner" role="listbox">
+					{% set i = 0 %}
+					{% for file in files %}
+						{% if file.extensionFile|is_image %}
+							{% set i = i + 1 %}
+							<div class="carousel-item {{ i == 1 ? 'active' : '' }}">
+								{{ file.realNameFile|imgsize(550, 'extended/photo/testimony/')|raw }}
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
+				<a class="text-left carousel-control-prev" href="#carousel-testimony" role="button" data-slide="prev">
+					<i class="fas fa-chevron-left" aria-hidden="true"></i>
+					<span class="sr-only">Previous</span>
+				</a>
+				<a class="text-right carousel-control-next" href="#carousel-testimony" role="button" data-slide="next">
+					<i class="fas fa-chevron-right" aria-hidden="true"></i>
+					<span class="sr-only">Next</span>
+				</a>
+			</div>
+			<hr>
+		{% endif %}
+		<div>{{ entity.text|raw }}</div>
+		<br>
+		<hr class="hr2">
+		<p class="mt-7"><i class="fas fa-dragon"></i> <a href="{{ path('ap_testimonymobile_index', {page: 1, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }} - <i class="fas fa-user"></i> {{ entity.pseudoUsed }} - <img class="align-middle d-inline" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></p>
+	</div>
+	
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+	<br>
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+{% endblock %}

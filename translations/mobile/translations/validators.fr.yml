@@ -1,0 +1,27 @@
+mobile:
+    main:
+        News: "Actualité"
+        Video: "Vidéo"
+        Photo: "Photo"
+        Testimony: "Témoignage"
+        Witchcraft: "Sorcellerie"
+        Search: "Rechercher"
+        Desktop: "Désactiver la version mobile"
+        Older: "Précédent"
+        Newer: "Suivant"
+        Contribute: "Participer"
+    news:
+        NoNews: "Aucune actualité"
+    video:
+        AllVideos: "Toutes les vidéos"
+        NoVideo: "Aucune vidéo"
+    photo:
+        AllPhotos: "Toutes les photos"
+        NoPhoto: "Aucune photo"
+    testimony:
+        AllTestimonials: "Tous les témoignages"
+        NoTestimony: "Aucun témoignage"
+        Testify: "Témoigner"
+    witchcraft:
+        AllRituals: "Tous les rituels"
+        NoRitual: "Aucun rituel"

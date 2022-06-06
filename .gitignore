@@ -1,0 +1,62 @@
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/.env
+/yarn.lock
+/composer.lock
+/symfony.lock
+/package-lock.json
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+###< symfony/framework-bundle ###
+
+###> symfony/webpack-encore-bundle ###
+/node_modules/
+/public/build/
+npm-debug.log
+yarn-error.log
+###< symfony/webpack-encore-bundle ###
+
+# PHPUnit
+/phpunit.xml.dist
+
+# Photo
+/public/extended/photo/album/*
+/public/extended/photo/banner/*
+/public/extended/photo/biography/*
+/public/extended/photo/blog/*
+/public/extended/photo/book/*
+/public/extended/photo/bookedition/*
+/public/extended/photo/cartography/*
+/public/extended/photo/country/*
+/public/extended/photo/document/*
+/public/extended/photo/eventMessage/*
+/public/extended/photo/language/*
+/public/extended/photo/licence/*
+/public/extended/photo/movie/*
+/public/extended/photo/music/*
+/public/extended/photo/news/*
+/public/extended/photo/page/*
+/public/extended/photo/partner/*
+/public/extended/photo/photo/*
+/public/extended/photo/quotation/*
+/public/extended/photo/special_theme_photo/*
+/public/extended/photo/state/*
+/public/extended/photo/store/*
+/public/extended/photo/tag/*
+/public/extended/photo/testimony/*
+/public/extended/photo/theme/*
+/public/extended/photo/user/*
+/public/extended/photo/video/*
+/public/extended/photo/webdirectory/*
+/public/extended/photo/witchcraft/*
+/public/extended/photo/witchcrafttools/*
+
+/public/extended/user/*
+/public/extended/witchcraft/grimoire/*
+/public/extended/witchcraft/menugrimoire/*
+/public/extended/witchcraft/surTheme/*
+/private/*

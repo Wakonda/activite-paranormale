@@ -1,0 +1,23 @@
+comment:
+    index:
+        Comment: "Comment"
+        Comments: "Comments"
+    edit:
+        Pseudo: "Pseudo"
+        MailDisplay: "Email (Optional: it will not be displayed)"
+        Comment: "Comment"
+        LoggedAs: "You are logged in as "
+        Validate: "Validate"
+    error:
+        NotBlank: "This field could not be empty"
+        Email: "This value is not a valid email address"
+    admin:
+        Approved: "Approved"
+        Denied: "Denied"
+        NotChecked: "Not checked"
+        Author: "Author"
+        Email: "Email"
+        Date: "Date"
+        State: "State"
+        Message: "Message"
+        Link: "Link"

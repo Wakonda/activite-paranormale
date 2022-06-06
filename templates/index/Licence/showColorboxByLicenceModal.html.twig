@@ -1,0 +1,27 @@
+{% if entity.licence is not null %}
+	<script>
+		$(function() {
+			$('#showColorboxByLicenceModal').on('show.bs.modal', function (e) {
+				$(this).find('.modal-body').load("{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}");
+			});
+		});
+	</script>
+
+	<div class="modal fade black_modal" id="showColorboxByLicenceModal" tabindex="-1" role="dialog" aria-labelledby="showColorboxByLicenceLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header text-center">
+					<h4 class="modal-title w-100" id="showColorboxByLicenceLabel">{{ "licence.showColorboxByLicence.License"|trans([], "validators") }}</h4>
+				</div>
+				<div class="modal-body">
+					<div class="text-center">
+						<i class="fas fa-spinner fa-pulse"></i>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}

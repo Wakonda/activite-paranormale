@@ -1,0 +1,19 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.language.vars.id }}").change(function()
+	{
+		$.ajax({
+			type: "POST",
+			url: "{{ path('Biography_Admin_ReloadByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var country = data.country;
+				$("#{{ form.nationality.vars.id }} option").remove();
+				$.each(country, function(index, element)
+				{
+					$("#{{ form.nationality.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+			}
+		});
+	});
+{% endmacro %}

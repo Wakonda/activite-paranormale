@@ -1,0 +1,79 @@
+<table id="social_network">
+	<tr>
+		{% if entity.getPdfVersionRoute() is defined %}
+		<td class="reseauSociaux d-none d-sm-inline">
+			<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select" /></a>
+		</td>
+		{% endif %}
+		<td class="reseauSociaux d-none d-sm-inline">
+			<span id="print_page" class="social_network_to_select"><img src="{{ asset('extended/photo/print.svg') }}" width="40" alt="Print version" /></span>
+			<script>
+				document.getElementById("print_page").addEventListener("click", (e) => {
+					window.print();
+				});
+			</script>
+		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share facebook share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Facebook"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share twitter share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Twitter"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share whatsapp share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="WhatsApp"><i class="fab fa-whatsapp fa-lg fa-fw"></i></a>
+		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share linkedin share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="LinkedIn"><i class="fab fa-linkedin-in fa-lg fa-fw"></i></a>
+		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share flipboard share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Flipboard"><i class="fab fa-flipboard fa-lg fa-fw"></i></a>
+		</td>
+	</tr>
+</table>
+
+<script>
+	function socialWindow(url) {
+		var left = (screen.width - 570) / 2;
+		var top = (screen.height - 570) / 2;
+		var params = "menubar=no,toolbar=no,status=no,width=570,height=570,top=" + top + ",left=" + left;
+		window.open(url,"NewWindow",params);
+	}
+
+	var pageUrl = encodeURIComponent(document.URL);
+	var title = encodeURIComponent(document.querySelector("title").innerHTML);
+
+	document.querySelector(".share-data.facebook").addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		url = "https://www.facebook.com/sharer.php?u=" + pageUrl;
+		socialWindow(url);
+	});
+	
+	document.querySelector(".share-data.twitter").addEventListener("click", (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		url = "https://twitter.com/intent/tweet?url=" + pageUrl + "&text=" + title;
+		socialWindow(url);
+	});
+
+	document.querySelector(".share-data.linkedin").addEventListener("click", (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		url = "https://www.linkedin.com/shareArticle?mini=true&url=" + pageUrl;
+		socialWindow(url);
+	});
+
+	document.querySelector(".share-data.whatsapp").addEventListener("click", (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		url = "https://wa.me/?text=" + title + " " + pageUrl;
+		socialWindow(url);
+	});
+
+	document.querySelector(".share-data.flipboard").addEventListener("click", (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		url = "https://share.flipboard.com/bookmarklet/popout?v=2&title=" + title + "&url=" + pageUrl;
+		socialWindow(url);
+	});
+</script>

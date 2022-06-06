@@ -1,0 +1,27 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}AP - {{ status_code }}{% endblock %}
+{% block h2_title %}
+	<h2>
+		<span class="float-left"><img src="{{ asset('extended/photo/error404.png') }}" width="25" class="mt-1" alt="Error"/></span>{{ "error.exception.Error"|trans([], "validators") }} {{ status_code }}
+	</h2>
+{% endblock h2_title %}
+
+{% block meta_plus %}
+	<meta name="robots" content="noindex">
+{% endblock %}
+
+{% block APBlog_body %}
+	<p><img src="{{ asset('extended/photo/error404.jpg') }}" class="mx-auto d-block img-fluid" alt="Error"/></p>
+	<br>
+	<div class="alert alert-danger">{{ status_text|trans([], "validators") }}</div>
+	{% if app.user.lastlogin is defined and is_granted('ROLE_ADMIN') %}
+	<hr>
+	<div class="error">
+		<p>{{ ("error.exception."~exception.message)|trans([], "validators") }}</p>
+	</div>
+	<br>
+	{% endif %}
+	<hr class="hr2">
+	<p class="text-center">{{ "google"|advertisement|raw }}</p>
+{% endblock %}

@@ -1,0 +1,7 @@
+usefullink:
+    admin:
+        UsefulLink: "Useful Link"
+        Title: "Título"
+        Text: "Texto"
+        Link: "Link útil"
+        GenerateLinkProduct: "Generar enlace de producto"

@@ -1,0 +1,8 @@
+{% extends "index/Generic/world.html.twig" %}
+
+{% block title %}{{ "photo.world.WorldPhoto"|trans([], "validators") }}{% endblock %}
+
+{% block world_datatables %}{{ path('Photo_WorldDatatables', { 'language' : app.request.attributes.get('language') }) }}{% endblock %}
+
+{% block world_flag %}Photo_World{% endblock %}
+{% block select_theme_for_index_world %}Photo_SelectThemeForIndexWorld{% endblock %}

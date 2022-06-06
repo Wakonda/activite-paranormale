@@ -1,0 +1,57 @@
+Quotation_Admin_Index:
+    path:  /{page}
+    controller: App\Controller\QuotationAdminController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+Quotation_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\QuotationAdminController::showAction
+
+Quotation_Admin_New:
+    path:  /new
+    controller: App\Controller\QuotationAdminController::newAction
+
+Quotation_Admin_Create:
+    path:  /create
+    controller: App\Controller\QuotationAdminController::createAction
+    requirements:
+        _method: post
+
+Quotation_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\QuotationAdminController::editAction
+
+Quotation_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\QuotationAdminController::updateAction
+    requirements:
+        _method: post
+
+Quotation_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\QuotationAdminController::deleteAction
+
+Quotation_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\QuotationAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Quotation_Admin_WYSIWYG_UploadFile:
+    path: /wysiwyg_uploadfile
+    controller: App\Controller\QuotationAdminController::QuotationAdminController::WYSIWYGUploadFileAction
+
+Quotation_Admin_CreateSameAuthor:
+    path: /create_same_author/{biographyId}
+    controller: App\Controller\QuotationAdminController::createSameAuthorAction
+
+Quotation_Admin_GenerateImage:
+    path: /generate_image/{id}
+    controller: App\Controller\QuotationAdminController::generateImageAction
+
+Quotation_Admin_RemoveImage:
+    path: /remove_image/{id}/{quotationImageId}
+    controller: App\Controller\QuotationAdminController::removeImageAction

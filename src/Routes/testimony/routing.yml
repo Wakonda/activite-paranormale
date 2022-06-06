@@ -1,0 +1,60 @@
+Testimony_Index:
+    path:  /testimony
+    controller: App\Controller\TestimonyController::indexAction
+
+Testimony_New:
+    path:  /testimony/new
+    controller: App\Controller\TestimonyController::newAction
+
+Testimony_Create:
+    path:  /testimony/create
+    controller: App\Controller\TestimonyController::createAction
+
+Testimony_Postcreate:
+    path:  /testimony/postcreate/{draft}/{preview}/{id}
+    controller: App\Controller\TestimonyController::postCreateAction
+    defaults:
+        draft: 0
+        preview: 0
+        id: 0
+
+Testimony_AddFile:
+    path:  /testimony/file/{id}
+    controller: App\Controller\TestimonyController::addFileAction
+
+Testimony_Show:
+    path:  /testimony/show/{id}/{title_slug}
+    controller: App\Controller\TestimonyController::showAction
+    defaults:
+        title_slug: null
+
+Testimony_Edit:
+    path: /testimony/edit/{id}
+    controller: App\Controller\TestimonyController::editAction
+
+Testimony_Update:
+    path: /testimony/update/{id}
+    controller: App\Controller\TestimonyController::createAction
+
+Testimony_Waiting:
+    path: /testimony/waiting/{id}
+    controller: App\Controller\TestimonyController::waitingAction
+
+Testimony_Validate:
+    path: /testimony/validate/{id}
+    controller: App\Controller\TestimonyController::validateAction
+
+Testimony_Tab:
+    path:  /testimony/tab/{id}/{theme}
+    controller: App\Controller\TestimonyController::tabAction
+    requirements:
+        theme: ".+"
+
+Testimony_Pdfversion:
+    path: /testimony/pdfversion/{id}
+    controller: App\Controller\TestimonyController::pdfVersionAction
+
+# Administration
+Testimony_Admin:
+    resource: "routing/testimonyadmin.yml"
+    prefix:   /admin/testimony

@@ -1,0 +1,11 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.State"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('State_Admin_Index') }}{% endblock %}
+
+{% block create_admin_route %}{{ path('State_Admin_Create') }}{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'index/StateAdmin/_form.html.twig' %}
+{% endblock %}

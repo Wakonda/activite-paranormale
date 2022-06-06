@@ -1,0 +1,36 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "index.archive.Archive"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "index.archive.Archive"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block header_plus %}
+{% endblock %}
+{% block APBlog_body %}
+	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/archive_index.jpg') }}" width="550" alt="Strange dream" /></p>
+	<hr>
+
+	{% if is_granted('ROLE_ARCHIVIST') == false %}
+		{{ ("index.archive.Unauthorized"|trans({"%urlAccount%": path("Registration_Register"), "%urlContact%": path("Contact_Index")}, "validators"))|raw }}
+	{% else %}
+		{{ "index.archive.DocArchive"|trans([], "validators") }}<span class="badge badge-danger">{{ total }}</span>
+		<hr>
+		<a href="{{ path('Archive_Index', {'language': 'all'}) }}" title="World"><img class="flagLang {% if app.request.attributes.get('language') == 'all' %}select_language_language{% endif %}" src="{{ asset('extended/photo/language/earthFlag.png') }}" alt="World earth" width="20" height="13" /></a>
+		{% for flag in languages %}
+			<a href="{{ path('Archive_Index', {'language': flag.abbreviation}) }}" title="{{ flag.title }}"><img {% if flag.abbreviation == currentLanguage.abbreviation %}class="select_language_language"{% endif %} src="{{ asset(flag.getAssetImagePath()) }}{{ flag.logo }}" alt="{{ flag.abbreviation }}" width="20" height="13" /></a>
+		{% endfor %}
+		<hr>
+		<table class="table table-bordered">
+			<tr class="trGene">
+				<th class="label_form">{{ "index.archive.Section"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "index.archive.Number"|trans([], "validators") }}</th>
+			</tr>
+			{% for data in datas %}
+				<tr>
+					<td class="td_form_table"><a href="{{ path(data.path, {className: data.className, language: currentLanguage.abbreviation}) }}" >{{ data.canonicalName }}</a></td>
+					<td class="tdGene"><span class="badge badge-info">{{ data.count }}</span></td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

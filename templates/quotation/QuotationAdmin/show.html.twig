@@ -1,0 +1,58 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Quotation"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Quotation_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Quotation_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Quotation_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Quotation_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block additional_new_entry %}
+	<li class="nav-item dropdown">
+	<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="far fa-address-book" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}...</a>
+		<div class="dropdown-menu">
+			<a class="dropdown-item" href="{{ path('Quotation_Admin_CreateSameAuthor', {'biographyId': entity.authorQuotation.id}) }}">{{ "quotation.admin.ForSameAuthor"|trans([], "validators") }}</a>
+		</div>
+	</li>
+{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Author"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><a href="{{ path('Biography_Admin_Show', {id: entity.authorQuotation.id}) }}" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: entity.authorQuotation.id}) }}" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> {{ entity.authorQuotation.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Quotation"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.textQuotation|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Explanation"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.explanation|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Source"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Images"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+	{% if entity.images is not empty %}
+		{% for imageEntity in entity.images %}
+			<div>
+				{{ imageEntity.image|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+				&nbsp;
+				<a class="btn btn-danger" href="{{ path('Quotation_Admin_RemoveImage', {'id': entity.id, 'quotationImageId': imageEntity.id}) }}"><i class="fas fa-trash" aria-hidden="true"></i></a>
+			</div>
+			<br>
+		{% endfor %}
+	{% endif %}
+	</div>
+
+	<a href="{{ path('Quotation_ReadQuotation', { 'id' : entity.id }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+{% endblock %}
+
+{% block data_bottom %}
+	{% import "quotation/QuotationAdmin/macro_quotation.html.twig" as macro_quotation %}
+	{{ macro_quotation.generate_image_quotation_form(entity, imageGeneratorForm) }}
+{% endblock %}

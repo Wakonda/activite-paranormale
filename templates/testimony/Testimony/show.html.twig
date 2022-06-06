@@ -1,0 +1,53 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block meta_plus %}
+	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_testimonymobile_read', {'id' : entity.id}) }}">
+{% endblock %}
+
+{% block header_plus %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p>{{ entity.text|raw }}</p>
+	<br>
+	{{ render(controller("App\\Controller\\FileManagementController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+	<hr class="hr2">
+	<p>
+		<i class="fas fa-dragon"></i> <a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.authorToString }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a> - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" />
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':entity} %}
+	{{ getTagsByEntityForDisplay(entity) }}
+	
+	<div class="hidden_for_print">
+		{% if previousAndNextEntities["previous"] is not empty %}
+			<a href="{{ path('Testimony_Show', {'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].getUrlSlug()})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
+		{% else %}
+			<span class="previous_next_disable_left"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></span>
+		{% endif %}
+
+		{% if previousAndNextEntities["next"] is not empty %}
+			<a class="previous_next_enable_right float-right" href="{{ path('Testimony_Show', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+		{% else %}
+			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+		{% endif %}
+	</div>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+{% endblock %}

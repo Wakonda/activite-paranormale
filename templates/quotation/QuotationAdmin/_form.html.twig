@@ -1,0 +1,18 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "quotation.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.authorQuotation, "quotation.admin.Author"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.authorQuotation) }}{{ form_widget(form.authorQuotation, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.textQuotation, "quotation.admin.Quotation"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.textQuotation) }}{{ form_widget(form.textQuotation, { 'attr': {'class': 'form-control'} }) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.explanation, "quotation.admin.Explanation"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.explanation) }}{{ form_widget(form.explanation) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "quotation.admin.Source"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control textarea120'} }) }}</div>

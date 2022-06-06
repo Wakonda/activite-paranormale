@@ -1,0 +1,37 @@
+Logo_Admin_Index:
+    path: /
+    controller: App\Controller\LogoAdminController::indexAction
+
+Logo_Admin_Show:
+    path: /{id}/show
+    controller: App\Controller\LogoAdminController::showAction
+
+Logo_Admin_New:
+    path: /new
+    controller: App\Controller\LogoAdminController::newAction
+
+Logo_Admin_Create:
+    path: /create
+    controller: App\Controller\LogoAdminController::createAction
+    requirements:
+        _method: post
+
+Logo_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\LogoAdminController::editAction
+
+Logo_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\LogoAdminController::updateAction
+    requirements:
+        _method: post
+
+Logo_Admin_Delete:
+    path: /{id}/delete
+    controller: App\Controller\LogoAdminController::deleteAction
+
+Logo_Admin_IndexDatatables:
+    path: /datatables
+    controller: App\Controller\LogoAdminController::indexDatatablesAction
+    requirements:
+        _method: get

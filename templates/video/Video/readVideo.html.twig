@@ -1,0 +1,208 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ video.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/spiderman.png') }}" width="25" class="mt-1" alt="Clown"/></span>{{ video.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
+	
+	<script>
+		$(function()
+		{
+			$("#confirm_colorbox").click(function(event)
+			{
+				$('#checkVideo').modal('show');
+				event.preventDefault();
+			});
+			
+			// Video embedded
+			{% if video.mediaVideo is not empty %}
+				var videoTagRef = document.getElementById("video_embedded");
+				var iframe = $($("#embedded_document").val());
+				
+				var default_width = iframe.attr("width");
+				var default_height = iframe.attr("height");
+
+				if(videoTagRef != null)
+				{
+					videoTagRef.addEventListener('loadedmetadata', function(e){
+						iframe.attr('width', videoTagRef.videoWidth);
+						iframe.attr('height', videoTagRef.videoHeight);
+						
+						$("#embedded_document").val(iframe[0].outerHTML);
+					});
+				}
+
+				var clipboard = new Clipboard('.clip_button');
+
+				clipboard.on('success', function(e) {
+					$("#success_copy").addClass("success");
+					$("#success_copy span").html("<div class='alert alert-success text-center'>{{ 'video.read.CodeCopiedWithSuccess'|trans([], 'validators') }}</div>");
+					setTimeout(fade_out, 5000);
+				});
+				
+				$("input.size_embedded").keyup(function(event)
+				{
+					var new_width;
+					var new_height;
+
+					if(isInt($(this).val()))
+					{
+						if($(this).attr("id") == "custom_width")
+						{
+							new_width = $(this).val();
+							new_height = Math.ceil((default_height * new_width) / default_width);
+		
+							$("input#custom_height").val(new_height);
+						}
+						else if($(this).attr("id") == "custom_height")
+						{
+							new_height = $(this).val();
+							new_width = Math.ceil((default_width * new_height) / default_height);
+							
+							$("input#custom_width").val(new_width);
+						}
+
+						iframe.attr('width', new_width); 
+						iframe.attr('height', new_height); 
+					
+						$("#embedded_document").val(iframe[0].outerHTML);
+					}
+				});
+				
+				function isInt(data)
+				{
+					if (data == parseInt(data, 10))
+						return true;
+					else
+						return false;
+				}
+
+				var fade_out = function() {
+					$("#success_copy").removeClass("success");
+					$("#success_copy span").empty();
+				}
+			{% endif %}
+			
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block meta_plus %}
+	<meta property="og:image" content="{{ absolute_url(asset(video.getAssetImagePath()~video.photo)) }}" />
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': video } %}
+	<div class="modal fade black_modal" tabindex="-1" role="dialog" id="checkVideo">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">{{ "video.read.VideoNotAvailableTitle"|trans([], "validators") }}</h5>
+		  </div>
+		  <div class="modal-body">
+			<p class='image'><img src='{{ asset("extended/photo/video/delete/1428237973_video.png") }}' alt='Deleted video' class="mx-auto d-block"/></p><p class='font-weight-bold colored_delete_video text-center'>{{ "video.read.ConfirmationVideoNotAvailable"|trans([], "validators") }}</p>
+		  </div>
+		  <div class="modal-footer">
+			<a href='{{ path('Video_Notify', { 'id' : video.id }) }}' alt='' rel='nofollow' class='confirmation_delete_video mr-auto btn btn-success text-white'>{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}</a>
+			<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
+		  </div>
+		</div>
+	  </div>
+	</div>
+
+	{% for flashMessage in app.session.flashbag.get('notice') %}
+		<div class="alert alert-success text-center">
+			{{ flashMessage }}
+		</div>
+	{% endfor %}
+	
+	{% if video.isAvailable == true %}
+		<div class="text-center">
+			{% if video.mediaVideo is not empty %}
+				<video class="w-100" controls="controls" id="video_embedded">
+					<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~video.mediaVideo) }}" type="video/mp4" />
+				</video>
+			{% else %}
+				<div class="embed-responsive embed-responsive-16by9">
+					{{ video.embeddedCode|raw }}
+				</div>
+			{% endif %}
+		</div>
+	{% else %}
+		<p class="text-center"><img src="{{ asset('extended/photo/video-not-available.png') }}" width="550" /></p>
+		<div class="alert alert-danger text-center"><i class="fas fa-video-slash"></i> {{ "video.read.VideoNotLongerAvailable"|trans([], "validators") }}</div>
+	{% endif %}
+	<div>
+		<p id="media_duration" class="mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" /> {{ (video.duration|string_duration)|default('-') }}</p>
+		<hr>
+		<p>{{ video.text|raw }}</p>
+		
+		{% if video.photo is not empty %}
+			<br>
+			<p class="image">{{ video.photo|imgsize(550, video.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		{% endif %}
+		
+		{% if video.mediaVideo is not empty %}
+			<h3>{{ "video.read.Share"|trans([], "validators") }}</h3>
+			<div id="success_copy"><span></span></div>
+			<textarea id="embedded_document" class="generation bg-light text-muted form-control mb-2" cols="65" rows="4"><iframe src="{{ url('Video_Export', { 'id' : video.id, 'title' : video.title }) }}" width="550" height="309"></iframe></textarea>
+			<span>{{ "video.read.VideoSize"|trans([], "validators") }} </span>
+			<div class="input-group">
+				<input type="integer" id="custom_width" class="size_embedded form-control">
+				<div class="input-group-prepend input-group-append">
+					<span class="input-group-text"><i class="fas fa-times"></i></span>
+				</div>
+				<input type="integer" id="custom_height" class="size_embedded form-control">
+			</div>
+			
+			<button type="button" id="copy-button" class="submitcomment clip_button btn mt-2" data-clipboard-action="copy"data-clipboard-target="#embedded_document" title="Click to copy me.">{{ "video.read.CopyToClipboard"|trans([], "validators") }}</button>
+		{% endif %}
+	</div>
+	<br>
+	<div>
+		<p><i class="fas fa-info-circle text-danger"></i> {{ "video.read.VideoNotAvailable"|trans([], "validators") }} <a href="{# path('Video_Notify', { 'id' : video.id }) #}" alt="" rel="nofollow" id="confirm_colorbox">{{ "video.read.NotifyUs"|trans([], "validators") }}</a>
+	</div>
+	<br>
+	<hr class="hr2">
+	<p>
+		<i class="fas fa-dragon"></i> <a dir="{{ video.language.direction }}" href="{{ path('Theme_Show', {id: video.theme.id, theme: video.theme.title}) }}">{{ video.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ video.writingDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if video.author is not empty and video.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: video.author.id}) }}">{{ video.author }}</a>{% else %}{{ video.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : video.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~video.licence.logo) }}" alt="{{ video.licence.title }}" /></a>
+		{% if is_current_languages(video.language.abbreviation) == false %}
+			- <a href="{{ path('Video_World', {'language' : video.language.abbreviation}) }}"><img src="{{ asset(video.language.getAssetImagePath()) }}{{ video.language.logo }}" class="align-middle" alt="{{ video.language.abbreviation }}" width="20" height="13" /></a>
+		{% endif %}
+		
+		{% include 'index/History/index.html.twig' with { 'entity': video } %}
+	</p>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':video.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':video} %}
+
+	{{ getTagsByEntityForDisplay(video) }}
+
+	<div class="hidden_for_print">
+		{% if previousAndNextEntities["previous"] is not empty %}
+			<a href="{{ path('Video_Read', {'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].getUrlSlug()})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
+		{% else %}
+			<span class="previous_next_disable_left"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></span>
+		{% endif %}
+
+		{% if previousAndNextEntities["next"] is not empty %}
+			<a class="previous_next_enable_right float-right" href="{{ path('Video_Read', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+		{% else %}
+			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+		{% endif %}
+	</div>
+
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : video.id, 'className': 'Video' })) }}
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : video.id, 'className': 'Video' })) }}
+	{{ render(controller("App\\Controller\\VideoController::getSameTopicsAction", { 'id' : video.id })) }}
+{% endblock %}

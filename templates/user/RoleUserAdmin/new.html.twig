@@ -1,0 +1,10 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.UserRole"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('RoleUser_Admin_Index') }}{% endblock %}
+{% block create_admin_route %}{{ path('RoleUser_Admin_Create') }}{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'user/RoleUserAdmin/_form.html.twig' %}
+{% endblock %}

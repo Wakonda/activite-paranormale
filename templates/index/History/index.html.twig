@@ -1,0 +1,3 @@
+{% if entity.history is not null %}
+	- <i class="fas fa-history"></i> <a href="{{ path('History_Show', {'id': entity.history.id, titleEntity: entity.title, path: base64_encode(path(entity.showRoute, {id: entity.id})) }) }}" id="show_history_link">{{ "history.show.ViewHistory"|trans([], "validators") }}</a>
+{% endif %}

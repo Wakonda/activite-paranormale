@@ -1,0 +1,41 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "book.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "book.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.photo is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.photo }}
+		<br>
+	{% endif %}
+	{{ form_errors(form.photo) }}
+	{{ form_widget(form.photo, { 'attr': {'class': 'form-control'} }) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "book.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "book.admin.PublicationDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "book.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.authors, "book.admin.Authors"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.authors) }}{{ form_widget(form.authors, { 'attr': {'data-width': '100%'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "book.admin.Theme"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "book.admin.State"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "book.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>

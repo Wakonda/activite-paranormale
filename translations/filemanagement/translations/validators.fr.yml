@@ -1,0 +1,24 @@
+file:
+    add:
+        AttachFile: "Joindre des fichiers (facultatif)"
+        Title: "Titre"
+        File: "Fichier"
+        Upload: "Télécharger"
+        Display: "Visualiser"
+        Delete: "Retirer"
+        NoFile: "Pas encore de fichier"
+        NoFileSelected: "Aucun fichier sélectionné"
+    uploadFile:
+        FileTooLarge: "Le fichier est trop volumineux"
+        UnauthorizedExtension: "Extension non autorisé"
+        NoFileSelected: "Aucun fichier sélectionné"
+        FileAddedWithSuccess: "Fichier ajouté avec succès"
+        NoFile: "Aucun fichier"
+    admin:
+        Files: "Fichiers"
+        File: "Fichier"
+        Title: "Titre"
+        Caption: "Légende"
+        CaptionPhoto: "Légende - Photo"
+        NotUsed: "Non utilisé"
+        MediaManagement: "Gestion des médias"

@@ -1,0 +1,15 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "country.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.flag, "country.admin.Flag"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.flag) }}{{ form_widget(form.flag) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.internationalName, "country.admin.InternationalName"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.internationalName) }}{{ form_widget(form.internationalName, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "country.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>

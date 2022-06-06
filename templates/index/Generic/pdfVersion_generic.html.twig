@@ -1,0 +1,59 @@
+<style type="text/css">
+<!--
+    table.page_header {width: 100%; border: none; background-color: #cdff79; border-bottom: solid 1mm #7cff1f; padding: 2mm }
+    table.page_footer {width: 100%; border: none; background-color: #DDDDFF; border-top: solid 1mm #AAAADD; padding: 2mm}
+    h1
+	{
+		color: #000033;
+		text-align: center;
+	}
+    h2 {color: #000055}
+    h3 {
+		color: #000077;
+		text-decoration: underline;
+		font-size: 17px;
+	}
+	
+	p, span
+	{
+		font-size: 15px;
+		text-align: justify;
+	}
+	
+	*
+	{
+		font-family: times;
+	}
+-->
+</style>
+<link rel="shortcut icon" type="image/x-icon" href="/extended/css/admin/favicon.ico" />
+
+<page backtop="14mm" backbottom="14mm" backleft="10mm" backright="10mm" style="font-size: 12pt">
+    <page_header>
+        <table class="page_header">
+            <tr>
+                <td style="width: 100%; text-align: center; ">
+                    Activité-Paranormale
+                </td>
+            </tr>
+        </table>
+    </page_header>
+    <page_footer>
+        <table class="page_footer">
+            <tr>
+                <td style="width: 33%; text-align: left;">
+                    https://activite-paranormale.net/
+                </td>
+                <td style="width: 34%; text-align: center">
+                    [[page_cu]]/[[page_nb]]
+                </td>
+                <td style="width: 33%; text-align: right">
+                    © Activité-Paranormale 2009-{{ "now"|date("Y") }}
+                </td>
+            </tr>
+        </table>
+    </page_footer>
+</page>
+
+{% block main_content_pdf %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% macro license_picture_admin(entity) %}
+	{% set infos = [] %}
+
+	{% if entity.author is not empty %}
+		{% set infos = infos|merge([entity.author]) %}
+	{% endif %}
+
+	{% if entity.license is not empty %}
+		{% set infos = infos|merge([entity.license]) %}
+	{% endif %}
+
+	{% if entity.urlSource is not empty %}
+		{% set infos = infos|merge(['<a href="'~ entity.urlSource ~'">' ~ parse_url(entity.urlSource)["host"] ~ '</a>']) %}
+	{% endif %}
+	
+	{% if infos is not empty %}
+		<p class="text-center">{{ infos|join(', ')|raw }}</p>
+	{% endif %}
+	<p class="text-center"><i>{{ entity.caption|raw }}</i></p>
+{% endmacro %}

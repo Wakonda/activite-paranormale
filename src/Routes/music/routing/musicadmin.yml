@@ -1,0 +1,47 @@
+Music_Admin_Index:
+    path:  /
+    controller: App\Controller\MusicAdminController::indexAction
+
+Music_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\MusicAdminController::showAction
+
+Music_Admin_New:
+    path:  /new
+    controller: App\Controller\MusicAdminController::newAction
+
+Music_Admin_Create:
+    path:  /create
+    controller: App\Controller\MusicAdminController::createAction
+    requirements:
+        _method: post
+
+Music_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\MusicAdminController::editAction
+
+Music_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\MusicAdminController::updateAction
+    requirements:
+        _method: post
+
+Music_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\MusicAdminController::deleteAction
+
+Music_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\MusicAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Music_Admin_ChooseExistingFile:
+    path:  /chooseexistingfile
+    controller: App\Controller\MusicAdminController::chooseExistingFileAction
+
+Music_Admin_IndexByAlbumDatatables:
+    path: /datatables/{albumId}
+    controller: App\Controller\MusicAdminController::indexByAlbumDatatablesAction
+    requirements:
+        _method: get

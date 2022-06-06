@@ -1,0 +1,45 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block page_title %}{{ entity.title }}{% endblock %}
+
+{% block meta_plus %}
+	{% if entity.archive == true %}
+		<meta name="robots" content="noindex">
+	{% endif %}
+{% endblock %}
+
+{% block body_content %}
+	<div class="read-content">
+		{% if entity.isAvailable == true %}
+			<div class="text-center">
+				{% if entity.mediaVideo is not empty %}
+					<video class="w-100" controls="controls" id="video_embedded">
+						<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
+					</video>
+				{% else %}
+					<div class="embed-responsive embed-responsive-16by9 video">
+						{{ entity.embeddedCode|raw }}
+					</div>
+				{% endif %}
+			</div>
+		{% else %}
+			<p class="text-center"><img src="{{ asset('extended/photo/video-not-available.png') }}" width="550" /></p>
+			<div class="alert alert-danger text-center"><i class="fas fa-video-slash"></i> {{ "video.read.VideoNotLongerAvailable"|trans([], "validators") }}</div>
+		{% endif %}
+		<div class="mt-2">
+			<p id="media_duration" class="text-center mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" class="d-inline" alt="Timer" width="30" /> {{ (entity.duration|string_duration)|default('-') }}</p>
+		</div>
+		<hr>
+		<p>{{ entity.text|raw }}</p>
+		<hr class="hr2">
+		<p class="mt-7"><i class="fas fa-dragon"></i> <a href="{{ path('ap_videomobile_index', {page: 1, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }} - <i class="fas fa-user"></i> {{ entity.pseudoUsed }} - <img class="align-middle d-inline" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></p>
+	</div>
+	
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+	<br>
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Video' })) }}
+{% endblock %}

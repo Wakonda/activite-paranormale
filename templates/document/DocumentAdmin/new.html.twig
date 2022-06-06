@@ -1,0 +1,26 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Doc"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Document_Admin_Index') }}{% endblock %}
+{% block create_admin_route %}{{ path('Document_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "document/DocumentAdmin/macro_document.html.twig" as macro_document %}
+	
+	<script>
+		$(function()
+		{
+			{{ macro_document.updateListForm(form) }}
+		});
+	</script>
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'document/DocumentAdmin/_form.html.twig' %}
+{% endblock %}

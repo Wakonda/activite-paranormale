@@ -1,0 +1,43 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{% endblock %}
+
+{% block style_edit %}
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('extended/css/bootstrap/plugins/bootstrap-select/bootstrap-select.css') }}">
+	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('extended/css/bootstrap/plugins/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Index') }}" title="Index"><i class="fas fa-home" aria-hidden="true"></i> Index</a></li>
+	<li class="nav-item"><a class="nav-link" href="{% block delete_admin_route %}{% endblock %}" title="Delete" onClick="if(!confirm('{{ "admin.show.ReallyWantRemoveDatas"|trans([], 'validators') }}')) return false;"><i class="fas fa-times" aria-hidden="true"></i> {{ "admin.general.Delete"|trans([], "validators") }}</a></li>
+	<li class="nav-item"><a class="nav-link" href="{% block new_admin_route %}{% endblock %}" title="Create"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}</a></li>
+	<li class="nav-item"><a class="nav-link" href="{% block index_admin_route %}{% endblock %}" title="Return"><i class="far fa-list-alt" aria-hidden="true"></i> {{ "admin.general.List"|trans([], "validators") }}</a></li>
+{% endblock %}
+
+{% block body_main %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': block('update_admin_route'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+	<div class="form-table form-table-4cols form-table-collapse">
+		{% block tbody_admin_table %}{% endblock %}
+	</div>
+	{{ form_rest(form) }}
+	<div class="my-3">
+		<button class="btn btn-success" type="submit">{{ "admin.general.Update"|trans([], "validators") }}</button>
+		<button onclick="self.location.href='{{ block('index_admin_route') }}'" type="button" class="btn btn-danger">{{ "admin.general.Cancel"|trans([], "validators") }}</button>
+	</div>
+	{{ form_end(form) }}
+{% endblock %}
+
+{% block js_edit %}
+	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js') }}"></script>
+	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-datetimepicker-master/src/js/locales/bootstrap-datetimepicker.fr.js') }}"></script>
+	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-select/bootstrap-select.js') }}"></script>
+	<script>
+		$(function()
+		{
+			$('.selectpicker').selectpicker();
+		});
+	</script>
+	{% block js_specific %}
+	{% endblock %}
+{% endblock %}

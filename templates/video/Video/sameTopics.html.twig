@@ -1,0 +1,28 @@
+{% extends "index/Generic/sameTopics.html.twig" %}
+
+{% block content %}
+	{% set i = 0 %}
+	{% for entity in sameTopics %}
+		<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+			<div class="card mb-3">
+				<div class="row no-gutters">
+					<div class="col-md-4 align-self-center text-center">
+						{{ entity.photo|imgsize(null, entity.getAssetImagePath())|raw }}
+					</div>
+					<div class="col-md-8 content-card">
+						<div class="card-body">
+							<h5 class="card-title text-center">{{ entity.title }}</h5>
+							<hr>
+							<p class="card-text mb-0 text-center">{{ entity.Theme.title }} - {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
+							<p class="card-text mb-0 text-center"><b>{{ "comment.index.Comments"|trans([], "validators") }}:</b> {{ entity|count_comments_by_article }}</p>
+							<p class="card-text text-center"><b>{{ "vote.index.AverageScore"|trans([], "validators") }}</b> {{ entity|average_rating_by_news }}</p>
+							<hr>
+							<p class="card-text text-center"><a href="{{ path('Video_Read', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}">{{ "news.index.PlusDInformations"|trans([], "validators") }}</a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{% set i = i + 1 %}
+	{% endfor %}
+{% endblock %}

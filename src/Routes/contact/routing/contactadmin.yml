@@ -1,0 +1,37 @@
+Contact_Admin_Index:
+    path:  /
+    controller: App\Controller\ContactAdminController::indexAction
+
+Contact_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\ContactAdminController::showAction
+
+Contact_Admin_New:
+    path:  /new
+    controller: App\Controller\ContactAdminController::newAction
+
+Contact_Admin_Create:
+    path:  /create
+    controller: App\Controller\ContactAdminController::createAction
+    requirements:
+        _method: post
+
+Contact_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\ContactAdminController::editAction
+
+Contact_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\ContactAdminController::updateAction
+    requirements:
+        _method: post
+
+Contact_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\ContactAdminController::deleteAction
+
+Contact_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\ContactAdminController::indexDatatablesAction
+    requirements:
+        _method: get

@@ -1,0 +1,62 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/partner_read.png') }}" width="25" class="mt-1" alt="Alien partner"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block APBlog_body %}
+	<p class="image">{{ entity.logo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	
+	{% set infos = [] %}
+	
+	{% if entity.foundedYear is not empty %}
+		{% set infos = infos|merge(["<b>"~"directory.read.FoundedYear"|trans([], "validators")~"</b> "~entity.foundedYear|doPartialDate(app.request.locale)]) %}
+	{% endif %}
+	
+	{% if entity.defunctYear is not empty %}
+		{% set infos = infos|merge(["<b>"~"directory.read.DefunctYear"|trans([], "validators")~"</b> "~entity.defunctYear|doPartialDate(app.request.locale)]) %}
+	{% endif %}
+	
+	{% if infos is not empty %}
+		<ul>
+			{% for info in infos %}
+				<li>{{ info|raw }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	
+	<hr>
+	{% if entity.text is not empty %}
+	<h3>{{ 'directory.read.Description'|trans([], 'validators') }}</h3>
+	{{ entity.text|raw }}
+
+	{% if entity.source is not empty %}
+		<br>
+		<h3>{{ "directory.read.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source) }}
+	{% endif %}
+
+	<hr>
+	{% endif %}
+	<p class="text-center">{{ entity.language.logo|imgsize(20, entity.language.getAssetImagePath())|raw }} - {{ entity.language.title }}</p>
+	<table class="table">
+		<tr>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/link.png" alt="{{ "directory.read.Link"|trans([], "validators") }}" src="{{ "directory.read.Link"|trans([], "validators") }}" style="height: 50px" /></td>
+			<td class="tdGene"><a href="{{ entity.link }}">{{ 'directory.read.Link'|trans([], 'validators') }}</a></td>
+			<td class="tdGene"><a href="{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
+		</tr>
+		{% if entity.socialNetwork is not null %}
+			{% set socialNetworkArray = json_decode(entity.socialNetwork) %}
+			{% for sn in socialNetworkArray %}
+				{% if sn.url is not empty %}
+				<tr>
+					<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/{{ sn.socialNetwork|lower }}.png" alt="{{ sn.socialNetwork }}" style="height: 50px" /></td>
+					<td class="tdGene"><a href="{{ sn.url }}">{{ sn.socialNetwork }}</a></td>
+					<td class="tdGene"><a href="{{ sn.url }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
+				</tr>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	</table>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

@@ -1,0 +1,59 @@
+Video_Index:
+    path:  /video
+    controller: App\Controller\VideoController::indexAction
+
+Video_Tab:
+    path:  /video/tab/{id}/{theme}
+    controller: App\Controller\VideoController::tabVideoAction
+    requirements:
+        theme: ".+"
+
+Video_TabVideoDatatables:
+    path: /video/tabvideodatatables/{themeId}
+    controller: App\Controller\VideoController::tabVideoDatatablesAction
+
+Video_Read:
+    path: /video/read/{id}/{title_slug}
+    controller: App\Controller\VideoController::readAction
+    defaults:
+        title_slug: null
+
+Video_Export:
+    path: /video/embedded/{id}/{title}
+    controller: App\Controller\VideoController::embeddedAction
+
+Video_Pdfversion:
+    path: /video/pdfversion/{id}
+    controller: App\Controller\VideoController::pdfVersionAction
+
+Video_Notify:
+    path: /video/notifydeleted/{id}
+    controller: App\Controller\VideoController::notifyDeletedVideoAction
+
+Video_World:
+    path: /video/world/{language}/{themeId}/{theme}
+    controller: App\Controller\VideoController::worldAction
+    defaults:
+        language: all
+        themeId: 0
+        theme: null
+    requirements:
+        theme: ".+"
+
+Video_WorldDatatables:
+    path: /video/worlddatatables/{language}/{themeId}
+    controller: App\Controller\VideoController::worldDatatablesAction
+    defaults:
+        language: all
+        themeId: 0
+
+Video_SelectThemeForIndexWorld:
+    path: /video/selectThemeForIndexWorldAction/{language}
+    controller: App\Controller\VideoController::selectThemeForIndexWorldAction
+    defaults:
+        language: all
+
+# Administration
+Video_Admin:
+    resource: "routing/videoadmin.yml"
+    prefix:   /admin/video

@@ -1,0 +1,106 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ "mobile.main.Search"|trans([], "validators") }}{% endblock %}
+{% block page_title%}{{ "mobile.main.Search"|trans([], "validators") }}{% endblock %}
+
+{% block meta_plus %}
+	<link rel="canonical" href="{{ url('Search_Query') }}">
+{% endblock %}
+
+{% block header_mobile_plus %}
+	<link href="{{ asset('extended/css/google_search.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body_content %}
+	<div class="read-content">
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/search.jpg') }}" alt="Search" /></p>
+	<hr />
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+
+	{{ form_start(form, {'action': path('ap_newsmobile_search'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="input-group">
+			{{ form_widget(form.query, {'attr':{'class' : 'form-control', value: keyword}}) }}
+			<div class="input-group-append">
+				<button name="Search" class="submitcomment bouton searchSubmit input-group-text border-0" type="submit" alt="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
+			</div>
+		</div>
+	{{ form_end(form) }}
+
+	<div class="search-result-box card-box mt-4">
+		<ul class="nav nav-tabs tabs-bordered" role="tablist">
+			<li class="nav-item"><a class="nav-link {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'active' : '' }}" id="web-tab" data-toggle="tab" href="#web" role="tab" aria-controls="web" aria-selected="true"><i class="fas fa-satellite"></i> Web <span class="badge badge-primary ml-1">{{ total }}</span></a></li>
+			<li class="nav-item"><a class="nav-link {{ app.request.query.get('type') == 'image' ? 'active' : '' }}" id="image-tab" data-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="image"><i class="far fa-image"></i> Image <span class="badge badge-primary ml-1">{{ totalImage }}</span></a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane fade {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'show active' : '' }}" id="web" role="tabpanel" aria-labelledby="web-tab">
+				{% if results is not empty %}
+					<div class="alert alert-secondary" role="alert">
+					  <b>{{ total }}</b> results (<b>{{ execution_time }}</b> ms) 
+					</div>
+				{% endif %}
+				
+				<div class="row">
+					<div class="col-md-12">
+						{% for item in pagination.items %}
+							<div class="search-item">
+								<h4 class="mb-1"><a href="{{ path(results[item.id~"_"~item.classname].showRoute, {id: item.id}) }}">{{ results[item.id~"_"~item.classname].entity.title }}</a></h4>
+								<div class="font-13 text-success mb-3"><i class="fas fa-caret-right"></i> {{ url(results[item.id~"_"~item.classname].showRoute, {id: item.id}) }}</div>
+								<div class="d-flex justify-content-start">
+									{% if results[item.id~"_"~item.classname].entity.illustration is defined and results[item.id~"_"~item.classname].entity.illustration is not empty %}
+										<div>{{ results[item.id~"_"~item.classname].entity.photoIllustrationFilename|imgsize(100, results[item.id~"_"~item.classname].entity.getAssetImagePath(), true, { 'class': 'mr-2 mt-1'}, {}, false)|raw }}</div>
+									{% endif %}
+									<p class="mb-0 text-muted">{{ item.searchText|slice(0, 150) }}</p>
+								</div>
+							</div>
+						{% else %}
+							<div class="alert alert-info" role="alert">
+								Aucun document ne correspond aux termes de recherche spécifiés
+							</div>
+						{% endfor %}
+
+						<div class="mt-3 justify-content-center">
+							{{ knp_pagination_render(pagination) }}
+						</div>
+
+						<div class="clearfix"></div>
+					</div>
+				</div>
+			</div>
+
+			<div class="tab-pane fade {{ app.request.query.get('type') == 'image' ? 'show active' : '' }}" id="image" role="tabpanel" aria-labelledby="image-tab">
+				{% if resultImages is not empty %}
+					<div class="alert alert-secondary" role="alert">
+					  <b>{{ totalImage }}</b> results (<b>{{ execution_time_image }}</b> ms) 
+					</div>
+				{% endif %}
+				
+				{% if resultImages is not empty %}
+					<div class="card-columns">
+						{% for item in paginationImage.items %}
+							<div class="card">
+								{{ resultImages[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
+								<div class="card-body text-center">
+									<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].title }}</h6>
+
+									{% set size = getimagesize(resultImages[item.id~"_"~item.classname].photoIllustrationFilename, resultImages[item.id~"_"~item.classname].getAssetImagePath()) %}
+									<p class="card-text text-center"><small class="text-muted">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
+									<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">Consulter</a></p>
+								</div>
+							</div>
+						{% endfor %}
+					</div>
+				{% else %}
+					<div class="alert alert-info" role="alert">
+						Aucun document ne correspond aux termes de recherche spécifiés
+					</div>
+				{% endif %}
+				
+				<div class="mt-3 justify-content-center">
+					{{ knp_pagination_render(paginationImage) }}
+				</div>
+
+				<div class="clearfix"></div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

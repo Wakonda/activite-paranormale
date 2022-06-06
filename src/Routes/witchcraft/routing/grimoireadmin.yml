@@ -1,0 +1,73 @@
+Grimoire_Admin_Index:
+    path:  /{page}
+    controller: App\Controller\GrimoireAdminController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+Grimoire_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\GrimoireAdminController::showAction
+
+Grimoire_Admin_New:
+    path:  /new
+    controller: App\Controller\GrimoireAdminController::newAction
+
+Grimoire_Admin_Create:
+    path:  /create
+    controller: App\Controller\GrimoireAdminController::createAction
+    requirements:
+        _method: post
+
+Grimoire_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\GrimoireAdminController::editAction
+
+Grimoire_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\GrimoireAdminController::updateAction
+    requirements:
+        _method: post
+
+Grimoire_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\GrimoireAdminController::deleteAction
+
+Grimoire_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\GrimoireAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Grimoire_Admin_ReloadListsByLanguage:
+    path:  /reloadlistsbylanguage
+    controller: App\Controller\GrimoireAdminController::reloadListsByLanguageAction
+
+Grimoire_Admin_State:
+    path:  /bystate/{state}
+    controller: App\Controller\GrimoireAdminController::indexStateAction
+
+Grimoire_Admin_ChangeState:
+    path: /change_state/{id}/{state}
+    controller: App\Controller\GrimoireAdminController::changeStateAction
+    requirements:
+        id: \d+
+
+Grimoire_Admin_Archive:
+    path: /archive/{id}
+    controller: App\Controller\GrimoireAdminController::archiveAction
+    requirements:
+        id: \d+
+
+Grimoire_Admin_WYSIWYG_UploadFile:
+    path: /wysiwyg_uploadfile
+    controller: App\Controller\GrimoireAdminController::WYSIWYGUploadFileAction
+
+Grimoire_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\GrimoireAdminController::showImageSelectorColorboxAction
+
+Grimoire_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\GrimoireAdminController::loadImageSelectorColorboxAction

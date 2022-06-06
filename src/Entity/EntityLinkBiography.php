@@ -1,0 +1,124 @@
+<?php
+
+namespace App\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Service\APPurifierHTML;
+
+/**
+ * App\Entity\EntityLinkBiography
+ *
+ * @ORM\Table(name="entity_link_biography")
+ * @ORM\Entity(repositoryClass="App\Repository\EntityLinkBiographyRepository")
+ * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorColumn(name="discr", type="string")
+ * @ORM\DiscriminatorMap({
+	"entity_link_biography" = "EntityLinkBiography",
+	"artist_biography" = "ArtistBiography",
+	"book_edition_biography" = "BookEditionBiography",
+	"movie_biography" = "App\Entity\Movies\MovieBiography",
+	"televisionserie_biography" = "App\Entity\Movies\TelevisionSerieBiography",
+  })
+ */
+class EntityLinkBiography
+{
+    /**
+     * @var integer $id
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+	/**
+	 * @ORM\Column(name="role", type="string", length=255, nullable=true)
+	 */
+	private $role;
+
+	/**
+	 * @ORM\Column(name="occupation", type="string", length=255)
+	 */
+	private $occupation;
+
+	/**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Biography", cascade={"persist"})
+	 * @ORM\JoinColumn(name="biography_id", referencedColumnName="id")
+	 */
+	private $biography;
+	
+	public static function getOccupations(): Array {
+		return [];
+	}
+	
+    /**
+     * Get id
+     *
+     * @return integer 
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set role
+     *
+     * @param string $role
+     */
+    public function setRole($role)
+    {
+        $this->role = $role;
+    }
+
+    /**
+     * Get role
+     *
+     * @return string 
+     */
+    public function getRole()
+    {
+        return $this->role;
+    }
+
+    /**
+     * Set occupation
+     *
+     * @param string $occupation
+     */
+    public function setOccupation($occupation)
+    {
+        $this->occupation = $occupation;
+    }
+
+    /**
+     * Get occupation
+     *
+     * @return string 
+     */
+    public function getOccupation()
+    {
+        return $this->occupation;
+    }
+
+    /**
+     * Set biography
+     *
+     * @param string $biography
+     */
+    public function setBiography($biography)
+    {
+        $this->biography = $biography;
+    }
+
+    /**
+     * Get biography
+     *
+     * @return string 
+     */
+    public function getBiography()
+    {
+        return $this->biography;
+    }
+}

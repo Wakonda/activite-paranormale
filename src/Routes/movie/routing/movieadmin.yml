@@ -1,0 +1,67 @@
+Movie_Admin_Index:
+    path: /
+    controller: App\Controller\MovieAdminController::indexAction
+
+Movie_Admin_Show:
+    path: /{id}/show
+    controller: App\Controller\MovieAdminController::showAction
+
+Movie_Admin_New:
+    path: /new
+    controller: App\Controller\MovieAdminController::newAction
+
+Movie_Admin_Create:
+    path: /create
+    controller: App\Controller\MovieAdminController::createAction
+    requirements:
+        _method: post
+
+Movie_Admin_Edit:
+    path: /{id}/edit
+    controller: App\Controller\MovieAdminController::editAction
+
+Movie_Admin_Update:
+    path: /{id}/update
+    controller: App\Controller\MovieAdminController::updateAction
+    requirements:
+        _method: post
+
+Movie_Admin_Delete:
+    path: /{id}/delete
+    controller: App\Controller\MovieAdminController::deleteAction
+
+Movie_Admin_Archive:
+    path: /archive/{id}
+    controller: App\Controller\MovieAdminController::archiveAction
+    requirements:
+        id: \d+
+
+Movie_Admin_IndexDatatables:
+    path: /datatables
+    controller: App\Controller\MovieAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Movie_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\MovieAdminController::showImageSelectorColorboxAction
+
+Movie_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\MovieAdminController::loadImageSelectorColorboxAction
+
+Movie_Admin_ReloadThemeByLanguage:
+    path: /reload_theme_by_language
+    controller: App\Controller\MovieAdminController::reloadThemeByLanguageAction
+
+Movie_Admin_Autocomplete:
+    path:  /autocomplete
+    controller: App\Controller\MovieAdminController::autocompleteAction
+
+Movie_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\MovieAdminController::internationalizationAction
+
+Movie_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\MovieAdminController::wikidataAction

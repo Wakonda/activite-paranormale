@@ -1,0 +1,75 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.musicPiece }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ album.artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		$(function ()
+		{
+			$('a#help_licence_link').click(function(e)
+			{
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': album } %}
+	
+	{% set img = album.photoIllustrationFilename|imgsize(550, album.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, album.photoIllustrationCaption, false) %}
+	
+	{% if img is not null %}
+		<p class="image">{{ img|raw }}</p>
+	{% endif %}
+	
+	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" /> {{ (entity.length|string_duration)|default('-') }}</p>
+	<hr>
+	<ul class="fa-ul">
+		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="font-weight-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: album.artist.id, title_slug: album.artist.title}) }}">{{ album.artist.title }}</a></li>
+		<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="font-weight-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.title, album: album.title}) }}">{{ album.title }}</a></li>
+	</ul>
+	<hr>
+	{% if entity.text is not empty %}
+		{{ entity.text|raw }}
+	{% endif %}
+	<div class="tabs">
+		{% if entity.musicPieceFile is not empty %}
+			<h3>{{ "music.music.AudioFile"|trans([], "validators") }}</h3>
+			<audio controls class="audio_show">
+				<source src="{{ asset(entity.getAssetMusicPath()) }}{{ entity.musicPieceFile }}" type="audio/mp3">
+			</audio>
+			<p class="text-center">
+				<img src="{{ asset('extended/photo/abstract-download-document.svg') }}" alt="Download file icon" class="align-middle" width="40"/>
+				<a href="{{ path('Music_Download', {'id' : entity.id}) }}">{{ "music.music.DownloadFile"|trans([], "validators") }}</a>
+			</p>
+		{% endif %}
+			
+		{% if entity.embeddedCode is not empty %}
+			<h3>{{ "music.music.Video"|trans([], "validators") }}</h3>
+			{{ entity.embeddedCode|raw }}
+		{% endif %}
+	
+		{% set datas = get_store_by_entity(album, "album", "AlbumStore") %}
+		
+		{% if datas|length > 0 %}
+			<br>
+			<h3>{{ "store.index.Store"|trans([], "validators") }}</h3>
+		{% endif %}
+		
+		{% for data in datas %}
+			{% include "store/Store/_product.html.twig" with { entity: data } %}
+		{% endfor %}
+		
+		<hr>
+		<p class="image"><a href="" id="help_licence_link"><img src="{{ asset('extended/photo/licence/'~album.licence.logo) }}" alt="{{ album.licence.title }}" /></a></p>
+		<br>
+		{% if entity.source is not empty %}
+			<h3>{{ "music.index.Sources"|trans([], "validators") }}</h3>
+			{{ source_document(entity.source) }}
+		{% endif %}
+		{{ "google"|advertisement|raw }}
+	</div>
+{% endblock %}

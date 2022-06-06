@@ -1,0 +1,84 @@
+{% if entity.store is not empty %}
+	<p class="text-center">{{ entity.store|raw }}</p>
+{% else %}
+	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+{% endif %}
+<br>
+<table class="table">
+	<tbody>
+		<tr>
+			<td class="td_form_table">{{ "book.read.Authors"|trans([], "validators") }}</td>
+			<td class="tdGene">
+				{% set authorsArray = [] %}
+				{% for author in entity.authors %}
+					{% set correctBio = biography_correct_language(author) %}
+					
+					{% if correctBio is null %}
+						{% set correctBio = author %}
+					{% endif %}
+					{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+				{% endfor %}
+				{{ (authorsArray|join(", "))|raw }}
+			</td>
+		</tr>
+		<tr>
+			<td class="td_form_table">{{ "book.read.PublishedOn"|trans([], "validators") }}</td>
+			<td class="tdGene">{{ entity.publicationDate|dodate(false, app.request.locale) }}</td>
+		</tr>
+
+		{% if entity.price is not empty %}
+		<tr>
+			<td class="td_form_table">{{ "book.read.Price"|trans([], "validators") }}</td>
+			<td class="tdGene">
+			<span class="price">{{ entity|format_price }}</span></span>
+			</td>
+		</tr>
+		{% endif %}
+
+		<tr>
+			<td class="td_form_table">{{ "book.read.Theme"|trans([], "validators") }}</td>
+			<td class="tdGene"><a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<h3>{{ "book.read.Description"|trans([], "validators") }}</h3>
+<div class="book_description">
+	{{ entity.text|raw }}
+</div>
+<h3>{{ "book.read.Details"|trans([], "validators") }}</h3>
+<table class="table">
+	<tbody>
+		<tr>
+			<td class="td_form_table">{{ "book.read.NumberPage"|trans([], "validators") }}</td>
+			<td class="tdGene">{{ entity.numberPage }}</td>
+		</tr>
+		<tr>
+			<td class="td_form_table">ISBN-10</td>
+			<td class="tdGene">{{ entity.isbn10 }}</td>
+		</tr>
+		<tr>
+			<td class="td_form_table">ISBN-13</td>
+			<td class="tdGene">{{ entity.isbn13 }}</td>
+		</tr>
+		<tr>
+			<td class="td_form_table">{{ "book.read.Format"|trans([], "validators") }}</td>
+			<td class="tdGene">{{ ("book.generic."~(entity.format|capitalize))|trans([], "validators") }}</td>
+		</tr>
+		<tr>
+			<td class="td_form_table">{{ "book.read.Publisher"|trans([], "validators") }}</td>
+			<td class="tdGene"><a href="{{ path('ByPublisherBook_Index', {'idPublisher': entity.publisher.id, 'titlePublisher': entity.publisher.title}) }}">{{ entity.publisher.photo|imgsize(200, entity.publisher.getAssetImagePath())|raw }}</a></td>
+		</tr>
+	</tbody>
+</table>
+<br>
+<hr class="hr2">
+<p>
+	<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} {% if entity.licence is not null %}- <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
+	{% if is_current_languages(entity.language.abbreviation) == false %}
+		- <a href="{{ path('Book_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+	{% endif %}
+	
+	{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+</p>
+{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Book' })) }}

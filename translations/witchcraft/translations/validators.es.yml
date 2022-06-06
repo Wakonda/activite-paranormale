@@ -1,0 +1,95 @@
+grimoire:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Theme: "Tema"
+        WritingDate: "Fecha de redacción"
+        Source: "Fuente"
+        State: "Estado"
+        Language: "Lengua"
+        Photo: "Photo"
+        Author: "Autor"
+        Validate: "Validar"
+        Refuse: "Rechazar"
+        RitualPublished: "Ritual publicado"
+        RitualRefused: "Ritual rechazado"
+magicbookmenu:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Picture: "Imagen"
+        Language: "Lengua"
+        InternationalName: "Nombre internacional"
+magicbooktheme:
+    admin:
+        Title: "Título"
+        Theme: "Tema"
+        Definition: "Definición"
+        Picture: "Imagen"
+        Language: "Lengua"
+        InternationalName: "Nombre internacional"
+        WitchcraftMenu: "Grimorio menu"
+witchcraft:
+    admin:
+        Witchcraft: "Brujería"
+    index:
+        Witchcraft: "Brujería"
+        MagicPrayer: "Magia - Oración"
+        MoonPhase: "Fase de la luna el %date%"
+    tabGrimoire:
+        Title: "Título"
+        Source: "Fuente"
+        Language: "Lengua"
+        Photo: "Foto"
+    read:
+        Source: "Fuente"
+    new:
+        AddRitual: "Sugerir un ritual"
+        Title: "Título"
+        Text: "Texto"
+        Theme: "Tema"
+        Pseudo: "Pseudo"
+        IsAnonymous: "¿Publicada de forma anónima?"
+        Validate: "Validar"
+        PublishedAnonymously: "Publicado anónimamente"
+        PostedWithMyUserAccount: "Publicado con mi cuenta de usuario"
+        AnonymousMessage: "Cuando publicáis de forma anónima, su ritual no aparecerá en su cuenta cuando sea aprobado por nuestro equipo de moderación."
+    validate:
+        Validation: "Validación"
+        ThankForYourParticipation: "¡Gracias por su participación!"
+        ThankForYourParticipationText: "Su ritual ha sido transmitido a nosotros. Será publicado en nuestra página web como la aprobación de un moderador."
+witchcraftTool:
+    index:
+        WitchcraftTool: "Herramienta de brujería"
+        Sources: "Fuentes"
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        Text: "Texto"
+        PublicationDate: "Fecha de publicación"
+        WitchcraftThemeTool: "Tema"
+        Language: "Lengua"
+        State: "Estado"
+        Source: "Fuente"
+    search:
+        SearchSort: "Buscar / Ordenar"
+        Keywords: "Palabras clave"
+        Theme: "Tema"
+        PublicationDate: "Fecha de publicación"
+        PublicationDateUp: "Fecha de publicación ↑"
+        PublicationDateDown: "Fecha de publicación ↓"
+        Sort: "Ordenar por"
+        Validate: "Validar"
+        Read: "Leer"
+        NoMatchingRecordsFound: "No se encontraron resultados"
+        MoreDetails: "Mas detalles"
+    read:
+        Theme: "Categoría"
+        Description: "Descripción"
+        PublishedOn: "Publicó el"
+witchcraftThemeTool:
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        InternationalName: "Nombre internacional"
+        Language: "Lengua"

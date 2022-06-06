@@ -1,0 +1,51 @@
+Store_Admin_Index:
+    path:  /index/{type}
+    controller: App\Controller\StoreAdminController::indexAction
+    defaults:
+        type: ""
+
+Store_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\StoreAdminController::showAction
+
+Store_Admin_New:
+    path:  /new/{category}
+    controller: App\Controller\StoreAdminController::newAction
+    defaults:
+        category: ""
+
+Store_Admin_Create:
+    path:  /create/{category}
+    controller: App\Controller\StoreAdminController::createAction
+    requirements:
+        _method: post
+    defaults:
+        category: ""
+
+Store_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\StoreAdminController::editAction
+
+Store_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\StoreAdminController::updateAction
+    requirements:
+        _method: post
+
+Store_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\StoreAdminController::deleteAction
+
+Store_Admin_IndexDatatables:
+    path:  /datatables/{type}
+    controller: App\Controller\StoreAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+    defaults:
+        type: ""
+
+Store_Admin_Autocomplete:
+    path:  /autocomplete
+    controller: App\Controller\StoreAdminController::autocompleteAction
+    requirements:
+        _method: get

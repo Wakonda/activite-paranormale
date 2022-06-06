@@ -1,0 +1,30 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.News"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('News_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('News_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('News_Admin_Index') }}{% endblock %}
+{% block update_admin_route %}{{ path('News_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block js_specific %}
+	{% import "news/NewsAdmin/macro_news.html.twig" as macro_news %}
+
+	<script>
+		$(function()
+		{
+			{{ macro_news.updateListForm(form) }}
+		});
+	</script>
+	
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.abstractText.vars.id, path('News_Admin_WYSIWYG_UploadFile')) }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id, path('News_Admin_WYSIWYG_UploadFile')) }}
+	{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'news/NewsAdmin/_form.html.twig' %}
+{% endblock %}

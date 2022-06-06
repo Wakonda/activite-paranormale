@@ -1,0 +1,61 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ televisionSerie.title }} - {{ "televisionSerie.read.Season"|trans([], "validators") }} {{ season }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ televisionSerie.title }} - {{ "televisionSerie.read.Season"|trans([], "validators") }} {{ season }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/episodeTelevisionSerie.jpg') }}" width="550" alt="Episode TV show" /></p>
+	<hr>
+		<ul class="fa-ul">
+			<li><span class="fa-li"><i class="fas fa-tv"></i></span> {{ "televisionSerie.read.TelevisionSerie"|trans([], "validators") }} <a href="{{ path('TelevisionSerie_Show', {id: televisionSerie.id, title_slug: televisionSerie.urlSlug}) }}">{{ televisionSerie.title }}</a></li>
+			<li><span class="fa-li"><i class="fas fa-list-ol"></i></span> {{ "televisionSerie.read.NumberEpisodesTitle"|trans([], "validators") }} <span class="badge badge-danger">{{ entities|length }}</span></li>
+			
+			{% set first = entities|first %}
+			{% set last = entities|last %}
+			<li><span class="fa-li"><i class="far fa-calendar-times"></i></span> {{ "televisionSerie.read.ReleaseDatesTitle"|trans([], "validators") }} {{ (first is not empty and first.releaseDate is not empty) ? first.releaseDate|dodate(false, app.request.locale) : "" }} - {{ (last is not empty and last.releaseDate is not empty) ? last.releaseDate|dodate(false, app.request.locale) : "" }}</li>
+		</ul>
+	<hr>
+	<div id="accordion">
+		{% for entity in entities %}
+			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-toggle="collapse" data-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
+				{{ "televisionSerie.read.Episode"|trans([], "validators") }} {{ entity.episodeNumber }} - {{ entity.title }}
+			</h3>
+			<div id="collapse{{ entity.episodeNumber }}" class="collapse{% if first.id == entity.id %} show{% endif %}" aria-labelledby="heading{{ entity.episodeNumber }}" data-parent="#accordion">
+				<table class="table">
+					<tbody>
+						{% set biographyDatas = episode_televisionserie_biographies_by_occupation(entity) %}
+						{% if biographyDatas is not empty %}
+						<tr>
+							{% for occupation, biographies in biographyDatas %}
+								<td class="td_form_table theme_title_td">{{ (("televisionSerie.read."~(occupation)|capitalize)~"By")|trans([], "validators") }}</td>
+								<td class="tdGene">
+									{% set persons = [] %}
+									{% for biography in biographies %}
+										{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a> ' ~ (occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') ? ' [<i>' ~ biography.role ~ '</i>]' : '')]) %}
+									{% endfor %}
+									{{ (persons|join(", "))|raw }}
+								</td>
+							{% endfor %}
+						</tr>
+						{% endif %}
+						{% if entity.duration is not empty %}
+							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Duration"|trans([], "validators") }}</td><td>{{ entity.duration }} {{ "televisionSerie.read.Minute"|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</td></tr>
+						{% endif %}
+						{% if entity.releaseDate is not empty %}
+							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.ReleaseDate"|trans([], "validators") }}</td><td>{{ entity.releaseDate|dodate(false, app.request.locale) }}</td></tr>
+						{% endif %}
+						{% if entity.source is not empty %}
+							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ source_document(entity.source) }}</td></tr>
+						{% endif %}
+					</tbody>
+				</table>
+				{{ entity.synopsis|raw }}
+				
+				{{ getTagsByEntityForDisplay(entity) }}
+			</div>
+		{% endfor %}
+	</div>
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

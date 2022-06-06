@@ -1,0 +1,37 @@
+WebDirectory_Admin_Index:
+    path:  /
+    controller: App\Controller\WebDirectoryAdminController::indexAction
+
+WebDirectory_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\WebDirectoryAdminController::showAction
+
+WebDirectory_Admin_New:
+    path:  /new
+    controller: App\Controller\WebDirectoryAdminController::newAction
+
+WebDirectory_Admin_Create:
+    path:  /create
+    controller: App\Controller\WebDirectoryAdminController::createAction
+    requirements:
+        _method: post
+
+WebDirectory_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\WebDirectoryAdminController::editAction
+
+WebDirectory_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\WebDirectoryAdminController::updateAction
+    requirements:
+        _method: post
+
+WebDirectory_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\WebDirectoryAdminController::deleteAction
+
+WebDirectory_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\WebDirectoryAdminController::indexDatatablesAction
+    requirements:
+        _method: get

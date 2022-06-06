@@ -1,0 +1,13 @@
+{% if links is defined and links is not empty %}
+<nav aria-label="Page navigation">
+	<ul class="pagination justify-content-center">
+	{% for link in links %}
+		{% if link.url is not null %}
+			<li class="page-item"><a class="page-link" href="{{ link.url }}">{{ link.text|raw }}</a></li>
+		{% else %}
+			<li class="page-item"><span class="{% if link.class is defined %} page-link {{ link.class }}{% else %}page-link{% endif %}">{{ link.text|raw }}</span></li>
+		{% endif %}
+	{% endfor %}
+	</ul>
+</nav>
+{% endif %}

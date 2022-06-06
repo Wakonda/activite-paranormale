@@ -1,0 +1,87 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+
+{% block main_card_properties %}itemscope itemtype="http://schema.org/Article"{% endblock %}
+
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block meta_description %}{{ entity.abstractText|strip_tags }}{% endblock %}
+
+{% block meta_plus %}
+	{% if entity.archive == true %}
+		<meta name="robots" content="noindex">
+	{% endif %}
+	
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+	
+	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_newsmobile_read', {'id' : entity.id}) }}">
+{% endblock %}
+
+{% block header_plus %}
+	<script>
+		$(function() {
+			function isSVGSupported() {
+				return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+			}
+			
+			if($("p.image object").length == 1 && !isSVGSupported())
+			{
+				$("p.image object").remove();
+				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
+			}
+			
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
+	<br>
+	{% set dir = entity.language.direction %}
+	<div dir="{{ dir }}">{{ entity.abstractText|raw }}</div>
+	<div dir="{{ dir }}">{{ entity.text|raw }}</div>
+	<br>
+	<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+	{{ source_document(entity.source) }}
+	<hr class="hr2">
+	<p>
+		<span><i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></span> - <i class="fas fa-calendar-alt"></i> <span>{{ entity.publicationDate|dodate(false, app.request.locale) }}</span> - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}<span>{{ entity.pseudoUsed }}</span>{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+		{% if is_current_languages(entity.language.abbreviation) == false %}
+			- <a href="{{ path('News_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+		{% endif %}
+		
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+
+	{{ getTagsByEntityForDisplay(entity) }}
+	
+	<div class="hidden_for_print">
+		{% if previousAndNextEntities["previous"] is not empty %}
+			<a href="{{ path('News_ReadNews_New', {'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].getUrlSlug()})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
+		{% else %}
+			<span class="previous_next_disable_left"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></span>
+		{% endif %}
+
+		{% if previousAndNextEntities["next"] is not empty %}
+			<a class="previous_next_enable_right float-right" href="{{ path('News_ReadNews_New', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+		{% else %}
+			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+		{% endif %}
+	</div>
+
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'News' })) }}
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'News' })) }}
+	{{ render(controller("App\\Controller\\NewsController::getSameTopicsAction", { 'id' : entity.id })) }}
+{% endblock %}

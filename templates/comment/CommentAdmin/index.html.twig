@@ -1,0 +1,73 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Comment"|trans([], "validators") }}{% endblock %}
+
+{% block indexdatatables_admin_route %}{{ path('Comment_Admin_IndexDatatables') }}{% endblock %}
+
+{% block js_edit_additional %}
+	document.querySelector("select#selected_state").addEventListener("change", (e) => {
+		oTable.fnFilter(e.target.value, 4);
+	});
+{% endblock %}
+
+{% block body_main_additional %}
+	<div class="container-fluid mt-3">
+		<label>{{ "comment.admin.State"|trans([], "validators") }}</label>
+		<select id="selected_state" class="form-control">
+			<option value=""></option>
+			<option value="{{ approved_state() }}">{{ "comment.admin.Approved"|trans([], "validators") }}</option>
+			<option value="{{ denied_state() }}">{{ "comment.admin.Denied"|trans([], "validators") }}</option>
+			<option value="{{ notChecked_state() }}">{{ "comment.admin.NotChecked"|trans([], "validators") }}</option>
+		</select>
+		<hr>
+	</div>
+{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form small_size">Id</th>
+	<th class="label_form">{{ "comment.admin.Author"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "comment.admin.Email"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "comment.admin.Date"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "comment.admin.State"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form small_size">Id</th>
+	<th class="label_form">{{ "comment.admin.Author"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "comment.admin.Email"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "comment.admin.Date"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "comment.admin.State"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block datatables_additional_options %}
+	"aoColumns": [
+		null,
+		null,
+		null,
+		null,
+		{ "sClass": "center" },
+		null
+	]
+{% endblock %}
+
+{% block body_main_additional_bottom %}
+	<div class="container-fluid mt-3">
+		<h3>{{ "admin.general.Assessment"|trans([], "validators") }}</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>{{ "comment.admin.Approved"|trans([], "validators") }}</th>
+				<td>{{ approved_state()|count_comments_by_state }}</td>
+			</tr>
+			<tr>
+				<th>{{ "comment.admin.NotChecked"|trans([], "validators") }}</th>
+				<td>{{ notChecked_state()|count_comments_by_state }}</td>
+			</tr>
+			<tr>
+				<th>{{ "comment.admin.Denied"|trans([], "validators") }}</th>
+				<td>{{ denied_state()|count_comments_by_state }}</td>
+			</tr>
+		</table>
+	</div>
+{% endblock %}

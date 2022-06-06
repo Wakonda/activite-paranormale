@@ -1,0 +1,132 @@
+page:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        InternationalName: "Nom international"
+        Language: "Langue"
+        PseudoUsed: "Pseudo utilisé"
+        Licence: "Licence"
+        State: "Etat"
+        WritingDate: "Date de redaction"
+        PublicationDate: "Date de publication"
+president:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Photo: "Photo"
+        Language: "Langue"
+        Licence: "Licence"
+        State: "Etat"
+        PseudoUsed: "Pseudo utilisé"
+        WritingDate: "Date de rédaction"
+        PublicationDate: "Date de publication"
+        NumberOfDays: "Nombre de jours"
+    index:
+        ArchivedMessages: "Messages archivés"
+    tab:
+        Title: "Titre"
+        PublicationDate: "Date de publication"
+        ArchivedMessage: "Message archivé"
+eventMessage:
+    menu:
+        Events: "Événements"
+        Calendar: "Calendrier"
+    calendar:
+        Events: "Événements"
+        List: "Liste"
+    index:
+        Event: "Événement"
+    tab:
+        Photo: "Photo"
+        Title: "Titre"
+        Date: "Date"
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Language: "Langue"
+        DateFrom: "Date de début"
+        DateTo: "Date de fin"
+        PseudoUsed: "Pseudo utilisé"
+        Licence: "Licence"
+        State: "Etat"
+        Photo: "Photo"
+        Thumbnail: "Aperçu"
+        Theme: "Thème"
+        Longitude: "Longitude"
+        Latitude: "Latitude"
+        Validate: "Valider"
+        Refuse: "Refuser"
+    slider:
+        MoreInformation: "Plus d'informations"
+    new:
+        AddEvents: "Proposer un événement"
+        Title: "Titre"
+        Text: "Texte"
+        Photo: "Photo"
+        Pseudo: "Pseudo"
+        DateFrom: "Date de début"
+        DateTo: "Date de fin"
+        Location: "Adresse"
+        FileSizeLimit: "Taille maximum"
+        AcceptedFormat: "Formats acceptés"
+        IsAnonymous: "Publié anonymement ?"
+        Validate: "Valider"
+        ClickHereToLocateOnMap: "Cliquer sur la carte pour localiser le lieu de l'événement"
+        PublishedAnonymously: "Publié anonymement"
+        PostedWithMyUserAccount: "Publié avec mon compte utilisateur"
+        AnonymousMessage: "En publiant anonymement, votre événement n’apparaitra pas dans votre compte utilisateur lorsqu’il sera validé par nos modérateurs."
+    error:
+        FileSizeError: "Le fichier est trop lourd"
+        FileFormat: "Le type du fichier est invalide"
+        StartDateSuperiorEndDate: "La date de début ne peut pas être supérieure à la date de fin"
+    waiting:
+        Edit: "Modifier"
+        Validate: "Valider"
+    validate:
+        Validation: "Confirmation"
+        ThankForYourParticipation: "Merci pour votre participation !"
+        ThankForYourParticipationText: "Votre événement nous a bien été transmis. Il sera publié sur notre site Internet dès qu'un modérateur l'aura validé."
+    world:
+        WorldEventMessage: "Événement multilingue"
+logo:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Alt: "Alt"
+        Language: "Langue"
+        PublishedAt: "Date de publication"
+        Image: "Image"
+        Folder: "Dossier"
+        IsActive: "Active"
+rssFeed:
+    menu:
+        RSSFeeds: "Flux RSS"
+        SubscribeToRSSFeeds: "S'abonner au flux RSS"
+    index:
+        SubscribeToRSSFeeds: "S'abonner au flux RSS"
+        WhatIsItTitle: "Qu'est-ce qu'un flux RSS ?"
+        WhatIsItText: "Les flux RSS vous permettent de vous abonner à un canal d'informations. Une fois abonné, vous pouvez suivre l'actualité du site web, à travers un lecteur, très rapidement et sans avoir à le consulter. Ainsi vous serez averti immédiatement dès qu'un nouvel article sera publié !"
+        CustomizeYourRSSFeed: "Personnalisez votre flux RSS"
+        RSSFeedCreatedTitle: "Flux RSS généré"
+        RSSFeedCreatedText: "Pour vous abonner au flux RSS d'Activité-Paranormale, copiez le lien ci-dessous et collez-le dans votre lecteur favori !"
+        Category: "Catégorie"
+        Language: "Langue"
+        Number: "Nombre"
+        News: "Actualité"
+        Document: "Document"
+        Photo: "Photo"
+        Testimony: "Témoignage"
+        Video: "Vidéo"
+        French: "Français"
+        English: "English"
+        Spanish: "Español"
+    read:
+        CopyToClipboard: "Copier"
+        CodeCopiedWithSuccess: "Le code a été copié avec succès"
+copyright:
+    table:
+        UsedPhotos: "Photos utilisées"
+        Photo: "Photo"
+        License: "Licence"
+        Author: "Auteur"
+        Link: "Lien"

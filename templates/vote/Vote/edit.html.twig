@@ -1,0 +1,67 @@
+<link href="{{ asset('extended/js/bootstrap-star-rating/css/star-rating.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+<script src="{{ asset('extended/js/bootstrap-star-rating/js/star-rating.min.js') }}"></script>
+<script src="{{ asset('extended/js/bootstrap-star-rating/js/locales/' ~ app.request.locale ~ '.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('extended/js/bootstrap-star-rating/css/theme.min.css') }}" />
+<script src="{{ asset('extended/js/bootstrap-star-rating/js/theme.min.js') }}"></script>
+
+<div class="star_rate mt-2">
+	{{ form_start(form, {'attr': {'class' : 'star_rating', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
+		<div class="row alert alert-dark no-gutters">
+			<div class="col-sm mt-1">
+			{{ form_widget(form.valueVote) }}
+			</div>
+			<div class="col-sm text-right">
+				<span id="resultVote">
+					{% apply spaceless %}
+					{{ "vote.edit.AverageScore"|trans([], "validators") }} <span class="averageVote">{{ averageVote|round(1) }}</span>
+					(<span class="badge badge-danger countVoteByClassName">{{ countVoteByClassName }}</span>
+
+					{% if countVoteByClassName <= 1 %} 
+						{{ "vote.edit.Vote"|trans([], "validators") }}
+					{% else %}
+						{{ "vote.edit.Votes"|trans([], "validators") }}
+					{% endif %}
+					)
+					{% endapply %}
+				</span>
+				<a title="rating" id="rate" onclick="$('#{{ form.vars['id'] }}').submit();" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</a>
+			</div>
+		</div>
+	{{ form_end(form) }}
+</div>
+
+<script>
+	$(function() {
+		$('#{{ form.valueVote.vars.id }}').rating({
+			hoverOnClear: false,
+			theme: 'krajee-fas',
+			containerClass: 'is-star',
+			language: "{{ app.request.locale }}",
+			defaultCaption: "{rating}",
+			starCaptions: function(val) {
+				val
+			}
+		});
+
+		$("#{{ form.vars.id }}").submit(function(e)
+		{
+			e.preventDefault();
+
+			var DATA = $(this).serialize();
+			
+			$.ajax(
+			{
+				type: "POST",
+				url: "{{ path('Vote_Edit', { 'idClassName' : idClassName, 'className': className }) }}",
+				data: DATA,
+				cache: false,
+				success: function(data)
+				{
+					$('.averageVote').html(data.averageVote);
+					$('.countVoteByClassName').html(data.countVoteByClassName);
+					$("#{{ form.valueVote.vars.id }}").rating('update', data.averageVote);
+				}
+			});
+		});
+	});
+</script>

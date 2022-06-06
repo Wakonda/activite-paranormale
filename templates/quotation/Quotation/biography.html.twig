@@ -1,0 +1,306 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/nessy-icon-biography.png') }}" width="30" class="mt-1" alt="Sea monster"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
+		
+			function loadQuotations(url)
+			{
+				$.ajax(
+				{
+					type: "GET",
+					url: url,
+					cache: false,
+					beforeSend: function()
+					{
+						$('p#loading_quotation').show();
+						$('div#load_quotations').hide();
+					},
+					success: function(data)
+					{
+						$('p#loading_quotation').hide();
+						$('div#load_quotations').show();
+						$('#load_quotations').html(data);
+					}
+				});
+			}
+			
+			loadQuotations("{{ path('Quotation_quotationsServerSide', { 'authorId' : entity.id }) }}");
+			
+			$(document).on("click", "div#pagination_quotation a", function(event) {
+				event.preventDefault();
+				loadQuotations($(this).attr('href'));
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, entity.photoIllustrationCaption)|raw }}</p>
+	
+	{% set infos = [] %}
+
+	{% if entity.birthDate is not empty %}
+		{% set infos = infos|merge(["<b>"~"biography.index.BirthDate"|trans([], "validators")~"</b> "~entity.birthDate|doPartialDate(app.request.locale)]) %}
+	{% endif %}
+	{% if entity.deathDate is not empty %}
+		{% set infos = infos|merge(["<b>"~"biography.index.DeathDate"|trans([], "validators")~"</b> "~entity.deathDate|doPartialDate(app.request.locale)]) %}
+	{% endif %}
+	{% if entity.nationality is not empty %}
+		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20px' height='13px'>"~" "~entity.nationality.title]) %}
+	{% endif %}
+	
+	{% set occupationArray = [] %}
+	{% for occupation in occupations_by_biography(entity) %}
+		{% set occupationArray = occupationArray|merge([(("biography.occupation."~(occupation|capitalize))|trans([], "validators"))]) %}
+	{% endfor %}
+
+	{% if occupationArray is not empty %}
+		{% set infos = infos|merge(["<b>"~"biography.index.Occupations"|trans([], "validators")~"</b> " ~ occupationArray|join(", ")]) %}
+	{% endif %}
+	
+	{% if entity.kind is not empty %}
+		{% set infos = infos|merge(["<i class='fas fa-user-astronaut text-primary'></i> <b>"~("biography.form."~entity.kind)|trans([], "validators")~"</b>"]) %}
+	{% endif %}
+	
+	{% if infos is not empty %}
+		<ul>
+			{% for info in infos %}
+				<li>{{ info|raw }}</li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+
+	<hr>
+	{{ entity.text|raw }}
+
+	{% if entity.links is not null %}
+		<br>
+		<h3><i class="fas fa-link fa-sm"></i> {{ "biography.index.Links"|trans([], "validators") }}</h3>
+		{% set linkArray = json_decode(entity.links) %}
+		{% for sn in linkArray %}
+			{% if sn.url is not empty %}
+				<a href="{{ sn.url }}" alt="{{ ("biography.link."~sn.label)|trans([], "validators") }}" title="{{ ("biography.link."~sn.label)|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/webdirectory/social_network/'~ (sn.link|lower)~'.png') }}" alt="{{ sn.link }}" width="50"/></a>
+			{% endif %}
+		{% endfor %}
+		<br>
+		<br>
+	{% endif %}
+	
+	{% if quotationsByAuthor|length > 0 %}
+		<h3><i class="fas fa-comment-dots fa-sm"></i> {{ "biography.index.Quotations"|trans([], "validators") }}</h3>
+		<p class="text-center" id="loading_quotation">
+			<img src="{{ asset('extended/photo/ajax-loader.gif') }}" alt="Loading" />
+			<br>
+			{{ "generality.data.LoadingInProgress"|trans([], "validators") }}
+		</p>
+		<div id="load_quotations">
+		</div>
+	{% endif %}
+
+	{% if documents|length > 0 %}
+		<h3><i class="fas fa-folder-open fa-sm"></i> {{ "biography.index.Documents"|trans([], "validators") }}</h3>
+		<table class="doc_datatables dt-responsive w-100">
+			<thead>
+				<tr>
+					<th>{{ "biography.index.Title"|trans([], "validators") }}</th>
+					<th>{{ "biography.index.Language"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for document in documents %}
+					<tr class="trGene">
+						<td class='tdGene'><a href="{{ url('DocumentBundle_AbstractDocument', { 'id' : document.id, 'title_slug' : document.getUrlSlug() }) }}"><span class="italic">{{ document.title }}</span></a></td>
+						<td class='tdGene'><img src="{{ asset(document.language.getAssetImagePath()) }}{{ document.language.logo }}" alt="" width="20px" height="13px" /></td></tr>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="clear"></div>
+	{% endif %}
+
+	{% if books|length > 0 or bookEditions|length > 0 %}
+			<h3><i class="fas fa-book fa-sm"></i> {{ "biography.index.Books"|trans([], "validators") }}</h3>
+		{% if books|length > 0 %}
+			<table class="doc_datatables dt-responsive w-100">
+				<thead>
+					<tr>
+						<th>{{ "book.biography.Title"|trans([], "validators") }}</th>
+						<th>{{ "book.biography.Language"|trans([], "validators") }}</th>
+						<th>{{ "book.biography.Purchase"|trans([], "validators") }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for book in books %}
+						<tr class="trGene">
+							<td class="tdGene" style="width: 50%">
+								<p class="text-center">{{ book.title }}</p>
+								{% set dataStore = (book.bookEditions is not empty ? image_embedded_code(book.bookEditions[0], "book", "BookStore") : null) %}
+								{% if dataStore is not empty %}
+									<p class="text-center">{{ book.store|raw }}</p>
+								{% else %}
+									{{ book.photo|imgsize(150, book.getAssetImagePath())|raw }}
+								{% endif %}
+							</td>
+							<td class='tdGene'><img src="{{ asset(book.language.getAssetImagePath()) }}{{ book.language.logo }}" alt="" width="20px" height="13px" /></td>
+							<td class='tdGene'>
+							<a class="btn read w-auto" href="{{ path('Book_Show', {'id': book.id, 'title_slug': book.getUrlSlug()}) }}">
+								<span><i class="fas fa-book fa-fw"></i></span>
+							</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="clear"></div>
+		{% endif %}
+	
+		{% if bookEditions|length > 0 %}
+			<h4><i class="fas fa-feather-alt"></i> <u>{{ "bookEdition.read.BookParticipation"|trans([], "validators") }}</u></h4>
+			<table class="doc_datatables dt-responsive w-100">
+				<thead>
+					<tr>
+						<th>{{ "book.biography.Title"|trans([], "validators") }}</th>
+						<th>ISBN</th>
+						<th>{{ "book.biography.Purchase"|trans([], "validators") }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for bed in bookEditions %}
+						<tr class="trGene">
+							<td class="tdGene" style="width: 50%">
+								{{ bed.bookEdition.book.title }}<br>
+								[<i>{{ ("bookEdition.read."~(bed.occupation|capitalize))|trans([], "validators") }}</i>]
+							</td>
+							<td class='tdGene'>
+								{% if bed.bookEdition.isbn10 is not empty %}
+									{{ bed.bookEdition.isbn10 }}
+								{% endif %}
+								<br>
+								{% if bed.bookEdition.isbn13 is not empty %}
+									{{ bed.bookEdition.isbn13 }}
+								{% endif %}
+							</td>
+							<td class='tdGene'>
+							<a class="btn read w-auto" href="{{ path('Book_Show', {'id': bed.bookEdition.book.id, 'title_slug': bed.bookEdition.book.getUrlSlug()}) }}">
+								<span><i class="fas fa-book fa-fw"></i></span>
+							</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="clear"></div>
+		{% endif %}
+	{% endif %}
+	
+	{% set movies = movies_by_biography(entity) %}
+	{% if movies|length > 0 %}
+		<h3><i class="fas fa-film fa-sm"></i> {{ "biography.index.Movies"|trans([], "validators") }}</h3>
+		<table class="doc_datatables dt-responsive w-100">
+			<thead>
+				<tr>
+					<th>{{ "movie.biography.Title"|trans([], "validators") }}</th>
+					<th>{{ "movie.biography.Occupations"|trans([], "validators") }}</th>
+					<th>{{ "movie.biography.Genre"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for movie in movies %}
+					<tr class="trGene">
+						<td class="tdGene"><a href="{{ path('Movie_Show', {id: movie.movieId, title_slug: movie.movieSlug}) }}">{{ movie.movieTitle }}</a></td>
+						<td class="tdGene">
+						{% set occupationArray = [] %}
+						{% for occupation in movie.occupations|split("|") %}
+							{% set occupationArray = occupationArray|merge([(("movie.read."~(occupation|capitalize))|trans([], "validators"))~((movie.movieRole is not empty and occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION')) ? " [<i>"~movie.movieRole~"</i>]" : "" )]) %}
+						{% endfor %}
+						
+						{{ (occupationArray|join(", "))|raw }}
+						</td>
+						<td class="tdGene"><i class="fas fa-film"></i> {{ movie.genreTitle }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="clear"></div>
+	{% endif %}
+	{% set televisionSeries = television_series_by_biography(entity) %}
+	{% if televisionSeries|length > 0 %}
+		<h3><i class="fas fa-tv fa-sm"></i> {{ "biography.index.TelevisionSeries"|trans([], "validators") }}</h3>
+		<table class="doc_datatables dt-responsive w-100">
+			<thead>
+				<tr>
+					<th>{{ "televisionSerie.biography.Title"|trans([], "validators") }}</th>
+					<th>{{ "televisionSerie.biography.Occupations"|trans([], "validators") }}</th>
+					<th>{{ "televisionSerie.biography.Genre"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for televisionSerie in televisionSeries %}
+					<tr class="trGene">
+						<td class="tdGene"><a href="{{ path('TelevisionSerie_Show', {id: televisionSerie.televisionSerieId, title_slug: televisionSerie.televisionSerieSlug}) }}">{{ televisionSerie.televisionSerieTitle }}</a></td>
+						<td class="tdGene">
+						{% set occupationArray = [] %}
+						{% for occupation in televisionSerie.occupations|split("|") %}
+							{% set occupationArray = occupationArray|merge([(("televisionSerie.read."~(occupation|capitalize))|trans([], "validators"))~((televisionSerie.televisionSerieRole is not empty and occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION')) ? " [<i>"~televisionSerie.televisionSerieRole~"</i>]" : "" )]) %}
+						{% endfor %}
+						
+						{{ (occupationArray|join(", "))|raw }}
+						</td>
+						<td class="tdGene"><i class="fas fa-film"></i> {{ televisionSerie.genreTitle }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="clear"></div>
+	{% endif %}
+	
+	{% set artists = artist_by_biography(entity) %}
+	{% if artists|length > 0 %}
+		<h3><i class="fas fa-music fa-sm"></i> {{ "biography.index.Artists"|trans([], "validators") }}</h3>
+		<table class="doc_datatables dt-responsive w-100">
+			<thead>
+				<tr>
+					<th>{{ "artist.biography.Title"|trans([], "validators") }}</th>
+					<th>{{ "artist.biography.Occupations"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for artist in artists %}
+					<tr class="trGene">
+						<td class="tdGene"><a href="{{ path('Music_Album', {id: artist.artistId, title_slug: artist.artistTitle}) }}">{{ artist.artistTitle }}</a></td>
+						<td class="tdGene">
+						{% set occupationArray = [] %}
+						{% for occupation in artist.occupations|split("|") %}
+							{% if ("artist.biography."~(occupation|capitalize))|trans([], "validators") not in occupationArray %}
+								{% set occupationArray = occupationArray|merge([(("artist.biography."~(occupation|capitalize))|trans([], "validators"))]) %}
+							{% endif %}
+						{% endfor %}
+						
+						{{ (occupationArray|join(", "))|raw }}
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		<div class="clear"></div>
+	{% endif %}
+	
+	{% if entity.source is not empty %}
+		<h3>{{ "biography.index.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source) }}
+	{% endif %}
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

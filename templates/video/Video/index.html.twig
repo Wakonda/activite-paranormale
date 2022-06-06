@@ -1,0 +1,41 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "video.index.Video"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/movie.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ "video.index.Video"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block header_plus %}
+{% endblock %}
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/video.jpg') }}" height="550" alt="Mermaid" /></p>
+	<p>{{ "video.index.NbrTotalVideo"|trans([], "validators") }}<span class="badge badge-danger">{{ nbrVideo }}</span></p>
+	<hr />
+
+	{% set nbrTheme1 = nbrTheme - 1 %}
+	
+	{% set i = 0 %}
+	<div id="accordion">
+		{% for ST in surTheme %}
+			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="true" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
+			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
+			<br />
+			<table class="table table-bordered">
+			<tr class="trGene">
+				<th>{{ "video.index.Theme"|trans([], "validators") }}</th>
+				<th>{{ "video.index.Number"|trans([], "validators") }}</th>
+			</tr>
+			{% for T in theme %}
+				{% if T.SurTheme == ST %}
+					{% for i in 0..nbrTheme1 %}
+						{% if T.title == tabThemeNbr[i][0] %}
+							<tr><td class="td_form_table"><a href="{{ path('Video_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ tabThemeNbr[i][0] }}</a></td><td class="tdGene"><span class="badge badge-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
+						{% endif %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+			</table>
+			</div>
+		{% endfor %}
+	</div>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

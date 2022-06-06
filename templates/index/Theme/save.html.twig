@@ -1,0 +1,11 @@
+{% extends "index/Generic/save_pdf_generic.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+
+{% block back_route %}{{ path('Theme_Show', {'id' : entity.id, 'theme' : entity.title }) }}{% endblock %}
+
+{% block file_name %}{{ entity.pdfTheme }}{% endblock %}
+
+{% block download_route %}{{ path('Theme_Download', {'id' : entity.id}) }}{% endblock %}
+
+{% block path_file %}{{ entity.getAssetImagePath() }}{% endblock %}

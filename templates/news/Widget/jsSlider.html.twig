@@ -1,0 +1,15 @@
+<div class="marquee-container d-flex">
+	<div class="d-flex align-items-center" style="flex-grow: 1;">
+		<ul id="marquee1" class="marquee w-100">
+			{% for SN in sliderNews %}
+				<li class="infoDefile"><i class="fas fa-calendar-alt"></i> {{ SN.publicationDate|date('d/m/Y') }} <i class="fas fa-chevron-right"></i> <a href="{{ path('News_ReadNews_New', {'id':SN.id, 'title_slug':SN.getUrlSlug() } ) }}" title="{{ SN.title }}">{{ SN.title }}</a></li>
+			{% endfor %}
+		</ul>
+	</div>
+	<div class="marquee-action">
+		<button class="btn btn-light btn-sm previous-marquee"><i class="fas fa-chevron-left"></i></button>
+		<button class="btn btn-light btn-sm pause-marquee"><i class="fas fa-pause"></i></button>
+		<button class="btn btn-light btn-sm resume-marquee d-none"><i class="fas fa-play"></i></button>
+		<button class="btn btn-light btn-sm next-marquee"><i class="fas fa-chevron-right"></i></button>
+	</div>
+</div>

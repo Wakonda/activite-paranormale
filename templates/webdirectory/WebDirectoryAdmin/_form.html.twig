@@ -1,0 +1,74 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "directory.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.link, "directory.admin.Link"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.link) }}{{ form_widget(form.link, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.logo, "directory.admin.Logo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.logo) }}
+	{% if entity.logo is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.logo }}
+		<br>
+	{% endif %}
+	{{ form_widget(form.logo) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "directory.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "directory.admin.Description"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.foundedYear, "directory.admin.FoundedYear"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.foundedYear) }}{{ form_widget(form.foundedYear, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.defunctYear, "directory.admin.DefunctYear"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.defunctYear) }}{{ form_widget(form.defunctYear, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkFacebook, "Facebook") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkFacebook) }}{{ form_widget(form.socialNetworkFacebook, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTwitter, "Twitter") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkTwitter) }}{{ form_widget(form.socialNetworkTwitter, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkGooglePlus, "GooglePlus") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkGooglePlus) }}{{ form_widget(form.socialNetworkGooglePlus, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkRSS, "RSS") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkRSS) }}{{ form_widget(form.socialNetworkRSS, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkYoutube, "Youtube") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkYoutube) }}{{ form_widget(form.socialNetworkYoutube, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkInstagram, "Instagram") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkInstagram) }}{{ form_widget(form.socialNetworkInstagram, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkPinterest, "Pinterest") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkPinterest) }}{{ form_widget(form.socialNetworkPinterest, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkDelicious, "Delicious") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkDelicious) }}{{ form_widget(form.socialNetworkDelicious, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkGithub, "Github") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkGithub) }}{{ form_widget(form.socialNetworkGithub, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkLinkedin, "Linkedin") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkLinkedin) }}{{ form_widget(form.socialNetworkLinkedin, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTumblr, "Tumblr") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkTumblr) }}{{ form_widget(form.socialNetworkTumblr, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkVimeo, "Vimeo") }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkVimeo) }}{{ form_widget(form.socialNetworkVimeo, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "directory.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>

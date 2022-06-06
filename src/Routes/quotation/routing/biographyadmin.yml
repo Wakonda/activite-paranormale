@@ -1,0 +1,69 @@
+Biography_Admin_Index:
+    path:  /{page}
+    controller: App\Controller\BiographyAdminController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+Biography_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\BiographyAdminController::showAction
+
+Biography_Admin_New:
+    path:  /new
+    controller: App\Controller\BiographyAdminController::newAction
+
+Biography_Admin_Create:
+    path:  /create
+    controller: App\Controller\BiographyAdminController::createAction
+    requirements:
+        _method: post
+
+Biography_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\BiographyAdminController::editAction
+
+Biography_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\BiographyAdminController::updateAction
+    requirements:
+        _method: post
+
+Biography_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\BiographyAdminController::deleteAction
+
+Biography_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\BiographyAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Biography_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\BiographyAdminController::showImageSelectorColorboxAction
+
+Biography_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\BiographyAdminController::loadImageSelectorColorboxAction
+
+Biography_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\BiographyAdminController::internationalizationAction
+
+Biography_Admin_Autocomplete:
+    path:  /autocomplete
+    controller: App\Controller\BiographyAdminController::autocompleteAction
+
+Biography_Admin_ReloadByLanguage:
+    path: /reload_by_language
+    controller: App\Controller\BiographyAdminController::reloadByLanguageAction
+
+Biography_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\BiographyAdminController::wikidataAction
+
+Biography_Admin_Validate:
+    path: /validate
+    controller: App\Controller\BiographyAdminController::validateBiographyAction

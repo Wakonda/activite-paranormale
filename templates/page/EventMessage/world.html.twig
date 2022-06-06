@@ -1,0 +1,8 @@
+{% extends "index/Generic/world.html.twig" %}
+
+{% block title %}{{ "eventMessage.world.WorldEventMessage"|trans([], "validators") }}{% endblock %}
+
+{% block world_datatables %}{{ path('EventMessage_WorldDatatables', { 'language' : app.request.attributes.get('language') }) }}{% endblock %}
+
+{% block world_flag %}EventMessage_World{% endblock %}
+{% block select_theme_for_index_world %}EventMessage_SelectThemeForIndexWorld{% endblock %}

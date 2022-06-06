@@ -1,0 +1,34 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Doc"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('Document_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('Document_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "document.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "document.admin.AuthorDocument"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "document.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "document.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "document.admin.AuthorDocument"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "document.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block body_main_additional_bottom %}
+	<div class="container-fluid mt-3">
+		<h3>{{ "admin.general.Assessment"|trans([], "validators") }}</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>{{ "admin.general.Archived"|trans([], "validators") }}</th>
+				<td><span class="badge badge-danger">{{ count_archived("App\\Entity\\Document") }}</span></td>
+			</tr>
+		</table>
+	</div>
+{% endblock %}

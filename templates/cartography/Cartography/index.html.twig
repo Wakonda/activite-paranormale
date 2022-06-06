@@ -1,0 +1,105 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ 'cartography.index.Cartography'|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bio-hazard-icon.png') }}" width="25" class="mt-1" alt="Biohazard"/></span>{{ 'cartography.index.Cartography'|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+	<link href='{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}' rel='stylesheet' />
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+	
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
+
+	<script>
+		$(function() {
+			var markersArray = new Array();
+			var map = L.map('map-canvas').setView([43.009198, -97.106824], 15);
+
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+
+			$(document).on("click", ".location_coordinates", function() {
+				map.setView(markersArray[$(this).attr("id")].getLatLng(), 15);
+				markersArray[$(this).attr("id")].openPopup();
+			});
+
+			map.addControl(new L.Control.Fullscreen());
+
+			$('table.doc_datatables').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": {{ total_line_display }},
+				"bProcessing": true,
+				"bServerSide": true,
+				"aaSorting": [[ 0, "asc" ]],
+				"ajax": "{{ path('Cartography_ListDatatables') }}",
+				"drawCallback": function( settings ) {
+					 map.eachLayer((layer) => {
+						 if(layer['_latlng']!=undefined)
+							 layer.remove();
+					 });
+					for(const data in settings.json.aaData) {
+						let item = settings.json.aaData[data];
+
+						markersArray[item.id] = L.marker([item.latitud, item.longitud]).addTo(map)
+						.bindPopup(item.infoWindow, { maxWidth: 500 });
+					}
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<h3 id="title_cartography_maps">{{ "cartography.index.SectionIndex"|trans([], "validators") }}</h3>
+	<div id="map-canvas" style="width:100%; height:400px"></div>
+	<br>
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "cartography.index.Picture"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Theme"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Latitud"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Longitud"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for entity in entities %}
+				<tr class="trGene">
+					<td class="tdGene">{{ entity.photo|imgsize(150, entity.getAssetImagePath())|raw }}</td>
+					<td class="tdGene"><a href="#title_cartography_maps" id="{{ entity.id }}" class="location_coordinates" data-latitud="{{ entity.coordXMap }}" data-longitud="{{ entity.coordYMap }}" >{{ entity.title }}</a></td>
+					<td class="tdGene">{{ entity.theme.title }}</td>
+					<td class="tdGene">{{ entity.coordXMap|number_format(2) }}</td>
+					<td class="tdGene">{{ entity.coordYMap|number_format(2) }}</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "cartography.index.Picture"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Theme"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Latitud"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "cartography.index.Longitud"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	<br />
+	{{ "google"|advertisement|raw }}
+{% endblock %}

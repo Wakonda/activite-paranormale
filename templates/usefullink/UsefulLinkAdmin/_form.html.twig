@@ -1,0 +1,8 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "usefullink.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "usefullink.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.links, "usefullink.admin.Link"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.links) }}{{ form_widget(form.links, { 'attr': {'class': 'form-control'} }) }}</div>

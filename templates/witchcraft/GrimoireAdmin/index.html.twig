@@ -1,0 +1,24 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.MagicBook"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('Grimoire_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('Grimoire_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "grimoire.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "grimoire.admin.Theme"|trans([], "validators") }}</th>
+	<th id="state_column" class="label_form">{{ "grimoire.admin.State"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "grimoire.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "grimoire.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "grimoire.admin.Theme"|trans([], "validators") }}</th>
+	<th id="state_column" class="label_form">{{ "grimoire.admin.State"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "grimoire.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

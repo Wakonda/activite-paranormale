@@ -1,0 +1,39 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Music"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Music_Admin_Index') }}{% endblock %}
+{% block create_admin_route %}{{ path('Music_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.select2_autocomplete() }}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+
+	<script>
+		$(function()
+		{
+			$("#{{ form.vars['id'] }}_existingFile .select_files_colorbox").click(function(e)
+			{
+				e.preventDefault();
+				$('#selectMusicFileModal_{{ form.vars.id }} .modal-body').load('{{ path("Music_Admin_ChooseExistingFile") }}',function(){
+					$('#selectMusicFileModal_{{ form.vars.id }}').modal({show:true});
+				});
+			});
+
+			$("#{{ form.vars['id'] }}_musicPieceFile").change(function(){
+				$("#{{ form.vars['id'] }}_existingFile").val("");
+			});
+			
+			$("#{{ form.existingFile.vars.id }} .remove_files_colorbox").click(function(e) {
+				$("#{{ form.existingFile.vars.id }} .existing_music_colorbox").val("");
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'music/MusicAdmin/_form.html.twig' %}
+{% endblock %}

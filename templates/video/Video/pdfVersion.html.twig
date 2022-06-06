@@ -1,0 +1,16 @@
+{% extends "index/Generic/pdfVersion_generic.html.twig" %}
+
+{% block main_content_pdf %}
+	<h1>{{ entity.title }}</h1>
+    <br />
+	{% set img = "http://" ~ app.request.server.get('HTTP_HOST') ~ "/" ~ asset(entity.getAssetImagePath()) ~ entity.photo %}
+	{% set size = img_size_html2pdf(img) %}
+		
+	<p class="text-center"><img src="{{ img }}" width="{{ size['width'] }}" height="{{ size['height'] }}" /></p>
+
+	<br />
+	<p class="texte">{{ ((entity.text|HTMLPurifier)|removeStyleAttributeFromHtmlTags)|raw }}</p>
+	<br />
+	<hr class="hr2"/>
+	<p>{{ entity.theme.title }} - {{ entity.publicationDate|dodate(false, app.request.locale) }} - {{ entity.pseudoUsed }} - {{ entity.licence.title }}</p>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block page_title%}{{ entity.title }}{% endblock %}
+
+{% block meta_plus %}
+	<link rel="canonical" href="{{ url('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : entity.id, 'title_slug' : entity.title}) }}">
+{% endblock %}
+
+{% block body_content %}
+	<div class="read-content">
+		<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		<br />
+		<div>{{ entity.text|raw }}</div>
+		<br />
+		<hr class="hr2"/>
+		<p class="mt-7">{{ entity.surTheme.menuGrimoire.title }} - <a href="{{ path('ap_witchcraftmobile_index', {theme: entity.surTheme.title}) }}">{{ entity.surTheme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|date_mobile(app.request.locale) }}</p>
+	</div>
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Grimoire' })) }}
+{% endblock %}

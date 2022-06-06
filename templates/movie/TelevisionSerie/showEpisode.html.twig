@@ -1,0 +1,68 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ entity.televisionSerie.title }} - {{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity.televisionSerie } %}
+
+	<table class="table">
+		<tbody>
+			{% set biographyDatas = episode_televisionserie_biographies_by_occupation(entity) %}
+			{% if biographyDatas is not empty %}
+			<tr>
+				{% for occupation, biographies in biographyDatas %}
+					<td class="td_form_table theme_title_td">{{ (("televisionSerie.read."~(occupation)|capitalize)~"By")|trans([], "validators") }}</td>
+					<td class="tdGene">
+						{% set persons = [] %}
+						{% for biography in biographies %}
+							{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a> ' ~ (occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') ? ' [<i>' ~ biography.role ~ '</i>]' : '')]) %}
+						{% endfor %}
+						{{ (persons|join(", "))|raw }}
+					</td>
+				{% endfor %}
+			</tr>
+			{% endif %}
+			{% if entity.duration is not empty %}
+				<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Duration"|trans([], "validators") }}</td><td>{{ entity.duration }} {{ "televisionSerie.read.Minute"|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</td></tr>
+			{% endif %}
+			{% if entity.releaseDate is not empty %}
+				<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.ReleaseDate"|trans([], "validators") }}</td><td>{{ entity.releaseDate|dodate(false, app.request.locale) }}</td></tr>
+			{% endif %}
+		</tbody>
+	</table>
+
+	{{ entity.synopsis|raw }}
+	
+	{{ getTagsByEntityForDisplay(entity) }}
+	
+	{% if entity.source is not empty %}
+		<br>
+		<h3>{{ "televisionSerie.read.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source) }}
+	{% endif %}
+	
+	{% set datas = get_store_by_entity(entity.televisionSerie, "televisionSerie", "TelevisionSerieStore") %}
+	
+	{% if datas|length > 0 %}
+		<h3>{{ "store.index.Store"|trans([], "validators") }}</h3>
+	
+		{% for data in datas %}
+			{% include "store/Store/_product.html.twig" with { entity: data } %}
+		{% endfor %}
+	{% endif %}
+
+	<hr class="hr2">
+	<p>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.televisionSerie.language.direction }}" href="{{ path('Theme_Show', { id: entity.televisionSerie.theme.id, theme: entity.televisionSerie.theme.title }) }}">{{ entity.televisionSerie.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.televisionSerie.publicationDate|dodate(false, app.request.locale) }} {% if entity.televisionSerie.licence is not null %}- <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.televisionSerie.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.televisionSerie.licence.logo) }}" alt="{{ entity.televisionSerie.licence.title }}" /></a>{% endif %}
+		{% include 'index/History/index.html.twig' with { 'entity': entity.televisionSerie } %}
+	</p>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+
+	{{ getTagsByEntityForDisplay(entity) }}
+
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'TelevisionSerie' })) }}
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

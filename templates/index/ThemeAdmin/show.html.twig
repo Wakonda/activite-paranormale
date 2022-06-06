@@ -1,0 +1,35 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.GeneralTheme"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Theme_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Theme_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Theme_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Theme_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Theme"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Family"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.SurTheme.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.InternationalName"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.internationalName }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.File"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.pdfTheme }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.photo|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Theme_Admin_Internationalization", "showRoute": "Theme_Admin_Show", "editRoute": "Theme_Admin_Edit"})) }}
+{% endblock %}

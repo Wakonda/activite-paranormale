@@ -1,0 +1,206 @@
+index:
+    main:
+        Welcome: "Welcome"
+        InternationalNews: "International news"
+        Video: "Video"
+        Gallery: "Gallery"
+        Witchcraft: "Witchcraft"
+        GoWebsiteMobile: "Go to the mobile version of the website"
+    mainMenu:
+        Welcome: "Welcome"
+        New: "New"
+        Witchcraft: "Witchcraft"
+        Blog: "Blog"
+        Store: "Store"
+    leftMenu:
+        Information: "Information"
+        Account: "Account"
+        YourAccount: "Your account"
+        ModifyAccount: "Modify your account"
+        ModifyPassword: "Modify your password"
+        Logout: "Log out"
+        Login: "Log in"
+        CreateAccount: "Create an account"
+        Management: "Management"
+        Section: "Section"
+        Archive: "Archive"
+        Quotation: "Quotation"
+        World: "Multilingual News"
+        Document: "Document"
+        Cartography: "Cartography"
+        Members: "Members"
+        Music: "Music"
+        Photo: "Photo"
+        Download: "Download"
+        Testimony: "Testimony"
+        Theme: "Theme"
+        Video: "Video"
+        OfferLink: "Offer a link"
+        Testify: "Testify"
+        SubmitArticle: "Submit an article"
+        Participate: "Participate"
+        Search: "Search"
+        HelpUs: "Help us"
+        Quotations: "Quotations"
+        Validation: "Validation"
+        More: "More"
+        Visitors: "Visitors"
+        Horoscope: "Horoscope"
+        AddNews: "Suggest a news"
+        AddRitual: "Suggest a ritual"
+        AddEvent: "Suggest an event"
+        Partner: "Partner"
+        Biography: "Biography"
+        Movie: "Movie"
+        TelevisionSerie: "Television serie"
+        FollowUsOn: "Follow us on..."
+        ClassifiedAds: "Classified ads"
+        Book: "Book"
+    footerMenu:
+        FollowUs: "Follow us"
+        About: "About"
+        MobileView: "Mobile view"
+        Directory: "Directory"
+        PrivacyPolicy: "Privacy policy"
+        Contact: "Contact"
+    rightMenu:
+        Login: "Log in"
+        CreateAccount: "Create an account"
+        Logout: "Log out"
+        SeeAccount: "See your account"
+        EditAccount: "Edit your account"
+        Admin: "Admin"
+    className:
+        Book: "Book"
+        Cartography: "Cartography"
+        Document: "Document"
+        EventMessage: "Event"
+        Movie: "Movie"
+        News: "News"
+        Photo: "Photo"
+        Testimony: "Testimony"
+        Video: "Video"
+        TelevisionSerie: "Television serie"
+        EpisodeTelevisionSerie: "Episode (television serie)"
+        Grimoire: "Witchcraft"
+        WitchcraftTool: "Witchcraft tool"
+    archive:
+        Archive: "Archive"
+        DocArchive: "Total number of documents archived: "
+        Theme: "Theme"
+        Number: "Number"
+        Source: "Source"
+        Title: "Title"
+        PublicationDate: "Publication date"
+        Section: "Section"
+        Unauthorized: "Our archives are private. To get access, you need to <a href='%urlAccount%'>open an account</a> and <a href='%urlContact%'>request an access</a> to this informations. When you will be allowed to enter, you could consultate freely and unlimitedly all our archives."
+civility:
+    admin:
+        Title: "Title"
+        InternationalName: "International name"
+        Language: "Language"
+        Icon: "Icon"
+country:
+    admin:
+        Country: "Country"
+        Flag: "Flag"
+        Title: "Title"
+        Language: "Language"
+        InternationalName: "International name"
+language:
+    admin:
+        Language: "Language"
+        Abbreviation: "Abbreviation"
+        Flag: "Flag"
+        Direction: "Writing system"
+        RightToLeft: "From right to left"
+        LeftToRight: "From left to right"
+licence:
+    showColorbox:
+        WhatLicensesChoose: "What licenses choose?"
+    showColorboxByLicence:
+        License: "License"
+    admin:
+        Title: "Title"
+        Logo: "Logo"
+        Description: "Description"
+        Language: "Language"
+        InternationalName: "International name"
+        Link: "Link"
+history:
+    show:
+        Title: "Title"
+        Date: "Date"
+        Author: "Author"
+        RevisionHistory: "Revision history of: "
+        ViewHistory: "View history"
+        History: "History"
+        Diff: "Diff"
+state:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        DisplayState: "Displayed"
+        Language: "Language"
+        InternationalName: "International name"
+surtheme:
+    admin:
+        Title: "Title"
+        Language: "Language"
+        InternationalName: "International name"
+theme:
+    admin:
+        Theme: "Theme"
+        Family: "Family"
+        Language: "Language"
+        File: "File"
+        Photo: "Photo"
+        InternationalName: "International name"
+    index:
+        Theme: "Theme"
+        Read: "Read"
+    read:
+        Theme: "Theme"
+generality:
+    read:
+        Previous: "Previous"
+        Next: "Next"
+        OnTheSameTopic: "On the same topic"
+        NoMatchingRecordsFound: "No matching records found"
+    data:
+        LoadingInProgress: "Loading in progress..."
+    page:
+        Advertisement: "Advertisements"
+    pdf:
+        Home: "Home"
+        Download: "Download"
+        Back: "Back"
+        SavePrint: "Save / Print"
+banner:
+    admin:
+        Title: "Title"
+        Link: "Link"
+        Image: "Image"
+        Display: "Display"
+        Language: "Language"
+captcha:
+    form:
+        RecopyCaptcha: "Match the characters in the picture"
+    error:
+        InvalidCaptcha: "Invalid code! Please, try again"
+twitter:
+    admin:
+        NumberOfRemainingCharacters: "Number of remaining characters:"
+        AddImage: "Add image"
+version:
+    title:
+        ActivateVersion: "Activate version"
+        ReturnToVersion: "Return to version"
+# Error HTTP
+"Not Found": "Not Found"
+"Internal Server Error": "Internal Server Error"
+
+error:
+    exception:
+        Error: "Error"
+        Deleted: "This page has been deleted"

@@ -1,0 +1,77 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ "witchcraft.new.AddRitual"|trans([], "validators") }}{% endblock %}
+{% block page_title%}{{ "witchcraft.new.AddRitual"|trans([], "validators") }}{% endblock %}
+
+{% block body_content %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_js(form.text.vars.id) }}
+
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('ap_witchcraftmobile_create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-group row">
+			{{ form_label(form.title, "witchcraft.new.Title"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.title) }}
+				{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.text, "witchcraft.new.Text"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.text) }}
+				{{ form_widget(form.text, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.surTheme, "witchcraft.new.Theme"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.surTheme) }}
+				{{ form_widget(form.surTheme, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+		</div>
+		{% if app.user is null %}
+			<div class="form-group row">
+				{{ form_label(form.pseudoUsed, "witchcraft.new.Pseudo"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+				<div class="col-sm-10">
+					{{ form_errors(form.pseudoUsed) }}
+					{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}
+				</div>
+			</div>
+		{% else %}
+			<div class="form-group row">
+				{{ form_label(form.isAnonymous, "witchcraft.new.IsAnonymous"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+				<div class="col-sm-10">
+					{{ form_errors(form.isAnonymous) }}
+					{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-control'}}) }}
+					<div id="anonymously_message"></div>
+				</div>
+			</div>
+		{% endif %}
+		<div class="text-right">
+			{{ form_widget(form.validate, {'label' : "witchcraft.new.Validate"|trans([], "validators"), 'attr':{'class' : 'btn submitcomment'}}) }}
+		</div>
+	{{ form_end(form) }}
+{% endblock %}
+
+{% block additional_javascript %}
+	<script>
+		$(function() {
+			function publishAnonymously(value)
+			{
+				if(value == 1)
+					$("div#anonymously_message").html("<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'witchcraft.new.AnonymousMessage'|trans([], 'validators') }}</div>");
+				else
+					$("div#anonymously_message").html("");
+			}
+			
+			$("select#{{ form.vars.name }}_isAnonymous").change(function()
+			{
+				publishAnonymously($(this).val());
+			});
+			
+			publishAnonymously($("select#{{ form.vars.name }}_isAnonymous").val());
+		});
+	</script>
+{% endblock %}

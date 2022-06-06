@@ -1,0 +1,65 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "witchcraft.new.AddRitual"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "witchcraft.new.AddRitual"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_js(form.text.vars.id) }}
+	
+	<script>
+		$(function() {
+			function publishAnonymously(value)
+			{
+				if(value == 1)
+					$("p#anonymously_message").html("{{ 'witchcraft.new.AnonymousMessage'|trans([], 'validators') }}");
+				else
+					$("p#anonymously_message").html("");
+			}
+			
+			$("select#{{ form.vars.name }}_isAnonymous").change(function()
+			{
+				publishAnonymously($(this).val());
+			});
+			
+			publishAnonymously($("select#{{ form.vars.name }}_isAnonymous").val());
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-ritual.jpg" alt="Suggest a ritual" width="550" /></p>
+	<br>
+	<hr class="hr2"/>
+	{{ form_start(form, {'action': path('Witchcraft_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "witchcraft.new.Title"|trans([], "validators") ) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "witchcraft.new.Text"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.surTheme, "witchcraft.new.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.surTheme) }}{{ form_widget(form.surTheme, {'attr':{'class' : 'form-control'}}) }}</div>
+			{% if app.user is null %}
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "witchcraft.new.Pseudo"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}</div>
+			{% else %}
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.isAnonymous, "witchcraft.new.IsAnonymous"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">
+					{{ form_errors(form.isAnonymous) }}{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-control'}}) }}
+					<p id="anonymously_message"></p>
+				</div>
+			{% endif %}
+		</div>
+		
+		<div class="text-right mt-3">
+			{{ form_widget(form.validate, { 'label': "witchcraft.new.Validate"|trans([], "validators") }) }}
+		</div>
+		{{ form_rest(form) }}
+		{{ form_errors(form) }}
+	{{ form_end(form) }}
+
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

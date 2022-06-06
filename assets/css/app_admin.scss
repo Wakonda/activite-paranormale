@@ -1,0 +1,250 @@
+@import "~bootstrap/scss/bootstrap";
+
+body
+{
+	background-color: black;
+	padding-right: 0px;
+	padding-left: 0px;
+	font-family: "Times New Roman", Arial, serif;
+}
+
+h3
+{
+	font-family: "Times New Roman", Arial, serif;
+}
+
+img {
+	height: auto;
+	max-width: 100%;
+}
+
+iframe, object, embed {
+	width: 100%;
+}
+
+.navbar{
+	padding-right: 10px;
+}
+
+.img-responsive {
+	margin: 0 auto;
+}
+
+#footer
+{
+	padding: 10px 15px;
+    background-color: #f5f5f5;
+    border-top: 1px solid #ddd;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+}
+
+.content
+{
+	background-color: white;
+	border-radius: 6px 6px 0px 0px;
+	padding-right: 20px;
+	padding-left: 20px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+
+div.container
+{
+  max-width: none !important;
+  width: auto;
+  margin-bottom: 5px;
+}
+
+h2 {
+	font-family: "Times New Roman", Arial, serif;
+	color: #2660ff;
+	border-bottom: 2px dotted #2660ff;
+}
+
+h5 {
+	font-family: "Times New Roman", Arial, serif;
+	color: #2660ff;
+	border-bottom: 2px dotted #2660ff;
+}
+
+div.content a:not(.btn), div h4.panel-title>a
+{
+	color: #0029ff;
+}
+
+nav li p.navbar-text, nav li button.btn{
+	margin-left: 15px;
+}
+
+table.table > tbody > tr > td, table.table > tbody > tr > th
+{
+	vertical-align: middle;
+}
+
+table.table > tbody > tr > th
+{
+	text-align: center;
+}
+
+table.index_admin 
+{
+	margin-bottom: 10px !important;
+}
+table.index_admin th
+{
+	text-align: center;
+}
+
+table td.input_form
+{
+	text-align: left !important;
+}
+
+table td.input_form ul.error li
+{
+	text-align: center !important;
+}
+
+/* DATATABLES */
+.dataTables_processing
+{
+	height: 50px !important;
+}
+
+/* FORMULAIRE */
+@media all and (max-width: 500px) {
+  .form-table-collapse {
+    display: block;
+  }
+  .form-table-collapse > .form-table-cell {
+    width: 100% !important;
+  }
+}
+.form-table {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.form-table-cell {
+    box-sizing: border-box;
+    flex-grow: 1;
+    padding: .8em 1.2em;
+    list-style: none;
+	border: 1px solid #dee2e6;
+    margin-left: -1px;
+    margin-bottom: -1px;
+}
+.form-table-cell-head {
+	background-color: #f5f5f5;
+    border-color: #dee2e6;
+    width: 25% !important;
+	font-weight: bold;
+}
+.form-table-4cols .form-table-cell {
+    width: 75%;
+}
+
+.label_form
+{
+	background-color: #f5f5f5;
+	width: 30%;
+}
+.input_form
+{
+	width: 70%;
+}
+
+.filter_columns_datatables
+{
+	width: 100%;
+}
+
+textarea{ resize:none;}
+
+textarea.textarea120
+{
+	height: 120px;
+}
+
+span.required_star
+{
+	color: red;
+}
+
+/*********** DELETED *************/
+table > tbody > tr.deleted, table > tbody > tr.deleted > td.sorting_1
+{
+	background-color: rgb(255, 200, 200) !important;
+}
+
+/********** Table Bilan ***********/
+table.assessment{
+	border-collapse: collapse;
+	text-align: center;
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+table.assessment th{
+	background-color: #EAEBFF;
+	width: 30%;
+	text-align: center;
+}
+
+table.assessment td, table.assessment th{
+	border: black 1px solid;
+}
+
+/********** Generic Block ***********/
+.sub_block .panel-heading {
+	border-bottom: none;
+}
+
+/******** Colorbox image *********/
+.show_image_colorbox
+{
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-flex-wrap: wrap;
+	-ms-flex-wrap: wrap;
+	flex-wrap: wrap;
+	padding-left: 0px;
+}
+
+.show_image_colorbox_item {
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	width: 23%;
+	margin: 5px 5px 5px 5px;
+}
+
+.show_image_colorbox_item img:hover {
+	border: 3px #2660ff solid;
+}
+
+/********* Generic **********/
+.pointer {
+	cursor: pointer;
+}
+
+.card.sub_block {
+	overflow: visible;
+}
+
+.card.sub_block div.collapse {
+    border-radius: .25rem !important;
+    border-bottom: 1px solid rgba(0,0,0,.125) !important;
+}
+
+.editor_holder h3 label {
+	display: none !important;
+}
+
+.editor_holder label.required:after {
+	content: " *";
+	color: red;
+}

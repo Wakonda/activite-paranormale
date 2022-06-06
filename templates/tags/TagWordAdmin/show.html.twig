@@ -1,0 +1,41 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.TagWord"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('TagWord_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('TagWord_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('TagWord_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('TagWord_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.InternationalName"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.internationalName|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.Sources"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "TagWord_Admin_Internationalization", "showRoute": "TagWord_Admin_Show", "editRoute": "TagWord_Admin_Edit"})) }}
+{% endblock %}

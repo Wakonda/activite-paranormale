@@ -1,0 +1,27 @@
+mobile:
+    main:
+        News: "News"
+        Video: "Video"
+        Photo: "Photo"
+        Testimony: "Testimony"
+        Witchcraft: "Witchcraft"
+        Search: "Search"
+        Desktop: "Desktop"
+        Older: "Older"
+        Newer: "Newer"
+        Contribute: "Contribute"
+    news:
+        NoNews: "No news"
+    video:
+        AllVideos: "All videos"
+        NoVideo: "No video"
+    photo:
+        AllPhotos: "All photos"
+        NoPhoto: "No photo"
+    testimony:
+        AllTestimonials: "All testimonials"
+        NoTestimony: "No testimony"
+        Testify: "Testify"
+    witchcraft:
+        AllRituals: "All rituals"
+        NoRitual: "No ritual"

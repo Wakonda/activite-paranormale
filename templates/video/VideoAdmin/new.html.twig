@@ -1,0 +1,52 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Video"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Video_Admin_Index') }}{% endblock %}
+{% block create_admin_route %}{{ path('Video_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "video/VideoAdmin/macro_video.html.twig" as macro_video %}
+	
+	<script>
+		$(function()
+		{
+			{{ macro_video.updateListForm(form) }}
+
+			$("#{{ form.vars['id'] }}_existingFile .select_videos_colorbox").click(function(e)
+			{
+				e.preventDefault();
+				$('#selectVideoFileModal_{{ form.vars.id }} .modal-body').load('{{ path("Video_Admin_ChooseExistingFile") }}',function(){
+					$('#selectVideoFileModal_{{ form.vars.id }}').modal({show:true});
+				});
+			});
+
+			$("#{{ form.vars['id'] }}_mediaVideo").change(function(){
+				$("#{{ form.vars['id'] }}_existingFile").val("");
+			});
+			
+			$("#{{ form.existingFile.vars.id }} .remove_videos_colorbox").click(function(e) {
+				$("#{{ form.existingFile.vars.id }} .existing_video_colorbox").val("");
+				e.preventDefault();
+			});
+			
+			$("#{{ form.vars['id'] }}_platform").change(function(){
+				if($(this).val() == "AP")
+					$("label[for='{{ form.vars['id'] }}_embeddedCode'] + span.required_star").remove();
+				else
+					$("label[for='{{ form.vars['id'] }}_embeddedCode']").after('<span class="required_star"> * </span>');
+			});
+			
+			$("#{{ form.vars['id'] }}_platform").change();
+		});
+	</script>
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'video/VideoAdmin/_form.html.twig' %}
+{% endblock %}

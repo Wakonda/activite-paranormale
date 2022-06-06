@@ -1,0 +1,16 @@
+{% extends "content_layout.html.twig" %}
+{% block title %}{{ "user.showProfile.YourAccount"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/elite-icon.png') }}" width="25" class="mt-1" alt="Elite"/></span>{{ "user.showProfile.YourAccount"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	{% block fos_user_content %}
+		{% include "user/Profile/show_content.html.twig" %}
+	{% endblock fos_user_content %}
+	
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller('App\\Controller\\UserController::viewContributionsAction', { id: user.id })) }}
+{% endblock %}

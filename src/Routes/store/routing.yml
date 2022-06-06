@@ -1,0 +1,20 @@
+Store_Index:
+    path: /store/{page}
+    controller: App\Controller\StoreController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+Store_Show:
+    path: /store/{id}/{title}
+    controller: App\Controller\StoreController::showAction
+    defaults:
+        title: null
+    requirements:
+        id: \d+
+
+# Administration
+Store_Admin:
+    resource: "routing/storeadmin.yml"
+    prefix:   /admin/store

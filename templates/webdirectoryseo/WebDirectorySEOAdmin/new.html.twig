@@ -1,0 +1,11 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.SEODirectory"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('WebDirectorySEO_Admin_Index') }}{% endblock %}
+
+{% block create_admin_route %}{{ path('WebDirectorySEO_Admin_Create') }}{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'webdirectoryseo/WebDirectorySEOAdmin/_form.html.twig' %}
+{% endblock %}

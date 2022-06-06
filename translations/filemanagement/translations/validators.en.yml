@@ -1,0 +1,24 @@
+file:
+    add:
+        AttachFile: "Attach files"
+        Title: "Title"
+        File: "File"
+        Upload: "Upload"
+        Display: "Display"
+        Delete: "Delete"
+        NoFile: "No upload yet"
+        NoFileSelected: "No file selected"
+    uploadFile:
+        FileTooLarge: "The file is too large"
+        UnauthorizedExtension: "Unauthorized extension"
+        NoFileSelected: "No file selected"
+        FileAddedWithSuccess: "File added with success"
+        NoFile: "No file"
+    admin:
+        Files: "Files"
+        File: "File"
+        Title: "Title"
+        Caption: "Caption"
+        CaptionPhoto: "Caption - Photo"
+        NotUsed: "Not used"
+        MediaManagement: "Media management"

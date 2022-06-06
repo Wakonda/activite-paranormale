@@ -1,0 +1,95 @@
+grimoire:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Theme: "Theme"
+        WritingDate: "Date de rédaction"
+        Source: "Source"
+        State: "Etat"
+        Language: "Langue"
+        Photo: "Photo"
+        Author: "Auteur"
+        Validate: "Valider"
+        Refuse: "Refuser"
+        RitualPublished: "Rituel publié"
+        RitualRefused: "Rituel refusé"
+magicbookmenu:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Picture: "Image"
+        Language: "Langue"
+        InternationalName: "Nom international"
+magicbooktheme:
+    admin:
+        Title: "Titre"
+        Theme: "Thème"
+        Definition: "Définition"
+        Picture: "Image"
+        Language: "Langue"
+        InternationalName: "Nom international"
+        WitchcraftMenu: "Menu grimore"
+witchcraft:
+    admin:
+        Witchcraft: "Sorcellerie"
+    index:
+        Witchcraft: "Sorcellerie"
+        MagicPrayer: "Magie - Prière"
+        MoonPhase: "Phase de la lune le %date%"
+    tabGrimoire:
+        Title: "Titre"
+        Source: "Source"
+        Language: "Langue"
+        Photo: "Photo"
+    read:
+        Source: "Source"
+    new:
+        AddRitual: "Proposer un rituel"
+        Title: "Titre"
+        Text: "Texte"
+        Theme: "Thème"
+        Pseudo: "Pseudo"
+        IsAnonymous: "Publié anonymement ?"
+        Validate: "Valider"
+        PublishedAnonymously: "Publié anonymement"
+        PostedWithMyUserAccount: "Publié avec mon compte utilisateur"
+        AnonymousMessage: "En publiant anonymement, votre article n’apparaitra pas dans votre compte utilisateur lorsqu’il sera validé par nos modérateurs."
+    validate:
+        Validation: "Confirmation"
+        ThankForYourParticipation: "Merci pour votre participation !"
+        ThankForYourParticipationText: "Votre rituel nous a bien été transmis. Il sera publié sur notre site Internet dès qu'un modérateur l'aura validé."
+witchcraftTool:
+    index:
+        WitchcraftTool: "Outils sorcellerie"
+        Sources: "Sources"
+    admin:
+        Title: "Titre"
+        Photo: "Photo"
+        Text: "Texte"
+        PublicationDate: "Date de publication"
+        WitchcraftThemeTool: "Thème"
+        Language: "Langue"
+        State: "Etat"
+        Source: "Source"
+    search:
+        SearchSort: "Rechercher / Trier"
+        Keywords: "Mots-clés"
+        Theme: "Thème"
+        PublicationDate: "Date de publication"
+        PublicationDateUp: "Date de publication ↑"
+        PublicationDateDown: "Date de publication ↓"
+        Sort: "Trier par"
+        Validate: "Valider"
+        Read: "Lire"
+        NoMatchingRecordsFound: "Aucun élément à afficher"
+        MoreDetails: "Plus de détails"
+    read:
+        Theme: "Catégorie"
+        Description: "Description"
+        PublishedOn: "Publié le"
+witchcraftThemeTool:
+    admin:
+        Title: "Titre"
+        Photo: "Photo"
+        InternationalName: "Nom international"
+        Language: "Langue"

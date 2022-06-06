@@ -1,0 +1,135 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.subtitle, "bookEdition.admin.Subtitle"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.subtitle) }}{{ form_widget(form.subtitle, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "bookEdition.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.backCover, "bookEdition.admin.BackCover"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.backCover) }}{{ form_widget(form.backCover) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.isbn10) }}</div>
+<div class="form-table-cell">
+	<div id="error_data_{{ form.isbn10.vars.id }}" class="alert alert-danger" style="display: none;">{{ "admin.error.NotDataFound"|trans([], "validators") }}</div>
+	<div class="input-group">{{ form_errors(form.isbn10) }}{{ form_widget(form.isbn10, { 'attr': {'class': 'form-control'} }) }}
+		<div class="input-group-append">
+			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn10.vars.id }}" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.isbn13) }}</div>
+<div class="form-table-cell">
+	<div id="error_data_{{ form.isbn13.vars.id }}" class="alert alert-danger" style="display: none;">{{ "admin.error.NotDataFound"|trans([], "validators") }}</div>
+	<div class="input-group">{{ form_errors(form.isbn13) }}{{ form_widget(form.isbn13, { 'attr': {'class': 'form-control'} }) }}
+		<div class="input-group-append">
+			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn13.vars.id }}" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.numberPage, "bookEdition.admin.NumberPage"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.numberPage) }}{{ form_widget(form.numberPage, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.format, "bookEdition.admin.Format"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.format) }}{{ form_widget(form.format, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "bookEdition.admin.PublicationDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.biographies, "biographies.admin.Biographies"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+    <ul id="biography-fields-list"
+        data-prototype="{{ form_widget(form.biographies.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.biographies|length }}"
+		class="list-unstyled">
+		{% for biographyField in form.biographies %}
+			<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
+				<div data-wikidata="{{ biographyField.vars.value.biography.wikidata }}" data-title="{{ biographyField.vars.value.biography.title }}" data-international-name="{{ biographyField.vars.value.biography.internationalName }}">
+					{{ form_errors(biographyField) }}
+					
+					{{ form_label(biographyField.biography, "biographies.admin.Biography"|trans([], "validators")) }}
+					{{ form_widget(biographyField.biography) }}
+					
+					{{ form_label(biographyField.occupation, "biographies.admin.Occupation"|trans([], "validators")) }}
+					{{ form_widget(biographyField.occupation) }}
+
+					{{ form_widget(biographyField.internationalName) }}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+	
+    <button type="button"
+        class="add-another-collection-widget btn btn-success float-right"
+        data-list-selector="#biography-fields-list"><i class="fas fa-plus"></i></button>
+		
+	<div class="d-none">
+	{% if entity.id is null and not form.biographies.isRendered() %}
+		{{ form_widget(form.biographies) }}
+	{% endif %}
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.publisher, "bookEdition.admin.Publisher"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.publisher) }}{{ form_widget(form.publisher, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wholeBook, "bookEdition.admin.WholeBook"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.wholeBook is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.wholeBook }}
+		<br />
+	{% endif %}
+	{{ form_errors(form.wholeBook) }}{{ form_widget(form.wholeBook, { 'attr': {'class': 'form-control'} }) }}
+</div>
+
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
+
+<script>
+	for(const element of document.getElementsByClassName("googleBook"))
+		element.addEventListener("click", (e) => {
+			e.preventDefault();
+
+			let field = e.currentTarget.dataset.field;
+			let isbn = document.getElementById(e.currentTarget.dataset.field).value;
+
+			if (isbn == "")
+				return;
+
+			let xmlHttp = new XMLHttpRequest();
+
+			document.querySelector('button[data-field="' + field + '"] .fa-sync').classList.add("fa-spin");
+			
+			xmlHttp.onreadystatechange = function() {
+				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+					let data = JSON.parse(xmlHttp.responseText);
+
+					if (data.totalItems == 1) {
+						let item = data.items[0];
+						
+						document.getElementById("{{ form.numberPage.vars.id }}").value = item.volumeInfo.pageCount;
+						document.getElementById("{{ form.publicationDate.year.vars.id }}").value = item.volumeInfo.publishedDate;
+
+						if(typeof item.volumeInfo.subtitle !== "undefined")
+							document.getElementById("{{ form.subtitle.vars.id }}").value = item.volumeInfo.subtitle;
+						
+						for (const ii of item.volumeInfo.industryIdentifiers) {
+							if (ii.type == "ISBN_10")
+								document.getElementById("{{ form.isbn10.vars.id }}").value = ii.identifier;
+							if (ii.type == "ISBN_13")
+								document.getElementById("{{ form.isbn13.vars.id }}").value = ii.identifier;
+						}
+						document.getElementById("error_data_" + field).style.display = "none";
+					} else {
+						document.getElementById("error_data_" + field).style.display = "block";
+					}
+					
+					document.querySelector('button[data-field="' + field + '"] .fa-sync').classList.remove("fa-spin");
+				}
+			};
+			
+			xmlHttp.overrideMimeType("application/json");
+			xmlHttp.open("GET", "{{ path('BookEdition_Admin_GoogleBook') }}?isbn=" + isbn, true);
+			xmlHttp.send();
+		});
+</script>

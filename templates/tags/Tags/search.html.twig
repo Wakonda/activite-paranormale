@@ -1,0 +1,80 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ tagWord.title }}"{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ tagWord.title }}"</h2>{% endblock h2_title %}
+{% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			oTable = $('table.index_tags').dataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": false,
+				"bLengthChange": true,
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": {{ total_line_display }},
+				"bProcessing": true,
+				"bServerSide": true,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"sAjaxSource": "{{ path('ap_tags_searchdatatables', { 'id' : tagWord.id, 'title' : tagWord.title }) }}",
+			});
+		});
+	</script>
+{% endblock %}
+{% block APBlog_body %}
+	<p class="image">
+		{% if tagWord.photoIllustrationFilename is not empty %}
+			{{ tagWord.photoIllustrationFilename|imgsize(550, tagWord.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, tagWord.photoIllustrationCaption)|raw }}
+		{% else %}
+			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.jpg') }}" width="550" alt="" />
+		{% endif %}
+	</p>
+	
+	{% if tagWord.text is not empty %}
+		{{ tagWord.text|raw }}
+	{% endif %}
+	<hr>
+	<table class="index_tags dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "tag.search.Section"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.search.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.search.Theme"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.search.PublicationDate"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "tag.search.Section"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.search.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.search.Theme"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.search.PublicationDate"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	{% if tagWord.source is not empty %}
+	<br>
+	<h3>{{ "tag.search.Sources"|trans([], "validators") }}</h3>
+	{{ source_document(tagWord.source) }}
+	{% endif %}
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

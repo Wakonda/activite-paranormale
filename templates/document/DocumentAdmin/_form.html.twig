@@ -1,0 +1,44 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "document.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.pdfDoc, "document.admin.Document"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.pdfDoc is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.pdfDoc }}
+		<br />
+	{% endif %}
+	{{ form_errors(form.pdfDoc) }}{{ form_widget(form.pdfDoc) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "document.admin.PseudoUsed"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.releaseDateOfDocument, "document.admin.ReleaseDateOfDocument"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.releaseDateOfDocument) }}{{ form_widget(form.releaseDateOfDocument, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "document.admin.PublicationDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.authorDocumentBiographies, "document.admin.AuthorDocumentBiographies"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.authorDocumentBiographies) }}{{ form_widget(form.authorDocumentBiographies, { 'attr': {'class': 'selectpicker', 'data-live-search' : 'true', 'data-width': '100%'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "document.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.documentFamily, "document.admin.Category"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.documentFamily) }}{{ form_widget(form.documentFamily, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "document.admin.Abstract"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "document.admin.Theme"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "document.admin.Licence"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "document.admin.State"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>

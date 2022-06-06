@@ -1,0 +1,29 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.vars['id'] }}_language").change(function()
+	{
+		$.ajax({
+			type: "POST",
+			url: "{{ path('Grimoire_Admin_ReloadListsByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var grimoire = data.grimoire;
+				
+				$("#{{form.vars['id'] }}_surTheme optgroup").remove();
+				$("#{{form.vars['id'] }}_surTheme option").remove();
+				
+				$.each(grimoire, function(index, element)
+				{
+				
+					var optGroup = $('<optgroup label="' + index + '"></optgroup>');
+
+					for(var i = 0; i < element.length; i++) {
+						optGroup.append('<option value="'+ element[i].id +'">'+ element[i].title +'</option>');
+					}
+					
+					$("#{{form.vars['id'] }}_surTheme").append(optGroup);
+				});
+			}
+		});
+	});
+{% endmacro %}

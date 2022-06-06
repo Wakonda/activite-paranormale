@@ -1,0 +1,86 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Store"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Store_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Store_Admin_New', {category: entity.category}) }}{% endblock %}
+{% block index_admin_route %}{{ path('Store_Admin_Index', {type: entity.linkedEntityName}) }}{% endblock %}
+{% block delete_admin_route %}{{ path('Store_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block restore_admin_route%}{{ path('Store_Admin_Restore', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.ImageEmbeddedCode"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.imageEmbeddedCode|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	{% if entity.url is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "store.admin.Url"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.url }}</div>
+	{% endif %}
+
+	{% if entity.amazonCode is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "store.admin.AmazonCode"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.amazonCode }}</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.Price"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.price }} {{ entity.currencyPrice }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.Category"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
+
+	{% if entity.isBookCategory() and entity.book is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
+		<div class="form-table-cell"><a href="{{ path('BookEdition_Admin_Show', {id: entity.book.id}) }}"><i>{{ entity.book.book.title }}</i></a> - {{ entity.book.isbn13 }}</div>
+	{% endif %}
+
+	{% if entity.isAlbumCategory() and entity.album is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
+		<div class="form-table-cell"><i>{{ entity.album.title }}</i> - {{ entity.album.artist.title }}</div>
+	{% endif %}
+
+	{% if entity.isMovieCategory() and entity.movie is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
+		<div class="form-table-cell"><i>{{ entity.movie.title }}</i> - {{ entity.movie.releaseYear }}</div>
+	{% endif %}
+
+	{% if entity.isTelevisionSerieCategory() and entity.televisionSerie is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
+		<div class="form-table-cell"><i>{{ entity.televisionSerie.title }}</i></div>
+	{% endif %}
+
+	{% if entity.isWitchcraftToolCategory() and entity.witchcraftTool is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
+		<div class="form-table-cell"><i>{{ entity.witchcraftTool.title }}</i></div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "store.admin.Platform"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.platform|capitalize }}</div>
+
+	{% for label, characteristic in entity.characteristic %}
+		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~(label|ucfirst))|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ ("store.characteristic."~(characteristic|ucfirst))|trans([], "validators") }}</div>
+	{% endfor %}
+{% endblock %}
+
+{% block data_bottom %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{% set blog = "news" %}
+	
+	{% if entity.category == constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY') %}
+		{% set blog = "magic" %}
+	{% endif %}
+	
+	{{ macro_index.blogger_form(entity, blog) }}
+{% endblock %}

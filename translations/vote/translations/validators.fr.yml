@@ -1,0 +1,8 @@
+vote:
+    edit:
+        Vote: "Vote"
+        Votes: "Votes"
+        VoteSubmit: "Votez"
+        AverageScore: "Note moyenne :"
+    index:
+        AverageScore: "Note moyenne :"

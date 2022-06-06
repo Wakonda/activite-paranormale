@@ -1,0 +1,41 @@
+{% extends "index/Generic/waiting.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block meta_description %}{{ entity.abstractText|strip_tags }}{% endblock %}
+
+{% block header_plus %}
+	<script>
+		$(function() {
+			function isSVGSupported() {
+				return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
+			}
+			
+			if($("p.image object").length == 1 && !isSVGSupported())
+			{
+				$("p.image object").remove();
+				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
+			}
+
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block content_waiting %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<br />
+	<div>{{ entity.abstractText|raw }}</div>
+	<div>{{ entity.text|raw }}</div>
+	<br />
+	<hr class="hr2"/>
+	<p><i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></span> - <i class="fas fa-calendar-alt"></i> <span>{{ entity.publicationDate|dodate(false, app.request.locale) }}</span> - <i class="fas fa-user"></i> <span>{{ entity.pseudoUsed }}</span> - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a></p>
+	{{ getTagsByEntityForDisplay(entity) }}
+{% endblock %}
+
+{% block button_validate %}<input type="submit" value="{{ 'news.waiting.Validate'|trans([], 'validators') }}" class="submitcomment btn" onclick="window.location='{{ path('News_Validate', {'id' : entity.id}) }}';" />{% endblock %}
+{% block button_edit %}<input type="submit" value="{{ 'news.waiting.Edit'|trans([], 'validators') }}" class="submitcomment btn" onclick="window.location='{{ path('News_Edit', {'id' : entity.id}) }}';" />{% endblock %}

@@ -1,0 +1,57 @@
+EventMessage_Admin_Index:
+    path:  /
+    controller: App\Controller\EventMessageAdminController::indexAction
+
+EventMessage_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\EventMessageAdminController::showAction
+
+EventMessage_Admin_New:
+    path:  /new
+    controller: App\Controller\EventMessageAdminController::newAction
+
+EventMessage_Admin_Create:
+    path:  /create
+    controller: App\Controller\EventMessageAdminController::createAction
+    requirements:
+        _method: post
+
+EventMessage_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\EventMessageAdminController::editAction
+
+EventMessage_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\EventMessageAdminController::updateAction
+    requirements:
+        _method: post
+
+EventMessage_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\EventMessageAdminController::deleteAction
+
+EventMessage_Admin_Archive:
+    path: /archive/{id}
+    controller: App\Controller\EventMessageAdminController::archiveAction
+    requirements:
+        id: \d+
+
+EventMessage_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\EventMessageAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+EventMessage_Admin_WYSIWYG_UploadFile:
+    path: /wysiwyg_uploadfile
+    controller: App\Controller\EventMessageAdminEventMessageAdminController::WYSIWYGUploadFileAction
+
+EventMessage_Admin_State:
+    path:  /bystate/{state}
+    controller: App\Controller\EventMessageAdminController::indexStateAction
+
+EventMessage_Admin_ChangeState:
+    path: /change_state/{id}/{state}
+    controller: App\Controller\EventMessageAdminController::changeStateAction
+    requirements:
+        id: \d+

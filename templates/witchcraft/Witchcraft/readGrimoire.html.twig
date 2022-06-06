@@ -1,0 +1,49 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/spells-icon.png') }}" width="25" class="mt-1" alt="Spells"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block meta_plus %}
+	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_witchcraftmobile_read', {'id' : entity.id}) }}">
+{% endblock %}
+
+{% block APBlog_body %}
+	{% if entity.photo is not empty %}
+	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	{% endif %}
+	{{ entity.text|raw }}
+
+	{% if entity.source is not empty %}
+		<br>
+		<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source) }}
+	{% endif %}
+	
+	<hr class="hr2"/>
+	<p>{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}{{ entity.surTheme.menuGrimoire.title }} - <span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.menuGrimoire.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></span> - <span><i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }}</span></p>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':entity} %}
+	
+	<div class="hidden_for_print">
+		{% if previousAndNextEntities["previous"] is not empty %}
+			<a href="{{ path('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].title})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
+		{% else %}
+			<span class="previous_next_disable_left"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></span>
+		{% endif %}
+
+		{% if previousAndNextEntities["next"] is not empty %}
+			<a class="float-right" href="{{ path('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].title})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+		{% else %}
+			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+		{% endif %}
+	</div>
+	
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Grimoire' })) }}
+
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Grimoire' })) }}
+{% endblock %}

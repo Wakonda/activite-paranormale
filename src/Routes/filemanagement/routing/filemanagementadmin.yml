@@ -1,0 +1,11 @@
+FileManagement_Admin_ListFiles:
+    path:  /list_files
+    controller: App\Controller\FileManagementAdminController::listFilesAction
+
+FileManagement_Admin_DeleteFile:
+    path:  /delete_file
+    controller: App\Controller\FileManagementAdminController::deleteFileAction
+
+FileManagement_Admin_MoveFile:
+    path:  /move_file/{rootFolder}
+    controller: App\Controller\FileManagementAdminController::moveFileAction

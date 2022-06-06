@@ -1,0 +1,206 @@
+index:
+    main:
+        Welcome: "Accueil"
+        InternationalNews: "Actualité internationale"
+        Video: "Vidéo"
+        Gallery: "Galerie"
+        Witchcraft: "Sorcellerie"
+        GoWebsiteMobile: "Accédez à la version mobile"
+    mainMenu:
+        Welcome: "Accueil"
+        New: "Actualité"
+        Witchcraft: "Sorcellerie"
+        Blog: "Blog"
+        Store: "Boutique"
+    leftMenu:
+        Information: "Information"
+        Account: "Profil"
+        YourAccount: "Voir votre profil"
+        ModifyAccount: "Modifier votre profil"
+        ModifyPassword: "Modifier votre mot de passe"
+        Logout: "Déconnexion"
+        Login: "Connexion"
+        CreateAccount: "Créer un compte"
+        Management: "Administration"
+        Section: "Rubrique"
+        Archive: "Archive"
+        Quotation: "Citation"
+        World: "Actualité multilingue"
+        Document: "Document"
+        Cartography: "Cartographie"
+        Members: "Membres"
+        Music: "Musique"
+        Photo: "Photo"
+        Download: "Téléchargement"
+        Testimony: "Témoignage"
+        Theme: "Thème"
+        Video: "Vidéo"
+        OfferLink: "Proposer un lien"
+        Testify: "Témoigner"
+        SubmitArticle: "Proposer un article"
+        Participate: "Participer"
+        Search: "Rechercher"
+        HelpUs: "Aidez-nous"
+        Quotations: "Citations"
+        Validation: "Validation"
+        More: "Plus"
+        Visitors: "Visiteurs"
+        Horoscope: "Horoscope"
+        AddNews: "Proposer un article"
+        AddRitual: "Proposer un rituel"
+        AddEvent: "Proposer un événement"
+        Partner: "Partenaire"
+        Biography: "Biographie"
+        Movie: "Film"
+        TelevisionSerie: "Série de télévision"
+        FollowUsOn: "Suivez-nous sur ..."
+        ClassifiedAds: "Petites annonces"
+        Book: "Livre"
+    footerMenu:
+        FollowUs: "Suivez-nous"
+        About: "À propos"
+        MobileView: "Version mobile"
+        Directory: "Annuaire"
+        PrivacyPolicy: "Politique de confidentialité"
+        Contact: "Contact"
+    rightMenu:
+        Login: "Connexion"
+        CreateAccount: "Créez un compte"
+        Logout: "Déconnexion"
+        SeeAccount: "Voir votre profil"
+        EditAccount: "Modifier votre profil"
+        Admin: "Administration"
+    className:
+        Book: "Livre"
+        Cartography: "Cartographie"
+        Document: "Document"
+        EventMessage: "Événement"
+        Movie: "Film"
+        News: "Actualité"
+        Photo: "Photo"
+        Testimony: "Témoignage"
+        Video: "Vidéo"
+        TelevisionSerie: "Série de télévision"
+        EpisodeTelevisionSerie: "Épisode (série de télévision)"
+        Grimoire: "Sorcellerie"
+        WitchcraftTool: "Outils de sorcellerie"
+    archive:
+        Archive: "Archive"
+        DocArchive: "Nombre total de documents archivés : "
+        Theme: "Thème"
+        Number: "Nombre"
+        Source: "Source"
+        Title: "Titre"
+        PublicationDate: "Date de publication"
+        Section: "Rubrique"
+        Unauthorized: "Nos archives sont privées. Pour y avoir accès, vous devez <a href='%urlAccount%'>ouvrir un compte</a> et <a href='%urlContact%'>demander un accès</a> à ces informations. Une fois que vous serez autorisé à entrer, vous pourrez consulter gratuitement et de manière illimitée toutes nos archives."
+civility:
+    admin:
+        Title: "Titre"
+        InternationalName: "Nom international"
+        Language: "Langue"
+        Icon: "Icône"
+country:
+    admin:
+        Country: "Pays"
+        Title: "Titre"
+        Flag: "Drapeau"
+        Language: "Langue"
+        InternationalName: "Nom international"
+language:
+    admin:
+        Language: "Langue"
+        Abbreviation: "Abréviation"
+        Flag: "Drapeau"
+        Direction: "Sens de l'écriture"
+        RightToLeft: "De droite à gauche"
+        LeftToRight: "De gauche à droite"
+licence:
+    showColorbox:
+        WhatLicensesChoose: "Quelles licences choisir ?"
+    showColorboxByLicence:
+        License: "Licence"
+    admin:
+        Title: "Titre"
+        Logo: "Logo"
+        Description: "Description"
+        InternationalName: "Nom international"
+        Language: "Langue"
+        Link: "Lien"
+history:
+    show:
+        Title: "Titre"
+        Date: "Date"
+        Author: "Auteur"
+        RevisionHistory: "Historique des versions de"
+        ViewHistory: "Voir l'historique"
+        History: "Historique"
+        Diff: "Diff"
+state:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        DisplayState: "Affichage"
+        Language: "Langue"
+        InternationalName: "Nom international"
+surtheme:
+    admin:
+        Title: "Titre"
+        Language: "Langue"
+        InternationalName: "Nom international"
+theme:
+    admin:
+        Theme: "Thème"
+        Family: "Famille"
+        Language: "Langue"
+        File: "Fichier"
+        Photo: "Photo"
+        InternationalName: "Nom international"
+    index:
+        Theme: "Thème"
+        Read: "Consulter"
+    read:
+        Theme: "Thème"
+generality:
+    read:
+        Previous: "Précédent"
+        Next: "Suivant"
+        OnTheSameTopic: "Sur le même sujet"
+        NoMatchingRecordsFound: "Aucune donnée disponible"
+    data:
+        LoadingInProgress: "Chargement en cours ..."
+    page:
+        Advertisement: "Publicité"
+    pdf:
+        Home: "Accueil"
+        Download: "Télécharger"
+        Back: "Retour"
+        SavePrint: "Enregistrer / Imprimer"
+banner:
+    admin:
+        Title: "Titre"
+        Link: "Lien"
+        Image: "Image"
+        Display: "Affichage"
+        Language: "Langue"
+captcha:
+    form:
+        RecopyCaptcha: "Recopiez le mot contenu dans l'image"
+    error:
+        InvalidCaptcha: "Code de sécurité invalide"
+twitter:
+    admin:
+        NumberOfRemainingCharacters: "Nombre de caractères restant :"
+        AddImage: "Joindre l'image"
+version:
+    title:
+        ActivateVersion: "Activer la version"
+        ReturnToVersion: "Revenir à la version"
+# Error HTTP
+"Not Found": "Page non trouvée"
+"Internal Server Error": "Erreur interne du serveur"
+
+error:
+    exception:
+        Error: "Erreur"
+        Deleted: "Cette page a été supprimée"

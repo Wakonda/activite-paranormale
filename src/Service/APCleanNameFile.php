@@ -1,0 +1,17 @@
+<?php
+	namespace App\Service;
+	
+	class APCleanNameFile
+	{
+		/**
+		 * @param string $titre
+		 */
+		public function filter($titre)
+		{
+			$search = array ('@[éèêëÊË]@i','@[àâäÂÄ]@i','@[îïÎÏ]@i','@[ûùüÛÜ]@i','@[ôöÔÖ]@i','@[ç]@i','@[ ]@i','@[^a-zA-Z0-9_]@', '@[ñ]@i');
+			$replace = array ('e','a','i','u','o','c','_','n');
+			$nf = strtolower(preg_replace($search, $replace, $titre));
+			$nf = $nf."-".uniqid().".png";
+			return $nf;
+		}
+	}

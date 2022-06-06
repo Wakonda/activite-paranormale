@@ -1,0 +1,5 @@
+search:
+    index:
+        Search: "Buscar"
+        NoResult: "Su búsqueda no obtuvo ningún resultado"
+        Results: "resultados"

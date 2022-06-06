@@ -1,0 +1,59 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Album"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Album_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Album_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Album_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Album_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Artist"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><a href="{{ path('Artist_Admin_Show', {id: entity.artist.id}) }}">{{ entity.artist.title }}</a></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.ReleaseYear"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.releaseYear|doPartialDate(app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Image"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
+
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Sources"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Licence"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.licence }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="d-flex flex-row mt-3">
+		<div><a href="{{ path('Music_Listen', { id: entity.id, artistId: entity.artist.id, artist: entity.artist.title, album: entity.title }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>
+		<div class="ml-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::ALBUM_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>
+	</div>
+{% endblock %}
+
+{% block data_bottom %}
+	<div class="mb-3">
+		{{ render(controller('App\\Controller\\MusicAdminController::indexByAlbumAction', { albumId: entity.id })) }}
+	</div
+{% endblock %}

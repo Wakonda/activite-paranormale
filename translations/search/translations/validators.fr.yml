@@ -1,0 +1,5 @@
+search:
+    index:
+        Search: "Rechercher"
+        NoResult: "Aucun document ne correspond aux termes de recherche spécifiés"
+        Results: "résultats"

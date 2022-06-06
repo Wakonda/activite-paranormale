@@ -1,0 +1,54 @@
+{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+
+{{ (asset(entity.getAssetImagePath()) ~ entity.pdfDoc)|displayPrivatePDF }}
+
+<hr>
+<div class="tabs">
+	<h3>{{ "document.abstract.Abstract"|trans([], "validators") }}</h3>
+	{% if entity.text|strip_tags is not empty %}
+		{{ entity.text|raw }}
+	{% else %}
+		<div class="alert alert-danger"><i>{{ "document.abstract.NoAbstract"|trans([], "validators") }}</i></div>
+	{% endif %}
+	<h3>{{ "document.abstract.Details"|trans([], "validators") }}</h3>
+	<div class="form-table form-table-4cols form-table-collapse">
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Title"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.title }}</div>
+
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Author"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+			{% for authorDocumentBiography in entity.authorDocumentBiographies %}
+				{% set correctBio = biography_correct_language(authorDocumentBiography) %}
+				{% if correctBio is not null %}
+					<p><a href="{{ path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title}) }}" alt="">{{ correctBio.title }}</a></p>
+				{% else %}
+					<p>{{ authorDocumentBiography.title }}</p>
+				{% endif %}
+			{% endfor %}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Date"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.releaseDateOfDocumentText|trans([], "validators") }}</div>
+
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Category"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.documentFamily|getDocumentFamilyRealName(app.request.locale) }}</div>
+
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Language"|trans([], "validators") }}</div>
+		<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt=""width="20" height="13" /></div>
+
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Extension"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ mime_content_type(asset(entity.getAssetImagePath()) ~ entity.pdfDoc, "private") }}</div>
+
+		<div class="form-table-cell form-table-cell-head">{{ "document.abstract.Size"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ filesize(asset(entity.getAssetImagePath()) ~ entity.pdfDoc, 2, "private") }}</div>
+	</div>
+
+	{{ getTagsByEntityForDisplay(entity) }}
+</div>
+<div style="clear: both;"></div>
+
+<hr class="hr2"/>
+<p>
+	{% if entity.theme is not empty %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+
+	{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+</p>

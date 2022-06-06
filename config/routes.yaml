@@ -1,0 +1,115 @@
+ap_mobile:
+    resource: "../src/Routes/mobile/routing.yml"
+    prefix:   /
+
+ap_tags:
+    resource: "../src/Routes/tags/routing.yml"
+    prefix:   /
+
+ap_useful_link:
+    resource: "../src/Routes/usefullink/routing.yml"
+    prefix:   /
+
+APFileManagementBundle:
+    resource: "../src/Routes/filemanagement/routing.yml"
+    prefix:   /
+
+APVoteBundle:
+    resource: "../src/Routes/vote/routing.yml"
+    prefix:   /
+
+APSearchBundle:
+    resource: "../src/Routes/search/routing.yml"
+    prefix:   /
+
+APTestimonyBundle:
+    resource: "../src/Routes/testimony/routing.yml"
+    prefix:   /
+
+APPhotoBundle:
+    resource: "../src/Routes/photo/routing.yml"
+    prefix:   /
+
+APPageBundle:
+    resource: "../src/Routes/page/routing.yml"
+    prefix:   /
+
+APCommentBundle:
+    resource: "../src/Routes/comment/routing.yml"
+    prefix:   /
+
+APContactBundle:
+    resource: "../src/Routes/contact/routing.yml"
+    prefix:   /
+
+APIndexBundle:
+    resource: "../src/Routes/index/routing.yml"
+    prefix:   /
+
+APAdminBundle:
+    resource: "../src/Routes/admin/routing.yml"
+    prefix:   /
+
+APQuotationBundle:
+    resource: "../src/Routes/quotation/routing.yml"
+    prefix:   /
+
+APWitchcraftBundle:
+    resource: "../src/Routes/witchcraft/routing.yml"
+    prefix:   /
+
+APBookBundle:
+    resource: "../src/Routes/book/routing.yml"
+    prefix:   /
+
+APCartographyBundle:
+    resource: "../src/Routes/cartography/routing.yml"
+    prefix:   /
+
+APPartnerBundle:
+    resource: "../src/Routes/partner/routing.yml"
+    prefix:   /
+
+APWebDirectorySEOBundle:
+    resource: "../src/Routes/webdirectoryseo/routing.yml"
+    prefix:   /
+
+APWebDirectoryBundle:
+    resource: "../src/Routes/webdirectory/routing.yml"
+    prefix:   /
+
+APMusicBundle:
+    resource: "../src/Routes/music/routing.yml"
+    prefix:   /
+
+APDocumentBundle:
+    resource: "../src/Routes/document/routing.yml"
+    prefix:   /
+
+APVideoBundle:
+    resource: "../src/Routes/video/routing.yml"
+    prefix:   /
+
+APNewsBundle:
+    resource: "../src/Routes/news/routing.yml"
+    prefix:   /
+
+APBlogBundle:
+    resource: "../src/Routes/blog/routing.yml"
+    prefix:   /
+
+APUserAdminBundle:
+    resource: "../src/Routes/user/adminuser.yml"
+    prefix:   /
+
+APUserBundle:
+    resource: "../src/Routes/user/user.yml"
+    prefix:   /
+
+Movie:
+    resource: "../src/Routes/movie/routing.yml"
+    prefix:   /
+
+Store:
+    resource: "../src/Routes/store/routing.yml"
+    prefix:   /

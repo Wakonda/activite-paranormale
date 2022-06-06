@@ -1,0 +1,428 @@
+{% macro blogger_form(entity, type) %}
+	{% set type = type~"_"~entity.language.abbreviation %}
+
+	{% if isBloggerAvailable(type) %}
+		<div class="accordion mb-2" id="accordionParentBlogger">
+			<div class="card sub_block">
+				<div class="card-header" role="tab" id="headingBlogger">
+					<span class="panel-title">
+					<a href="#" role="button" data-toggle="collapse" data-target="#collapseBlogger" aria-expanded="true" aria-controls="collapseOne">
+					<i class="fab fa-google-plus-square" aria-hidden="true"></i> Blogger
+					</a>
+					</span>
+				</div>
+				<div id="collapseBlogger" class="collapse" aria-labelledby="headingBlogger"  data-parent="#accordionParentBlogger">
+					<div class="card-body">
+						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type }) }}" method="POST">
+							{% set tags = blogger_tags(type) %}
+							<select multiple name="blogger_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								{% for tag in tags %}
+									<option value="{{ tag }}">{{ tag }}</option>
+								{% endfor %}
+							</select>
+							<br><br>
+							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro shopify_form(entity, type) %}
+	{% set type_locale = type~"_"~entity.language.abbreviation %}
+
+	{% if isShopifyAvailable(type_locale) %}
+		<div class="accordion mb-2" id="accordionParentShopify">
+			<div class="card sub_block">
+				<div class="card-header" role="tab" id="headingShopify">
+					<span class="panel-title">
+					<a href="#" role="button" data-toggle="collapse" data-target="#collapseShopify" aria-expanded="true" aria-controls="collapseOne">
+					<i class="fab fa-shopify"></i> Shopify
+					</a>
+					</span>
+				</div>
+				<div id="collapseShopify" class="collapse" aria-labelledby="headingShopify"  data-parent="#accordionParentShopify">
+					<div class="card-body">
+						<form action="{{ path('Admin_Shopify', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type_locale }) }}" method="POST">
+							{% if type == "magic" %}
+								{% set tags = grimoire_themes_by_language(entity.language.abbreviation) %}
+							{% else %}
+								{% set tags = themes_by_language(entity.language.abbreviation) %}
+							{% endif %}
+							<select multiple name="shopify_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								{% for tag in tags %}
+									<option value="{{ tag }}">{{ tag }}</option>
+								{% endfor %}
+							</select>
+							<br><br>
+							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro tumblr_form(entity) %}
+	{% if isTumblrAvailable(entity) %}
+		<div class="accordion mb-2" id="accordionParentTumblr">
+			<div class="card sub_block">
+				<div class="card-header" role="tab" id="headingTumblr">
+					<span class="panel-title">
+					<a href="#" role="button" data-toggle="collapse" data-target="#collapseTumblr" aria-expanded="true" aria-controls="collapseOne">
+					<i class="fab fa-tumblr-square" aria-hidden="true"></i> Tumblr
+					</a>
+					</span>
+				</div>
+				<div id="collapseTumblr" class="collapse" aria-labelledby="headingTumblr" data-parent="#accordionParentTumblr">
+					<div class="card-body">
+						<form action="{{ path('Admin_Tumblr', {'id': entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="POST">
+							{% set tags = themes_by_language(entity.language.abbreviation) %}
+							<select multiple name="tumblr_tags[]" class="form-contro selectpicker" data-live-search="true" data-width="100%">
+								{% for tag in tags %}
+									<option value="{{ tag.title }}">{{ tag.title }}</option>
+								{% endfor %}
+							</select>
+							<br>
+							<br>
+							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro facebook_form(entity) %}
+	<div class="accordion mb-2" id="accordionParentFacebook">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingFacebook">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseFacebook" aria-expanded="true" aria-controls="collapseOne">
+				<i class="fab fa-facebook-square" aria-hidden="true"></i> Facebook
+				</a>
+				</span>
+			</div>
+			<div id="collapseFacebook" class="collapse" aria-labelledby="headingFacebook" data-parent="#accordionParentFacebook">
+				<div class="card-body">
+					<form action="{{ path('Admin_Facebook', {'id': entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="POST">
+						<select name="facebook_media" class="form-control">
+							<option value="photo_media">Photo</option>
+							<option value="post_media">Post</option>
+						</select>
+						<br>
+						<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro twitter_form(entity) %}
+	{% if isTwitterAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentTwitter">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingTwitter">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseTwitter" aria-expanded="true" aria-controls="collapseTwitter">
+				<i class="fab fa-twitter-square" aria-hidden="true"></i> Twitter
+				</a>
+				</span>
+			</div>
+			
+			<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" data-parent="#accordionParentTwitter">
+				<div class="card-body">
+					<form action="{{ path('Admin_Twitter', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string" class="badge badge-danger">280</span></p>
+						<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
+						<div id="tags">
+							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+						</div>
+						<br>
+						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title }}</textarea>
+						<br>
+						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro twitter_form_js() %}
+	<script>
+		$(function()
+		{
+			var datas = $("#twitter_area").text().split(" ");
+			$("div#tags a").each(function() {
+				
+				for(var i = 0; i < datas.length; i++)
+				{
+					if($(this).text().toLowerCase() == datas[i].toLowerCase())
+						datas[i] = "#" + datas[i];
+				}
+			});
+			
+			$("#twitter_area").val(datas.join(" "));
+		
+			$("#twitter_area").bind("keydown keyup", function()
+			{
+				var limit = 280;
+				$("#limit_string").html(limit - $(this).val().length);
+				
+				if(limit <= $(this).val().length)
+				{
+					$("input[type=submit]#tweet").attr("disabled", "disabled");
+				}
+				else
+					$("input[type=submit]#tweet").removeAttr("disabled");
+			});
+			$("#twitter_area").keyup();
+			
+			//Twitter Tags
+			$("div#tags a").click(function(event) {
+				event.preventDefault();
+				var textToInsert = "#" + $(this).data('tag');
+				var position = $('#twitter_area').prop("selectionStart");
+				var textareaContent = $('#twitter_area').val();
+				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+				$('#twitter_area').val(output);
+				$("#twitter_area").keyup();
+			});
+		});
+	</script>
+{% endmacro %}
+
+{% macro pinterest_form(entity) %}
+	{% if isPinterestAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentPinterest">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingPinterest">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapsePinterest" aria-expanded="true" aria-controls="collapsePinterest">
+				<i class="fab fa-pinterest" aria-hidden="true"></i> Pinterest
+				</a>
+				</span>
+			</div>
+			<div id="collapsePinterest" class="collapse" aria-labelledby="headingPinterest" data-parent="#accordionParentPinterest">
+				<div class="card-body">
+					<form action="{{ path('Admin_Pinterest', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<textarea id="pinterest_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title }}</textarea>
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro tinymce_init_js() %}
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+{% endmacro %}
+
+{% macro tinymce_js(id) %}
+	{% set language = "fr_FR" %}
+	{% if app.request.locale == "en" %}
+		{% set language = "en_GB" %}
+	{% elseif app.request.locale == "es" %}
+		{% set language = "es" %}
+	{% endif %}
+
+	<script>
+	tinymce.init({
+		selector:'#{{ id }}',
+		height: 250,
+		language: '{{ language }}',
+		menubar: false,
+		statusbar: false,
+		browser_spellcheck: true,
+		plugins: [
+			'lists link image charmap textcolor media'
+		],
+		toolbar: 'bold italic underline | forecolor backcolor insert | alignleft aligncenter alignright alignjustify | bullist numlist | link image | undo redo |',
+		setup: function (editor) {
+			editor.on('change', function () {
+				tinymce.triggerSave();
+			});
+		}
+	});
+	</script>
+{% endmacro %}
+
+{% macro tinymce_light_js(id) %}
+	{% set language = "fr_FR" %}
+	{% if app.request.locale == "en" %}
+		{% set language = "en_GB" %}
+	{% elseif app.request.locale == "es" %}
+		{% set language = "es" %}
+	{% endif %}
+
+	<script>
+	tinymce.init({
+		selector:'#{{ id }}',
+		height: 100,
+		language: '{{ language }}',
+		menubar: false,
+		statusbar: false,
+		browser_spellcheck: true,
+		plugins: [
+			'lists link image charmap textcolor media code'
+		],
+		toolbar: 'bold italic underline | link | undo redo | code',
+		setup: function (editor) {
+			editor.on('change', function () {
+				tinymce.triggerSave();
+			});
+		}
+	});
+	</script>
+{% endmacro %}
+
+{% macro tinymce_admin_js(selector, uploadRoute) %}
+	{% set language = "fr_FR" %}
+	{% if app.request.locale == "en" %}
+		{% set language = "en_GB" %}
+	{% elseif app.request.locale == "es" %}
+		{% set language = "es" %}
+	{% endif %}
+
+	<script>
+		{% if uploadRoute != "" %}
+			$("body").append('<iframe id="{{ selector }}_form_target" name="{{ selector }}_form_target" style="display:none"></iframe>');
+			$("#{{ selector }}_form_target").after('<form id="{{ selector }}_form_upload" action="" target="{{ selector }}_form_target" method="post" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden"><input name="image" type="file"></form>');
+		{% endif %}
+
+		tinymce.init({
+			statusbar: false,
+			extended_valid_elements : "a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]",
+			height: 300,
+			block_formats: 'Header 3=h3;Header 4=h4;Header 5=h5;Header 6=h6',
+			menubar: false,
+			browser_spellcheck: true,
+			language: '{{ language }}',
+			selector:'#{{ selector }}',
+			entity_encoding: "raw",
+			toolbar: 'bold italic underline | formatselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist | link image media replacePWithBr code | undo redo | fullscreen',
+			plugins: [
+				'lists link image charmap textcolor media, code, paste, fullscreen'
+			],
+			paste_preprocess : function(pl, o) {
+				//<(\w+)\s*(?:(?:(?:(?!class=|id=|name=)[^>]))*((?:class|id|name)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!class=|id=|name=)[^>]))*((?:class|id|name)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!class=|id=|name=)[^>]))*((?:class|id|name)=['"][^'"]*['"]\s*)?)[^>]*>
+				o.content = o.content.replace(/<(\w+)\s*(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)[^>]*>/gi, '<$1 $2$3$4>');
+				
+				o.content = o.content.replace(/<[a-z][a-z0-9]*\s*?>\s*<\/[a-z][a-z0-9]*>/gi, '');
+			
+				//o.content = o.content.replace(/<(\w+)\s*(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)+>/gi, '<$1>');
+				//o.content = o.content.replace(/<\s*([a-z][a-z0-9]*)\s.*?>/gi, '<$1>');
+				
+				o.content = o.content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/gi, '');
+				o.content = o.content.replace(/<p>[\n\r]+<\/p>/g, '');
+				o.content = o.content.replace(/(<p>\s*<\/p>)+/gi, '');
+			},
+			setup: function (editor) {
+				editor.addButton('replacePWithBr', {
+					tooltip: "Replace paragraph with line break",
+					image: "{{ asset('extended/css/admin/notes_remove-128.png') }}",
+					onclick: function () {
+						var selection = editor.selection.getContent();
+						selection = selection.replace(/(<p.*?>)/igm, '').replace(/<\/p>/igm, '<br>');
+						selection  = "<p>"+selection+"</p>";
+						editor.insertContent(selection);
+					}
+				});
+			},
+			{% if uploadRoute != "" %}
+				file_picker_types: 'file image',
+				image_caption: true,
+				relative_urls: false,
+				file_picker_callback: function(callback, value, meta) {
+					// Provide image and alt text for the image dialog
+					if (meta.filetype == 'image' || meta.filetype == 'file') {
+						document.querySelector("form#{{ selector }}_form_upload input").click();
+
+						handler = function() {
+							var form = document.querySelector("form#{{ selector }}_form_upload");
+							var action = form.getAttribute("action");
+							action = "{{ uploadRoute }}?fileType=" + meta.filetype;
+							form.setAttribute("action", action);
+							form.submit();
+							document.querySelector("form#{{ selector }}_form_upload input").removeEventListener('change', handler, false);
+						};
+
+						document.querySelector("form#{{ selector }}_form_upload input").addEventListener('change', handler, false);
+					}
+				}
+			{% endif %}
+		});
+	</script>
+{% endmacro %}
+
+{% macro thedailytruth_form(entity) %}
+	{% if isTheDailyTruthAvailable(entity.language.abbreviation) %}
+		<div class="accordion mb-2" id="accordionParentTheDailyTruth">
+			<div class="card sub_block">
+				<div class="card-header" role="tab" id="headingTheDailyTruth">
+					<span class="panel-title">
+					<a href="#" role="button" data-toggle="collapse" data-target="#collapseTheDailyTruth" aria-expanded="false" aria-controls="collapseTheDailyTruth">
+					<i class="fas fa-yin-yang"></i> The Daily Truth
+					</a>
+					</span>
+				</div>
+				<div id="collapseTheDailyTruth" class="collapse" aria-labelledby="headingTheDailyTruth" data-parent="#accordionParentTheDailyTruth">
+					<div class="card-body">
+						<form action="{{ path('Admin_TheDailyTruth', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
+							{% set tags = thedailytruth_tags() %}
+							<select multiple name="thedailytruth_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								{% for tag in tags %}
+									<option value="{{ tag }}">{{ tag }}</option>
+								{% endfor %}
+							</select>
+							<br>
+							<br>
+							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro select_list_theme(themes, routePath, text_button) %}
+	<form name="choixTheme" id="choose_theme_news" action="{{ path(routePath, { 'page' : 1}) }}" method="post" class="form-inline">
+		<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
+		<div class="input-group">
+			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">
+				<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
+				{% for theme in themes %}
+					<option value="{{ theme.id }}">{{ theme.title }}</option>
+				{% endfor %}
+			</select>
+			<div class="input-group-append">
+				<button id="selectTheme" type="submit" class="btn btn-primary"><i class="far fa-eye" aria-hidden="true"></i>{% if is_mobile() == false %} {{ text_button|trans([], 'validators') }}{% endif %}</button> 
+			</div>
+		</div>
+	</form>
+{% endmacro %}
+
+{% macro select2_autocomplete() %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/select2/dist/css/select2.min.css') }}" media="screen" />
+	<script src="{{ asset('extended/js/select2/dist/js/select2.full.min.js') }}"></script>
+	<script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
+	<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+{% endmacro %}

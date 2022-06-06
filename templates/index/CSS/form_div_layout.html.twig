@@ -1,0 +1,44 @@
+{% block form_label %}
+{% apply spaceless %}
+    {% if not compound %}
+        {% set label_attr = label_attr|merge({'for': id}) %}
+    {% endif %}
+    {% if required %}
+        {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+    {% endif %}
+    {% if label is empty %}
+        {% set label = name|humanize %}
+    {% endif %}
+    <label{% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}
+	{% if required %}
+		<span class="required_star"> * </span>
+	{% endif %}
+	</label>
+{% endapply %}
+{% endblock form_label %}
+
+{% block field_errors %}
+{% apply spaceless %}
+    {% if errors|length > 0 %}
+	<div class="alert alert-danger" role="alert">
+		<ul class = "error">
+			{% for error in errors %}
+				<li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+			{% endfor %}
+		</ul>
+	</div>
+    {% endif %}
+{% endapply %}
+{% endblock field_errors %}
+
+{% block form_errors %}
+    {% if errors|length > 0 %}
+	<div class="alert alert-danger pb-0" role="alert">
+        <ul class="list-unstyled">
+            {% for error in errors %}
+                <li>{{ error.messageTemplate|trans(error.messageParameters, 'validators') }}</li>
+            {% endfor %}
+        </ul>
+	</div>
+    {% endif %}
+{% endblock form_errors %}

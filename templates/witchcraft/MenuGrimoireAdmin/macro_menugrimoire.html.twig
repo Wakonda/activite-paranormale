@@ -1,0 +1,19 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.vars['id'] }}_language").change(function()
+	{
+		$.ajax({
+			type: "POST",
+			url: "{{ path('SurThemeGrimoire_Admin_ReloadListsByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var menuGrimoire = data.menuGrimoire;
+				$("#{{form.vars['id'] }}_surTheme option").remove();
+				$.each(menuGrimoire, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_menuGrimoire").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+			}
+		});
+	});
+{% endmacro %}

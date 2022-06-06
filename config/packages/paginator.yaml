@@ -1,0 +1,5 @@
+knp_paginator:
+    default_options:
+        sort_direction_name: direction  # sort direction query parameter name
+    template:                             
+        pagination: 'mobile/Generic/paginator.html.twig'

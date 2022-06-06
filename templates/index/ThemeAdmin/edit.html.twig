@@ -1,0 +1,24 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.GeneralTheme"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('Theme_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Theme_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Theme_Admin_Index') }}{% endblock %}
+
+{% block update_admin_route %}{{ path('Theme_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/ThemeAdmin/macro_theme.html.twig" as macro_theme %}
+
+	<script>
+		$(function()
+		{
+			{{ macro_theme.updateListForm(form) }}
+		});
+	</script>
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'index/ThemeAdmin/_form.html.twig' %}
+{% endblock %}

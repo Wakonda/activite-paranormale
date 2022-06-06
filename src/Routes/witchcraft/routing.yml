@@ -1,0 +1,88 @@
+Witchcraft_Index:
+    path:  /grimoire
+    controller: App\Controller\WitchcraftController::indexAction
+
+Witchcraft_TabGrimoire:
+    path:  /grimoire/tab/{surtheme}/{id}/{theme}
+    controller: App\Controller\WitchcraftController::tabGrimoireAction
+    requirements:
+       theme: ".+"
+       id: \d+
+
+Witchcraft_TabGrimoireDatatables:
+    path: /tabgrimoiredatatables/{themeId}
+    controller: App\Controller\WitchcraftController::tabGrimoireDatatablesAction
+
+Witchcraft_ReadGrimoire:
+    path:  /grimoire/read/{surtheme}/{id}/{title_slug}
+    controller: App\Controller\WitchcraftController::readGrimoireAction
+    requirements:
+       surtheme: ".+"
+       title_slug: .+
+
+Witchcraft_ReadGrimoire_Simple:
+    path:  /grimoire/read_simple/{id}
+    controller: App\Controller\WitchcraftController::readGrimoireSimpleAction
+
+Witchcraft_CountRitual:
+    path:  /grimoire/count/{id}
+    controller: App\Controller\WitchcraftController::countRitualAction
+    requirements:
+       id: \d+
+
+Witchcraft_Pdfversion:
+    path: /grimoire/pdfversion/{id}
+    controller: App\Controller\WitchcraftController::pdfVersionAction
+
+Witchcraft_New:
+    path: /grimoire/new
+    controller: App\Controller\WitchcraftController::newAction
+
+Witchcraft_Create:
+    path: /grimoire/create
+    controller: App\Controller\WitchcraftController::createAction
+
+Witchcraft_Waiting:
+    path: /grimoire/waiting/{id}
+    controller: App\Controller\WitchcraftController::waitingAction
+
+Witchcraft_Validate:
+    path: /grimoire/validate/{id}
+    controller: App\Controller\WitchcraftController::validateAction
+
+WitchcraftTool_Index:
+    path: /witchcrafttool/{page}
+    controller: App\Controller\WitchcraftController::indexWitchcraftToolAction
+    defaults:
+        page: 1
+    requirements:
+       page: \d+
+
+WitchcraftTool_Show:
+    path: /witchcrafttool/{id}/{title_slug}
+    controller: App\Controller\WitchcraftController::showWitchcraftToolAction
+    defaults:
+        title_slug: null
+    requirements:
+       id: \d+
+
+# Administration
+MenuGrimoire_Admin:
+    resource: "routing/menugrimoireadmin.yml"
+    prefix:   /admin/menu_grimoire
+
+SurThemeGrimoire_Admin:
+    resource: "routing/surthemegrimoireadmin.yml"
+    prefix:   /admin/theme_grimoire
+
+Grimoire_admin:
+    resource: "routing/grimoireadmin.yml"
+    prefix:   /admin/grimoire
+
+WitchcraftTool_admin:
+    resource: "routing/witchcrafttooladmin.yml"
+    prefix:   /admin/witchcrafttool
+
+WitchcraftThemeTool_Admin:
+    resource: "routing/witchcraftthemetooladmin.yml"
+    prefix:   /admin/witchcraftthemetool

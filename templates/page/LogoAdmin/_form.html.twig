@@ -1,0 +1,32 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "logo.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "logo.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.alt, "logo.admin.Alt"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.alt) }}{{ form_widget(form.alt, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.publishedAt, "logo.admin.PublishedAt"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.publishedAt) }}{{ form_widget(form.publishedAt, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "logo.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.image, "logo.admin.Image"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.image is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.image }}
+		<br />
+	{% endif %}
+	{{ form_errors(form.image) }}{{ form_widget(form.image) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.folder, "logo.admin.Folder"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.folder) }}{{ form_widget(form.folder, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.isActive, "logo.admin.IsActive"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.isActive) }}{{ form_widget(form.isActive) }}</div>
+
+{{ form_rest(form) }}
+{{ form_errors(form) }}

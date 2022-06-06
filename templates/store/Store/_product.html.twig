@@ -1,0 +1,46 @@
+<div class="card mb-3">
+	<div class="row no-gutters">
+		<div class="col-md-4 align-self-center text-center">
+			{% if entity.imageEmbeddedCode is not empty %}
+				<div class="store_embedded_image">{{ entity.imageEmbeddedCode|raw }}</div>
+			{% endif %}
+		</div>
+
+		<div class="col-md-8 content-card">
+			<div class="card-body pb-0">
+				<h5 class="card-title text-center">{{ entity.title }}</h5>
+				<hr>
+				{% if entity.price is not empty %}
+					<p class="card-text text-center"><span class="price">{{ entity|format_price }}</span></p>
+				{% endif %}
+				<p class="text-center"><i class="fas fa-cash-register"></i> <a href="{{ path('Store_Index', {category: entity.category}) }}">{{ ("store.index."~(entity.category|ucfirst))|trans([], "validators") }}</a></p>
+				{% if entity.characteristic is not empty %}
+					{% for label, characteristic in entity.characteristic %}
+						<div class="text-center">
+						{{ ("store.index."~(label|ucfirst))|trans([], "validators") }} <b>{{ ("store.characteristic."~(characteristic|ucfirst))|trans([], "validators") }}</b>
+						</div>
+					{% endfor %}
+				{% endif %}
+				
+				<hr>
+			</div>
+			<div class="card-footer text-center">
+				<a class="btn read" href="{{ path('Store_Show', {'id': entity.id, 'title': entity.title}) }}">
+					<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+					<b class="align-middle">{{ "store.search.Read"|trans([], "validators") }}</b>
+				</a>
+				{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
+					<a class="btn amazon" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
+						<span class="mr-2"><i class="fab fa-amazon fa-fw"></i></span>
+						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
+					</a>
+				{% else %}
+					<a class="btn aliexpress" href="{{ entity.url }}" rel="nofollow" target="_blank">
+						<span class="mr-2"><i class="fab fa-alipay fa-fw"></i></span>
+						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
+					</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+</div>

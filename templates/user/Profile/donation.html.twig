@@ -1,0 +1,33 @@
+{% set i = 0 %}
+<div id="accordion">
+	{% for donation in donations %}
+		<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ donation.title }}" aria-expanded="true" aria-controls="collapse_{{ donation.title }}"><img src="{{ asset('extended/photo/store/cryptoCurrencies/'~(donation.title|lower)~'.svg') }}" width="20">  {{ donation.title }}</h3>
+		<div id="collapse_{{ donation.title }}" class="collapse {% if i == 0 %}show{% endif %}" data-parent="#accordion">
+		<br>
+			<div class="text-center">
+				{% if donation.title != "Paypal" %}
+					<p class="text-center"><b>{{ donation.address }}</b></p>
+					<img src="data:image/gif;base64,{{ donation.qrcode }}" />
+				{% else %}
+					<form action="https://www.paypal.com/cgi-bin/webscr" method="post">
+						<input type="hidden" name="cmd" value="_donations">
+						<input type="hidden" name="business" value="amatukami@hotmail.fr">
+						<input type="hidden" name="lc" value="US">
+						<input type="hidden" name="item_name" value="Stackoverflow">
+						<input type="hidden" name="no_note" value="0">
+							{{ "user.donation.SelectCurrency"|trans([], "validators") }}
+							<select name="currency_code" class="form-control">
+								{% for currency in currencies %}
+									<option value="{{ currency.iso4217 }}" {% if currency.iso4217 == "EUR" %}selected{% endif %}>{{ currency.abbr }}</option>
+								{% endfor %}
+							</select><hr>
+						<input type="hidden" name="bn" value="PP-DonationsBF:btn_donateCC_LG.gif:NonHostedGuest">
+						<input type="image" src="https://www.paypalobjects.com/{{ languageCountry }}/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+						<img alt="" border="0" src="https://www.paypalobjects.com/{{ languageCountry }}/i/scr/pixel.gif" width="1" height="1">
+					</form>
+				{% endif %}
+			</div>
+		</div>
+		{% set i = i + 1 %}
+	{% endfor %}
+</div>

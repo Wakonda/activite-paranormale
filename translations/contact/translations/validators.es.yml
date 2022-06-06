@@ -1,0 +1,25 @@
+contact:
+    error:
+        mailRegex: "Su email es incorrecto"
+        fieldEmpty: "Este campo no puede estar vacío"
+    index:
+        ContactUs: "¡Contáctenos!"
+        Name: "Nombre"
+        Email: "Email"
+        Subject: "Tema"
+        Message: "Mensaje"
+        Send: "Enviar"
+        Cancel: "Anular"
+    mail:
+        MessageSentBy: "Mensaje enviado por"
+    send:
+        Confirmation: "Confirmación"
+        messageSucces: "¡Su mensaje ha sido enviado con éxito!"
+        messageConfirmation: "Le responderemos lo más rápidamente posible con su solicitud."
+    admin:
+        Pseudo: "Pseudo"
+        Email: "Email"
+        Message: "Mensaje"
+        Read: "¿Leyendo?"
+        Subject: "Tema"
+        Date: "Fecha"

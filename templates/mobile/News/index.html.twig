@@ -1,0 +1,88 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ "mobile.main.News"|trans([], "validators") }}{% endblock %}
+{% block page_title%}
+	{{ "mobile.main.News"|trans([], "validators") }}
+	{% if app.request.attributes.get('theme') != "" %}
+		{{ (" - "~app.request.attributes.get('theme')) }}
+	{% endif %}
+{% endblock %}
+
+{% block meta_plus %}
+	<link rel="canonical" href="{{ url('News_Index', {'page': currentPage, 'theme': app.request.attributes.get('theme')}) }}">
+{% endblock %}
+
+{% block additional_javascript %}
+	<script>
+		$(function ()
+		{
+			$('select.selected_theme_news').change(function()
+			{
+				var DATA = $("#choose_theme_news").serialize();
+				$.ajax(
+				{
+					type: "POST",
+					url: "{{ path('ap_newsmobile_selectthemeforindexnew') }}",
+					data: DATA,
+					cache: false,
+					success: function(data)
+					{
+						document.location.href = data;
+					}
+				});
+				return false;
+			});
+			
+			$("div.media").click(function() {
+				document.location.href = $(this).find("a").attr("href");
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block body_content %}
+
+	{% import "mobile/Generic/macro_news.html.twig" as macro_news %}
+	{{ macro_news.select_list_theme(themes, 'ap_newsmobile_index', 'news.index.ViewAll') }}
+	
+	{% set adLocation = (pagination.items|length / 2)|round %}
+	{% set i = 0 %}
+
+	{% for entity in pagination.items %}
+	{% set i = i + 1 %}
+	{% if i == adLocation %}
+		<div class="media-container m-0 mt-3">
+			<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
+			<br>
+			<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+			<!-- AP_Mobile_2 -->
+			<ins class="adsbygoogle"
+				 style="display:block"
+				 data-ad-client="ca-pub-1951906303386196"
+				 data-ad-slot="8068030897"
+				 data-ad-format="auto"
+				 data-full-width-responsive="true"></ins>
+			<script>
+				 (adsbygoogle = window.adsbygoogle || []).push({});
+			</script>
+		</div>
+	{% endif %}
+	<div class="row media-container m-0 mt-3">
+		<div class="col-sm-4 mt-7 mb-7">
+			{{ entity.photoIllustrationFilename|imgsizeMobile(entity.getAssetImagePath())|raw }}
+		</div>
+		<div class="col-sm-8 mt-7">
+			<h4 class="media-heading"><a href="{{ path('ap_newsmobile_read', { 'id' : entity.id }) }}">{{ entity.title }}</a></h4>
+			<div class="text-justify">{{ entity.abstractText|raw }}</div>
+			<hr>
+			<i>{{ entity.theme.title }} - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }}</i>
+		</div>
+	</div>
+	{% else %}
+	<br>
+	<div class="alert alert-danger"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> {{ "mobile.news.NoNews"|trans([], "validators") }}</div>
+	{% endfor %}
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "publisher.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "publisher.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.photo is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.photo }}
+		<br>
+	{% endif %}
+	{{ form_errors(form.photo) }}
+	{{ form_widget(form.photo, { 'attr': {'class': 'form-control'} }) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.website, "publisher.admin.Website"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.website) }}{{ form_widget(form.website, {'attr': {'class':'form-control'}}) }}</div>

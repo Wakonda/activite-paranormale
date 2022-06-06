@@ -1,0 +1,8 @@
+{% extends "index/Generic/world.html.twig" %}
+
+{% block title %}{{ "cartography.world.WorldCartography"|trans([], "validators") }}{% endblock %}
+
+{% block world_datatables %}{{ path('Cartography_WorldDatatables', { 'language' : app.request.attributes.get('language') }) }}{% endblock %}
+
+{% block world_flag %}Cartography_World{% endblock %}
+{% block select_theme_for_index_world %}Cartography_SelectThemeForIndexWorld{% endblock %}

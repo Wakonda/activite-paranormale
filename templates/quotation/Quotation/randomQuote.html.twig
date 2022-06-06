@@ -1,0 +1,6 @@
+{% if entity is not null %}
+	<p class="mt-2"><span class="font-italic">{{ entity.textQuotation }}</span>
+	<br>(<a class="font-weight-bold" href="{{ path('Biography_Show', {'id': entity.authorQuotation.id, 'title': entity.authorQuotation.title} ) }}" title="{{ entity.authorQuotation }}">{{entity.authorQuotation}}</a>)</p>
+{% else %}
+	<p class="mt-2"><span class="font-italic">No quotation.</span></p>
+{% endif %}

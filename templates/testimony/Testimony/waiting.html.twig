@@ -1,0 +1,26 @@
+{% extends "index/Generic/waiting.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	</script>
+{% endblock %}
+
+{% block content_waiting %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p>{{ entity.text|raw }}</p>
+	<br>
+	{{ render(controller("App\\Controller\\FileManagementController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+	<hr class="hr2">
+	<p><i class="fas fa-dragon"></i> <a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.authorToString }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a> - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></p>
+	{{ getTagsByEntityForDisplay(entity) }}
+{% endblock %}
+
+{% block button_validate %}<input type="submit" value="{{ 'testimony.waiting.Validate'|trans([], 'validators') }}" class="submitcomment btn" onclick="window.location='{{ path('Testimony_Validate', {'id' : entity.id}) }}';" />{% endblock %}
+{% block button_edit %}<input type="submit" value="{{ 'testimony.waiting.Edit'|trans([], 'validators') }}" class="submitcomment btn" onclick="window.location='{{ path('Testimony_Edit', {'id' : entity.id}) }}';" />{% endblock %}

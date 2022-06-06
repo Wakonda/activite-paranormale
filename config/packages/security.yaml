@@ -1,0 +1,49 @@
+security:
+    encoders:
+        App\Entity\User:
+            algorithm: sha512
+            iterations: 5000
+
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_MODERATOR]
+        ROLE_MODERATOR: [ROLE_JOURNALIST, ROLE_CORRECTOR, ROLE_TRANSLATOR, ROLE_ARCHIVIST]
+        ROLE_ARCHIVIST: [ROLE_SIMPLE]
+        ROLE_JOURNALIST: [ROLE_SIMPLE]
+        ROLE_CORRECTOR: [ROLE_SIMPLE]
+        ROLE_TRADUCTOR: [ROLE_SIMPLE]
+        ROLE_SIMPLE: [ROLE_BANNED, ROLE_DISABLED]
+
+    providers:
+        our_db_provider:
+            entity:
+                class: App\Entity\User
+                property: username
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            pattern:    ^/
+            http_basic: ~
+            provider: our_db_provider
+            anonymous: ~
+            form_login:
+                always_use_default_target_path: true
+                default_target_path : /profile/
+                csrf_token_generator: security.csrf.token_manager
+                remember_me: true
+                login_path: Security_Login
+                check_path: Security_Login
+            logout:
+                path: /logout
+                target: /user_logout
+            remember_me:
+                secret: "%kernel.secret%"
+                lifetime: 604800
+                path: /
+
+            anonymous: true
+
+    access_control:
+        - { path: /admin.*, roles: ROLE_ADMIN }
+        - { path: /_console.*, roles: ROLE_ADMIN }

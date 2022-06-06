@@ -1,0 +1,20 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Book"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('Book_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('Book_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "book.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "book.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "book.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "book.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}

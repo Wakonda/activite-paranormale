@@ -1,0 +1,16 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.BookEdition"|trans([], "validators") }}{% endblock %}
+
+{% block create_admin_route %}{{ path('BookEdition_Admin_Create', {bookId: entity.book.id}) }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.backCover.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'book/BookEditionAdmin/_form.html.twig' %}
+{% endblock %}

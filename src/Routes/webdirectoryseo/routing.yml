@@ -1,0 +1,10 @@
+WebDirectorySEO_Index:
+    path:  /directory/seo/{page}
+    controller: App\Controller\WebDirectorySEOController::indexAction
+    defaults:
+        page: 1
+
+# Administration
+WebDirectorySEO_Admin:
+    resource: "routing/webdirectoryseoadmin.yml"
+    prefix:   /admin/directoryseo

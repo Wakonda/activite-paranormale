@@ -1,0 +1,32 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "president.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "president.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "president.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "president.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "president.admin.PseudoUsed"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "president.admin.PublicationDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.numberOfDays, "president.admin.NumberOfDays"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.numberOfDays) }}{{ form_widget(form.numberOfDays, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "president.admin.Licence"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "president.admin.State"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+
+{{ form_rest(form) }}

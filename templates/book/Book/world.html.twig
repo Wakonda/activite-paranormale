@@ -1,0 +1,8 @@
+{% extends "index/Generic/world.html.twig" %}
+
+{% block title %}{{ "book.world.WorldBook"|trans([], "validators") }}{% endblock %}
+
+{% block world_datatables %}{{ path('Book_WorldDatatables', { 'language' : app.request.attributes.get('language') }) }}{% endblock %}
+
+{% block world_flag %}Book_World{% endblock %}
+{% block select_theme_for_index_world %}Book_SelectThemeForIndexWorld{% endblock %}

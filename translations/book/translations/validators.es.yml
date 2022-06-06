@@ -1,0 +1,84 @@
+book:
+    index:
+        Book: "Libro"
+    admin:
+        Book: "Libro"
+        Title: "Título"
+        Photo: "Foto"
+        Text: "Texto"
+        PublicationDate: "Fecha de publicación"
+        Authors: "Autores"
+        Language: "Lengua"
+        Theme: "Tema"
+        State: "Estado"
+        Sources: "Fuentes"
+    biography:
+        Title: "Título"
+        Language: "Lengua"
+        Purchase: "Comprar"
+    search:
+        SearchSort: "Buscar / Ordenar"
+        Keywords: "Palabras clave"
+        Theme: "Tema"
+        PublicationDate: "Fecha de publicación"
+        PublicationDateUp: "Fecha de publicación ↑"
+        PublicationDateDown: "Fecha de publicación ↓"
+        Sort: "Ordenar por"
+        Validate: "Validar"
+        Read: "Leer"
+        NoMatchingRecordsFound: "No se encontraron resultados"
+    read:
+        Authors: "Autores"
+        PublishedOn: "Publicó el"
+        Description: "Descripción"
+        Details: "Detalles"
+        Theme: "Tema"
+        CodeCopiedWithSuccess: "El código ha sido copiado con éxito"
+        BookEditions: "Ediciones"
+        Sources: "Fuentes"
+    byPublisher:
+        VisitThePublishersWebsite: "Visitar la página web del editor"
+    world:
+        WorldBook: "Libro multilingüe"
+bookEdition:
+    admin:
+        ListOfEditions: "Lista de ediciones"
+        AddEdition: "Añadir edición"
+        NumberPage: "Número de páginas"
+        PublicationDate: "Fecha de publicación"
+        Biographies: "Biografías"
+        Format: "Formato"
+        BackCover: "Contraportada"
+        Photo: "Foto"
+        Publisher: "Editor"
+        Paperback: "Tapa blanda"
+        Hardcover: "Tapa dura"
+        Audiobook: "Audiolibro"
+        Ebook: "Ebook"
+        WholeBook: "Libro entero"
+        Subtitle: "Subtítulo"
+    generic:
+        Paperback: "Tapa blanda"
+        Hardcover: "Tapa dura"
+        Audiobook: "Audiolibro"
+        Ebook: "Ebook"
+    read:
+        BackCover: "Contraportada"
+        NumberPage: "Número de páginas"
+        Format: "Formato"
+        PublishedOn: "Publicó el"
+        Publisher: "Editor"
+        Subtitle: "Subtítulo"
+        Photo: "Foto"
+        Translator: "Traductor"
+        Preface: "Prefacio"
+        BookParticipation: "Participación"
+publisher:
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        Website: "Sitio web"
+biographies:
+    admin:
+        Translator: "Traductor"
+        Preface: "Prefacio"

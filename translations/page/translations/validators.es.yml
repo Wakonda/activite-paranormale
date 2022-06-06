@@ -1,0 +1,132 @@
+page:
+    admin:
+        Title: "Titulo"
+        Text: "Texto"
+        InternationalName: "Nombre internacional"
+        Language: "Lengua"
+        PseudoUsed: "Pseudo utilizado"
+        WritingDate: "Fecha de redacción"
+        PublicationDate: "Fecha de publicación"
+        Licence: "Licencia"
+        State: "Estado"
+president:
+    admin:
+        Title: "Titulo"
+        Text: "Texto"
+        Photo: "Foto"
+        Language: "Lengua"
+        Licence: "Licencia"
+        State: "Estado"
+        PseudoUsed: "Pseudo utilizado"
+        WritingDate: "Fecha de redacción"
+        PublicationDate: "Fecha de publicación"
+        NumberOfDays: "Número de días"
+    index:
+        ArchivedMessages: "Mensajes archivados"
+    tab:
+        Title: "Titulo"
+        PublicationDate: "Fecha de publicación"
+        ArchivedMessage: "Mensaje archivado"
+eventMessage:
+    menu:
+        Events: "Eventos"
+        Calendar: "Calendario"
+    calendar:
+        Events: "Eventos"
+        List: "Lista"
+    index:
+        Event: "Evento"
+    tab:
+        Photo: "Foto"
+        Title: "Título"
+        Date: "Fecha"
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Language: "Lengua"
+        DateFrom: "Fecha de inicio"
+        DateTo: "Fecha de finalización"
+        PseudoUsed: "Pseudo utilizado"
+        Licence: "Licencia"
+        State: "Estado"
+        Photo: "Foto"
+        Thumbnail: "Miniatura"
+        Theme: "Tema"
+        Longitude: "Longitud"
+        Latitude: "Latitud"
+        Validate: "Validar"
+        Refuse: "Rechazar"
+    slider:
+        MoreInformation: "Más información"
+    new:
+        AddEvents: "Sugerir un evento"
+        Title: "Título"
+        Text: "Texto"
+        Photo: "Foto"
+        Pseudo: "Pseudo"
+        DateFrom: "Fecha de inicio"
+        DateTo: "Fecha de finalización"
+        Location: "Dirección"
+        FileSizeLimit: "Tamaño máximo"
+        AcceptedFormat: "Formatos aceptados"
+        IsAnonymous: "¿Publicada de forma anónima?"
+        Validate: "Validar"
+        ClickHereToLocateOnMap: "Haga clic en el mapa para ubicar el lugar del evento."
+        PublishedAnonymously: "Publicado anónimamente"
+        PostedWithMyUserAccount: "Publicado con mi cuenta de usuario"
+        AnonymousMessage: "Cuando publicáis de forma anónima, su artículo no aparecerá en su cuenta cuando sea aprobado por nuestro equipo de moderación."
+    error:
+        FileSizeError: "El archivo es demasiado grande"
+        FileFormat: "El tipo mime del archivo no es válido"
+        StartDateSuperiorEndDate: "La fecha de inicio no puede ser mayor que la fecha de finalización"
+    waiting:
+        Edit: "Modificar"
+        Validate: "Validar"
+    validate:
+        Validation: "Validación"
+        ThankForYourParticipation: "¡Gracias por su participación!"
+        ThankForYourParticipationText: "Su evento ha sido transmitido a nosotros. Será publicado en nuestra página web como la aprobación de un moderador."
+    world:
+        WorldEventMessage: "Evento multilingüe"
+logo:
+    admin:
+        Title: "Titulo"
+        Text: "Texto"
+        Alt: "Alt"
+        Language: "Lengua"
+        PublishedAt: "Publicada en"
+        Image: "Imagen"
+        Folder: "Carpeta"
+        IsActive: "Activo"
+rssFeed:
+    menu:
+        RSSFeeds: "Canales RSS"
+        SubscribeToRSSFeeds: "Suscribirse a los canales RSS"
+    index:
+        SubscribeToRSSFeeds: "Suscribirse a los canales RSS"
+        WhatIsItTitle: "¿Qué es?"
+        WhatIsItText: "RSS son las siglas de Really Simple Syndication, un formato XML para sindicar o compartir contenido en la web. Se utiliza para difundir información actualizada frecuentemente a usuarios que se han suscrito a la fuente de contenidos."
+        CustomizeYourRSSFeed: "Personalizar los canales RSS"
+        RSSFeedCreatedTitle: "Canales RSS"
+        RSSFeedCreatedText: "Para suscribirse a canales RSS, copiar el enlace de abajo y pégalo en tu lector favorito!"
+        Category: "Categoría"
+        Language: "Lengua"
+        Number: "Total"
+        News: "Noticias"
+        Document: "Documento"
+        Photo: "Foto"
+        Testimony: "Testigo"
+        Video: "Vídeo"
+        French: "Français"
+        English: "English"
+        Spanish: "Español"
+    read:
+        CopyToClipboard: "Copiado al portapapeles"
+        CodeCopiedWithSuccess: "El código ha sido copiado con éxito"
+copyright:
+    table:
+        UsedPhotos: "Fotos utilizadas"
+        Photo: "Foto"
+        License: "Licencia"
+        Author: "Autor"
+        Link: "Enlace"

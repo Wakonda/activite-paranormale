@@ -1,0 +1,48 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.language.vars.id }}").change(function()
+	{
+		var currentState = $("#{{ form.state.vars.id }}").find('option:selected').data('intl');
+
+		$.ajax({
+			type: "POST",
+			url: "{{ path('News_Admin_ReloadThemeByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var theme = data.theme;
+				$("#{{ form.theme.vars.id }} option").remove();
+				$.each(theme, function(index, element)
+				{
+					$("#{{ form.theme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+				var state = data.state;
+				$("#{{ form.state.vars.id }} option").remove();
+				$.each(state, function(index, element)
+				{
+					$("#{{ form.state.vars.id }}").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+				});
+			}
+		});
+
+		$.ajax({
+			type: "POST",
+			url: "{{ path('TelevisionSerie_Admin_ReloadThemeByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var genre = data.genre;
+				$("#{{ form.genre.vars.id }} option").remove();
+				$.each(genre, function(index, element)
+				{
+					$("#{{ form.genre.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+				var country = data.country;
+				$("#{{ form.country.vars.id }} option").remove();
+				$.each(country, function(index, element)
+				{
+					$("#{{ form.country.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+			}
+		});
+	});
+{% endmacro %}

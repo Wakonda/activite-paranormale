@@ -1,0 +1,81 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}Activité-Paranormale{% endblock %}
+
+{% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/Marquee/jquery.marquee.min.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/Marquee/jquery.marquee.js') }}"></script>
+
+	<script>
+		$(document).ready(function(){
+			$("#marquee1").marquee();
+			
+			$(".pause-marquee").click(function() {
+				$("#marquee1").marquee("pause");
+				$(".resume-marquee").removeClass("d-none");
+				$(".pause-marquee").addClass("d-none");
+			});
+			$(".resume-marquee").click(function() {
+				$("#marquee1").marquee("resume");
+				$(".resume-marquee").addClass("d-none");
+				$(".pause-marquee").removeClass("d-none");
+			});
+			$(".next-marquee").click(function() {
+				$("#marquee1").marquee("next");
+				$(".pause-marquee").click();
+			})
+			$(".previous-marquee").click(function() {
+				$("#marquee1").marquee("previous");
+				$(".pause-marquee").click();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block h2_title %}
+	<h2>
+	<span class="float-left">
+		<img src="{{ asset('extended/photo/anger.png') }}" width="25" class="mt-1" alt="Anger ghost"/>
+	</span>Activité-Paranormale
+	</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	{{ render(controller('App\\Controller\\NewsController::mainSliderAction', { 'lang' : app.request.locale})) }}
+	<br />
+	{% if is_mobile() == true and app.session.get('v') == 'v2' %}
+		<div class="text-center">
+			<a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" alt=""><img src="{{ asset('extended/photo/mobile-version.png') }}" alt="Mobile version" width="30" class="align-middle"> {{ "index.main.GoWebsiteMobile"|trans([], "validators") }}</a>
+			<br>
+		</div>
+	{% endif %}
+	
+	{% include "index/Index/version.html.twig" %}
+	
+	{% set bannerArray = ""|random_banner %}
+
+	{% if bannerArray is not null %}
+		<p class="image"><a href="{{ bannerArray['link'] }}" target="_blank"><img src="{{ asset('extended/photo/banner/') }}{{ bannerArray['name'] }}" width = "{{ bannerArray['width'] }}" height = "{{ bannerArray['height'] }}" alt="" class=" mx-auto d-block img-fluid" /></a></p>
+	{% endif %}
+	
+	{{ render(controller('App\\Controller\\PageController::wordPresidentAction')) }}
+	{{ render(controller('App\\Controller\\StoreController::sliderAction')) }}
+	<br>
+	{{ "google"|advertisement|raw }}
+	<br>
+	{{ render(controller('App\\Controller\\EventMessageController::sliderAction')) }}
+	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
+	{{ render(controller('App\\Controller\\NewsController::sliderAction')) }}
+	<br />
+	<h3>{{ "index.main.Video"|trans([], "validators") }}</h3>
+	{{ render(controller('App\\Controller\\VideoController::sliderAction')) }}
+	<br />
+	<h3>{{ "index.main.Gallery"|trans([], "validators") }}</h3>
+	{{ render(controller('App\\Controller\\PhotoController::sliderAction')) }}
+	<br />
+	<h3>{{ "index.main.Witchcraft"|trans([], "validators") }}</h3>
+	{{ render(controller('App\\Controller\\WitchcraftController::widgetAction')) }}
+
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

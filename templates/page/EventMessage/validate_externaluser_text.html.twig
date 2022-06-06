@@ -1,0 +1,13 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "eventMessage.validate.Validation"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire"/></span>{{ "news.validate.Validation"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventmessage-validate-user-participation.jpg') }}" alt="Centaurus Girl" width="550" /></p>
+	<hr>
+	<div class="alert alert-success">{{ "eventMessage.validate.ThankForYourParticipation"|trans([], "validators") }}</div>
+	<p>{{ "eventMessage.validate.ThankForYourParticipationText"|trans([], "validators") }}</p>
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

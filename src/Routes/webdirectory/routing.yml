@@ -1,0 +1,16 @@
+WebDirectory_Index:
+    path:  /directory
+    controller: App\Controller\WebDirectoryController::indexAction
+
+WebDirectory_Read:
+    path: /directory/read/{id}/{title}
+    controller: App\Controller\WebDirectoryController::readAction
+
+WebDirectory_SearchDatatables:
+    path:  /searchdatatables
+    controller: App\Controller\WebDirectoryController::searchDatatablesAction
+
+# Admin
+WebDirectory_Admin:
+    resource: "routing/webdirectoryadmin.yml"
+    prefix:   /admin/directory

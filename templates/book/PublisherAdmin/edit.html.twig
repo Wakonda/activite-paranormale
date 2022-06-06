@@ -1,0 +1,13 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Publisher"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('Publisher_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Publisher_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Publisher_Admin_Index') }}{% endblock %}
+
+{% block update_admin_route %}{{ path('Publisher_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'book/PublisherAdmin/_form.html.twig' %}
+{% endblock %}

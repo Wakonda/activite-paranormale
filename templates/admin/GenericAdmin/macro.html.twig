@@ -1,0 +1,79 @@
+{% macro import_wikipedia(fieldId, sourceField = null) %}
+<style>
+	.select2-container--default {
+		height: calc(1.5em + .75rem + 2px);
+	}
+	.select2-selection--multiple {
+		height: calc(1.5em + .75rem + 2px);
+		overflow: auto;
+	}
+</style>
+<div class="input-group mb-2">
+	<div class="input-group-prepend">
+		<span class="input-group-text"><i class="fab fa-wikipedia-w"></i></span>
+	</div>
+	<input type="text" id="url_{{ fieldId }}" class="form-control"/>
+	<select id="sections_{{ fieldId }}" name="sections[]" multiple="multiple" style="min-width: 25%"></select>
+	<button type="button" class="btn btn-success" id="import_url_{{ fieldId }}"><i class="fas fa-check"></i></button>
+</div>
+<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/select2/dist/css/select2.min.css') }}" media="screen" />
+<script src="{{ asset('extended/js/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
+<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
+<script>
+	$(function() {
+		$('#sections_{{ fieldId }}').select2();
+		$("#url_{{ fieldId }}").on("change paste", function(e) {
+			e.preventDefault();
+			
+			let url = $("#url_{{ fieldId }}").val();
+			
+			if(typeof (e.originalEvent || e).clipboardData !== "undefined") {
+				url = (e.originalEvent || e).clipboardData.getData('text/plain');
+				$("#url_{{ fieldId }}").val(url);
+			}
+			
+			if(url == "")
+				return;
+
+			$.ajax({
+				type: "GET",
+				url: "{{ path('Admin_WikipediaSections') }}",
+				data: { "url" : url },
+				success: function(data)
+				{
+					$('#sections_{{ fieldId }}').html("").select2({"data": data, closeOnSelect: false});
+				}
+			});
+		});
+
+		$("#import_url_{{ fieldId }}").click(function(e) {
+			e.preventDefault();
+			let url = $("#url_{{ fieldId }}").val();
+			let sections = $("#sections_{{ fieldId }}").val();
+			
+			$.ajax({
+				type: "POST",
+				url: "{{ path('Admin_ImportWikipedia') }}",
+				data: { "url" : url, "sections": sections },
+				beforeSend: function( xhr ) {
+					{% if sourceField is not null %}
+						var data = editor{{ sourceField }}.getValue();
+						data.type = "url"
+						data.url = url
+						editor{{ sourceField }}.setValue(data)
+					{% endif %}
+				},
+				success: function(data)
+				{
+					tinymce.get("{{ fieldId }}").setContent(data.content);
+
+					{% if sourceField is not null %}
+						document.getElementById('add_source_{{ sourceField }}').click();
+					{% endif %}
+				}
+			});
+		});
+	});
+</script>
+{% endmacro %}

@@ -1,0 +1,69 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ publisher.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="{{ publisher.title }}"/></span>{{ publisher.title }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ publisher.photo|imgsize(550, publisher.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<hr class="hr2">
+	
+	{% if publisher.website is not empty %}
+	<ul class="fa-ul">
+		<li>
+			<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+			<a href="{{ publisher.website }}" alt="" target="_blank">{{ "book.byPublisher.VisitThePublishersWebsite"|trans([], "validators") }}</a>
+		</li>
+	</ul>
+	<hr class="hr2">
+	{% endif %}
+
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row no-gutters">
+				<div class="col-md-4 align-self-center text-center">
+					{% set dataStore = (entity is not empty ? image_embedded_code(entity, "book", "BookStore") : null) %}
+					{% if dataStore is not empty %}
+						{{ dataStore|raw }}
+					{% else %}
+						{{ entity.book.photo|imgsize(null, entity.book.getAssetImagePath())|raw }}
+					{% endif %}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body">
+						<h5 class="card-title text-center">{{ entity.book.title }}</h5>
+						{% if entity.subtitle is not empty %}
+							<p class="text-center"><i>{{ entity.subtitle }}</i></p>
+						{% endif %}
+						<hr>
+						<p class="card-text mb-0 text-center">
+							<i class="fas fa-calendar-alt"></i> {{ entity.book.publicationDate|dodate(false, app.request.locale) }}
+							{% set authorsArray = [] %}
+							{% for author in entity.book.authors %}
+								{% set correctBio = biography_correct_language(author) %}
+								{% set correctBio = (correctBio is not empty) ? correctBio : author %}
+								{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+							{% endfor %}
+						</p>
+						<p class="card-text mb-0 text-center my-3">{% if entity.book.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>
+						<hr>
+					</div>
+					<div class="card-footer text-center">
+						<a class="btn read" href="{{ path('Book_Show', {'id': entity.book.id, 'title_slug': entity.book.getUrlSlug()}) }}">
+							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% endfor %}
+	
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

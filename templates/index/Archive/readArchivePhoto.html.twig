@@ -1,0 +1,23 @@
+{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+
+<p id="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), 'imgGalery', { 'id': 'img_zoomed' }, null, true, true)|raw }}</p>
+<div>
+<p>{{ entity.text|raw }}</p>	
+</div>
+
+<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
+{{ entity.photoIllustrationCaption|raw }}
+
+<hr class="hr2"/>
+<p>
+	<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+	{% if is_current_languages(entity.language.abbreviation) == false %}
+		- <a href="{{ path('Photo_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+	{% endif %}
+	
+	{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+</p>
+
+{{ getTagsByEntityForDisplay(entity) }}
+
+{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Photo' })) }}

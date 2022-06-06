@@ -1,0 +1,36 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "theme.read.Theme"|trans([], "validators") }} - {{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/dildo-icon.svg') }}" width="27" class="mt-1" alt="Skull"/></span>{{ "theme.read.Theme"|trans([], "validators") }} - {{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<hr>
+	{% if entity.pdfTheme is not empty and file_exists(entity.getAssetImagePath() ~ entity.pdfTheme) %}
+		<form action="{{ path('Theme_Save', {'id' : entity.id, 'theme' : entity.title|replace({'/': '-'}) })}}" name="choixTheme">
+			<input class="submitcomment btn" type="submit" name="Search" value="{{ "generality.pdf.SavePrint"|trans([], "validators") }}" title="Search" /> 
+		</form>
+		<br>
+		<iframe src="{{ asset(entity.getAssetImagePath()) }}{{ entity.pdfTheme }}" style="width: 100%; height: 800px;" ></iframe>
+		<br>
+		<hr class="hr2">
+	{% endif %}
+	
+	<table class="table">
+		<tbody>
+			{% for key, publication in publications %}
+			<tr>
+				<td class="td_form_table">{{ key }}</td>
+				<td><a href="{{ publication["path"] }}">{{ publication["number"] }}</a></td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	<br>
+	<hr class="hr2"/>
+	<p>
+	{{ entity.surTheme.title }} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />
+	</p>
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

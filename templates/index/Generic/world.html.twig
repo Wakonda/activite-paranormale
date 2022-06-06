@@ -1,0 +1,139 @@
+{% extends "content_layout.html.twig" %}
+
+{% block h2_title %}
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/in-the-world-icon.png') }}" width="25" class="mt-1" alt="In the World"/></span>{{ block ("title") }}{% if app.request.attributes.get('language') != 'all' %} - {{ title }}{# {{ app.request.attributes.get('language') }} #}{% endif %}</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+
+	<script>
+		$(function ()
+		{
+			var lengthTd = $(".index_world thead th").length - 1;
+
+			oTable = $('table.index_world').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": {{ total_line_display }},
+				"bProcessing": true,
+				"bServerSide": true,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"aaSorting": [[ lengthTd, "desc" ]],
+				"sAjaxSource": "{% block world_datatables %}{% endblock %}",
+				"fnServerParams": function ( aoData ) {
+					aoData.push( { "name" : "theme_id", "value": "{{ theme is defined and theme is not empty ? theme.id : '' }}" } );
+				}
+			});
+			
+			{% if block("select_theme_for_index_world") is not empty %}
+				$('select.selected_theme_news').change(function()
+				{
+					var DATA = $("#choose_theme_news").serialize() + '&language=' + $(this).find(':selected').data('language');
+
+					$.ajax(
+					{
+						type: "POST",
+						url: "{{ path(block('select_theme_for_index_world')) }}",
+						data: DATA,
+						cache: false,
+						success: function(data)
+						{
+							document.location.href = data;
+						}
+					});
+					return false;
+				});
+			{% endif %}
+		});
+	</script>
+
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+
+	<ul id="tab_resources" class="nav nav-pills nav-fill">
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("News_World") }}';" {{ "News_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'news.index.Actualite'|trans([], 'validators') }}</span></li>
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("Biography_World") }}';" {{ "Biography_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'biography.index.Biography'|trans([], 'validators') }}</span></li>
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("Book_World") }}';" {{ "Book_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'book.index.Book'|trans([], 'validators') }}</span></li>
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("Cartography_World") }}';" {{ "Cartography_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'cartography.index.Cartography'|trans([], 'validators') }}</span></li>
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("EventMessage_World") }}';" {{ "EventMessage_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'eventMessage.index.Event'|trans([], 'validators') }}</span></li>
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("Photo_World") }}';" {{ "Photo_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'photo.index.Photo'|trans([], 'validators') }}</span></li>
+		<li class="nav-item mb-2"><span onclick="location.href = '{{ path("Video_World") }}';"  {{ "Video_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'video.index.Video'|trans([], 'validators') }}</span></li>
+	</ul>
+	<br>
+	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/world-news.jpg') }}" width="550" alt="Apocalypse world" /></p>
+	<hr>
+	{{ "news.world.ChooseALanguage"|trans([], "validators") }} :
+	<a href="{{ path(block('world_flag'), {'language': 'all'}) }}" title="World"><img class="flagLang {% if app.request.attributes.get('language') == 'all' %}select_language_language{% endif %}" src="{{ asset('extended/photo/language/earthFlag.png') }}" alt="World earth" width="20" height="13" /></a>
+	{% for flag in flags %}
+		<a href="{{ path(block('world_flag'), {'language': flag.abbreviation}) }}" title="{{ flag.title }}"><img {% if flag.abbreviation == app.request.attributes.get('language') %}class="select_language_language"{% endif %} src="{{ asset(flag.getAssetImagePath()) }}{{ flag.logo }}" alt="{{ flag.abbreviation }}" width="20" height="13" /></a>
+	{% endfor %}
+	<hr>
+
+	{% if block("select_theme_for_index_world") is not empty %}
+		<form name="choixTheme" id="choose_theme_news" action="{{ path(block('world_flag'), { 'language' : app.request.attributes.get('language')}) }}" method="post" class="form-inline">
+			<label for="theme_id">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
+			<div class="input-group">
+				<select name="theme_id" class="form-control selected_theme_news">
+					<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
+					{% for language, themeArray in themes %}
+						<optgroup label="{{ language }}">
+						{% for theme in themeArray %}
+							<option data-language="{{ theme.language }}" value="{{ theme.id }}">{{ theme.title }}</option>
+						{% endfor %}
+						</optgroup>
+					{% endfor %}
+				</select>
+				<div class="input-group-append">
+					<button id="selectTheme" type="submit" class="btn btn-primary"><i class="far fa-eye" aria-hidden="true"></i>{% if is_mobile() == false %} {{ 'news.index.ViewAll'|trans([], 'validators') }}{% endif %}</button> 
+				</div>
+			</div>
+		</form>
+		<hr />
+	{% endif %}
+
+	<br />
+	<table class="index_world dt-responsive w-100">
+		<thead>
+			<tr>
+			{% block thead_table %}
+				<th class="label_form">{{ "news.world.Language"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "news.world.Photo"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "news.world.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "news.world.PublicationDate"|trans([], "validators") }}</th>
+			{% endblock %}
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+			{% block tfoottable %}
+				<th class="label_form">{{ "news.world.Language"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "news.world.Photo"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "news.world.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "news.world.PublicationDate"|trans([], "validators") }}</th>
+			{% endblock %}
+			</tr>
+		</tfoot>
+	</table>
+	<div class="clear"></div>
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

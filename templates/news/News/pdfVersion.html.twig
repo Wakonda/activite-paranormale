@@ -1,0 +1,15 @@
+{% extends "index/Generic/pdfVersion_generic.html.twig" %}
+
+{% block main_content_pdf %}
+	<h1>{{ entity.title }}</h1>
+    <br />
+	<p class="text-center">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), false)|raw }}</p>
+
+	{{ ((entity.abstractText|HTMLPurifier)|formatTextForPDFVersion(entity))|raw }}
+	<br />
+	{{ ((entity.text)|formatTextForPDFVersion(entity))|raw }}
+	<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+	<span>{{ source_document(entity.source) }}</span>
+	<hr style="height: 1px"/>
+	<p>{{ entity.theme.title }} - {{ entity.publicationDate|dodate(false, app.request.locale) }} - {{ entity.pseudoUsed }} - {{ entity.licence.title }}</p>
+{% endblock %}

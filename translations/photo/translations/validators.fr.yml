@@ -1,0 +1,27 @@
+photo:
+    index:
+        Photo: "Photographie"
+        NbrPhoto: "Nombre total de photographies : "
+        Theme: "Thème"
+        Number: "Nombre"
+    tab:
+        Title: "Titre"
+        PublicationDate: "Date de publication"
+        Photo: "Photo"
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Photo: "Photo"
+        Language: "Langue"
+        Theme: "Thème"
+        PseudoUsed: "Pseudo utilisé"
+        PublicationDate: "Date de publication"
+        State: "Etat"
+        Licence: "Licence"
+        WritingDate: "Date de rédaction"
+    read:
+        SourcePhoto: "Source de la photo"
+    slider:
+        More: "Plus"
+    world:
+        WorldPhoto: "Photo multilingue"

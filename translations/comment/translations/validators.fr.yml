@@ -1,0 +1,23 @@
+comment:
+    index:
+        Comment: "Commentaire"
+        Comments: "Commentaires"
+    edit:
+        Pseudo: "Pseudo"
+        MailDisplay: "Email (Facultatif : il ne sera pas affiché)"
+        Comment: "Commentaire"
+        LoggedAs: "Vous êtes connecté en tant que "
+        Validate: "Valider"
+    error:
+        NotBlank: "Ce champ ne peut pas être vide"
+        Email: "Cette valeur n'est pas une adresse email valide."
+    admin:
+        Approved: "Approuvé"
+        Denied: "Rejeté"
+        NotChecked: "Non vérifié"
+        Author: "Auteur"
+        Email: "Email"
+        Date: "Date"
+        State: "Etat"
+        Message: "Message"
+        Link: "Lien"

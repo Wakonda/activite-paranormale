@@ -1,0 +1,25 @@
+<div class="show_image_colorbox">
+	{% for entity in entities %}
+		<div class="show_image_colorbox_item">
+			<figcaption>
+				<img src="{{ asset(entity.path~entity.photo) }}" width="150" height="150" class="pointer" title="{{ entity.photo }}">
+			</figcaption>
+		</div>
+	{% endfor %}
+</div>
+
+<div class="mx-1 d-flex justify-content-between align-items-center">
+	{% if current_page <= 1 %}
+		<a href="#" class="btn btn-dark disabled" aria-disabled="true"><i class="fas fa-chevron-left fa-lg" aria-hidden="true"></i></a>
+	{% else %}
+		<a href="#" alt="" id="previous_photo" data-page="{{ current_page - 1 }}" class="pagination_colorbox btn btn-dark"><i class="fas fa-chevron-left fa-lg align-middle" aria-hidden="true"></i></a>
+	{% endif %}
+	
+	<span>{{ current_page }} / {{ last_page }}</span>
+
+	{% if current_page >= last_page %}
+		<a href="#" class="btn btn-dark disabled float-right" aria-disabled="true"><i class="fas fa-chevron-right fa-lg right"></i></a>
+	{% else %}
+		<a href="#" alt="" id="next_photo" data-page="{{ current_page + 1 }}" class="pagination_colorbox btn btn-dark float-right"><i class="fas fa-chevron-right fa-lg align-middle" aria-hidden="true"></i></a>
+	{% endif %}
+</div>

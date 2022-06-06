@@ -1,0 +1,113 @@
+Index_Index:
+    path:  /index
+    controller: App\Controller\IndexController::indexAction
+
+Index_Index_Simple:
+    path:  /
+    controller: App\Controller\IndexController::indexAction
+
+Index_SelectLanguage:
+    path:  /selectLanguage/{lang}
+    controller: App\Controller\IndexController::selectLanguageAction
+
+# Licence
+Licence_ShowColorbox:
+    path: /showcolorbox
+    controller: App\Controller\LicenceController::showColorboxAction
+
+Licence_ShowColorboxByLicence:
+    path: /showcolorboxbylicence/{id}
+    controller: App\Controller\LicenceController::showColorboxByLicenceAction
+
+# History
+History_Show:
+    path: /history/show/{id}/{titleEntity}/{path}
+    controller: App\Controller\HistoryController::showAction	
+
+# Captcha
+Captcha_Reload:
+    path: /reload_captcha
+    controller: App\Controller\CaptchaController::reloadCaptchaAction
+
+# Theme
+Theme_Index:
+    path: /theme
+    controller: App\Controller\ThemeController::indexAction
+
+Theme_Show:
+    path: /theme/show/{id}/{theme}
+    controller: App\Controller\ThemeController::showAction
+    requirements:
+        theme: ".+"
+
+Theme_Save:
+    path: /theme/save/{id}/{theme}
+    controller: App\Controller\ThemeController::saveAction
+    requirements:
+        theme: ".+"
+
+Theme_Download:
+    path: /theme/download/{id}
+    controller: App\Controller\ThemeController::downloadAction
+
+# Archive
+Archive_Index:
+    path: /archive/{language}
+    controller: App\Controller\ArchiveController::archiveAction
+    defaults:
+        language: null
+
+Archive_Theme:
+    path: /archive/theme/{className}/{language}
+    controller: App\Controller\ArchiveController::archiveThemesAction
+    defaults:
+        language: null
+
+Archive_Witchcraft:
+    path: /archive/witchcraft/{className}/{language}
+    controller: App\Controller\ArchiveController::archiveWitchcraftsAction
+    defaults:
+        language: null
+
+Archive_Tab:
+    path: /archive/tab/{id}/{theme}/{className}
+    controller: App\Controller\ArchiveController::tabarchiveAction
+    requirements:
+        theme: ".+"
+
+Archive_Datatables:
+    path: /tabarchivedatatables/{themeId}/{className}
+    controller: App\Controller\ArchiveController::tabarchiveDatatablesAction
+
+Archive_Read:
+    path: /archive/read/{id}/{className}
+    controller: App\Controller\ArchiveController::readAction
+
+# Administration
+Banner_Admin:
+    resource: "routing/banneradmin.yml"
+    prefix:   /admin/banner
+
+Country_Admin:
+    resource: "routing/countryadmin.yml"
+    prefix:   /admin/country
+
+Language_Admin:
+    resource: "routing/languageadmin.yml"
+    prefix:   /admin/language
+
+Licence_Admin:
+    resource: "routing/licenceadmin.yml"
+    prefix:   /admin/licence
+
+Theme_Admin:
+    resource: "routing/themeadmin.yml"
+    prefix:   /admin/theme
+
+State_Admin:
+    resource: "routing/stateadmin.yml"
+    prefix:   /admin/state
+
+SurTheme_Admin:
+    resource: "routing/surthemeadmin.yml"
+    prefix:   /admin/surtheme

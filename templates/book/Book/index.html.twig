@@ -1,0 +1,78 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "book.index.Book"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "book.index.Book"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ "store-girl-angel-wallpaper.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', {'internationalName' : 'book'})) }}
+	
+	<h3>{{ "book.search.SearchSort"|trans([], "validators") }}</h3>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('Book_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.keywords, "book.search.Keywords"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.keywords) }}{{ form_widget(form.keywords, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "book.search.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "book.search.Sort"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-right mt-3">{{ "book.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+	<br>
+	<br>
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row no-gutters">
+				<div class="col-md-4 align-self-center text-center store_embedded_image">
+					{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
+					{% if dataStore is not empty %}
+						{{ dataStore|raw }}
+					{% else %}
+						{{ entity.photo|imgsize(null, entity.getAssetImagePath())|raw }}
+					{% endif %}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body">
+						<h5 class="card-title text-center">{{ entity.title }}</h5>
+						<hr>
+						<p class="card-text mb-0 text-center">
+							<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}
+							{% set authorsArray = [] %}
+							{% for author in entity.authors %}
+								{% set correctBio = biography_correct_language(author) %}
+								{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+							{% endfor %}
+						</p>
+						<p class="card-text mb-0 text-center my-3">{% if entity.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>
+
+						<hr>
+					</div>
+					<div class="card-footer text-center">
+						<a class="btn read" href="{{ path('Book_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
+							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger font-italic text-center">{{ "book.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+	
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

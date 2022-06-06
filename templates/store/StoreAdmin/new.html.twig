@@ -1,0 +1,18 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Store"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Store_Admin_Index', {category: app.request.get('category')}) }}{% endblock %}
+
+{% block create_admin_route %}{{ path('Store_Admin_Create', {category: app.request.get('category')}) }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'store/StoreAdmin/_form.html.twig' %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Comment"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Comment_Admin_Index') }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "comment.admin.Author"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.authorComment is not null %}
+			{{ entity.authorComment }}
+		{% else %}
+			{{ entity.anonymousAuthorComment }}
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "comment.admin.Email"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.emailComment }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "comment.admin.Date"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.dateComment|dodate(false, app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "comment.admin.State"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.isApproved %}
+			<i class="fas fa-check-circle text-success" aria-hidden="true"></i>
+		{% elseif entity.isDenied %}
+			<i class="fas fa-times-circle text-danger" aria-hidden="true"></i>
+		{% else %}
+			<i class="fas fa-question-circle text-primary" aria-hidden="true"></i>
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "comment.admin.Message"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.messageComment|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "comment.admin.Link"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><a href="{{ path(entity.entityLinked.showRoute, {'id' : entity.entityLinked.id, 'title' : entity.entityLinked.title }) }}" alt="">{{ entity.entityLinked.title }}</a></div>
+{% endblock %}
+
+{% block data_bottom %}
+	<a href='{{ path("Comment_Admin_ChangeState", { "id" : entity.id, "state" : entity.denied }) }}' class="btn btn-danger">{{ "comment.admin.Denied"|trans([], "validators") }}</a>
+	<a href='{{ path("Comment_Admin_ChangeState", { "id" : entity.id, "state" : entity.approved }) }}' class="btn btn-success">{{ "comment.admin.Approved"|trans([], "validators") }}</a>
+{% endblock %}

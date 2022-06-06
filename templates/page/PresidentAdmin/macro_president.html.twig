@@ -1,0 +1,27 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.vars['id'] }}_language").change(function()
+	{
+		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+
+		$.ajax({
+			type: "POST",
+			url: "{{ path('News_Admin_ReloadThemeByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var state = data.state;
+				$("#{{form.vars['id'] }}_state option").remove();
+				$.each(state, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_state").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+				});
+				var licence = data.licence;
+				$("#{{form.vars['id'] }}_licence option").remove();
+				$.each(licence, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_licence").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+			}
+		});
+	});
+{% endmacro %}

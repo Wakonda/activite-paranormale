@@ -1,0 +1,23 @@
+directory:
+    index:
+        Annuaire: "Directory"
+        Visiter: "Visit"
+        Logo: "Logo"
+        Title: "Title"
+        Language: "Language"
+        Link: "Link"
+    read:
+        Link: "Link"
+        Description: "Description"
+        FoundedYear: "Founded:"
+        DefunctYear: "Defunct:"
+        Sources: "Sources"
+    admin:
+        Title: "Title"
+        Link: "Link"
+        Logo: "Logo"
+        Language: "Language"
+        Description: "Description"
+        FoundedYear: "Founded"
+        DefunctYear: "Defunct"
+        Sources: "Sources"

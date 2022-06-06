@@ -1,0 +1,34 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Banner"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Banner_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Banner_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Banner_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Banner_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "banner.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "banner.admin.Link"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.link }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "banner.admin.Image"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.image|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "banner.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "banner.admin.Display"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.display %}
+			<span class="text-success"><i class="fas fa-check" aria-hidden="true"></i></span>
+		{% else %}
+			<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>
+		{% endif %}
+	</div>
+{% endblock %}

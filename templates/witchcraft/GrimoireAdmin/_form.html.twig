@@ -1,0 +1,21 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "grimoire.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "grimoire.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "grimoire.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.surTheme, "grimoire.admin.Theme"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.surTheme) }}{{ form_widget(form.surTheme, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "grimoire.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "grimoire.admin.Source"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>

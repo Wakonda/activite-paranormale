@@ -1,0 +1,41 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "testimony.index.Testimony"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "testimony.index.Testimony"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+{% endblock %}
+
+{% block APBlog_body %}
+	<p>{{ ("testimony.index.Text"|trans({'%url%' : path('Testimony_New') }, "validators"))|raw }}</p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/testimony-devil-angel.jpg') }}" alt="Angel devil girl" /></p>
+	<hr />
+	{{ "testimony.index.NbrTotalTestimony"|trans([], "validators") }}<span class="badge badge-danger">{{ countEntities }}</span>
+	<hr />
+	{% set nbrTheme1 = theme|length - 1 %}
+	
+	{% set i = 0 %}
+	<div id="accordion">
+		{% for ST in surTheme %}
+			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="true" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
+			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
+				<br />
+				<table class="table table-bordered">
+				<tr class="trGene">
+					<th class="label_form">{{ "testimony.index.Theme"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "testimony.index.Number"|trans([], "validators") }}</th>
+				</tr>
+				{% for T in theme %}
+					{% if T.surTheme == ST %}
+						<tr><td class="td_form_table"><a href="{{ path('Testimony_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
+						<td class="tdGene"><span class="badge badge-info">{{ render(controller("App\\Controller\\TestimonyController::countThemeLangTestimonyAction", { 'theme':T.title, 'lang':app.request.locale })) }}</span></td></tr>
+					{% endif %}
+				{% endfor %}
+				</table>
+			</div>
+		{% endfor %}
+	</div>
+	<br>
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

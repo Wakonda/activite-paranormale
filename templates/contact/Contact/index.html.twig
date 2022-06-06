@@ -1,0 +1,78 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "contact.index.ContactUs"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>{{ "contact.index.ContactUs"|trans([], "validators") }}</h2>
+{% endblock h2_title %}
+
+{% block header_plus %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_js(form.messageContact.vars.id) }}
+
+	<script>
+		$(document).ready(function()
+		{
+			$("img#reload_captcha").click(function()
+			{
+				$.ajax({
+					type: "GET",
+					url: "{{ path('Captcha_Reload') }}",
+					cache: false,
+					success: function(data)
+					{
+						$("img#captcha").attr("src", "data:image/png;base64," + data.new_captcha);
+					}
+				});
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}contact.jpg" alt="Fairy" /></p>
+	<br />
+	<hr class="hr2"/>
+		{{ form_start(form, {'action': path('Contact_Send'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+			<div class="form-table form-table-4cols form-table-collapse">
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoContact, "contact.index.Name"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">
+					{{ form_errors(form.pseudoContact) }}
+					{{ form_widget(form.pseudoContact, {'attr':{'class' : 'form-control'}}) }}
+				</div>
+
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.emailContact, "contact.index.Email"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">
+					{{ form_errors(form.emailContact) }}
+					{{ form_widget(form.emailContact, {'attr':{'class' : 'form-control'}}) }}
+				</div>
+
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.subjectContact, "contact.index.Subject"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.subjectContact) }}{{ form_widget(form.subjectContact, {'attr':{'class' : 'form-control'}}) }}</div>
+
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.messageContact, "contact.index.Message"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.messageContact) }}{{ form_widget(form.messageContact) }}</div>
+			</div>
+			<br />
+			<div class="form-table form-table-4cols form-table-collapse">
+					<div class="form-table-cell form-table-cell-head">
+						{{ form_label(form.captcha, "captcha.form.RecopyCaptcha"|trans([], "validators")) }}
+					</div>
+
+					<div class="form-table-cell">
+						{{ form_errors(form.captcha) }}{{ form_widget(form.captcha, {'attr':{'class' : 'form-control'}}) }}
+						<br><br>
+						<p class="text-center"><img src="data:image/png;base64,{{ captcha() }}" alt="" class="align-middle" id="captcha" /><img src="{{ asset('extended/photo/reload_captcha.png') }}" alt="Reload captcha" width="50" class="align-middle cursor-pointer mt-3" id="reload_captcha"/></p>
+					</div>
+			</div>
+			{{ form_rest(form) }}
+			<div class="text-right mt-3">
+				<button type="submit" class="submitcomment btn">{{ "contact.index.Send"|trans([], "validators") }}</button>
+			</div>
+		{{ form_end(form) }}
+		<br>
+		{{ "google"|advertisement|raw }}
+{% endblock %}

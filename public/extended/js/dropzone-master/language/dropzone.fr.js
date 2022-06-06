@@ -1,0 +1,10 @@
+Dropzone.prototype.defaultOptions.dictDefaultMessage = "Déposer les fichiers ici pour les télécharger";
+Dropzone.prototype.defaultOptions.dictFallbackMessage = "Votre navigateur ne supporte pas les téléchargements de fichiers par glisser-déposer.";
+Dropzone.prototype.defaultOptions.dictFallbackText = "Veuillez utiliser le formulaire de secours ci-dessous pour télécharger vos fichiers comme auparavant.";
+Dropzone.prototype.defaultOptions.dictFileTooBig = "Le fichier est trop volumineux ({{filesize}} MiB). Taille maximale du fichier : {{maxFilesize}} MiB.";
+Dropzone.prototype.defaultOptions.dictInvalidFileType = "Vous ne pouvez pas télécharger de fichiers de ce type.";
+Dropzone.prototype.defaultOptions.dictResponseError = "Le serveur a répondu avec le code {{statusCode}}.";
+Dropzone.prototype.defaultOptions.dictCancelUpload = "Annuler le téléchargement";
+Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Êtes-vous sûr de vouloir annuler ce téléchargement ?";
+Dropzone.prototype.defaultOptions.dictRemoveFile = "Supprimer le fichier";
+Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "Vous ne pouvez plus télécharger de fichiers.";

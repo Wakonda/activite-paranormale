@@ -1,0 +1,37 @@
+Publisher_Admin_Index:
+    path:  /
+    controller: App\Controller\PublisherAdminController::indexAction
+
+Publisher_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\PublisherAdminController::showAction
+
+Publisher_Admin_New:
+    path:  /new
+    controller: App\Controller\PublisherAdminController::newAction
+
+Publisher_Admin_Create:
+    path:  /create
+    controller: App\Controller\PublisherAdminController::createAction
+    requirements:
+        _method: post
+
+Publisher_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\PublisherAdminController::editAction
+
+Publisher_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\PublisherAdminController::updateAction
+    requirements:
+        _method: post
+
+Publisher_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\PublisherAdminController::deleteAction
+
+Publisher_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\PublisherAdminController::indexDatatablesAction
+    requirements:
+        _method: get

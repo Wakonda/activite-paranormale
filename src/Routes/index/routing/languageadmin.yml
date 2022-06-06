@@ -1,0 +1,37 @@
+Language_Admin_Index:
+    path:  /
+    controller: App\Controller\LanguageAdminController::indexAction
+
+Language_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\LanguageAdminController::showAction
+
+Language_Admin_New:
+    path:  /new
+    controller: App\Controller\LanguageAdminController::newAction
+
+Language_Admin_Create:
+    path:  /create
+    controller: App\Controller\LanguageAdminController::createAction
+    requirements:
+        _method: post
+
+Language_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\LanguageAdminController::editAction
+
+Language_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\LanguageAdminController::updateAction
+    requirements:
+        _method: post
+
+Language_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\LanguageAdminController::deleteAction
+
+Language_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\LanguageAdminController::indexDatatablesAction
+    requirements:
+        _method: get

@@ -1,0 +1,77 @@
+Movie_Index:
+    path: /movie/{page}
+    controller: App\Controller\MovieController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+Movie_Show:
+    path: /movie/read/{id}/{title_slug}
+    controller: App\Controller\MovieController::showAction
+    defaults:
+        title_slug: null
+    requirements:
+        id: \d+
+
+ByGenreMovie_Index:
+    path: /movie/genre/{idGenre}/{titleGenre}/{page}
+    controller: App\Controller\MovieController::byGenreAction
+    defaults:
+        page: 1
+    requirements:
+        idGenre: \d+
+
+TelevisionSerie_Index:
+    path: /television_serie/{page}
+    controller: App\Controller\TelevisionSerieController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+TelevisionSerie_Show:
+    path: /television_serie/{id}/{title_slug}
+    controller: App\Controller\TelevisionSerieController::showAction
+    defaults:
+        title_slug: null
+    requirements:
+        id: \d+
+
+TelevisionSerie_Season:
+    path: /television_serie/{id}/{title_slug}/season/{season}
+    controller: App\Controller\TelevisionSerieController::seasonAction
+    defaults:
+        title_slug: null
+    requirements:
+        id: \d+
+
+TelevisionSerie_Episode:
+    path: /television_serie/episode/{id}/{title_slug}
+    controller: App\Controller\TelevisionSerieController::episodeAction
+    defaults:
+        title_slug: null
+    requirements:
+        id: \d+
+
+ByGenreTelevisionSerie_Index:
+    path: /television_serie/genre/{idGenre}/{titleGenre}/{page}
+    controller: App\Controller\TelevisionSerieController::byGenreAction
+    defaults:
+        page: 1
+    requirements:
+        idGenre: \d+
+
+# Administration
+Movie_Admin:
+    resource: "routing/movieadmin.yml"
+    prefix: /admin/movie
+GenreAudiovisual_Admin:
+    resource: "routing/genreaudiovisualadmin.yml"
+    prefix: /admin/genreaudiovisual
+TelevisionSerie_Admin:
+    resource: "routing/televisionserieadmin.yml"
+    prefix: /admin/televisionserie
+EpisodeTelevisionSerie_Admin:
+    resource: "routing/episodetelevisionserieadmin.yml"
+    prefix: /admin/episodetelevisionserie

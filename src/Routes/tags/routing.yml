@@ -1,0 +1,16 @@
+ap_tags_search:
+    path:  /searchtags/{id}/{title}
+    controller: App\Controller\TagsController::searchAction
+
+ap_tags_searchdatatables:
+    path:  /searchtagsdatatables/{id}/{title}
+    controller: App\Controller\TagsController::searchDatatablesAction
+
+ap_tags_tagsavailableedit:
+    path:  /tagsavailableedit
+    controller: App\Controller\TagsController::TagsAvailableEditAction
+
+# Administration
+TagWord_Admin:
+    resource: "routing/tagwordadmin.yml"
+    prefix:   /admin/tagword

@@ -1,0 +1,7 @@
+Vote_Index:
+    path:  /vote/{className}/{idClassName}
+    controller: App\Controller\VoteController::indexAction
+
+Vote_Edit:
+    path:  /vote/edit/{idClassName}/{className}
+    controller: App\Controller\VoteController:editAction

@@ -1,0 +1,84 @@
+book:
+    index:
+        Book: "Livre"
+    admin:
+        Book: "Livre"
+        Title: "Titre"
+        Photo: "Photo"
+        Text: "Texte"
+        PublicationDate: "Date de publication"
+        Authors: "Auteurs"
+        Language: "Langue"
+        Theme: "Thème"
+        State: "Etat"
+        Sources: "Sources"
+    biography:
+        Title: "Titre"
+        Language: "Langue"
+        Purchase: "Acheter"
+    search:
+        SearchSort: "Rechercher / Trier"
+        Keywords: "Mots-clés"
+        Theme: "Thème"
+        PublicationDate: "Date de publication"
+        PublicationDateUp: "Date de publication ↑"
+        PublicationDateDown: "Date de publication ↓"
+        Sort: "Trier par"
+        Validate: "Valider"
+        Read: "Lire"
+        NoMatchingRecordsFound: "Aucun élément à afficher"
+    read:
+        Authors: "Auteurs"
+        PublishedOn: "Publié le"
+        Description: "Description"
+        Details: "Détails"
+        Theme: "Thème"
+        CodeCopiedWithSuccess: "Le code a été copié avec succès"
+        BookEditions: "Éditions"
+        Sources: "Sources"
+    byPublisher:
+        VisitThePublishersWebsite: "Visiter le site Internet de l'éditeur"
+    world:
+        WorldBook: "Livre multilingue"
+bookEdition:
+    admin:
+        ListOfEditions: "Liste des éditions"
+        AddEdition: "Ajouter une édition"
+        NumberPage: "Nombre de pages"
+        PublicationDate: "Date de publication"
+        Biographies: "Biographies"
+        Format: "Format"
+        BackCover: "Quatrième de couverture"
+        Photo: "Photo"
+        Publisher: "Editeur"
+        Paperback: "Broché"
+        Hardcover: "Relié"
+        Audiobook: "Audio"
+        Ebook: "Ebook"
+        WholeBook: "Livre entier"
+        Subtitle: "Sous-titre"
+    generic:
+        Paperback: "Broché"
+        Hardcover: "Relié"
+        Audiobook: "Audio"
+        Ebook: "Ebook"
+    read:
+        BackCover: "Quatrième de couverture"
+        NumberPage: "Nombre de pages"
+        Format: "Format"
+        PublishedOn: "Publié le"
+        Publisher: "Editeur"
+        Subtitle: "Sous-titre"
+        Photo: "Photo"
+        Translator: "Traducteur"
+        Preface: "Préface"
+        BookParticipation: "Participation"
+publisher:
+    admin:
+        Title: "Titre"
+        Photo: "Photo"
+        Website: "Site Internet"
+biographies:
+    admin:
+        Translator: "Traducteur"
+        Preface: "Préface"

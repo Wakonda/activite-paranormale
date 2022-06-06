@@ -1,0 +1,98 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "biography.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "biography.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "biography.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.birthDate, "biography.admin.BirthDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.birthDate) }}{{ form_widget(form.birthDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.deathDate, "biography.admin.DeathDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.deathDate) }}{{ form_widget(form.deathDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "biography.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.nationality, "biography.admin.Nationality"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.nationality) }}{{ form_widget(form.nationality, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.kind, "biography.admin.Kind"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.kind) }}{{ form_widget(form.kind, { 'attr': {'class': 'form-control'}}) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">
+	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
+		<div class="input-group-append">
+			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "biography.admin.Source"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkWebsite, "biography.link.Website"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkWebsite) }}{{ form_widget(form.socialNetworkWebsite, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkFacebook, "biography.link.FacebookAccount"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkFacebook) }}{{ form_widget(form.socialNetworkFacebook, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTwitter, "biography.link.TwitterAccount"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkTwitter) }}{{ form_widget(form.socialNetworkTwitter, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkYoutube, "biography.link.YoutubeAccount"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkYoutube) }}{{ form_widget(form.socialNetworkYoutube, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkInstagram, "biography.link.InstagramAccount"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkInstagram) }}{{ form_widget(form.socialNetworkInstagram, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkPinterest, "biography.link.PinterestAccount"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkPinterest) }}{{ form_widget(form.socialNetworkPinterest, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkLinkedin, "biography.link.LinkedInAccount"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetworkLinkedin) }}{{ form_widget(form.socialNetworkLinkedin, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector('#wikidata .fa-sync').classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("{{ form.birthDate.day.vars.id }}").value = data.birthDate.day;
+				document.getElementById("{{ form.birthDate.month.vars.id }}").value = data.birthDate.month;
+				document.getElementById("{{ form.birthDate.year.vars.id }}").value = data.birthDate.year;
+				document.getElementById("{{ form.deathDate.day.vars.id }}").value = data.deathDate.day;
+				document.getElementById("{{ form.deathDate.month.vars.id }}").value = data.deathDate.month;
+				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+				document.getElementById("{{ form.nationality.vars.id }}").value = data.nationality.country.id;
+				document.getElementById("{{ form.socialNetworkTwitter.vars.id }}").value = data.socialNetwork.twitter;
+					
+				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+			}
+		};
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('Biography_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

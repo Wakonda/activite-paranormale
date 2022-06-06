@@ -1,0 +1,23 @@
+tag:
+    search:
+        ArticleTagged: >-
+            {number, plural,
+                =0   {article tagged}
+                one   {article tagged}
+                other {articles tagged}
+            }
+        Section: "Section"
+        Title: "Title"
+        Theme: "Theme"
+        PublicationDate: "Publication date"
+        Sources: "Sources"
+    admin:
+        Tags: "Tags"
+tagWord:
+    admin:
+        Title: "Title"
+        Language: "Language"
+        InternationalName: "International name"
+        Text: "Text"
+        Photo: "Photo"
+        Sources: "Sources"

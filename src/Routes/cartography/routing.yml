@@ -1,0 +1,43 @@
+Cartography_Index:
+    path:  /cartography
+    controller: App\Controller\CartographyController::indexAction
+
+Cartography_Show:
+    path:  /cartography/show/{id}/{title_slug}
+    controller: App\Controller\CartographyController::showAction
+    defaults:
+        title_slug: null
+    requirements:
+        title_slug: ".+"
+
+Cartography_World:
+    path: /cartography/world/{language}/{themeId}/{theme}
+    controller: App\Controller\CartographyController::worldAction
+    defaults:
+        language: all
+        themeId: 0
+        theme: null
+    requirements:
+        theme: ".+"
+
+Cartography_ListDatatables:
+    path: /cartography/datatables
+    controller: App\Controller\CartographyController::listDatatablesAction
+
+Cartography_WorldDatatables:
+    path: /cartography/worlddatatables/{language}/{themeId}
+    controller: App\Controller\CartographyController::worldDatatablesAction
+    defaults:
+        language: all
+        themeId: 0
+
+Cartography_SelectThemeForIndexWorld:
+    path: /cartography/selectThemeForIndexWorldAction/{language}
+    controller: App\Controller\CartographyController::selectThemeForIndexWorldAction
+    defaults:
+        language: all
+
+# Administration
+Cartography_Admin:
+    resource: "routing/cartographyadmin.yml"
+    prefix:   /admin/cartography

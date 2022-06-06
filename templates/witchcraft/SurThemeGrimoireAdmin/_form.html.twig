@@ -1,0 +1,26 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "magicbooktheme.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "magicbooktheme.admin.Theme"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "magicbooktheme.admin.Definition"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "magicbooktheme.admin.Picture"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{% if entity.photo is not empty %}
+		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.photo }}
+		<br>
+	{% endif %}
+	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.internationalName, "civility.admin.InternationalName"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.internationalName) }}{{ form_widget(form.internationalName, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "magicbooktheme.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.menuGrimoire, "magicbooktheme.admin.menuGrimoire"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.menuGrimoire) }}{{ form_widget(form.menuGrimoire, { 'attr': {'class': 'form-control'} }) }}</div>

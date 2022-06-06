@@ -1,0 +1,45 @@
+MenuGrimoire_Admin_Index:
+    path:  /{page}
+    controller: App\Controller\MenuGrimoireAdminController::indexAction
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
+
+MenuGrimoire_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\MenuGrimoireAdminController::showAction
+
+MenuGrimoire_Admin_New:
+    path:  /new
+    controller: App\Controller\MenuGrimoireAdminController::newAction
+
+MenuGrimoire_Admin_Create:
+    path:  /create
+    controller: App\Controller\MenuGrimoireAdminController::createAction
+    requirements:
+        _method: post
+
+MenuGrimoire_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\MenuGrimoireAdminController::editAction
+
+MenuGrimoire_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\MenuGrimoireAdminController::updateAction
+    requirements:
+        _method: post
+
+MenuGrimoire_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\MenuGrimoireAdminController::deleteAction
+
+MenuGrimoire_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\MenuGrimoireAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+MenuGrimoire_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\MenuGrimoireAdminController::internationalizationAction

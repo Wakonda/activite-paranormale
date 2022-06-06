@@ -1,0 +1,47 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Music"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('Music_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Music_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Music_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Music_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Album"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><a href="{{ path('Album_Admin_Show', {id: entity.album.id}) }}">{{ entity.album.title }}</a></div>
+
+	{% if entity.musicPieceFile is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "music.admin.File"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+			<audio controls>
+				<source src="{{ asset(entity.getAssetMusicPath()) }}{{ entity.musicPieceFile }}" type="audio/mp3">
+			</audio>
+		</div>
+	{% endif %}
+
+	{% if entity.embeddedCode is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "music.admin.EmbeddedCode"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.embeddedCode|raw }}</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Morceau"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.musicPiece }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Duration"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.length|string_duration }}</div>
+
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Sources"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+{% endblock %}

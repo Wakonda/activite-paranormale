@@ -1,0 +1,24 @@
+file:
+    add:
+        AttachFile: "Adjuntar archivos"
+        Title: "Título"
+        File: "Fichero"
+        Upload: "Subir"
+        Display: "Visualizar"
+        Delete: "Suprimir"
+        NoFile: "No upload yet"
+        NoFileSelected: "No hay ningún archivo seleccionado"
+    uploadFile:
+        FileTooLarge: "El archivo es demasiado grande"
+        UnauthorizedExtension: "Extensión no autorizada"
+        NoFileSelected: "No hay ningún archivo seleccionado"
+        FileAddedWithSuccess: "Archivo añadido con éxito"
+        NoFile: "No hay archivos"
+    admin:
+        Files: "Ficheros"
+        File: "Fichero"
+        Title: "Título"
+        Caption: "Leyenda"
+        CaptionPhoto: "Leyenda - Foto"
+        NotUsed: "No utilizado"
+        MediaManagement: "Gestión de medios"

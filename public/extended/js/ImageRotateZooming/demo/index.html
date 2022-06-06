@@ -1,0 +1,20 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="../ImageRotateZooming.css" />
+		
+		<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script type="text/javascript" src="../ImageRotateZooming.js"></script>
+
+		<script>
+			$(function() {
+				$("#img_zoomed").ImageRotateZooming({
+					"rotate": true,
+					"zoom": true
+				});
+			});
+		</script>
+	</head>
+	<body>
+		<img id="img_zoomed" src="adriana-barrientos-fantome.png" width="400" height="400" />
+	</body>
+</html>

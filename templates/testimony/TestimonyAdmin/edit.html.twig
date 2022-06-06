@@ -1,0 +1,28 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Testimony"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('Testimony_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Testimony_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('Testimony_Admin_Index') }}{% endblock %}
+{% block update_admin_route %}{{ path('Testimony_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
+	
+	{% import "testimony/TestimonyAdmin/macro_testimony.html.twig" as macro_testimony %}
+	
+	<script>
+		$(function()
+		{
+			{{ macro_testimony.updateListForm(form) }}
+		});
+	</script>
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'testimony/TestimonyAdmin/_form.html.twig' %}
+{% endblock %}

@@ -1,0 +1,84 @@
+book:
+    index:
+        Book: "Book"
+    admin:
+        Book: "Book"
+        Title: "Title"
+        Photo: "Photo"
+        Text: "Text"
+        PublicationDate: "Publication date"
+        Authors: "Authors"
+        Language: "Language"
+        Theme: "Theme"
+        State: "State"
+        Sources: "Sources"
+    biography:
+        Title: "Title"
+        Language: "Language"
+        Purchase: "Purchase"
+    search:
+        SearchSort: "Search / Sort"
+        Keywords: "Keywords"
+        Theme: "Theme"
+        PublicationDate: "Publication date"
+        PublicationDateUp: "Publication date ↑"
+        PublicationDateDown: "Publication date ↓"
+        Sort: "Sort by"
+        Validate: "Validate"
+        Read: "Read"
+        NoMatchingRecordsFound: "No matching records found"
+    read:
+        Authors: "Authors"
+        PublishedOn: "Published on"
+        Description: "Description"
+        Details: "Details"
+        Theme: "Theme"
+        CodeCopiedWithSuccess: "The code has been copied successfully"
+        BookEditions: "Editions"
+        Sources: "Sources"
+    byPublisher:
+        VisitThePublishersWebsite: "Visit the publisher's website"
+    world:
+        WorldBook: "Multilingual book"
+bookEdition:
+    admin:
+        ListOfEditions: "List of editions"
+        AddEdition: "Add an edition"
+        NumberPage: "Numbers of pages"
+        PublicationDate: "Publication date"
+        Biographies: "Biographies"
+        Format: "Format"
+        BackCover: "Back cover"
+        Photo: "Photo"
+        Publisher: "Publisher"
+        Paperback: "Paperback"
+        Hardcover: "Hardcover"
+        Audiobook: "Audiobook"
+        Ebook: "Ebook"
+        WholeBook: "Whole book"
+        Subtitle: "Subtitle"
+    generic:
+        Paperback: "Paperback"
+        Hardcover: "Hardcover"
+        Audiobook: "Audiobook"
+        Ebook: "Ebook"
+    read:
+        BackCover: "Back cover"
+        NumberPage: "Numbers of pages"
+        Format: "Format"
+        PublishedOn: "Published on"
+        Publisher: "Publisher"
+        Subtitle: "Subtitle"
+        Photo: "Photo"
+        Translator: "Translator"
+        Preface: "Preface"
+        BookParticipation: "Participation"
+publisher:
+    admin:
+        Title: "Title"
+        Photo: "Photo"
+        Website: "Website"
+biographies:
+    admin:
+        Translator: "Translator"
+        Preface: "Preface"

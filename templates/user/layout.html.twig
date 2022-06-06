@@ -1,0 +1,26 @@
+{% extends "content_layout.html.twig" %}
+
+{% block APBlog_body %}
+	<p class="image">{{ "layout-user.jpg"|imgsize(550, 'extended/photo/', true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<div>
+		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+			{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
+			<a href="{{ path('Security_Logout') }}">
+				{{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+			</a>
+		{% else %}
+			<a href="{{ path('Security_Login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a>
+		{% endif %}
+	</div>
+
+	{% for key, message in app.flashes %}
+	<div class="{{ key }}">
+		{{ message|trans({}, 'FOSUserBundle') }}
+	</div>
+	{% endfor %}
+
+	<div>
+		{% block fos_user_content %}
+		{% endblock fos_user_content %}
+	</div>
+{% endblock %}

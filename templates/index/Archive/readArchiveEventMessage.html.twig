@@ -1,0 +1,59 @@
+{% if entity.longitude is not empty and entity.latitude is not empty %}
+<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet' />
+<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
+<script>
+	$(function() {
+		var map = L.map('map-canvas').setView([{{ entity.latitude }}, {{ entity.longitude }}], 15);
+		
+		L.marker([{{ entity.latitude }}, {{ entity.longitude }}]).addTo(map);
+
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
+
+		map.addControl(new L.Control.Fullscreen());
+		
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	});
+</script>
+{% endif %}
+
+{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+<p id="media_duration">
+	<a href="{{ path('EventMessage_Calendar') }}" alt="">
+	<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" /> 
+	{% if entity.dateTo == entity.dateFrom %}
+		{{ entity.dateFrom|dodate(false, app.request.locale) }}
+	{% else %}
+		{{ entity.dateFrom|dodate(false, app.request.locale) }} - 
+		{{ entity.dateTo|dodate(false, app.request.locale) }}
+	{% endif %}
+	</a>
+</p>
+<hr>
+<br>
+{{ entity.text|raw }}
+{% if entity.longitude is not empty and entity.latitude is not empty %}
+	<br>
+	<div id="map-canvas" style="width:100%; height:400px"></div>
+{% endif %}
+<br>
+<hr class="hr2"/>
+<p>
+	{% if entity.theme is not null %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}{% if entity.licence is not null %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
+	{% if is_current_languages(entity.language.abbreviation) == false %}
+		- <a href="{{ path('EventMessage_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+	{% endif %}
+	
+	{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+</p>
+
+{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'EventMessage' })) }}

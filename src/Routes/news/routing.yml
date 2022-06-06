@@ -1,0 +1,103 @@
+News_Index:
+    path:  /news/{page}/{theme}
+    controller: App\Controller\NewsController::indexAction
+    defaults:
+        theme: null
+    requirements:
+       page: \d+
+       theme: ".+"
+
+News_ReadNews:
+    path: /NewRead-{id}-{title}.ap
+    controller: App\Controller\NewsController::readNewsAction
+    requirements:
+       title: .+
+
+News_ReadNews_New:
+    path: /news/read/{id}/{title_slug}
+    controller: App\Controller\NewsController::readNewsAction
+    defaults:
+        title_slug: null
+    requirements:
+        title_slug: ".+"
+
+News_World:
+    path: /news/world/{language}/{themeId}/{theme}
+    controller: App\Controller\NewsController::worldAction
+    defaults:
+        language: all
+        themeId: 0
+        theme: null
+    requirements:
+        theme: ".+"
+
+News_WorldDatatables:
+    path: /news/worlddatatables/{language}/{themeId}
+    controller: App\Controller\NewsController::worldDatatablesAction
+    defaults:
+        language: all
+        themeId: 0
+
+News_SelectThemeForIndexWorld:
+    path: /news/selectThemeForIndexWorldAction/{language}
+    controller: App\Controller\NewsController::selectThemeForIndexWorldAction
+    defaults:
+        language: all
+
+News_Pdfversion:
+    path: /news/pdfversion/{id}
+    controller: App\Controller\NewsController::pdfVersionAction
+
+News_SelectThemeForIndexNew:
+    path: /selectThemeForIndexNewAction
+    controller: App\Controller\NewsController::selectThemeForIndexNewAction
+
+News_New:
+    path: /news/new
+    controller: App\Controller\NewsController::newAction
+
+News_Create:
+    path: /news/create
+    controller: App\Controller\NewsController::createAction
+
+News_Edit:
+    path: /news/edit/{id}
+    controller: App\Controller\NewsController::editAction
+
+News_Update:
+    path: /news/update/{id}
+    controller: App\Controller\NewsController::updateAction
+
+News_Waiting:
+    path: /news/waiting/{id}
+    controller: App\Controller\NewsController::waitingAction
+
+News_Validate:
+    path: /news/validate/{id}
+    controller: App\Controller\NewsController::validateAction
+
+# Administration
+News_Admin:
+    resource: "routing/newsadmin.yml"
+    prefix:   /admin/news
+
+# News User
+News_User_News:
+    path:  /news/published
+    controller: App\Controller\NewsController::newAction
+
+News_User_Create:
+    path:  /news/published/create/{draft}/{preview}
+    controller: App\Controller\NewsController::createAction
+    defaults:
+        draft: 0
+        preview: 0
+
+# Widget
+News_Slider:
+    path: /slider
+    controller: App\Controller\NewsController::sliderAction
+
+News_MainSlider:
+    path: /mainslider/{lang}
+    controller: App\Controller\NewsController::mainSliderAction

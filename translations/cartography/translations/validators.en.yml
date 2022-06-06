@@ -1,0 +1,29 @@
+cartography:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Longitud: "Longitude"
+        Latitud: "Latitude"
+        Picture: "Picture"
+        Language: "Language"
+        Theme: "Theme"
+        State: "State"
+        Licence: "Licence"
+        PseudoUsed: "Pseudo used"
+        WritingDate: "Writing date"
+        LinkGMaps: "GMaps link"
+    index:
+        SectionIndex: "Mapping of strange paranormal phenomena"
+        Cartography: "Cartography"
+        Title: "Title"
+        Longitud: "Longitude"
+        Latitud: "Latitude"
+        Theme: "Theme"
+        Picture: "Picture"
+    show:
+        MoreDetails: "More details"
+        Longitud: "Longitude:"
+        Latitud: "Latitude:"
+        SeeOnGMaps: "See on the map"
+    world:
+        WorldCartography: "Multilingual cartography"

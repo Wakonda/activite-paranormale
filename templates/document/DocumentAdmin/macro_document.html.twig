@@ -1,0 +1,39 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.vars['id'] }}_language").change(function()
+	{
+		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+
+		$.ajax({
+			type: "POST",
+			url: "{{ path('Document_Admin_ReloadDocumentFamilyByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var documentFamily = data.documentFamily;
+				$("#{{form.vars['id'] }}_documentFamily option").remove();
+				$.each(documentFamily, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_documentFamily").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+				var theme = data.theme;
+				$("#{{form.vars['id'] }}_theme option").remove();
+				$.each(theme, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_theme").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+				var licence = data.licence;
+				$("#{{form.vars['id'] }}_licence option").remove();
+				$.each(licence, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_licence").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+				var state = data.state;
+				$("#{{form.vars['id'] }}_state option").remove();
+				$.each(state, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_state").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+				});
+			}
+		});
+	});
+{% endmacro %}

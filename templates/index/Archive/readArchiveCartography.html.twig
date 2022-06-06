@@ -1,0 +1,50 @@
+<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet' />
+<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
+<script>
+	var map = L.map('map-canvas').setView([43.009198, -97.106824], 15);
+	var markersArray = new Array();
+
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+	
+	map.addControl(new L.Control.Fullscreen());
+
+	var marker = L.marker([{{ entity.coordXMap }}, {{ entity.coordYMap }}]).addTo(map);
+
+	map.setView(marker.getLatLng(), 15);
+</script>
+
+{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, parse_url(entity.linkGMaps).host|upper)|raw }}</p>
+<br />
+<div>{{ entity.text|raw }}</div>
+<ul>
+	<li><span class="font-weight-bold"><u>{{ "cartography.show.Longitud"|trans([], "validators") }}</u></span> {{ entity.coordYMap }}</li>
+	<li><span class="font-weight-bold"><u>{{ "cartography.show.Latitud"|trans([], "validators") }}</u></span> {{ entity.coordXMap }}</li>
+</ul>
+
+<div id="map-canvas" style="width:100%; height:400px"></div>
+
+<ul class="mt-2 fa-ul">
+	<li>
+		<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+		<a href="{{ entity.linkGMaps }}" alt="{{ entity.title }}" target="_blank">{{ "cartography.show.SeeOnGMaps"|trans([], "validators") }}</a>
+	</li>
+</ul>
+<br>
+<hr class="hr2">
+<p>
+	<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+	{% if is_current_languages(entity.language.abbreviation) == false %}
+		- <a href="{{ path('News_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+	{% endif %}
+	
+	{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+</p>
+<hr class="hr2">
+{{ getTagsByEntityForDisplay(entity) }}

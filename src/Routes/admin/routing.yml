@@ -1,0 +1,80 @@
+Admin_Index:
+    path:  /admin/index
+    controller: App\Controller\AdminController::indexAction
+
+Admin_SelectLanguage:
+    path:  /admin/selectLanguage/{language}
+    controller: App\Controller\AdminController::selectLanguageAction
+    defaults:
+        language: "fr"
+
+Admin_Phpinfo:
+    path: /admin/phpinfo
+    controller: App\Controller\AdminController::phpinfoAction
+
+Admin_Facebook:
+    path: /admin/facebook/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::facebookAction
+
+Admin_TheDailyTruth:
+    path: /admin/thedailytruth/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::thedailytruthAction
+
+Admin_Blogger:
+    path: /admin/blogger/{id}/{path}/{routeToRedirect}/{type}
+    controller: App\Controller\AdminController::bloggerAction
+    defaults:
+        type: "test"
+
+Admin_BloggerPost:
+    path: /admin/bloggerpost
+    controller: App\Controller\AdminController::bloggerPostAction
+
+Admin_Shopify:
+    path: /admin/shopify/{id}/{path}/{routeToRedirect}/{type}
+    controller: App\Controller\AdminController::shopifyAction
+
+Admin_ShopifyPost:
+    path: /admin/shopifypost
+    controller: App\Controller\AdminController::shopifyPostAction
+
+Admin_Twitter:
+    path: /admin/twitter/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::twitterAction
+
+Admin_Pinterest:
+    path: /admin/pinterest/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::pinterestAction
+
+Admin_Tumblr:
+    path: /admin/tumblr/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::tumblrAction
+
+Admin_TumblrPost:
+    path: /admin/tumblrpost
+    controller: App\Controller\AdminController::tumblrPostAction
+
+Admin_WikipediaSections:
+    path: /admin/loadWikipediaSectionsPageAction
+    controller: App\Controller\AdminController::loadWikipediaSectionsPageAction
+
+Admin_ImportWikipedia:
+    path: /import
+    controller: App\Controller\AdminController::importWikipediaAction
+
+# Backup
+Backup_Admin_Index:
+    path: /admin/backup/index
+    controller: App\Controller\BackupAdminController::indexAction
+
+Backup_Admin_Delete:
+    path: /admin/backup/delete/{filename}
+    controller: App\Controller\BackupAdminController::deleteAction
+
+Backup_Admin_Download:
+    path: /admin/backup/download/{filename}
+    controller: App\Controller\BackupAdminController::downloadAction
+
+Backup_Admin_Generate:
+    path: /admin/backup/generate
+    controller: App\Controller\BackupAdminController::generateAction

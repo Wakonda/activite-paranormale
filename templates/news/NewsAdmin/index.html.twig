@@ -1,0 +1,61 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.News"|trans([], "validators") }}{% endblock %}
+
+{% block new_admin_route %}{{ path('News_Admin_New') }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('News_Admin_IndexDatatables') }}{% endblock %}
+
+{% block js_edit_additional %}
+	document.querySelector("select#selected_state").addEventListener("change", (e) => {
+		oTable.fnFilter(e.target.value, 5);
+
+	});
+{% endblock %}
+
+{% block body_main_additional %}
+	<div class="container-fluid mt-3">
+		{% set states = ""|states_by_language %}
+		<label>{{ "news.admin.State"|trans([], "validators") }}</label>
+		<select id="selected_state" class="form-control">
+			<option value=""></option>
+		{% for state in states %}
+			<option value="{{ state.internationalName }}">{{ state.title }}</option>
+		{% endfor %}
+		</select>
+		<hr>
+	</div>
+{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form small_size">Id</th>
+	<th class="label_form">{{ "news.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Date"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Author"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Theme"|trans([], "validators") }}</th>
+	<th id="state_column" class="label_form">{{ "news.admin.State"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "news.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Date"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Author"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Theme"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.State"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "news.admin.Language"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
+{% endblock %}
+
+{% block body_main_additional_bottom %}
+	<div class="container-fluid mt-3">
+		<h3>{{ "admin.general.Assessment"|trans([], "validators") }}</h3>
+		<table class="table table-striped table-bordered">
+			<tr>
+				<th>{{ "admin.general.Archived"|trans([], "validators") }}</th>
+				<td><span class="badge badge-danger">{{ count_archived("App\\Entity\\News") }}</span></td>
+			</tr>
+		</table>
+	</div>
+{% endblock %}

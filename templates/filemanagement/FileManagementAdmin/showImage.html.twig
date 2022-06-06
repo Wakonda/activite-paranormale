@@ -1,0 +1,25 @@
+{% if entities|length > 0 %}
+<h3>{{ "file.admin.Files"|trans([], "validators") }}</h3>
+<table class="table table-striped table-bordered">
+	<thead>
+		<th>{{ "file.admin.Title"|trans([], "validators") }}</th>
+		<th>{{ "file.admin.File"|trans([], "validators") }}</th>
+	</thead>
+	<tbody>
+	{% for entity in entities %}
+		<tr>
+			{% if entity.extensionFile|is_image %}
+				<td>{{ entity.titleFile }}</td>
+				<td>
+					{% if mainEntity.archive %}
+						{{ entity.realNameFile|imgsize(550, 'extended/photo/testimony/', true, {"class": "mx-auto d-block img-fluid"}, null, true, true)|raw }}
+					{% else %}
+						{{ entity.realNameFile|imgsize(550, 'extended/photo/testimony/', true, {"class": "mx-auto d-block img-fluid"})|raw }}
+					{% endif %}
+				</td>
+			{% endif %}
+		</tr>
+		{% endfor %}
+	</tbody>
+</table>
+{% endif %}

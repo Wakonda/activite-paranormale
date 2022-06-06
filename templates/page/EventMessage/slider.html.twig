@@ -1,0 +1,49 @@
+{% if entities is not empty %}
+	<script>
+		$(function() {
+			$('#carousel-event-index').carousel({
+				interval: false
+			}).on('slide.bs.carousel', function (e) {
+				var nextH = $(e.relatedTarget).height();
+				$(this).find('.active.carousel-item').parent().animate({
+					height: nextH
+				}, 500);
+			});
+		});
+	</script>
+
+	<h3>{{ "eventMessage.calendar.Events"|trans([], "validators") }}</h3>
+
+	<div id="carousel-event-index" class="carousel-pagination carousel slide" data-interval="false">
+		<!-- Indicators -->
+		<ol class="carousel-indicators carousel-indicators-numbers pagination">
+		{% set i = 0 %}
+		{% set j = 1 %}
+		{% for entity in entities %}
+			<li data-target="#carousel-event-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+			{% set i = i + 1 %}
+			{% set j = j + 1 %}
+		{% endfor %}
+		</ol>
+
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner" role="listbox">
+			{% set i = 0 %}
+			{% for entity in entities %}
+				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+					<p><span style="font-weight: bold; font-size: 16px;">{{ entity.title }}</span></p>
+					<div class="image"  style="float:left; margin-right: 5px;">{{ entity.photo|imgsize(225, entity.getAssetImagePath())|raw }}</div>
+					<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="20" class="align-middle"/> 
+					{% if entity.dateTo == entity.dateFrom %}
+						{{ entity.dateFrom|dodate(false, app.request.locale) }}
+					{% else %}
+						{{ entity.dateFrom|dodate(false, app.request.locale) }} - 
+						{{ entity.dateTo|dodate(false, app.request.locale) }}
+					{% endif %}
+					<p><i class="fas fa-arrow-right"></i> <a href="{{ path('EventMessage_Read', { 'id':entity.id, 'title_slug':entity.getUrlSlug()}) }}">{{ "eventMessage.slider.MoreInformation"|trans([], "validators") }}</a></p> 
+					{% set i = i + 1 %}
+				</div>
+			{% endfor %}
+		</div>
+	</div>
+{% endif %}
