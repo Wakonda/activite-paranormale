@@ -134,6 +134,31 @@
 			$httpCode = curl_getinfo($curlObj, CURLINFO_HTTP_CODE); 
 			
 			curl_close($curlObj);
+
+			return array("http_code" => $httpCode, "response" => $response);
+		}
+		
+		public function updatePost($idPostBlogger, $blogTitle, $accessToken, $title, $content, $tags = array())
+		{
+			$blogTitle = $_ENV["APP_ENV"] == "dev" ? "Test" : $blogTitle;
+			$blogId = $this->blogId_array[$blogTitle];
+			$data = array("kind" => "blogger#post", "blog" => array("id" => $blogId), "title" => $title, "content" => $content, "labels" => json_decode($tags));
+
+			$curlObj = curl_init();
+
+			curl_setopt($curlObj, CURLOPT_URL, 'https://www.googleapis.com/blogger/v3/blogs/'.$blogId.'/posts?key='.$_ENV["BLOGGER_API_KEY"].'&alt=json');
+			curl_setopt($curlObj, CURLOPT_RETURNTRANSFER, 1);
+			curl_setopt($curlObj, CURLOPT_SSL_VERIFYPEER, 0);
+			curl_setopt($curlObj, CURLOPT_CUSTOMREQUEST, "PUT");
+			curl_setopt($curlObj, CURLOPT_HEADER, false);
+			curl_setopt($curlObj, CURLOPT_HTTPHEADER, array('Content-type:application/json', 'Authorization: OAuth '.$accessToken));
+			curl_setopt($curlObj, CURLOPT_POSTFIELDS, http_build_query($data));
+
+			$response = curl_exec($curlObj);
+			
+			$httpCode = curl_getinfo($curlObj, CURLINFO_HTTP_CODE); 
+			
+			curl_close($curlObj);
 			
 
 			return array("http_code" => $httpCode, "response" => $response);
