@@ -159,7 +159,6 @@
 			$httpCode = curl_getinfo($curlObj, CURLINFO_HTTP_CODE); 
 			
 			curl_close($curlObj);
-			
 
 			return array("http_code" => $httpCode, "response" => $response);
 		}
