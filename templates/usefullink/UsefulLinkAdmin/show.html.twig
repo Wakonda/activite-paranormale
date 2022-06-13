@@ -21,7 +21,7 @@
 	<div class="form-table-cell">
 		<ul>
 		{% for data in json_decode(entity.links) %}
-			{% if data.title is not null %}
+			{% if data.title is not empty %}
 				<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a></li>
 			{% else %}
 				<li><a href="{{ data.url }}" target="_blank">{{ data.url }}</a></li>

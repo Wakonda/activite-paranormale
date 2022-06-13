@@ -127,6 +127,9 @@ admin:
     twitter:
         TweetSent: "Tweet enviado"
         FailedToSendTweet: "Fallo al enviar el tweet"
+    facebook:
+        Success: "Mensaje enviado a Facebook con éxito"
+        Failed: "Error al enviar a Facebook"
     tumblr:
         Success: "Artículo publicado en Tumblr con éxito"
     pinterest:

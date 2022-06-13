@@ -77,6 +77,13 @@ class TagWord
 			$this->illustration = clone $this->illustration;
 	}
 
+	public function cleanTags() {
+		$transliterator = \Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: Lower(); :: NFC;', \Transliterator::FORWARD);
+		$normalized = $transliterator->transliterate($this->title);
+
+		return preg_replace("/[^a-zA-Z0-9_]/", "", $normalized);
+	}
+
     /**
      * Get id
      *

@@ -97,6 +97,8 @@
 				new TwigFunction('entities_other_languages', array($this, 'getEntitiesOtherLanguages')),
 				new TwigFunction('isTwitterAvailable', array($this, 'isTwitterAvailable')),
 				new TwigFunction('isBloggerAvailable', array($this, 'isBloggerAvailable')),
+				new TwigFunction('isFacebookAvailable', array($this, 'isFacebookAvailable')),
+				new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
 				new TwigFunction('isTheDailyTruthAvailable', array($this, 'isTheDailyTruthAvailable')),
 				new TwigFunction('isTumblrAvailable', array($this, 'isTumblrAvailable')),
 				new TwigFunction('isPinterestAvailable', array($this, 'isPinterestAvailable')),
@@ -607,7 +609,7 @@
 			return $this->em->getRepository($className)->countArchivedEntries();
 		}
 		
-		public function getTagsByEntity($entity, $show = true)
+		public function getTagsByEntity($entity, $show = true, $clean = false)
 		{
 			$className = array_reverse(explode("\\", get_class($entity)));
 			$tags = $this->em->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));
@@ -615,7 +617,7 @@
 			$tagArray = array();
 
 			foreach($tags as $tag)
-				$tagArray[] = $tag->getTagWord()->getTitle();
+				$tagArray[] = !$clean ? $tag->getTagWord()->getTitle() : $tag->getTagWord()->cleanTags();
 
 			return (empty($tagArray)) ? ($show ? "-" : "") : implode(", ", $tagArray);
 		}
@@ -793,17 +795,29 @@
 			return array("width" => $new_width, "height" => $new_height);
 		}
 
-		public function isTwitterAvailable($entity)
+		public function isTwitterAvailable($entity): bool
 		{
-			$twitterAPI = new TwitterAPI();
+			$api = new TwitterAPI();
 			
-			return in_array($entity->getLanguage()->getAbbreviation(), $twitterAPI->getLanguages());
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 
-		public function isBloggerAvailable($type)
+		public function isBloggerAvailable($type): bool
 		{
-			$bloggerAPI = new GoogleBlogger();
-			return in_array($type, $bloggerAPI->getTypes());
+			$api = new GoogleBlogger();
+			return in_array($type, $api->getTypes());
+		}
+
+		public function isFacebookAvailable($entity): bool
+		{
+			$api = new \App\Service\Facebook();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+		}
+
+		public function isMastodonAvailable($entity): bool
+		{
+			$api = new \App\Service\Mastodon();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 
 		public function isTheDailyTruthAvailable($locale): bool

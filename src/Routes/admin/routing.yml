@@ -12,6 +12,10 @@ Admin_Phpinfo:
     path: /admin/phpinfo
     controller: App\Controller\AdminController::phpinfoAction
 
+Admin_Mastodon:
+    path: /admin/mastodon/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::mastodonAction
+
 Admin_Facebook:
     path: /admin/facebook/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::facebookAction

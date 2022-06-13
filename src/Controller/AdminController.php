@@ -21,6 +21,8 @@ use App\Service\GoogleBlogger;
 use App\Service\Shopify;
 use App\Service\TheDailyTruth;
 use App\Service\FunctionsLibrary;
+use App\Service\Facebook;
+use App\Service\Mastodon;
 
 class AdminController extends AbstractController
 {
@@ -514,8 +516,15 @@ class AdminController extends AbstractController
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
-		$twitterAPI->sendTweet($requestParams->get("twitter_area")." ".$currentURL, $image);
-		$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+		
+		$res = $twitterAPI->sendTweet($requestParams->get("twitter_area")." ".$currentURL, $image);
+
+		if(property_exists($res, "errors")) {
+			$errorsArray = array_map(function($e) { return $e->code.": ".$e->message; }, $res->errors);
+			$session->getFlashBag()->add('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".implode(", ", $errorsArray).")");
+		}
+		else
+			$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
 	}
@@ -613,108 +622,47 @@ class AdminController extends AbstractController
 	}
 	
 	// Facebook
-	public function facebookAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	public function facebookAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$entity = $em->getRepository(urldecode($path))->find($id);
-		$fb = new \Facebook\Facebook([
-			'app_id' => "435607197859748",//"c38e98d236ca748cd971c1568a29ab60"; //getenv("FACEBOOK_APP_ID"),
-			'app_secret' => "c38e98d236ca748cd971c1568a29ab60", //getenv("FACEBOOK_APP_SECRET"),
-			'default_graph_version' => 'v2.6'
-		]);
+		$requestParams = $request->request;
 		
-		$pageId = "2283443385078223";
-		$helper = $fb->getRedirectLoginHelper();
-		// $helper->getPersistentDataHandler()->set("state", $request->query->get("state"));
+		$path = urldecode($path);
 		
-$accessToken = "EAAGMLrRKP6QBAKluIWAgLvJBfHP7eQOoUs4PBZChiMPBupfWO4ZCZBy63DQ5lfJxrEJbney3EmVQ6oV4ilz97IydD3Vov8L67y55SpA1wux4HEkgjv05mmZClbXYssgXdkZCc5Y5TJFEZCDrIniCgZBgJXNZANgRtaaC3W5w824jpAzdX6KmLdvXNo7bZANX8iDZAC6uJjZAU1lSEquBQOC5Gbu";
-/*$secretKey = "c38e98d236ca748cd971c1568a29ab60";
-$appId =  "435607197859748";
-$userId = "751376615255146";
-$graphApiToken = "v2.11";
+		$entity = $em->getRepository($path)->find($id);
+		$image = false;
+		$url = $requestParams->get("facebook_url", null);
 
-$longLiveToken = json_decode(file_get_contents("https://graph.facebook.com/oauth/access_token?grant_type=fb_exchange_token&client_id=${appId}&client_secret=${secretKey}&fb_exchange_token=${accessToken}"));
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
 
-$longLivedUserAccessToken = $longLiveToken->access_token;
+		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area")));
 
-$accessTokenTest = $appId.'|'.$secretKey;
-
-$url = json_decode(file_get_contents("https://graph.facebook.com/${graphApiToken}/${appId}/accounts?access_token=${accessTokenTest}"), true);
-
-$longLivedUserAccessToken = $url["data"][0]["access_token"];*/
-//Post property to Facebook
-
-
-$accessToken = "EAAGMLrRKP6QBAObqkz1Rcis1mXjnER1bZB4hLhmbX60pY5kurVNKSyeEg98BUMTwyZAGOTRWDknfqTBWfwVqdpHxSOWhhyrsA84ZCOqXRgK9ZAldytAJjiTYIJzkovLZAJhyKLLOLovZB0GqOzjISfpH9wVT2k8AgmDZBtqxvCGj7igf4fUicGwrAdbHr8r9XueFtxn9rVsBTQcZCW2n5xkF";
-
-$linkData = [
- 'link' => 'www.yoururl.com',
- 'message' => 'Your message here'
-];
-
-
-try {
- $response = $fb->post('/me/feed', $linkData, $accessToken);
-} catch(Facebook\Exceptions\FacebookResponseException $e) {
- echo 'Graph returned an error: '.$e->getMessage();
- exit;
-} catch(Facebook\Exceptions\FacebookSDKException $e) {
- echo 'Facebook SDK returned an error: '.$e->getMessage();
- exit;
-}
-$graphNode = $response->getGraphNode();
-		dd($graphNode);
-/*
-		$accessToken = $helper->getAccessToken();
-		$res = [];
-dd($accessToken, $helper, $request->query->get("state"));*/
-		if(empty($accessToken))
-		{
-			$permissions = ['email', 'user_likes', 'user_birthday', 'manage_pages ', 'user_photos', 'publish_actions', 'publish_pages' ];
-			$loginUrl = $helper->getLoginUrl($this->generateUrl("Admin_Facebook", ["id" => $id, "path" => $path, "routeToRedirect" => $routeToRedirect], UrlGeneratorInterface::ABSOLUTE_URL));
-			return $this->redirect($loginUrl);
-		}
-		else
-		{
-			try {
-				$accessToken = $accessToken->getValue();
-				
-				$response = $fb->get('/'.$pageId.'?fields=access_token', (string)$accessToken);
-				$accessTokenPage = json_decode($response->getBody())->access_token;
-				$currentURL = $this->router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
-
-				if($request->request->get("facebook_media") == "photo_media")
-				{
-					$photoData = [
-						'message' => $entity->getTitle(),
-						'source' => $fb->fileToUpload($this->getImageName($request, $entity))
-					];
-
-					$response = $fb->post('/'.$pageId.'/photos', $photoData, $accessTokenPage);
-				}
-				else
-				{
-					$linkData = [
-						'link' => $currentURL,
-						'message' => $entity->getTitle(),
-						// 'from' => '220184531706758'
-					];
-
-					$response = $fb->post('/'.$pageId.'/feed', $linkData, $accessTokenPage);
-				}
-				// $response = $fb->get('/me', $accessToken);
-				// $response = $fb->get('/me/accounts', $accessToken);
-				$message = ($response->isError()) ? ['state' => 'error', 'message' => ''] : ['state' => 'success', 'message' => 'Post published with success!'];
-			}
-			catch(\Facebook\Exceptions\FacebookResponseException $e) {
-				$message = ['state' => 'error', 'message' => $e->getMessage()];
-			}
-			catch(\Facebook\Exceptions\FacebookSDKException $e) {
-				$message = ['state' => 'error', 'message' => $e->getMessage()];
-			}
-		}
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
 		
-		$session->getFlashBag()->add($message['state'], $message['message']);
+		$session->getFlashBag()->add($message["state"], $message["state"], [], 'validators');
+
+		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+	
+	// Mastodon
+	public function mastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$requestParams = $request->request;
+		
+		$path = urldecode($path);
+		
+		$entity = $em->getRepository($path)->find($id);
+		$image = false;
+		$url = $requestParams->get("mastodon_url", null);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$res = json_decode($mastodon->postMessage($currentURL, $request->request->get("mastodon_area")));
+
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
+		
+		$session->getFlashBag()->add($message["state"], $message["state"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
 	}
