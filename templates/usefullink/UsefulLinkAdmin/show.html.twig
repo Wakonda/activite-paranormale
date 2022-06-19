@@ -17,6 +17,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Category"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ ("usefullink.admin." ~ entity.category|capitalize)|trans([], "validators") }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Link"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
 		<ul>
@@ -26,6 +29,15 @@
 			{% else %}
 				<li><a href="{{ data.url }}" target="_blank">{{ data.url }}</a></li>
 			{% endif %}
+		{% endfor %}
+		</ul>
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Tags"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		<ul>
+		{% for data in json_decode(entity.tags) %}
+				<li>{{ data.value }}</li>
 		{% endfor %}
 		</ul>
 	</div>

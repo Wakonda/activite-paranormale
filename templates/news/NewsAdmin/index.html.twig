@@ -8,7 +8,6 @@
 {% block js_edit_additional %}
 	document.querySelector("select#selected_state").addEventListener("change", (e) => {
 		oTable.fnFilter(e.target.value, 5);
-
 	});
 {% endblock %}
 

@@ -83,10 +83,21 @@ class UsefulLinkAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
-		$output = $informationArray['output'];
+		$em = $this->getDoctrine()->getManager();
 
-		foreach($informationArray['entities'] as $entity)
+		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
+
+        $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $request->query->all());
+		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $request->query->all(), true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => array()
+		);
+
+		foreach($entities as $entity)
 		{
 			$links = [];
 
@@ -110,10 +121,11 @@ class UsefulLinkAdminController extends AdminGenericController
 			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
+			$row[] = !empty($entity->getCategory()) ? $translator->trans('usefullink.admin.'.ucfirst($entity->getCategory()), [], 'validators') : "";
 			$row[] = '<ul>'.implode("", $links).'</ul>';
 			$row[] = "
-			 <a href='".$this->generateUrl('UsefulLink_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('UsefulLink_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('UsefulLink_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('UsefulLink_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
 			";
 
 			$output['aaData'][] = $row;

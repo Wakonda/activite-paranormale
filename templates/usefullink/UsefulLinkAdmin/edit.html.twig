@@ -12,6 +12,14 @@
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+	
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/tagify/tagify.min.css') }}" media="screen" />
+	<script src="{{ asset('extended/js/tagify/tagify.min.js') }}"></script>
+
+	<script>
+		var input = document.querySelector('#{{ form.tags.vars.id }}');
+		new Tagify(input);
+	</script>
 {% endblock %}
 
 {% block tbody_admin_table %}
