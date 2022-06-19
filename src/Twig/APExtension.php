@@ -798,7 +798,7 @@
 		public function isTwitterAvailable($entity): bool
 		{
 			$api = new TwitterAPI();
-			
+			// dd($entity->getLanguage()->getAbbreviation());
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 
