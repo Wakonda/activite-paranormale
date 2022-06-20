@@ -517,7 +517,7 @@ class AdminController extends AbstractController
 
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
 		
-		$res = $twitterAPI->sendTweet($requestParams->get("twitter_area")." ".$currentURL, $image);
+		$res = $twitterAPI->sendTweet($requestParams->get("twitter_area")." ".$currentURL, $entity->getLanguage()->getAbbreviation(), $image);
 
 		if(property_exists($res, "errors")) {
 			$errorsArray = array_map(function($e) { return $e->code.": ".$e->message; }, $res->errors);
@@ -635,7 +635,7 @@ class AdminController extends AbstractController
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area")));
+		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
 		
@@ -658,7 +658,7 @@ class AdminController extends AbstractController
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = json_decode($mastodon->postMessage($currentURL, $request->request->get("mastodon_area")));
+		$res = json_decode($mastodon->postMessage($currentURL, $request->request->get("mastodon_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 		

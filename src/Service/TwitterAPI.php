@@ -2,7 +2,6 @@
 namespace App\Service;
 
 use Abraham\TwitterOAuth\TwitterOAuth;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class TwitterAPI
 {
@@ -12,14 +11,9 @@ class TwitterAPI
 	private $OAUTH_TOKEN_SECRET = null;
 	private $TWITTER_USERNAME = null;
 
-	public function __construct(ContainerInterface $container = null)
+	public function sendTweet(string $message, string $locale, $image = false)
 	{
-		$this->container = $container;
-	}
-
-	public function sendTweet($message, $image = false)
-	{
-		$this->setLanguage($this->container->get('request_stack')->getCurrentRequest()->getLocale());
+		$this->setLanguage($locale);
 		$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->OAUTH_TOKEN, $this->OAUTH_TOKEN_SECRET);
 
 		$parameters = array(

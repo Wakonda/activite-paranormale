@@ -2,20 +2,11 @@
 
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 class Mastodon {
-	private $container;
-
 	private $MASTODON_FR_ACCESS_TOKEN = null;
 
-	public function __construct(ContainerInterface $container = null)
-	{
-		$this->container = $container;
-	}
-
-	public function postMessage(string $url, string $message) {
-		$this->setLanguage($this->container->get('request_stack')->getCurrentRequest()->getLocale());
+	public function postMessage(string $url, string $message, string $locale) {
+		$this->setLanguage($locale);
 
 		$accessToken = $this->MASTODON_FR_ACCESS_TOKEN;
 		

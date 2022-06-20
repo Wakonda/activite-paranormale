@@ -2,11 +2,8 @@
 
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
-
 class Facebook {
 	// https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-long-lived
-	private $container;
 
 	private $FACEBOOK_PAGE_ID = null;
 	private $FACEBOOK_APP_ID = null;
@@ -14,11 +11,6 @@ class Facebook {
 	private $FACEBOOK_GRAPH_VERSION = null;
 	private $FACEBOOK_USER_ID = null;
 	private $FACEBOOK_ACCESS_TOKEN = null;
-
-	public function __construct(ContainerInterface $container = null)
-	{
-		$this->container = $container;
-	}
 
 	public function getLongLiveAccessToken() {
 		$accessToken = ""; // Token généré à partir de la page : https://developers.facebook.com/tools/explorer/
@@ -68,8 +60,8 @@ class Facebook {
 		return json_decode($result);
 	}
 
-	public function postMessage(string $url, string $message) {
-		$this->setLanguage($this->container->get('request_stack')->getCurrentRequest()->getLocale());
+	public function postMessage(string $url, string $message, string $locale) {
+		$this->setLanguage($locale);
 
 		$pageId = $this->FACEBOOK_PAGE_ID;
 
