@@ -101,9 +101,6 @@ class PresidentAdminController extends AdminGenericController
 		{
 			$row = array();
 			
-			if($entity->getArchive())
-				$row["DT_RowClass"] = "deleted";
-			
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
@@ -161,5 +158,32 @@ class PresidentAdminController extends AdminGenericController
 		$translateArray['licence'] = $licenceArray;
 
 		return new JsonResponse($translateArray);
+	}
+	
+	public function internationalizationAction(Request $request, $id)
+	{
+		$formType = PresidentAdminType::class;
+		$entity = new President();
+		
+		$em = $this->getDoctrine()->getManager();
+		$entityToCopy = $em->getRepository(President::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
+		
+		if(empty($state)) {
+			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
+		}
+
+		$entity->setState($state);
+		
+		$entity->setLanguage($language);
+		$entity->setPhoto($entityToCopy->getPhoto());
+		$entity->setNumberOfDays($entityToCopy->getNumberOfDays());
+
+		$request->setLocale($language->getAbbreviation());
+
+		$twig = 'page/PresidentAdmin/new.html.twig';
+		return $this->newGenericAction($request, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 }

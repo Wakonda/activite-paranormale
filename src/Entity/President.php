@@ -102,7 +102,17 @@ class President
 		$this->writingDate = new \DateTime();
 		$this->publicationDate = new \DateTime();
 	}
-	
+
+	public function getShowRoute()
+	{
+		return "President_Archive_Read";
+	}
+
+	public function getEntityName()
+	{
+		return get_called_class();
+	}
+
     /**
      * Get id
      *
