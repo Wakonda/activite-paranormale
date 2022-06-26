@@ -24,6 +24,7 @@ yarn-error.log
 /phpunit.xml.dist
 
 # Photo
+/public/extended/photo/advertising/*
 /public/extended/photo/album/*
 /public/extended/photo/banner/*
 /public/extended/photo/biography/*
