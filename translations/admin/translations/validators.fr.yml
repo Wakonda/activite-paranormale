@@ -82,6 +82,7 @@ admin:
         MusicGenre: "Genre musical"
         BookEdition: "Édition"
         Store: "Boutique"
+        Advertising: "Publicité"
     show:
         Internationalization: "Internationalisation"
         ReallyWantRemoveDatas: "Souhaitez-vous réellement supprimer ces données ?"

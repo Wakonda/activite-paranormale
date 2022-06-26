@@ -113,3 +113,7 @@ Movie:
 Store:
     resource: "../src/Routes/store/routing.yml"
     prefix:   /
+
+Advertising:
+    resource: "../src/Routes/advertising/routing.yml"
+    prefix:   /

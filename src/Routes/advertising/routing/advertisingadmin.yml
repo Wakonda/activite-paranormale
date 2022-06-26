@@ -1,0 +1,41 @@
+Advertising_Admin_Index:
+    path:  /
+    controller: App\Controller\AdvertisingAdminController::indexAction
+
+Advertising_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\AdvertisingAdminController::showAction
+
+Advertising_Admin_New:
+    path:  /new
+    controller: App\Controller\AdvertisingAdminController::newAction
+
+Advertising_Admin_Create:
+    path:  /create
+    controller: App\Controller\AdvertisingAdminController::createAction
+    requirements:
+        _method: post
+
+Advertising_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\AdvertisingAdminController::editAction
+
+Advertising_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\AdvertisingAdminController::updateAction
+    requirements:
+        _method: post
+
+Advertising_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\AdvertisingAdminController::deleteAction
+
+Advertising_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\AdvertisingAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Advertising_Admin_WYSIWYG_UploadFile:
+    path: /wysiwyg_uploadfile
+    controller: App\Controller\AdvertisingAdminController::WYSIWYGUploadFileAction

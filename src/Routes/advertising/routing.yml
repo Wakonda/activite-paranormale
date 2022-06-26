@@ -1,0 +1,4 @@
+# Administration
+Advertising_Admin:
+    resource: "routing/advertisingadmin.yml"
+    prefix: /admin/advertising

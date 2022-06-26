@@ -1,0 +1,7 @@
+advertising:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Width: "Largeur"
+        Height: "Longueur"
+        Language: "Langue"

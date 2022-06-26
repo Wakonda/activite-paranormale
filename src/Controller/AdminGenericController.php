@@ -308,9 +308,8 @@ abstract class AdminGenericController extends AbstractController
 	protected function getLanguageByDefault($request, $formName)
 	{
 		$valueForm = $request->request->get($formName);
-
 		$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($valueForm['language']);
-		
+
 		if(empty($language))
 			$abbreviation = $request->getLocale();
 		else
