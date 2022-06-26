@@ -82,6 +82,7 @@ admin:
         MusicGenre: "Music genre"
         BookEdition: "Edition"
         Store: "Store"
+        Advertising: "Advertising"
     show:
         Internationalization: "Internationalization"
         ReallyWantRemoveDatas: "Are you sure you want to delete this data?"
@@ -127,6 +128,9 @@ admin:
     twitter:
         TweetSent: "Tweet sent"
         FailedToSendTweet: "Failed to send tweet"
+    facebook:
+        Success: "Message sent to Facebook successfully"
+        Failed: "Failed to send to Facebook"
     tumblr:
         Success: "Article published with success in Tumblr"
     pinterest:

@@ -5,9 +5,37 @@
 {% block new_admin_route %}{{ path('UsefulLink_Admin_New') }}{% endblock %}
 {% block indexdatatables_admin_route %}{{ path('UsefulLink_Admin_IndexDatatables') }}{% endblock %}
 
+{% block js_edit_additional %}
+	document.querySelector("#usefullink_filter").addEventListener("submit", (e) => {
+		e.preventDefault();
+		oTable.api().ajax.url("{{ block('indexdatatables_admin_route') }}?category_filter=" + document.getElementById("category_filter").value + "&tags_filter=" + document.getElementById("tags_filter").value).load();
+	});
+{% endblock %}
+
+{% block body_main_additional %}
+	<form class="form-inline" id="usefullink_filter">
+	<div class="form-group">
+		<label>{{ "usefullink.admin.Category"|trans([], "validators") }}</label>
+		<select id="category_filter" class="form-control ml-2">
+			<option value=""></option>
+			<option value="{{ constant('App\\Entity\\UsefulLink::DEVELOPMENT_FAMILY') }}">{{ ("usefullink.admin." ~ constant('App\\Entity\\UsefulLink::DEVELOPMENT_FAMILY')|capitalize)|trans([], "validators") }}</option>
+			<option value="{{ constant('App\\Entity\\UsefulLink::RESOURCE_FAMILY') }}">{{ ("usefullink.admin." ~ constant('App\\Entity\\UsefulLink::RESOURCE_FAMILY')|capitalize)|trans([], "validators") }}</option>
+		</select>
+		<hr>
+	</div>
+	<div class="form-group">
+		<label class="ml-2">{{ "usefullink.admin.Tags"|trans([], "validators") }}</label>
+		<input id="tags_filter" type="text" class="form-control ml-2" />
+	</div>
+	<button type="submit" class="btn btn-primary ml-2">{{ "usefullink.admin.Search"|trans([], "validators") }}</button>
+	</form>
+	<hr>
+{% endblock %}
+
 {% block thead_admin_table %}
 	<th class="label_form">Id</th>
 	<th class="label_form">{{ "usefullink.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "usefullink.admin.Category"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "usefullink.admin.Link"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}
@@ -15,6 +43,7 @@
 {% block tfoot_admin_table %}
 	<th class="label_form">Id</th>
 	<th class="label_form">{{ "usefullink.admin.Title"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "usefullink.admin.Category"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "usefullink.admin.Link"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}

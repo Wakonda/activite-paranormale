@@ -61,6 +61,20 @@ class Quotation
 	{
 		$this->images = new ArrayCollection();
 	}
+
+	public function getTitle() {
+		return $this->textQuotation;
+	}
+
+	public function getShowRoute()
+	{
+		return "Quotation_ReadQuotation";
+	}
+
+	public function getEntityName()
+	{
+		return get_called_class();
+	}
 	
     /**
      * Get id

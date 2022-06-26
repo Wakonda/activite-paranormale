@@ -22,3 +22,5 @@ doctrine:
                 GROUP_CONCAT: App\DQL\GroupConcat
                 IFNULL: App\DQL\IfNull
                 JSON_SEARCH: App\DQL\JsonSearch
+                JSON_CONTAINS: App\DQL\JsonContains
+                JSON_EXTRACT: App\DQL\JsonExtract

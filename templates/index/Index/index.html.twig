@@ -42,7 +42,7 @@
 
 {% block APBlog_body %}
 	{{ render(controller('App\\Controller\\NewsController::mainSliderAction', { 'lang' : app.request.locale})) }}
-	<br />
+	<br>
 	{% if is_mobile() == true and app.session.get('v') == 'v2' %}
 		<div class="text-center">
 			<a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" alt=""><img src="{{ asset('extended/photo/mobile-version.png') }}" alt="Mobile version" width="30" class="align-middle"> {{ "index.main.GoWebsiteMobile"|trans([], "validators") }}</a>
@@ -66,16 +66,16 @@
 	{{ render(controller('App\\Controller\\EventMessageController::sliderAction')) }}
 	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\NewsController::sliderAction')) }}
-	<br />
+	<br>
 	<h3>{{ "index.main.Video"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\VideoController::sliderAction')) }}
-	<br />
+	<br>
 	<h3>{{ "index.main.Gallery"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\PhotoController::sliderAction')) }}
-	<br />
+	<br>
 	<h3>{{ "index.main.Witchcraft"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\WitchcraftController::widgetAction')) }}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

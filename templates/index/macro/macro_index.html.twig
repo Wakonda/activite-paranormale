@@ -31,7 +31,7 @@
 {% endmacro %}
 
 {% macro shopify_form(entity, type) %}
-	{% set type_locale = type~"_"~entity.language.abbreviation %}
+	{#{% set type_locale = type~"_"~entity.language.abbreviation %}
 
 	{% if isShopifyAvailable(type_locale) %}
 		<div class="accordion mb-2" id="accordionParentShopify">
@@ -63,11 +63,11 @@
 				</div>
 			</div>
 		</div>
-	{% endif %}
+	{% endif %}#}
 {% endmacro %}
 
 {% macro tumblr_form(entity) %}
-	{% if isTumblrAvailable(entity) %}
+	{#{% if isTumblrAvailable(entity) %}
 		<div class="accordion mb-2" id="accordionParentTumblr">
 			<div class="card sub_block">
 				<div class="card-header" role="tab" id="headingTumblr">
@@ -94,33 +94,139 @@
 				</div>
 			</div>
 		</div>
-	{% endif %}
+	{% endif %}#}
 {% endmacro %}
 
 {% macro facebook_form(entity) %}
+	{% if isFacebookAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentFacebook">
 		<div class="card sub_block">
 			<div class="card-header" role="tab" id="headingFacebook">
 				<span class="panel-title">
-				<a href="#" role="button" data-toggle="collapse" data-target="#collapseFacebook" aria-expanded="true" aria-controls="collapseOne">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseFacebook" aria-expanded="true" aria-controls="collapseFacebook">
 				<i class="fab fa-facebook-square" aria-hidden="true"></i> Facebook
 				</a>
 				</span>
 			</div>
+			
 			<div id="collapseFacebook" class="collapse" aria-labelledby="headingFacebook" data-parent="#accordionParentFacebook">
 				<div class="card-body">
-					<form action="{{ path('Admin_Facebook', {'id': entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="POST">
-						<select name="facebook_media" class="form-control">
-							<option value="photo_media">Photo</option>
-							<option value="post_media">Post</option>
-						</select>
+					<form action="{{ path('Admin_Facebook', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<div id="tags_facebook">
+							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+						</div>
 						<br>
-						<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control">{{ entity.title }} {% for t in get_tags(entity, true, true)|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}</textarea>
+						<br>
+						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 					</form>
 				</div>
 			</div>
 		</div>
 	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro facebook_form_js() %}
+	<script>
+		$(function()
+		{
+			var datas = $("#facebook_area").text().split(" ");
+			$("div#tags_facebook a").each(function() {
+				
+				for(var i = 0; i < datas.length; i++)
+				{
+					if($(this).text().toLowerCase() == datas[i].toLowerCase())
+						datas[i] = "#" + datas[i];
+				}
+			});
+			
+			$("#facebook_area").val(datas.join(" "));
+
+			$("div#tags_facebook a").click(function(event) {
+				event.preventDefault();
+				var textToInsert = "#" + $(this).data('tag');
+				var position = $('#facebook_area').prop("selectionStart");
+				var textareaContent = $('#facebook_area').val();
+				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+				$('#facebook_area').val(output);
+				$("#facebook_area").keyup();
+			});
+		});
+	</script>
+{% endmacro %}
+
+{% macro mastodon_form(entity) %}
+	{% if isMastodonAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentMastodon">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingMastodon">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseMastodon" aria-expanded="true" aria-controls="collapseMastodon">
+				<i class="fab fa-mastodon" aria-hidden="true"></i> Mastodon
+				</a>
+				</span>
+			</div>
+			
+			<div id="collapseMastodon" class="collapse" aria-labelledby="headingMastodon" data-parent="#accordionParentMastodon">
+				<div class="card-body">
+					<form action="{{ path('Admin_Mastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<div id="tags_mastodon">
+							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+						</div>
+						<br>
+						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control">{{ entity.title }} {% for t in get_tags(entity, true, true)|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}</textarea>
+						<br>
+						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro facebook_form_js() %}
+	<script>
+		$(function()
+		{
+			var datas = $("#mastodon_area").text().split(" ");
+			$("div#tags_mastodon a").each(function() {
+				
+				for(var i = 0; i < datas.length; i++)
+				{
+					if($(this).text().toLowerCase() == datas[i].toLowerCase())
+						datas[i] = "#" + datas[i];
+				}
+			});
+			
+			$("#mastodon_area").val(datas.join(" "));
+
+			$("div#tags_mastodon a").click(function(event) {
+				event.preventDefault();
+				var textToInsert = "#" + $(this).data('tag');
+				var position = $('#mastodon_area').prop("selectionStart");
+				var textareaContent = $('#mastodon_area').val();
+				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+				$('#mastodon_area').val(output);
+				$("#mastodon_area").keyup();
+			});
+		});
+	</script>
 {% endmacro %}
 
 {% macro twitter_form(entity) %}
@@ -140,7 +246,7 @@
 					<form action="{{ path('Admin_Twitter', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string" class="badge badge-danger">280</span></p>
 						<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
-						<div id="tags">
+						<div id="tags_twitter">
 							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
 							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
 							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
@@ -149,7 +255,7 @@
 							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
 						</div>
 						<br>
-						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title }}</textarea>
+						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title }} {% for t in get_tags(entity, true, true)|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
 						<br>
@@ -158,7 +264,7 @@
 				</div>
 			</div>
 		</div>
-		</div>
+	</div>
 	{% endif %}
 {% endmacro %}
 
@@ -167,7 +273,7 @@
 		$(function()
 		{
 			var datas = $("#twitter_area").text().split(" ");
-			$("div#tags a").each(function() {
+			$("div#tags_twitter a").each(function() {
 				
 				for(var i = 0; i < datas.length; i++)
 				{
@@ -193,7 +299,7 @@
 			$("#twitter_area").keyup();
 			
 			//Twitter Tags
-			$("div#tags a").click(function(event) {
+			$("div#tags_twitter a").click(function(event) {
 				event.preventDefault();
 				var textToInsert = "#" + $(this).data('tag');
 				var position = $('#twitter_area').prop("selectionStart");

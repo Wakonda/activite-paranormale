@@ -1,0 +1,14 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "advertising.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "advertising.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.width, "advertising.admin.Width"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.width) }}{{ form_widget(form.width, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.height, "advertising.admin.Height"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.height) }}{{ form_widget(form.height, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "advertising.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>

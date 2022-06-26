@@ -13,6 +13,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UsefulLink
 {
+	const DEVELOPMENT_FAMILY = "development";
+	const RESOURCE_FAMILY = "resource";
+
     /**
      * @var integer $id
      *
@@ -42,6 +45,20 @@ class UsefulLink
      * @ORM\Column(name="links", type="text", nullable=true)
      */
     private $links;
+
+    /**
+     * @var string $tags
+     *
+     * @ORM\Column(name="tags", type="json", nullable=true)
+     */
+    private $tags;
+
+    /**
+     * @var string $category
+     *
+     * @ORM\Column(name="category", type="string", length=100, nullable=true)
+     */
+    private $category;
 
     /**
      * Get id
@@ -120,5 +137,51 @@ class UsefulLink
     public function getLinks()
     {
         return $this->links;
+    }
+
+    /**
+     * Set tags
+     *
+     * @param string $tags
+     * @return UsefulLink
+     */
+    public function setTags($tags)
+    {
+        $this->tags = json_decode($tags);
+    
+        return $this;
+    }
+
+    /**
+     * Get tags
+     *
+     * @return string 
+     */
+    public function getTags()
+    {
+        return json_encode($this->tags);
+    }
+
+    /**
+     * Set category
+     *
+     * @param string $category
+     * @return UsefulLink
+     */
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return string 
+     */
+    public function getCategory()
+    {
+        return $this->category;
     }
 }

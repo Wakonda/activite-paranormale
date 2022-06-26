@@ -41,4 +41,24 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "president.admin.WritingDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.writingDate|dodate(false, app.request.locale) }}</div>
+	
+	<a href="{{ path('President_Archive_Read', { 'id' : entity.id }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "President_Admin_Internationalization", "showRoute": "President_Admin_Show", "editRoute": "President_Admin_Edit"})) }}
+	
+	{% if entity.state.isStateDisplayed() %}
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+
+		{{ macro_index.twitter_form(entity) }}
+		{{ macro_index.facebook_form(entity) }}
+		{{ macro_index.mastodon_form(entity) }}
+	{% endif %}
+{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.twitter_form_js() }}
+	{{ macro_index.facebook_form_js() }}
 {% endblock %}

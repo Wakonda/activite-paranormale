@@ -60,6 +60,7 @@
 		{% if entity.archive == false %}
 			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.blogger_form(entity, "news") }}
+			{{ macro_index.mastodon_form(entity) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}

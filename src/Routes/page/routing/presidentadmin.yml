@@ -43,3 +43,7 @@ President_Admin_IndexDatatables:
     controller: App\Controller\PresidentAdminController::indexDatatablesAction
     requirements:
         _method: get
+
+President_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\PresidentAdminController::internationalizationAction

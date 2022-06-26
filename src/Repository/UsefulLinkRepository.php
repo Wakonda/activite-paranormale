@@ -20,9 +20,9 @@ class UsefulLinkRepository extends EntityRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
+	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $filter = null, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.links', 'c.id');
+		$aColumns = array( 'c.id', 'c.title', 'c.category', 'c.links', 'c.id');
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -36,6 +36,17 @@ class UsefulLinkRepository extends EntityRepository
 				   ->setParameter('search', $search);
 			}
 		}
+
+		if(!empty($filter)) {
+			if(isset($filter["category_filter"]) and !empty($value = $filter["category_filter"])) {
+				$qb->andWhere("c.category = :valueCategory")
+				   ->setParameter("valueCategory", $value);
+			}
+			if(isset($filter["tags_filter"]) and !empty($value = $filter["tags_filter"])) {
+				$qb->andWhere("JSON_CONTAINS(JSON_EXTRACT(LOWER(c.tags), '$[*].value'), LOWER('\"".$value."\"'), '$') = true");
+			}
+		}
+		
 		if($count)
 		{
 			$qb->select("count(c)");

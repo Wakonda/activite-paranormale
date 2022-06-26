@@ -63,6 +63,7 @@
 		{% if entity.archive == false %}
 			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.blogger_form(entity, "news") }}
+			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.tumblr_form(entity) }}
 		{% endif %}
 	{% endif %}
@@ -71,4 +72,5 @@
 {% block js_specific %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.twitter_form_js() }}
+	{{ macro_index.facebook_form_js() }}
 {% endblock %}

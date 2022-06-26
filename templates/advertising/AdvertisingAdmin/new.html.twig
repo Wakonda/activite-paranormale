@@ -1,0 +1,17 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Advertising"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('Advertising_Admin_Index') }}{% endblock %}
+
+{% block create_admin_route %}{{ path('Advertising_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id, path('Advertising_Admin_WYSIWYG_UploadFile')) }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'advertising/AdvertisingAdmin/_form.html.twig' %}
+{% endblock %}

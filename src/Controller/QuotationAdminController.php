@@ -162,8 +162,8 @@ class QuotationAdminController extends AdminGenericController
 		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid()) {
 			$data = $imageGeneratorForm->getData();
 			
-			$font = str_replace("\\", "/", realpath($this->getParameter('kernel.project_dir'). '/../public'))."/extended/font/Edmundsbury_Serif.ttf";
-			
+			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'Edmundsbury_Serif.ttf';
+
 			$textColor = [0, 0, 0];
 			$strokeColor = [255, 255, 255];
 			$rectangleColor = [255, 255, 255];
