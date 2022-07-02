@@ -1274,6 +1274,7 @@ h2 span img {
 /****** CARD ******/
 .card {
 	border-radius: 0.25rem;
+	word-wrap: break-word;
 }
 .card-body {
     -ms-flex: 1 1 auto;
@@ -1861,6 +1862,11 @@ ul ol {
 	position: relative;
 	pointer-events: none;
 }
+@media (min-width: 992px) {
+  .modal-lg {
+    max-width: 800px;
+  }
+}
 .modal.fade .modal-dialog {
   transition: -webkit-transform 0.3s ease-out;
   transition: transform 0.3s ease-out;
@@ -2082,7 +2088,19 @@ figcaption {
     orphans: 1;
     widows: 1;
 }
-
+.card-img-top {
+    width: 100%;
+}
+@media (min-width: 576px) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+.card-header {
+    padding: 0.75rem 1.25rem;
+}
 .card-columns .card {
   margin-bottom: 0.75rem;
 }

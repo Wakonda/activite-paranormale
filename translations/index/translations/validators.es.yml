@@ -56,6 +56,9 @@ index:
         FollowUsOn: "Síguenos en ..."
         ClassifiedAds: "Anuncio clasificado"
         Book: "Libro"
+    donate:
+        DonateInCryptocurrency: "Donar en criptomoneda"
+        CryptocurrencyDonation: "Donación de cripto"
     footerMenu:
         FollowUs: "Socios"
         About: "Sobre"

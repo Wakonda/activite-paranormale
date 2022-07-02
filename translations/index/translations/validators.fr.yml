@@ -56,6 +56,9 @@ index:
         FollowUsOn: "Suivez-nous sur ..."
         ClassifiedAds: "Petites annonces"
         Book: "Livre"
+    donate:
+        DonateInCryptocurrency: "Faites un don en cryptomonnaie"
+        CryptocurrencyDonation: "Don en crypto"
     footerMenu:
         FollowUs: "Suivez-nous"
         About: "À propos"

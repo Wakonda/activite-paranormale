@@ -226,7 +226,7 @@
 								</div>
 								
 								<div class="text-center">
-									<button onclick="window.open('https://wakonda.guru/help_us#make-donation');" target="_blank" class="btn btn-warning mb-3"><i class="fab fa-bitcoin" aria-hidden="true"></i> Bitcoin</button>
+									{% include 'index/Index/_donate.html.twig' %}
 								</div>
 							</div>
 							{% if is_mobile() == false %}

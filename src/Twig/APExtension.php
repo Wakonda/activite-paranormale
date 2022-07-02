@@ -109,7 +109,8 @@
 				new TwigFunction('format_history', array($this, 'formatHistory')),
 				new TwigFunction('source_document', array($this, 'getSourceDocument'), array('is_safe' => array('html'))),
 				new TwigFunction('parse_url', array($this, 'parseUrl')),
-				new TwigFunction('getimagesize', array($this, 'getimagesize'))
+				new TwigFunction('getimagesize', array($this, 'getimagesize')),
+				new TwigFunction('get_env', array($this, 'getEnv'))
 			);
 		}
 
@@ -883,6 +884,11 @@
 		
 		public function UcfirstFilter(String $string) {
 			return ucfirst($string);
+		}
+
+		public function getEnv(string $varname): string
+		{
+			return $_ENV[$varname];
 		}
 
 		public function getName()
