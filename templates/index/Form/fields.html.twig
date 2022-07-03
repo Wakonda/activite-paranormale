@@ -345,13 +345,13 @@
 				  type: "string",
 				  title: "ISBN-10",
 				  format: "isbn",
-				  maxLength: 10
+				  maxLength: 15
 				},
 				isbn13: {
 				  type: "string",
 				  title: "ISBN-13",
 				  format: "isbn",
-				  maxLength: 13
+				  maxLength: 15
 				},
 				url: {
 				  title: "{{ 'admin.source.Link'|trans([], 'validators') }}",
@@ -489,7 +489,13 @@
 			}
 
 			if (schema{{ form.vars.id }}.format == "isbn" && value != "") {
-				var r = /^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)/;
+				var r = /^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$/;
+				
+				
+console.log(r.test("9782908534726".replace("-", "")))
+console.log(r.test(value.replace("-", "")))
+console.log(value.replace("-", ""))
+				
 				if(!r.test(value.replace("-", ""))) {
 					errors{{ form.vars.id }}.push({
 						path: path,
