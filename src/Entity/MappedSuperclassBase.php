@@ -94,6 +94,11 @@ class MappedSuperclassBase implements SearchEngineInterface
      */
     private $archive;
 
+    /**
+     * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
+     */
+    private $socialNetworkIdentifiers;
+
 	public function __construct()
 	{
 		$this->writingDate = new \DateTime();
@@ -386,5 +391,25 @@ class MappedSuperclassBase implements SearchEngineInterface
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set socialNetworkIdentifiers
+     *
+     * @param string $socialNetworkIdentifiers
+     */
+    public function setSocialNetworkIdentifiers($socialNetworkIdentifiers)
+    {
+        $this->socialNetworkIdentifiers = $socialNetworkIdentifiers;
+    }
+
+    /**
+     * Get socialNetworkIdentifiers
+     *
+     * @return string 
+     */
+    public function getSocialNetworkIdentifiers()
+    {
+        return $this->socialNetworkIdentifiers;
     }
 }

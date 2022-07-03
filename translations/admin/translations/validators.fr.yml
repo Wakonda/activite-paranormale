@@ -122,6 +122,7 @@ admin:
         NoBlank: "Cette valeur ne peut pas être vide"
     blogger:
         Success: "Article publié sur Blogger avec succès"
+        DeleteSuccess: "Article supprimé de Blogger avec succès"
         Error: "Erreur %code%"
     shopify:
         Success: "Article publié sur Shopify avec succès"

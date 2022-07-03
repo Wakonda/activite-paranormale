@@ -89,6 +89,12 @@ class HistoryListener
 				if($changeSet[0] == $newText)
 					continue;
 
+				if(is_array($originalText))
+					$originalText = json_encode($originalText);
+
+				if(is_array($newText))
+					$newText = json_encode($newText);
+
 				$text[] = $differ->diff(htmlentities($originalText), htmlentities($newText));
 			}
 		}

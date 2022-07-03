@@ -135,7 +135,7 @@ class SearchEngine {
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 		
 		$sql = $this->createSearchQuery($keyword, $language, $classname, $pageNumber);
-// die("kkk");
+
 		$statement = $pdo->prepare($sql);
 		$statement->execute();
 		
@@ -203,7 +203,7 @@ class SearchEngine {
 	
 	public function insertImage(array $data) {
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
-		// dd($data);
+
 		if(!isset($data["id"]))
 			throw new Exception("Field 'id' must be specified");
 		
@@ -224,7 +224,7 @@ class SearchEngine {
 		unset($data["classname"]);
 
 		$pdo->exec("DELETE FROM imageList WHERE id = ${id} AND classname = '{$classname}'");
-// die("kkk");
+
 		foreach($data as $d) {
 			if(preg_match('/\.(jpe?g|png|gif|bmp)$/i', $d))
 				$pdo->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '${d}', '${language}')");
@@ -259,12 +259,6 @@ class SearchEngine {
 			throw new Exception("Field 'classname' must be specified");
 		
 		$classname = $data["classname"];
-
-		unset($data["id"]);
-		unset($data["language"]);
-		unset($data["classname"]);
-
-		$text = $this->sanitizeDataArray($data);
 		
 		$statement = $pdo->prepare("SELECT * FROM doclist WHERE id = ${id} AND classname = '{$classname}'");
 		$statement->execute();
@@ -272,6 +266,12 @@ class SearchEngine {
 		if($statement->fetchColumn() !== false) {
 			$this->update($data);
 		} else {
+			unset($data["id"]);
+			unset($data["language"]);
+			unset($data["classname"]);
+
+			$text = $this->sanitizeDataArray($data);
+
 			$pdo->exec("INSERT INTO doclist (id, classname, searchText, language) VALUES (${id}, '${classname}', '${text}', '${language}')");
 		}
 	
@@ -281,8 +281,10 @@ class SearchEngine {
 	public function update(array $data) {
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 		
-		if(!isset($data["id"]))
+		if(!isset($data["id"])) {
+			dd($data);
 			throw new Exception("Field 'id' must be specified");
+		}
 		
 		$id = $data["id"];
 		

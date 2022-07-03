@@ -3,6 +3,15 @@
 
 	{% if isBloggerAvailable(type) %}
 		<div class="accordion mb-2" id="accordionParentBlogger">
+			{% set obj = null %}
+			{% set method = "POST" %}
+			{% if method_exists(entity, "getSocialNetworkIdentifiers") %}
+				{% if entity.socialNetworkIdentifiers["Blogger"] is defined %}
+					{% set obj = entity.socialNetworkIdentifiers["Blogger"] %}
+					{% set method = "PUT" %}
+				{% endif %}
+			{% endif %}
+
 			<div class="card sub_block">
 				<div class="card-header" role="tab" id="headingBlogger">
 					<span class="panel-title">
@@ -13,15 +22,19 @@
 				</div>
 				<div id="collapseBlogger" class="collapse" aria-labelledby="headingBlogger"  data-parent="#accordionParentBlogger">
 					<div class="card-body">
-						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type }) }}" method="POST">
+						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
 							{% set tags = blogger_tags(type) %}
 							<select multiple name="blogger_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
-									<option value="{{ tag }}">{{ tag }}</option>
+									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% endif %}>{{ tag }}</option>
 								{% endfor %}
 							</select>
 							<br><br>
 							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+							
+							{% if obj is not empty %}
+								<a href="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: 'DELETE' }) }}" class="btn btn-outline-danger">{{ "admin.general.Delete"|trans([], "validators") }}</a>
+							{% endif %}
 						</form>
 					</div>
 				</div>

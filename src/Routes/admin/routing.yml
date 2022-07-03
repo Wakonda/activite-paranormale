@@ -25,10 +25,11 @@ Admin_TheDailyTruth:
     controller: App\Controller\AdminController::thedailytruthAction
 
 Admin_Blogger:
-    path: /admin/blogger/{id}/{path}/{routeToRedirect}/{type}
+    path: /admin/blogger/{id}/{path}/{routeToRedirect}/{type}/{method}
     controller: App\Controller\AdminController::bloggerAction
     defaults:
         type: "test"
+        method: "POST"
 
 Admin_BloggerPost:
     path: /admin/bloggerpost

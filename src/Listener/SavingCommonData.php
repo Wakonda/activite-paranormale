@@ -91,7 +91,9 @@ class SavingCommonData
 					"title" => $args->getObject()->getTitle(),
 					"text" => $args->getObject()->getText()
 				];
-
+				
+				// if(!isset($data["id"]))
+// dd($data);
 				$searchEngine->insert($data);
 				$searchEngine->insertImage(array_merge($data, ["img" => $args->getObject()->getIllustration()->getRealNameFile()]));
 			}
