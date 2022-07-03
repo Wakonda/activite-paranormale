@@ -159,7 +159,7 @@ class UsefulLink
      */
     public function getTags()
     {
-        return json_encode($this->tags);
+        return is_null($this->tags) ? [] : json_encode($this->tags);
     }
 
     /**
