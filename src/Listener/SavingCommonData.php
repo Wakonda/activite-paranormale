@@ -70,7 +70,9 @@ class SavingCommonData
 			];
 
 			$searchEngine->insert($data);
-			$searchEngine->insertImage(array_merge($data, [$args->getObject()->getIllustration()->getRealNameFile()]));
+
+			if(method_exists($args->getObject(), "getIllustration"))
+				$searchEngine->insertImage(array_merge($data, [$args->getObject()->getIllustration()->getRealNameFile()]));
 		}
 	}
 	
@@ -91,11 +93,11 @@ class SavingCommonData
 					"title" => $args->getObject()->getTitle(),
 					"text" => $args->getObject()->getText()
 				];
-				
-				// if(!isset($data["id"]))
-// dd($data);
+
 				$searchEngine->insert($data);
-				$searchEngine->insertImage(array_merge($data, ["img" => $args->getObject()->getIllustration()->getRealNameFile()]));
+				
+				if(method_exists($args->getObject(), "getIllustration"))
+					$searchEngine->insertImage(array_merge($data, ["img" => $args->getObject()->getIllustration()->getRealNameFile()]));
 			}
 		}
 	}
