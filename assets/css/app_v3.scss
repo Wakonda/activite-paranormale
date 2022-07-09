@@ -5,6 +5,8 @@ $facebook-color: #3b5998;
 $linkedin-color: #0e76a8;
 $whatsapp-color: #4AC959;
 $flipboard-color: #e12828;
+$github-color: #333333;
+$mastodon-color: #2A8BD2;
 
 body {
 	padding-top: 56px;
@@ -410,6 +412,12 @@ a.social-share {
 }
 .social-share.flipboard {
 	background-color: $flipboard-color;
+}
+.social-share.github {
+	background-color: $github-color;
+}
+.social-share.mastodon {
+	background-color: $mastodon-color;
 }
 /********** FORM ***********/
 .required_star {

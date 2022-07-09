@@ -7,6 +7,8 @@ $facebook-color: #3b5998;
 $linkedin-color: #0e76a8;
 $whatsapp-color: #4AC959;
 $flipboard-color: #e12828;
+$github-color: #333333;
+$mastodon-color: #2A8BD2;
 
 body {
 	margin: 0;
@@ -433,6 +435,7 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
     padding: 0.375rem 0.75rem;
     border-radius: 0.25rem;
 	color: white;
+	display: inline-block;
 }
 .social-share.twitter {
 	background-color: $twitter-color;
@@ -448,6 +451,12 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 }
 .social-share.flipboard {
 	background-color: $flipboard-color;
+}
+.social-share.github {
+	background-color: $github-color;
+}
+.social-share.mastodon {
+	background-color: $mastodon-color;
 }
 #social_network
 {
