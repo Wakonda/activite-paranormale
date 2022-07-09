@@ -47,7 +47,7 @@ abstract class AdminGenericController extends AbstractController
 			$entity->setLanguage($language);
 		}
 
-		if(is_subclass_of($entity, "App\Entity\MappedSuperclassBase"))
+		if(is_subclass_of($entity, "App\Entity\MappedSuperclassBase") or method_exists($entity, "getState"))
 		{
 			if(!empty($language))
 			{

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -96,6 +97,17 @@ class President
 	 *
 	 */
 	private $numberOfDays;
+
+	public function getRealClass()
+	{
+		$classname = get_class($this);
+
+		if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
+			$classname = $matches[1];
+		}
+
+		return $classname;
+	}
 
 	public function __construct()
 	{
