@@ -35,9 +35,9 @@
 		}
 
 		// Filters
-		public function formatPriceFilter($entity)
+		public function formatPriceFilter($price, $currency, $locale = "en")
 		{
-			return Currency::formatPrice($entity->getPrice(), $entity->getCurrencyPrice());
+			return Currency::formatPrice($price, $currency, $locale);
 		}
 		
 		// Functions

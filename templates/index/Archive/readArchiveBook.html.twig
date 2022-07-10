@@ -30,7 +30,7 @@
 		<tr>
 			<td class="td_form_table">{{ "book.read.Price"|trans([], "validators") }}</td>
 			<td class="tdGene">
-			<span class="price">{{ entity|format_price }}</span></span>
+			<span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></span>
 			</td>
 		</tr>
 		{% endif %}

@@ -72,6 +72,24 @@
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ get_tags(entity) }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "movie.admin.BoxOffice"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.boxOffice }} {{ entity.boxOfficeUnit }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "movie.admin.Cost"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.cost }} {{ entity.costUnit }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "movie.admin.ReviewScores"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% set datas = json_decode(entity.reviewScores) %}
+		{% if datas is not empty %}
+			<ul>
+				{% for data in datas %}
+					<li>{{ data.source }} (<i>{{ data.score }}</i>)</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "movie.admin.Identifiers"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
 		{% set datas = json_decode(entity.identifiers) %}

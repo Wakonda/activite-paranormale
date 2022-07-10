@@ -11,6 +11,8 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -21,12 +23,14 @@ use App\Entity\Movies\Movie;
 use App\Entity\Movies\MovieBiography;
 use App\Form\Field\SourceEditType;
 use App\Form\Field\IdentifiersEditType;
+use App\Form\Field\ReviewScoresEditType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
+use App\Service\Currency;
 use App\Entity\TagWord;
 use App\Form\Field\DatePartialType;
 use App\Form\EventListener\InternationalNameFieldListener;
@@ -122,6 +126,11 @@ class MovieAdminType extends AbstractType
             ->add('source', SourceEditType::class, array('required' => false))
             ->add('identifiers', IdentifiersEditType::class, array('required' => false))
 			->add('wikidata', TextType::class, ['required' => false])
+			->add('boxOffice', NumberType::class, array('required' => true, 'translation_domain' => 'validators', "required" => false))
+			->add('boxOfficeUnit', ChoiceType::class, array('choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'))
+			->add('cost', NumberType::class, array('required' => true, 'translation_domain' => 'validators', "required" => false))
+			->add('costUnit', ChoiceType::class, array('choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'))
+            ->add('reviewScores', ReviewScoresEditType::class, array('required' => false))
 		;
 
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());

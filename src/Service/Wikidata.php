@@ -298,7 +298,7 @@
 				
 				$res["boxOffice"] = [
 					"amount" => intval($boxOffice[0]->mainsnak->datavalue->value->amount),
-					"unit" => $this->getUnit($boxOffice[0]->mainsnak->datavalue->value->unit)
+					"unit" => $this->getCurrencyIso4217($boxOffice[0]->mainsnak->datavalue->value->unit)
 				];
 			}
 
@@ -308,7 +308,7 @@
 				
 				$res["cost"] = [
 					"amount" => $cost[0]->mainsnak->datavalue->value->amount,
-					"unit" => $this->getUnit($cost[0]->mainsnak->datavalue->value->unit)
+					"unit" => $this->getCurrencyIso4217($cost[0]->mainsnak->datavalue->value->unit)
 				];
 			}
 
@@ -319,7 +319,7 @@
 				$this->getIdsByProperty("P856", $datas, $code, "website", $language, $websitesArray);
 				$res["websites"] = $websitesArray;
 			}
-			
+
 			return $res;
 		}
 		
@@ -400,6 +400,14 @@
 			}
 
 			return $res;
+		}
+
+		private function getCurrencyIso4217(string $url, string $language = "en"): ?string {
+			$id = array_reverse(explode("/", $url))[0];
+
+			$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&ids=${id}&languages=${language}&format=json"));
+
+			return $data->entities->$id->claims->P498[0]->mainsnak->datavalue->value;
 		}
 
 		private function getPageTitle(string $id, string $language) {

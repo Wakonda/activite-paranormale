@@ -61,23 +61,25 @@
         data-widget-counter="{{ form.movieBiographies|length }}"
 		class="list-unstyled">
 		{% for movieBiographyField in form.movieBiographies %}
-			<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
-				<div data-wikidata="{{ movieBiographyField.vars.value.biography.wikidata }}" data-title="{{ movieBiographyField.vars.value.biography.title }}" data-international-name="{{ movieBiographyField.vars.value.biography.internationalName }}">
-					{{ form_errors(movieBiographyField) }}
-					{{ form_errors(movieBiographyField.biography) }}
-					
-					{{ form_label(movieBiographyField.biography, "biographies.admin.Biography"|trans([], "validators")) }}
-					{{ form_widget(movieBiographyField.biography) }}
-					
-					{{ form_label(movieBiographyField.occupation, "biographies.admin.Occupation"|trans([], "validators")) }}
-					{{ form_widget(movieBiographyField.occupation) }}
-					
-					{{ form_label(movieBiographyField.role, "biographies.admin.Role"|trans([], "validators")) }}
-					{{ form_widget(movieBiographyField.role) }}
-					
-					{{ form_widget(movieBiographyField.internationalName) }}
-				</div>
-			</li>
+			{% if movieBiographyField.vars.value.biography is not empty %}
+				<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
+					<div data-wikidata="{{ movieBiographyField.vars.value.biography.wikidata }}" data-title="{{ movieBiographyField.vars.value.biography.title }}" data-international-name="{{ movieBiographyField.vars.value.biography.internationalName }}{% endif %}">
+						{{ form_errors(movieBiographyField) }}
+						{{ form_errors(movieBiographyField.biography) }}
+						
+						{{ form_label(movieBiographyField.biography, "biographies.admin.Biography"|trans([], "validators")) }}
+						{{ form_widget(movieBiographyField.biography) }}
+						
+						{{ form_label(movieBiographyField.occupation, "biographies.admin.Occupation"|trans([], "validators")) }}
+						{{ form_widget(movieBiographyField.occupation) }}
+						
+						{{ form_label(movieBiographyField.role, "biographies.admin.Role"|trans([], "validators")) }}
+						{{ form_widget(movieBiographyField.role) }}
+						
+						{{ form_widget(movieBiographyField.internationalName) }}
+					</div>
+				</li>
+			{% endif %}
 		{% endfor %}
 	</ul>
 	
@@ -101,7 +103,40 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "movie.admin.Identifiers"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.boxOffice, "movie.admin.BoxOffice"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.boxOffice) }}
+	<div class="form-group-inline">
+		<div class="row">
+			<div class="col-md-6">
+				{{ form_widget(form.boxOffice, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_widget(form.boxOfficeUnit, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.cost, "movie.admin.Cost"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.cost) }}
+	<div class="form-group-inline">
+		<div class="row">
+			<div class="col-md-6">
+				{{ form_widget(form.cost, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_widget(form.costUnit, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.reviewScores, "movie.admin.ReviewScores"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.reviewScores) }}{{ form_widget(form.reviewScores, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "movie.admin.Identifiers"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
 
 {% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
@@ -136,10 +171,22 @@
 				document.getElementById("{{ form.releaseYear.month.vars.id }}").value = data.publicationDate.month;
 
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
-				
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);
-				
 				reload{{ form.identifiers.vars.id }}(data);
+
+				editor{{ form.reviewScores.vars.id }}.setValue(data.reviewScores)
+				document.getElementById("{{ form.reviewScores.vars.id }}").value = JSON.stringify(data.reviewScores);
+				reload{{ form.reviewScores.vars.id }}(data);
+				
+				if(typeof data.boxOffice !== "undefined") {
+					document.getElementById("{{ form.boxOffice.vars.id }}").value = parseInt(data.boxOffice.amount);
+					document.getElementById("{{ form.boxOfficeUnit.vars.id }}").value = data.boxOffice.unit;
+				}
+				
+				if(typeof data.cost !== "undefined") {
+					document.getElementById("{{ form.cost.vars.id }}").value = parseInt(data.cost.amount);
+					document.getElementById("{{ form.costUnit.vars.id }}").value = data.cost.unit;
+				}
 				
 				if(typeof data.duration == "undefined" && data.duration.unit == "minute") {
 					document.getElementById("{{ form.duration.vars.id }}").value = data.duration.amount;

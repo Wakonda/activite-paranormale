@@ -104,6 +104,31 @@ class Movie extends MappedSuperclassBase
      */
     private $identifiers;
 
+    /**
+     * @ORM\Column(name="reviewScores", type="text", nullable=true)
+     */
+    private $reviewScores;
+
+    /**
+     * @ORM\Column(name="boxOffice", type="integer", nullable=true)
+     */
+    private $boxOffice;
+
+    /**
+     * @ORM\Column(name="boxOfficeUnit", type="string", length=10, nullable=true)
+     */
+    private $boxOfficeUnit;
+
+    /**
+     * @ORM\Column(name="cost", type="integer", nullable=true)
+     */
+    private $cost;
+
+    /**
+     * @ORM\Column(name="costUnit", type="string", length=10, nullable=true)
+     */
+    private $costUnit;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -356,5 +381,106 @@ class Movie extends MappedSuperclassBase
     public function getIdentifiers()
     {
         return $this->identifiers;
+    }
+
+    /**
+     * Set reviewScores
+     *
+     * @param string $reviewScores
+     */
+    public function setReviewScores($reviewScores)
+    {
+        $this->reviewScores = $reviewScores;
+    }
+
+    /**
+     * Get reviewScores
+     *
+     * @return string 
+     */
+    public function getReviewScores()
+    {
+        return $this->reviewScores;
+    }
+
+    /**
+     * Set boxOffice
+     *
+     * @param integer $boxOffice
+     */
+    public function setBoxOffice($boxOffice)
+    {
+        $this->boxOffice = $boxOffice;
+    }
+
+    /**
+     * Get boxOffice
+     *
+     * @return integer
+     */
+    public function getBoxOffice()
+    {
+        return $this->boxOffice;
+    }
+
+    /**
+     * Set boxOfficeUnit
+     *
+     * @param string $boxOfficeUnit
+     */
+    public function setBoxOfficeUnit($boxOfficeUnit)
+    {
+        $this->boxOfficeUnit = $boxOfficeUnit;
+    }
+
+    /**
+     * Get boxOfficeUnit
+     *
+     * @return string
+     */
+    public function getBoxOfficeUnit()
+    {
+        return $this->boxOfficeUnit;
+    }
+
+    /**
+     * Set cost
+     *
+     * @param string $cost
+     */
+    public function setCost($cost)
+    {
+        $this->cost = $cost;
+    }
+
+
+    /**
+     * Get cost
+     *
+     * @return integer
+     */
+    public function getCost()
+    {
+        return $this->cost;
+    }
+
+    /**
+     * Set costUnit
+     *
+     * @param string $costUnit
+     */
+    public function setCostUnit($costUnit)
+    {
+        $this->costUnit = $costUnit;
+    }
+
+    /**
+     * Get costUnit
+     *
+     * @return string
+     */
+    public function getCostUnit()
+    {
+        return $this->costUnit;
     }
 }

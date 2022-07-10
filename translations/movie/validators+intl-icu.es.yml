@@ -69,6 +69,11 @@ movie:
         Sources: "Fuentes"
         Previous: "Película anterior"
         Identifiers: "Número de identificación"
+        BoxOffice: "Recaudación"
+        Cost: "Presupuesto"
+        ReviewScores: "Reseñas"
+        ReviewSource: "Fuente"
+        ReviewScore: "Nota"
 biographies:
     admin:
         Biographies: "Biografías"

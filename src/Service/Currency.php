@@ -163,20 +163,13 @@
 			return self::getCurrencies()[array_search($currency, array_column(self::getCurrencies(), "iso4217"))]["abbr"];
 		}
 
-		public static function formatPrice($price, $currency): string
+		public static function formatPrice($price, $currency, $locale = "en"): string
 		{
-			$res = "";
+			if(empty($price))
+				return "";
 
-			switch($currency) {
-				case "EUR":
-					$price = (empty($price)) ? "-" : number_format($price, 2, ".", " ");
-					$res = $price." ".self::getSymbolByCurrency($currency);
-					break;
-				default:
-					$price = (empty($price)) ? "-" : number_format($price, 2);
-					$res = self::getSymbolByCurrency($currency).$price;
-			}
-
-			return $res;
+			$fmt = numfmt_create($locale, \NumberFormatter::CURRENCY );
+			
+			return numfmt_format_currency($fmt, $price, $currency)."\n";
 		}
 	}

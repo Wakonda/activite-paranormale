@@ -17,6 +17,16 @@
 </div>
 
 <script>
+	function addDeleteButtonFormDeleteLink($tagFormLi) {
+		var $removeFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-danger mt-2 float-right"><i class="fas fa-trash"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
+
+		$tagFormLi.appendChild($removeFormButton);
+
+		$removeFormButton.addEventListener('click', (e) => {
+			$tagFormLi.remove();
+		});
+	}
+
 	function addBiographyValidationFormDisplayLink($tagFormLi, count) {
 		let internationalName = $tagFormLi.querySelector(".international-name");
 		let element = $tagFormLi.querySelector("*");
@@ -33,40 +43,41 @@
 			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-secondary mt-2 float-left choose-biography" title="{{ 'biography.admin.YouMustValidateThisBiography'|trans([], 'validators') }}"><i class="far fa-minus-square state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 
 		$tagFormLi.appendChild($validateFormButton);
+		
+		addDeleteButtonFormDeleteLink($tagFormLi);
 
 		$validateFormButton.addEventListener('click', (e) => {
+			document.querySelector("#validateBiographyModal .modal-body").innerHTML = "";
+				let xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function() {
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+						let data = xmlHttp.responseText;
 
-		document.querySelector("#validateBiographyModal .modal-body").innerHTML = "";
-			let xmlHttp = new XMLHttpRequest();
-			xmlHttp.onreadystatechange = function() {
-				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-					let data = xmlHttp.responseText;
-
-					document.querySelector("#validateBiographyModal .modal-body").appendChild(document.createRange().createContextualFragment(data));
-					document.getElementById("validateBiographyModal").setAttribute("data-input", internationalName.getAttribute("id"));
-					$("#validateBiographyModal").modal("show");
-		
-					document.getElementById("create-new-biography").addEventListener("click", (e) => {
-						document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = "+";
-						$("#validateBiographyModal").modal("hide");
-					});
-		
-					$('#validateBiographyModal').on('hidden.bs.modal', function (e) {
-						if (document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value != "") {
-							$validateFormButton.classList.add("btn-success");
-							$validateFormButton.classList.remove("btn-secondary");
-							
-							$validateFormButton.querySelector(".state-biography").classList.add("fas");
-							$validateFormButton.querySelector(".state-biography").classList.remove("far");
-							$validateFormButton.querySelector(".state-biography").classList.add("fa-check");
-							$validateFormButton.querySelector(".state-biography").classList.remove("fa-minus-square");
-						}
-					});
+						document.querySelector("#validateBiographyModal .modal-body").appendChild(document.createRange().createContextualFragment(data));
+						document.getElementById("validateBiographyModal").setAttribute("data-input", internationalName.getAttribute("id"));
+						$("#validateBiographyModal").modal("show");
+			
+						document.getElementById("create-new-biography").addEventListener("click", (e) => {
+							document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = "+";
+							$("#validateBiographyModal").modal("hide");
+						});
+			
+						$('#validateBiographyModal').on('hidden.bs.modal', function (e) {
+							if (document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value != "") {
+								$validateFormButton.classList.add("btn-success");
+								$validateFormButton.classList.remove("btn-secondary");
+								
+								$validateFormButton.querySelector(".state-biography").classList.add("fas");
+								$validateFormButton.querySelector(".state-biography").classList.remove("far");
+								$validateFormButton.querySelector(".state-biography").classList.add("fa-check");
+								$validateFormButton.querySelector(".state-biography").classList.remove("fa-minus-square");
+							}
+						});
+					}
 				}
-			}
 
-			xmlHttp.open("GET", "{{ path('Biography_Admin_Validate') }}?wikidata=" + element.dataset.wikidata + "&title=" + encodeURIComponent(element.dataset.title), false);
-			xmlHttp.send();
+				xmlHttp.open("GET", "{{ path('Biography_Admin_Validate') }}?wikidata=" + element.dataset.wikidata + "&title=" + encodeURIComponent(element.dataset.title), false);
+				xmlHttp.send();
 		});
 	}
 	
@@ -119,18 +130,7 @@
 		$collectionHolder = document.querySelectorAll('ul#biography-fields-list li.container-form-biography');
 
 		$collectionHolder.forEach((e) => {
-			addDeleteButtonFormDeleteLink(e);
 			addBiographyValidationFormDisplayLink(e);
 		});
-
-		function addDeleteButtonFormDeleteLink($tagFormLi) {
-			var $removeFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-danger mt-2 float-right"><i class="fas fa-trash"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
-
-			$tagFormLi.appendChild($removeFormButton);
-
-			$removeFormButton.addEventListener('click', (e) => {
-				$tagFormLi.remove();
-			});
-		}
 	});
 </script>

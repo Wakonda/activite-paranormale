@@ -11,6 +11,8 @@
 	<h3>{{ "movie.read.Datasheet"|trans([], "validators") }}</h3>
 	
 	{% set biographyDatas = movie_biographies_by_occupation(entity) %}
+	
+	{% set actors = [] %}
 
 	<table class="table">
 		<tbody>
@@ -30,6 +32,34 @@
 				<td class="td_form_table">{{ "movie.read.Country"|trans([], "validators") }}</td>
 				<td class="tdGene">{% if entity.country is not null %}<img id="flagC" src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" /> - {{ entity.country.title }}{% endif %}</td>
 			</tr>
+			{% if entity.boxOffice is not empty %}
+			<tr>
+				<td class="td_form_table">{{ "movie.read.BoxOffice"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.boxOffice|format_price(entity.boxOfficeUnit, app.request.locale) }}</td>
+			</tr>
+			{% endif %}
+			{% if entity.cost is not empty %}
+			<tr>
+				<td class="td_form_table">{{ "movie.read.Cost"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.cost|format_price(entity.costUnit, app.request.locale) }}</td>
+			</tr>
+			{% endif %}
+			{% if entity.reviewScores is not empty %}
+			<tr>
+				<td class="td_form_table">{{ "movie.read.ReviewScores"|trans([], "validators") }}</td>
+				<td class="tdGene">
+					{% set datas = json_decode(entity.reviewScores) %}
+					{% if datas is not empty %}
+						<ul>
+							{% for data in datas %}
+								<li>{{ data.source }} (<i>{{ data.score }}</i>)</li>
+							{% endfor %}
+						</ul>
+					{% endif %}
+				</td>
+			</tr>
+			{% endif %}
+
 			{% for occupation, biographies in biographyDatas %}
 				{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
 				<tr>
@@ -42,6 +72,10 @@
 						{{ (persons|join(", "))|raw }}
 					</td>
 				</tr>
+				{% else %}
+						{% for biography in biographies %}
+					{% set actors = actors|merge([biography]) %}
+						{% endfor %}
 				{% endif %}
 			{% endfor %}
 		</tbody>
@@ -59,8 +93,8 @@
 		<h3 class="mt-2">{{ "movie.read.Text"|trans([], "validators") }}</h3>
 		{{ entity.text|raw }}
 	{% endif %}
-	
-	{% if biographyDatas|length > 0 %}
+
+	{% if actors|length > 0 %}
 	<h3>{{ "movie.read.Cast"|trans([], "validators") }}</h3>
 	<table class="table">
 		<thead>
@@ -70,15 +104,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for occupation, biographies in biographyDatas %}
-				{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
-					{% for biography in biographies %}
-						<tr>
-							<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
-							<td>{{ biography.role }}</td>
-						</tr>
-					{% endfor %}
-				{% endif %}
+			{% for biography in actors %}
+				<tr>
+					<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+					<td>{{ biography.role }}</td>
+				</tr>
 			{% endfor %}
 		</tbody>
 	</table>
