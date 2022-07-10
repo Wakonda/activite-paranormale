@@ -53,6 +53,11 @@ class Music
      */
     private $album;
 
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Artist")
+     */
+    private $artist;
+
 	/** @ORM\Column(type="text", nullable=true) */
 	private $embeddedCode;
 
@@ -196,16 +201,24 @@ class Music
         return $this->length;
     }
 
-    // On définit le getter et le setter associé.
     public function getAlbum()
     {
         return $this->album;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité langue.
     public function setAlbum(Album $album)
     {
         $this->album = $album;
+    }
+
+    public function getArtist()
+    {
+        return $this->artist;
+    }
+
+    public function setArtist($artist)
+    {
+        $this->artist = $artist;
     }
 
     /**

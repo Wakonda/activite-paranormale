@@ -15,11 +15,13 @@ use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Field\SourceEditType;
+use App\Entity\Artist;
 use App\Entity\Album;
 
 class MusicAdminType extends AbstractType
@@ -57,6 +59,24 @@ class MusicAdminType extends AbstractType
 				'delay' => 250,
 				'cache' => false,
 				'req_params' => ['locale' => 'parent.children[language]']
+			])
+		    ->add('artist', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Artist_Admin_Autocomplete',
+				'class' => Artist::class,
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'req_params' => ['locale' => 'parent.children[language]']
+			])
+			->add('linkMusic', ChoiceType::class, [
+				'choices'  => ["admin.index.Album" => "album", "admin.index.Artist" => "artist"],
+				'data' => (!empty($builder->getData()->getArtist()) ? "artist" : (!empty($builder->getData()->getAlbum()) ? "album" : null)),
+				'mapped' => false,
+				'translation_domain' => 'validators', "attr" => ["class" => "form-control"]
 			])
             ->add('musicPieceFile',  FileType::class, array('data_class' => null, 'required' => true))
             ->add('musicPiece', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))

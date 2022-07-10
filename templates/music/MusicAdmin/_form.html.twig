@@ -21,8 +21,19 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "music.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.album, "music.admin.Album"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.album) }}{{ form_widget(form.album, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.linkMusic, "music.admin.LinkMusic"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_widget(form.linkMusic, { 'attr': {'class': 'form-control'} }) }}
+	
+	<div class="mt-2">
+		<div id="{{ form.album.vars.id }}_container">
+			{{ form_widget(form.album, { 'attr': {'class': 'form-control'} }) }}
+		</div>
+		<div id="{{ form.artist.vars.id }}_container">
+			{{ form_widget(form.artist, { 'attr': {'class': 'form-control'} }) }}
+		</div>
+	</div>
+</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.musicPieceFile, "music.admin.File"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -114,3 +125,34 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "music.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<script>
+	function linkMusic(val) {
+		document.getElementById("{{ form.album.vars.id }}_container").style.display = "none";
+		document.getElementById("{{ form.artist.vars.id }}_container").style.display = "none";
+		document.getElementById("{{ form.album.vars.id }}").value = "";
+		document.getElementById("{{ form.artist.vars.id }}").value = "";
+		
+		if(val== "album") {
+			document.getElementById("{{ form.album.vars.id }}_container").style.display = "block";
+			$('#{{ form.album.vars.id }}').select2();
+			
+		} else if(val == "artist") {
+			document.getElementById("{{ form.artist.vars.id }}_container").style.display = "block";
+			$('#{{ form.artist.vars.id }}').select2();
+		}
+	}
+	
+	{% if entity.album is empty and entity.artist is empty %}
+		linkMusic(document.getElementById("{{ form.linkMusic.vars.id }}").value);
+	{% elseif entity.album is not empty %}
+		document.getElementById("{{ form.artist.vars.id }}_container").style.display = "none";
+	{% elseif entity.artist is not empty %}
+		document.getElementById("{{ form.album.vars.id }}_container").style.display = "none";
+	
+	{% endif %}
+
+	document.getElementById("{{ form.linkMusic.vars.id }}").addEventListener("change", (e) => {
+		linkMusic(e.target.value);
+	});
+</script>
