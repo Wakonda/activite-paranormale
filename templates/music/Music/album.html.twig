@@ -97,9 +97,9 @@
 			<tbody>
 				{% for entity in entities %}
 					<tr>
-					<td class="tdGene">{{ entity['album_title'] }}</td>
-					<td class="tdGene"><span class="badge badge-info">{{ entity['number_title'] }}</span></td>
-					<td><a href="{{ path('Music_Listen', { 'id' : entity['album_id'], 'artist' : entity['artist_title'], 'artistId' : entity['artist_id'], 'album' : entity['album_title'] }) }}">{{ "music.album.Read"|trans([], "validators") }}</a></td>
+						<td class="tdGene">{{ entity['album_title'] }}</td>
+						<td class="tdGene"><span class="badge badge-info">{{ entity['number_title'] }}</span></td>
+						<td><a href="{{ path('Music_Listen', { 'id' : entity['album_id'], 'artist' : entity['artist_title'], 'artistId' : entity['artist_id'], 'album' : entity['album_title'] }) }}">{{ "music.album.Read"|trans([], "validators") }}</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -111,6 +111,32 @@
 				</tr>
 			</tfoot>
 		</table>
+		
+		{% if musicByArtists is not empty %}
+		<h3>{{ "artist.read.Video"|trans([], "validators") }}</h3>
+		<table class="doc_datatables table dt-responsive w-100">
+			<thead>
+				<tr>
+					<th class="label_form">{{ "music.listen.Title"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "music.listen.Duration"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for entity in musicByArtists %}
+					<tr>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'music' : entity.musicPiece }) }}" alt="" class="font-weight-bold">{{ entity.musicPiece }}</a></td>
+					<td><i class="far fa-clock"></i> {{ (entity.length|string_duration)|default('-') }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th class="label_form">{{ "music.listen.Title"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "music.listen.Duration"|trans([], "validators") }}</th>
+				</tr>
+			</tfoot>
+		</table>
+		{% endif %}
 
 		{% if artist.source is not empty %}
 			<br>
@@ -118,7 +144,7 @@
 			{{ source_document(artist.source) }}
 		{% endif %}
 		
-		<br />
+		<br>
 		{{ "google"|advertisement|raw }}
 	</div>
 {% endblock %}

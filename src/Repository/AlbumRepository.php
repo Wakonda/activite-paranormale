@@ -101,7 +101,7 @@ class AlbumRepository extends EntityRepository
 	public function getMusicsByAlbum($id)
 	{
 		$qb = $this->_em->createQueryBuilder();
-		
+
 		$qb->select("al.id AS album_id, al.title AS album_title, ar.id AS artist_id, ar.title AS artist_title, COUNT(al.id) AS number_title")
 		   ->from("App\Entity\Music", "mu")
 		   ->leftjoin("mu.album", "al")
@@ -109,7 +109,7 @@ class AlbumRepository extends EntityRepository
 		   ->where("ar.id = :id")
 		   ->setParameter("id", $id)
 		   ->groupby("al.id");
-		
+
 		return $qb->getQuery()->getResult();
 	}
 	
@@ -123,7 +123,7 @@ class AlbumRepository extends EntityRepository
 			   ->where('la.abbreviation = :locale')
 			   ->setParameter('locale', $locale);
 		}
-		   
+
 		if(!empty($query))
 		{
 			$query = is_array($query) ? "%".$query[0]."%" : "%".$query."%";
@@ -131,7 +131,7 @@ class AlbumRepository extends EntityRepository
 			$qb->andWhere("pf.title LIKE :query")
 			   ->setParameter("query", $query);
 		}
-		
+
 		$qb->orderBy("pf.title", "ASC")
 		   ->setMaxResults(15);
 

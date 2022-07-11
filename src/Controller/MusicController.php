@@ -76,11 +76,14 @@ class MusicController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		
 		$entities = $em->getRepository(Album::class)->getMusicsByAlbum($id);
+		$musicByArtists = $em->getRepository(Music::class)->getMusicsByArtist($id);
+
 		$artist = $em->getRepository(Artist::class)->find($id);
 		
 		return $this->render('music/Music/album.html.twig', array(
 			"artist" => $artist,
-			'entities' => $entities
+			'entities' => $entities,
+			'musicByArtists' => $musicByArtists
 		));	
 	}
 
@@ -99,16 +102,18 @@ class MusicController extends AbstractController
 		));	
 	}
 	
-	public function musicAction($id, $music, $album, $albumId)
+	public function musicAction($id, $music)
 	{
 		$em = $this->getDoctrine()->getManager();
 
 		$entity = $em->getRepository(Music::class)->find($id);
-		$album = $em->getRepository(Album::class)->find($albumId);
+		$album = $entity->getAlbum();
+		$artist = !empty($album) ? $album->getArtist() : $entity->getArtist();
 		
 		return $this->render('music/Music/music.html.twig', array(
 			"album" => $album,
-			'entity' => $entity
+			'entity' => $entity,
+			'artist' => $artist
 		));
 	}
 

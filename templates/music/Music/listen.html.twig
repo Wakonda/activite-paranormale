@@ -42,8 +42,10 @@
 		<li><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> <span class="font-weight-bold">{{ "music.listen.ReleaseDate"|trans([], "validators") }}</span> {{ album.releaseYear|doPartialDate(app.request.locale) }}</li>
 	</ul>
 	<hr>
+
 	{% if album.text is not empty %}
 		{{ album.text|raw }}
+		<hr>
 	{% endif %}
 	
 	<h3>{{ "music.listen.TrackListing"|trans([], "validators") }}</h3>
@@ -52,13 +54,13 @@
 			<thead>
 				<tr>
 					<th class="label_form">{{ "music.listen.Title"|trans([], "validators") }}</th>
-					<th class="label_form">{{ "music.listen.Listen"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "music.listen.Duration"|trans([], "validators") }}</th>
 				</tr>
 			</thead>
 			<tbody>
 				{% for entity in entities %}
 					<tr>
-					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'music' : entity.musicPiece, 'album' : album.title, 'albumId' : album.id }) }}" alt="" class="font-weight-bold">{{ entity.musicPiece }}</a></td>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'music' : entity.musicPiece }) }}" alt="" class="font-weight-bold">{{ entity.musicPiece }}</a></td>
 					<td><i class="far fa-clock"></i> {{ (entity.length|string_duration)|default('-') }}</td>
 					</tr>
 				{% endfor %}
@@ -66,7 +68,7 @@
 			<tfoot>
 				<tr>
 					<th class="label_form">{{ "music.listen.Title"|trans([], "validators") }}</th>
-					<th class="label_form">{{ "music.listen.Listen"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "music.listen.Duration"|trans([], "validators") }}</th>
 				</tr>
 			</tfoot>
 		</table>

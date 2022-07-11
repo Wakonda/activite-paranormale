@@ -58,6 +58,17 @@ class MusicRepository extends EntityRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
+	public function getMusicsByArtist($id)
+	{
+		$qb = $this->createQueryBuilder("m");
+
+		$qb->leftjoin("m.artist", "a")
+		   ->where("a.id = :id")
+		   ->setParameter("id", $id);
+
+		return $qb->getQuery()->getResult();
+	}
+
 	// ADMINISTRATION
 	public function countAdmin()
 	{

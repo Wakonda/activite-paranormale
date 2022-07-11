@@ -15,7 +15,7 @@ Music_Genre:
     controller: App\Controller\MusicController::musicGenreAction
 
 Music_Music:
-    path:  /music/piece/{album}/{albumId}/{music}/{id}
+    path:  /music/piece/{music}/{id}
     controller: App\Controller\MusicController::musicAction
 
 Music_Download:
