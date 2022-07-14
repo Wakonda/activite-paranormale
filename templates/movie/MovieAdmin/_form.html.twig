@@ -63,7 +63,7 @@
 		{% for movieBiographyField in form.movieBiographies %}
 			{% if movieBiographyField.vars.value.biography is not empty %}
 				<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
-					<div data-wikidata="{{ movieBiographyField.vars.value.biography.wikidata }}" data-title="{{ movieBiographyField.vars.value.biography.title }}" data-international-name="{{ movieBiographyField.vars.value.biography.internationalName }}{% endif %}">
+					<div data-wikidata="{{ movieBiographyField.vars.value.biography.wikidata }}" data-title="{{ movieBiographyField.vars.value.biography.title }}" data-international-name="{{ movieBiographyField.vars.value.biography.internationalName }}">
 						{{ form_errors(movieBiographyField) }}
 						{{ form_errors(movieBiographyField.biography) }}
 						

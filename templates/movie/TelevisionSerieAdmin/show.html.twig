@@ -56,7 +56,7 @@
 	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ get_tags(entity) }}</div>
+	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>
 
 	<div class="d-flex flex-row mt-3">
 		<div><a href="{{ path('TelevisionSerie_Show', { 'id' : entity.id, 'title_slug' : entity.urlSlug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>

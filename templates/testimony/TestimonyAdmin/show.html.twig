@@ -40,7 +40,7 @@
 	<div class="form-table-cell">{{ entity.emailAuthor }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ get_tags(entity) }}</div>
+	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>
 	
 	{% if entity.state.isStateDisplayed() %}
 		<a href="{{ path('Testimony_Show', { 'id' : entity.id, 'title_slug': entity.urlSlug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>

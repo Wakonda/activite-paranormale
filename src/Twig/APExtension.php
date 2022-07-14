@@ -81,7 +81,7 @@
 			return array(
 				new TwigFunction('base64_encode', array($this, 'base64Encode')),
 				new TwigFunction('json_decode', array($this, 'jsonDecode')),
-				new TwigFunction('get_tags', array($this, 'getTagsByEntity')),
+				new TwigFunction('get_tags', array($this, 'getTagsByEntity'), array('is_safe' => array('html'))),
 				new TwigFunction('getTagsByEntityForDisplay', array($this, 'getTagsByEntityForDisplay'), array('is_safe' => array('html'))),
 				new TwigFunction('biography_correct_language', array($this, 'getBiographyInCorrectLanguage')),
 				new TwigFunction('count_availability', array($this, 'countAvailability')),
@@ -610,16 +610,23 @@
 			return $this->em->getRepository($className)->countArchivedEntries();
 		}
 		
-		public function getTagsByEntity($entity, $show = true, $clean = false)
+		public function getTagsByEntity($entity, $show = true, $clean = false, $action = true)
 		{
 			$className = array_reverse(explode("\\", get_class($entity)));
 			$tags = $this->em->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));
 			
 			$tagArray = array();
 
-			foreach($tags as $tag)
-				$tagArray[] = !$clean ? $tag->getTagWord()->getTitle() : $tag->getTagWord()->cleanTags();
+			foreach($tags as $tag) {
+				
+			$html = "";
+			
+			if($action)
+				$html = '<a href="'.$this->container->get('router')->generate("TagWord_Admin_Show", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="'.$this->container->get('router')->generate("TagWord_Admin_Edit", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> ';
 
+				$tagArray[] = !$clean ? $html.$tag->getTagWord()->getTitle() : $tag->getTagWord()->cleanTags();
+			}
+			
 			return (empty($tagArray)) ? ($show ? "-" : "") : implode(", ", $tagArray);
 		}
 
