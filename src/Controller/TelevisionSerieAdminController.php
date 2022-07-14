@@ -85,8 +85,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 
 		if($form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
+			$datas = !empty($d = json_decode($form->get("episode")->getData(), true)) ? $d : [];
 
-			foreach(json_decode($form->get("episode")->getData(), true) as $season => $values) {
+			foreach($datas as $season => $values) {
 				foreach($values as $episodeNumber => $value) {
 					$episode = new EpisodeTelevisionSerie();
 					$episode->setWikidata($value["wikidata"]);

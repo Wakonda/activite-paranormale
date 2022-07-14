@@ -42,17 +42,17 @@ class TelevisionSerieAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('introduction', TextareaType::class, array('required' => false))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
 			->add('genre', EntityType::class, array('class'=>'App\Entity\Movies\GenreAudiovisual',
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\GenreAudiovisualRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 					'choice_label'=>'title',
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(EntityRepository $er)
 						{
 							return $er->createQueryBuilder('u')
@@ -62,19 +62,19 @@ class TelevisionSerieAdminType extends AbstractType
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
 					'choice_label'=>'title', 
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'choice_attr' => function($val, $key, $index) {
 						return ['data-intl' => $val->getInternationalName()];
 					}))
 			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
 					'choice_label'=>'title', 
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Movie_Admin_ShowImageSelectorColorbox'))
@@ -103,7 +103,7 @@ class TelevisionSerieAdminType extends AbstractType
 			])
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
-			->add('episode', TextareaType::class, ['mapped' => false, 'required' => false])
+			->add('episode', HiddenType::class, ['mapped' => false, 'required' => false])
 		;
 		
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());

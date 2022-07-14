@@ -95,9 +95,9 @@ class SavingCommonData
 				];
 
 				$searchEngine->insert($data);
-				
-				if(method_exists($args->getObject(), "getIllustration"))
-					$searchEngine->insertImage(array_merge($data, ["img" => $args->getObject()->getIllustration()->getRealNameFile()]));
+
+				if(method_exists($args->getObject(), "getIllustration") and !empty($illustration = $args->getObject()->getIllustration()))
+					$searchEngine->insertImage(array_merge($data, ["img" => $illustration->getRealNameFile()]));
 			}
 		}
 	}
