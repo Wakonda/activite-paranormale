@@ -626,7 +626,7 @@
 
 				$tagArray[] = !$clean ? $html.$tag->getTagWord()->getTitle() : $tag->getTagWord()->cleanTags();
 			}
-			
+			// dd((empty($tagArray)) ? ($show ? "-" : "") : implode(", ", $tagArray));
 			return (empty($tagArray)) ? ($show ? "-" : "") : implode(", ", $tagArray);
 		}
 
