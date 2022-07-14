@@ -144,7 +144,6 @@
 			$blogId = $this->blogId_array[$blogTitle];
 			$data = array("kind" => "blogger#post", "id" => $idPostBlogger, "blog" => array("id" => $blogId), "title" => $title, "content" => $content, "labels" => json_decode($tags));
 
-			// dd($data);
 			$curlObj = curl_init();
 
 			curl_setopt($curlObj, CURLOPT_URL, 'https://www.googleapis.com/blogger/v3/blogs/'.$blogId.'/posts/'.$idPostBlogger.'?key='.$_ENV["BLOGGER_API_KEY"].'&alt=json');
@@ -161,7 +160,7 @@
 			$httpCode = curl_getinfo($curlObj, CURLINFO_HTTP_CODE); 
 			
 			curl_close($curlObj);
-// dd($response);
+
 			return array("http_code" => $httpCode, "response" => $response);
 		}
 		

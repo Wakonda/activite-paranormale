@@ -6,7 +6,7 @@
 		public function getBookInfoByISBN(string $isbn): array {
 			$curlObj = curl_init();
 			
-			$key = getenv("BLOGGER_API_KEY");
+			$key = $_ENV["BLOGGER_API_KEY"];
 			
 			$isbn = str_replace("-", "", $isbn);
 			

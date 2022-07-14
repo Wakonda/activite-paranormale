@@ -8,6 +8,7 @@
 	
 	use App\Entity\ArtistBiography;
 	use App\Entity\Music;
+	use App\Entity\MusicGenre;
 
 	class APMusicExtension extends AbstractExtension
 	{
@@ -20,15 +21,16 @@
 		
 		public function getFilters()
 		{
-			return array();
+			return [];
 		}
 
 		public function getFunctions()
 		{
 			return array(
-				new TwigFunction('artist_by_biography', array($this, 'getArtistsByBiography'), array('is_safe' => null)),
-				new TwigFunction('biography_by_artist', array($this, 'getBiographiesByArtist'), array('is_safe' => null)),
-				new TwigFunction('music_by_album', array($this, 'getMusicsByAlbum'), array('is_safe' => null))
+				new TwigFunction('artist_by_biography', [$this, 'getArtistsByBiography'], ['is_safe' => null]),
+				new TwigFunction('biography_by_artist', [$this, 'getBiographiesByArtist'], ['is_safe' => null]),
+				new TwigFunction('music_by_album', [$this, 'getMusicsByAlbum'], ['is_safe' => null]),
+				new TwigFunction('music_genres', [$this, 'getAllGenresByLocale'], ['is_safe' => null])
 			);
 		}
 
@@ -45,5 +47,9 @@
 		public function getMusicsByAlbum($album)
 		{
 			return $this->em->getRepository(Music::class)->findBy(["album" => $album]);
+		}
+		
+		public function getAllGenresByLocale($locale) {
+			return $this->em->getRepository(MusicGenre::class)->getAllGenresByLocale($locale);
 		}
 	}

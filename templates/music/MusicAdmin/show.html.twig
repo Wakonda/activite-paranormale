@@ -51,3 +51,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Sources"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
 {% endblock %}
+
+{% block data_bottom %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+
+	{{ macro_index.tumblr_form(entity, "music") }}
+{% endblock %}

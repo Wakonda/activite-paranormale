@@ -27,7 +27,7 @@
 	{% endif %}
 	
 	{{ musicGenre.text|raw }}
-	
+
 	<hr>
 	<p>{{ "musicGenre.index.NumberOfArtists"|trans([], "validators") }} <span class="badge badge-danger">{{ entities|length }}</span></p>
 	<hr>
@@ -43,7 +43,7 @@
 			{% for entity in entities %}
 				<tr>
 					<td>{{ entity.title }}</td>
-					<td><img src="{{ asset(entity.country.getAssetImagePath())~entity.country.flag }}" alt='' width='20px' height='13px'> {{ entity.country.title }}</td>
+					<td>{% if entity.country is not empty %}<img src="{{ asset(entity.country.getAssetImagePath())~entity.country.flag }}" alt='' width='20px' height='13px'> {{ entity.country.title }}{% endif %}</td>
 					<td><a href="{{ path('Music_Album', { id: entity.id, title_slug: entity.title }) }}">{{ "musicGenre.index.Read"|trans([], "validators") }}</a></td>
 				</tr>
 			{% endfor %}

@@ -835,11 +835,10 @@
 			return in_array($type, $api->getTypes());
 		}
 
-		public function isTumblrAvailable($entity)
+		public function isTumblrAvailable($type)
 		{
-			$tumblrAPI = new TumblrAPI();
-			
-			return in_array($entity->getLanguage()->getAbbreviation(), $tumblrAPI->getLanguages());
+			$api = new TumblrAPI();
+			return in_array($type, $api->getTypes());
 		}
 
 		public function isPinterestAvailable($entity)

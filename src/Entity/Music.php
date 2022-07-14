@@ -73,6 +73,20 @@ class Music
 	 */
 	private $wikidata;
 
+	public function getLanguage() {
+		if(!empty($e = $this->album))
+			return $e->getLanguage();
+		elseif(!empty($e = $this->artist))
+			return $e->getLanguage();
+			
+		return null;
+	}
+
+	public function getEntityName()
+	{
+		return get_called_class();
+	}
+
     /**
      * Get id
      *

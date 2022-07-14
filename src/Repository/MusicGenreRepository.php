@@ -12,6 +12,16 @@ use Doctrine\ORM\EntityRepository;
  */
 class MusicGenreRepository extends EntityRepository
 {
+	public function getAllGenresByLocale(string $locale) {
+		$qb = $this->createQueryBuilder("c");
+		
+		$qb->innerjoin("c.language", "l")
+		   ->where("l.abbreviation = :locale")
+		   ->setParameter("locale", $locale);
+		   
+		return $qb->getQuery()->getResult();
+	}
+
 	// ****************** ADMINISTRATION
 	public function countAdmin()
 	{
