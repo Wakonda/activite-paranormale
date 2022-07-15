@@ -78,6 +78,7 @@ music:
         Text: "Texte"
         Sources: "Sources"
         AddMusic: "Ajouter un morceau"
+        LinkMusic: "Lien"
     index:
         Music: "Musique"
         OfficialWebsite: "Site officiel"

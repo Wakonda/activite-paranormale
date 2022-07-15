@@ -78,6 +78,7 @@ music:
         Text: "Text"
         Sources: "Sources"
         AddMusic: "Add a music"
+        LinkMusic: "Link"
     index:
         Music: "Music"
         OfficialWebsite: "Official Website"

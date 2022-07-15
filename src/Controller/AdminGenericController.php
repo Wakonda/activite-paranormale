@@ -40,7 +40,7 @@ abstract class AdminGenericController extends AbstractController
 
 	protected function defaultValueForMappedSuperclassBase(Request $request, $entity)
 	{
-		if((is_subclass_of($entity, "App\Entity\MappedSuperclassBase") || method_exists($entity, "getLanguage")) and empty($entity->getLanguage()))
+		if((is_subclass_of($entity, "App\Entity\MappedSuperclassBase") || method_exists($entity, "setLanguage")) and empty($entity->getLanguage()))
 		{
 			$em = $this->getDoctrine()->getManager();
 			$language = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $request->getLocale()));
