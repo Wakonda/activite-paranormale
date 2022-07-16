@@ -9,7 +9,7 @@ movie:
         Read: "Lire"
     biography:
         Title: "Titre"
-        Occupations: "Activitéss"
+        Occupations: "Activités"
         Genre: "Genre"
     search:
         Validate: "Valider" 

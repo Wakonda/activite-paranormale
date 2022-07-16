@@ -16,31 +16,33 @@
 		
 			function loadQuotations(url)
 			{
-				$.ajax(
-				{
-					type: "GET",
-					url: url,
-					cache: false,
-					beforeSend: function()
-					{
-						$('p#loading_quotation').show();
-						$('div#load_quotations').hide();
-					},
-					success: function(data)
-					{
-						$('p#loading_quotation').hide();
-						$('div#load_quotations').show();
-						$('#load_quotations').html(data);
+				let xmlHttp = new XMLHttpRequest();
+
+				document.querySelector('div#load_quotations').style.display = "none";
+				document.querySelector('p#loading_quotation').style.display = "block";
+
+				xmlHttp.onreadystatechange = function() {
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+						document.querySelector('div#load_quotations').style.display = "block";
+						document.querySelector('p#loading_quotation').style.display = "none";
+						
+						document.querySelector("#load_quotations").innerHTML = "";
+						document.querySelector("#load_quotations").appendChild(document.createRange().createContextualFragment(xmlHttp.responseText));
+						
+						document.querySelectorAll("div#pagination_quotation a").forEach(page => 
+							page.addEventListener("click", (e) => {
+								e.preventDefault();
+								loadQuotations(e.target.getAttribute("href"));
+							})
+						)
 					}
-				});
+				}
+
+				xmlHttp.open("GET", url, true);
+				xmlHttp.send();
 			}
 			
 			loadQuotations("{{ path('Quotation_quotationsServerSide', { 'authorId' : entity.id }) }}");
-			
-			$(document).on("click", "div#pagination_quotation a", function(event) {
-				event.preventDefault();
-				loadQuotations($(this).attr('href'));
-			});
 		});
 	</script>
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
