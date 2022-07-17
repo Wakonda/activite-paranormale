@@ -35,6 +35,7 @@ class EpisodeTelevisionSerieAdminType extends AbstractType
             ->add('duration', IntegerType::class, array('required' => false))
             ->add('season', IntegerType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('episodeNumber', IntegerType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('fullStreaming', TextareaType::class, array('required' => false))
             ->add('source', SourceEditType::class, array('required' => false))
             ->add('releaseDate', DateType::class, array('required' => false, 'widget' => 'single_text'))
 			->add('televisionSerie', EntityType::class, array('class'=>'App\Entity\Movies\TelevisionSerie',

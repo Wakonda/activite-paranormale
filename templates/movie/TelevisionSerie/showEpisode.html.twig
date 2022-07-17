@@ -33,6 +33,11 @@
 	</table>
 
 	{{ entity.synopsis|raw }}
+
+	{% if entity.fullStreaming is not empty %}
+		<h3>{{ "episodeTelevisionSerie.read.FullStreaming"|trans([], "validators") }}</h3>
+		{{ entity.fullStreaming|raw }}
+	{% endif %}
 	
 	{{ getTagsByEntityForDisplay(entity) }}
 	

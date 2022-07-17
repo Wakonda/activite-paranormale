@@ -113,6 +113,11 @@
 		</tbody>
 	</table>
 	{% endif %}
+
+	{% if entity.fullStreaming is not empty %}
+		<h3>{{ "movie.read.FullStreaming"|trans([], "validators") }}</h3>
+		{{ entity.fullStreaming|raw }}
+	{% endif %}
 	
 	{% set datas = get_store_by_entity(entity, "movie", "MovieStore") %}
 

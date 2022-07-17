@@ -32,7 +32,7 @@ class TelevisionSerieVote extends Vote
      *
      * @param  App\Entity\Movies\TelevisionSerie  $entity
      */
-    public function setEntity(TelevisionSerie $entity)
+    public function setEntity(?TelevisionSerie $entity)
     {
         $this->entity = $entity;
     }

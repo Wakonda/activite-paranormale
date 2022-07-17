@@ -53,6 +53,7 @@ class MovieAdminType extends AbstractType
             ->add('introduction', TextareaType::class, array('required' => false))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('trailer', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('fullStreaming', TextareaType::class, array('required' => false))
             ->add('duration', IntegerType::class, array('required' => false))
             ->add('releaseYear', DatePartialType::class, array('required' => false))
 			->add('genre', EntityType::class, array('class'=>'App\Entity\Movies\GenreAudiovisual',

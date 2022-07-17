@@ -25,6 +25,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "episodeTelevisionSerie.admin.EpisodeNumber"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.episodeNumber }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "episodeTelevisionSerie.admin.FullStreaming"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.fullStreaming|raw }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "episodeTelevisionSerie.admin.TelevisionSerie"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><a href="{{ path('TelevisionSerie_Admin_Show', {id: entity.televisionSerie.id}) }}">{{ entity.televisionSerie.title }}</a></div>
 

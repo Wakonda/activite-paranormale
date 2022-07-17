@@ -95,6 +95,11 @@ class EpisodeTelevisionSerie
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+    /**
+     * @ORM\Column(name="fullStreaming", type="text", nullable=true)
+     */
+    private $fullStreaming;
 	
 	public function getLanguage()
 	{
@@ -303,5 +308,25 @@ class EpisodeTelevisionSerie
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    /**
+     * Set fullStreaming
+     *
+     * @param string $fullStreaming
+     */
+    public function setFullStreaming($fullStreaming)
+    {
+        $this->fullStreaming = $fullStreaming;
+    }
+
+    /**
+     * Get fullStreaming
+     *
+     * @return string
+     */
+    public function getFullStreaming()
+    {
+        return $this->fullStreaming;
     }
 }

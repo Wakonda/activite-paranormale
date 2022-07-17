@@ -129,6 +129,11 @@ class Movie extends MappedSuperclassBase
      */
     private $costUnit;
 
+    /**
+     * @ORM\Column(name="fullStreaming", type="text", nullable=true)
+     */
+    private $fullStreaming;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -482,5 +487,25 @@ class Movie extends MappedSuperclassBase
     public function getCostUnit()
     {
         return $this->costUnit;
+    }
+
+    /**
+     * Set fullStreaming
+     *
+     * @param string $fullStreaming
+     */
+    public function setFullStreaming($fullStreaming)
+    {
+        $this->fullStreaming = $fullStreaming;
+    }
+
+    /**
+     * Get fullStreaming
+     *
+     * @return string
+     */
+    public function getFullStreaming()
+    {
+        return $this->fullStreaming;
     }
 }

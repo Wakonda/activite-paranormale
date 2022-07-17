@@ -1,32 +1,32 @@
 {% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "movie.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "televisionSerie.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "movie.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "televisionSerie.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
 <div class="form-table-cell form-table-cell-head">
-{{ form_label(form.introduction, "movie.admin.Introduction"|trans([], "validators")) }}
+{{ form_label(form.introduction, "televisionSerie.admin.Introduction"|trans([], "validators")) }}
 </div>
 <div class="form-table-cell">
 	{{ macro_admin.import_wikipedia(form.introduction.vars.id) }}
 	{{ form_errors(form.introduction) }}{{ form_widget(form.introduction) }}
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "movie.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "televisionSerie.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
 	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "movie.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "televisionSerie.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "movie.admin.State"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "televisionSerie.admin.State"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "movie.admin.Theme"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "televisionSerie.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
@@ -38,10 +38,10 @@
 	</div>
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "movie.admin.Country"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "televisionSerie.admin.Country"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "movie.admin.Genre"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "televisionSerie.admin.Genre"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
@@ -85,7 +85,7 @@
 	</div>
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "movie.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "televisionSerie.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
 {% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}

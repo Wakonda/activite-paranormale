@@ -53,6 +53,7 @@ movie:
         Sources: "Sources"
         FilmSeries: "Film series"
         Identifiers: "Identifiers"
+        FullStreaming: "Whole movie"
     admin:
         Movie: "Movie"
         Title: "Title"
@@ -75,6 +76,7 @@ movie:
         ReviewScores: "Review scores"
         ReviewSource: "Source"
         ReviewScore: "Score"
+        FullStreaming: "Whole movie"
 biographies:
     admin:
         Biographies: "Biographies"
@@ -170,3 +172,6 @@ episodeTelevisionSerie:
         ReleaseDate: "Release date"
         ListOfEpisodes: "List of episodes"
         AddEpisode: "Add episode"
+        FullStreaming: "Whole movie"
+    read:
+        FullStreaming: "Whole movie"

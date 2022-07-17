@@ -52,6 +52,7 @@ movie:
         Sources: "Fuentes"
         FilmSeries: "Serie cinematográfica"
         Identifiers: "Número de identificación"
+        FullStreaming: "Película entera"
     admin:
         Movie: "Película"
         Title: "Título"
@@ -74,6 +75,7 @@ movie:
         ReviewScores: "Reseñas"
         ReviewSource: "Fuente"
         ReviewScore: "Nota"
+        FullStreaming: "Película entera"
 biographies:
     admin:
         Biographies: "Biografías"
@@ -170,3 +172,6 @@ episodeTelevisionSerie:
         ReleaseDate: "Fecha de publicación"
         ListOfEpisodes: "Lista de episodios"
         AddEpisode: "Añadir un episodio"
+        FullStreaming: "Película entera"
+    read:
+        FullStreaming: "Película entera"

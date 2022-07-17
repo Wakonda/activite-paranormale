@@ -44,6 +44,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.trailer, "movie.admin.Trailer"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.trailer) }}{{ form_widget(form.trailer, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.fullStreaming, "movie.admin.FullStreaming"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.fullStreaming) }}{{ form_widget(form.fullStreaming, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.duration, "movie.admin.Duration"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.duration) }}{{ form_widget(form.duration, { 'attr': {'class': 'form-control'} }) }}</div>
 

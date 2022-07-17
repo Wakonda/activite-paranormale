@@ -20,6 +20,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.episodeNumber, "episodeTelevisionSerie.admin.EpisodeNumber"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.episodeNumber) }}{{ form_widget(form.episodeNumber, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.fullStreaming, "episodeTelevisionSerie.admin.FullStreaming"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.fullStreaming) }}{{ form_widget(form.fullStreaming, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "episodeTelevisionSerie.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 

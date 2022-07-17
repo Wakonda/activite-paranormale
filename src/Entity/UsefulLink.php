@@ -60,6 +60,11 @@ class UsefulLink
      */
     private $category;
 
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
+     */
+    protected $language;
+
     /**
      * Get id
      *
@@ -183,5 +188,15 @@ class UsefulLink
     public function getCategory()
     {
         return $this->category;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    public function setLanguage(Language $language)
+    {
+        $this->language = $language;
     }
 }
