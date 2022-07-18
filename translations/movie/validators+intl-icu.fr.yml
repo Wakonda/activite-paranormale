@@ -134,6 +134,8 @@ televisionSerie:
         ReleaseDatesTitle: "Dates de diffusion :"
         ReleaseDate: "Date de diffusion"
         TelevisionSerie: "Série :"
+        Title: "Titre"
+        EpisodeNumber: "N° d'épisode"
     admin:
         TelevisionSerie: "Série de télévision"
         Title: "Titre"

@@ -19,6 +19,7 @@
 		{% for entity in entities %}
 			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-toggle="collapse" data-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
 				{{ "televisionSerie.read.Episode"|trans([], "validators") }} {{ entity.episodeNumber }} - {{ entity.title }}
+				<button onClick="javascript:window.location.href='{{ path('TelevisionSerie_Episode', {id: entity.id, title_slug: entity.urlSlug }) }}'" class="badge badge-info float-right"><i class="fas fa-info fa-fw"></i></button>
 			</h3>
 			<div id="collapse{{ entity.episodeNumber }}" class="collapse{% if first.id == entity.id %} show{% endif %}" aria-labelledby="heading{{ entity.episodeNumber }}" data-parent="#accordion">
 				<table class="table">

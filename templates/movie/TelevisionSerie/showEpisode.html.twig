@@ -6,8 +6,22 @@
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity.televisionSerie } %}
 
+	<h3>{{ "televisionSerie.read.Datasheet"|trans([], "validators") }}</h3>
+
 	<table class="table">
 		<tbody>
+			<tr>
+				<td class="td_form_table theme_title_td">{{ "televisionSerie.read.Title"|trans([], "validators") }}</td>
+				<td class="tdGene"><a href="{{ path('TelevisionSerie_Show', {id: entity.televisionSerie.id, title_slug: entity.televisionSerie.slug }) }}">{{ entity.televisionSerie.title }}</a></td>
+			</tr>
+			<tr>
+				<td class="td_form_table theme_title_td">{{ "televisionSerie.read.Season"|trans([], "validators") }}</td>
+				<td class="tdGene"><a href="{{ path('TelevisionSerie_Season', {id: entity.televisionSerie.id, title_slug: entity.televisionSerie.slug, season: entity.season }) }}">{{ entity.season }}</a></td>
+			</tr>
+			<tr>
+				<td class="td_form_table theme_title_td">{{ "televisionSerie.read.EpisodeNumber"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ entity.episodeNumber }}</td>
+			</tr>
 			{% set biographyDatas = episode_televisionserie_biographies_by_occupation(entity) %}
 			{% if biographyDatas is not empty %}
 			<tr>
@@ -32,6 +46,7 @@
 		</tbody>
 	</table>
 
+	<h3>{{ "televisionSerie.read.Text"|trans([], "validators") }}</h3>
 	{{ entity.synopsis|raw }}
 
 	{% if entity.fullStreaming is not empty %}

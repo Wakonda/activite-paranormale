@@ -133,6 +133,8 @@ televisionSerie:
         ReleaseDatesTitle: "Release date:"
         ReleaseDate: "Release date"
         TelevisionSerie: "Serie :"
+        Title: "Title"
+        EpisodeNumber: "Episode number"
     admin:
         TelevisionSerie: "Television serie"
         Title: "Title"
