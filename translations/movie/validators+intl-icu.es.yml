@@ -174,6 +174,6 @@ episodeTelevisionSerie:
         ReleaseDate: "Fecha de publicación"
         ListOfEpisodes: "Lista de episodios"
         AddEpisode: "Añadir un episodio"
-        FullStreaming: "Película entera"
+        FullStreaming: "Episodio completo"
     read:
-        FullStreaming: "Película entera"
+        FullStreaming: "Episodio completo"

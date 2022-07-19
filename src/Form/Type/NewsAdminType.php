@@ -30,15 +30,15 @@ class NewsAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('abstractText', TextareaType::class, array('required' =>true, 'constraints' => array(new NotBlank())))
-            ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('source', SourceEditType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('pseudoUsed', TextType::class, array('required' =>true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('abstractText', TextareaType::class, array('required' =>true, 'constraints' => [new NotBlank()]))
+            ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('source', SourceEditType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('pseudoUsed', TextType::class, array('required' =>true, 'constraints' => [new NotBlank()]))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 					'choice_label'=>'title', 
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(EntityRepository $er) 
 						{
 							return $er->createQueryBuilder('u')
@@ -48,19 +48,19 @@ class NewsAdminType extends AbstractType
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
-            ->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
+            ->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => [new NotBlank()]))
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
 			))
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
 					'choice_label'=>'title', 
 					'required' => true,
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'choice_attr' => function($val, $key, $index) {
 						return ['data-intl' => $val->getInternationalName()];
 					},
