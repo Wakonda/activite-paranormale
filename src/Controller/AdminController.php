@@ -680,7 +680,7 @@ class AdminController extends AbstractController
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
 		
-		$session->getFlashBag()->add($message["state"], $message["state"], [], 'validators');
+		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
 	}
@@ -699,11 +699,11 @@ class AdminController extends AbstractController
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = json_decode($mastodon->postMessage($currentURL, $request->request->get("mastodon_area"), $entity->getLanguage()->getAbbreviation()));
+		$res = $mastodon->postMessage($currentURL, $request->request->get("mastodon_area"), $entity->getLanguage()->getAbbreviation());
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 		
-		$session->getFlashBag()->add($message["state"], $message["state"], [], 'validators');
+		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
 	}

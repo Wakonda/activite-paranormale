@@ -129,6 +129,9 @@ admin:
     twitter:
         TweetSent: "Tweet sent"
         FailedToSendTweet: "Failed to send tweet"
+    mastodon:
+        Success: "Message successfully sent to Mastodon"
+        Failed: "Failed to send message to Mastodon"
     facebook:
         Success: "Message sent to Facebook successfully"
         Failed: "Failed to send to Facebook"

@@ -3,14 +3,14 @@
 namespace App\Service;
 
 class Mastodon {
-	private $MASTODON_FR_ACCESS_TOKEN = null;
+	private $MASTODON_ACCESS_TOKEN = null;
 
 	public function postMessage(string $url, string $message, string $locale) {
 		$this->setLanguage($locale);
 
-		$accessToken = $this->MASTODON_FR_ACCESS_TOKEN;
-		
-		$res = stdClass;
+		$accessToken = $this->MASTODON_ACCESS_TOKEN;
+
+		$res = new \stdClass;
 
 		$ch = curl_init();
 

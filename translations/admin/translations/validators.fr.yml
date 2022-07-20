@@ -130,6 +130,9 @@ admin:
     twitter:
         TweetSent: "Tweet envoyé"
         FailedToSendTweet: "Echec lors de l'envoi du tweet"
+    mastodon:
+        Success: "Message envoyé avec succès sur Mastodon"
+        Failed: "Echec lors de l'envoi du message sur Mastodon"
     facebook:
         Success: "Message envoyé sur Facebook avec succès"
         Failed: "Echec lors de l'envoi sur Facebook"
