@@ -4,7 +4,7 @@
 
 	class GoogleBlogger
 	{
-		private $email = $_ENV["MAILER_CONTACT"];
+		private $email = null;
 		private $state = "profile"; //optional - could be whatever value you want
 		private $access_type = "offline"; //optional - allows for retrieval of refresh_token for offline access
 		private $scope = "https://www.googleapis.com/auth/blogger";
@@ -40,6 +40,7 @@
 		
 		public function getCode($redirect_uri)
 		{
+			$this->email = $_ENV["MAILER_CONTACT"];
 			$loginUrl = sprintf("https://accounts.google.com/o/oauth2/auth?scope=%s&state=%s&redirect_uri=%s&response_type=code&client_id=%s&access_type=%s&login_hint=%s", $this->scope, $this->state, $redirect_uri, $_ENV["BLOGGER_CLIENT_ID"], $this->access_type, $this->email);
 			
 			if(!isset($_GET['code']))

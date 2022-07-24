@@ -1,0 +1,53 @@
+{% macro tinymce(selector) %}
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
+
+	{% set language = "fr_FR" %}
+	{% if app.request.locale == "en" %}
+		{% set language = "en_GB" %}
+	{% elseif app.request.locale == "es" %}
+		{% set language = "es" %}
+	{% endif %}
+
+	<script>
+	tinymce.init({
+		selector:'{{ selector }}',
+		codesample_languages: [
+			{text: 'HTML/XML', value: 'markup'},
+			{text: 'JavaScript', value: 'javascript'},
+			{text: 'CSS', value: 'css'},
+			{text: 'PHP', value: 'php'},
+			{text: 'Ruby', value: 'ruby'},
+			{text: 'Python', value: 'python'},
+			{text: 'Java', value: 'java'},
+			{text: 'C', value: 'c'},
+			{text: 'C#', value: 'csharp'},
+			{text: 'C++', value: 'cpp'}
+		],
+		height: 250,
+		language: '{{ language }}',
+		menubar: false,
+		statusbar: false,
+		browser_spellcheck: true,
+		plugins: [
+			'lists link image charmap textcolor media code codesample'
+		],
+		toolbar: 'bold italic underline | link | undo redo | code codesample',
+		setup: function (editor) {
+			editor.on('change', function () {
+				tinymce.triggerSave();
+			});
+		},
+		codesample_content_css: "{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}"
+	});
+	</script>
+{% endmacro %}
+
+{% macro tagify(selector) %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/tagify/tagify.min.css') }}" media="screen" />
+	<script src="{{ asset('extended/js/tagify/tagify.min.js') }}"></script>
+
+	<script>
+		var input = document.querySelector('{{ selector }}');
+		new Tagify(input, {whitelist: ['PHP', 'Symfony', 'Doctrine', 'jQuery', 'Bootstrap', 'JavaScript', 'Ruby on Rails', 'Python', 'Flask', 'MySQL'], enforceWhitelist: true});
+	</script>
+{% endmacro %}

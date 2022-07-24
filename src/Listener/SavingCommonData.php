@@ -76,8 +76,8 @@ class SavingCommonData
 		}
 	}
 	
-	public function postUpdate(LifecycleEventArgs $args) {//die('llll');
-		if($args->getObject() instanceof SearchEngineInterface) {//dd($args->getObject()->getArchive() == true);
+	public function postUpdate(LifecycleEventArgs $args) {
+		if($args->getObject() instanceof SearchEngineInterface) {
 			$searchEngine = new \App\Service\SearchEngine();
 			$searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR.$_ENV["SEARCH_SQLITE_PATH"], null);
 

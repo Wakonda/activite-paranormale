@@ -45,3 +45,14 @@
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 {% endblock %}
+
+{% block js_specific %}
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.min.css') }}" />
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-copy-to-clipboard.min.js') }}"></script>
+{% endblock %}
