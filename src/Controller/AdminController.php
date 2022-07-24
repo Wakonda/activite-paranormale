@@ -349,13 +349,12 @@ class AdminController extends AbstractController
 			
 			$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 		}
-// dd($method);
+
 		switch($method) {
 			case "POST";
 				$response = $blogger->addPost($blogName, $accessToken, $entity->getTitle(), (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "PUT";
-				// dd($entity->getSocialNetworkIdentifiers()["Blogger"]);
 				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken, $entity->getTitle(), (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "DELETE";
@@ -363,7 +362,7 @@ class AdminController extends AbstractController
 				break;
 		}
 		$obj = json_decode($response["response"]);
-		// dd($obj);
+
 		if(in_array($response["http_code"], [Response::HTTP_OK, Response::HTTP_NO_CONTENT])) {
 			if($response["http_code"] == Response::HTTP_NO_CONTENT) {
 				$session->getFlashBag()->add('success', $translator->trans('admin.blogger.DeleteSuccess', [], 'validators'));
@@ -623,13 +622,18 @@ class AdminController extends AbstractController
 		
 		$entity = $em->getRepository($path)->find($id);
 		
-		$img = $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
-		$imgCaption = null;
+		$img = null;
 		
-		if(method_exists($entity, "getPhotoIllustrationCaption"))
-			$imgCaption = "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators')."</b><br>".$imgCaption."</div>";
 		
-		$img = $imgSize->adaptImageSize(550, $img);
+		if(method_exists($entity, "getAssetImagePath")) {
+			$img = $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
+			$imgCaption = null;
+			
+			if(method_exists($entity, "getPhotoIllustrationCaption"))
+				$imgCaption = "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators')."</b><br>".$imgCaption."</div>";
+			
+			$img = $imgSize->adaptImageSize(550, $img);
+		}
 		
 		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
 
@@ -637,6 +641,11 @@ class AdminController extends AbstractController
 
 		switch($entity->getRealClass())
 		{
+			case "Music":
+				$body = $entity->getEmbeddedCode();
+				$body .= "<br>".$entity->getText();
+				$body .= "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation());
+				break;
 			case "Cartography":
 			case "Photo":
 				$body = "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p><br>".$entity->getText().$imgCaption;
@@ -655,6 +664,9 @@ class AdminController extends AbstractController
 		
 		// Fix Tumblr bugs 
 		$body = str_replace(array("\r\n", "\n", "\t", "\r"), ' ', $body);
+		// die($body);
+		// dd($title, $body, $tags);
+		
 		$tumblr->addPost($title, $body, $tags);
 		
 		$session->getFlashBag()->add('success', $translator->trans('admin.tumblr.Success', [], 'validators'));

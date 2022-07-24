@@ -87,6 +87,10 @@
 			{{ macro_index.facebook_form(entity) }}
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.shopify_form(entity, "news") }}
+			
+			{% if entity.theme.internationalName == 'music' %}
+				{{ macro_index.tumblr_form(entity, "music") }}
+			{% endif %}
 		{% else %}
 			{{ macro_index.thedailytruth_form(entity) }}
 		{% endif %}

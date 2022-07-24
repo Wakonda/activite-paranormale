@@ -72,6 +72,13 @@ class Music
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+	
+	public function getTitle(): string {
+		$album = !empty($this->album) ? $this->album->getTitle() : null;
+		$artist = !empty($this->artist) ? $this->artist->getTitle() : (!empty($this->album) ? $this->album->getArtist()->getTitle() : null);
+
+		return $artist." - ".$this->musicPiece.(!empty($album) ? " (".$album.")" : "");
+	}
 
 	public function getLanguage() {
 		if(!empty($e = $this->album))
@@ -80,6 +87,17 @@ class Music
 			return $e->getLanguage();
 			
 		return null;
+	}
+
+	public function getRealClass()
+	{
+		$classname = get_class($this);
+
+		if (preg_match('@\\\\([\w]+)$@', $classname, $matches)) {
+			$classname = $matches[1];
+		}
+
+		return $classname;
 	}
 
 	public function getEntityName()
