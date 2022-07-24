@@ -15,7 +15,7 @@
 	<div class="form-table-cell">{{ entity.title }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Text"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.text|raw }}</div>
+	<div class="form-table-cell">{{ (entity.text|prism_formatter)|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Category"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ ("usefullink.admin." ~ entity.category|capitalize)|trans([], "validators") }}</div>

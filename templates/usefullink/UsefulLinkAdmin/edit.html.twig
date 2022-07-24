@@ -15,7 +15,6 @@
 	{% import "usefullink/UsefulLinkAdmin/macro_usefullink.html.twig" as macro_usefullink %}
 	{{ macro_usefullink.tinymce("#" ~ form.text.vars.id) }}
 	{{ macro_usefullink.tagify("#" ~ form.tags.vars.id) }}
-
 {% endblock %}
 
 {% block tbody_admin_table %}

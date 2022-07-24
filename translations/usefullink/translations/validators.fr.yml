@@ -11,3 +11,7 @@ usefullink:
         GenerateLinkProduct: "Générer un lien produit"
         Search: "Rechercher"
         Language: "Langue"
+    index:
+        Copy: "Copier"
+        Copied: "Copié !"
+        Error: "Appuyez sur Ctrl+C pour copier"
