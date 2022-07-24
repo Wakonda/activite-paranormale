@@ -20,6 +20,8 @@ class UsefulLinkAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		$language = $options['locale'];
+
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => false])
@@ -35,6 +37,12 @@ class UsefulLinkAdminType extends AbstractType
 									->orderBy('u.title', 'ASC');
 						}
 					))
+			->add('licence', EntityType::class, ['class'=>'App\Entity\Licence', 
+					'choice_label'=>'title', 
+					'required' => true,
+					'constraints' => [new NotBlank()],
+					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
+			])
             ->add('category', ChoiceType::class, ['choices' => ['usefullink.admin.'.ucfirst(UsefulLink::DEVELOPMENT_FAMILY) => UsefulLink::DEVELOPMENT_FAMILY, 'usefullink.admin.'.ucfirst(UsefulLink::RESOURCE_FAMILY) => UsefulLink::RESOURCE_FAMILY], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
         ;
     }
@@ -47,7 +55,8 @@ class UsefulLinkAdminType extends AbstractType
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			'data_class' => 'App\Entity\UsefulLink'
+			'data_class' => 'App\Entity\UsefulLink',
+			'locale' => 'fr'
 		));
 	}
 }

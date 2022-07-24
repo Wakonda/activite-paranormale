@@ -39,3 +39,7 @@ UsefulLink_Admin_IndexDatatables:
 UsefulLink_Admin_GenerateLinkStore:
     path:  /generate_link_store
     controller: App\Controller\UsefulLinkAdminController::generateStoreLinkAction
+
+UsefulLink_Admin_ReloadThemeByLanguage:
+    path: /reload_theme_by_language
+    controller: App\Controller\UsefulLinkAdminController::reloadThemeByLanguageAction

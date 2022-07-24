@@ -64,6 +64,11 @@ class UsefulLink
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
      */
     protected $language;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
+     */
+    protected $licence;
 
     /**
      * Get id
@@ -198,5 +203,15 @@ class UsefulLink
     public function setLanguage(Language $language)
     {
         $this->language = $language;
+    }
+
+	public function getLicence()
+    {
+        return $this->licence;
+    }
+
+    public function setLicence(Licence $licence)
+    {
+        $this->licence = $licence;
     }
 }

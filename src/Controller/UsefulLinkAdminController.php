@@ -21,6 +21,7 @@ class UsefulLinkAdminController extends AdminGenericController
 	
 	protected $indexRoute = "UsefulLink_Admin_Index"; 
 	protected $showRoute = "UsefulLink_Admin_Show";
+	protected $formName = 'ap_usefullink_usefullinkadmintype';
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
@@ -62,7 +63,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -71,15 +72,16 @@ class UsefulLinkAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
     public function editAction($id)
     {
+		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -87,7 +89,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
     public function deleteAction($id)
@@ -154,5 +156,44 @@ class UsefulLinkAdminController extends AdminGenericController
 		$partnerId = \App\Entity\Stores\Store::partnerId;
 		
 		return $this->render('usefullink/UsefulLinkAdmin/generateLinkStore.html.twig', array('form' => $form->createView(), "partnerId" => $partnerId));
+	}
+
+	public function reloadThemeByLanguageAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = [];
+		
+		if(!empty($language))
+		{
+			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
+			
+			$currentLanguagesWebsite = array("fr", "en", "es");
+			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
+				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
+
+			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+		}
+		else
+		{
+			$themes = $em->getRepository(Theme::class)->findAll();
+			$states = $em->getRepository(State::class)->findAll();
+			$licences = $em->getRepository(Licence::class)->findAll();
+		}
+	
+		$licenceArray = [];
+
+		foreach($licences as $licence)
+		{
+			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+		}
+		$translateArray['licence'] = $licenceArray;
+		
+		$response = new Response(json_encode($translateArray));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
 	}
 }

@@ -51,3 +51,25 @@
 		new Tagify(input, {whitelist: ['PHP', 'Symfony', 'Doctrine', 'jQuery', 'Bootstrap', 'JavaScript', 'Ruby on Rails', 'Python', 'Flask', 'MySQL'], enforceWhitelist: true});
 	</script>
 {% endmacro %}
+
+{% macro updateListForm(form) %}
+	$("#{{ form.vars['id'] }}_language").change(function()
+	{
+		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+
+		$.ajax({
+			type: "POST",
+			url: "{{ path('UsefulLink_Admin_ReloadThemeByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var licence = data.licence;
+				$("#{{form.vars['id'] }}_licence option").remove();
+				$.each(licence, function(index, element)
+				{
+					$("#{{form.vars['id'] }}_licence").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+			}
+		});
+	});
+{% endmacro %}
