@@ -229,6 +229,13 @@
 									{% include 'index/Index/_donate.html.twig' %}
 								</div>
 							</div>
+							<div id="development_right_menu" class="news_section">
+								<h3>{{ "index.leftMenu.Development"|trans([], "validators") }}</h3>
+								<div class="text-center">
+									<p class="mb-2">{{ 'index.development.CodingSkills'|trans([], "validators") }}</p>
+									<a href="#" class="btn btn-info mb-3"><i class="fas fa-code"></i> {{ 'index.development.Develop'|trans([], "validators") }}</a>
+								</div>
+							</div>
 							{% if is_mobile() == false %}
 								<div class="news_section">
 									<h3>{{ "index.leftMenu.Visitors"|trans([], "validators") }}</h3>

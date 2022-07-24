@@ -56,9 +56,13 @@ index:
         FollowUsOn: "Síguenos en ..."
         ClassifiedAds: "Anuncio clasificado"
         Book: "Libro"
+        Development: "Desarrollo"
     donate:
         DonateInCryptocurrency: "Donar en criptomoneda"
         CryptocurrencyDonation: "Donación de cripto"
+    development:
+        Develop: "Desarrollar"
+        CodingSkills: "¡Aporta tus habilidades de programación!"
     footerMenu:
         FollowUs: "Socios"
         About: "Sobre"

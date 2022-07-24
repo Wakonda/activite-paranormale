@@ -623,8 +623,7 @@ class AdminController extends AbstractController
 		$entity = $em->getRepository($path)->find($id);
 		
 		$img = null;
-		
-		
+
 		if(method_exists($entity, "getAssetImagePath")) {
 			$img = $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$imgCaption = null;
@@ -674,8 +673,6 @@ class AdminController extends AbstractController
 		
 		// Fix Tumblr bugs 
 		$body = str_replace(array("\r\n", "\n", "\t", "\r"), ' ', $body);
-		// die($body);
-		// dd($title, $body, $tags);
 		
 		$tumblr->addPost($title, $body, $tags);
 		
