@@ -141,12 +141,12 @@ class VideoController extends AbstractController
 
 		$entity->setPseudoContact($this->getClientIp($request));
 		$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', array("id" => $video->getId(), "title_slug" => $video->getUrlSlug()), UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
-		$entity->setEmailContact('amatukami@hotmail.fr');
+		$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
 		$entity->setSubjectContact("Suppression d'une vidéo");
 		
 		$message = (new \Swift_Message("Suppression d'une vidéo"))
-			->setTo('amatukami@hotmail.fr')
-			->setFrom(array('amatukami@hotmail.fr'))
+			->setTo($_ENV["MAILER_CONTACT"])
+			->setFrom([$_ENV["MAILER_CONTACT"]])
 			->setBody($this->renderView('contact/Contact/mail.html.twig', array('entity' => $entity)), 'text/html')
 		;
 		$mailer->send($message);

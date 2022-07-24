@@ -41,7 +41,7 @@ class ContactController extends AbstractController
 
 		if ($form->isValid()) {
 			$message = (new \Swift_Message($entity->getSubjectContact()))
-				->setTo('amatukami@hotmail.fr')
+				->setTo($_ENV["MAILER_CONTACT"])
 				->setFrom(array($entity->getEmailContact()))
 				->setBody($this->renderView('contact/Contact/mail.html.twig', array('entity' => $entity)), 'text/html')
 			;

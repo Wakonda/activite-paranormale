@@ -4,7 +4,7 @@
 
 	class GoogleBlogger
 	{
-		private $email = "amatukami@hotmail.fr";
+		private $email = $_ENV["MAILER_CONTACT"];
 		private $state = "profile"; //optional - could be whatever value you want
 		private $access_type = "offline"; //optional - allows for retrieval of refresh_token for offline access
 		private $scope = "https://www.googleapis.com/auth/blogger";
