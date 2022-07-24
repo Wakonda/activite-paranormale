@@ -646,6 +646,16 @@ class AdminController extends AbstractController
 				$body .= "<br>".$entity->getText();
 				$body .= "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation());
 				break;
+			case "News":
+				$imgProperty = $entity->getPhotoIllustrationFilename();
+				$img = $entity->getAssetImagePath().$imgProperty;
+				$img = $imgSize->adaptImageSize(550, $img);
+
+				$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
+				$body = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<br><b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+				$body = "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>".$parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
+
+				break;
 			case "Cartography":
 			case "Photo":
 				$body = "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p><br>".$entity->getText().$imgCaption;
