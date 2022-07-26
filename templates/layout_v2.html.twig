@@ -20,6 +20,53 @@
 
 		<script src="{{ asset('extended/js/cookiechoices/cookiechoices.min.js') }}"></script>
 		
+		<script src="{{ asset('extended/js/tarteaucitron.js/tarteaucitron.js') }}"></script>
+		
+        <script type="text/javascript">
+        tarteaucitron.init({
+    	  "privacyUrl": "", /* Privacy policy url */
+          "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
+
+    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
+    	  "cookieName": "tarteaucitron", /* Cookie name */
+    
+    	  "orientation": "middle", /* Banner position (top - bottom) */
+       
+          "groupServices": false, /* Group services by category */
+          "serviceDefaultState": "wait", /* Default state (true - wait - false) */
+                           
+    	  "showAlertSmall": false, /* Show the small banner on bottom right */
+    	  "cookieslist": false, /* Show the cookie list */
+                           
+          "closePopup": false, /* Show a close X on the banner */
+
+          "showIcon": true, /* Show cookie icon to manage cookies */
+          //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
+          "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
+
+    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
+                           
+          "DenyAllCta" : true, /* Show the deny all button */
+          "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
+          "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
+                           
+    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
+
+    	  "removeCredit": false, /* Remove credit link */
+    	  "moreInfoLink": true, /* Show more info link */
+
+          "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
+          "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
+                          
+          "readmoreLink": "http://127.0.0.1:8000/cookie", /* Change the default readmore link */
+
+          "mandatory": true, /* Show a message about mandatory cookies */
+          "mandatoryCta": true /* Show the disabled accept button when mandatory on */
+        });
+		
+		(tarteaucitron.job = tarteaucitron.job || []).push('adsense');
+        </script>
+		
 		<script>
 		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -139,16 +186,8 @@
 								</div>
 								<div id="publicity_right_menu" class="news_section">
 									<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
-									<script>
-										google_ad_client = "ca-pub-1951906303386196";
-										google_ad_slot = "0150773125";
-										google_ad_width = 200;
-										google_ad_height = 200;
-									</script>
-									<!-- AP_Menu -->
-									<script
-									src="//pagead2.googlesyndication.com/pagead/show_ads.js">
-									</script>
+									<ins class="adsbygoogle" style="display:inline-block;width:200;height:200" data-ad-client="ca-pub-1951906303386196" data-ad-slot="0150773125"></ins>
+									<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>
 								</div>
 								<div class="news_section">
 									<h3>{{ "index.leftMenu.Partner"|trans([], "validators") }}</h3>
