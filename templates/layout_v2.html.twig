@@ -20,62 +20,20 @@
 
 		<script src="{{ asset('extended/js/cookiechoices/cookiechoices.min.js') }}"></script>
 		
-		<script src="{{ asset('extended/js/tarteaucitron.js/tarteaucitron.js') }}"></script>
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+		{{ macro_index.tarteaucitron_js() }}
 		
         <script type="text/javascript">
-        tarteaucitron.init({
-    	  "privacyUrl": "", /* Privacy policy url */
-          "bodyPosition": "bottom", /* or top to bring it as first element for accessibility */
-
-    	  "hashtag": "#tarteaucitron", /* Open the panel with this hashtag */
-    	  "cookieName": "tarteaucitron", /* Cookie name */
-    
-    	  "orientation": "middle", /* Banner position (top - bottom) */
-       
-          "groupServices": false, /* Group services by category */
-          "serviceDefaultState": "wait", /* Default state (true - wait - false) */
-                           
-    	  "showAlertSmall": false, /* Show the small banner on bottom right */
-    	  "cookieslist": false, /* Show the cookie list */
-                           
-          "closePopup": false, /* Show a close X on the banner */
-
-          "showIcon": true, /* Show cookie icon to manage cookies */
-          //"iconSrc": "", /* Optionnal: URL or base64 encoded image */
-          "iconPosition": "BottomRight", /* BottomRight, BottomLeft, TopRight and TopLeft */
-
-    	  "adblocker": false, /* Show a Warning if an adblocker is detected */
-                           
-          "DenyAllCta" : true, /* Show the deny all button */
-          "AcceptAllCta" : true, /* Show the accept all button when highPrivacy on */
-          "highPrivacy": true, /* HIGHLY RECOMMANDED Disable auto consent */
-                           
-    	  "handleBrowserDNTRequest": false, /* If Do Not Track == 1, disallow all */
-
-    	  "removeCredit": false, /* Remove credit link */
-    	  "moreInfoLink": true, /* Show more info link */
-
-          "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
-          "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
-                          
-          "readmoreLink": "http://127.0.0.1:8000/cookie", /* Change the default readmore link */
-
-          "mandatory": true, /* Show a message about mandatory cookies */
-          "mandatoryCta": true /* Show the disabled accept button when mandatory on */
-        });
-		
-		(tarteaucitron.job = tarteaucitron.job || []).push('adsense');
+			tarteaucitron.user.analyticsUa = 'UA-12307735-3';
+			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
+			tarteaucitron.user.analyticsUaCreate = { /* optionnal create configuration */ };
+			tarteaucitron.user.analyticsAnonymizeIp = true;
+			tarteaucitron.user.analyticsPageView = { /* optionnal pageview configuration */ };
+			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
+			(tarteaucitron.job = tarteaucitron.job || []).push('analytics');
         </script>
 		
 		<script>
-		  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-		  ga('create', 'UA-12307735-3', 'activite-paranormale.net');
-		  ga('send', 'pageview');
-		  
 			$(function() {
 				cookieChoices.showCookieBar({
 					linkHref: '{{ path("Page_Cookie") }}',

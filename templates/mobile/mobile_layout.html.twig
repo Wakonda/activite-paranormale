@@ -18,6 +18,9 @@
 	{{ encore_entry_script_tags('app_mobile') }}
 	
 	{% block header_mobile_plus %}{% endblock %}
+	
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tarteaucitron_js() }}
 
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
   </head>
@@ -66,16 +69,8 @@
 				{% block body_content %}{% endblock %}
 				
 				<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
-				<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-				<!-- AP_Mobile -->
-				<ins class="adsbygoogle"
-					 style="display:block"
-					 data-ad-client="ca-pub-1951906303386196"
-					 data-ad-slot="8762915348"
-					 data-ad-format="auto"></ins>
-				<script>
-				(adsbygoogle = window.adsbygoogle || []).push({});
-				</script>
+				<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto"></ins>
+				<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>
 			</div>
 		</div>
 		{% block sub_content %}{% endblock %}
