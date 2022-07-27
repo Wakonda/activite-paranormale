@@ -550,7 +550,7 @@
 	<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 {% endmacro %}
 
-{% macro tarteaucitron_js %}
+{% macro tarteaucitron_js() %}
 	<script src="{{ asset('extended/js/tarteaucitron.js/tarteaucitron.js') }}"></script>
 	
 	<script type="text/javascript">
@@ -589,7 +589,7 @@
 	  "useExternalCss": false, /* If false, the tarteaucitron.css file will be loaded */
 	  "useExternalJs": false, /* If false, the tarteaucitron.js file will be loaded */
 					  
-	  "readmoreLink": "http://127.0.0.1:8000/cookie", /* Change the default readmore link */
+	  "readmoreLink": "{{ path("Page_Cookie") }}", /* Change the default readmore link */
 
 	  "mandatory": true, /* Show a message about mandatory cookies */
 	  "mandatoryCta": true /* Show the disabled accept button when mandatory on */

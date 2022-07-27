@@ -17,8 +17,6 @@
         {% endblock %}
 		
 		{{ encore_entry_script_tags('app_v3') }}
-
-		<script src="{{ asset('extended/js/cookiechoices/cookiechoices.min.js') }}"></script>
 		
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.tarteaucitron_js() }}
@@ -32,16 +30,7 @@
 			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
 			(tarteaucitron.job = tarteaucitron.job || []).push('analytics');
         </script>
-		
-		<script>
-			$(function() {
-				cookieChoices.showCookieBar({
-					linkHref: '{{ path("Page_Cookie") }}',
-					language: 'fr'
-				});
-			});
-		</script>
-		
+
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
 	</head>

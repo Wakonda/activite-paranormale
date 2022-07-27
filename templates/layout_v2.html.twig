@@ -32,16 +32,7 @@
 			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
 			(tarteaucitron.job = tarteaucitron.job || []).push('analytics');
         </script>
-		
-		<script>
-			$(function() {
-				cookieChoices.showCookieBar({
-					linkHref: '{{ path("Page_Cookie") }}',
-					language: 'fr'
-				});
-			});
-		</script>
-		
+
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
 	</head>
