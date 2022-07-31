@@ -13,19 +13,17 @@
 	<hr>
 	<script src="{{ asset('extended/js/github/buttons.js') }}"></script>
 
-<div class="d-flex justify-content-between">
-<a class="github-button" href="https://github.com/sponsors/Wakonda" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @Wakonda on GitHub">Sponsor</a>
-<a class="github-button" href="https://github.com/Wakonda/activite-paranormale/subscription" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-eye" data-size="large" aria-label="Watch Wakonda/activite-paranormale on GitHub">Watch</a>
-<a class="github-button" href="https://github.com/Wakonda/activite-paranormale" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-star" data-size="large" aria-label="Star Wakonda/activite-paranormale on GitHub">Star</a>
-<a class="github-button" href="https://github.com/Wakonda/activite-paranormale/fork" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-repo-forked" data-size="large" aria-label="Fork Wakonda/activite-paranormale on GitHub">Fork</a>
-<a class="github-button" href="https://github.com/Wakonda" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-size="large" aria-label="Follow @Wakonda on GitHub">Follow @Wakonda</a>
-</div>
-<hr>
+	<div class="d-flex justify-content-between">
+		<a class="github-button" href="https://github.com/sponsors/Wakonda" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @Wakonda on GitHub">Sponsor</a>
+		<a class="github-button" href="https://github.com/Wakonda/activite-paranormale/subscription" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-eye" data-size="large" aria-label="Watch Wakonda/activite-paranormale on GitHub">Watch</a>
+		<a class="github-button" href="https://github.com/Wakonda/activite-paranormale" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-star" data-size="large" aria-label="Star Wakonda/activite-paranormale on GitHub">Star</a>
+		<a class="github-button" href="https://github.com/Wakonda/activite-paranormale/fork" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-repo-forked" data-size="large" aria-label="Fork Wakonda/activite-paranormale on GitHub">Fork</a>
+		<a class="github-button" href="https://github.com/Wakonda" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-size="large" aria-label="Follow @Wakonda on GitHub">Follow @Wakonda</a>
+	</div>
+	<hr>
 	{% if page is not empty %}
 		{{ page.text|raw }}
 	{% endif %}
-	
 
-	
 	{{ "google"|advertisement|raw }}
 {% endblock %}
