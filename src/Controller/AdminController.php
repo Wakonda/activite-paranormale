@@ -620,8 +620,6 @@ class AdminController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		
 		$entity = $em->getRepository(urldecode($path))->find($id);
-		
-		$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
 
 		$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
 		
@@ -640,7 +638,7 @@ class AdminController extends AbstractController
 			"biography" => ["wikidata" => $entity->getAuthorQuotation()->getWikidata()],
 			"source" => ["identifier" => $sourceIdentifier]
 		];
-		
+	
 		$api = new \App\Service\Muse();
 		$api->addPost($data, $api->getOauth2Token());
 		

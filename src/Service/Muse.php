@@ -50,14 +50,14 @@
 			
 			$response = curl_exec($ch);
 		 
-			$json_response = curl_exec($curl);
-			$errors = curl_error($curl);
-			curl_close($curl);
+			$json_response = curl_exec($ch);
+			$errors = curl_error($ch);
+			curl_close($ch);
 
 			return json_decode($json_response);
 		}
 		
 		public function getLocaleAvailable(): array {
-			return ["fr"];
+			return ["fr", "en"];
 		}
 	}
