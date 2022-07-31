@@ -1107,6 +1107,10 @@ h2 span img {
   display: -ms-flexbox !important;
   display: flex !important;
 }
+.justify-content-between {
+  -ms-flex-pack: justify !important;
+  justify-content: space-between !important;
+}
 .justify-content-around {
     justify-content: space-around!important;
 }

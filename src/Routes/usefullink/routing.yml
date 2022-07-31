@@ -1,3 +1,11 @@
+UsefulLink_Index:
+    path:  /usefullink/{page}
+    controller: App\Controller\UsefulLinkController::indexAction
+    defaults:
+        page: 1
+    requirements:
+       page: \d+
+
 # Administration
 UsefulLink_Admin:
     resource: "routing/usefullinkadmin.yml"

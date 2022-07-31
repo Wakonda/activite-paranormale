@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block meta_plus %}
-<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_newsmobile_index', {'page': page, 'theme': app.request.attributes.get('theme')}) }}">
+	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_newsmobile_index', {'page': page, 'theme': app.request.attributes.get('theme')}) }}">
 {% endblock %}
 
 {% block h2_title %}
