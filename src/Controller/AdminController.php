@@ -593,6 +593,60 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
 	}
 	
+	// Wakonda.GURU
+	public function wakondaGuruAction(Request $request, int $id, string $path, string $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$entity = $em->getRepository(urldecode($path))->find($id);
+
+		$data = [
+			"title" => $entity->getTitle(),
+			"text" => $entity->getText(),
+			"tags" => implode(",", array_map(function($e) { return $e->value; }, json_decode($entity->getTags()))),
+			"sources" => $entity->getLinks(),
+			"identifier" => "development#".$entity->getId()
+		];
+
+		$api = new \App\Service\WakondaGuru();
+		$api->addPost($data, $api->getOauth2Token());
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
+	}
+	
+	// Muse
+	public function museAction(Request $request, int $id, string $path, string $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$entity = $em->getRepository(urldecode($path))->find($id);
+		
+		$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
+
+		$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
+		
+		$sourceIdentifier = null;
+		
+		if(!empty($source)) {
+			if(isset($source["isbn13"]) and !empty($isbn13 = $source["isbn13"]))
+				$sourceIdentifier = $isbn13;
+			elseif(isset($source["isbn10"]) and !empty($isbn10 = $source["isbn10"]))
+				$sourceIdentifier = $isbn10;
+		}
+
+		$data = [
+			"text" => $entity->getTextQuotation(),
+			"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
+			"biography" => ["wikidata" => $entity->getAuthorQuotation()->getWikidata()],
+			"source" => ["identifier" => $sourceIdentifier]
+		];
+		
+		$api = new \App\Service\Muse();
+		$api->addPost($data, $api->getOauth2Token());
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
+	}
+	
 	// Tumblr
 	public function tumblrAction(Request $request, TumblrAPI $tumblr, $id, $path, $routeToRedirect)
 	{

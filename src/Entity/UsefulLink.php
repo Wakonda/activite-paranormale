@@ -70,6 +70,11 @@ class UsefulLink
      */
     protected $licence;
 
+	public function getEntityName()
+	{
+		return get_called_class();
+	}
+
     /**
      * Get id
      *

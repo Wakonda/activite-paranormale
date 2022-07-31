@@ -67,6 +67,14 @@ Admin_ImportWikipedia:
     path: /import
     controller: App\Controller\AdminController::importWikipediaAction
 
+Admin_Muse:
+    path: /admin/muse/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::museAction
+
+Admin_WakondaGuru:
+    path: /admin/wakonda_guru/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::wakondaGuruAction
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index

@@ -48,7 +48,7 @@
 
 	<script>
 		var input = document.querySelector('{{ selector }}');
-		new Tagify(input, {whitelist: ['PHP', 'Symfony', 'Doctrine', 'jQuery', 'Bootstrap', 'JavaScript', 'Ruby on Rails', 'Python', 'Flask', 'MySQL'], enforceWhitelist: true});
+		new Tagify(input, {enforceWhitelist: true});
 	</script>
 {% endmacro %}
 

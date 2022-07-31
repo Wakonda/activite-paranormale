@@ -3,6 +3,7 @@
 /.env.local.php
 /.env.*.local
 /.env
+/.env.dev
 /yarn.lock
 /composer.lock
 /symfony.lock

@@ -22,11 +22,14 @@ class UsefulLinkAdminType extends AbstractType
     {
 		$language = $options['locale'];
 
+		$api = new \App\Service\WakondaGuru();
+		$tags = $api->getTags($api->getOauth2Token());
+
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => false])
             ->add('links', LinksEditType::class, ['required' => true, 'constraints' => [new NotBlank()]])
-            ->add('tags', TextType::class, ['required' => false])
+            ->add('tags', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $tags)]])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 					'choice_label'=>'title', 
 					'required' => true,

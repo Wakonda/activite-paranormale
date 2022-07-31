@@ -49,6 +49,11 @@
 	<div class="form-table-cell">{{ entity.licence }}</div>
 {% endblock %}
 
+{% block data_bottom %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.wakondaguru_form(entity) }}
+{% endblock %}
+
 {% block js_specific %}
 	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
 	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.css') }}" />
