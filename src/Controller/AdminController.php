@@ -611,6 +611,8 @@ class AdminController extends AbstractController
 		$api = new \App\Service\WakondaGuru();
 		$api->addPost($data, $api->getOauth2Token());
 		
+		$session->getFlashBag()->add('success', $translator->trans('admin.wakondaguru.Success', [], 'validators'));
+		
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
@@ -641,6 +643,8 @@ class AdminController extends AbstractController
 	
 		$api = new \App\Service\Muse();
 		$api->addPost($data, $api->getOauth2Token());
+		
+		$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}

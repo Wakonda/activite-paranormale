@@ -137,6 +137,10 @@ admin:
         Failed: "Error al enviar a Facebook"
     tumblr:
         Success: "Artículo publicado en Tumblr con éxito"
+    wakondaguru:
+        Success: "Artículo publicado en Wakonda.GURU con éxito"
+    muse:
+        Success: "Artículo publicado en Muse con éxito"
     pinterest:
         Success: "Artículo publicado en Pinterest con éxito"
     wikipedia:
