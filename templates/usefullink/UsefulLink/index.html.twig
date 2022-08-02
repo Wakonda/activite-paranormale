@@ -1,11 +1,11 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}
-	{{ page.title }}}
+	{{ entity.title }}}
 {% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-left"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span> {{ page.title }}</h2>
+	<h2><span class="float-left"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span> {{ entity.title }}</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}
@@ -13,6 +13,7 @@
 	<hr>
 	<script src="{{ asset('extended/js/github/buttons.js') }}"></script>
 
+	<!-- https://github.com/ntkme/github-buttons -->
 	<div class="d-flex justify-content-between">
 		<a class="github-button" href="https://github.com/sponsors/Wakonda" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-heart" data-size="large" aria-label="Sponsor @Wakonda on GitHub">Sponsor</a>
 		<a class="github-button" href="https://github.com/Wakonda/activite-paranormale/subscription" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-icon="octicon-eye" data-size="large" aria-label="Watch Wakonda/activite-paranormale on GitHub">Watch</a>
@@ -21,9 +22,62 @@
 		<a class="github-button" href="https://github.com/Wakonda" data-color-scheme="no-preference: light; light: dark_high_contrast; dark: light;" data-size="large" aria-label="Follow @Wakonda on GitHub">Follow @Wakonda</a>
 	</div>
 	<hr>
-	{% if page is not empty %}
-		{{ page.text|raw }}
+	{% if entity is not empty %}
+		{{ entity.text|raw }}
 	{% endif %}
+	
+	<br>
 
 	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	<div class="card main_column_section mt-3">
+		<div class="card-header">
+			<h2><span class="float-left"><img src="{{ asset('extended/photo/usefullink-logo.svg') }}" width="25" class="mt-1" alt="Comments"/></span>{{ "usefullink.index.TipsAndTricks"|trans([], "validators") }}</h2>
+		</div>
+			<div class="card-body">
+			{% for data in pagination.items %}
+				<h3>{{ data.title }}</h3>
+				<div>
+					{{ data.text|raw }}
+				</div>
+				
+				{% if data.tags is not empty %}<i class="fas fa-tags"></i> {% for tag in json_decode(data.tags) %}<a href="#">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}
+			
+				<p><i class="fas fa-link"></i> {{ "usefullink.index.Sources"|trans([], "validators") }}</p>
+				<ul>
+				{% for data in json_decode(data.links) %}
+					{% if data.title is not empty %}
+						<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a></li>
+					{% else %}
+						<li><a href="{{ data.url }}" target="_blank">{{ data.url }}</a></li>
+					{% endif %}
+				{% endfor %}
+				</ul>
+				
+				{% if loop.last != false %}
+					<hr>
+				{% endif %}
+			{% else %}
+				<div class="alert alert-danger font-italic text-center">{{ "usefullink.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+				<br>
+			{% endfor %}
+			
+			<div class="mt-3 justify-content-center">
+				{{ knp_pagination_render(pagination) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.min.css') }}" />
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-copy-to-clipboard.min.js') }}"></script>
 {% endblock %}

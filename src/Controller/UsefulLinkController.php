@@ -8,19 +8,31 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 
+use Knp\Component\Pager\PaginatorInterface;
+
 use App\Entity\Page;
-use App\Entity\UsefulLLink;
+use App\Entity\UsefulLink;
 use App\Entity\Language;
 
 class UsefulLinkController extends AbstractController
 {
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, PaginatorInterface $paginator, $page)
     {
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
-		$page = $em->getRepository(Page::class)->findOneBy(["language" => $language, "internationalName" => "development"]);
+		$entity = $em->getRepository(Page::class)->findOneBy(["language" => $language, "internationalName" => UsefulLink::DEVELOPMENT_FAMILY]);
 
-		return $this->render('usefullink/UsefulLink/index.html.twig', ["page" => $page]);
+		$query = $em->getRepository(UsefulLink::class)->getUsefulLLinks(UsefulLink::DEVELOPMENT_FAMILY, $page, $request->getLocale());
+
+		$pagination = $paginator->paginate(
+			$query, /* query NOT result */
+			$page, /*page number*/
+			12 /*limit per page*/
+		);
+
+		$pagination->setCustomParameters(['align' => 'center']);
+
+		return $this->render('usefullink/UsefulLink/index.html.twig', ["entity" => $entity, 'pagination' => $pagination]);
     }
 }

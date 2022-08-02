@@ -12,6 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class UsefulLinkRepository extends EntityRepository
 {
+	public function getUsefulLLinks($category, $page, $locale) {
+		$qb = $this->createQueryBuilder("c");
+		
+		$qb->join("c.language", "l")
+		   ->where("l.abbreviation = :locale")
+		   ->setParameter("locale", $locale)
+		   ->andWhere("c.category = :category")
+		   ->setParameter("category", $category);
+		   
+		return $qb->getQuery();
+	}
+	
 	public function countAdmin()
 	{
 		$qb = $this->createQueryBuilder('c');
