@@ -19,13 +19,13 @@ class SavingCommonData
 	}
 
 	private function purifierText($text)
-	{
+	{return $text;
 		$purifier = new APPurifierHTML();
 		return $purifier->purifier($text);
 	}
 
 	private function saveImageFromUrlFromText($text, $entity)
-	{
+	{return $text;
 		$parser = new APParseHTML($this->container);
 		
 		if(empty($this->container->get('request_stack')->getCurrentRequest()))

@@ -24,7 +24,7 @@
 
 		// Filters
 		public function prismFormatterFilter(string $text)
-		{
+		{return $text;
 			$dom = new \DOMDocument();
 			
 			libxml_use_internal_errors(true);

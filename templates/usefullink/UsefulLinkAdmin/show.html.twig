@@ -25,9 +25,9 @@
 		<ul>
 		{% for data in json_decode(entity.links) %}
 			{% if data.title is not empty %}
-				<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a></li>
+				<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
 			{% else %}
-				<li><a href="{{ data.url }}" target="_blank">{{ data.url }}</a></li>
+				<li><a href="{{ data.url }}" target="_blank">{{ data.url|urlclean }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
 			{% endif %}
 		{% endfor %}
 		</ul>
@@ -35,11 +35,13 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
-		<ul>
-		{% for data in json_decode(entity.tags) %}
-			<li>{{ data.value }}</li>
-		{% endfor %}
-		</ul>
+		{% if entity.tags is not empty %}
+			<ul>
+			{% for data in json_decode(entity.tags) %}
+				<li>{{ data.value }}</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
 	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Language"|trans([], "validators") }}</div>

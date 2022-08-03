@@ -30,7 +30,7 @@ class UsefulLinkAdminController extends AdminGenericController
 	public function postValidationAction($form, $entityBindded)
 	{
 		$dom = new \DOMDocument();
-		$dom->loadHTML(mb_convert_encoding($entityBindded->getText(), 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
+		$dom->loadHTML(mb_convert_encoding($entityBindded->getText(), 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NODEFDTD);
 
 		foreach($dom->getElementsByTagName('pre') as $pre) {
 			$classes = explode(" ", $pre->getAttribute("class"));
@@ -39,7 +39,9 @@ class UsefulLinkAdminController extends AdminGenericController
 			$pre->setAttribute("class", implode(" ", $classes));
 		}
 
-		$entityBindded->setText($dom->saveHTML());
+		$html = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $dom->saveHTML());
+
+		$entityBindded->setText($html);
         $em = $this->getDoctrine()->getManager();
 		$em->persist($entityBindded);
 		$em->flush();

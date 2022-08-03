@@ -112,6 +112,7 @@ admin:
         Link: "Link"
         Publisher: "Publisher"
         Date: "Date"
+        License: "License"
         NoBlank: "This value should not be blank"
         NotValid: "This value is not valid"
     identifier:

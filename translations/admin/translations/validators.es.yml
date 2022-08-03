@@ -112,6 +112,7 @@ admin:
         Link: "Enlace"
         Publisher: "Editor"
         Date: "Fecha"
+        License: "Licencia"
         NoBlank: "Este valor no puede estar vacío"
         NotValid: "Este valor no es válido"
     identifier:

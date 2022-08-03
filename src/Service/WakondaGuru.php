@@ -58,6 +58,9 @@
 			$errors = curl_error($curl);
 			curl_close($curl);
 
+			if(!$res)
+				return [];
+
 			return json_decode($res)->datas;
 		}
 		
