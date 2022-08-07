@@ -4,49 +4,11 @@
 	</div>
 	<div class="card-body">
 		<div id="comment_container">
-			<div id="tab_resources" class="nav nav-pills mb-1">
-				<span data-id="comment_facebook" class="nav-link active mr-2">Facebook</span> <span data-id="comment_list" class="nav-link">Activité-Paranormale</span>
-			</div>
-			<br>
 			<div id="tab_content">
-				<div id="comment_facebook">
-					{% set language = "fr_FR" %}
-					{% if app.request.locale == "en" %}
-						{% set language = "en_US" %}
-					{% elseif app.request.locale == "es" %}
-						{% set language = "es_ES" %}
-					{% endif %}
-					
-					<div id="fb-root"></div>
-					<script>(function(d, s, id) {
-					  var js, fjs = d.getElementsByTagName(s)[0];
-					  if (d.getElementById(id)) return;
-					  js = d.createElement(s); js.id = id;
-					  js.src = "//connect.facebook.net/{{ language }}/sdk.js#xfbml=1&version=v2.6&appId=506624582881740";
-					  fjs.parentNode.insertBefore(js, fjs);
-					}(document, 'script', 'facebook-jssdk'));</script>
-					
-					<div class="fb-comments" data-href="{{ path }}" data-width="100%" data-numposts="5"></div>
-				</div>
-
 				<div id="comment_list">
 					{% include 'comment/Comment/edit.html.twig' with { 'idClassName' : idClassName, 'className': className } %}
 				</div>
 			</div>
-			<script>
-				document.querySelector("div#comment_list").style.display = "none";
-				
-				document.querySelectorAll("div#tab_resources span").forEach(input => input.addEventListener("click", (e) => {
-					document.querySelector("div#comment_list").style.display = "block";
-					
-					for (let el of document.querySelectorAll("div#tab_resources span")) el.classList.remove("active");				
-					input.classList.add("active");
-					
-					for (let el of document.querySelectorAll("div#tab_content > div")) el.style.display = "none";				
-					
-					document.querySelector("div#tab_content div#" + input.getAttribute("data-id")).style.display = "block";
-				}));
-			</script>
 		</div>
 	</div>
 </div>
