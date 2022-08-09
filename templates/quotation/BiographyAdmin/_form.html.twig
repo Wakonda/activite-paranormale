@@ -76,12 +76,16 @@
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 				let data = JSON.parse(xmlHttp.responseText);
+				
+				console.log(data)
+				
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
 				document.getElementById("{{ form.birthDate.day.vars.id }}").value = data.birthDate.day;
 				document.getElementById("{{ form.birthDate.month.vars.id }}").value = data.birthDate.month;
 				document.getElementById("{{ form.birthDate.year.vars.id }}").value = data.birthDate.year;
 				document.getElementById("{{ form.deathDate.day.vars.id }}").value = data.deathDate.day;
 				document.getElementById("{{ form.deathDate.month.vars.id }}").value = data.deathDate.month;
+				document.getElementById("{{ form.deathDate.year.vars.id }}").value = data.deathDate.year;
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 				document.getElementById("{{ form.nationality.vars.id }}").value = data.nationality.country.id;
