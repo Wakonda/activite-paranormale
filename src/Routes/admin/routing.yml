@@ -64,7 +64,7 @@ Admin_WikipediaSections:
     controller: App\Controller\AdminController::loadWikipediaSectionsPageAction
 
 Admin_ImportWikipedia:
-    path: /import
+    path: /admin/import
     controller: App\Controller\AdminController::importWikipediaAction
 
 Admin_Muse:
