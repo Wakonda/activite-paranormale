@@ -5,7 +5,7 @@ book:
         Book: "Livre"
         Title: "Titre"
         Photo: "Photo"
-        Text: "Texte"
+        Text: "Résumé"
         PublicationDate: "Date de publication"
         Authors: "Auteurs"
         Language: "Langue"

@@ -52,10 +52,10 @@
 				$newLarg = $info[0];
 				$newLong = $info[1];
 			}
-			// var_dump(empty($newLarg), empty($newLong));
+
 			$newLarg = empty($newLarg) ? "fit-content" : round($newLarg).$unit;
 			$newLong = empty($newLong) ? "fit-content" : round($newLong).$unit;
 
-			return array($newLarg, $newLong, $file);
+			return [$newLarg, $newLong, $file];
 		}
 	}

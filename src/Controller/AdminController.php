@@ -139,6 +139,8 @@ class AdminController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($path)->find($id);
+		
+		$title = $entity->getTitle();
 
 		if(in_array($method, ["POST", "PUT"])) {
 			$text = "";
@@ -220,6 +222,8 @@ class AdminController extends AbstractController
 					$twig = $this->get("twig");
 					$text = $entity->getText()."<br>";
 					$language = $entity->getBook()->getBook()->getLanguage()->getAbbreviation();
+					$title = $translator->trans('book.index.Book', [], 'validators', $language)." - ".$entity->getTitle();
+					
 					$text .= (!empty($d = $entity->getBook()->getBackCover()) ? "<b>".$translator->trans('bookEdition.admin.BackCover', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getBook()->getText()) ? "<b>".$translator->trans('book.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
@@ -349,13 +353,13 @@ class AdminController extends AbstractController
 			
 			$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 		}
-
+// dd($title);
 		switch($method) {
 			case "POST";
-				$response = $blogger->addPost($blogName, $accessToken, $entity->getTitle(), (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
+				$response = $blogger->addPost($blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "PUT";
-				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken, $entity->getTitle(), (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
+				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "DELETE";
 				$response = $blogger->deletePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken);
