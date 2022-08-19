@@ -353,7 +353,7 @@ class AdminController extends AbstractController
 			
 			$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 		}
-// dd($title);
+
 		switch($method) {
 			case "POST";
 				$response = $blogger->addPost($blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);

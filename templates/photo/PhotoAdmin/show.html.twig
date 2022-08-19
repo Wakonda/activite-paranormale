@@ -64,8 +64,11 @@
 			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.blogger_form(entity, "news") }}
 			{{ macro_index.mastodon_form(entity) }}
-			{{ macro_index.tumblr_form(entity) }}
 			{{ macro_index.pinterest_form(entity) }}
+			
+			{% if entity.theme.internationalName == 'music' %}
+				{{ macro_index.tumblr_form(entity, "music") }}
+			{% endif %}
 		{% endif %}
 	{% endif %}
 {% endblock %}
