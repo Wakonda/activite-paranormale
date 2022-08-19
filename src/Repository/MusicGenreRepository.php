@@ -17,7 +17,8 @@ class MusicGenreRepository extends EntityRepository
 		
 		$qb->innerjoin("c.language", "l")
 		   ->where("l.abbreviation = :locale")
-		   ->setParameter("locale", $locale);
+		   ->setParameter("locale", $locale)
+		   ->orderBy("c.title", "ASC");
 		   
 		return $qb->getQuery()->getResult();
 	}
