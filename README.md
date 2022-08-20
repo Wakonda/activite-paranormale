@@ -1,6 +1,6 @@
 Activité-Paranormale
 ========================
-**Activité-Paranormale** is a website written in PHP 7+ (Symfony 5+). Currently, his goal is to build a complete library about all paranormal phenomena. We published everyday news, photos, videos, ... .
+**Activité-Paranormale** is a website written in PHP 7+ (Symfony 5+). Currently, his goal is to build a complete library about all paranormal phenomena. We published everyday news, photos, videos, books, movies, ... .
 
 <p align="center">
   <img src="/public/extended/photo/document-abstract.jpg" alt="Logo">
