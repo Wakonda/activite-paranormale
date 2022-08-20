@@ -15,6 +15,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Title"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.title }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.AbstractText"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.abstractText|raw }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
@@ -47,6 +50,9 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Longitude"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.longitude }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Source"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
 
 	<a href="{{ path('EventMessage_Read', { 'id' : entity.id, 'title_slug': entity.urlSlug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}

@@ -1,8 +1,19 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "eventMessage.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.abstractText, "eventMessage.admin.AbstractText"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.abstractText.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.abstractText) }}{{ form_widget(form.abstractText) }}
+</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "eventMessage.admin.Text"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "eventMessage.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>

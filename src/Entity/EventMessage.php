@@ -23,6 +23,11 @@ class EventMessage extends MappedSuperclassBase
      */
     private $id;
 
+	/**
+	 * @ORM\Column(type="abstractText", nullable=true)
+	 */
+	protected $abstractText;
+
     /**
 	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -297,5 +302,15 @@ class EventMessage extends MappedSuperclassBase
     public function getLatitude()
     {
         return $this->latitude;
+    }
+
+    public function setAbstractText($abstractText)
+    {
+        $this->abstractText = $abstractText;
+    }
+
+    public function getAbstractText()
+    {
+        return $this->abstractText;
     }
 }
