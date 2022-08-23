@@ -32,9 +32,9 @@ trait GenericEntityTrait
     {
 		if(method_exists($this, "getIllustration") and !empty($this->getIllustration()))
 			return [
-						"caption" => $this->getIllustration()->getCaption(),
-						"source" => ["author" => $this->getIllustration()->getAuthor(), "license" => $this->getIllustration()->getLicense(), "url" => $this->getIllustration()->getUrlSource()]
-				   ];
+				"caption" => $this->getIllustration()->getCaption(),
+				"source" => ["author" => $this->getIllustration()->getAuthor(), "license" => $this->getIllustration()->getLicense(), "url" => $this->getIllustration()->getUrlSource()]
+		    ];
 		
 		return [];
     }

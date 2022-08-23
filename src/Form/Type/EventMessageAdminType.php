@@ -55,15 +55,15 @@ class EventMessageAdminType extends AbstractType
 					'required' => true,
 					'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
 			))
-			->add('photo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'EventMessage_Admin_ShowImageSelectorColorbox'))
 			->add('thumbnail', FileType::class, array('data_class' => null, 'required' => false))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'constraints' => array(new NotBlank()),
 					'required' => true,
 					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
-			->add('longitude', TextType::class, array('required' => false, 'constraints' => array(new NotBlank())))
-			->add('latitude', TextType::class, array('required' => false, 'constraints' => array(new NotBlank())))
+			->add('longitude', TextType::class, array('required' => false))
+			->add('latitude', TextType::class, array('required' => false))
             ->add('source', SourceEditType::class, array('required' => false))
         ;
     }

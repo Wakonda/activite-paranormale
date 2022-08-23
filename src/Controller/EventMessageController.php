@@ -114,10 +114,12 @@ class EventMessageController extends AbstractController
 				$dateString = $date->doDate($request->getLocale(), $entity->getDateFrom());
 			else
 				$dateString = $date->doDate($request->getLocale(), $entity->getDateFrom())." - ".$date->doDate($request->getLocale(), $entity->getDateTo());
-			
-			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
+
+			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
+			$img = $imgSize->adaptImageSize(150, $img);
+
 			$row = array();
-			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
+			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].'; height:'.$img[1].'">';			
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $dateString;
 

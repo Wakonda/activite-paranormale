@@ -81,10 +81,11 @@ class WitchcraftController extends AbstractController
 		
 		foreach($entities as $entity)
 		{
-			$file = !empty($photo = $entity->getPhoto()) ? $entity->getAssetImagePath().$entity->getPhoto() : null;
-			$photo = $imgSize->adaptImageSize(150, $file);
+			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
+			$img = $imgSize->adaptImageSize(150, $img);
+			
 			$row = array();
-			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].';">';			
+			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';			
 			$row[] = '<a href="'.$this->generateUrl("Witchcraft_ReadGrimoire", array('id' => $entity->getId(), 'title_slug' => $entity->getTitle(), 'surtheme' => $entity->getSurTheme()->getTitle())).'" >'.$entity->getTitle().'</a>';
 
 			$output['aaData'][] = $row;

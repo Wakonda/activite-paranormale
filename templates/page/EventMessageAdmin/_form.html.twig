@@ -33,14 +33,8 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "eventMessage.admin.State"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "eventMessage.admin.Photo"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
-	{% if entity.photo is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.photo }}
-		<br>
-	{% endif %}
-	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
-</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "eventMessage.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.thumbnail, "eventMessage.admin.Thumbnail"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -59,3 +53,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.longitude, "eventMessage.admin.Longitude"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.longitude) }}{{ form_widget(form.longitude, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "eventMessage.admin.Source"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>

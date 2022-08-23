@@ -34,7 +34,7 @@
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
-	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 	<p id="media_duration">
 		<a href="{{ path('EventMessage_Calendar') }}" alt="">
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" /> 

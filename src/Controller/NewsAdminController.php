@@ -39,7 +39,7 @@ class NewsAdminController extends AdminGenericController
 	protected $indexRoute = "News_Admin_Index"; 
 	protected $showRoute = "News_Admin_Show";
 	protected $formName = 'ap_news_newsadmintype';
-	
+
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)

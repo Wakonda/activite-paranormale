@@ -65,9 +65,9 @@ class Cartography extends MappedSuperclassBase
     public function getPhotoIllustrationCaption(): ?Array
     {
 		return [
-					"caption" => null,
-					"source" => ["author" => null, "license" => null, "url" => $this->getLinkGMaps()]
-			   ];
+			"caption" => null,
+			"source" => ["author" => null, "license" => null, "url" => $this->getLinkGMaps()]
+	    ];
     }
 
     /**

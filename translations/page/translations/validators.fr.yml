@@ -42,6 +42,7 @@ eventMessage:
         Date: "Date"
     admin:
         Title: "Titre"
+        AbstractText: "Résumé"
         Text: "Texte"
         Language: "Langue"
         DateFrom: "Date de début"
@@ -54,6 +55,7 @@ eventMessage:
         Theme: "Thème"
         Longitude: "Longitude"
         Latitude: "Latitude"
+        Source: "Sources"
         Validate: "Valider"
         Refuse: "Refuser"
     slider:

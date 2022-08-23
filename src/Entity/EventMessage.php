@@ -24,7 +24,7 @@ class EventMessage extends MappedSuperclassBase
     private $id;
 
 	/**
-	 * @ORM\Column(type="abstractText", nullable=true)
+	 * @ORM\Column(type="text", nullable=true)
 	 */
 	protected $abstractText;
 
@@ -65,12 +65,23 @@ class EventMessage extends MappedSuperclassBase
      * @ORM\Column(type="string", nullable=true)
      */
 	 private $latitude;
+
+    /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $illustration;
 	
 	public function __construct()
 	{
 		parent::__construct();
 		$this->dateFrom = new \DateTime();
 		$this->dateTo = new \DateTime();
+	}
+	
+	public function __clone()
+	{
+		$this->illustration = clone $this->illustration;
 	}
 
 	public function getShowRoute()
@@ -312,5 +323,25 @@ class EventMessage extends MappedSuperclassBase
     public function getAbstractText()
     {
         return $this->abstractText;
+    }
+
+    /**
+     * Set illustration
+     *
+     * @param string $illustration
+     */
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * Get illustration
+     *
+     * @return string 
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }

@@ -40,7 +40,13 @@
 	<div class="form-table-cell">{{ entity.dateFrom|dodate(false, app.request.locale) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Photo"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"}, null, true, entity.archive)|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Thumbnail"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.thumbnail is not empty %}{{ entity.thumbnail|imgsize(200, entity.getAssetImagePath())|raw }}{% endif %}</div>

@@ -10,12 +10,8 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.surTheme, "grimoire.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.surTheme) }}{{ form_widget(form.surTheme, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "grimoire.admin.Photo"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
-	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
-	<br>
-	{{ form_widget(form.photo_selector) }}
-</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "grimoire.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "grimoire.admin.Source"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>

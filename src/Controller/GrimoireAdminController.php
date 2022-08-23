@@ -32,11 +32,11 @@ class GrimoireAdminController extends AdminGenericController
 	protected $indexRoute = "Grimoire_Admin_Index"; 
 	protected $showRoute = "Grimoire_Admin_Show";
 	protected $formName = "ap_witchcraft_grimoireadmintype";
-	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();

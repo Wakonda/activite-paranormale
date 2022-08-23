@@ -55,3 +55,11 @@ EventMessage_Admin_ChangeState:
     controller: App\Controller\EventMessageAdminController::changeStateAction
     requirements:
         id: \d+
+
+EventMessage_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\EventMessageAdminController::showImageSelectorColorboxAction
+
+EventMessage_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\EventMessageAdminController::loadImageSelectorColorboxAction

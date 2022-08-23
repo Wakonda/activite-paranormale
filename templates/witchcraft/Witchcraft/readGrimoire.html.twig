@@ -8,8 +8,8 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	{% if entity.photo is not empty %}
-	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	{% if entity.illustration is not empty %}
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 	{% endif %}
 	{{ entity.text|raw }}
 

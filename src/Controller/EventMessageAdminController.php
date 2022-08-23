@@ -29,11 +29,12 @@ class EventMessageAdminController extends AdminGenericController
 	protected $indexRoute = "EventMessage_Admin_Index"; 
 	protected $showRoute = "EventMessage_Admin_Show";
 	protected $formName = "ap_page_eventmessageadmintype";
-	protected $illustrations = [["field" => "photo"]];
+	
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -159,11 +160,20 @@ class EventMessageAdminController extends AdminGenericController
 		return $this->editGenericAction($id, $twig, $formType);
 	}
 
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('EventMessage_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
+	}
+
 	public function countByStateAction($state)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
 	}
-
 }

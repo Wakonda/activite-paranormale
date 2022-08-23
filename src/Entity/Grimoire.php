@@ -61,6 +61,12 @@ class Grimoire
      */
     private $photo;
 
+    /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $illustration;
+
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
 	 * @Assert\NotBlank(message="admin.error.NotBlank", groups={"grimoire_validation"})
@@ -110,6 +116,22 @@ class Grimoire
 		$this->publicationDate = new \DateTime();
 		$this->archive = false;
 	}
+	
+	public function __clone()
+	{
+		$this->illustration = clone $this->illustration;
+	}
+
+    public function getPhotoIllustrationCaption(): ?Array
+    {
+		if(method_exists($this, "getIllustration") and !empty($this->getIllustration()))
+			return [
+				"caption" => $this->getIllustration()->getCaption(),
+				"source" => ["author" => $this->getIllustration()->getAuthor(), "license" => $this->getIllustration()->getLicense(), "url" => $this->getIllustration()->getUrlSource()]
+		    ];
+		
+		return [];
+    }
 
 	public function getPdfVersionRoute()
 	{
@@ -443,5 +465,25 @@ class Grimoire
     public function getPublicationDate()
     {
         return $this->publicationDate;
+    }
+
+    /**
+     * Set illustration
+     *
+     * @param string $illustration
+     */
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * Get illustration
+     *
+     * @return string 
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }

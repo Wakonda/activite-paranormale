@@ -46,8 +46,7 @@ class GrimoireAdminType extends AbstractType
 								  ->orderBy('u.title', 'ASC');
 					}
 			))
-            ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'Grimoire_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
+			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'Grimoire_Admin_ShowImageSelectorColorbox'))
         ;
     }
 
