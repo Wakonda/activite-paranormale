@@ -379,10 +379,16 @@
 			$display .= "<h3>".$this->translator->trans("generality.page.Advertisement", array(), "validators")."</h3>";
 			
 			if($pub == "google")
-			{
+			{				
 				$display .= '
 				<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="6790583340" data-ad-format="auto" data-full-width-responsive="true"></ins>
 				<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>';
+
+				$ads = $this->advertising(728, 90);
+				
+				if(!empty($ads)) {
+					$display .= '<div class="d-none advertising-alternative advertising_image text-center">'.$ads->getText().'</div>';
+				}
 			}
 			elseif($pub == "amazon")
 			{
