@@ -162,6 +162,13 @@
 								<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
 								<ins class="adsbygoogle" style="display:inline-block;width:200;height:200" data-ad-client="ca-pub-1951906303386196" data-ad-slot="0150773125"></ins>
 								<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+								{% set ads = advertising(300, 250) %}
+								{% if ads is not empty %}
+								<div class="d-none advertising-alternative advertising_image text-center">
+									{{ ads.text|raw }}
+								</div>
+								{% endif %}
 							</div>
 							<div class="news_section">
 								<h3>{{ "index.leftMenu.Partner"|trans([], "validators") }}</h3>
@@ -361,5 +368,31 @@
 		<div class="footer container footer-copyright text-center py-2">
 			<span class="font-weight-bold">Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }}</span> <a class="font-weight-bold" href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a>
 		</div>
+		
+		<script type="text/javascript">
+			async function detectAdBlock() {
+			  let adBlockEnabled = false
+			  const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
+			  try {
+				await fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true)
+			  } catch (e) {
+				adBlockEnabled = true
+			  } finally {
+				if(document.cookie.includes("tarteaucitron=!adsense=true") && adBlockEnabled == false) {
+					for (let element of document.getElementsByClassName("advertising-alternative"))
+						element.classList.add("d-none");
+					for (let element of document.getElementsByClassName("adsbygoogle"))
+						element.classList.remove("d-none");
+				} else {
+					for (let element of document.getElementsByClassName("advertising-alternative"))
+						element.classList.remove("d-none");
+					for (let element of document.getElementsByClassName("adsbygoogle"))
+						element.classList.add("d-none");
+				}
+			  }
+			}
+			
+			detectAdBlock();
+		</script>
 	</body>
 </html>
