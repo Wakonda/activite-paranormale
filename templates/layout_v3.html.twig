@@ -163,7 +163,7 @@
 								<ins class="adsbygoogle" style="display:inline-block;width:200;height:200" data-ad-client="ca-pub-1951906303386196" data-ad-slot="0150773125"></ins>
 								<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-								{% set ads = advertising(300, 250) %}
+								{% set ads = advertising(728, 90) %}
 								{% if ads is not empty %}
 								<div class="d-none advertising-alternative advertising_image text-center">
 									{{ ads.text|raw }}
@@ -226,7 +226,7 @@
 								<h3>{{ "index.leftMenu.Development"|trans([], "validators") }}</h3>
 								<div class="text-center">
 									<p class="mb-2">{{ 'index.development.CodingSkills'|trans([], "validators") }}</p>
-									<a href="{{ path('UsefulLink_Index') }}" class="btn btn-info mb-3"><i class="fas fa-code"></i> {{ 'index.development.Develop'|trans([], "validators") }}</a>
+									<a href="{{ path('UsefulLink_Index') }}" class="btn btn-info mb-3 text-white"><i class="fas fa-code"></i> {{ 'index.development.Develop'|trans([], "validators") }}</a>
 								</div>
 							</div>
 							{% if is_mobile() == false %}
@@ -261,7 +261,7 @@
 									</a>
 								</p>
 							</div>
-							<div class="button_01"><a class="btn submitcomment w-100 text-left text-dark font-weight-bold" href="{{ path('WebDirectory_Index') }}"><i class="fas fa-link text-right rounded bg-white mr-2 fa-border fa-sm w-25"></i><span class="align-top">{{ "index.leftMenu.More"|trans([], "validators") }}</span></a></div>
+							<div class="text-center"><a class="btn submitcomment text-left text-dark font-weight-bold" href="{{ path('WebDirectory_Index') }}"><i class="fas fa-link text-right fa-sm mr-2"></i><span class="align-top">{{ "index.leftMenu.More"|trans([], "validators") }}</span></a></div>
 						</div>
 					</div>
 					<div class="card mt-2">
