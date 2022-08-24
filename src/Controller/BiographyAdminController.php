@@ -193,7 +193,7 @@ class BiographyAdminController extends AdminGenericController
 			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
-		
+	
 		$datas =  $this->getDoctrine()->getManager()->getRepository(Biography::class)->getAutocomplete($locale, $query);
 		
 		$results = array();

@@ -297,13 +297,13 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->groupBy("b.internationalName")
 		   ->addGroupBy("b.wikidata");
 		
-		/*if(!empty($locale))
+		if(!empty($locale))
 		{
 			$qb
 			   ->leftjoin("b.language", "la")
 			   ->where('la.abbreviation = :locale')
 			   ->setParameter('locale', $locale);
-		}*/
+		}
 		   
 		if(!empty($query))
 		{

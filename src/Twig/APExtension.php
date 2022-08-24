@@ -112,6 +112,7 @@
 				new TwigFunction('source_document', array($this, 'getSourceDocument'), array('is_safe' => array('html'))),
 				new TwigFunction('parse_url', array($this, 'parseUrl')),
 				new TwigFunction('getimagesize', array($this, 'getimagesize')),
+				new TwigFunction('advertising', array($this, 'advertising')),
 				new TwigFunction('get_env', array($this, 'getEnv'))
 			);
 		}
@@ -897,6 +898,10 @@
 		
 		public function UcfirstFilter(String $string) {
 			return ucfirst($string);
+		}
+		
+		public function advertising($maxWidth, $maxHeight) {
+			return $this->em->getRepository("App\Entity\Advertising")->getOneRandomAdsByWidthAndHeight($maxWidth, $maxHeight);
 		}
 
 		public function getEnv(string $varname): string

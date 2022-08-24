@@ -47,4 +47,27 @@ class AdvertisingRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+	
+	public function getOneRandomAdsByWidthAndHeight(int $maxWidth, int $maxHeight) {
+		$qb = $this->createQueryBuilder("a");
+
+		$qb->select("COUNT(a.id) AS countRow")->where("a.width <= :maxWidth")
+		   ->andWhere("a.height <= :maxHeight")
+		   ->setParameter("maxWidth", $maxWidth)
+		   ->setParameter("maxHeight", $maxHeight);
+
+		$max = max($qb->getQuery()->getSingleScalarResult() - 1, 0);
+		$offset = rand(0, $max);
+		
+		$qb = $this->createQueryBuilder("a");
+		
+		$qb->where("a.width <= :maxWidth")
+		   ->andWhere("a.height <= :maxHeight")
+		   ->setParameter("maxWidth", $maxWidth)
+		   ->setParameter("maxHeight", $maxHeight)
+		   ->setFirstResult($offset)
+		   ->setMaxResults(1);
+		   
+		return $qb->getQuery()->getOneOrNullResult();
+	}
 }
