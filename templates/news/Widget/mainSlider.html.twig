@@ -1,53 +1,57 @@
-﻿<script>
-$(function() {
-    $('#carousel-world-news-index').carousel({
-        interval: 5000
-    }).on('slide.bs.carousel', function (e) {
-        var nextH = $(e.relatedTarget).height();
-        $(this).find('.active.carousel-item').parent().animate({
-            height: nextH
-        }, 500);
-    });
-});
-</script>
+﻿{% if worldNews is not empty %}
+	<script>
+		$(function() {
+			$('#carousel-world-news-index').carousel({
+				interval: 5000
+			}).on('slide.bs.carousel', function (e) {
+				var nextH = $(e.relatedTarget).height();
+				$(this).find('.active.carousel-item').parent().animate({
+					height: nextH
+				}, 500);
+			});
+		});
+	</script>
 
-<div id="carousel-world-news-index" class="carousel-pagination carousel slide" data-ride="carousel">
-	<!-- Indicators -->
-	<ol class="carousel-indicators carousel-indicators-numbers pagination">
-	{% set i = 0 %}
-	{% set j = 1 %}
-	{% for worldNew in worldNews %}
-		<li data-target="#carousel-world-news-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
-		{% set i = i + 1 %}
-		{% set j = j + 1 %}
-	{% endfor %}
-	</ol>
+	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
 
-	<!-- Wrapper for slides -->
-	<div class="carousel-inner" role="listbox">
+	<div id="carousel-world-news-index" class="carousel-pagination carousel slide" data-ride="carousel">
+		<!-- Indicators -->
+		<ol class="carousel-indicators carousel-indicators-numbers pagination">
 		{% set i = 0 %}
+		{% set j = 1 %}
 		{% for worldNew in worldNews %}
-			<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-				<div class="card mb-3">
-					<div class="card-header h-100 text-left">
-						<img class="image_wrapper" src="{{ asset(worldNew.language.getAssetImagePath()) }}{{ worldNew.language.logo }}" title="{{ worldNew.language.abbreviation }}" width="20" height="13" alt="{{ worldNew.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ worldNew.title }}</span>
-					</div>
-					<div class="row no-gutters">
-						<div class="col-md-4 mt-3">
-							{{ worldNew.photoIllustrationFilename|imgsize(null, worldNew.getAssetImagePath())|raw }}
+			<li data-target="#carousel-world-news-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+			{% set i = i + 1 %}
+			{% set j = j + 1 %}
+		{% endfor %}
+		</ol>
+
+		<!-- Wrapper for slides -->
+		<div class="carousel-inner" role="listbox">
+			{% set i = 0 %}
+			{% for worldNew in worldNews %}
+				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+					<div class="card mb-3">
+						<div class="card-header h-100 text-left">
+							<img class="image_wrapper" src="{{ asset(worldNew.language.getAssetImagePath()) }}{{ worldNew.language.logo }}" title="{{ worldNew.language.abbreviation }}" width="20" height="13" alt="{{ worldNew.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ worldNew.title }}</span>
 						</div>
-						<div class="col-md-8">
-							<div class="card-body">
-								{{ worldNew.abstractText|raw }}
+						<div class="row no-gutters">
+							<div class="col-md-4 mt-3">
+								{{ worldNew.photoIllustrationFilename|imgsize(null, worldNew.getAssetImagePath())|raw }}
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									{{ worldNew.abstractText|raw }}
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="card-footer text-muted text-right">
-						<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': worldNew.id, 'title_slug':worldNew.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
+						<div class="card-footer text-muted text-right">
+							<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': worldNew.id, 'title_slug':worldNew.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
+						</div>
 					</div>
 				</div>
-			</div>
-			{% set i = i + 1 %}
-		{% endfor %}
+				{% set i = i + 1 %}
+			{% endfor %}
+		</div>
 	</div>
-</div>
+{% endif %}

@@ -64,13 +64,10 @@
 	{{ "google"|advertisement|raw }}
 	<br>
 	{{ render(controller('App\\Controller\\EventMessageController::sliderAction')) }}
-	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\NewsController::sliderAction')) }}
 	<br>
-	<h3>{{ "index.main.Video"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\VideoController::sliderAction')) }}
 	<br>
-	<h3>{{ "index.main.Gallery"|trans([], "validators") }}</h3>
 	{{ render(controller('App\\Controller\\PhotoController::sliderAction')) }}
 	<br>
 	{{ render(controller('App\\Controller\\WitchcraftController::widgetAction')) }}

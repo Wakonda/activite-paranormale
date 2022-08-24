@@ -1,5 +1,7 @@
-<div style="position:relative;">
-	{% if entity is not null %}
+{% if entity is not null %}
+	<h3>{{ "index.main.Video"|trans([], "validators") }}</h3>
+	
+	<div style="position:relative;">
 		<p><span style="font-weight: bold; font-size: 16px;">{{ entity.title }} (<a href="{{ path('Video_Read', { 'id':entity.id, 'title_slug':entity.getUrlSlug()}) }}" title="More">{{ "photo.slider.More"|trans([], "validators") }}</a>)</span></p>
 		<div class="image">
 			{% if entity.mediaVideo is not empty %}
@@ -14,5 +16,5 @@
 				</div>
 			{% endif %}
 		</div>
-	{% endif %}
-</div>
+	</div>
+{% endif %}
