@@ -36,6 +36,7 @@ store:
         Characteristic: "Caractéristique"
         AddProduct: "Ajouter un produit"
         Product: "Produit"
+        MoreBooksOn: "Plus de livres sur"
     characteristic:
         VinylDisc: "Disque vinyle"
         Cd: "CD"
