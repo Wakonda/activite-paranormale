@@ -37,7 +37,7 @@ class MigratePhotosGrimoireEventToFilemanagementCommand extends Command
 
 		$sql = "SELECT id, photo FROM eventmessage WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAll($sql);
-		
+
 		foreach($datas as $data)
 		{
 			$conn->exec("INSERT INTO `filemanagement` (`titleFile`, `realNameFile`, `extensionFile`, `kindFile`, `discr`, `caption`) VALUES ('".str_replace("'", "\'", $data['photo'])."', '".str_replace("'", "\'", $data['photo'])."', '".pathinfo(str_replace("'", "\'", $data['photo']), PATHINFO_EXTENSION)."', 'file', 'filemanagement', NULL)");
@@ -46,7 +46,7 @@ class MigratePhotosGrimoireEventToFilemanagementCommand extends Command
 			$conn->exec("UPDATE eventmessage SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
 		}
 		
-		die("End eventmessage");
+		echo "End eventmessage";
 
 		$sql = "SELECT id, photo FROM grimoire WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAll($sql);
@@ -59,7 +59,7 @@ class MigratePhotosGrimoireEventToFilemanagementCommand extends Command
 			$conn->exec("UPDATE grimoire SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
 		}
 		
-		die("End grimoire");
+		echo "End grimoire";
 
         return 0;
     }
