@@ -49,7 +49,7 @@ class NewsUserParticipationType extends AbstractType
 											'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
 											))
 			->add('validate', SubmitType::class, array(
-				'attr' => array('class' => 'submitcomment btn'),
+				'attr' => array('class' => 'submitcomment btn')
 			))
 			->add('illustration', FileType::class, array('data_class' => null, 'required' => false))
 			;

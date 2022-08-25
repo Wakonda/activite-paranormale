@@ -12,6 +12,7 @@ use App\Entity\Language;
 use App\Entity\Theme;
 use App\Entity\State;
 use App\Entity\User;
+use App\Entity\FileManagement;
 use App\Form\Type\EventMessageUserParticipationType;
 use App\Service\APImgSize;
 use App\Service\APDate;
@@ -266,7 +267,20 @@ class EventMessageController extends AbstractController
 		}
 
         if ($form->isValid())
-		{	
+		{
+			if(is_object($ci = $entity->getIllustration()))
+			{
+				$titleFile = uniqid()."_".$ci->getClientOriginalName();
+				$illustration = new FileManagement();
+				$illustration->setTitleFile($titleFile);
+				$illustration->setRealNameFile($titleFile);
+				$illustration->setExtensionFile(pathinfo($ci->getClientOriginalName(), PATHINFO_EXTENSION));
+				
+				$ci->move($entity->getTmpUploadRootDir(), $titleFile);
+				
+				$entity->setIllustration($illustration);
+			}
+
 			$em->persist($entity);
 			$em->flush();
 			

@@ -40,7 +40,7 @@ class EventMessageUserParticipationType extends AbstractType
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn'),
 			))
-			->add('photo', FileType::class, array('data_class' => null, 'required' => false))
+			->add('illustration', FileType::class, array('data_class' => null, 'required' => false))
 			->add('longitude', HiddenType::class, array('required' => false))
 			->add('latitude', HiddenType::class, array('required' => false))
 			;
