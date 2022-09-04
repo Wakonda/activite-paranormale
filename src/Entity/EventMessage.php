@@ -41,12 +41,12 @@ class EventMessage extends MappedSuperclassBase
     private $thumbnail;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", length=12)
      */
     protected $dateFrom;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="string", length=12, nullable=true)
      */
     protected $dateTo;
 

@@ -599,7 +599,7 @@ class AdminController extends AbstractController
 	}
 	
 	// Wakonda.GURU
-	public function wakondaGuruAction(Request $request, int $id, string $path, string $routeToRedirect)
+	public function wakondaGuruAction(Request $request, SessionInterface $session, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		
@@ -622,7 +622,7 @@ class AdminController extends AbstractController
 	}
 	
 	// Muse
-	public function museAction(Request $request, int $id, string $path, string $routeToRedirect)
+	public function museAction(Request $request, TranslatorInterface $translator, SessionInterface $session, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		
@@ -655,9 +655,8 @@ class AdminController extends AbstractController
 	}
 	
 	// Tumblr
-	public function tumblrAction(Request $request, TumblrAPI $tumblr, $id, $path, $routeToRedirect)
+	public function tumblrAction(Request $request, TumblrAPI $tumblr, SessionInterface $session, $id, $path, $routeToRedirect)
 	{
-		$session = $request->getSession();
 		$session->set("id_tumblr", $id);
 		$session->set("path_tumblr", urldecode($path));
 		$session->set("routeToRedirect_tumblr", $routeToRedirect);

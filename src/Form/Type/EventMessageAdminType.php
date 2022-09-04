@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 use App\Form\Field\SourceEditType;
+use App\Form\Field\DatePartialType;
 
 class EventMessageAdminType extends AbstractType
 {
@@ -27,8 +28,8 @@ class EventMessageAdminType extends AbstractType
             ->add('title', TextType::class, array('label'=>'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('label'=>'Texte', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('abstractText', TextareaType::class, array('required' => false))
-			->add('dateFrom', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
-			->add('dateTo', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
+			->add('dateFrom', DatePartialType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+			->add('dateTo', DatePartialType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 					'choice_label'=>'title', 
 					'required' => true,

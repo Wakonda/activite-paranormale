@@ -34,10 +34,10 @@
 	<div class="form-table-cell">{{ entity.PseudoUsed }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.DateTo"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.dateTo|dodate(false, app.request.locale) }}</div>
+	<div class="form-table-cell">{{ entity.dateTo|doPartialDate(app.request.locale) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.DateFrom"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.dateFrom|dodate(false, app.request.locale) }}</div>
+	<div class="form-table-cell">{{ entity.dateFrom|doPartialDate(app.request.locale) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Photo"|trans([], "validators") }}</div>
 	<div class="form-table-cell">

@@ -14,7 +14,7 @@
 	</div>
 	<input type="text" id="url_{{ fieldId }}" class="form-control"/>
 	<select id="sections_{{ fieldId }}" name="sections[]" multiple="multiple" style="min-width: 25%"></select>
-	<button type="button" class="btn btn-success" id="import_url_{{ fieldId }}"><i class="fas fa-check"></i></button>
+	<button type="button" class="btn btn-success" id="import_url_{{ fieldId }}"><i class="fas fa-check" id="import_url_icon_{{ fieldId }}"></i></button>
 </div>
 <link rel="stylesheet" type="text/css" href="{{ asset('extended/js/select2/dist/css/select2.min.css') }}" media="screen" />
 <script src="{{ asset('extended/js/select2/dist/js/select2.full.min.js') }}"></script>
@@ -52,6 +52,8 @@
 			let url = $("#url_{{ fieldId }}").val();
 			let sections = $("#sections_{{ fieldId }}").val();
 			
+			$("#import_url_icon_{{ fieldId }}").removeClass("fa-check").addClass("fa-sync fa-spin");
+
 			$.ajax({
 				type: "POST",
 				url: "{{ path('Admin_ImportWikipedia') }}",
@@ -71,6 +73,9 @@
 					{% if sourceField is not null %}
 						document.getElementById('add_source_{{ sourceField }}').click();
 					{% endif %}
+				},
+				complete: function(data) {
+					$("#import_url_icon_{{ fieldId }}").addClass("fa-check").removeClass("fa-sync fa-spin");
 				}
 			});
 		});
