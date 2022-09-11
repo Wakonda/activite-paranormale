@@ -6,8 +6,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\EventMessage;
+use App\Entity\Biography;
 use App\Entity\Language;
 use App\Entity\Theme;
 use App\Entity\State;
@@ -51,17 +53,44 @@ class EventMessageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsBetweenTwoDates($request->getLocale(), $startDate, $endDate);
 		
+		$eventDates = [];
+
+		foreach($entities as $entity)
+		{
+			$interval = \DateInterval::createFromDateString("1 day");
+			$period = new \DatePeriod(new \DateTime($entity->getDateFrom()), $interval, (new \DateTime($entity->getDateTo()))->modify("+1 day"));
+			
+			foreach($period as $dt) {
+				$eventDates[] = $dt->format("Y-m-d");
+			}
+		}
+
+		$interval = \DateInterval::createFromDateString("1 day");
+		$period = new \DatePeriod($startDate, $interval, $endDate);
+		
 		$res = [];
+		
+		foreach($period as $dt) {
+			$res[] = [
+				"title" => '<i class="fas fa-play-circle fa-2x"></i>',
+				"color" => in_array($dt->format("Y-m-d"), $eventDates) ? 'darkgreen' : "darkred",
+				"url" => $this->generateUrl('EventMessage_SelectDayMonth', ['year' => $dt->format("Y"), 'month' => $dt->format("m"), 'day' => $dt->format("d")]),
+				"start" => $dt->format("Y-m-d"),
+				"end" => $dt->format("Y-m-d")
+			];
+		}
+
+		/*$res = [];
 
 		foreach($entities as $entity)
 		{
 			$res[] = [
 				"title" => $entity->getTitle(),
 				"url" => $this->generateUrl('EventMessage_Read', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]),
-				"start" => $entity->getDateFrom()->format("Y-m-d"),
-				"end" => $entity->getDateTo()->format("Y-m-d")
+				"start" => $entity->getDateFrom(),
+				"end" => $entity->getDateTo()
 			];
-		}
+		}*/
 
 		$response = new Response(json_encode($res));
 		$response->headers->set('Content-Type', 'application/json');
@@ -112,9 +141,9 @@ class EventMessageController extends AbstractController
 			$dateString = null;
 
 			if($entity->getDateTo() == $entity->getDateFrom())
-				$dateString = $date->doDate($request->getLocale(), $entity->getDateFrom());
+				$dateString = $date->doPartialDate($entity->getDateFromString(), $request->getLocale());
 			else
-				$dateString = $date->doDate($request->getLocale(), $entity->getDateFrom())." - ".$date->doDate($request->getLocale(), $entity->getDateTo());
+				$dateString = $date->doPartialDate($entity->getDateFromString(), $request->getLocale())." - ".$date->doPartialDate($entity->getDateToString(), $request->getLocale());
 
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(150, $img);
@@ -230,7 +259,6 @@ class EventMessageController extends AbstractController
 			
 			if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 				throw new \Exception("You are not authorized to edit this document.");
-
 		}
 
         $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
@@ -375,5 +403,255 @@ class EventMessageController extends AbstractController
 		$response = new Response(json_encode($output));
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
+	}
+	
+	public function getAllEventsByDayAndMonthAction(Request $request, TranslatorInterface $translator, $year, $month, $day)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
+		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+
+		$currentDate = new \DateTime($year."-".$month."-".$day);
+
+		$bc = $translator->trans("eventMessage.dayMonth.BC", [], "validators");
+
+		$res = [];
+		$currentEvent = [];
+
+		$entities = $em->getRepository(EventMessage::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
+		
+		foreach($entities as $entity) {
+			$yearEvent = $entity->getYearFrom();
+			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
+			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
+			
+			if($yearEvent != $year) {
+				$res["event"][$centuryText][$entity->getYearFrom()][] = [
+					"title" => $entity->getTitle(),
+					"theme" => $entity->getTheme()->getTitle(),
+					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
+				];
+			} else {
+				$currentEvent["event"][] = [
+					"title" => $entity->getTitle(),
+					"theme" => $entity->getTheme()->getTitle(),
+					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
+				];
+			}
+		}
+		
+		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
+		
+		foreach($entities as $entity) {
+			$type = "deathDate";
+
+			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("m-d") == $month."-".$day)
+				$type = "birthDate";
+			
+			$get = "get".ucfirst($type);
+			
+			$yearEvent = (new \DateTime($entity->$get()))->format("Y");
+			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
+			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
+
+			if($yearEvent != $year) {
+				$res[$type][$centuryText][(new \DateTime($entity->$get()))->format("Y")][] = [
+					"title" => $entity->getTitle(),
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+				];
+			} else {
+				$currentEvent[$type][] = [
+					"title" => $entity->getTitle(),
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+				];
+			}
+		}
+
+		return $this->render("page/EventMessage/dayMonthEvent.html.twig", [
+			"res" => $res,
+			"currentEvent" => $currentEvent,
+			"currentDate" => $currentDate
+		]);
+	}
+	
+	public function getAllEventsByYearOrMonthAction(Request $request, TranslatorInterface $translator, $year, $month)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$month = !empty($month) ? str_pad($month, 2, "0", STR_PAD_LEFT) : "01";
+
+		$currentDate = new \DateTime($year."-".$month."-01");
+
+		$res = [];
+		$currentEvent = [];
+
+		$entities = $em->getRepository(EventMessage::class)->getAllEventsByMonthOrYear($year, $month, $request->getLocale());
+		
+		foreach($entities as $entity) {
+			$res["event"][] = [
+				"title" => $entity->getTitle(),
+				"theme" => $entity->getTheme()->getTitle(),
+				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
+				"startDate" => ["year" => $entity->getYearFrom(), "month" => $entity->getMonthFrom(), "day" => $entity->getDayFrom()],
+				"endDate" => ($entity->getDayFrom() == $entity->getDayTo()) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
+			];
+		}
+		
+		$entities = $em->getRepository(Biography::class)->getAllEventsByMonthOrYear($year, $month, $request->getLocale());
+
+		foreach($entities as $entity) {
+			$type = "deathDate";
+
+			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y-m") == $year."-".$month)
+				$type = "birthDate";
+			
+			$get = "get".ucfirst($type);
+			
+			$startDateArray = explode("-", $entity->getBirthDate());
+			$startArray = ["year" => null, "month" => null, "day" => null];
+			
+			if(isset($startDateArray[0]))
+				$startArray["year"] = $startDateArray[0];
+			
+			if(isset($startDateArray[1]))
+				$startArray["month"] = $startDateArray[1];
+			
+			if(isset($startDateArray[2]))
+				$startArray["day"] = $startDateArray[2];
+			
+			$endDateArray = explode("-", $entity->getDeathDate());
+			$endArray = ["year" => null, "month" => null, "day" => null];
+			
+			if(isset($endDateArray[0]))
+				$endArray["year"] = $endDateArray[0];
+			
+			if(isset($endDateArray[1]))
+				$endArray["month"] = $endDateArray[1];
+			
+			if(isset($endDateArray[2]))
+				$endArray["day"] = $endDateArray[2];
+
+			$res[$type][] = [
+				"title" => $entity->getTitle(),
+				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ]),
+				"startDate" => (empty($startArray["year"]) and empty($startArray["month"]) and empty($startArray["day"])) ? null : $startArray,
+				"endDate" => (empty($endArray["year"]) and empty($endArray["month"]) and empty($endArray["day"])) ? null : $endArray
+			];
+		}
+
+		return $this->render("page/EventMessage/yearMonthEvent.html.twig", [
+			"res" => $res,
+			"currentDate" => $currentDate
+		]);
+	}
+	
+	public function getAllEventsByYearAction(Request $request, TranslatorInterface $translator, $year)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$currentDate = new \DateTime($year."-01-01");
+
+		$res = [];
+		$currentEvent = [];
+
+		$entities = $em->getRepository(EventMessage::class)->getAllEventsByMonthOrYear($year, null, $request->getLocale());
+		
+		foreach($entities as $entity) {
+			$res["event"][] = [
+				"title" => $entity->getTitle(),
+				"theme" => $entity->getTheme()->getTitle(),
+				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
+				"startDate" => ["year" => $entity->getYearFrom(), "month" => $entity->getMonthFrom(), "day" => $entity->getDayFrom()],
+				"endDate" => ($entity->getDayFrom() == $entity->getDayTo()) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
+			];
+		}
+		
+		$entities = $em->getRepository(Biography::class)->getAllEventsByMonthOrYear($year, null, $request->getLocale());
+
+		foreach($entities as $entity) {
+			$type = "deathDate";
+
+			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y") == $year)
+				$type = "birthDate";
+			
+			$get = "get".ucfirst($type);
+			
+			$startDateArray = explode("-", $entity->getBirthDate());
+			$startArray = ["year" => null, "month" => null, "day" => null];
+			
+			if(isset($startDateArray[0]))
+				$startArray["year"] = $startDateArray[0];
+			
+			if(isset($startDateArray[1]))
+				$startArray["month"] = $startDateArray[1];
+			
+			if(isset($startDateArray[2]))
+				$startArray["day"] = $startDateArray[2];
+			
+			$endDateArray = explode("-", $entity->getDeathDate());
+			$endArray = ["year" => null, "month" => null, "day" => null];
+			
+			if(isset($endDateArray[0]))
+				$endArray["year"] = $endDateArray[0];
+			
+			if(isset($endDateArray[1]))
+				$endArray["month"] = $endDateArray[1];
+			
+			if(isset($endDateArray[2]))
+				$endArray["day"] = $endDateArray[2];
+
+			$res[$type][] = [
+				"title" => $entity->getTitle(),
+				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ]),
+				"startDate" => (empty($startArray["year"]) and empty($startArray["month"]) and empty($startArray["day"])) ? null : $startArray,
+				"endDate" => (empty($endArray["year"]) and empty($endArray["month"]) and empty($endArray["day"])) ? null : $endArray
+			];
+		}
+
+		return $this->render("page/EventMessage/yearEvent.html.twig", [
+			"res" => $res,
+			"currentDate" => $currentDate
+		]);
+	}
+	
+	private function romanNumerals($num){ 
+		$n = intval($num); 
+		$res = ''; 
+
+		/*** roman_numerals array  ***/ 
+		$roman_numerals = array( 
+			'M'  => 1000, 
+			'CM' => 900, 
+			'D'  => 500, 
+			'CD' => 400, 
+			'C'  => 100, 
+			'XC' => 90, 
+			'L'  => 50, 
+			'XL' => 40, 
+			'X'  => 10, 
+			'IX' => 9, 
+			'V'  => 5, 
+			'IV' => 4, 
+			'I'  => 1); 
+
+		foreach ($roman_numerals as $roman => $number){ 
+			/*** divide to get  matches ***/ 
+			$matches = intval($n / $number); 
+
+			/*** assign the roman char * $matches ***/ 
+			$res .= str_repeat($roman, $matches); 
+
+			/*** substract from the number ***/ 
+			$n = $n % $number; 
+		} 
+
+		/*** return the res ***/ 
+		return $res; 
+	}
+
+	function getCentury($year) 
+	{
+		return ceil($year / 100);
 	}
 }

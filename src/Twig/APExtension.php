@@ -53,6 +53,7 @@
 				new TwigFilter('displayPrivatePDF', array($this, 'displayPrivatePDFFilter'), array('is_safe' => array('html'))),
 				new TwigFilter('dodate', array($this, 'dodateFilter')),
 				new TwigFilter('doPartialDate', array($this, 'doPartialDateFilter')),
+				new TwigFilter('doYearMonthDayDate', array($this, 'doYearMonthDayDateFilter')),
 				new TwigFilter('advertisement', array($this, 'advertisementFilter')),
 				new TwigFilter('linkfollow', array($this, 'linkFollowFilter')),
 				new TwigFilter('is_image', array($this, 'isImageFilter')),
@@ -343,34 +344,12 @@
 		
 		public function doPartialDateFilter(?string $partialDate, $language)
 		{
-			$dateArray = explode("-", $partialDate);
-			
-			if(empty($dateArray))
-				return null;
-			
-			if(count($dateArray) == 1)
-				return $dateArray[0];
-			
-			$year = $dateArray[0];	
-			$month = $dateArray[1];
-
-			if($language == "fr")
-			{
-				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]." " : "").$monthFrench[$dateArray[1]-1]." ".$dateArray[0];
-			}
-			else if($language == "es")
-			{
-				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]." de " : "").$monthSpain[$dateArray[1]-1]." de ".$dateArray[0];
-			}
-			else
-			{
-				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]."th " : "").$monthEnglish[$dateArray[1]-1]." ".$dateArray[0];
-			}
-			
-			return $dateString;
+			return (new \App\Service\APDate())->doPartialDate($partialDate, $language);
+		}
+		
+		public function doYearMonthDayDateFilter($day, $month, $year, $language)
+		{
+			return (new \App\Service\APDate())->doYearMonthDayDate($day, $month, $year, $language);
 		}
 
 		public function advertisementFilter($pub)

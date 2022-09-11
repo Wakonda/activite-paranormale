@@ -72,6 +72,17 @@
 					{
 						$form->get($fieldName)->get("titleFile")->addError(new FormError($this->translator->trans('admin.error.NotBlank', array(), 'validators')));
 					}
+
+					if(!empty($entityBindded->$getFieldName()))
+					{
+						// dd($entityBindded->$getFieldName()->getTitleFile(), $currentFile);
+						if((!empty($entityBindded->$getFieldName()->getLicense()) or !empty($entityBindded->$getFieldName()->getAuthor()) or !empty($entityBindded->$getFieldName()->getUrlSource()) or !empty($entityBindded->$getFieldName()->getCaption())) and (empty($currentFile) or empty($currentFile->getTitleFile())) and empty($entityBindded->$getFieldName()->getTitleFile()) and empty($url))
+						{
+							$form->get($fieldName)->get("titleFile")->addError(new FormError($this->translator->trans('admin.error.NotBlank', array(), 'validators')));
+						}
+					}
+					
+					// dd($currentFile);
 				}
 			}
 		}

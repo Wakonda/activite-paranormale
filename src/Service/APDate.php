@@ -16,7 +16,7 @@
 				{
 					if($language == "fr")
 					{
-						$MoisFr = array('janvier', 'f�vrier', 'mars', 'avril', 'mai', 'juin', 'juillet', 'ao�t', 'septembre', 'octobre', 'novembre', 'd�cembre');
+						$MoisFr = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
 						$d = explode("-", $date);
 						$dateF = $d[2]." ".$MoisFr[$d[1]-1]." ".$d[0];
 					}
@@ -48,7 +48,7 @@
 				switch($language)
 				{
 					case "fr":
-						$dateTimeString = $dateString." � ".$datetime->format("H:i:s");
+						$dateTimeString = $dateString." à ".$datetime->format("H:i:s");
 						break;
 					case "en":
 						$dateTimeString = $dateString." at ".$datetime->format("h:i:s A");
@@ -62,5 +62,66 @@
 			}
 			
 			return "-";
+		}
+		
+		public function doPartialDate(?string $partialDate, $language)
+		{
+			$dateArray = explode("-", $partialDate);
+			
+			if(empty($dateArray))
+				return null;
+			
+			if(count($dateArray) == 1)
+				return $dateArray[0];
+			
+			$year = $dateArray[0];	
+			$month = $dateArray[1];
+
+			if($language == "fr")
+			{
+				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]." " : "").$monthFrench[$dateArray[1]-1]." ".$dateArray[0];
+			}
+			else if($language == "es")
+			{
+				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]." de " : "").$monthSpain[$dateArray[1]-1]." de ".$dateArray[0];
+			}
+			else
+			{
+				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]."th " : "").$monthEnglish[$dateArray[1]-1]." ".$dateArray[0];
+			}
+			
+			return $dateString;
+		}
+		
+		public function doYearMonthDayDate($day, $month, $year, $language) {
+			if(empty($day) and empty($month) and empty($year))
+				return null;
+			
+			if(!empty($day) and empty($month) and !empty($year))
+				return null;
+
+			if(empty($day) and empty($month) and !empty($year))
+				return $year;
+			
+			if($language == "fr")
+			{
+				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
+				$dateString = $day." ".$monthFrench[$month-1]." ".$year;
+			}
+			else if($language == "es")
+			{
+				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
+				$dateString = ((!empty($day)) ? $day." de " : "").$monthSpain[$month-1]." de ".$year;
+			}
+			else
+			{
+				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+				$dateString = ((!empty($day)) ? $day."th " : "").$monthEnglish[$month-1]." ".$year;
+			}
+			
+			return $dateString;
 		}
 	}

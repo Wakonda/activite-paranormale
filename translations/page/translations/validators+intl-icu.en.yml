@@ -90,6 +90,20 @@ eventMessage:
         ThankForYourParticipationText: "Your event has been transmitted to us. It will be published on our website as soon as a moderator's approval."
     world:
         WorldEventMessage: "Multilingual event"
+    dayMonth:
+        Century: >-
+            {number, plural,
+                =1 {{romanNumber}<sup>st</sup> century {bc}}
+                =2 {{romanNumber}<sup>nd</sup> century {bc}}
+                =3 {{romanNumber}<sup>rd</sup> century {bc}}
+                other {{romanNumber}<sup>th</sup> century {bc}}
+            }
+        BC: "BC"
+        BirthDate: "Births"
+        DeathDate: "Deaths"
+        Event: "Events"
+        NoEventToday: "No event today"
+        NoEvent: "No event"
 logo:
     admin:
         Title: "Title"

@@ -290,6 +290,7 @@ class MovieAdminController extends AdminGenericController
 		$entity->setTrailer($entityToCopy->getTrailer());
 		$entity->setDuration($entityToCopy->getDuration());
 		$entity->setReleaseYear($entityToCopy->getReleaseYear());
+		$entity->setWikidata($entityToCopy->getWikidata());
 		
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		

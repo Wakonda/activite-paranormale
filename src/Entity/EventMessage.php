@@ -41,14 +41,46 @@ class EventMessage extends MappedSuperclassBase
     private $thumbnail;
 
     /**
-     * @ORM\Column(type="string", length=12)
+	 * @deprecated
+     * @ORM\Column(type="string", length=12, nullable=true)
      */
     protected $dateFrom;
 
     /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $dayFrom;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $monthFrom;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $yearFrom;
+
+    /**
+	 * @deprecated
      * @ORM\Column(type="string", length=12, nullable=true)
      */
     protected $dateTo;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $dayTo;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $monthTo;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    protected $yearTo;
 
 	// Longitude
     /**
@@ -75,8 +107,14 @@ class EventMessage extends MappedSuperclassBase
 	public function __construct()
 	{
 		parent::__construct();
-		$this->dateFrom = new \DateTime();
-		$this->dateTo = new \DateTime();
+	}
+	
+	public function getDateFromString(): String {
+		return implode("-", array_filter([$this->yearFrom, $this->monthFrom, $this->dayFrom]));
+	}
+	
+	public function getDateToString(): String {
+		return implode("-", array_filter([$this->yearTo, $this->monthTo, $this->dayTo]));
 	}
 	
 	public function __clone()
@@ -343,5 +381,65 @@ class EventMessage extends MappedSuperclassBase
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    public function setDayFrom($dayFrom)
+    {
+        $this->dayFrom = $dayFrom;
+    }
+
+    public function getDayFrom()
+    {
+        return $this->dayFrom;
+    }
+
+    public function setMonthFrom($monthFrom)
+    {
+        $this->monthFrom = $monthFrom;
+    }
+
+    public function getMonthFrom()
+    {
+        return $this->monthFrom;
+    }
+
+    public function setYearFrom($yearFrom)
+    {
+        $this->yearFrom = $yearFrom;
+    }
+
+    public function getYearFrom()
+    {
+        return $this->yearFrom;
+    }
+
+    public function setDayTo($dayTo)
+    {
+        $this->dayTo = $dayTo;
+    }
+
+    public function getDayTo()
+    {
+        return $this->dayTo;
+    }
+
+    public function setMonthTo($monthTo)
+    {
+        $this->monthTo = $monthTo;
+    }
+
+    public function getMonthTo()
+    {
+        return $this->monthTo;
+    }
+
+    public function setYearTo($yearTo)
+    {
+        $this->yearTo = $yearTo;
+    }
+
+    public function getYearTo()
+    {
+        return $this->yearTo;
     }
 }

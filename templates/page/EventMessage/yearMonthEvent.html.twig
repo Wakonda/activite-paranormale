@@ -1,0 +1,47 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ (((""|doYearMonthDayDate(currentDate|date("m"), currentDate|date("Y"), app.request.locale)))|trim)|capitalize }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<style>
+		p#media_duration span {
+			color: white;
+		}
+	</style>
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-year-month.jpg') }}" alt="Killer girl" /></p>
+	<hr>
+	
+	{% set icons = {'event': 'bomb', 'birthDate': 'birthday-cake', 'deathDate': 'skull-crossbones'} %}
+
+	<p id="media_duration">
+		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" />
+		<span class="align-middle"><b>{{ ((""|doYearMonthDayDate(currentDate|date("m"), currentDate|date("Y"), app.request.locale))|trim)|capitalize }}</b></span>
+	</p>
+
+	{% for theme, data in res %}
+		<h3><i class="fas fa-{{ icons[theme] }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
+		<ul>
+			{% for event in data %}
+				{% set dateArray  = [] %}
+				{% if event.startDate is not null %}
+					{% set dateArray = dateArray|merge([(event.startDate.day)|doYearMonthDayDate(event.startDate.month, event.startDate.year, app.request.locale)]) %}
+				{% endif %}
+
+				{% if event.endDate is not null %}
+					{% set dateArray = dateArray|merge([(event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale)]) %}
+				{% endif %}
+			
+				<li>[{{ dateArray|join(" - ") }}] - <a href="{{ event.url }}">{{ event.title }}</a></li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<div class="alert alert-info">{{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
+	{% endfor %}
+	
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

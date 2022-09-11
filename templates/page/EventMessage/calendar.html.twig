@@ -15,6 +15,10 @@
 	<script src="{{ asset('extended/js/fullcalendar/packages/daygrid/main.js') }}"></script>
 	<script src="{{ asset('extended/js/fullcalendar/packages/bootstrap/main.js') }}"></script>
 
+    <link href="{{ asset('extended/js/vanilla-calendar-main/build/vanilla-calendar.min.css') }}" rel="stylesheet">
+    <!-- Plugin JS -->
+    <script src="{{ asset('extended/js/vanilla-calendar-main/build/vanilla-calendar.min.js') }}"></script>
+
 	<style>
 		.fc-button-primary {
 			background-color: #000;
@@ -63,35 +67,82 @@
 			background-color: #d1ecf1;
 			border-color: #bee5eb;
 		}
+		.fc-event {
+			height:40px !important;
+		}
+		.fc-event-container .fc-event {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			margin-bottom: 5px;
+			margin-left: 7px;
+			margin-right: 7px;
+		}
+		.fc-scroller {
+			height: auto !important;
+		}
 	</style>
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-        var calendarEl = document.getElementById('calendar');
+			var calendarEl = document.getElementById('calendar');
 
-        var calendar = new FullCalendar.Calendar(calendarEl, {
-			locale: '{{ app.request.locale }}',
-			plugins: [ 'dayGrid', 'list' ],
-			events: '{{ path("EventMessage_Calendar_Events") }}',
-			header: {
-				left: 'prev,next today',
-				center: 'title',
-				right: 'dayGridMonth,listWeek'
-			},
-			views: {
-				listWeek: { buttonText: '{{ "eventMessage.calendar.List"|trans([], "validators") }}' }
-			},
-			navLinks: true, // can click day/week names to navigate views
-			editable: false,
-			displayEventTime: false,
-			eventLimit: false, // allow "more" link when too many events*/
-        });
-		calendar.render();
+			var calendar = new FullCalendar.Calendar(calendarEl, {
+				locale: '{{ app.request.locale }}',
+				plugins: [ 'dayGrid', 'list' ],
+				events: '{{ path("EventMessage_Calendar_Events") }}',
+				customButtons: {
+					monthButton: {
+						text: "",
+						click: function() {
+							var url = "{{ path('EventMessage_SelectYearMonth', {year: '0000', month: '00'}) }}";
+							url = url.replace('0000', calendar.getDate().getFullYear()).replace('00', calendar.getDate().getMonth() + 1)
+							window.location.href = url;
+						}
+					},
+					yearButton: {
+						text: "",
+						click: function() {
+							var url = "{{ path('EventMessage_SelectYear', {year: '0000'}) }}";
+							url = url.replace('0000', calendar.getDate().getFullYear())
+							window.location.href = url;
+						}
+					}
+				},
+				datesRender: function( info  ) {
+					var date = new Date(info.view.calendar.getDate());
+
+					var monthName = new Intl.DateTimeFormat("fr", { month: "long" }).format;
+					var longName = monthName(date); // "July"
+
+					document.querySelector(".fc-monthButton-button").innerHTML = longName;
+					document.querySelector(".fc-yearButton-button").innerHTML = date.getUTCFullYear();
+				},
+				header: {
+					left: 'prev,next today ',
+					center: 'monthButton yearButton',
+					right: 'dayGridMonth'
+				},
+				eventMinHeight: 30,
+				eventRender: function(info) {
+					let selector = info.el.querySelector('.fc-title');
+					if (selector) { 
+						selector.innerHTML = info.event.title;
+					}
+				},
+				navLinks: false, // can click day/week names to navigate views
+				editable: false,
+				displayEventTime: false,
+				eventLimit: false, // allow "more" link when too many events*/
+			});
+			calendar.render();
         });
 	</script>
 {% endblock %}
 
 {% block APBlog_body %}
+	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/calendar-event-index.jpg') }}" alt="Gothic girl fire" /></p>
+	<hr>
 	<div id='calendar'></div>
 	<hr class="hr2"/>
 	{{ "google"|advertisement|raw }}

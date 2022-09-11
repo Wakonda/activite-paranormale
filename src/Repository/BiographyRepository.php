@@ -174,6 +174,54 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 	
+	public function getAllEventsByDayAndMonth($day, $month, $language)
+	{
+		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
+		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+		
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $language)
+			->andWhere("REGEXP(c.birthDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) = :monthDay")
+			->orWhere("REGEXP(c.deathDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) = :monthDay")
+			->setParameter("regexp", "^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+			->setParameter('monthDay', $month."-".$day)
+			->orderBy("EXTRACT(YEAR FROM c.birthDate)", "DESC")
+			->addOrderBy("EXTRACT(YEAR FROM c.deathDate)", "DESC");
+
+		return $qb->getQuery()->getResult();
+	}
+	
+	public function getAllEventsByMonthOrYear($year, $month, $language)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $language);
+
+		if(!empty($month)) {
+			$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+			$qb->andWhere("(REGEXP(c.birthDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')) = :year AND EXTRACT(MONTH FROM CONCAT(c.birthDate, '-01')) = :month) OR (REGEXP(c.birthDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.birthDate) = :year AND EXTRACT(MONTH FROM c.birthDate) = :month)")
+			   ->orWhere("(REGEXP(c.deathDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.deathDate, '-01')) = :year AND EXTRACT(MONTH FROM CONCAT(c.deathDate, '-01')) = :month) OR (REGEXP(c.deathDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.deathDate) = :year AND EXTRACT(MONTH FROM c.deathDate) = :month)")
+			   ->setParameter("month", $month);
+		} else {
+			$qb->andWhere("(REGEXP(c.birthDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')) = :year) OR (REGEXP(c.birthDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.birthDate) = :year) OR (REGEXP(c.birthDate, :regexYear) = true AND c.birthDate = :year)")
+			   ->orWhere("(REGEXP(c.deathDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.deathDate, '-01')) = :year) OR (REGEXP(c.deathDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.deathDate) = :year) OR (REGEXP(c.deathDate, :regexYear) = true AND c.deathDate = :year)")
+			   ->setParameter("regexYear", '^[0-9]{4}$')
+			   ->orderBy("IF(REGEXP(c.birthDate, :regexYearMonthDay) = true, EXTRACT(YEAR FROM c.birthDate), IF(REGEXP(c.birthDate, :regexYearMonth) = true, EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')), c.birthDate))", "DESC")
+			   ->addOrderBy("IF(REGEXP(c.deathDate, :regexYearMonthDay) = true, EXTRACT(YEAR FROM c.deathDate), IF(REGEXP(c.deathDate, :regexYearMonth) = true, EXTRACT(YEAR FROM CONCAT(c.deathDate, '-01')), c.deathDate))", "DESC");
+		}
+		
+		$qb->setParameter("regexYearMonth", '^[0-9]{4}-[0-9]{2}$')
+		   ->setParameter("regexYearMonthDay", '^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
+		   ->setParameter("year", $year);
+
+		return $qb->getQuery()->getResult();
+	}
+	
 	// FORM
 	public function getBiographyByLanguage($language)
 	{

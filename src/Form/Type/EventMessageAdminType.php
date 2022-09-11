@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
 
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+
 class EventMessageAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -28,8 +31,11 @@ class EventMessageAdminType extends AbstractType
             ->add('title', TextType::class, array('label'=>'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('label'=>'Texte', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('abstractText', TextareaType::class, array('required' => false))
-			->add('dateFrom', DatePartialType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-			->add('dateTo', DatePartialType::class, array('required' => false))
+			->add('dateFrom', DatePartialType::class, array('required' => true, 'constraints' => [new NotBlank()], "mapped" => false))
+			// ->add('dayFrom', IntegerType::class, array("required" => false))
+			// ->add('monthFrom', IntegerType::class, array("label" => "", "required" => false))
+			// ->add('yearFrom', IntegerType::class, array("label" => "", "required" => false))
+			->add('dateTo', DatePartialType::class, array('required' => false, "mapped" => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 					'choice_label'=>'title', 
 					'required' => true,
@@ -67,6 +73,35 @@ class EventMessageAdminType extends AbstractType
 			->add('latitude', TextType::class, array('required' => false))
             ->add('source', SourceEditType::class, array('required' => false))
         ;
+
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
+			$data = $event->getData();
+			$form = $event->getForm();
+			
+			$dateFrom = $form->get('dateFrom')->getNormData();
+			
+			$data->setDayFrom($dateFrom["day"]);
+			$data->setMonthFrom($dateFrom["month"]);
+			$data->setYearFrom($dateFrom["year"]);
+			
+			$dateTo = $form->get('dateTo')->getNormData();
+			
+			$data->setDayTo($dateTo["day"]);
+			$data->setMonthTo($dateTo["month"]);
+			$data->setYearTo($dateTo["year"]);
+		});
+		
+		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){
+			$data = $event->getData();
+
+			$event->getForm()->get('dateFrom')->get('day')->setData($data->getDayFrom());
+			$event->getForm()->get('dateFrom')->get('month')->setData($data->getMonthFrom());
+			$event->getForm()->get('dateFrom')->get('year')->setData($data->getYearFrom());
+
+			$event->getForm()->get('dateTo')->get('day')->setData($data->getDayTo());
+			$event->getForm()->get('dateTo')->get('month')->setData($data->getMonthTo());
+			$event->getForm()->get('dateTo')->get('year')->setData($data->getYearTo());
+		});
     }
 
     public function getBlockPrefix()

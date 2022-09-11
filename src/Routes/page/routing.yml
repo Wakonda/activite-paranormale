@@ -109,6 +109,18 @@ EventMessage_SelectThemeForIndexWorld:
     defaults:
         language: all
 
+EventMessage_SelectDayMonth:
+    path: /event/day_month/{year}/{month}/{day}
+    controller: App\Controller\EventMessageController::getAllEventsByDayAndMonthAction
+
+EventMessage_SelectYearMonth:
+    path: /event/year_month/{year}/{month}
+    controller: App\Controller\EventMessageController::getAllEventsByYearOrMonthAction
+
+EventMessage_SelectYear:
+    path: /event/year/{year}
+    controller: App\Controller\EventMessageController::getAllEventsByYearAction
+
 # Administration
 President_Admin:
     resource: "routing/presidentadmin.yml"

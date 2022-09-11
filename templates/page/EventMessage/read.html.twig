@@ -36,15 +36,38 @@
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 	<p id="media_duration">
-		<a href="{{ path('EventMessage_Calendar') }}" alt="">
-		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" /> 
-		{% if entity.dateTo == entity.dateFrom %}
-			{{ entity.dateFrom|dodate(false, app.request.locale) }}
-		{% else %}
-			{{ entity.dateFrom|dodate(false, app.request.locale) }} - 
-			{{ entity.dateTo|dodate(false, app.request.locale) }}
+		{% set urlFrom = null %}
+		
+		{% if entity.dayFrom is not empty and entity.monthFrom is not empty and entity.yearFrom %}
+			{% set urlFrom = path('EventMessage_SelectDayMonth', {year: entity.yearFrom, month: entity.monthFrom, day: entity.dayFrom}) %}
+		{% elseif entity.monthFrom is not empty and entity.yearFrom %}
+			{% set urlFrom = path('EventMessage_SelectYearMonth', {year: entity.yearFrom, month: entity.monthFrom}) %}
+		{% elseif entity.yearFrom %}
+			{% set urlFrom = path('EventMessage_SelectYear', {year: entity.yearFrom}) %}
 		{% endif %}
-		</a>
+
+		{% set urlTo = null %}
+		
+		{% if entity.dayTo is not empty and entity.monthTo is not empty and entity.yearTo %}
+			{% set urlTo = path('EventMessage_SelectDayMonth', {year: entity.yearTo, month: entity.monthTo, day: entity.dayTo}) %}
+		{% elseif entity.monthTo is not empty and entity.yearTo %}
+			{% set urlTo = path('EventMessage_SelectYearMonth', {year: entity.yearTo, month: entity.monthTo}) %}
+		{% elseif entity.yearTo %}
+			{% set urlTo = path('EventMessage_SelectYear', {year: entity.yearTo}) %}
+		{% endif %}
+
+		
+		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" /> 
+		{% if entity.dateToString == entity.dateFromString %}
+			<a href="{{ urlFrom }}" alt="">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
+		{% else %}
+			<a href="{{ urlFrom }}" alt="">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
+			{% if entity.dateToString is not empty %}
+			- 
+			<a href="{{ urlTo }}" alt="">{{ entity.dayTo|doYearMonthDayDate(entity.monthTo, entity.yearTo, app.request.locale) }}</a>
+			{% endif %}
+		{% endif %}
+		
 	</p>
 	<hr>
 	<br>

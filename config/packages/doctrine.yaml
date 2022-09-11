@@ -24,3 +24,6 @@ doctrine:
                 JSON_SEARCH: App\DQL\JsonSearch
                 JSON_CONTAINS: App\DQL\JsonContains
                 JSON_EXTRACT: App\DQL\JsonExtract
+                LPAD: App\DQL\Lpad
+                REGEXP: App\DQL\Regexp
+                EXTRACT: App\DQL\Extract

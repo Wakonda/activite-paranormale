@@ -35,7 +35,7 @@ eventMessage:
         Events: "Eventos"
         List: "Lista"
     index:
-        Event: "Evento"
+        Event: "Acontecimiento"
     tab:
         Photo: "Foto"
         Title: "Título"
@@ -61,7 +61,7 @@ eventMessage:
     slider:
         MoreInformation: "Más información"
     new:
-        AddEvents: "Sugerir un evento"
+        AddEvents: "Sugerir un acontecimiento"
         Title: "Título"
         Text: "Texto"
         Photo: "Foto"
@@ -73,7 +73,7 @@ eventMessage:
         AcceptedFormat: "Formatos aceptados"
         IsAnonymous: "¿Publicada de forma anónima?"
         Validate: "Validar"
-        ClickHereToLocateOnMap: "Haga clic en el mapa para ubicar el lugar del evento."
+        ClickHereToLocateOnMap: "Haga clic en el mapa para ubicar el lugar del acontecimiento."
         PublishedAnonymously: "Publicado anónimamente"
         PostedWithMyUserAccount: "Publicado con mi cuenta de usuario"
         AnonymousMessage: "Cuando publicáis de forma anónima, su artículo no aparecerá en su cuenta cuando sea aprobado por nuestro equipo de moderación."
@@ -87,9 +87,20 @@ eventMessage:
     validate:
         Validation: "Validación"
         ThankForYourParticipation: "¡Gracias por su participación!"
-        ThankForYourParticipationText: "Su evento ha sido transmitido a nosotros. Será publicado en nuestra página web como la aprobación de un moderador."
+        ThankForYourParticipationText: "Su acontecimiento ha sido transmitido a nosotros. Será publicado en nuestra página web como la aprobación de un moderador."
     world:
-        WorldEventMessage: "Evento multilingüe"
+        WorldEventMessage: "Acontecimiento multilingüe"
+    dayMonth:
+        Century: >-
+            {number, plural,
+                other {Siglo {romanNumber} {bc}}
+            }
+        BC: "d. C."
+        BirthDate: "Nacimientos"
+        DeathDate: "Fallecimientos"
+        Event: "Acontecimientos"
+        NoEventToday: "No hay acontecimiento hoy"
+        NoEvent: "No acontecimiento"
 logo:
     admin:
         Title: "Titulo"

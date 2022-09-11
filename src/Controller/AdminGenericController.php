@@ -321,7 +321,7 @@ abstract class AdminGenericController extends AbstractController
 	private function uploadFile($entity, $form, $entityOriginal = null)
 	{
 		$regex = '/[^a-zA-Z0-9_-]+/';
-
+// return;
 		foreach($this->illustrations as $illustration)
 		{
 			$fieldName = $illustration["field"];

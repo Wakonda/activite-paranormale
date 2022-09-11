@@ -90,6 +90,18 @@ eventMessage:
         ThankForYourParticipationText: "Votre événement nous a bien été transmis. Il sera publié sur notre site Internet dès qu'un modérateur l'aura validé."
     world:
         WorldEventMessage: "Événement multilingue"
+    dayMonth:
+        Century: >-
+            {number, plural,
+                =1 {{romanNumber}<sup>er</sup> siècle}
+                other {{romanNumber}<sup>ème</sup> siècle}
+            }
+        BC: "av. J.-C."
+        BirthDate: "Naissances"
+        DeathDate: "Décès"
+        Event: "Événements"
+        NoEventToday: "Aucun événement aujourd'hui"
+        NoEvent: "Aucun événement"
 logo:
     admin:
         Title: "Titre"

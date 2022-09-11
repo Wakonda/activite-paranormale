@@ -46,6 +46,57 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getResult();
 	}
+	
+	public function getAllEventsByDayAndMonth($day, $month, $language)
+	{
+		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
+		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+		    ->join('c.state', 's')
+			->where('l.abbreviation = :lang')
+		    ->andWhere('s.displayState = 1')
+			->setParameter('lang', $language)
+			->andWhere("(CONCAT(c.yearFrom, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL) OR (c.monthTo IS NULL AND c.dayTo IS NULL AND CONCAT(c.yearFrom, '-', :monthDay) = CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')))")
+			->orWhere("CONCAT(c.yearTo, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
+			->setParameter('monthDay', $month."-".$day)
+		    ->andWhere("c.archive = false")
+			->orderBy("c.yearFrom", "DESC")
+			->addOrderBy("c.yearTo", "DESC");
+
+		return $qb->getQuery()->getResult();
+	}
+	
+	public function getAllEventsByMonthOrYear($year, $month, $language)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+		    ->join('c.state', 's')
+			->where('l.abbreviation = :lang')
+		    ->andWhere('s.displayState = 1')
+			->setParameter('lang', $language)
+			->setParameter('year', $year)
+		    ->andWhere("c.archive = false");
+			
+		if(!empty($month)) {
+			$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+		
+			$qb->andWhere("(c.yearFrom = :year AND c.monthFrom = :month) OR (c.yearTo = :year AND c.monthTo = :month)")
+			   ->setParameter("month", $month)
+			   ->orderBy("c.monthFrom", "DESC")
+			   ->addOrderBy("c.monthTo", "DESC");
+		} else {
+			$qb->andWhere("c.yearFrom = :year OR c.yearTo = :year");
+		}
+		
+		$qb ->addOrderBy("c.yearFrom", "DESC")
+			->addOrderBy("c.yearTo", "DESC");
+
+		return $qb->getQuery()->getResult();
+	}
 
 	// ADMINISTRATION
 	public function countAdmin()

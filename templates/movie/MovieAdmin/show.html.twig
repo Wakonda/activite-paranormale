@@ -105,6 +105,11 @@
 		{% endif %}
 	</div>
 
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
 	<div class="d-flex flex-row mt-3">
 		<div><a href="{{ path('Movie_Show', { 'id' : entity.id, 'title_slug' : entity.urlSlug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>
 		<div class="ml-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::MOVIE_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>

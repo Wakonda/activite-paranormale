@@ -25,8 +25,6 @@ use App\Form\Field\SourceEditType;
 use App\Form\Field\IdentifiersEditType;
 use App\Form\Field\ReviewScoresEditType;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Form\FormEvent;
-use Symfony\Component\Form\FormEvents;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 

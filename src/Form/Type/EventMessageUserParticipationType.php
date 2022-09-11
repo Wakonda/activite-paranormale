@@ -34,8 +34,8 @@ class EventMessageUserParticipationType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
-			->add('dateTo', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
-			->add('dateFrom', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
+			->add('dateTo', DateType::class, array('required' => true, 'mapped' => false, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
+			->add('dateFrom', DateType::class, array('required' => true, 'mapped' => false, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank())))
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn'),
@@ -82,9 +82,18 @@ class EventMessageUserParticipationType extends AbstractType
 					$form->get('photo')->addError(new FormError('eventMessage.error.FileSizeError'));
 			}
 			
-			$dateFrom = $form->get('dateFrom')->getData();
-			$dateTo = $form->get('dateTo')->getData();
+			if (!empty($dateFrom = $form->get('dateFrom')->getNormData())) {
+				$data->setDayFrom($dateFrom->format("d"));
+				$data->setMonthFrom($dateFrom->format("m"));
+				$data->setYearFrom($dateFrom->format("Y"));
+			}
 			
+			if (!empty($dateTo = $form->get('dateTo')->getNormData())) {
+				$data->setDayTo($dateTo->format("d"));
+				$data->setMonthTo($dateTo->format("m"));
+				$data->setYearTo($dateTo->format("Y"));
+			}
+
 			if($dateFrom > $dateTo)
 				$form->get('dateFrom')->addError(new FormError('eventMessage.error.StartDateSuperiorEndDate'));
 		});
