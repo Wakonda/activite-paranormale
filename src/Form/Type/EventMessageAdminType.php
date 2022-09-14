@@ -31,11 +31,11 @@ class EventMessageAdminType extends AbstractType
             ->add('title', TextType::class, array('label'=>'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('label'=>'Texte', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('abstractText', TextareaType::class, array('required' => false))
-			->add('dateFrom', DatePartialType::class, array('required' => true, 'constraints' => [new NotBlank()], "mapped" => false))
+			->add('dateFrom', DatePartialType::class, array('required' => true, 'constraints' => [new NotBlank()], "mapped" => false, "allow_empty_year" => true))
 			// ->add('dayFrom', IntegerType::class, array("required" => false))
 			// ->add('monthFrom', IntegerType::class, array("label" => "", "required" => false))
 			// ->add('yearFrom', IntegerType::class, array("label" => "", "required" => false))
-			->add('dateTo', DatePartialType::class, array('required' => false, "mapped" => false))
+			->add('dateTo', DatePartialType::class, array('required' => false, "mapped" => false, "allow_empty_year" => true))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 					'choice_label'=>'title', 
 					'required' => true,

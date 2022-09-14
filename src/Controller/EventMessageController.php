@@ -427,13 +427,13 @@ class EventMessageController extends AbstractController
 			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
 			
 			if($yearEvent != $year) {
-				$res["event"][$centuryText][$entity->getYearFrom()][] = [
+				$res[$entity->getType()][empty($yearEvent) ? "noYear" : $centuryText][$entity->getYearFrom()][] = [
 					"title" => $entity->getTitle(),
 					"theme" => $entity->getTheme()->getTitle(),
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
 				];
 			} else {
-				$currentEvent["event"][] = [
+				$currentEvent[$entity->getType()][] = [
 					"title" => $entity->getTitle(),
 					"theme" => $entity->getTheme()->getTitle(),
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
@@ -444,10 +444,10 @@ class EventMessageController extends AbstractController
 		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
 		
 		foreach($entities as $entity) {
-			$type = "deathDate";
+			$type = EventMessage::DEATH_DATE_TYPE;
 
 			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("m-d") == $month."-".$day)
-				$type = "birthDate";
+				$type = EventMessage::BIRTH_DATE_TYPE;
 			
 			$get = "get".ucfirst($type);
 			
@@ -489,7 +489,7 @@ class EventMessageController extends AbstractController
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByMonthOrYear($year, $month, $request->getLocale());
 		
 		foreach($entities as $entity) {
-			$res["event"][] = [
+			$res[$entity->getType()][] = [
 				"title" => $entity->getTitle(),
 				"theme" => $entity->getTheme()->getTitle(),
 				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
@@ -501,10 +501,10 @@ class EventMessageController extends AbstractController
 		$entities = $em->getRepository(Biography::class)->getAllEventsByMonthOrYear($year, $month, $request->getLocale());
 
 		foreach($entities as $entity) {
-			$type = "deathDate";
+			$type = EventMessage::DEATH_DATE_TYPE;
 
 			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y-m") == $year."-".$month)
-				$type = "birthDate";
+				$type = EventMessage::BIRTH_DATE_TYPE;
 			
 			$get = "get".ucfirst($type);
 			
@@ -558,7 +558,7 @@ class EventMessageController extends AbstractController
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByMonthOrYear($year, null, $request->getLocale());
 		
 		foreach($entities as $entity) {
-			$res["event"][] = [
+			$res[$entity->getType()][] = [
 				"title" => $entity->getTitle(),
 				"theme" => $entity->getTheme()->getTitle(),
 				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
@@ -570,10 +570,10 @@ class EventMessageController extends AbstractController
 		$entities = $em->getRepository(Biography::class)->getAllEventsByMonthOrYear($year, null, $request->getLocale());
 
 		foreach($entities as $entity) {
-			$type = "deathDate";
+			$type = EventMessage::DEATH_DATE_TYPE;
 
 			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y") == $year)
-				$type = "birthDate";
+				$type = EventMessage::BIRTH_DATE_TYPE;
 			
 			$get = "get".ucfirst($type);
 			

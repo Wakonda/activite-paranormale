@@ -15,7 +15,7 @@
 	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-day-month.jpg') }}" alt="Angel girl rock" /></p>
 	<hr>
 	
-	{% set icons = {'event': 'bomb', 'birthDate': 'birthday-cake', 'deathDate': 'skull-crossbones'} %}
+	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
 
 	<p id="media_duration">
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" />
@@ -23,7 +23,7 @@
 	</p>
 
 	{% for theme, data in currentEvent %}
-		<h3><i class="fas fa-{{ icons[theme] }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
+		<h3><i class="fas fa-{{ macro_event.icon(theme) }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
 		<ul>
 			{% for event in data %}
 				<li><a href="{{ event.url }}">{{ event.title }}</a></li>
@@ -39,15 +39,17 @@
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" />
 		<span class="align-middle"><b>{{ (currentDate|date("d"))|doYearMonthDayDate(currentDate|date("m"), null, app.request.locale) }}</b></span>
 	</p>
-	
+{{ dump(res)}}
 	{% for theme, data in res %}
-		<h3><i class="fas fa-{{ icons[theme] }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
+		<h3><i class="fas fa-{{ macro_event.icon(theme) }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
 		{% for century, da in data %}
-			<h4><i>{{ century|raw }}</i></h4>
+			{% if century != "noYear" %}
+				<h4><i>{{ century|raw }}</i></h4>
+			{% endif %}
 			<ul>
 				{% for year, d in da %}
 					{% for event in d %}
-						<li><b>{{ year }}</b> - <a href="{{ event.url }}">{{ event.title }}</a></li>
+						<li>{% if year is not empty %}<b>{{ year }}</b> - {% endif %}<a href="{{ event.url }}">{{ event.title }}</a></li>
 					{% endfor %}
 				{% endfor %}
 			</ul>
@@ -55,7 +57,7 @@
 	{% else %}
 		<div class="alert alert-info">{{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
 	{% endfor %}
-	
+
 	<hr class="hr2"/>
 	{{ "google"|advertisement|raw }}
 {% endblock %}

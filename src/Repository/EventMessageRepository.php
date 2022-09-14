@@ -59,13 +59,14 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 			->where('l.abbreviation = :lang')
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
-			->andWhere("(CONCAT(c.yearFrom, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL) OR (c.monthTo IS NULL AND c.dayTo IS NULL AND CONCAT(c.yearFrom, '-', :monthDay) = CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')))")
+			->andWhere("(CONCAT(c.yearFrom, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL) OR (c.monthTo IS NULL AND c.dayTo IS NULL AND CONCAT(c.yearFrom, '-', :monthDay) = CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0'))) OR (c.monthTo IS NULL AND c.dayTo IS NULL AND c.yearFrom IS NULL AND :monthDay = CONCAT(LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')))")
 			->orWhere("CONCAT(c.yearTo, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
+			->orWhere("c.yearFrom IS NULL AND c.yearTo IS NULL AND CONCAT('2000-', :monthDay) BETWEEN CONCAT('2000-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT('2000-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
 			->setParameter('monthDay', $month."-".$day)
 		    ->andWhere("c.archive = false")
 			->orderBy("c.yearFrom", "DESC")
 			->addOrderBy("c.yearTo", "DESC");
-
+// dd($qb->getQuery()->getResult());
 		return $qb->getQuery()->getResult();
 	}
 	

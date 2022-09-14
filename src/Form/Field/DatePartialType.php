@@ -4,6 +4,7 @@ namespace App\Form\Field;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 use App\Form\DataTransformer\DatePartialTransformer;
@@ -31,7 +32,7 @@ class DatePartialType extends AbstractType
 			->add('month', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Month"], "translation_domain" => "validators"])
 			->add('year', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Year"], "translation_domain" => "validators"]);
 	
-		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event)
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($options)
 		{
 			$data = $event->getData();
 			$form = $event->getForm();
@@ -40,8 +41,8 @@ class DatePartialType extends AbstractType
 			$year = $form->get('year')->getData();
 			$month = $form->get('month')->getData();
 			$day = $form->get('day')->getData();
-			
-			if(empty($year) and (!empty($month) or !empty($day))) {
+// dd($options);
+			if(empty($year) and (!empty($month) or !empty($day)) and !$options["allow_empty_year"]) {dd($year, $month, $day, $options["allow_empty_year"]);
 				$form->get('year')->addError(new FormError($notBlank->message));
 			}
 
@@ -64,4 +65,11 @@ class DatePartialType extends AbstractType
 			}
 		});
     }
+
+	public function configureOptions(OptionsResolver $resolver)
+	{
+		$resolver->setDefaults(array(
+			'allow_empty_year' => false
+		));
+	}
 }

@@ -14,7 +14,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class EventMessage extends MappedSuperclassBase
 {
-    /**
+	const BIRTH_DATE_TYPE = "birthDate";
+	const DEATH_DATE_TYPE = "deathDate";
+	const EVENT_TYPE = "event";
+	const CELEBRATION_TYPE = "celebration";
+	const CONVENTION_TYPE = "convention";
+    
+	/**
      * @var integer $id
      *
      * @ORM\Column(name="id", type="integer")
@@ -88,7 +94,7 @@ class EventMessage extends MappedSuperclassBase
      *
      * @ORM\Column(type="string", nullable=true)
      */
-	 private $longitude;
+	private $longitude;
 
 	// Latitude
     /**
@@ -103,6 +109,11 @@ class EventMessage extends MappedSuperclassBase
      * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $illustration;
+
+	/**
+	 * @ORM\Column(type="string", length=100)
+	 */
+	protected $type;
 	
 	public function __construct()
 	{
@@ -130,6 +141,10 @@ class EventMessage extends MappedSuperclassBase
 	public function getWaitingRoute()
 	{
 		return "EventMessage_Waiting";
+	}
+
+	public function withoutYearEvent(): boolean {
+		return (empty($this->yearFrom) and empty($this->yearTo));
 	}
 
     /**
@@ -441,5 +456,15 @@ class EventMessage extends MappedSuperclassBase
     public function getYearTo()
     {
         return $this->yearTo;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+    }
+
+    public function getType()
+    {
+        return $this->type;
     }
 }

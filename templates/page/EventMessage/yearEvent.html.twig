@@ -15,7 +15,7 @@
 	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-year.jpg') }}" alt="Alone girl" /></p>
 	<hr>
 	
-	{% set icons = {'event': 'bomb', 'birthDate': 'birthday-cake', 'deathDate': 'skull-crossbones'} %}
+	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
 
 	<p id="media_duration">
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" />
@@ -23,7 +23,7 @@
 	</p>
 
 	{% for theme, data in res %}
-		<h3><i class="fas fa-{{ icons[theme] }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
+		<h3><i class="fas fa-{{ macro_event.icon(theme) }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
 		<ul>
 			{% for event in data %}
 				{% set dateArray  = [] %}

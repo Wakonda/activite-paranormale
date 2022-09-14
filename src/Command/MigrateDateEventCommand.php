@@ -38,8 +38,6 @@ class MigrateDateEventCommand extends Command
 		
 		foreach($datas as $data)
 		{
-			// 
-			
 			if(!empty($data["datefrom"]))
 				list($yearFrom, $monthFrom, $dayFrom) = explode("-", $data["datefrom"]);
 			else {
@@ -60,6 +58,8 @@ class MigrateDateEventCommand extends Command
 		}
 		
 		echo "End Event";
+
+		$conn->exec("UPDATE eventmessage SET type = 'convention'");
 
         return 0;
     }
