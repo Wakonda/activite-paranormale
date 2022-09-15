@@ -19,6 +19,8 @@ class EventMessage extends MappedSuperclassBase
 	const EVENT_TYPE = "event";
 	const CELEBRATION_TYPE = "celebration";
 	const CONVENTION_TYPE = "convention";
+	const SAINT_TYPE = "saint";
+	const HOROSCOPE_TYPE = "horoscope";
     
 	/**
      * @var integer $id

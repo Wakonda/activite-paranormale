@@ -30,6 +30,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.State"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.state }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Type"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ ("eventMessage.dayMonth."~entity.type|ucfirst)|trans([], "validators") }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.PseudoUsed"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.PseudoUsed }}</div>
 

@@ -71,12 +71,17 @@
 	</p>
 	<hr>
 	<br>
+	{{ entity. abstractText|raw }}
 	{{ entity.text|raw }}
 	{% if entity.longitude is not empty and entity.latitude is not empty %}
 		<br>
 		<div id="map-canvas" style="width:100%; height:400px"></div>
 	{% endif %}
 	<br>
+	
+	<h3>{{ "eventMessage.index.Sources"|trans([], "validators") }}</h3>
+	{{ source_document(entity.source) }}
+	
 	<hr class="hr2"/>
 	<p>
 		{% if entity.theme is not null %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}{% if entity.licence is not null %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}

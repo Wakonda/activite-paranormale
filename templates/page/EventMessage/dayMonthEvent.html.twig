@@ -39,7 +39,7 @@
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" />
 		<span class="align-middle"><b>{{ (currentDate|date("d"))|doYearMonthDayDate(currentDate|date("m"), null, app.request.locale) }}</b></span>
 	</p>
-{{ dump(res)}}
+
 	{% for theme, data in res %}
 		<h3><i class="fas fa-{{ macro_event.icon(theme) }}"></i> {{ ("eventMessage.dayMonth." ~ theme|ucfirst)|trans([], "validators") }}</h3>
 		{% for century, da in data %}

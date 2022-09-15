@@ -53,6 +53,7 @@ eventMessage:
         Photo: "Photo"
         Thumbnail: "Aperçu"
         Theme: "Thème"
+        Type: "Type"
         Longitude: "Longitude"
         Latitude: "Latitude"
         Source: "Sources"
@@ -100,6 +101,10 @@ eventMessage:
         BirthDate: "Naissances"
         DeathDate: "Décès"
         Event: "Événements"
+        Celebration: "Célébrations"
+        Horoscope: "Horoscopes"
+        Convention: "Conférences"
+        Saint: "Saints"
         NoEventToday: "Aucun événement aujourd'hui"
         NoEvent: "Aucun événement"
 logo:

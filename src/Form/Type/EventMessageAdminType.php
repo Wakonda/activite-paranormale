@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -20,6 +21,8 @@ use App\Form\Field\DatePartialType;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+
+use App\Entity\EventMessage;
 
 class EventMessageAdminType extends AbstractType
 {
@@ -71,6 +74,7 @@ class EventMessageAdminType extends AbstractType
 					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
 			->add('longitude', TextType::class, array('required' => false))
 			->add('latitude', TextType::class, array('required' => false))
+            ->add('type', ChoiceType::class, ['choices' => ['eventMessage.dayMonth.'.ucfirst(EventMessage::BIRTH_DATE_TYPE) => EventMessage::BIRTH_DATE_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::DEATH_DATE_TYPE) => EventMessage::DEATH_DATE_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::EVENT_TYPE) => EventMessage::EVENT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CELEBRATION_TYPE) => EventMessage::CELEBRATION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CONVENTION_TYPE) => EventMessage::CONVENTION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::SAINT_TYPE) => EventMessage::SAINT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::HOROSCOPE_TYPE) => EventMessage::HOROSCOPE_TYPE], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
             ->add('source', SourceEditType::class, array('required' => false))
         ;
 
