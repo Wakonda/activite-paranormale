@@ -36,6 +36,7 @@ eventMessage:
         List: "Lista"
     index:
         Event: "Acontecimiento"
+        Sources: "Fuentes"
     tab:
         Photo: "Foto"
         Title: "Título"

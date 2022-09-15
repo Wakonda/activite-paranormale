@@ -116,6 +116,13 @@ class EventMessage extends MappedSuperclassBase
 	 * @ORM\Column(type="string", length=100)
 	 */
 	protected $type;
+
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
 	
 	public function __construct()
 	{
@@ -468,5 +475,25 @@ class EventMessage extends MappedSuperclassBase
     public function getType()
     {
         return $this->type;
+    }
+
+    /**
+     * Set wikidata
+     *
+     * @param String $wikidata
+     */
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    /**
+     * Get wikidata
+     *
+     * @return String
+     */
+    public function getWikidata()
+    {
+        return $this->wikidata;
     }
 }

@@ -15,6 +15,9 @@
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.type, "eventMessage.admin.Type"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.type) }}{{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}</div>
 
