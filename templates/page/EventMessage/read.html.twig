@@ -38,21 +38,29 @@
 	<p id="media_duration">
 		{% set urlFrom = null %}
 		
-		{% if entity.dayFrom is not empty and entity.monthFrom is not empty and entity.yearFrom %}
-			{% set urlFrom = path('EventMessage_SelectDayMonth', {year: entity.yearFrom, month: entity.monthFrom, day: entity.dayFrom}) %}
-		{% elseif entity.monthFrom is not empty and entity.yearFrom %}
+		{% if entity.dayFrom is not empty and entity.monthFrom is not empty %}
+			{% set yearFrom = entity.yearFrom %}
+			{% if yearFrom is empty %}
+				{% set yearFrom = "now"|date("Y") %}
+			{% endif %}
+			{% set urlFrom = path('EventMessage_SelectDayMonth', {year: yearFrom, month: entity.monthFrom, day: entity.dayFrom}) %}
+		{% elseif entity.monthFrom is not empty and entity.yearFrom is not empty %}
 			{% set urlFrom = path('EventMessage_SelectYearMonth', {year: entity.yearFrom, month: entity.monthFrom}) %}
-		{% elseif entity.yearFrom %}
+		{% elseif entity.yearFrom is not empty %}
 			{% set urlFrom = path('EventMessage_SelectYear', {year: entity.yearFrom}) %}
 		{% endif %}
 
 		{% set urlTo = null %}
 		
-		{% if entity.dayTo is not empty and entity.monthTo is not empty and entity.yearTo %}
-			{% set urlTo = path('EventMessage_SelectDayMonth', {year: entity.yearTo, month: entity.monthTo, day: entity.dayTo}) %}
-		{% elseif entity.monthTo is not empty and entity.yearTo %}
+		{% if entity.dayTo is not empty and entity.monthTo is not empty %}
+			{% set yearTo = entity.yearTo %}
+			{% if yearTo is empty %}
+				{% set yearTo = "now"|date("Y") %}
+			{% endif %}
+			{% set urlTo = path('EventMessage_SelectDayMonth', {year: yearTo, month: entity.monthTo, day: entity.dayTo}) %}
+		{% elseif entity.monthTo is not empty and entity.yearTo is not empty %}
 			{% set urlTo = path('EventMessage_SelectYearMonth', {year: entity.yearTo, month: entity.monthTo}) %}
-		{% elseif entity.yearTo %}
+		{% elseif entity.yearTo is not empty %}
 			{% set urlTo = path('EventMessage_SelectYear', {year: entity.yearTo}) %}
 		{% endif %}
 
