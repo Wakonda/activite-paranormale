@@ -40,8 +40,10 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 			->where('l.abbreviation = :lang')
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
-			->andWhere('c.dateFrom BETWEEN :startDate AND :endDate')
-			->andWhere('c.dateTo BETWEEN :startDate AND :endDate')
+			->andWhere("c.yearFrom IS NOT NULL AND c.monthFrom IS NOT NULL AND c.dayFrom IS NOT NULL")
+			->andWhere("c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL")
+			->andWhere("CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN :startDate AND :endDate")
+			->andWhere("CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN :startDate AND :endDate")
 			->setParameter('startDate', $startDate)
 			->setParameter('endDate', $endDate)
 		    ->andWhere("c.archive = false");

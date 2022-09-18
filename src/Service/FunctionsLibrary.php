@@ -22,7 +22,7 @@
 		
 		public function sourceString($sourceJSON, string $locale, Array $classes = []): ?String {
 			$datas = json_decode($sourceJSON, true);
-			
+			// dd($datas, $sourceJSON);
 			if(empty($datas))
 				return null;
 

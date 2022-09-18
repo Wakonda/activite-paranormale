@@ -110,6 +110,11 @@ class Grimoire
      */
     protected $publicationDate;
 
+    /**
+     * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
+     */
+    private $socialNetworkIdentifiers;
+
 	public function __construct()
 	{
 		$this->writingDate = new \DateTime();
@@ -485,5 +490,25 @@ class Grimoire
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    /**
+     * Set socialNetworkIdentifiers
+     *
+     * @param string $socialNetworkIdentifiers
+     */
+    public function setSocialNetworkIdentifiers($socialNetworkIdentifiers)
+    {
+        $this->socialNetworkIdentifiers = $socialNetworkIdentifiers;
+    }
+
+    /**
+     * Get socialNetworkIdentifiers
+     *
+     * @return string 
+     */
+    public function getSocialNetworkIdentifiers()
+    {
+        return $this->socialNetworkIdentifiers;
     }
 }

@@ -193,14 +193,13 @@
 		
 		public function replacePathLinksByFullURL($html, $baseURL)
 		{
-			return $html;
 			$doc = new \DOMDocument();
 
 			libxml_use_internal_errors(true);
 			$doc->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD);
 			libxml_use_internal_errors(false);
 			
-			/*$links = $doc->getElementsByTagName('a');
+			$links = $doc->getElementsByTagName('a');
 			
 			foreach ($links as $link)
 			{
@@ -211,7 +210,8 @@
 					$new_src_url = $baseURL.$old_src;
 					$link->setAttribute('href', $new_src_url);
 				}
-			}*/
+			}
+			
 			return $doc->saveHTML();
 		}
 		

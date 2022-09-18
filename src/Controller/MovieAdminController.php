@@ -291,6 +291,14 @@ class MovieAdminController extends AdminGenericController
 		$entity->setDuration($entityToCopy->getDuration());
 		$entity->setReleaseYear($entityToCopy->getReleaseYear());
 		$entity->setWikidata($entityToCopy->getWikidata());
+		$entity->setFullStreaming($entityToCopy->getFullStreaming());
+		$entity->setCost($entityToCopy->getCost());
+		$entity->setCostUnit($entityToCopy->getCostUnit());
+		$entity->setBoxOffice($entityToCopy->getBoxOffice());
+		$entity->setBoxOfficeUnit($entityToCopy->getBoxOfficeUnit());
+		$entity->setReviewScores($entityToCopy->getReviewScores());
+		$entity->setSocialNetworkIdentifiers($entityToCopy->getSocialNetworkIdentifiers());
+		$entity->setIdentifiers($entityToCopy->getIdentifiers());
 		
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		

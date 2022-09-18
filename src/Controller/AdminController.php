@@ -176,10 +176,16 @@ class AdminController extends AbstractController
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "Grimoire":
-					$imgProperty = $entity->getPhoto();
+					$imgProperty = $entity->getPhotoIllustrationFilename();
 					$img = $entity->getAssetImagePath().$imgProperty;
+					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
 					$text = $entity->getText();
-					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath()."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+					
+					// dd($entity->getSource(), (new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation()));
+					
+					$text = $parser->replacePathImgByFullURL($text."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+					// die($text);
 					break;
 				case "President":
 					$imgProperty = $entity->getPhoto();
@@ -366,6 +372,7 @@ class AdminController extends AbstractController
 				$response = $blogger->deletePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken);
 				break;
 		}
+
 		$obj = json_decode($response["response"]);
 
 		if(in_array($response["http_code"], [Response::HTTP_OK, Response::HTTP_NO_CONTENT])) {
@@ -374,14 +381,6 @@ class AdminController extends AbstractController
 			} else {
 				$url = "<br><a href='".$obj->url."' target='_blank'>".$obj->url."</a>";
 				$session->getFlashBag()->add('success', $translator->trans('admin.blogger.Success', [], 'validators').$url);
-			}
-			
-			switch($entity->getRealClass()) {
-				case "Grimoire":
-					$entity->setSource($obj->url);
-					$em->persist($entity);
-					$em->flush();
-					break;
 			}
 			
 			if(method_exists($entity, "setSocialNetworkIdentifiers")) {
