@@ -47,10 +47,13 @@ class ArtistAdminType extends AbstractType
 					'choice_label'=>'title',
 					'required' => true,
 					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er)
+					'query_builder' => function(EntityRepository $er) use ($language)
 						{
 							return $er->createQueryBuilder('u')
-									  ->orderBy('u.title', 'ASC');
+									  ->orderBy('u.title', 'ASC')
+									  ->innerjoin("u.language", "l")
+									  ->where("l.abbreviation = :locale")
+									  ->setParameter("locale", $language);
 						},
 				))
 			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 

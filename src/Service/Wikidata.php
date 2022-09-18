@@ -155,7 +155,7 @@
 			$personArray = [];
 			
 			$this->getIdsByProperty("P527", $datas, $code, "member", $language, $personArray);
-			// dd($personArray);
+
 			foreach($datas->entities->$code->claims->P527 as $member) {
 				$start = null;
 				$end = null;

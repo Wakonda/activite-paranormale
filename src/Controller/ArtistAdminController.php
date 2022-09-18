@@ -14,6 +14,8 @@ use App\Entity\ArtistBiography;
 use App\Entity\Biography;
 use App\Entity\FileManagement;
 use App\Entity\Language;
+use App\Entity\Country;
+use App\Entity\MusicGenre;
 use App\Form\Type\ArtistAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -202,6 +204,14 @@ class ArtistAdminController extends AdminGenericController
 		$entity->setTitle($entityToCopy->getTitle());
 		$entity->setGenre($entityToCopy->getGenre());
 		$entity->setWebsite($entityToCopy->getWebsite());
+		$entity->setWikidata($entityToCopy->getWikidata());
+		
+		$country = null;
+		
+		if(!empty($entityToCopy->getCountry()))
+			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
+		
+		$entity->setCountry($country);
 		
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		
@@ -257,6 +267,18 @@ class ArtistAdminController extends AdminGenericController
 			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());
 
 		$translateArray['country'] = $countryArray;
+		
+		if(!empty($language))
+			$musicGenres = $em->getRepository(MusicGenre::class)->getAllGenresByLocale($language->getAbbreviation());
+		else
+			$musicGenres = $em->getRepository(MusicGenre::class)->findAll();
+
+		$musicGenreArray = [];
+		
+		foreach($musicGenres as $musicGenre)
+			$musicGenreArray[] = ["id" => $musicGenre->getId(), "title" => $musicGenre->getTitle()];
+
+		$translateArray['musicGenre'] = $musicGenreArray;
 
 		return new JsonResponse($translateArray);
 	}
