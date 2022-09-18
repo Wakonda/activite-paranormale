@@ -104,6 +104,8 @@
 				document.getElementById("url_{{ form.biography.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.biography.vars.id }}").dispatchEvent(new Event("change"));
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
+				document.getElementById("{{ form.website.vars.id }}").value = data.links;
+				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
 				
 				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
 

@@ -266,7 +266,7 @@ class ArtistAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
-		
+
 		$res = $wikidata->getArtistDatas($code, $language->getAbbreviation());
 
 		return new JsonResponse($res);

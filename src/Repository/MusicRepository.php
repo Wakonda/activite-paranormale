@@ -144,9 +144,12 @@ class MusicRepository extends EntityRepository
 		$qb->select("count(b)")
 		   ->where("b.musicPiece = :musicPiece")
 		   ->setParameter("musicPiece", $entity->getMusicPiece())
-		   ->innerjoin("b.album", "l")
-		   ->andWhere("l.title = :title")
-		   ->setParameter("title", $entity->getAlbum()->getTitle());
+		   ->innerjoin("b.album", "a")
+		   ->innerjoin("a.language", "l")
+		   ->andWhere("a.title = :title")
+		   ->setParameter("title", $entity->getAlbum()->getTitle())
+		   ->andWhere("l.abbreviation = :locale")
+		   ->setParameter("locale", $entity->getAlbum()->getLanguage()->getAbbreviation());
 		   
 		if($entity->getId() != null)
 		{

@@ -144,12 +144,13 @@
 			// country of origin
 			$country = $datas->entities->$code->claims->P495;
 			$countryId = $country[0]->mainsnak->datavalue->value->id;
-			$res["origin"] = $this->getCountry($datas, $code, "P495");
+			$res["origin"] = $this->getCountry($datas, $code, "P495", $language);
 			
 			// website
 			$websitesArray = [];
 			$this->getIdsByProperty("P856", $datas, $code, "website", $language, $websitesArray);
-			$res["links"] = $websitesArray;
+
+			$res["links"] = isset($websitesArray["website"]) ? key($websitesArray["website"]) : null;
 			
 			$personArray = [];
 			
