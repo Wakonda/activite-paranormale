@@ -46,19 +46,21 @@ class AlbumAdminController extends AdminGenericController
 		if($form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
 			
-			foreach(json_decode($form->get("tracklist")->getData(), true) as $code => $value) {
-				$music = new Music();
-				$music->setWikidata($code);
-				$music->setMusicPiece($value);
-				$music->setAlbum($entityBindded);
+			if(!empty($form->get("tracklist")->getData())) {
+				foreach(json_decode($form->get("tracklist")->getData(), true) as $code => $value) {
+					$music = new Music();
+					$music->setWikidata($code);
+					$music->setMusicPiece($value);
+					$music->setAlbum($entityBindded);
+					
+					$searchForDoublons = $em->getRepository(Music::class)->countForDoublons($music);
+					
+					if($searchForDoublons == 0)
+						$em->persist($music);
+				}
 				
-				$searchForDoublons = $em->getRepository(Music::class)->countForDoublons($music);
-				
-				if($searchForDoublons == 0)
-					$em->persist($music);
+				$em->flush();
 			}
-			
-			$em->flush();
 		}
 	}
 
@@ -79,12 +81,17 @@ class AlbumAdminController extends AdminGenericController
 		$formType = AlbumAdminType::class;
 		$entity = new Album();
 		
+		$locale = $request->getLocale();
+
 		if ($request->query->has("artistId")) {
-			$entity->setArtist($this->getDoctrine()->getManager()->getRepository(Artist::class)->find($request->query->get("artistId")));
+			$artist = $this->getDoctrine()->getManager()->getRepository(Artist::class)->find($request->query->get("artistId"));
+			$entity->setArtist($artist);
+			$locale = $artist->getLanguage()->getAbbreviation();
+			$entity->setLanguage($artist->getLanguage());
 		}
 
 		$twig = 'music/AlbumAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $locale]);
     }
 
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
