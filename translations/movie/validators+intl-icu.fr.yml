@@ -46,7 +46,7 @@ movie:
         DirectorOfPhotography: "Photographe"
         FilmEditor: "Monteur"
         Composer: "Compositeur"
-        DirectordOfPhotographyBy: "Photographie"
+        DirectorOfPhotographyBy: "Photographie"
         FilmEditorBy: "Montage"
         ComposerBy: "Musique"
         Introduction: "Présentation"
@@ -54,6 +54,9 @@ movie:
         FilmSeries: "Série de films"
         Identifiers: "Numéros d'identification"
         FullStreaming: "Film entier"
+        BoxOffice: "Box-office"
+        Cost: "Budget"
+        ReviewScores: "Avis"
     admin:
         Movie: "Film"
         Title: "Titre"

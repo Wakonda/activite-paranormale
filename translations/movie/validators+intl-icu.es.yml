@@ -53,6 +53,9 @@ movie:
         FilmSeries: "Serie cinematográfica"
         Identifiers: "Número de identificación"
         FullStreaming: "Película entera"
+        BoxOffice: "Recaudación"
+        Cost: "Presupuesto"
+        ReviewScores: "Reseñas"
     admin:
         Movie: "Película"
         Title: "Título"

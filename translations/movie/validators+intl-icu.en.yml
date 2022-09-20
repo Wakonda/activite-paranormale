@@ -54,6 +54,9 @@ movie:
         FilmSeries: "Film series"
         Identifiers: "Identifiers"
         FullStreaming: "Whole movie"
+        BoxOffice: "Box office"
+        Cost: "Budget"
+        ReviewScores: "Review scores"
     admin:
         Movie: "Movie"
         Title: "Title"

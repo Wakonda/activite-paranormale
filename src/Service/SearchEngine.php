@@ -229,7 +229,7 @@ class SearchEngine {
 			if(preg_match('/\.(jpe?g|png|gif|bmp)$/i', $d))
 				$pdo->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '${d}', '${language}')");
 			else {
-				$dom = new DOMDocument();//dd($d);
+				$dom = new DOMDocument();
 				$dom->loadHTML($d, LIBXML_NOERROR);
 
 				foreach ($dom->getElementsByTagName('img') as $i => $img) {
