@@ -180,12 +180,9 @@ class AdminController extends AbstractController
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode($c["source"], ", ") : "";
 					$text = $entity->getText();
-					
-					// dd($entity->getSource(), (new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation()));
-					
+
 					$text = $parser->replacePathImgByFullURL($text."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
-					// die($text);
 					break;
 				case "President":
 					$imgProperty = $entity->getPhoto();
