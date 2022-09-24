@@ -72,7 +72,7 @@ class Facebook {
 		$message = urlencode($message);
 		
 		$llt = $this->FACEBOOK_ACCESS_TOKEN;
-
+// dd($_ENV, "https://graph.facebook.com/${pageId}/feed?message=${message}&link=${url}&access_token=".$llt);
 		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${pageId}/feed?message=${message}&link=${url}&access_token=".$llt);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
@@ -104,11 +104,27 @@ class Facebook {
 				$this->FACEBOOK_USER_ID = $_ENV["FACEBOOK_FR_USER_ID"];
 				$this->FACEBOOK_ACCESS_TOKEN = $_ENV["FACEBOOK_FR_ACCESS_TOKEN"];
 				break;
+			case "en":
+				$this->FACEBOOK_PAGE_ID = $_ENV["FACEBOOK_EN_PAGE_ID"];
+				$this->FACEBOOK_APP_ID = $_ENV["FACEBOOK_EN_APP_ID"];
+				$this->FACEBOOK_SECRET_KEY = $_ENV["FACEBOOK_EN_SECRET_KEY"];
+				$this->FACEBOOK_GRAPH_VERSION = $_ENV["FACEBOOK_EN_GRAPH_VERSION"];
+				$this->FACEBOOK_USER_ID = $_ENV["FACEBOOK_EN_USER_ID"];
+				$this->FACEBOOK_ACCESS_TOKEN = $_ENV["FACEBOOK_EN_ACCESS_TOKEN"];
+				break;
+			case "es":
+				$this->FACEBOOK_PAGE_ID = $_ENV["FACEBOOK_ES_PAGE_ID"];
+				$this->FACEBOOK_APP_ID = $_ENV["FACEBOOK_ES_APP_ID"];
+				$this->FACEBOOK_SECRET_KEY = $_ENV["FACEBOOK_ES_SECRET_KEY"];
+				$this->FACEBOOK_GRAPH_VERSION = $_ENV["FACEBOOK_ES_GRAPH_VERSION"];
+				$this->FACEBOOK_USER_ID = $_ENV["FACEBOOK_ES_USER_ID"];
+				$this->FACEBOOK_ACCESS_TOKEN = $_ENV["FACEBOOK_ES_ACCESS_TOKEN"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr"];
+		return ["fr", "en", "es"];
 	}
 }
