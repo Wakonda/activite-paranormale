@@ -1,0 +1,21 @@
+<div>
+	<h3 id="#forum_title">{{ "user.phpbb.Forums"|trans([], "validators") }}</h3>
+	
+	<div class="alert alert-info">{{ "user.phpbb.YourNicknameOnTheForums"|trans([], "validators") }} <b>{{ app.user.username }}</b></div>
+
+	<div class="form-table form-table-4cols form-table-collapse">
+		{% for forum in forums %}
+			<div class="form-table-cell form-table-cell-head">{{ ("user.phpbb.Forum" ~ forum.language)|trans([], "validators") }}</div>
+			<div class="form-table-cell">
+				{% if forum.exists %}
+					<a href="{{ forum.url }}/ucp.php?mode=login" target="_blank" class="btn btn-success text-white">{{ "user.phpbb.LogIn"|trans([], "validators") }}</a>
+				{% else %}
+					<form method="post" action="{{ path('Profile_PHPBB') }}" class="form-inline">
+						{{ form_widget(form["password" ~ forum.language|lower], {'attr': {'class': 'form-control', 'placeholder': "user.phpbb.YourForumPassword"|trans([], "validators")}})}}
+						<button type="submit" name="language[{{ forum.language|lower }}]" class="btn btn-success">{{ "user.phpbb.CreateAccount"|trans([], "validators") }}</button>
+					</form>
+				{% endif %}
+			</div>
+		{% endfor %}
+	</div>
+</div>

@@ -68,10 +68,52 @@ class UserController extends AbstractController
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
-        return $this->render('user/Profile/show.html.twig', array(
-            'user' => $user,
-        ));
+        return $this->render('user/Profile/show.html.twig', [
+            'user' => $user
+        ]);
     }
+	
+	public function phpbbAction(Request $request, SessionInterface $session, TranslatorInterface $translator, \App\Service\PHPBB $phpbb) {
+		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+
+        if (!is_object($user)) {
+            throw new AccessDeniedException('This user does not have access to this section.');
+        }
+		
+		$form = $this->createFormBuilder();
+		
+		foreach($phpbb->getLanguages() as $language) {
+			$form->add("password".$language, \Symfony\Component\Form\Extension\Core\Type\PasswordType::class);
+		}
+		
+		$form = $form->getForm();
+		
+		if($request->isMethod('post')) {
+			$form->handleRequest($request);
+			$language = key($request->request->get("language"));
+			$password = $form->get("password".$language)->getData();
+
+			if(empty($password))
+				$session->getFlashBag()->add("error", $translator->trans("user.phpbb.ErrorPasswordEmpty", [], "validators"));
+			else {
+				$token = $phpbb->getJWT($language);
+				$user = $this->get('security.token_storage')->getToken()->getUser();
+				$res = $phpbb->saveUser($token, $user->getUsername(), $password, $user->getEmail());
+
+				if(isset($res["error"]))
+					$session->getFlashBag()->add("error", $translator->trans("user.phpbb.ErrorCreateAccount", [], "validators")." [".$res["error"]."]");
+				else
+					$session->getFlashBag()->add("success", $translator->trans("user.phpbb.Success", [], "validators")." [".$res["success"]."]");
+			}
+			
+			return $this->redirect($this->generateUrl("Profile_Show"));
+		}
+		
+        return $this->render('user/Profile/phpbb.html.twig', [
+			'forums' => $phpbb->getForumsByUser($user->getUsername()),
+			"form" => $form->createView()
+        ]);
+	}
 
     /**
      * Request reset user password: show form.

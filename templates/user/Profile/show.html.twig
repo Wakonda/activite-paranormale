@@ -3,6 +3,17 @@
 {% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/elite-icon.png') }}" width="25" class="mt-1" alt="Elite"/></span>{{ "user.showProfile.YourAccount"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
+	{% for flashMessage in app.session.flashbag.get('success') %}
+		<div class="alert alert-success text-center">
+			{{ flashMessage }}
+		</div>
+	{% endfor %}
+	{% for flashMessage in app.session.flashbag.get('error') %}
+		<div class="alert alert-danger text-center">
+			{{ flashMessage }}
+		</div>
+	{% endfor %}
+
 	{% block fos_user_content %}
 		{% include "user/Profile/show_content.html.twig" %}
 	{% endblock fos_user_content %}

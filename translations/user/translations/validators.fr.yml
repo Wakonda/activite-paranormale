@@ -145,6 +145,18 @@ user:
         ReceiveRewardsSentence: "Pour recevoir des récompenses pour vos publications, vous pouvez paramétrer plusieurs méthodes de paiement <a href='%url%'>en complétant votre profil</a>."
         AddressOfYourWallet: "Adresse de votre portefeuille"
         EmailAddress: "Adresse email"
+    phpbb:
+        Forums: "Forums"
+        ForumFR: "Forum en français"
+        ForumEN: "Forum en anglais"
+        ForumES: "Forum en espagnol"
+        CreateAccount: "Créer un compte"
+        LogIn: "Se connecter"
+        YourForumPassword: "Mot de passe sur le forum"
+        YourNicknameOnTheForums: "Votre pseudo sur les forums :"
+        ErrorCreateAccount: "Erreur lors de la création de votre compte"
+        ErrorPasswordEmpty: "Vous devez saisir un mot de passe"
+        Success: "Succès"
 role:
     admin:
         Title: "Titre"

@@ -72,7 +72,7 @@ class Facebook {
 		$message = urlencode($message);
 		
 		$llt = $this->FACEBOOK_ACCESS_TOKEN;
-// dd($_ENV, "https://graph.facebook.com/${pageId}/feed?message=${message}&link=${url}&access_token=".$llt);
+
 		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${pageId}/feed?message=${message}&link=${url}&access_token=".$llt);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);

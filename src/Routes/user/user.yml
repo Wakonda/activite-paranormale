@@ -67,3 +67,8 @@ Profile_Change_Password:
     path:  /profile/change-password
     controller: App\Controller\UserController::changePasswordAction
     methods: GET|POST
+
+Profile_PHPBB:
+    path:  /phpbb
+    controller: App\Controller\UserController::phpbbAction
+    methods: GET|POST
