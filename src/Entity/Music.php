@@ -72,6 +72,11 @@ class Music
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+    /**
+     * @ORM\Column(name="identifiers", type="text", nullable=true)
+     */
+    private $identifiers;
 	
 	public function getTitle(): string {
 		$album = !empty($this->album) ? $this->album->getTitle() : null;
@@ -331,5 +336,15 @@ class Music
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    public function setIdentifiers($identifiers)
+    {
+        $this->identifiers = $identifiers;
+    }
+
+    public function getIdentifiers()
+    {
+        return $this->identifiers;
     }
 }

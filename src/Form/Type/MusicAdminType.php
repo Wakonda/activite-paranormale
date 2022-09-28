@@ -21,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Field\SourceEditType;
+use App\Form\Field\IdentifiersEditType;
 use App\Entity\Artist;
 use App\Entity\Album;
 
@@ -86,6 +87,7 @@ class MusicAdminType extends AbstractType
             ->add('embeddedCode', TextareaType::class, array('required' => false))
 			->add('existingFile', TextType::class, array('mapped' => false, 'required' => false, 'attr' => array('class' => 'existing_file')))
 			->add('wikidata', TextType::class, ['required' => false])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["ISRC", "AllMusic song ID", "MusicBrainz recording ID"]])
         ;
 
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){

@@ -47,10 +47,21 @@ class AlbumAdminController extends AdminGenericController
 			$em = $this->getDoctrine()->getManager();
 			
 			if(!empty($form->get("tracklist")->getData())) {
-				foreach(json_decode($form->get("tracklist")->getData(), true) as $code => $value) {
+				// dd(json_decode($form->get("tracklist")->getData(), true));
+				foreach(json_decode($form->get("tracklist")->getData(), true) as $code => $data) {
+					// dd($code, $value);
 					$music = new Music();
 					$music->setWikidata($code);
-					$music->setMusicPiece($value);
+					$music->setMusicPiece($data["title"]);
+					$music->setIdentifiers(json_encode($data["identifiers"]));
+					
+					if(isset($data["duration"])) {
+						if($data["duration"]["unit"] == "second") {
+							$time = $data["duration"]["amount"];
+							$music->setLength(sprintf('%02d:%02d:%02d', ($time/3600),($time/60%60), $time%60));
+						}
+					}
+
 					$music->setAlbum($entityBindded);
 					
 					$searchForDoublons = $em->getRepository(Music::class)->countForDoublons($music);
@@ -58,7 +69,7 @@ class AlbumAdminController extends AdminGenericController
 					if($searchForDoublons == 0)
 						$em->persist($music);
 				}
-				
+				// die("ok)");
 				$em->flush();
 			}
 		}

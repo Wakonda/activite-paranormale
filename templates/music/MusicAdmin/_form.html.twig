@@ -120,6 +120,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "music.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "music.admin.Identifiers"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <script>
 	function linkMusic(val) {
 		document.getElementById("{{ form.album.vars.id }}_container").style.display = "none";

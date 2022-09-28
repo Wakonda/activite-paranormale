@@ -79,6 +79,7 @@ music:
         Sources: "Sources"
         AddMusic: "Ajouter un morceau"
         LinkMusic: "Lien"
+        Identifiers: "Numéros d'identification"
     index:
         Music: "Musique"
         OfficialWebsite: "Site officiel"

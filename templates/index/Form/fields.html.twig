@@ -613,7 +613,7 @@
 				identifier: {
 				    title: "{{ 'admin.identifier.Id'|trans([], 'validators') }}",
 					type: "string",
-					enum: ["IMDb ID", "Rotten Tomatoes ID", "Letterboxd film ID"],
+					enum: JSON.parse('{{ form.vars.enum|json_encode|e('js') }}'),
 					required: true
 				},
 				value: {
@@ -760,7 +760,7 @@
 				source: {
 				    title: "{{ 'movie.admin.ReviewSource'|trans([], 'validators') }}",
 					type: "string",
-					enum: ["Rotten Tomatoes"],
+					enum: JSON.parse('{{ form.vars.enum|json_encode|e('js') }}'),
 					required: true
 				},
 				score: {

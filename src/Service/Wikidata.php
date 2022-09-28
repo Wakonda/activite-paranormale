@@ -96,13 +96,10 @@
 				foreach($songs->P658 as $song) {
 					$idSong = $song->mainsnak->datavalue->value->id;
 
-					$contentSong = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSong}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-					$dataSong = json_decode($contentSong);
-					
-					$songArray[$idSong] = $dataSong->entities->$idSong->labels->$language->value;
+					$songArray[$idSong] = $this->getMusicByIdSong($idSong, $language);
 				}
 			}
-				
+
 			$res["tracklist"] = $songArray;
 
 			$res["publicationDate"] = [
@@ -122,6 +119,56 @@
 				];
 			}
 
+			return $res;
+		}
+		
+		private function getMusicByIdSong(string $idSong, string $language): array
+		{
+			$languageWiki = $language."wiki";
+			$contentSong = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSong}&sitefilter=${languageWiki}");
+			$dataSong = json_decode($contentSong);
+			
+			$res = [];
+			
+			$res["title"] = $dataSong->entities->$idSong->labels->$language->value;
+			$res["wikidata"] = $idSong;
+
+			if(property_exists($dataSong->entities->$idSong->claims, "P2047")) {
+				$duration = $dataSong->entities->$idSong->claims->P2047;
+				
+				$res["duration"] = [
+					"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
+					"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
+				];
+			}
+		
+			if(property_exists($dataSong->entities->$idSong->claims, "P1243")) {
+				$value = $dataSong->entities->$idSong->claims->P1243[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "ISRC",
+					"value" => $value
+				];
+			}
+			
+			if(property_exists($dataSong->entities->$idSong->claims, "P1730")) {
+				$value = $dataSong->entities->$idSong->claims->P1730[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "AllMusic song ID",
+					"value" => $value
+				];
+			}
+			
+			if(property_exists($dataSong->entities->$idSong->claims, "P4404")) {
+				$value = $dataSong->entities->$idSong->claims->P4404[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "MusicBrainz recording ID",
+					"value" => $value
+				];
+			}
+			
 			return $res;
 		}
 		
@@ -246,7 +293,7 @@
 
 			// producteur / producer
 			$this->getIdsByProperty("P162", $datas, $code, "producer", $language, $personArray);
-// die;
+
 			$res["person"] = $personArray;
 
 			// Sociétés de production / production company
@@ -464,6 +511,9 @@
 
 				$contentCountry = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${idCountry}");
 				$datasCountry = json_decode($contentCountry);
+
+				if(empty($datasCountry->entities->$idCountry->claims->P297[0]))
+					return [];
 
 				$res[$key] = [
 					"alpha2" => $datasCountry->entities->$idCountry->claims->P297[0]->mainsnak->datavalue->value,

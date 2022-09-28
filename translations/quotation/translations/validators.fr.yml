@@ -76,6 +76,9 @@ biography:
         Violin: "Violoniste"
         Translator: "Traducteur"
         Preface: "Préfacier"
+        DirectorOfPhotography: "Photographe"
+        FilmEditor: "Monteur"
+        Composer: "Compositeur"
     search:
         ArtistBiography: "Musique"
         MovieBiography: "Film"

@@ -123,13 +123,13 @@ class MovieAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
             ->add('source', SourceEditType::class, array('required' => false))
-            ->add('identifiers', IdentifiersEditType::class, array('required' => false))
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["IMDb ID", "Rotten Tomatoes ID", "Letterboxd film ID"]])
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('boxOffice', NumberType::class, array('required' => true, 'translation_domain' => 'validators', "required" => false))
 			->add('boxOfficeUnit', ChoiceType::class, array('choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'))
 			->add('cost', NumberType::class, array('required' => true, 'translation_domain' => 'validators', "required" => false))
 			->add('costUnit', ChoiceType::class, array('choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'))
-            ->add('reviewScores', ReviewScoresEditType::class, array('required' => false))
+            ->add('reviewScores', ReviewScoresEditType::class, ['required' => false, 'enum' => ["Rotten Tomatoes"]])
 		;
 
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
