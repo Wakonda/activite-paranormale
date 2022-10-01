@@ -77,6 +77,9 @@
 	</div>
 </div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "artist.admin.Identifiers"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "artist.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
@@ -106,6 +109,10 @@
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
 				document.getElementById("{{ form.website.vars.id }}").value = data.links;
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
+
+				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
+				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);
+				reload{{ form.identifiers.vars.id }}(data);
 				
 				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
 

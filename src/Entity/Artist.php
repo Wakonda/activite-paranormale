@@ -95,6 +95,11 @@ class Artist
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+    /**
+     * @ORM\Column(name="identifiers", type="text", nullable=true)
+     */
+    private $identifiers;
 	
 	public function __clone()
 	{
@@ -339,5 +344,25 @@ class Artist
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    /**
+     * Set identifiers
+     *
+     * @param string $identifiers
+     */
+    public function setIdentifiers($identifiers)
+    {
+        $this->identifiers = $identifiers;
+    }
+
+    /**
+     * Get identifiers
+     *
+     * @return string 
+     */
+    public function getIdentifiers()
+    {
+        return $this->identifiers;
     }
 }

@@ -9,6 +9,7 @@ artist:
         Country: "Country"
         Sources: "Sources"
         AlbumList: "Album list"
+        Identifiers: "Identifiers"
     biography:
         Title: "Title"
         Occupations: "Activités"
@@ -26,6 +27,7 @@ artist:
         Sources: "Sources"
         Discography: "Discography"
         Video: "Video"
+        Identifiers: "Identifiers"
     search:
         SearchSort: "Search"
         Title: "Title"

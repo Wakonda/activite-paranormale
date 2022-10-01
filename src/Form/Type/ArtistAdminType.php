@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use App\Form\Field\SourceEditType;
+use App\Form\Field\IdentifiersEditType;
 use App\Entity\ArtistBiography;
 
 class ArtistAdminType extends AbstractType
@@ -63,6 +64,7 @@ class ArtistAdminType extends AbstractType
             ->add('source', SourceEditType::class, array('required' => false))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('artistBiographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => ArtistBiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => ArtistBiography::class, "language" => $language, "req_params" => ["locale" => $this->getBlockPrefix()."[language]"]]))
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["Spotify artist ID", "MusicBrainz artist ID", "AllMusic artist ID", "ISNI", "VIAF ID"]])
         ;
 		
 		$builder->add('internationalName', HiddenType::class, array('required' => true, 'constraints' => array(new NotBlank())));

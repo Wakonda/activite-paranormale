@@ -77,6 +77,18 @@
 	<div class="form-table-cell form-table-cell-head">{{ "artist.admin.Country"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.country is not empty %}<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20px" height="13px" />{% endif %}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "artist.admin.Identifiers"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% set datas = json_decode(entity.identifiers) %}
+		{% if datas is not empty %}
+			<ul>
+				{% for data in datas %}
+					<li>{{ data.identifier }} (<i>{{ data.value }}</i>)</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "artist.admin.Sources"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
 

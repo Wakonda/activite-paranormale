@@ -50,7 +50,12 @@
 				"Amazon Standard Identification Number" => "https://www.amazon.com/dp/${value}",
 				"MusicBrainz release group ID" => "https://musicbrainz.org/release-group/${value}",
 				"AllMusic album ID" => "https://www.allmusic.com/album/${value}",
-				"Spotify album ID" => "https://open.spotify.com/album/${value}"
+				"Spotify album ID" => "https://open.spotify.com/album/${value}",
+				"Spotify artist ID" => "https://open.spotify.com/artist/${value}",
+				"MusicBrainz artist ID" => "https://musicbrainz.org/artist/${value}",
+				"AllMusic artist ID" => "https://www.allmusic.com/artist/${value}",
+				"ISNI" => "https://isni.org/isni/${value}",
+				"VIAF ID" => "https://viaf.org/viaf/${value}"
 			];
 			
 			return $data[$id];

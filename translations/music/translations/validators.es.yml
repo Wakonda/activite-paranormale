@@ -9,6 +9,7 @@ artist:
         Country: "País"
         Sources: "Fuentes"
         AlbumList: "Lista de álbumes"
+        Identifiers: "Número de identificación"
     biography:
         Title: "Titulo"
         Occupations: "Ocupaciónes"
@@ -26,6 +27,7 @@ artist:
         Sources: "Fuentes"
         Discography: "Discografía"
         Video: "Vídeo"
+        Identifiers: "Número de identificación"
     search:
         SearchSort: "Buscar"
         Title: "Titulo"

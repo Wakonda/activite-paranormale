@@ -311,7 +311,52 @@
 			$this->getIdsByProperty("P856", $datas, $code, "website", $language, $websitesArray);
 
 			$res["links"] = isset($websitesArray["website"]) ? key($websitesArray["website"]) : null;
-			
+
+			if(property_exists($datas->entities->$code->claims, "P1902")) {
+				$value = $datas->entities->$code->claims->P1902[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "Spotify artist ID",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P434")) {
+				$value = $datas->entities->$code->claims->P434[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "MusicBrainz artist ID",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P1728")) {
+				$value = $datas->entities->$code->claims->P1728[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "AllMusic artist ID",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P213")) {
+				$value = $datas->entities->$code->claims->P213[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "ISNI",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P214")) {
+				$value = $datas->entities->$code->claims->P214[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "VIAF ID",
+					"value" => $value
+				];
+			}
+
 			$personArray = [];
 			
 			$this->getIdsByProperty("P527", $datas, $code, "member", $language, $personArray);
