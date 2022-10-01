@@ -85,6 +85,9 @@
 	</div>
 </div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "televisionSerie.admin.Identifiers"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "televisionSerie.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
@@ -123,10 +126,19 @@
 				let data = JSON.parse(xmlHttp.responseText);
 				
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				
+				document.getElementById("url_{{ form.introduction.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.introduction.vars.id }}").dispatchEvent(new Event("change"));
+				
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+				
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
 				document.getElementById("{{ form.episode.vars.id }}").value = JSON.stringify(data.episodes);
+
+				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
+				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);
+				reload{{ form.identifiers.vars.id }}(data);
 				
 				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
 			}

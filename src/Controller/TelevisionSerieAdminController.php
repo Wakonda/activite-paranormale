@@ -93,6 +93,15 @@ class TelevisionSerieAdminController extends AdminGenericController
 					$episode->setWikidata($value["wikidata"]);
 					$episode->setTitle($value["title"]);
 					
+					if(isset($value["identifiers"]) and !empty($value["identifiers"]))
+						$episode->setIdentifiers(json_encode($value["identifiers"]));
+					
+					if(isset($value["duration"]) and !empty($value["duration"])) {
+						if($value["duration"]["unit"] == "minute") {
+							$episode->setDuration($value["duration"]["amount"]);
+						}
+					}
+					// dd($value);
 					if(!empty($value["date"]))
 						$episode->setReleaseDate(new \DateTime(implode("-", $value["date"])));
 					$episode->setSeason($season);

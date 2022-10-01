@@ -123,11 +123,11 @@
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "music.admin.Sources"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
-
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "music.admin.Identifiers"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "music.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <script>
 	document.getElementById("wikidata").addEventListener("click", (e) => {
@@ -163,7 +163,6 @@
 					document.getElementById("{{ form.minuteDuration.vars.id }}").value = unitString[1];
 					document.getElementById("{{ form.secondDuration.vars.id }}").value = unitString[2];
 				}
-				console.log(data)
 				
 				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
 			}

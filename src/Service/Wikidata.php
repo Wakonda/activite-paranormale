@@ -470,7 +470,7 @@
 
 			if(property_exists($datas->entities->$code->claims, "P2047")) {
 				$duration = $datas->entities->$code->claims->P2047;
-				
+
 				$res["duration"] = [
 					"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
 					"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
@@ -540,7 +540,38 @@
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
 			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
+
+			$datas = json_decode($content);
+
+			if(property_exists($datas->entities->$code->claims, "P345")) {
+				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "IMDb ID",
+					"value" => $value
+				];
+			}
 			
+			if(property_exists($datas->entities->$code->claims, "P1258")) {
+				$value = $datas->entities->$code->claims->P1258[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "Rotten Tomatoes ID",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P2047")) {
+				$duration = $datas->entities->$code->claims->P2047;
+
+				$res["duration"] = [
+					"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
+					"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
+				];
+			}
+
 			return $res;
 		}
 
@@ -564,6 +595,24 @@
 				$country = $datas->entities->$code->claims->P495;
 				$countryId = $country[0]->mainsnak->datavalue->value->id;
 				$res["origin"] = $this->getCountry($datas, $code, "P495");
+			}
+			
+			if(property_exists($datas->entities->$code->claims, "P345")) {
+				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "IMDb ID",
+					"value" => $value
+				];
+			}
+			
+			if(property_exists($datas->entities->$code->claims, "P1258")) {
+				$value = $datas->entities->$code->claims->P1258[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "Rotten Tomatoes ID",
+					"value" => $value
+				];
 			}
 
 			// Episodes
@@ -595,8 +644,39 @@
 									"day" => $publicationDate["day"]
 								];
 							}
+							
+							$identifiers = [];
 
-							$episodeArray[$i][] = ["title" => $contentEpisodeDetailContent->entities->$idEpisode->labels->$language->value, "date" => $date, "wikidata" => $idEpisode];
+							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P345")) {
+								$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P345[0]->mainsnak->datavalue->value;
+								
+								$identifiers[] = [
+									"identifier" => "IMDb ID",
+									"value" => $value
+								];
+							}
+
+							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P1258")) {
+								$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P1258[0]->mainsnak->datavalue->value;
+								
+								$identifiers[] = [
+									"identifier" => "Rotten Tomatoes ID",
+									"value" => $value
+								];
+							}
+							
+							$durationArray = [];
+
+							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P2047")) {
+								$duration = $contentEpisodeDetailContent->entities->$idEpisode->claims->P2047;
+// dd($duration);
+								$durationArray = [
+									"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
+									"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
+								];
+							}
+
+							$episodeArray[$i][] = ["title" => $contentEpisodeDetailContent->entities->$idEpisode->labels->$language->value, "date" => $date, "wikidata" => $idEpisode, "identifiers" => $identifiers, "duration" => $durationArray];
 						}
 					}
 					$i++;
@@ -604,7 +684,7 @@
 				
 				$res["episodes"] = $episodeArray;
 			}
-
+// dd($res);
 			return $res;
 		}
 

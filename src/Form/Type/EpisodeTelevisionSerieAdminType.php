@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use App\Form\Field\SourceEditType;
+use App\Form\Field\IdentifiersEditType;
 use App\Entity\Movies\TelevisionSerieBiography;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
@@ -73,6 +74,7 @@ class EpisodeTelevisionSerieAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
 			->add('wikidata', TextType::class, ['required' => false])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["IMDb ID", "Rotten Tomatoes ID"]])
 		;
     }
 

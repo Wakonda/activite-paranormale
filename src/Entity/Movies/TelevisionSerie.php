@@ -73,6 +73,11 @@ class TelevisionSerie extends MappedSuperclassBase
 	 */
 	private $wikidata;
 
+    /**
+     * @ORM\Column(name="identifiers", type="text", nullable=true)
+     */
+    private $identifiers;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -225,5 +230,15 @@ class TelevisionSerie extends MappedSuperclassBase
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    public function setIdentifiers($identifiers)
+    {
+        $this->identifiers = $identifiers;
+    }
+
+    public function getIdentifiers()
+    {
+        return $this->identifiers;
     }
 }

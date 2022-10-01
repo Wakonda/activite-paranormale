@@ -100,6 +100,11 @@ class EpisodeTelevisionSerie
      * @ORM\Column(name="fullStreaming", type="text", nullable=true)
      */
     private $fullStreaming;
+
+    /**
+     * @ORM\Column(name="identifiers", type="text", nullable=true)
+     */
+    private $identifiers;
 	
 	public function getLanguage()
 	{
@@ -328,5 +333,15 @@ class EpisodeTelevisionSerie
     public function getFullStreaming()
     {
         return $this->fullStreaming;
+    }
+
+    public function setIdentifiers($identifiers)
+    {
+        $this->identifiers = $identifiers;
+    }
+
+    public function getIdentifiers()
+    {
+        return $this->identifiers;
     }
 }

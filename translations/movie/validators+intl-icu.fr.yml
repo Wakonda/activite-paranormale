@@ -139,6 +139,7 @@ televisionSerie:
         TelevisionSerie: "Série :"
         Title: "Titre"
         EpisodeNumber: "N° d'épisode"
+        Identifiers: "Numéros d'identification"
     admin:
         TelevisionSerie: "Série de télévision"
         Title: "Titre"
@@ -151,6 +152,7 @@ televisionSerie:
         State: "État"
         Genre: "Genre"
         Sources: "Sources"
+        Identifiers: "Numéros d'identification"
     search:
         SearchSort: "Rechercher / trier"
         Keywords: "Mots-clés"
@@ -179,5 +181,7 @@ episodeTelevisionSerie:
         ListOfEpisodes: "Liste des épisodes"
         AddEpisode: "Ajouter un épisode"
         FullStreaming: "Épisode complet"
+        Identifiers: "Numéros d'identification"
     read:
         FullStreaming: "Épisode complet"
+        Identifiers: "Numéros d'identification"
