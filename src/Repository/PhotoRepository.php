@@ -119,11 +119,13 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
+			$orWhere = [];
+			
 			foreach($aColumns as $column)
-			{
-				$qb->orWhere($column." LIKE :search")
-				   ->setParameter('search', $search);
-			}
+				$orWhere[] = $column." LIKE :search";
+
+			$qb->andWhere(implode(" OR ", $orWhere))
+			   ->setParameter('search', $search);
 		}
 		if($count)
 		{
