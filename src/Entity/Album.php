@@ -77,6 +77,16 @@ class Album
 	 */
 	private $wikidata;
 
+    /**
+     * @ORM\Column(name="identifiers", type="text", nullable=true)
+     */
+    private $identifiers;
+
+    /**
+     * @ORM\Column(name="reviewScores", type="text", nullable=true)
+     */
+    private $reviewScores;
+
 	public function __toString(): string
 	{
 		return $this->title." - ".$this->artist->getTitle();
@@ -295,5 +305,45 @@ class Album
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    /**
+     * Set identifiers
+     *
+     * @param string $identifiers
+     */
+    public function setIdentifiers($identifiers)
+    {
+        $this->identifiers = $identifiers;
+    }
+
+    /**
+     * Get identifiers
+     *
+     * @return string 
+     */
+    public function getIdentifiers()
+    {
+        return $this->identifiers;
+    }
+
+    /**
+     * Set reviewScores
+     *
+     * @param string $reviewScores
+     */
+    public function setReviewScores($reviewScores)
+    {
+        $this->reviewScores = $reviewScores;
+    }
+
+    /**
+     * Get reviewScores
+     *
+     * @return string 
+     */
+    public function getReviewScores()
+    {
+        return $this->reviewScores;
     }
 }

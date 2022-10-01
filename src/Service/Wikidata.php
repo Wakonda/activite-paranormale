@@ -118,6 +118,84 @@
 					"day" => $publicationDate["day"]
 				];
 			}
+			
+			// review score
+			if(property_exists($datas->entities->$code->claims, "P444")) {
+				$reviewScores = $datas->entities->$code->claims->P444;
+				$reviewScoreArray = [];
+				foreach($reviewScores as $reviewScore) {
+					$reviewScoreArray[] = [
+						"score" => $reviewScore->mainsnak->datavalue->value,
+						"source" => $this->getPropertyValue($reviewScore->qualifiers->P447[0]->datavalue->value->id),
+					];
+				}
+
+				$res["reviewScores"] = $reviewScoreArray;
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P1729")) {
+				$value = $datas->entities->$code->claims->P1729[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "AllMusic album ID",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P5749")) {
+				$value = $datas->entities->$code->claims->P5749[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "Amazon Standard Identification Number",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P436")) {
+				$value = $datas->entities->$code->claims->P436[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "MusicBrainz release group ID",
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P2205")) {
+				$value = $datas->entities->$code->claims->P2205[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "Spotify album ID",
+					"value" => $value
+				];
+			}
+
+			return $res;
+		}
+		
+		public function getMusicDatas(string $code, string $language)
+		{
+			$res = [];
+			$languageWiki = $language."wiki";
+// dd("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+
+			$datas = json_decode($content);
+// dd($datas->entities->$code->sitelinks, $language);
+			$res["title"] = $datas->entities->$code->labels->$language->value;
+			
+			if(property_exists($datas->entities->$code->sitelinks, $languageWiki))
+				$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+			
+			$res = array_merge($res, $this->getMusicByIdSong($code, $language));
+			
+			if(isset($res["identifiers"])) {
+				$identifiers = $res["identifiers"];
+				$found_key = array_search('YouTube video ID', array_column($identifiers, 'identifier'));
+
+				if(isset($identifiers[$found_key]) and $identifiers[$found_key]["identifier"] == "YouTube video ID" and !empty($d = $identifiers[$found_key]["value"])) {
+					$res["embeddedCode"] = '<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/'.$d.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+				}
+			}
 
 			return $res;
 		}
@@ -132,16 +210,42 @@
 			
 			$res["title"] = $dataSong->entities->$idSong->labels->$language->value;
 			$res["wikidata"] = $idSong;
+			
+			// recording or performance of
+			if(property_exists($dataSong->entities->$idSong->claims, "P2550")) {
+				$id = $dataSong->entities->$idSong->claims->P2550[0]->mainsnak->datavalue->value->id;
+				$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$id}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+
+				$datas = json_decode($content);
+				
+				$res["url"] = $datas->entities->$id->sitelinks->$languageWiki->url;
+			}
+// dd();
+			$duration = null;
 
 			if(property_exists($dataSong->entities->$idSong->claims, "P2047")) {
 				$duration = $dataSong->entities->$idSong->claims->P2047;
+				$unit = $this->getUnit($duration[0]->mainsnak->datavalue->value->unit);
+				$amount = intval($duration[0]->mainsnak->datavalue->value->amount);
+			} elseif(property_exists($dataSong->entities->$idSong->claims, "P1651") and property_exists($dataSong->entities->$idSong->claims->P1651[0]->qualifiers, "P2047")) {
+				$duration = $dataSong->entities->$idSong->claims->P1651[0]->qualifiers->P2047;
+				$unit = $this->getUnit($duration[0]->datavalue->value->unit);
+				$amount = intval($duration[0]->datavalue->value->amount);
+			}
+			
+			if(!empty($duration)) {
+				$unitString = null;
+
+				if($unit == "second")
+					$unitString = sprintf('%02d:%02d:%02d', ($amount/3600),($amount/60%60), $amount%60);
 				
 				$res["duration"] = [
-					"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
-					"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
+					"amount" => $amount,
+					"unit" => $unit,
+					"unitString" => $unitString
 				];
 			}
-		
+		//dd($res);
 			if(property_exists($dataSong->entities->$idSong->claims, "P1243")) {
 				$value = $dataSong->entities->$idSong->claims->P1243[0]->mainsnak->datavalue->value;
 				
@@ -165,6 +269,15 @@
 				
 				$res["identifiers"][] = [
 					"identifier" => "MusicBrainz recording ID",
+					"value" => $value
+				];
+			}
+			
+			if(property_exists($dataSong->entities->$idSong->claims, "P1651")) {
+				$value = $dataSong->entities->$idSong->claims->P1651[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => "YouTube video ID",
 					"value" => $value
 				];
 			}

@@ -105,6 +105,7 @@ music:
         Download: "Go"
         ReleaseDate: "Release date:"
         TrackListing: "Track listing"
+        Identifiers: "Identifiers"
     music:
         Artist: "Artist:"
         Album: "Album:"
@@ -130,3 +131,8 @@ album:
         Sources: "Sources"
         TrackListing: "Track listing"
         AddAlbum: "Add an album"
+        Identifiers: "Identifiers"
+        ReviewScores: "Review scores"
+    read:
+        Identifiers: "Identifiers"
+        ReviewScores: "Review scores"

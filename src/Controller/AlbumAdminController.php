@@ -47,14 +47,22 @@ class AlbumAdminController extends AdminGenericController
 			$em = $this->getDoctrine()->getManager();
 			
 			if(!empty($form->get("tracklist")->getData())) {
-				// dd(json_decode($form->get("tracklist")->getData(), true));
 				foreach(json_decode($form->get("tracklist")->getData(), true) as $code => $data) {
-					// dd($code, $value);
 					$music = new Music();
 					$music->setWikidata($code);
 					$music->setMusicPiece($data["title"]);
-					$music->setIdentifiers(json_encode($data["identifiers"]));
 					
+					if(isset($data["identifiers"])) {
+						$identifiers = $data["identifiers"];
+						$music->setIdentifiers(json_encode($identifiers));
+					
+						$found_key = array_search('YouTube video ID', array_column($identifiers, 'identifier'));
+
+						if(isset($identifiers[$found_key]) and $identifiers[$found_key]["identifier"] == "YouTube video ID" and !empty($d = $identifiers[$found_key]["value"])) {
+							$music->setEmbeddedCode('<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/'.$d.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+						}
+					}
+
 					if(isset($data["duration"])) {
 						if($data["duration"]["unit"] == "second") {
 							$time = $data["duration"]["amount"];
@@ -69,7 +77,7 @@ class AlbumAdminController extends AdminGenericController
 					if($searchForDoublons == 0)
 						$em->persist($music);
 				}
-				// die("ok)");
+
 				$em->flush();
 			}
 		}

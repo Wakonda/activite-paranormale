@@ -46,6 +46,30 @@
 	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.ReviewScores"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% set datas = json_decode(entity.reviewScores) %}
+		{% if datas is not empty %}
+			<ul>
+				{% for data in datas %}
+					<li>{{ data.source }} (<i>{{ data.score }}</i>)</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "album.admin.Identifiers"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% set datas = json_decode(entity.identifiers) %}
+		{% if datas is not empty %}
+			<ul>
+				{% for data in datas %}
+					<li>{{ data.identifier }} (<i>{{ data.value }}</i>)</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
+
 	<div class="d-flex flex-row mt-3">
 		<div><a href="{{ path('Music_Listen', { id: entity.id, artistId: entity.artist.id, artist: entity.artist.title, album: entity.title }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>
 		<div class="ml-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::ALBUM_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>

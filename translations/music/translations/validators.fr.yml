@@ -105,6 +105,7 @@ music:
         Download: "Action"
         ReleaseDate: "Date de sortie :"
         TrackListing: "Liste des morceaux"
+        Identifiers: "Numéros d'identification"
     music:
         Artist: "Artiste :"
         Album: "Album :"
@@ -130,3 +131,8 @@ album:
         Sources: "Sources"
         TrackListing: "Liste des morceaux"
         AddAlbum: "Ajouter un album"
+        Identifiers: "Numéros d'identification"
+        ReviewScores: "Avis"
+    read:
+        Identifiers: "Numéros d'identification"
+        ReviewScores: "Avis"

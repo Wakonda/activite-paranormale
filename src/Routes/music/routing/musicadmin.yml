@@ -45,3 +45,7 @@ Music_Admin_IndexByAlbumDatatables:
     controller: App\Controller\MusicAdminController::indexByAlbumDatatablesAction
     requirements:
         _method: get
+
+Music_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\MusicAdminController::wikidataAction

@@ -14,6 +14,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
+use App\Form\Field\IdentifiersEditType;
+use App\Form\Field\ReviewScoresEditType;
 use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
 use App\Entity\Artist;
@@ -74,6 +76,8 @@ class AlbumAdminType extends AbstractType
 				))
 			->add('wikidata', TextType::class, array('required' => false))
 			->add('tracklist', HiddenType::class, ['mapped' => false, 'required' => false])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["Amazon Standard Identification Number", "MusicBrainz release group ID", "AllMusic album ID", "Spotify album ID"]])
+			->add('reviewScores', ReviewScoresEditType::class, ['required' => false, 'enum' => ["Music Story", "AllMusic"]])
 		;
     }
 

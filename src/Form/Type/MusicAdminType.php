@@ -87,7 +87,7 @@ class MusicAdminType extends AbstractType
             ->add('embeddedCode', TextareaType::class, array('required' => false))
 			->add('existingFile', TextType::class, array('mapped' => false, 'required' => false, 'attr' => array('class' => 'existing_file')))
 			->add('wikidata', TextType::class, ['required' => false])
-            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["ISRC", "AllMusic song ID", "MusicBrainz recording ID"]])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["ISRC", "AllMusic song ID", "MusicBrainz recording ID", "YouTube video ID"]])
         ;
 
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){

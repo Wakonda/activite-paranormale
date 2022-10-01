@@ -39,12 +39,18 @@
 			);
 		}
 		
-		public function getURLIdentifier(string $id): string {
+		public function getURLIdentifier(string $id, string $value): string {
 			$data = [
-				"IMDb ID" => "https://www.imdb.com/title/",
-				"Rotten Tomatoes ID" => "https://www.rottentomatoes.com/m/", 
-				"Letterboxd film ID" => "https://letterboxd.com/film/"
-			
+				"IMDb ID" => "https://www.imdb.com/title/${value}",
+				"Rotten Tomatoes ID" => "https://www.rottentomatoes.com/m/${value}", 
+				"Letterboxd film ID" => "https://letterboxd.com/film/${value}",
+				"ISRC" => "https://isrcsearch.ifpi.org/#!/search?isrcCode=${value}&tab=lookup&showReleases=0&start=0&number=10",
+				"AllMusic song ID" => "https://www.allmusic.com/song/${value}",
+				"MusicBrainz recording ID" => "https://musicbrainz.org/recording/${value}",
+				"Amazon Standard Identification Number" => "https://www.amazon.com/dp/${value}",
+				"MusicBrainz release group ID" => "https://musicbrainz.org/release-group/${value}",
+				"AllMusic album ID" => "https://www.allmusic.com/album/${value}",
+				"Spotify album ID" => "https://open.spotify.com/album/${value}"
 			];
 			
 			return $data[$id];

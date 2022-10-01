@@ -189,4 +189,15 @@ class MusicAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
+	
+	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$code = $request->query->get("code");
+		
+		$res = $wikidata->getMusicDatas($code, $language->getAbbreviation());
+// dd($res);
+		return new JsonResponse($res);
+	}
 }

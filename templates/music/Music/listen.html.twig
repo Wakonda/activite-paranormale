@@ -84,6 +84,35 @@
 			{% include "store/Store/_product.html.twig" with { entity: data } %}
 		{% endfor %}
 		
+		{% if album.reviewScores is not empty %}
+			{% set datas = json_decode(album.reviewScores) %}
+			{% if datas is not empty %}
+				<h3>{{ "album.read.ReviewScores"|trans([], "validators") }}</h3>
+				<table class="table">
+					<tbody>
+						{% for data in datas %}
+							<tr>
+								<td class="td_form_table">{{ data.source }}</td>
+								<td class="tdGene">{{ data.score }}</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			{% endif %}
+		{% endif %}
+	
+		{% if album.identifiers is not empty %}
+			{% set datas = json_decode(album.identifiers) %}
+			{% if datas is not empty %}
+				<h3>{{ "album.read.Identifiers"|trans([], "validators") }}</h3>
+				<ul class="fa-ul">
+					{% for data in datas %}
+						<li><span class="fa-li"><i class="fas fa-fast-forward"></i></span> {{ data.identifier }} (<i><a href="{{ url_identifier(data.identifier, data.value) }}" target="_blank">{{ data.value }}</a></i>)</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
+		{% endif %}
+		
 		{% if album.source is not empty %}
 			<h3>{{ "music.index.Sources"|trans([], "validators") }}</h3>
 			{{ source_document(album.source) }}
