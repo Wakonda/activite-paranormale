@@ -23,9 +23,6 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.fullStreaming, "episodeTelevisionSerie.admin.FullStreaming"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.fullStreaming) }}{{ form_widget(form.fullStreaming, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "episodeTelevisionSerie.admin.Sources"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
-
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.releaseDate, "episodeTelevisionSerie.admin.ReleaseDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.releaseDate) }}{{ form_widget(form.releaseDate, { 'attr': {'class': 'form-control'} }) }}</div>
 
@@ -85,6 +82,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "episodeTelevisionSerie.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
 {% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
 
 <script>
@@ -123,9 +123,6 @@
 						
 					document.getElementById("url_{{ form.synopsis.vars.id }}").value = data.url;
 					document.getElementById("url_{{ form.synopsis.vars.id }}").dispatchEvent(new Event("change"));
-
-					if(typeof data.duration !== "undefined")
-						document.getElementById("{{ form.duration.vars.id }}").value = data.duration.amount;
 						
 					if(typeof data.releaseDate !== "undefined")
 						document.getElementById("{{ form.releaseDate.vars.id }}").value = data.releaseDate.year + "-" + data.releaseDate.month.toString().padStart(2, "0") + "-" + data.releaseDate.day.toString().padStart(2, "0");
@@ -141,7 +138,7 @@
 					reload{{ form.identifiers.vars.id }}(data);
 
 					if(typeof data.duration !== "undefined") {
-						document.getElementById("{{ form.duration.vars.id }}").value = data.duration.amounth;
+						document.getElementById("{{ form.duration.vars.id }}").value = data.duration.amount;
 					}
 					
 					document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
