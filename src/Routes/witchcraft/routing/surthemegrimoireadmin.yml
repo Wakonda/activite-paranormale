@@ -43,3 +43,15 @@ SurThemeGrimoire_Admin_IndexDatatables:
 SurThemeGrimoire_Admin_ReloadListsByLanguage:
     path:  /reloadlistsbylanguage
     controller: App\Controller\SurThemeGrimoireAdminController::reloadListsByLanguageAction
+
+SurThemeGrimoire_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\SurThemeGrimoireAdminController::internationalizationAction
+
+SurThemeGrimoire_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\SurThemeGrimoireAdminController::showImageSelectorColorboxAction
+
+SurThemeGrimoire_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\SurThemeGrimoireAdminController::loadImageSelectorColorboxAction

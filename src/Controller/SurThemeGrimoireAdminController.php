@@ -28,7 +28,8 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 	
 	protected $indexRoute = "SurThemeGrimoire_Admin_Index"; 
 	protected $showRoute = "SurThemeGrimoire_Admin_Show";
-	protected $illustrations = [["field" => "photo"]];
+	protected $formName = "ap_witchcraft_surthemegrimoireadmintype";
+	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
@@ -63,7 +64,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$entity = new SurThemeGrimoire();
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -72,7 +73,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$entity = new SurThemeGrimoire();
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
     public function editAction($id)
@@ -80,7 +81,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$formType = SurThemeGrimoireAdminType::class;
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($id, $twig, $formType, ['locale' => $request->getLocale()]);
     }
 	
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -88,7 +89,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$formType = SurThemeGrimoireAdminType::class;
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
     public function deleteAction($id)
@@ -160,6 +161,9 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$menuGrimoire = $em->getRepository(MenuGrimoire::class)->findOneBy(["internationalName" => $entityToCopy->getMenuGrimoire()->getInternationalName(), "language" => $language]);
 
+		if(!empty($menuGrimoire))
+			$entity->setMenuGrimoire($menuGrimoire);
+
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setPhoto($entityToCopy->getPhoto());
 		$entity->setLanguage($language);
@@ -169,4 +173,14 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/new.html.twig';
 		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit']);
     }
+
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('SurThemeGrimoire_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
+	}
 }

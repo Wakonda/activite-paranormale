@@ -159,7 +159,7 @@ class ThemeAdminController extends AdminGenericController
 	{
 		return $this->loadImageSelectorColorboxGenericAction($request);
 	}
-	
+
     public function internationalizationAction(Request $request, $id)
     {
 		$formType = ThemeAdminType::class;
