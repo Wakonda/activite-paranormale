@@ -117,12 +117,24 @@
 			xmlHttp.onreadystatechange = function() {
 				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 					let data = JSON.parse(xmlHttp.responseText);
-					
-					if(document.getElementById("{{ form.title.vars.id }}").value != "")
+
+					if(document.getElementById("{{ form.title.vars.id }}").value == "")
 						document.getElementById("{{ form.title.vars.id }}").value = data.title;
 						
 					document.getElementById("url_{{ form.synopsis.vars.id }}").value = data.url;
 					document.getElementById("url_{{ form.synopsis.vars.id }}").dispatchEvent(new Event("change"));
+
+					if(typeof data.duration !== "undefined")
+						document.getElementById("{{ form.duration.vars.id }}").value = data.duration.amount;
+						
+					if(typeof data.releaseDate !== "undefined")
+						document.getElementById("{{ form.releaseDate.vars.id }}").value = data.releaseDate.year + "-" + data.releaseDate.month.toString().padStart(2, "0") + "-" + data.releaseDate.day.toString().padStart(2, "0");
+						
+					if(typeof data.episodeNumber !== "undefined")
+						document.getElementById("{{ form.episodeNumber.vars.id }}").value = data.episodeNumber;
+						
+					if(typeof data.season !== "undefined")
+						document.getElementById("{{ form.season.vars.id }}").value = data.season;
 
 					editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 					document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);

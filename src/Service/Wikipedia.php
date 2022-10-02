@@ -17,43 +17,28 @@
 		}
 		
 		public function getContentBySection(Int $sectionIndex = null): String {
-			// $sectionIndex = 0;
-			// dump($sectionIndex);die;
-			/*$this->sectionName = $sectionName;
-			
-			if(!empty($sectionName) and isset($this->getSections()[$sectionName]))
-				$sectionIndex = $this->getSections()[$sectionName];
-				
-			if($sectionName == "abstract")
-				$sectionName = 0;*/
-
-			// $url = "https://".$this->locale.".wikipedia.org/w/api.php?format=json&formatversion=2&action=query&prop=revisions&rvsection=${sectionIndex}&rvprop=content&titles=".$this->page;
 			$url = "https://{$this->locale}.wikipedia.org/w/api.php?action=parse&format=json&page={$this->page}&prop=text".($sectionIndex !== null ? "&section=${sectionIndex}" : "");
-	// die(var_dump($url, $sectionIndex));
+
 			$content = json_decode(file_get_contents($url), true);
-	// print_r($content);die;
+
 			return $this->wikiTextToHTML($content["parse"]["text"]["*"]);
 		}
 		
 		public function getContentBySections(Array $sectionIndexArray): String {
 			$content = [];
 
-				// dump($sectionIndexArray);die;
 			if(count($sectionIndexArray) > 1) {
 				$this->keepTitle = true;
 				foreach($sectionIndexArray as $section) {
-					// dump($section);
 					$content[] = $this->getContentBySection($section);
-				// dump($content);
-				}//die;
+				}
 			} elseif(count($sectionIndexArray) == 1)
 				$content[] = $this->getContentBySection($sectionIndexArray[0]);
 			else {
 				$this->keepTitle = true;
 				$content[] = $this->getContentBySection();
 			}
-			// die("oo");
-				
+
 			return implode("", $content);
 		}
 		

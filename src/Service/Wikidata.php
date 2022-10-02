@@ -545,6 +545,18 @@
 
 			$datas = json_decode($content);
 
+			if(property_exists($datas->entities->$code->claims, "P179")) {
+				$res["episodeNumber"] = intval($datas->entities->$code->claims->P179[0]->qualifiers->P1545[0]->datavalue->value);
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P4908")) {
+				$idSeason = $datas->entities->$code->claims->P4908[0]->mainsnak->datavalue->value->id;
+				
+				$datasSeason = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSeason}&sitefilter=${languageWiki}"));
+
+				$res["season"] = $datasSeason->entities->$idSeason->claims->P179[0]->qualifiers->P1545[0]->datavalue->value;
+			}
+
 			if(property_exists($datas->entities->$code->claims, "P345")) {
 				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
 				
@@ -560,6 +572,16 @@
 				$res["identifiers"][] = [
 					"identifier" => "Rotten Tomatoes ID",
 					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P577")) {
+				$releaseDate = date_parse($datas->entities->$code->claims->P577[0]->mainsnak->datavalue->value->time);
+
+				$res["releaseDate"] = [
+					"year" => $releaseDate["year"],
+					"month" => $releaseDate["month"],
+					"day" => $releaseDate["day"]
 				];
 			}
 
