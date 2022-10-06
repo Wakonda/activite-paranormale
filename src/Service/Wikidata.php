@@ -25,7 +25,7 @@
 			$datas = json_decode($content);
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -83,15 +83,15 @@
 			$datas = json_decode($content);
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
-			
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
 			$datas = json_decode($content);
-			
+
 			// Songs
 			$songArray = [];
-			
+
 			if(property_exists($songs = $datas->entities->$code->claims, "P658")) {
 				foreach($songs->P658 as $song) {
 					$idSong = $song->mainsnak->datavalue->value->id;
@@ -107,7 +107,7 @@
 				"month" => null,
 				"day" => null
 			];
-			
+
 			if(property_exists($datas->entities->$code->claims, "P577")) {
 				$publicationDate = $datas->entities->$code->claims->P577[0]->mainsnak->datavalue->value->time;
 				$publicationDate = date_parse($publicationDate);
@@ -118,7 +118,7 @@
 					"day" => $publicationDate["day"]
 				];
 			}
-			
+
 			// review score
 			if(property_exists($datas->entities->$code->claims, "P444")) {
 				$reviewScores = $datas->entities->$code->claims->P444;
@@ -171,23 +171,22 @@
 
 			return $res;
 		}
-		
+
 		public function getMusicDatas(string $code, string $language)
 		{
 			$res = [];
 			$languageWiki = $language."wiki";
-// dd("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 			$datas = json_decode($content);
-// dd($datas->entities->$code->sitelinks, $language);
+
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			
+
 			if(property_exists($datas->entities->$code->sitelinks, $languageWiki))
-				$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
-			
+				$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+
 			$res = array_merge($res, $this->getMusicByIdSong($code, $language));
-			
+
 			if(isset($res["identifiers"])) {
 				$identifiers = $res["identifiers"];
 				$found_key = array_search('YouTube video ID', array_column($identifiers, 'identifier'));
@@ -199,28 +198,28 @@
 
 			return $res;
 		}
-		
+
 		private function getMusicByIdSong(string $idSong, string $language): array
 		{
 			$languageWiki = $language."wiki";
 			$contentSong = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSong}&sitefilter=${languageWiki}");
 			$dataSong = json_decode($contentSong);
-			
+
 			$res = [];
-			
+
 			$res["title"] = $dataSong->entities->$idSong->labels->$language->value;
 			$res["wikidata"] = $idSong;
-			
+
 			// recording or performance of
 			if(property_exists($dataSong->entities->$idSong->claims, "P2550")) {
 				$id = $dataSong->entities->$idSong->claims->P2550[0]->mainsnak->datavalue->value->id;
 				$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$id}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 				$datas = json_decode($content);
-				
-				$res["url"] = $datas->entities->$id->sitelinks->$languageWiki->url;
+
+				$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			}
-// dd();
+
 			$duration = null;
 
 			if(property_exists($dataSong->entities->$idSong->claims, "P2047")) {
@@ -232,20 +231,20 @@
 				$unit = $this->getUnit($duration[0]->datavalue->value->unit);
 				$amount = intval($duration[0]->datavalue->value->amount);
 			}
-			
+
 			if(!empty($duration)) {
 				$unitString = null;
 
 				if($unit == "second")
 					$unitString = sprintf('%02d:%02d:%02d', ($amount/3600),($amount/60%60), $amount%60);
-				
+
 				$res["duration"] = [
 					"amount" => $amount,
 					"unit" => $unit,
 					"unitString" => $unitString
 				];
 			}
-		//dd($res);
+
 			if(property_exists($dataSong->entities->$idSong->claims, "P1243")) {
 				$value = $dataSong->entities->$idSong->claims->P1243[0]->mainsnak->datavalue->value;
 				
@@ -254,28 +253,28 @@
 					"value" => $value
 				];
 			}
-			
+
 			if(property_exists($dataSong->entities->$idSong->claims, "P1730")) {
 				$value = $dataSong->entities->$idSong->claims->P1730[0]->mainsnak->datavalue->value;
-				
+
 				$res["identifiers"][] = [
 					"identifier" => "AllMusic song ID",
 					"value" => $value
 				];
 			}
-			
+
 			if(property_exists($dataSong->entities->$idSong->claims, "P4404")) {
 				$value = $dataSong->entities->$idSong->claims->P4404[0]->mainsnak->datavalue->value;
-				
+
 				$res["identifiers"][] = [
 					"identifier" => "MusicBrainz recording ID",
 					"value" => $value
 				];
 			}
-			
+
 			if(property_exists($dataSong->entities->$idSong->claims, "P1651")) {
 				$value = $dataSong->entities->$idSong->claims->P1651[0]->mainsnak->datavalue->value;
-				
+	
 				$res["identifiers"][] = [
 					"identifier" => "YouTube video ID",
 					"value" => $value
@@ -295,7 +294,7 @@
 			$datas = json_decode($content);
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
@@ -390,7 +389,7 @@
 			$datas = json_decode($content);
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
@@ -539,7 +538,7 @@
 			$datas = json_decode($content);
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -607,7 +606,7 @@
 			$datas = json_decode($content);
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $datas->entities->$code->sitelinks->$languageWiki->url;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -691,7 +690,7 @@
 
 							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P2047")) {
 								$duration = $contentEpisodeDetailContent->entities->$idEpisode->claims->P2047;
-// dd($duration);
+
 								$durationArray = [
 									"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
 									"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
@@ -706,7 +705,7 @@
 				
 				$res["episodes"] = $episodeArray;
 			}
-// dd($res);
+
 			return $res;
 		}
 
@@ -764,7 +763,11 @@
 		}
 
 		private function getCountry($datas, string $code, string $countryId, string $language = "en", string $key = "country"): array {
-			$res = [];
+			$res[$key] = [
+				"alpha2" => null,
+				"alpga3" => null,
+				"id" => null
+			];
 
 			if(property_exists($datas->entities->$code->claims, $countryId)) {
 				$idCountry = $datas->entities->$code->claims->$countryId[0]->mainsnak->datavalue->value->id;
@@ -773,7 +776,7 @@
 				$datasCountry = json_decode($contentCountry);
 
 				if(empty($datasCountry->entities->$idCountry->claims->P297[0]))
-					return [];
+					return $res;
 
 				$res[$key] = [
 					"alpha2" => $datasCountry->entities->$idCountry->claims->P297[0]->mainsnak->datavalue->value,
@@ -788,5 +791,14 @@
 		private function countryToEntity(string $code, string $language) {
 			$language = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 			return $this->em->getRepository(Country::class)->findOneBy(["internationalName" => strtolower($code), "language" => $language]);
+		}
+		
+		private function getUrl(object $datas, string $code, string $languageWiki): ?string {
+			$siteLinks = $datas->entities->$code->sitelinks;
+			
+			if(property_exists($siteLinks, $languageWiki))
+				return $siteLinks->$languageWiki->url;
+			
+			return null;
 		}
 	}
