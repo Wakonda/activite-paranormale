@@ -31,7 +31,6 @@ class JsonContains extends FunctionNode
 		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 
-
     public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
     {
         return sprintf('JSON_CONTAINS(%s, %s, %s)',

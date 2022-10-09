@@ -76,7 +76,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function editAction($id)
+    public function editAction(Request $request, $id)
     {
 		$formType = SurThemeGrimoireAdminType::class;
 

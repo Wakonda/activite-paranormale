@@ -288,8 +288,6 @@ class NewsAdminController extends AdminGenericController
 		curl_close($curl);
 		
 		$json = json_decode($res);
-		
-		
 
 		$curl = curl_init("http://127.0.0.1:5000/admin/article/api/tags");
 	 
@@ -303,8 +301,7 @@ class NewsAdminController extends AdminGenericController
 		curl_close($curl);
 
 		return new Response();
-		
-		
+
 		$formType = \App\Form\Type\NewsTheDailyTruthAdminType::class;
 		
 		$twig = 'news/NewsAdmin/newTheDailyTruth.html.twig';

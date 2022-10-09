@@ -152,7 +152,7 @@ class EventMessage extends MappedSuperclassBase
 		return "EventMessage_Waiting";
 	}
 
-	public function withoutYearEvent(): boolean {
+	public function withoutYearEvent(): bool {
 		return (empty($this->yearFrom) and empty($this->yearTo));
 	}
 
