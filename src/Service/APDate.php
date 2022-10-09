@@ -32,7 +32,7 @@
 						$d = explode("-", $date);
 						$dateF = $d[2]."th ".$MoisEn[$d[1]-1]." ".$d[0];
 					}
-					return utf8_encode($dateF);
+					return $dateF;
 				}
 			}
 			return "-";
