@@ -82,5 +82,7 @@
 		{% set blog = "magic" %}
 	{% endif %}
 	
-	{{ macro_index.blogger_form(entity, blog) }}
+	{#{{ macro_index.blogger_form(entity, blog) }}#}
+	
+	{{ macro_index.blogger_multi_form(entity, blog) }}
 {% endblock %}

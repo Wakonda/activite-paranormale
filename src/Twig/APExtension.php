@@ -92,6 +92,8 @@
 				new TwigFunction('file_exists', array($this, 'fileExists')),
 				new TwigFunction('captcha', array($this, 'generateCaptcha')),
 				new TwigFunction('blogger_tags', array($this, 'getBloggerTags')),
+				new TwigFunction('blogger_list', array($this, 'getBloggerList')),
+				new TwigFunction('blogger_id', array($this, 'getBloggerId')),
 				new TwigFunction('thedailytruth_tags', array($this, 'getTheDailyTruthTags')),
 				new TwigFunction('slug', array($this, 'slugifyUrl')),
 				new TwigFunction('img_size_html2pdf', array($this, 'getImageSizeHTML2PDF')),
@@ -723,8 +725,33 @@
 				$tagsArray[] = $tag->term;
 			
 			sort($tagsArray);
-			
+
 			return $tagsArray;
+		}
+		
+		public function getBloggerList($locale)
+		{
+			$bloggerAPI = new GoogleBlogger();
+			
+			$datas = [];
+			
+			foreach($bloggerAPI->getTypes() as $type) {
+				list($f, $l) = explode("_", $type);
+				
+				if($locale == $l)
+					$datas[$type] = $bloggerAPI->getCorrectBlog($type);
+			}
+			
+			array_multisort($datas, SORT_ASC, $datas);
+
+			return $datas;
+		}
+		
+		public function getBloggerId($type)
+		{
+			$bloggerAPI = new GoogleBlogger();
+			
+			return $bloggerAPI->blogId_array[$bloggerAPI->getCorrectBlog($type)];
 		}
 		
 		public function getTheDailyTruthTags()
@@ -792,6 +819,10 @@
 		public function isBloggerAvailable($type): bool
 		{
 			$api = new GoogleBlogger();
+			
+			if($_ENV["APP_ENV"] == "dev")
+				$type = "test_".explode("_", $type)[1];
+
 			return in_array($type, $api->getTypes());
 		}
 

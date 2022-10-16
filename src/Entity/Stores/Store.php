@@ -119,6 +119,11 @@ class Store
 	 * @Groups("api_read")
      */
     private $characteristic;
+
+    /**
+     * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
+     */
+    private $socialNetworkIdentifiers;
 	
 	public function getLinkedEntityName() {
 		return null;
@@ -366,5 +371,25 @@ class Store
     public function setCharacteristic($characteristic)
     {
         $this->characteristic = json_encode($characteristic);
+    }
+
+    /**
+     * Set socialNetworkIdentifiers
+     *
+     * @param string $socialNetworkIdentifiers
+     */
+    public function setSocialNetworkIdentifiers($socialNetworkIdentifiers)
+    {
+        $this->socialNetworkIdentifiers = $socialNetworkIdentifiers;
+    }
+
+    /**
+     * Get socialNetworkIdentifiers
+     *
+     * @return string 
+     */
+    public function getSocialNetworkIdentifiers()
+    {
+        return $this->socialNetworkIdentifiers;
     }
 }

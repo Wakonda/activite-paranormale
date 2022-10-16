@@ -10,7 +10,7 @@
 		private $scope = "https://www.googleapis.com/auth/blogger";
 		private $oauth2token_url = "https://accounts.google.com/o/oauth2/token";
 		
-		private $blogId_array = array(
+		public $blogId_array = array(
 			"JakinEtBoaz" => "4192778394306065291",
 			"BookOfLucifer" => "8587307742034849671",
 			"PrieresEtSortileges" => "1611333979864196065",
@@ -100,7 +100,7 @@
 			$blogTitle = $_ENV["APP_ENV"] == "dev" ? "Test" : $blogTitle;
 			$blogId = $this->blogId_array[$blogTitle];
 			$curlObj = curl_init();
-			
+
 			// Get blog information
 			curl_setopt($curlObj, CURLOPT_URL, 'https://www.googleapis.com/blogger/v3/blogs/'.$blogId.'?key='.$_ENV["BLOGGER_API_KEY"]);
 			curl_setopt($curlObj, CURLOPT_RETURNTRANSFER, 1);
@@ -229,6 +229,9 @@
 
 		public function getTypes()
 		{
+			if($_ENV["APP_ENV"] == "dev")
+				return ["test_en", "test_fr", "test_es"];
+
 			return ["news_en", "news_es", "news_fr", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "test_en", "test_fr", "test_es"];
 		}
 	}

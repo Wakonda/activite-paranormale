@@ -92,6 +92,40 @@ class AdminController extends AbstractController
 	}
 
 	// Blogger
+	public function bloggerTagsAction(Request $request, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
+	{
+		// dd($request->request->all(), $request->query->all());
+		$twig = $this->get("twig");
+		
+		$type = $request->query->get("type");
+		
+		$tags = $twig->getExtensions()["App\Twig\APExtension"]->getBloggerTags($type);
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(urldecode($path))->find($id);
+		$blogId = $blogger->blogId_array[$blogger->getCorrectBlog($type)];
+		
+		$obj = null;
+		
+		$method = "POST";
+
+		if(method_exists($entity, "getSocialNetworkIdentifiers")) {
+			if(isset($entity->getSocialNetworkIdentifiers()["Blogger"][$blogId])) {
+				$obj = $entity->getSocialNetworkIdentifiers()["Blogger"][$blogId];
+				$method = "PUT";
+			}
+		}
+		
+		$urlAddUpdate = $this->generateUrl('Admin_Blogger', ['id' => $entity->getId(), 'path' => urlencode($entity->getEntityName()), 'routeToRedirect' => $routeToRedirect, 'type' => $type, 'method' => $method]);
+		
+		$urlDelete = null;
+		
+		if(!empty($obj))
+			$urlDelete = $this->generateUrl('Admin_Blogger', ['id' => $entity->getId(), 'path' => urlencode($entity->getEntityName()), 'routeToRedirect' => $routeToRedirect, 'type' => $type, 'method' => "DELETE"]);
+		
+		return new JsonResponse(["obj" => $obj, "method" => $method, "tags" => $tags, "urlAddUpdate" => $urlAddUpdate, "urlDelete" => $urlDelete]);
+	}
+	
 	public function bloggerAction(Request $request, GoogleBlogger $blogger, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type, $method)
 	{
 		$session = $request->getSession();
@@ -136,6 +170,7 @@ class AdminController extends AbstractController
 		$redirectURL = $router->generate("Admin_BloggerPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
 		$accessToken = $blogger->getOauth2Token($code, "online", $redirectURL);
 		$blogName = $blogger->getCorrectBlog($type);
+		$blogId = $blogger->blogId_array[$blogName];
 
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($path)->find($id);
@@ -363,10 +398,10 @@ class AdminController extends AbstractController
 				$response = $blogger->addPost($blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "PUT";
-				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
+				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"][$blogId]["id"], $blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "DELETE";
-				$response = $blogger->deletePost($entity->getSocialNetworkIdentifiers()["Blogger"]["id"], $blogName, $accessToken);
+				$response = $blogger->deletePost($entity->getSocialNetworkIdentifiers()["Blogger"][$blogId]["id"], $blogName, $accessToken);
 				break;
 		}
 
@@ -385,10 +420,20 @@ class AdminController extends AbstractController
 					case "POST";
 					case "PUT";
 						$labels = property_exists($obj, "labels") ? $obj->labels : [];
-						$entity->setSocialNetworkIdentifiers(["Blogger" => ["id" => $obj->id, "url" => $obj->url, "labels" => $labels]]);
+						
+						$sni = $entity->getSocialNetworkIdentifiers();
+						
+						if(!isset($sni["Blogger"][$blogId]))
+							$sni["Blogger"][$blogId] = ["id" => $obj->id, "url" => $obj->url, "labels" => $labels];
+
+						$entity->setSocialNetworkIdentifiers($sni);
 						break;
 					case "DELETE";
-						$entity->setSocialNetworkIdentifiers(null);
+						$sni = $entity->getSocialNetworkIdentifiers();
+						
+						unset($sni["Blogger"][$blogId]);
+						
+						$entity->setSocialNetworkIdentifiers($sni);
 						break;
 				}
 		

@@ -17,7 +17,7 @@ class PHPBB {
 		$this->em = $em;
 	}
 
-	public function getJWT(string $language): string
+	public function getJWT(string $language): ?string
 	{
 		$this->setLanguage($language);
 

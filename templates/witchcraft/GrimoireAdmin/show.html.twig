@@ -19,7 +19,7 @@
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "grimoire.admin.Theme"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.surTheme.title }} ({{ entity.surTheme.menuGrimoire.title }})</div>
+	<div class="form-table-cell">{% if entity.surTheme is not empty %}{{ entity.surTheme.title }} ({{ entity.surTheme.menuGrimoire.title }}){% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "grimoire.admin.WritingDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.writingDate|dodate(false, app.request.locale) }}</div>
@@ -39,7 +39,9 @@
 		{% endif %}
 	</div>
 
-	<a href="{{ path('Witchcraft_ReadGrimoire', { 'surtheme' : entity.surTheme.title, 'id' : entity.id, 'title_slug' : entity.title }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+	{% if entity.surTheme is not empty %}
+		<a href="{{ path('Witchcraft_ReadGrimoire', { 'surtheme' : entity.surTheme.title, 'id' : entity.id, 'title_slug' : entity.title }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+	{% endif %}
 {% endblock %}
 
 {% block data_bottom %}

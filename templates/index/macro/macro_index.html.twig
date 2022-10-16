@@ -1,4 +1,8 @@
 {% macro blogger_form(entity, type) %}
+	{% if get_env("APP_ENV") == "dev" %}
+		{% set type = "test" %}
+	{% endif %}
+
 	{% set type = type~"_"~entity.language.abbreviation %}
 
 	{% if isBloggerAvailable(type) %}
@@ -6,8 +10,8 @@
 			{% set obj = null %}
 			{% set method = "POST" %}
 			{% if method_exists(entity, "getSocialNetworkIdentifiers") %}
-				{% if entity.socialNetworkIdentifiers["Blogger"] is defined %}
-					{% set obj = entity.socialNetworkIdentifiers["Blogger"] %}
+				{% if entity.socialNetworkIdentifiers["Blogger"] is defined and entity.socialNetworkIdentifiers["Blogger"][blogger_id(type)] is defined %}
+					{% set obj = entity.socialNetworkIdentifiers["Blogger"][blogger_id(type)] %}
 					{% set method = "PUT" %}
 				{% endif %}
 			{% endif %}
@@ -41,6 +45,94 @@
 			</div>
 		</div>
 	{% endif %}
+{% endmacro %}
+
+{% macro blogger_multi_form(entity, type) %}
+	{% set type = type~"_"~entity.language.abbreviation %}
+
+	<div class="accordion mb-2" id="accordionParentBloggerMulti">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingBloggerMulti">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseBloggerMulti" aria-expanded="true" aria-controls="collapseOne">
+				<i class="fab fa-google-plus-square" aria-hidden="true"></i> Blogger
+				</a>
+				</span>
+			</div>
+			<div id="collapseBloggerMulti" class="collapse" aria-labelledby="headingBloggerMulti"  data-parent="#accordionParentBloggerMulti">
+				<div class="card-body">
+					<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: 'POST' }) }}" method="POST" id="blogger_multi_form">
+						<div class="row">
+							<div class="col">
+								{% set list = blogger_list(entity.language.abbreviation) %}
+
+								<select name="blogger_list[]" id="blogger_list" class="form-control" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+									{% for t, l in list %}
+										<option value="{{ t }}" {{ type == t ? "selected" : "" }}>{{ l }}</option>
+									{% endfor %}
+								</select>
+							</div>
+							
+							<div class="col">
+								<select multiple name="blogger_tags[]" id="blogger_tags" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								</select>
+							</div>
+						</div>
+						<br>
+						<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						
+						<div id="blogger_multi_delete" class="float-right"></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<script>
+		function changeBlogger(val) {
+			let xmlHttp = new XMLHttpRequest();
+
+			xmlHttp.onreadystatechange = function() {
+				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+					$('#blogger_tags').selectpicker('destroy');
+					document.querySelectorAll('#blogger_tags option').forEach(option => option.remove());
+					
+					let data = JSON.parse(xmlHttp.responseText);
+					
+					for(var i = 0; i < data.tags.length; i++) {
+						let isSelected = data.obj != null ? data.obj.labels.includes(data.tags[i]) : false;
+						document.querySelector("select#blogger_tags").add(new Option(data.tags[i], data.tags[i], isSelected, isSelected));
+					}
+					
+					$('#blogger_tags').selectpicker('refresh');
+					
+					document.querySelector('#blogger_multi_delete').innerHTML = '';
+					
+					document.getElementById("blogger_multi_form").action = data.urlAddUpdate;
+					
+					if(data.urlDelete != null) {
+						var a = document.createElement('a');
+						
+						a.innerHTML = '{{ "admin.general.Delete"|trans([], "validators") }}';
+						a.href = data.urlDelete;
+						a.className = "btn btn-outline-danger";
+						
+						document.getElementById("blogger_multi_delete").appendChild(a);
+					}
+				}
+			}
+
+			xmlHttp.overrideMimeType("application/json");
+			xmlHttp.open("GET", "{{ path('Admin_BloggerTags', {id : entity.id, path: entity.entityName|url_encode, routeToRedirect: app.request.attributes.get('_route')}) }}?type=" + val, true);
+			xmlHttp.send();
+		}
+		
+		changeBlogger(document.getElementById("blogger_list").value);
+
+		document.querySelector("select#blogger_list").addEventListener("change", (e) => {
+			changeBlogger(e.target.value);
+		});
+	</script>
 {% endmacro %}
 
 {% macro shopify_form(entity, type) %}

@@ -35,6 +35,10 @@ Admin_BloggerPost:
     path: /admin/bloggerpost
     controller: App\Controller\AdminController::bloggerPostAction
 
+Admin_BloggerTags:
+    path: /admin/bloggertags/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::bloggerTagsAction
+
 Admin_Shopify:
     path: /admin/shopify/{id}/{path}/{routeToRedirect}/{type}
     controller: App\Controller\AdminController::shopifyAction
