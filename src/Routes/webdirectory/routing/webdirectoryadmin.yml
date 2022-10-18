@@ -35,3 +35,15 @@ WebDirectory_Admin_IndexDatatables:
     controller: App\Controller\WebDirectoryAdminController::indexDatatablesAction
     requirements:
         _method: get
+
+WebDirectory_Admin_ReloadListsByLanguage:
+    path:  /reloadlistsbylanguage
+    controller: App\Controller\WebDirectoryAdminController::reloadListsByLanguageAction
+
+WebDirectory_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\WebDirectoryAdminController::showImageSelectorColorboxAction
+
+WebDirectory_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\WebDirectoryAdminController::loadImageSelectorColorboxAction

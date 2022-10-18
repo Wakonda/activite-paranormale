@@ -20,26 +20,35 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use App\Form\Field\DatePartialType;
 use App\Form\Field\SourceEditType;
+use App\Form\Type\FileSelectorType;
 
 class WebDirectoryAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		$language = $options['locale'];
+
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('link', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('logo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
             ->add('language', EntityType::class, array(
-											'class'=>'App\Entity\Language', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-										    'query_builder' => function(EntityRepository $er) 
-														{
-															return $er->createQueryBuilder('u')
-																	->orderBy('u.title', 'ASC');
-														},
-											))
+					'class'=>'App\Entity\Language', 
+					'choice_label'=>'title', 
+					'required' => true,
+					'constraints' => array(new NotBlank()),
+					'query_builder' => function(EntityRepository $er) 
+						{
+							return $er->createQueryBuilder('u')
+									->orderBy('u.title', 'ASC');
+						},
+					))
+			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
+					'choice_label'=>'title', 
+					'required' => false,
+					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
+			))
 			->add('socialNetwork', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
 			->add('text', TextareaType::class, array('required' => false))
 			->add('foundedYear', DatePartialType::class, ['required' => false])
@@ -162,7 +171,8 @@ class WebDirectoryAdminType extends AbstractType
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			'data_class' => 'App\Entity\WebDirectory'
+			'data_class' => 'App\Entity\WebDirectory',
+			'locale' => 'fr'
 		));
 	}
 }

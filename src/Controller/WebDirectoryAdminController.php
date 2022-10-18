@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\WebDirectory;
+use App\Entity\Language;
+use App\Entity\Licence;
 use App\Form\Type\WebDirectoryAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -26,7 +28,9 @@ class WebDirectoryAdminController extends AdminGenericController
 	
 	protected $indexRoute = "WebDirectory_Admin_Index"; 
 	protected $showRoute = "WebDirectory_Admin_Show";
-	protected $illustrations = [["field" => "logo"]];
+	protected $formName = 'ap_webdirectory_webdirectoryadmintype';
+
+	protected $illustrations = [["field" => "logo", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
@@ -61,7 +65,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$entity = new WebDirectory();
 
 		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -70,15 +74,16 @@ class WebDirectoryAdminController extends AdminGenericController
 		$entity = new WebDirectory();
 
 		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
     public function editAction($id)
     {
+		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
 		$formType = WebDirectoryAdminType::class;
 
 		$twig = 'webdirectory/WebDirectoryAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -86,7 +91,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$formType = WebDirectoryAdminType::class;
 		$twig = 'webdirectory/WebDirectoryAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
     public function deleteAction($id)
@@ -116,5 +121,38 @@ class WebDirectoryAdminController extends AdminGenericController
 		}
 
 		return new JsonResponse($output);
+	}
+
+	public function reloadListsByLanguageAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = array();
+		
+		if(!empty($language))
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+		else
+			$licences = $em->getRepository(Licence::class)->findAll();
+
+		$licenceArray = array();
+
+		foreach($licences as $licence)
+		{
+			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+		}
+		$translateArray['licence'] = $licenceArray;
+
+		return new JsonResponse($translateArray);
+	}
+
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('WebDirectory_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
 	}
 }

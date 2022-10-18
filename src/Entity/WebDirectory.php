@@ -84,6 +84,11 @@ class WebDirectory
 	 */
 	private $wikidata;
 
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
+     */
+    protected $licence;
+
     /**
      * Get id
      *
@@ -341,5 +346,15 @@ class WebDirectory
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+	public function getLicence()
+    {
+        return $this->licence;
+    }
+
+    public function setLicence(Licence $licence)
+    {
+        $this->licence = $licence;
     }
 }

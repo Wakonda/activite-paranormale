@@ -110,4 +110,39 @@ class WebDirectoryRepository extends EntityRepository
 		
 		return $qb->getQuery()->getSingleScalarResult();
 	}
+
+	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->orderBy('c.title', 'ASC');
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+
+			$qb->where("c.logo LIKE :search")
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(DISTINCT c.logo)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->groupBy('c.logo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		$entities = $qb->getQuery()->getResult();
+		$res = array();
+		
+		foreach($entities as $entity)
+		{
+			$photo = new \StdClass();
+			$photo->photo = $entity->getLogo();
+			$photo->path = $entity->getAssetImagePath();
+			
+			$res[] = $photo;
+		}
+		
+		return $res;
+	}
 }

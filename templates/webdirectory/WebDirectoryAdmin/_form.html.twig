@@ -8,12 +8,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.logo, "directory.admin.Logo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{{ form_errors(form.logo) }}
-	{% if entity.logo is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.logo }}
-		<br>
-	{% endif %}
-	{{ form_widget(form.logo) }}
+	{{ form_errors(form.logo) }}{{ form_widget(form.logo) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "directory.admin.Language"|trans([], "validators")) }}</div>
@@ -72,3 +69,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "directory.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "directory.admin.Licence"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
