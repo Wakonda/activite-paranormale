@@ -20,4 +20,5 @@ directory:
         Description: "Descripción"
         FoundedYear: "Lanzamiento"
         DefunctYear: "Cierre"
+        Licence: "Licencia"
         Sources: "Fuentes"
