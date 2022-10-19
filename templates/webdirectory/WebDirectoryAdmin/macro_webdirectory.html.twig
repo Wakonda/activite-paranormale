@@ -1,0 +1,28 @@
+{% macro updateListForm(form) %}
+	$("#{{ form.language.vars.id }}").change(function()
+	{
+		$.ajax({
+			type: "POST",
+			url: "{{ path('WebDirectory_Admin_ReloadListsByLanguage') }}",
+			data: { "id" : $(this).val() },
+			success: function(data)
+			{
+				var licence = data.licence;
+				$("#{{ form.licence.vars.id }} option").remove();
+				
+				$("#{{ form.licence.vars.id }}").append('<option value=""></option>');
+				
+				$.each(licence, function(index, element)
+				{
+					$("#{{ form.licence.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				});
+				
+				{% if form.vars.value.licence.id is defined %}
+					$("#{{ form.licence.vars.id }}").val("{{ form.vars.value.licence.id }}");
+				{% endif %}
+			}
+		});
+	});
+	
+	$("#{{ form.language.vars.id }}").change();
+{% endmacro %}
