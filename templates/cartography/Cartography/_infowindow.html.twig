@@ -1,6 +1,6 @@
 <div class='infowindow'>
 	<p class='infowindow_title'><b><u>{{ entity.title }}</u></b></p>
-	<p class="image">{{ entity.photo|imgsize(200, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(200, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<div class="infowindow_text">{{ (entity.text)|raw }}</div>
 	<p><i class="fas fa-arrow-right"></i> <a href="{{ path('Cartography_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug() }) }}" class="link_map">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a></p>
 </div>

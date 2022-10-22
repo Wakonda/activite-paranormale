@@ -32,11 +32,12 @@ class CartographyAdminController extends AdminGenericController
 	protected $indexRoute = "Cartography_Admin_Index"; 
 	protected $showRoute = "Cartography_Admin_Show";
 	protected $formName = 'ap_cartography_cartographyadmintype';
-	protected $illustrations = [['field' => 'photo', 'selectorFile' => 'photo_selector']];
+	
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
 	public function postValidationAction($form, $entityBindded)

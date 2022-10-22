@@ -46,6 +46,22 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
+		$output->writeln("Start Cartography migration");
+
+		$sql = "SELECT id, photo FROM cartography WHERE illustration_id IS NULL";
+		$datas = $conn->fetchAll($sql);
+		
+		foreach($datas as $data)
+		{
+			$conn->exec("INSERT INTO `filemanagement` (`titleFile`, `realNameFile`, `extensionFile`, `kindFile`, `discr`, `caption`) VALUES ('".str_replace("'", "\'", $data['photo'])."', '".str_replace("'", "\'", $data['photo'])."', '".pathinfo(str_replace("'", "\'", $data['photo']), PATHINFO_EXTENSION)."', 'file', 'filemanagement', NULL)");
+			$fmId = $conn->fetchColumn("SELECT LAST_INSERT_ID()");
+
+			$conn->exec("UPDATE cartography SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
+		}
+
+        $output->writeln("End Cartography migration");
+		dd("p");
+		
 		$datas = $this->em->getRepository(WebDirectory::class)->findAll();
 		
 		foreach($datas as $data) {

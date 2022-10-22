@@ -28,7 +28,13 @@
 	<div class="form-table-cell"><a href="{{ entity.linkGMaps }}" alt="">{{ entity.linkGMaps|urlclean }}</a></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "cartography.admin.Picture"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"}, null, true, entity.archive, null, true, entity.archive)|raw }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"}, null, true, entity.archive, null, true, entity.archive)|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "cartography.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>

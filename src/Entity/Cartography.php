@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\CartographyRepository")
  */
-class Cartography extends MappedSuperclassBase
+class Cartography extends MappedSuperclassBase implements Interfaces\PhotoIllustrationInterface
 {
     /**
      * @var integer $id
@@ -40,10 +40,15 @@ class Cartography extends MappedSuperclassBase
     private $coordYMap;
 
     /**
-	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $illustration;
 
     /**
      * @var string $linkGMaps
@@ -56,19 +61,17 @@ class Cartography extends MappedSuperclassBase
 	{
 		parent::__construct();
 	}
+	
+	public function __clone()
+	{
+		if($this->illustration)
+			$this->illustration = clone $this->illustration;
+	}
 
 	public function getShowRoute()
 	{
 		return "Cartography_Show";
 	}
-
-    public function getPhotoIllustrationCaption(): ?Array
-    {
-		return [
-			"caption" => null,
-			"source" => ["author" => null, "license" => null, "url" => $this->getLinkGMaps()]
-	    ];
-    }
 
     /**
      * Get id
@@ -215,5 +218,25 @@ class Cartography extends MappedSuperclassBase
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setPhoto($filename);
 		}
+    }
+
+    /**
+     * Set illustration
+     *
+     * @param string $illustration
+     */
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * Get illustration
+     *
+     * @return string 
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }

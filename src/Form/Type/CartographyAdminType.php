@@ -30,7 +30,7 @@ class CartographyAdminType extends AbstractType
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('coordXMap', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('coordYMap', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Cartography_Admin_ShowImageSelectorColorbox'))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label'=>'title',
 				'required' => true,
@@ -63,8 +63,7 @@ class CartographyAdminType extends AbstractType
 											'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}))
 											
 			->add('linkGMaps', UrlType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'Cartography_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
-		    ->add('tags', Select2EntityType::class, [
+			->add('tags', Select2EntityType::class, [
 				'multiple' => true,
 				'allow_add' => [
 					'enabled' => true,
@@ -87,7 +86,6 @@ class CartographyAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
         ;
-
     }
 
     public function getBlockPrefix()
