@@ -145,6 +145,41 @@ class WebDirectoryAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
+	
+    public function internationalizationAction(Request $request, $id)
+    {
+		$formType = WebDirectoryAdminType::class;
+		$entity = new WebDirectory();
+		
+		$em = $this->getDoctrine()->getManager();
+		$entityToCopy = $em->getRepository(WebDirectory::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		
+		$websiteLanguage = null;
+		
+		if(!empty($entityToCopy->getWebsiteLanguage()))
+			$websiteLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $entityToCopy->getWebsiteLanguage()->getAbbreviation()]);
+		
+		$licence = null;
+		
+		if(!empty($entityToCopy->getLicence()))
+			$licence = $em->getRepository(Licence::class)->findOneBy(["internationalName" => $entityToCopy->getLicence()->getInternationalName(), "language" => $language]);
+		
+		$entity->setInternationalName($entityToCopy->getInternationalName());
+		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setLink($entityToCopy->getLink());
+		$entity->setLanguage($language);
+		$entity->setLogo($entityToCopy->getLogo());
+		$entity->setLicence($licence);
+		$entity->setWebsiteLanguage($websiteLanguage);
+		$entity->setSocialNetwork($entityToCopy->getSocialNetwork());
+		$entity->setFoundedYear($entityToCopy->getFoundedYear());
+		$entity->setDefunctYear($entityToCopy->getDefunctYear());
+		$entity->setWikidata($entityToCopy->getWikidata());
+
+		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+    }
 
 	public function showImageSelectorColorboxAction()
 	{

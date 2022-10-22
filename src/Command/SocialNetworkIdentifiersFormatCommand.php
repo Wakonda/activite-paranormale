@@ -20,6 +20,7 @@ use App\Entity\Grimoire;
 use App\Entity\News;
 use App\Entity\Stores\Store;
 use App\Entity\Licence;
+use App\Entity\WebDirectory;
 
 class SocialNetworkIdentifiersFormatCommand extends Command
 {
@@ -45,6 +46,23 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
+		$datas = $this->em->getRepository(WebDirectory::class)->findAll();
+		
+		foreach($datas as $data) {
+			if(empty($data->getInternationalName())) {
+				$generator = new \Ausi\SlugGenerator\SlugGenerator;
+				$data->setInternationalName($generator->generate($data->getTitle()).uniqid());
+			}
+			
+			if(empty($data->getWebsiteLanguage())) {
+				$data->setWebsiteLanguage($data->getLanguage());
+			}
+
+			$this->em->persist($data);
+		}
+		
+		$this->em->flush();
+		die("eeee");
 		
 		
 		$datas = $this->em->getRepository(Licence::class)->findAll();

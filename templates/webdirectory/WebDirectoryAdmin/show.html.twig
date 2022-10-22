@@ -20,6 +20,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Logo"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.logo|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.WebsiteLanguage"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.websiteLanguage.getAssetImagePath()) }}{{ entity.websiteLanguage.logo }}" alt="" width="20px" height="13px" /></div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 
@@ -35,8 +38,10 @@
 	{% if entity.socialNetwork is not null %}
 		{% set socialNetworkArray = json_decode(entity.socialNetwork) %}
 		{% for sn in socialNetworkArray %}
-			<div class="form-table-cell form-table-cell-head">{{ sn.socialNetwork }}</div>
-			<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+			{% if sn.url is not empty %}
+				<div class="form-table-cell form-table-cell-head">{{ sn.socialNetwork }}</div>
+				<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+			{% endif %}
 		{% endfor %}
 	{% endif %}
 
@@ -47,4 +52,8 @@
 	<div class="form-table-cell">{{ entity.licence }}</div>
 
 	<a href="{{ path('WebDirectory_Read', { 'id' : entity.id, 'title' : entity.title }) }}" type="button" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "WebDirectory_Admin_Internationalization", "showRoute": "WebDirectory_Admin_Show", "editRoute": "WebDirectory_Admin_Edit"})) }}
 {% endblock %}

@@ -574,13 +574,11 @@ class User implements UserInterface, \Serializable
         return $this->presentation;
     }
 
-    // On définit le getter et le setter associé.
     public function getCountry()
     {
         return $this->country;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité Country.
     public function setCountry(Country $country)
     {
         $this->country = $country;

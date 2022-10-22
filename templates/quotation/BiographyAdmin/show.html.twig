@@ -55,8 +55,10 @@
 	{% if entity.links is not null %}
 		{% set linkArray = json_decode(entity.links) %}
 		{% for sn in linkArray %}
-			<div class="form-table-cell form-table-cell-head">{{ ("biography.link."~sn.label)|trans([], "validators") }}</div>
-			<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+			{% if sn.url is not empty %}
+				<div class="form-table-cell form-table-cell-head">{{ ("biography.link."~sn.label)|trans([], "validators") }}</div>
+				<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+			{% endif %}
 		{% endfor %}
 	{% endif %}
 	

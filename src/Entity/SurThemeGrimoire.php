@@ -235,25 +235,21 @@ class SurThemeGrimoire
 		}
     }
 
-    // On définit le getter et le setter associé.
     public function getLanguage()
     {
         return $this->language;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité langue.
     public function setLanguage(Language $language)
     {
         $this->language = $language;
     }
 
-    // On définit le getter et le setter associé.
     public function getMenuGrimoire()
     {
         return $this->menuGrimoire;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité langue.
     public function setMenuGrimoire(MenuGrimoire $menuGrimoire)
     {
         $this->menuGrimoire = $menuGrimoire;

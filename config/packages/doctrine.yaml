@@ -27,3 +27,4 @@ doctrine:
                 LPAD: App\DQL\Lpad
                 REGEXP: App\DQL\Regexp
                 EXTRACT: App\DQL\Extract
+                SUBSTRING_INDEX: App\DQL\SubstringIndex

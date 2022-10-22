@@ -157,13 +157,11 @@ class Document extends MappedSuperclassBase
 		}
     }	
 
-    // On définit le getter et le setter associé.
     public function getDocumentFamily()
     {
         return $this->documentFamily;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité family.
     public function setDocumentFamily(DocumentFamily $documentFamily)
     {
         $this->documentFamily = $documentFamily;

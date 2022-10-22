@@ -40,6 +40,10 @@ WebDirectory_Admin_ReloadListsByLanguage:
     path:  /reloadlistsbylanguage
     controller: App\Controller\WebDirectoryAdminController::reloadListsByLanguageAction
 
+WebDirectory_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\WebDirectoryAdminController::internationalizationAction
+
 WebDirectory_Admin_ShowImageSelectorColorbox:
     path:  /showImageSelectorColorbox
     controller: App\Controller\WebDirectoryAdminController::showImageSelectorColorboxAction

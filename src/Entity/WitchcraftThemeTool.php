@@ -175,13 +175,11 @@ class WitchcraftThemeTool
         $this->internationalName = $internationalName;
     }
 
-    // On définit le getter et le setter associé.
     public function getLanguage()
     {
         return $this->language;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité langue.
     public function setLanguage(Language $language)
     {
         $this->language = $language;

@@ -48,6 +48,11 @@ class WebDirectory
      */
     private $language;
 
+   /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
+     */
+    private $websiteLanguage;
+
     /**
      * @var text $socialNetwork
      *
@@ -88,6 +93,13 @@ class WebDirectory
      * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
      */
     protected $licence;
+
+	/**
+	 * @var string $internationalName
+	 *
+	 * @ORM\Column(name="internationalName", type="string", length=255)
+	 */
+	private $internationalName;
 
     /**
      * Get id
@@ -216,13 +228,11 @@ class WebDirectory
 		}
     }
 
-    // On définit le getter et le setter associé.
     public function getLanguage()
     {
         return $this->language;
     }
 
-    // Ici, on force le type de l'argument à être une instance de notre entité langue.
     public function setLanguage(Language $language)
     {
         $this->language = $language;
@@ -356,5 +366,35 @@ class WebDirectory
     public function setLicence(Licence $licence)
     {
         $this->licence = $licence;
+    }
+
+    /**
+     * Set internationalName
+     *
+     * @param string $internationalName
+     */
+    public function setInternationalName($internationalName)
+    {
+        $this->internationalName = $internationalName;
+    }
+
+    /**
+     * Get internationalName
+     *
+     * @return internationalName 
+     */
+    public function getInternationalName()
+    {
+        return $this->internationalName;
+    }
+	
+    public function getWebsiteLanguage()
+    {
+        return $this->websiteLanguage;
+    }
+
+    public function setWebsiteLanguage(Language $websiteLanguage)
+    {
+        $this->websiteLanguage = $websiteLanguage;
     }
 }

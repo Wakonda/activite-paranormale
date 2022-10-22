@@ -17,6 +17,7 @@ directory:
         Link: "Lien"
         Logo: "Logo"
         Language: "Langue"
+        WebsiteLanguage: "Langue du site Internet"
         Description: "Description"
         FoundedYear: "Lancement"
         DefunctYear: "Fermeture"

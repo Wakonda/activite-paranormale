@@ -35,6 +35,7 @@ class WebDirectoryController extends AbstractController
 	public function searchDatatablesAction(Request $request, TranslatorInterface $translator, APImgSize $imgSize)
 	{
 		$em = $this->getDoctrine()->getManager();
+		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -52,8 +53,8 @@ class WebDirectoryController extends AbstractController
 			}
 		}
 		
-        $entities = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
-		$iTotal = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+        $entities = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language);
+		$iTotal = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language, true);
 
 		$output = array(
 			"sEcho" => $request->query->get('sEcho'),
@@ -70,7 +71,7 @@ class WebDirectoryController extends AbstractController
 			
 			$readUrl = $this->generateUrl("WebDirectory_Read", array("id" => $entity->getId(), "title" => $entity->getTitle()));
 			$row[] = '<a href="'.$readUrl.'" alt=""><strong>'.$entity->getTitle().'</strong></a>';
-			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
+			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getWebsiteLanguage()->getAssetImagePath().$entity->getWebsiteLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = "<a href='".$entity->getLink()."'>".$translator->trans('directory.index.Visiter', array(), 'validators')."</a>";
 
 			$output['aaData'][] = $row;

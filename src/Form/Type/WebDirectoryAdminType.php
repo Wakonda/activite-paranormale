@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormEvents;
 use App\Form\Field\DatePartialType;
 use App\Form\Field\SourceEditType;
 use App\Form\Type\FileSelectorType;
+use App\Form\EventListener\InternationalNameFieldListener;
 
 class WebDirectoryAdminType extends AbstractType
 {
@@ -34,6 +35,17 @@ class WebDirectoryAdminType extends AbstractType
             ->add('logo', FileType::class, array('data_class' => null, 'required' => true))
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
             ->add('language', EntityType::class, array(
+					'class'=>'App\Entity\Language', 
+					'choice_label'=>'title', 
+					'required' => true,
+					'constraints' => array(new NotBlank()),
+					'query_builder' => function(EntityRepository $er) 
+						{
+							return $er->createQueryBuilder('u')
+									->orderBy('u.title', 'ASC');
+						},
+					))
+			->add('websiteLanguage', EntityType::class, array(
 					'class'=>'App\Entity\Language', 
 					'choice_label'=>'title', 
 					'required' => true,
@@ -137,6 +149,8 @@ class WebDirectoryAdminType extends AbstractType
 		
 			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'))
 		;
+		
+		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
 	
 	public function onPreSubmitData(FormEvent $event)

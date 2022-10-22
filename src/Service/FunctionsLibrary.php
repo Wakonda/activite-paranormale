@@ -1,9 +1,20 @@
 <?php
 
 	namespace App\Service;
+	
+	use Doctrine\ORM\EntityManagerInterface;
+	
+	use App\Entity\Licence;
 
 	class FunctionsLibrary
 	{
+		private $em;
+		
+		public function __construct(EntityManagerInterface $em = null)
+		{
+			$this->em = $em;
+		}
+
 		public function isUrl($string)
 		{
 			$regex = "((https?|ftp)\:\/\/)?"; // SCHEME 
@@ -22,20 +33,28 @@
 		
 		public function sourceString($sourceJSON, string $locale, Array $classes = []): ?String {
 			$datas = json_decode($sourceJSON, true);
-			// dd($datas, $sourceJSON);
+
 			if(empty($datas))
 				return null;
 
 			$res = [];
 			
 			foreach($datas as $data) {
+				
+				// dd($data);
 				$subRes = [];
 				switch($data["type"]) {
 					case "url":
+						$wd = $this->em->getRepository("\App\Entity\WebDirectory")->getWebdirectoryByUrl($data["url"], $locale);
+						$licence = null;
+						
+						if(!empty($wd))
+							$licence = "<a href='".$wd->getLicence()->getLink()."' target='_blank'>".$wd->getLicence()->getTitle()."</a>";
+						
 						if(!empty($data["title"]))
-							$subRes[] = '<i><a href="'.$data["url"].'">'.$data["title"].'</a></i> - <b>'.parse_url($data["url"], PHP_URL_HOST).'</b>';
+							$subRes[] = '<i><a href="'.$data["url"].'">'.$data["title"].'</a></i> - <b>'.parse_url($data["url"], PHP_URL_HOST).'</b>'.(!empty($licence) ? " - ".$licence : "");
 						else
-							$subRes[] = '<a href="'.$data["url"].'">'.$this->cleanUrl($data["url"]).'</a>';
+							$subRes[] = '<a href="'.$data["url"].'">'.$this->cleanUrl($data["url"]).'</a>'.(!empty($licence) ? " - ".$licence : "");
 						
 						if(!empty($data["author"]))
 							$subRes[] = $data["author"];

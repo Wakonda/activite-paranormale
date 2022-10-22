@@ -904,8 +904,9 @@
 		
 		public function getSourceDocument($sourceJSON, Array $classes = [])
 		{
+			// dd($this->container->get("App\Service\FunctionsLibrary"));
 			$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
-			return (new \App\Service\FunctionsLibrary())->sourceString($sourceJSON, $locale, $classes);
+			return (new \App\Service\FunctionsLibrary($this->em))->sourceString($sourceJSON, $locale, $classes);
 		}
 		
 		public function parseUrl(string $url, int $component = -1) {

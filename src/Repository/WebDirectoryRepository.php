@@ -17,31 +17,41 @@ class WebDirectoryRepository extends EntityRepository
 		$qb = $this->createQueryBuilder('c');
 
 		$qb->select("count(c)");
-		$q = $qb->getQuery();
 
-		return $q->getSingleScalarResult();
+		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language, $count = false)
 	{
-		$qb = $this->createQueryBuilder('c');
+		$qb = $this->createQueryBuilder('wd');
 
-		$aColumns = array( 'c.title', 'c.title', 'l.abbreviation', 'c.title');
+		$aColumns = array( 'wd.title', 'wd.title', 'l.abbreviation', 'wd.title');
 
-		$qb->join('c.language', 'l');
+		$qb->join('wd.language', 'l');
+
+		$subQb = $this->createQueryBuilder("wd2");
 		
+		$subQb->select("wd2.internationalName")
+		      ->join("wd2.language", "l2")
+			  ->where("l2.abbreviation = :language")
+			  ->andWhere("wd2.internationalName = wd.internationalName");
+			  
+		$qb->andWhere("l.abbreviation = :language OR wd.internationalName NOT IN (".$subQb->getDQL().")");
+		
+		$qb->setParameter("language", $language);
+
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[1], $sortDirColumn[0]);
 		
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->where('c.title LIKE :search')
+			$qb->andWhere('wd.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
 		if($count)
 		{
-			$qb->select("count(c)");
+			$qb->select("count(wd)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}
 		else
@@ -144,5 +154,20 @@ class WebDirectoryRepository extends EntityRepository
 		}
 		
 		return $res;
+	}
+	
+	public function getWebdirectoryByUrl(string $url, string $locale) {
+		$domain = parse_url($url, PHP_URL_HOST);
+
+		$qb = $this->createQueryBuilder('c');
+		
+		$qb->where("SUBSTRING_INDEX((SUBSTRING_INDEX(c.link, '://', -1)), '/', 1) = :domain")
+		   ->setParameter("domain", $domain)
+		   ->join("c.language", "l")
+		   ->andWhere("l.abbreviation = :locale")
+		   ->setParameter("locale", $locale);
+
+		
+		return $qb->getQuery()->getOneOrNullResult();
 	}
 }
