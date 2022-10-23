@@ -57,7 +57,7 @@
 	{% if genre.source is not empty %}
 		<br>
 		<h3>{{ "movie.read.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(genre.source) }}
+		{{ source_document(genre.source, entity.language) }}
 	{% endif %}
 
 	{{ "google"|advertisement|raw }}

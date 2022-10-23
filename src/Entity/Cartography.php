@@ -57,6 +57,13 @@ class Cartography extends MappedSuperclassBase implements Interfaces\PhotoIllust
      */
     private $linkGMaps;
 
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -238,5 +245,25 @@ class Cartography extends MappedSuperclassBase implements Interfaces\PhotoIllust
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    /**
+     * Set wikidata
+     *
+     * @param String $wikidata
+     */
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    /**
+     * Get wikidata
+     *
+     * @return String
+     */
+    public function getWikidata()
+    {
+        return $this->wikidata;
     }
 }

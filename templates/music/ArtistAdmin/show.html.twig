@@ -90,7 +90,7 @@
 	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "artist.admin.Sources"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
 	<a href="{{ path('Music_Album', { 'id' : entity.id, 'title_slug' : entity.title }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}

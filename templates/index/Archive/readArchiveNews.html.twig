@@ -6,7 +6,7 @@
 <div dir="{{ dir }}">{{ (entity.text|displayPrivateFile)|raw }}</div>
 <br>
 <h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
-{{ source_document(entity.source) }}
+{{ source_document(entity.source, entity.language) }}
 <hr class="hr2">
 <p>
 	<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>

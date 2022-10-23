@@ -41,20 +41,24 @@
 
 	<br>
 	<div>{{ entity.text|raw }}</div>
+	
+	<h3>{{ "cartography.show.Map"|trans([], "validators") }}</h3>
 	<ul>
 		<li><span class="font-weight-bold"><u>{{ "cartography.show.Longitud"|trans([], "validators") }}</u></span> {{ entity.coordYMap }}</li>
 		<li><span class="font-weight-bold"><u>{{ "cartography.show.Latitud"|trans([], "validators") }}</u></span> {{ entity.coordXMap }}</li>
 	</ul>
 
 	<div id="map-canvas" style="width:100%; height:400px"></div>
-	
 	<ul class="mt-2 fa-ul">
 		<li>
 			<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
 			<a href="{{ entity.linkGMaps }}" alt="{{ entity.title }}" target="_blank">{{ "cartography.show.SeeOnGMaps"|trans([], "validators") }}</a>
 		</li>
 	</ul>
-	<br>
+
+	<h3>{{ "cartography.show.Source"|trans([], "validators") }}</h3>
+	{{ source_document(entity.source, entity.language) }}
+
 	<hr class="hr2">
 	<p>
 		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>

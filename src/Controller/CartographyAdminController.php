@@ -206,6 +206,7 @@ class CartographyAdminController extends AdminGenericController
 		$entity->setCoordXMap($entityToCopy->getCoordXMap());
 		$entity->setCoordYMap($entityToCopy->getCoordYMap());
 		$entity->setLinkGMaps($entityToCopy->getLinkGMaps());
+		$entity->setWikidata($entityToCopy->getWikidata());
 
 		$request->setLocale($language->getAbbreviation());
 

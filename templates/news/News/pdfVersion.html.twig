@@ -9,7 +9,7 @@
 	<br />
 	{{ ((entity.text)|formatTextForPDFVersion(entity))|raw }}
 	<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
-	<span>{{ source_document(entity.source) }}</span>
+	<span>{{ source_document(entity.source, entity.language) }}</span>
 	<hr style="height: 1px"/>
 	<p>{{ entity.theme.title }} - {{ entity.publicationDate|dodate(false, app.request.locale) }} - {{ entity.pseudoUsed }} - {{ entity.licence.title }}</p>
 {% endblock %}

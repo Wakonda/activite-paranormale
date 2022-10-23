@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
+use App\Form\Field\SourceEditType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\TagWord;
@@ -31,6 +32,8 @@ class CartographyAdminType extends AbstractType
             ->add('coordXMap', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('coordYMap', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Cartography_Admin_ShowImageSelectorColorbox'))
+			->add('wikidata', TextType::class, ['required' => false])
+            ->add('source', SourceEditType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label'=>'title',
 				'required' => true,

@@ -1,6 +1,6 @@
 {% for quotation in pagination.items %}
 	<div class="list_quotations_author" onclick="window.location='{{ url('Quotation_ReadQuotation', {'id' : quotation.id }) }}';">
-		« <span class="font-italic">{{ quotation.textQuotation }}</span> »<br><div class="text-right mt-2">{% if quotation.source is not empty %}<i class="fas fa-angle-double-right"></i> {{ source_document(quotation.source, ["d-inline-block", "list-unstyled"]) }}{% endif %}</div>
+		« <span class="font-italic">{{ quotation.textQuotation }}</span> »<br><div class="text-right mt-2">{% if quotation.source is not empty %}<i class="fas fa-angle-double-right"></i> {{ source_document(quotation.source, quotation.language, ["d-inline-block", "list-unstyled"]) }}{% endif %}</div>
 	</div>
 {% else %}
 	<div class="alert alert-danger text-center font-italic">{{ "biography.index.NoQuotation"|trans([], "validators") }}</div>

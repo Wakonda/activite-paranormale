@@ -50,7 +50,7 @@
 	{% endif %}
 
 	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Source"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
 	{% if entity.links is not null %}
 		{% set linkArray = json_decode(entity.links) %}

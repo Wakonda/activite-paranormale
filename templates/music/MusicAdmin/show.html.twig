@@ -49,7 +49,7 @@
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Sources"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "music.admin.Identifiers"|trans([], "validators") }}</div>
 	<div class="form-table-cell">

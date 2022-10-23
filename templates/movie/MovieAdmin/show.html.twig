@@ -70,7 +70,7 @@
 	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "movie.admin.Sources"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>

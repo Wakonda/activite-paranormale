@@ -902,10 +902,13 @@
 			}, explode(PHP_EOL, $text)))."</pre>";
 		}
 		
-		public function getSourceDocument($sourceJSON, Array $classes = [])
+		public function getSourceDocument($sourceJSON, $locale = null, Array $classes = [])
 		{
-			// dd($this->container->get("App\Service\FunctionsLibrary"));
-			$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+			if(!empty($locale))
+				$locale = $locale->getAbbreviation();
+			else
+				$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+			
 			return (new \App\Service\FunctionsLibrary($this->em))->sourceString($sourceJSON, $locale, $classes);
 		}
 		

@@ -52,7 +52,7 @@
 	
 	{% if musicGenre.source is not empty %}
 		<h3>{{ "musicGenre.index.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(musicGenre.source) }}
+		{{ source_document(musicGenre.source, musicGenre.language) }}
 	{% endif %}
 	<hr>
 	{{ "google"|advertisement|raw }}

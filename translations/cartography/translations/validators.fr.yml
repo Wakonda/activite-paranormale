@@ -12,6 +12,7 @@ cartography:
         PseudoUsed: "Pseudo utilisé"
         WritingDate: "Date de rédaction"
         LinkGMaps: "Lien"
+        Source: "Source"
     index:
         SectionIndex: "Cartographie des phénomènes insolites et paranormaux"
         Cartography: "Cartographie"
@@ -25,5 +26,7 @@ cartography:
         Longitud: "Longitude :"
         Latitud: "Latitude :"
         SeeOnGMaps: "Voir sur la carte"
+        Map: "Carte"
+        Source: "Source"
     world:
         WorldCartography: "Cartographie multilingue"

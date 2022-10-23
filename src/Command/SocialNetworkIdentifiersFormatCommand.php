@@ -21,6 +21,7 @@ use App\Entity\News;
 use App\Entity\Stores\Store;
 use App\Entity\Licence;
 use App\Entity\WebDirectory;
+use App\Entity\Quotation;
 
 class SocialNetworkIdentifiersFormatCommand extends Command
 {
@@ -45,6 +46,17 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 		$output->writeln("Start Event migration");
 
 		$conn = $this->em->getConnection();
+		
+		$datas = $this->em->getRepository(Quotation::class)->findAll();
+		
+		foreach($datas as $data) {
+			$data->setTextQuotation(trim(strip_tags($data->getTextQuotation())));
+
+			$this->em->persist($data);
+		}
+		
+		$this->em->flush();
+		die("kkk");
 		
 		$output->writeln("Start Cartography migration");
 

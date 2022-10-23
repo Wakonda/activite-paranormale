@@ -154,7 +154,7 @@
 	{% if entity.source is not empty %}
 		<br>
 		<h3>{{ "movie.read.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(entity.source) }}
+		{{ source_document(entity.source, entity.language) }}
 	{% endif %}
 
 	<hr class="hr2">

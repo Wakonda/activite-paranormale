@@ -88,7 +88,7 @@
 		<br>
 		{% if entity.source is not empty %}
 			<h3>{{ "music.index.Sources"|trans([], "validators") }}</h3>
-			{{ source_document(entity.source) }}
+			{{ source_document(entity.source, entity.language) }}
 		{% endif %}
 		{{ "google"|advertisement|raw }}
 	</div>

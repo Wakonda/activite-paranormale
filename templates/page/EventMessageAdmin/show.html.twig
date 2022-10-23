@@ -66,7 +66,7 @@
 	<div class="form-table-cell">{{ entity.longitude }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Source"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
 	<a href="{{ path('EventMessage_Read', { 'id' : entity.id, 'title_slug': entity.urlSlug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}

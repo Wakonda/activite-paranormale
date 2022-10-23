@@ -33,7 +33,7 @@
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "tagWord.admin.Sources"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ source_document(entity.source) }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 {% endblock %}
 
 {% block data_bottom %}

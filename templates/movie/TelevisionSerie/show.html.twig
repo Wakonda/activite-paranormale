@@ -110,7 +110,7 @@
 	{% if entity.source is not empty %}
 		<br>
 		<h3>{{ "televisionSerie.read.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(entity.source) }}
+		{{ source_document(entity.source, entity.language) }}
 	{% endif %}
 	
 	{% set datas = get_store_by_entity(entity, "televisionSerie", "TelevisionSerieStore") %}
