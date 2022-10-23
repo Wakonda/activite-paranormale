@@ -157,7 +157,7 @@ class CartographyController extends AbstractController
 
 		foreach($entities as $entity)
 		{
-			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
+			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
 			$row = [];
 			$row["latitud"] = $entity->getCoordXMap();
 			$row["longitud"] = $entity->getCoordYMap();

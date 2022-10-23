@@ -8,7 +8,7 @@
 		</div>
 		<div class="col-md-8 content-card">
 		  <div class="card-body text-center">
-			<h5 class="card-title"><a href="{{ url('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : entity.id, 'title_slug' : entity.title}) }}">{{ entity.title }}</a></h5>
+			<h5 class="card-title"><a href="{{ url('Witchcraft_ReadGrimoire', {'surtheme' : (entity.surTheme is not empty ? entity.surTheme.title : null), 'id' : entity.id, 'title_slug' : entity.title}) }}">{{ entity.title }}</a></h5>
 			<hr>
 			<p class="card-text text-center">{% if entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.menuGrimoire.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></p>
 			<div class="card-footer text-muted"><small class="text-muted"><i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }}</small></div>

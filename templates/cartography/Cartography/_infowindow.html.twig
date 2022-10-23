@@ -4,3 +4,11 @@
 	<div class="infowindow_text">{{ (entity.text)|raw }}</div>
 	<p><i class="fas fa-arrow-right"></i> <a href="{{ path('Cartography_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug() }) }}" class="link_map">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a></p>
 </div>
+
+<style>
+	.infowindow_text h3 {
+		color: black !important;
+		font-weight: bold;
+		border-color: black;
+	}
+</style>
