@@ -45,7 +45,7 @@ class MovieAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];
-
+// dd($builder->getData()->getMovieBiographies());
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('introduction', TextareaType::class, array('required' => false))

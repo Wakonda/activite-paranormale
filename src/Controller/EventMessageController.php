@@ -54,6 +54,7 @@ class EventMessageController extends AbstractController
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsBetweenTwoDates($request->getLocale(), $startDate, $endDate);
 		
 		$eventDates = [];
+		$eventNumber = [];
 
 		foreach($entities as $entity)
 		{
@@ -62,6 +63,10 @@ class EventMessageController extends AbstractController
 			
 			foreach($period as $dt) {
 				$eventDates[] = $dt->format("Y-m-d");
+				
+				if(!isset($eventNumber[$dt->format("Y-m-d")]))
+					$eventNumber[$dt->format("Y-m-d")] = 0;
+				$eventNumber[$dt->format("Y-m-d")]++;
 			}
 		}
 
@@ -69,10 +74,12 @@ class EventMessageController extends AbstractController
 		$period = new \DatePeriod($startDate, $interval, $endDate);
 		
 		$res = [];
-		
+
 		foreach($period as $dt) {
+			$number = isset($eventNumber[$dt->format("Y-m-d")]) ? $eventNumber[$dt->format("Y-m-d")] : 0;
+			$color = $number > 0 ? "darkgreen" : "darkred";
 			$res[] = [
-				"title" => '<i class="fas fa-play-circle fa-2x"></i>',
+				"title" => '<span style="color: '.$color.'">'.$number."</span>", //'<i class="fas fa-play-circle fa-2x"></i>',
 				"color" => in_array($dt->format("Y-m-d"), $eventDates) ? 'darkgreen' : "darkred",
 				"url" => $this->generateUrl('EventMessage_SelectDayMonth', ['year' => $dt->format("Y"), 'month' => $dt->format("m"), 'day' => $dt->format("d")]),
 				"start" => $dt->format("Y-m-d"),

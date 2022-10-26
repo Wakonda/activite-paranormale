@@ -80,55 +80,63 @@
 				xmlHttp.send();
 		});
 	}
-	
+
+	function addNewBiography(selector) {
+		var list = document.querySelector(selector);
+		var counter = list.getAttribute('data-widget-counter') || list.children.length;
+		var newWidget = list.getAttribute('data-prototype');
+
+		newWidget = newWidget.replace(/__name__/g, counter);
+		counter++;
+		list.setAttribute('data-widget-counter', counter);
+
+		var newElem = new DOMParser().parseFromString(list.getAttribute('data-widget-tags'), 'text/html').documentElement.querySelector('body').firstChild;
+		
+		newElem.innerHTML = newWidget;
+
+		newElem.classList.add("border", "p-2", "bg-light", "mb-2", "clearfix", "container-form-biography");
+
+		list.appendChild(document.createRange().createContextualFragment(newElem.outerHTML));
+
+		var id = new DOMParser().parseFromString(newWidget, 'text/html').documentElement.querySelector('body').firstChild.getAttribute("id");
+
+		$("#" + id + "_biography").select2entity();
+
+		$(document).on('select2:selecting', "#" + id + "_biography", function(e) {
+			let val = e.params.args.data;
+			let count = 0;
+
+			if(typeof val.internationalName === "undefined") {
+				document.getElementById(id).parentNode.value = "+";
+			}
+			else {
+				document.getElementById(id).setAttribute("data-wikidata", val.wikidata);
+				document.getElementById(id).setAttribute("data-title", val.title);
+				count = 1;
+			}
+
+			document.getElementById(id + "_internationalName").value = "";
+			
+			if(document.getElementById(id) != null && document.getElementById(id).parentNode.querySelector(".state-biography") != null)
+				document.getElementById(id).parentNode.querySelector(".state-biography").parentNode.remove();
+				
+			addBiographyValidationFormDisplayLink(document.getElementById(id).parentNode, count);
+		});
+
+		addDeleteButtonFormDeleteLink(newElem);
+		
+		let idArray = id.split("_");
+		
+		return idArray[idArray.length - 1];
+	}
+
 	$(function() {
 		document.querySelector('.add-another-collection-widget').addEventListener("click", (e) => {
-			var list = document.querySelector(e.currentTarget.getAttribute('data-list-selector'));
-			var counter = list.getAttribute('data-widget-counter') || list.children.length;
-			var newWidget = list.getAttribute('data-prototype');
-
-			newWidget = newWidget.replace(/__name__/g, counter);
-			counter++;
-			list.setAttribute('data-widget-counter', counter);
-
-			var newElem = new DOMParser().parseFromString(list.getAttribute('data-widget-tags'), 'text/html').documentElement.querySelector('body').firstChild;
-			
-			newElem.innerHTML = newWidget;
-
-			newElem.classList.add("border", "p-2", "bg-light", "mb-2", "clearfix", "container-form-biography");
-
-			list.appendChild(document.createRange().createContextualFragment(newElem.outerHTML));
-
-			var id = new DOMParser().parseFromString(newWidget, 'text/html').documentElement.querySelector('body').firstChild.getAttribute("id");
-
-			$("#" + id + "_biography").select2entity();
-
-			$(document).on('select2:selecting', "#" + id + "_biography", function(e) {
-				let val = e.params.args.data;
-				let count = 0;
-
-				if(typeof val.internationalName === "undefined") {
-					document.getElementById(id).parentNode.value = "+";
-				}
-				else {
-					document.getElementById(id).setAttribute("data-wikidata", val.wikidata);
-					document.getElementById(id).setAttribute("data-title", val.title);
-					count = 1;
-				}
-
-				document.getElementById(id + "_internationalName").value = "";
-				
-				if(document.getElementById(id) != null && document.getElementById(id).parentNode.querySelector(".state-biography") != null)
-					document.getElementById(id).parentNode.querySelector(".state-biography").parentNode.remove();
-					
-				addBiographyValidationFormDisplayLink(document.getElementById(id).parentNode, count);
-			});
-
-			addDeleteButtonFormDeleteLink(newElem);
+			addNewBiography(e.currentTarget.getAttribute('data-list-selector'));
 		});
 
 		$collectionHolder = document.querySelectorAll('ul#biography-fields-list li.container-form-biography');
-
+console.log($collectionHolder)
 		$collectionHolder.forEach((e) => {
 			addBiographyValidationFormDisplayLink(e);
 		});

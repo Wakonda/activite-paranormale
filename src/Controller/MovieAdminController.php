@@ -47,7 +47,7 @@ class MovieAdminController extends AdminGenericController
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
-		
+
 		foreach ($form->get('movieBiographies') as $formChild)
 		{
 			if(empty($formChild->get('internationalName')->getData()))
@@ -68,7 +68,7 @@ class MovieAdminController extends AdminGenericController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$originalMovieBiographies = new ArrayCollection($em->getRepository(MovieBiography::class)->findBy(["movie" => $entityBindded->getId()]));
-		
+
 		foreach($originalMovieBiographies as $originalMovieBiography)
 		{
 			if(false === $entityBindded->getMovieBiographies()->contains($originalMovieBiography))

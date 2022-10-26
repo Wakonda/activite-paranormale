@@ -156,7 +156,7 @@ abstract class AdminGenericController extends AbstractController
         $form->handleRequest($request);
 
 		$this->validationForm($request, $ccv, $translator, $form, $entity, $entity);
-
+// dd($form->getErrors(true));
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 			
