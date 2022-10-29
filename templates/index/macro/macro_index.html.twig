@@ -337,7 +337,7 @@
 	</script>
 {% endmacro %}
 
-{% macro twitter_form(entity) %}
+{% macro twitter_form(entity, addPhoto = false) %}
 	{% if isTwitterAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentTwitter">
 		<div class="card sub_block">
@@ -353,7 +353,11 @@
 				<div class="card-body">
 					<form action="{{ path('Admin_Twitter', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string" class="badge badge-danger">280</span></p>
-						<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
+
+						{% if addPhoto == true %}
+							<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
+						{% endif %}
+
 						<div id="tags_twitter">
 							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
 							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
