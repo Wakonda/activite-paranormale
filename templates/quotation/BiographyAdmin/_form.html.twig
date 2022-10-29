@@ -89,10 +89,12 @@
 				document.getElementById("{{ form.nationality.vars.id }}").value = data.nationality.country.id;
 				document.getElementById("{{ form.socialNetworkTwitter.vars.id }}").value = data.socialNetwork.twitter;
 
-				document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
-				document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
-				document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
-				document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
+					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
+					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
+					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+				}
 					
 				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
 			}
