@@ -98,6 +98,13 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
      */
     protected $bookEditions;
 
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -414,5 +421,25 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     {
         $this->bookEditions->add($bookEdition);
         $bookEdition->setBook($this);
+    }
+
+    /**
+     * Set wikidata
+     *
+     * @param String $wikidata
+     */
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    /**
+     * Get wikidata
+     *
+     * @return String
+     */
+    public function getWikidata()
+    {
+        return $this->wikidata;
     }
 }

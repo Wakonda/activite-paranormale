@@ -31,7 +31,7 @@ class BookAdminController extends AdminGenericController
 	protected $indexRoute = "Book_Admin_Index"; 
 	protected $showRoute = "Book_Admin_Show";
 	protected $formName = 'ap_book_bookadmintype';
-	protected $illustrations = [['field' => 'photo']];
+	protected $illustrations = [['field' => 'photo', 'selectorFile' => 'photo_selector']];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

@@ -31,6 +31,11 @@
 	{% endfor %}
 	</div>
 
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
 	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 

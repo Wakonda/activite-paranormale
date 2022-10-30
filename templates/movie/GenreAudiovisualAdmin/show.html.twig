@@ -20,6 +20,11 @@
 	<div class="form-table-cell form-table-cell-head">{{ "genreAudiovisual.admin.Photo"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.photo|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
 
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
 	<div class="form-table-cell form-table-cell-head">{{ "genreAudiovisual.admin.InternationalName"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.internationalName }}</div>
 
