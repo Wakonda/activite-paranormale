@@ -67,14 +67,7 @@
 	</div>
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
-<div class="form-table-cell">
-	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
-		<div class="input-group-append">
-			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
-		</div>
-	</div>
-</div>
+{{ macro_admin.wikidata_html_generic(form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "episodeTelevisionSerie.admin.Identifiers"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>

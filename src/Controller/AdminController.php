@@ -828,6 +828,17 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
 	}
 	
+	public function wikidataGenericAction(Request $request, \App\Service\Wikidata $wikidata)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$code = $request->query->get("code");
+		
+		$res = $wikidata->getGenericDatas($code, $language->getAbbreviation());
+
+		return new JsonResponse($res);
+	}
+	
 	private function getImageName(Request $request, $entity, $url = true)
 	{
 		$imageName = null;

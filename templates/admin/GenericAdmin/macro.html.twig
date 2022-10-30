@@ -82,3 +82,65 @@
 	});
 </script>
 {% endmacro %}
+
+{% macro wikidata_html_generic(form) %}
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
+<div class="form-table-cell">
+	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
+		<div class="input-group-append">
+			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
+		</div>
+	</div>
+</div>
+{% endmacro %}
+
+{% macro import_wikidata_generic(wikidataFieldId, languageFieldId, titleFieldId, textFieldId, illustrationForm) %}
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+		let locale = document.getElementById("{{ languageFieldId }}").value;
+		let code = document.getElementById("{{ wikidataFieldId }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector('#wikidata .fa-sync').classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+				
+				document.getElementById("{{ titleFieldId }}").value = data.title;
+				document.getElementById("url_{{ textFieldId }}").value = data.url;
+				document.getElementById("url_{{ textFieldId }}").dispatchEvent(new Event("change"));
+
+				{% if illustrationForm is not empty %}
+					if(document.getElementById("{{ illustrationForm.photo_selector.vars.id }}").value == "") {
+						document.getElementById("{{ illustrationForm.photo_selector.vars.id }}").value = data.image.url;
+						
+						{% if illustrationForm.license is defined %}
+							document.getElementById("{{ illustrationForm.license.vars.id }}").value = data.image.license;
+						{% endif %}
+						
+						{% if illustrationForm.author is defined %}
+							document.getElementById("{{ illustrationForm.author.vars.id }}").value = data.image.user;
+						{% endif %}
+						
+						{% if illustrationForm.urlSource is defined %}
+							document.getElementById("{{ illustrationForm.urlSource.vars.id }}").value = data.image.url;
+						{% endif %}
+					}
+				{% endif %}
+					
+				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+			}
+		};
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('Admin_WikidataGeneric') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>
+{% endmacro %}

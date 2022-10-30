@@ -79,6 +79,10 @@ Admin_WakondaGuru:
     path: /admin/wakonda_guru/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::wakondaGuruAction
 
+Admin_WikidataGeneric:
+    path: /admin/wikidata_generic
+    controller: App\Controller\AdminController::wikidataGenericAction
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index

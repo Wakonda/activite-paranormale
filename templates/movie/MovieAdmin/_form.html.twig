@@ -20,14 +20,7 @@
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
-<div class="form-table-cell">
-	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
-		<div class="input-group-append">
-			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
-		</div>
-	</div>
-</div>
+{{ macro_admin.wikidata_html_generic(form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "movie.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>

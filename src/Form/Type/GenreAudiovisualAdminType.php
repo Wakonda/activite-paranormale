@@ -36,6 +36,7 @@ class GenreAudiovisualAdminType extends AbstractType
 				},
 				'constraints' => [new NotBlank()]
 			))
+			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
 			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'GenreAudiovisual_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
 		;

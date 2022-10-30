@@ -59,6 +59,13 @@ class GenreAudiovisual
      * @ORM\Column(name="source", type="text", nullable=true)
      */
     private $source;
+
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
 	
 	public function __toString()
 	{
@@ -241,5 +248,25 @@ class GenreAudiovisual
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set wikidata
+     *
+     * @param String $wikidata
+     */
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    /**
+     * Get wikidata
+     *
+     * @return String
+     */
+    public function getWikidata()
+    {
+        return $this->wikidata;
     }
 }
