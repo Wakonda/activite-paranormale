@@ -9,6 +9,9 @@
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
 
+{{ macro_admin.wikidata_html_generic(form) }}
+{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form.illustration) }}
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "tagWord.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 

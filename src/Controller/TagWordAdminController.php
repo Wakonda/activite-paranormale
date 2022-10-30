@@ -159,6 +159,7 @@ class TagWordAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		
 		$entity->setInternationalName($entityToCopy->getInternationalName());
+		$entity->setWikidata($entityToCopy->getWikidata());
 		$entity->setLanguage($language);
 		
 		if(!empty($ci = $entityToCopy->getIllustration())) {

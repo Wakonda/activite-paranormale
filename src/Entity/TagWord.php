@@ -65,6 +65,13 @@ class TagWord
      * @ORM\Column(name="source", type="text", nullable=true)
      */
     private $source;
+
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
 	
 	public function __toString()
 	{
@@ -269,5 +276,25 @@ class TagWord
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    /**
+     * Set wikidata
+     *
+     * @param String $wikidata
+     */
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    /**
+     * Get wikidata
+     *
+     * @return String
+     */
+    public function getWikidata()
+    {
+        return $this->wikidata;
     }
 }

@@ -36,6 +36,7 @@ class TagWordAdminType extends AbstractType
 				},
 				'constraints' => array(new NotBlank())
 			))
+			->add('wikidata', TextType::class, ['required' => false])
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'TagWord_Admin_ShowImageSelectorColorbox'));
     }
 
