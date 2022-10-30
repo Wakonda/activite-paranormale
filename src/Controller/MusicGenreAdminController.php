@@ -143,6 +143,7 @@ class MusicGenreAdminController extends AdminGenericController
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setWikidata($entityToCopy->getWikidata());
 		
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();

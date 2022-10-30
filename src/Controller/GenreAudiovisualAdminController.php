@@ -138,6 +138,7 @@ class GenreAudiovisualAdminController extends AdminGenericController
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setPhoto($entityToCopy->getPhoto());
+		$entity->setWikidata($entityToCopy->getWikidata());
 		$entity->setLanguage($language);
 
 		$request->setLocale($language->getAbbreviation());

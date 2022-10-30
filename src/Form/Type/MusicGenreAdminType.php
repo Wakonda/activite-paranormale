@@ -48,6 +48,7 @@ class MusicGenreAdminType extends AbstractType
 									  ->orderBy('u.title', 'ASC');
 						},
 				))
+			->add('wikidata', TextType::class, ['required' => false])
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'MusicGenre_Admin_ShowImageSelectorColorbox'))
             ->add('source', SourceEditType::class, array('required' => false))
 		;
