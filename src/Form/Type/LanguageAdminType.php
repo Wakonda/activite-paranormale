@@ -20,7 +20,8 @@ class LanguageAdminType extends AbstractType
             ->add('title', TextType::class, array('constraints' => array(new NotBlank())))
             ->add('abbreviation', TextType::class, array('constraints' => array(new NotBlank())))
             ->add('logo', FileType::class, array("required" => true, 'data_class' => null))
-			->add('direction', ChoiceType::class, array('constraints' => array(new NotBlank()), 'expanded' => true, 'multiple' => false, 'label' => 'Sens d\'écriture', 'choices' => array('language.admin.RightToLeft' => 'rtl', 'language.admin.LeftToRight' => 'ltr'), 'translation_domain' => 'validators'))
+			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'data' => $builder->getData()->getLogo()))
+			->add('direction', ChoiceType::class, array('constraints' => array(new NotBlank()), 'expanded' => true, 'multiple' => false, 'choices' => array('language.admin.RightToLeft' => 'rtl', 'language.admin.LeftToRight' => 'ltr'), 'translation_domain' => 'validators'))
         ;
     }
 

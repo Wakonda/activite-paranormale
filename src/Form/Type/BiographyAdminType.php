@@ -9,7 +9,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 
-use App\Form\Type\FileSelectorType;
 use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
 use App\Form\EventListener\InternationalNameFieldListener;

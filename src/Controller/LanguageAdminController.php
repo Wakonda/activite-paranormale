@@ -27,7 +27,7 @@ class LanguageAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Language_Admin_Index"; 
 	protected $showRoute = "Language_Admin_Show";
-	protected $illustrations = [["field" => "logo"]];
+	protected $illustrations = [["field" => "logo", 'selectorFile' => 'photo_selector']];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
