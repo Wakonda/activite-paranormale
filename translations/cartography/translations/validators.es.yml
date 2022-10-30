@@ -11,7 +11,7 @@ cartography:
         Licence: "Licencia"
         PseudoUsed: "Pseudo utilizado"
         WritingDate: "Fecha de redacción"
-        LinkGMaps: "Hipervínculo"
+        LinkGMaps: "Hipervínculo (Google Maps)"
         Source: "Fuente"
     index:
         SectionIndex: "Mapeo de los fenómenos paranormales"

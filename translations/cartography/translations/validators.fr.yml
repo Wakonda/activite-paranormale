@@ -11,7 +11,7 @@ cartography:
         Licence: "Licence"
         PseudoUsed: "Pseudo utilisé"
         WritingDate: "Date de rédaction"
-        LinkGMaps: "Lien"
+        LinkGMaps: "Lien (Google Maps)"
         Source: "Source"
     index:
         SectionIndex: "Cartographie des phénomènes insolites et paranormaux"
