@@ -65,6 +65,7 @@ class WitchcraftToolAdminType extends AbstractType
 						return $repository->createQueryBuilder("p")->innerjoin("p.language", "l")->where("l.abbreviation = :language")->setParameter("language", $language)->orderBy("p.title", "ASC");
 					}
 			))
+			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false));
     }
 
