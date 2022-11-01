@@ -13,7 +13,9 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
+use App\Form\EventListener\InternationalNameFieldListener;
 use App\Form\Field\SourceEditType;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -67,6 +69,8 @@ class WitchcraftToolAdminType extends AbstractType
 			))
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false));
+
+		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
 
     public function getBlockPrefix()

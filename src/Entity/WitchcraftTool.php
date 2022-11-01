@@ -105,6 +105,13 @@ class WitchcraftTool
     protected $witchcraftThemeTool;
 
 	/**
+	 * @var string $internationalName
+	 *
+	 * @ORM\Column(name="internationalName", type="string", length=255)
+	 */
+	private $internationalName;
+
+	/**
 	 * @var string $wikidata
 	 *
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
@@ -471,6 +478,26 @@ class WitchcraftTool
     public function getSource()
     {
         return $this->source;
+    }
+
+    /**
+     * Set internationalName
+     *
+     * @param string $internationalName
+     */
+    public function setInternationalName($internationalName)
+    {
+        $this->internationalName = $internationalName;
+    }
+
+    /**
+     * Get internationalName
+     *
+     * @return internationalName 
+     */
+    public function getInternationalName()
+    {
+        return $this->internationalName;
     }
 
     /**

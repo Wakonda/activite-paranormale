@@ -40,6 +40,12 @@
 	<div class="form-table-cell form-table-cell-head">{{ "witchcraftTool.admin.Source"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "witchcraftTool.admin.InternationalName"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.internationalName }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "witchcraftTool.admin.Licence"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.licence }}</div>
+
 	<div class="d-flex flex-row mt-3">
 		<div><a href="{{ path('WitchcraftTool_Show', { 'id' : entity.id, 'title_slug' : entity.urlSlug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>
 		<div class="ml-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>
@@ -47,6 +53,8 @@
 {% endblock %}
 
 {% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "WitchcraftTool_Admin_Internationalization", "showRoute": "WitchcraftTool_Admin_Show", "editRoute": "WitchcraftTool_Admin_Edit"})) }}
+	
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.twitter_form(entity) }}

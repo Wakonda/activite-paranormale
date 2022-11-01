@@ -71,6 +71,8 @@ witchcraftTool:
         Language: "Langue"
         State: "Etat"
         Source: "Source"
+        InternationalName: "Nom international"
+        Licence: "Licence"
     search:
         SearchSort: "Rechercher / Trier"
         Keywords: "Mots-clés"

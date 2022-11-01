@@ -47,7 +47,7 @@ class WitchcraftToolAdminController extends AdminGenericController
 
 		//Default values
 		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $entityBindded->getLanguage(), "internationalName" => "magic"]);
-		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND", "language" => $entityBindded->getLanguage()]);
+		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $entityBindded->getLanguage()]);
 		$state = $em->getRepository(State::class)->findOneBy(["internationalName" => "Validate", "language" => $entityBindded->getLanguage()]);
 		$entityBindded->setTheme($theme);
 		$entityBindded->setLicence($licence);
@@ -154,6 +154,43 @@ class WitchcraftToolAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
+	
+    public function internationalizationAction(Request $request, $id)
+    {
+		$formType = WitchcraftToolAdminType::class;
+		$entity = new WitchcraftTool();
+		
+		$em = $this->getDoctrine()->getManager();
+		$entityToCopy = $em->getRepository(WitchcraftTool::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		
+		$entity->setInternationalName($entityToCopy->getInternationalName());
+		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setText($entityToCopy->getText());
+		$entity->setPhoto($entityToCopy->getPhoto());
+		$entity->setWikidata($entityToCopy->getWikidata());
+		$entity->setPublicationDate($entityToCopy->getPublicationDate());
+		
+		$witchcraftThemeTool = null;
+		
+		if(!empty($entityToCopy->getWitchcraftThemeTool()))
+			$witchcraftThemeTool = $em->getRepository(WitchcraftThemeTool::class)->findOneBy(["internationalName" => $entityToCopy->getWitchcraftThemeTool()->getInternationalName(), "language" => $language]);
+		
+		$entity->setWitchcraftThemeTool($witchcraftThemeTool);
+		
+		$state = null;
+		
+		if(!empty($entityToCopy->getState()))
+			$state = $em->getRepository(State::class)->findOneBy(["internationalName" => $entityToCopy->getState()->getInternationalName(), "language" => $language]);
+		
+		$entity->setState($state);
+
+		$entity->setSource($entityToCopy->getSource());
+		$entity->setLanguage($language);
+
+		$twig = 'witchcraft/WitchcraftToolAdmin/new.html.twig';
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+    }
 
 	public function showImageSelectorColorboxAction()
 	{

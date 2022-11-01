@@ -40,6 +40,10 @@ WitchcraftTool_Admin_ReloadListsByLanguage:
     path:  /reloadlistsbylanguage
     controller: App\Controller\WitchcraftToolAdminController::reloadListsByLanguageAction
 
+WitchcraftTool_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\WitchcraftToolAdminController::internationalizationAction
+
 WitchcraftTool_Admin_ShowImageSelectorColorbox:
     path:  /showImageSelectorColorbox
     controller: App\Controller\WitchcraftToolAdminController::showImageSelectorColorboxAction
