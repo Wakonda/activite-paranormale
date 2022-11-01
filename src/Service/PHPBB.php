@@ -43,8 +43,11 @@ class PHPBB {
 		return $result->jwt;
 	}
 	
-	public function checkUserExists(string $token, string $username): bool
+	public function checkUserExists(?string $token, ?string $username): bool
 	{
+		if(empty($token) or empty($username))
+			return false;
+
 		$curl = curl_init();
 
 		$url = $this->PHPBB_URL."/get_account/".$username;

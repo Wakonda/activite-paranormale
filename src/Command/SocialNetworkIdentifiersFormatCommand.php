@@ -22,6 +22,7 @@ use App\Entity\Stores\Store;
 use App\Entity\Licence;
 use App\Entity\WebDirectory;
 use App\Entity\Quotation;
+use App\Entity\WitchcraftTool;
 
 class SocialNetworkIdentifiersFormatCommand extends Command
 {
@@ -46,6 +47,17 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 		$output->writeln("Start Event migration");
 
 		$conn = $this->em->getConnection();
+		
+		$datas = $this->em->getRepository(WitchcraftTool::class)->findAll();
+		
+		foreach($datas as $data) {
+			$generator = new \Ausi\SlugGenerator\SlugGenerator;
+			$data->setInternationalName($generator->generate($data->getTitle()).uniqid());
+			$this->em->persist($data);
+		}
+		
+		$this->em->flush();
+		die("kkk");
 		
 		$datas = $this->em->getRepository(Quotation::class)->findAll();
 		
