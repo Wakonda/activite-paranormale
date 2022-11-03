@@ -23,8 +23,7 @@
 				</div>
 			</div>
 		</div>
-		{{ form.vars.id }}
-{{ dump(base_path) }}
+
 		<script>
 			$(function()
 			{
@@ -37,8 +36,8 @@
 					});
 				{% endif %}
 
-				$("#{{ form.vars.id }} .remove_files_colorbox").click(function(e) {
-					$("#{{ form.vars.id }} .existing_photo_colorbox").val("");
+				$("#{{ form.vars.id }}_container .remove_files_colorbox").click(function(e) {
+					$("#{{ form.vars.id }}_container .existing_photo_colorbox").val("");
 					e.preventDefault();
 				});
 			});
