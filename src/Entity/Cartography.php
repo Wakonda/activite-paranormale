@@ -190,44 +190,6 @@ class Cartography extends MappedSuperclassBase implements Interfaces\PhotoIllust
     }
 
     /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function uploadPhoto() {
-        // the file property can be empty if the field is not required
-        if (null === $this->photo) {
-            return;
-        }
-
-		if(is_object($this->photo))
-		{
-			$NameFile = basename($this->photo->getClientOriginalName());
-			$reverseNF = strrev($NameFile);
-			$explodeNF = explode(".", $reverseNF, 2);
-			$NNFile = strrev($explodeNF[1]);
-			$ExtFile = strrev($explodeNF[0]);
-			$NewNameFile = $NNFile."-".$this->getId().".".$ExtFile;
-			if(!$this->id){
-				$this->photo->move($this->getTmpUploadRootDir(), $NewNameFile);
-			}else{
-				if (is_object($this->photo))
-					$this->photo->move($this->getUploadRootDir(), $NewNameFile);
-			}
-			if (is_object($this->photo))
-				$this->setPhoto($NewNameFile);
-		} elseif(filter_var($this->photo, FILTER_VALIDATE_URL)) {
-			$parser = new \App\Service\APParseHTML();
-			$html = $parser->getContentURL($this->photo);
-			$pi = pathinfo($this->photo);
-			$filename = $pi["filename"].".".$pi["extension"];
-			$filename = uniqid()."_".$filename;
-
-			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
-			$this->setPhoto($filename);
-		}
-    }
-
-    /**
      * Set illustration
      *
      * @param string $illustration

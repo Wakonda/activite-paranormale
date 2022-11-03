@@ -149,7 +149,8 @@ class Document extends MappedSuperclassBase
 			$parser = new \App\Service\APParseHTML();
 			$html = $parser->getContentURL($this->pdfDoc);
 			$pi = pathinfo($this->pdfDoc);
-			$filename = $pi["filename"].".".$pi["extension"];
+			$extension = $res = pathinfo(parse_url($this->pdfDoc, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);

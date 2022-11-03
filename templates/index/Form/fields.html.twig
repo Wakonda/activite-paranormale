@@ -23,12 +23,13 @@
 				</div>
 			</div>
 		</div>
-
+		{{ form.vars.id }}
+{{ dump(base_path) }}
 		<script>
 			$(function()
 			{
 				{% if base_path is not null %}
-					$("#{{ form.vars.id }} .select_files_colorbox").on('click',function(e){
+					$("#{{ form.vars.id }}_container div .select_files_colorbox").on('click',function(e){
 						e.preventDefault();
 						$('#selectFileModal_{{ form.vars.id }} .modal-body').load('{{ path(base_path) }}',function(){
 							$('#selectFileModal_{{ form.vars.id }}').modal({show:true});

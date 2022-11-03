@@ -426,10 +426,11 @@ class BookEdition implements Interfaces\PhotoIllustrationInterface
 			$parser = new \App\Service\APParseHTML();
 			$html = $parser->getContentURL($this->wholeBook);
 			$pi = pathinfo($this->wholeBook);
-			$filename = $pi["filename"].".".$pi["extension"];
+			$extension = $res = pathinfo(parse_url($this->wholeBook, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
-			file_put_contents($this->getTmpUploadRootPdfDir().$filename, $html);
+			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setWholeBook($filename);
 		}
     }

@@ -197,7 +197,8 @@ class Video extends MappedSuperclassBase
 			$parser = new \App\Service\APParseHTML();
 			$html = $parser->getContentURL($this->mediaVideo);
 			$pi = pathinfo($this->mediaVideo);
-			$filename = $pi["filename"].".".$pi["extension"];
+			$extension = $res = pathinfo(parse_url($this->mediaVideo, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
@@ -250,7 +251,8 @@ class Video extends MappedSuperclassBase
 			$parser = new \App\Service\APParseHTML();
 			$html = $parser->getContentURL($this->photo);
 			$pi = pathinfo($this->photo);
-			$filename = $pi["filename"].".".$pi["extension"];
+			$extension = $res = pathinfo(parse_url($this->photo, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);

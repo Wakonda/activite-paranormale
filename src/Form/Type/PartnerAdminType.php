@@ -23,15 +23,15 @@ class PartnerAdminType extends AbstractType
             ->add('link', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-											'choice_label'=>'title',
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-											'query_builder' => function(EntityRepository $er)
-														{
-															return $er->createQueryBuilder('u')
-																	->orderBy('u.title', 'ASC');
-														},
-											))
+					'choice_label'=>'title',
+					'required' => true,
+					'constraints' => array(new NotBlank()),
+					'query_builder' => function(EntityRepository $er)
+								{
+									return $er->createQueryBuilder('u')
+											->orderBy('u.title', 'ASC');
+								},
+					))
 			->add('active', CheckboxType::class, array('required' => true))
         ;
     }

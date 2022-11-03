@@ -190,7 +190,8 @@ class Music
 			$parser = new \App\Service\APParseHTML();
 			$html = $parser->getContentURL($this->musicPieceFile);
 			$pi = pathinfo($this->musicPieceFile);
-			$filename = $pi["filename"].".".$pi["extension"];
+			$extension = $res = pathinfo(parse_url($this->musicPieceFile, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);

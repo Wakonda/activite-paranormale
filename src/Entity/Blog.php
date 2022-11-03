@@ -258,7 +258,8 @@ class Blog
 			$parser = new \App\Service\APParseHTML();
 			$html = $parser->getContentURL($this->banner);
 			$pi = pathinfo($this->banner);
-			$filename = $pi["filename"].".".$pi["extension"];
+			$extension = $res = pathinfo(parse_url($this->logo, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
