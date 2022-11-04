@@ -22,7 +22,7 @@ class BlogAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Blog_Admin_Index"; 
 	protected $showRoute = "Blog_Admin_Show";
-	protected $illustrations = [["field" => "banner"]];
+	protected $illustrations = [["field" => "banner", 'selectorFile' => 'photo_selector']];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

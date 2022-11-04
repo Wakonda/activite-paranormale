@@ -3,11 +3,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.banner, "blog.admin.Banner"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{% if entity.banner is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.banner }}
-		<br />
-	{% endif %}
 	{{ form_errors(form.banner) }}{{ form_widget(form.banner) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.link, "blog.admin.Link"|trans([], "validators")) }}</div>

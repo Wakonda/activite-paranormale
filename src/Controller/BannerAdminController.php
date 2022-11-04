@@ -26,7 +26,7 @@ class BannerAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Banner_Admin_Index"; 
 	protected $showRoute = "Banner_Admin_Show";
-	protected $illustrations = [["field" => "image"]];
+	protected $illustrations = [["field" => "image", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

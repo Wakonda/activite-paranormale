@@ -27,15 +27,16 @@ class BannerAdminType extends AbstractType
 					'data' => true
 				))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-											'choice_label'=>'title', 
-											'required' => true,
-										    'query_builder' => function(EntityRepository $er) 
-														{
-															return $er->createQueryBuilder('u')
-																	->orderBy('u.title', 'ASC');
-														},
-											'constraints' => array(new NotBlank())
-											))
+				'choice_label'=>'title', 
+				'required' => true,
+				'query_builder' => function(EntityRepository $er) 
+							{
+								return $er->createQueryBuilder('u')
+										->orderBy('u.title', 'ASC');
+							},
+				'constraints' => array(new NotBlank())
+				))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getImage()])
         ;
     }
 

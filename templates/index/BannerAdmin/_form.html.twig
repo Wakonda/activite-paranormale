@@ -6,11 +6,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.image, "banner.admin.Image"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{% if entity.image is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.image }}
-		<br />
-	{% endif %}
 	{{ form_errors(form.image) }}{{ form_widget(form.image) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "banner.admin.Language"|trans([], "validators")) }}</div>

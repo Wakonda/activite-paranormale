@@ -76,11 +76,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.wholeBook, "bookEdition.admin.WholeBook"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{% if entity.wholeBook is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.wholeBook }}
-		<br />
-	{% endif %}
-	{{ form_errors(form.wholeBook) }}{{ form_widget(form.wholeBook, { 'attr': {'class': 'form-control'} }) }}
+	{{ form_errors(form.wholeBook) }}{{ form_widget(form.wholeBook) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
 </div>
 
 {% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}

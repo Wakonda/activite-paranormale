@@ -95,6 +95,7 @@ class DocumentAdminType extends AbstractType
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPdfDoc()])
 		;
     }
 

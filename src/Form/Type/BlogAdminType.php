@@ -45,6 +45,7 @@ class BlogAdminType extends AbstractType
 								},
 					'constraints' => array(new NotBlank())
 					))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getBanner()])
 			->add('active', CheckboxType::class)
 		;
     }

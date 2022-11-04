@@ -26,7 +26,7 @@ class PublisherAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Publisher_Admin_Index"; 
 	protected $showRoute = "Publisher_Admin_Show";
-	protected $illustrations = [["field" => "photo"]];
+	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

@@ -34,7 +34,7 @@ class DocumentAdminController extends AdminGenericController
 	protected $indexRoute = "Document_Admin_Index"; 
 	protected $showRoute = "Document_Admin_Show";
 	protected $formName = "ap_document_documentadmintype";
-	protected $illustrations = [['field' => 'pdfDoc']];
+	protected $illustrations = [['field' => 'pdfDoc', 'selectorFile' => 'photo_selector']];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

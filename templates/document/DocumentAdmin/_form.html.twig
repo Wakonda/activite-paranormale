@@ -3,11 +3,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.pdfDoc, "document.admin.Document"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{% if entity.pdfDoc is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.pdfDoc }}
-		<br />
-	{% endif %}
 	{{ form_errors(form.pdfDoc) }}{{ form_widget(form.pdfDoc) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "document.admin.PseudoUsed"|trans([], "validators")) }}</div>

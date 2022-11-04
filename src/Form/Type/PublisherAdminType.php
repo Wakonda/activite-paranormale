@@ -21,6 +21,7 @@ class PublisherAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('photo', FileType::class, array('data_class' => null, 'required' => false))
             ->add('website', TextType::class, array('data_class' => null, 'required' => false, 'constraints' => [new Url()]))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()])
 		;
     }
 
