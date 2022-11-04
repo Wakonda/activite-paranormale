@@ -350,7 +350,7 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
      */
 	public function removeAuthor(Biography $biography)
 	{
-		$this->authors->removeElement(biography);
+		$this->authors->removeElement($biography);
 	}
 
     /**
