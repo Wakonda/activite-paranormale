@@ -19,6 +19,8 @@ admin:
         Archived: "Archived"
         CurrentFile: "Current file:"
         EnterURL: "Enter a URL"
+        ChooseExistingFile: "Choose an existing file"
+        File: "File"
     index:
         Welcome: "Welcome"
         InfoGene: "General information"
