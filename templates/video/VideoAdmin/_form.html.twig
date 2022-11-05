@@ -25,9 +25,13 @@
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.mediaVideo, "video.admin.File"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
+<div class="form-table-cell mediaVideoContainer">
 	{{ form_errors(form.mediaVideo) }}
-	{% if entity.mediaVideo is not empty %}
+
+	{{ form_widget(form.mediaVideo, { 'attr': {'class': 'form-control music_piece_file'} }) }}
+	{{ form_widget(form.mediaVideo_selector, {'attr':{'class': 'existing_music_colorbox form-control'}}) }}
+			
+	{#{% if entity.mediaVideo is not empty %}
 		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.mediaVideo|default("-") }}
 	{% endif %}
 	{{ form_widget(form.mediaVideo, { 'attr': {'class': 'media_video form-control'} }) }}
@@ -40,7 +44,7 @@
 		<div class="input-group-append">
 		<a href="#" class="input-group-text remove_files_colorbox"><i class="fas fa-times" aria-hidden="true"></i></a>
 		</div>
-	</div>
+	</div>#}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "video.admin.Abstract"|trans([], "validators")) }}</div>

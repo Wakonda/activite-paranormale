@@ -64,6 +64,7 @@ class EventMessageAdminType extends AbstractType
 			))
 			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'EventMessage_Admin_ShowImageSelectorColorbox'))
 			->add('thumbnail', FileType::class, array('data_class' => null, 'required' => false))
+			->add('thumbnail_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getThumbnail()])
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'constraints' => array(new NotBlank()),

@@ -91,6 +91,7 @@ class VideoAdminType extends AbstractType
 					},
 					'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}))
 			->add('existingFile', TextType::class, array('mapped' => false, 'required' => false))
+			->add('mediaVideo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => "Video_Admin_ChooseExistingFile", 'data' => $builder->getData()->getMediaVideo()])
 			->add('available', CheckboxType::class, array('required' => true))
 			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'Video_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
 		    ->add('tags', Select2EntityType::class, [

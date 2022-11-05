@@ -3,12 +3,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "witchcraftThemeTool.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{% if entity.photo is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.photo }}
-		<br>
-	{% endif %}
-	{{ form_errors(form.photo) }}
-	{{ form_widget(form.photo, { 'attr': {'class': 'form-control'} }) }}
+	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "witchcraftThemeTool.admin.Language"|trans([], "validators")) }}</div>

@@ -41,7 +41,8 @@ class ThemeAdminType extends AbstractType
 				'query_builder' => function(\App\Repository\SurThemeRepository $repository) use($language) { return $repository->getSurThemeByLanguage($language);}
 			))
 			->add('photo', FileType::class, array('data_class' => null, 'required' => true))
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'Theme_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'Theme_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()])
+			->add('pdf_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPdfTheme()])
         ;
     }
 

@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Form\EventListener\InternationalNameFieldListener;
 
@@ -23,6 +24,7 @@ class MenuGrimoireAdminType extends AbstractType
             ->add('text', TextareaType::class, array('label'=>'Texte', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
             ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label'=>'title',
 				'required' => true,

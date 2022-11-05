@@ -31,10 +31,12 @@ class EventMessageAdminController extends AdminGenericController
 	protected $formName = "ap_page_eventmessageadmintype";
 	
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
+	protected $illustrationThumbnails = [["field" => "thumbnail", "selectorFile" => "thumbnail_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrationThumbnails);
 	}
 
 	public function postValidationAction($form, $entityBindded)

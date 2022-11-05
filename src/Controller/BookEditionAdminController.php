@@ -34,10 +34,12 @@ class BookEditionAdminController extends AdminGenericController
 	protected $formName = 'ap_book_bookextensionadmintype';
 	
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
+	protected $illustrationWholeBooks = [["field" => "wholeBook", "selectorFile" => "file_selector"]];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrationWholeBooks);
 
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -67,11 +69,14 @@ class BookEditionAdminController extends AdminGenericController
 			}
 		}
 
-		foreach($entityBindded->getBiographies() as $mb)
+		if(!empty($entityBindded->getBiographies())) 
 		{
-			if(!empty($mb->getBiography())) {
-				$mb->setBookEdition($entityBindded);
-				$em->persist($mb);	
+			foreach($entityBindded->getBiographies() as $mb)
+			{
+				if(!empty($mb->getBiography())) {
+					$mb->setBookEdition($entityBindded);
+					$em->persist($mb);
+				}
 			}
 		}
 

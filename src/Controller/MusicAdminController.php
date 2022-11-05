@@ -34,8 +34,9 @@ class MusicAdminController extends AdminGenericController
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$data = $form->all();
-		if(isset($data['existingFile']) and $entityBindded->getMusicPieceFile() == "")
-			$entityBindded->setMusicPieceFile($data['existingFile']->getNormData());
+
+		if(isset($data['music_selector']) and $entityBindded->getMusicPieceFile() == "")
+			$entityBindded->setMusicPieceFile($data['music_selector']->getNormData());
 	
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -137,7 +138,7 @@ class MusicAdminController extends AdminGenericController
 
 	public function chooseExistingFileAction()
     {
-		$webPath = $this->getParameter('kernel.project_dir').'/../public/extended/flash/Music/MP3/';
+		$webPath = $this->getParameter('kernel.project_dir').'/public/extended/flash/Music/MP3/';
 	
 		$finder = new Finder();
 		$finder->files()->in($webPath);

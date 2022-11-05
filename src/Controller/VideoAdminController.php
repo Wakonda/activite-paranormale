@@ -44,8 +44,8 @@ class VideoAdminController extends AdminGenericController
 
 		$params = $request->request->get($form->getName());
 
-		if(isset($params['existingFile']) and !empty($params['existingFile']))
-			$entityBindded->setMediaVideo($params['existingFile']);
+		if(isset($params['mediaVideo_selector']) and !empty($params['mediaVideo_selector']))
+			$entityBindded->setMediaVideo($params['mediaVideo_selector']);
 
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
@@ -127,7 +127,7 @@ class VideoAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			
 			if($entity->getArchive())
 				$row["DT_RowClass"] = "deleted";
@@ -144,8 +144,8 @@ class VideoAdminController extends AdminGenericController
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = $entity->getTheme()->getTitle();
 			$row[] = "
-			 <a href='".$this->generateUrl('Video_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Video_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />";
+			 <a href='".$this->generateUrl('Video_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Video_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />";
 
 			$output['aaData'][] = $row;
 		}
@@ -158,7 +158,7 @@ class VideoAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 		{
@@ -178,9 +178,9 @@ class VideoAdminController extends AdminGenericController
 			$licences = $em->getRepository(Licence::class)->findAll();
 		}
 
-		$themeArray = array();
-		$stateArray = array();
-		$licenceArray = array();
+		$themeArray = [];
+		$stateArray = [];
+		$licenceArray = [];
 		
 		foreach($themes as $theme)
 		{
@@ -205,16 +205,14 @@ class VideoAdminController extends AdminGenericController
 
 	public function chooseExistingFileAction()
     {
-		$webPath = $this->getParameter('kernel.project_dir').'/../public/extended/flash/Video/KAWAplayer_v1/videos/';
+		$webPath = $this->getParameter('kernel.project_dir').'/public/extended/flash/Video/KAWAplayer_v1/videos/';
 	
 		$finder = new Finder();
 		$finder->files()->in($webPath);
-		$filesArray = array();
+		$filesArray = [];
 		
 		foreach ($finder as $file)
-		{
 			$filesArray[] = $file->getRelativePathname();
-		}
 	
 		return $this->render('video/VideoAdmin/chooseExistingFile.html.twig', array(
 			"filesArray" => $filesArray

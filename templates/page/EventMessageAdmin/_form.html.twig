@@ -43,11 +43,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.thumbnail, "eventMessage.admin.Thumbnail"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{% if entity.thumbnail is not empty %}
-		<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.thumbnail }}
-		<br>
-	{% endif %}
 	{{ form_errors(form.thumbnail) }}{{ form_widget(form.thumbnail) }}
+	<br>
+	{{ form_widget(form.thumbnail_selector) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "eventMessage.admin.Theme"|trans([], "validators")) }}</div>

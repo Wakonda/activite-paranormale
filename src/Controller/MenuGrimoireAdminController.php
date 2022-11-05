@@ -27,7 +27,7 @@ class MenuGrimoireAdminController extends AdminGenericController
 	
 	protected $indexRoute = "MenuGrimoire_Admin_Index"; 
 	protected $showRoute = "MenuGrimoire_Admin_Show";
-	protected $illustrations = [["field" => "photo"]];
+	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

@@ -8,8 +8,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Url;
-use Symfony\Component\Form\FormError;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
@@ -22,17 +20,18 @@ class WitchcraftThemeToolAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()])
 			->add('internationalName', TextType::class, array('label'=>'Nom international', 'required' =>true, 'constraints' => array(new NotBlank())))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-										    'query_builder' => function(EntityRepository $er) 
-														{
-															return $er->createQueryBuilder('u')
-																	->orderBy('u.title', 'ASC');
-														},
-											))
+				'choice_label'=>'title', 
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(EntityRepository $er) 
+							{
+								return $er->createQueryBuilder('u')
+										->orderBy('u.title', 'ASC');
+							},
+				))
 		;
     }
 

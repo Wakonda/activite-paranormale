@@ -29,7 +29,7 @@ class ThemeAdminController extends AdminGenericController
 	protected $indexRoute = "Theme_Admin_Index"; 
 	protected $showRoute = "Theme_Admin_Show";
 	protected $formName = "ap_index_themeadmintype";
-	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
+	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector'], ["field" => "pdfTheme", 'selectorFile' => 'pdf_selector']];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

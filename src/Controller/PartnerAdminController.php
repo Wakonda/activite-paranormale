@@ -26,7 +26,7 @@ class PartnerAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Partner_Admin_Index"; 
 	protected $showRoute = "Partner_Admin_Show";
-	protected $illustrations = [["field" => "photo"]];
+	protected $illustrations = [["field" => "photo", "selectorFile" => "photo_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

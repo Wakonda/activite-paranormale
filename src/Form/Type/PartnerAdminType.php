@@ -22,6 +22,7 @@ class PartnerAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('link', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 					'choice_label'=>'title',
 					'required' => true,

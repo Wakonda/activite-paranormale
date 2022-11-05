@@ -36,7 +36,7 @@
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.musicPieceFile, "music.admin.File"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
+<div class="form-table-cell musicContainer">
 	<ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
 		<li class="nav-item" role="presentation">
 			<a class="nav-link active" id="pills-audio-tab" data-toggle="pill" href="#pills-audio" role="tab" aria-controls="pills-audio" aria-selected="true"><i class="fas fa-headphones fa-fw"></i> {{ "music.admin.AudioFile"|trans([], "validators") }}</a>
@@ -48,21 +48,9 @@
 	<div class="tab-content" id="pills-tabContent">
 		<div class="tab-pane fade show active" id="pills-audio" role="tabpanel" aria-labelledby="pills-audio-tab">
 			{{ form_errors(form.musicPieceFile) }}
-			{% if entity.musicPieceFile is not empty %}
-				<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ entity.musicPieceFile }}
-				<br />
-			{% endif %}
+
 			{{ form_widget(form.musicPieceFile, { 'attr': {'class': 'form-control music_piece_file'} }) }}
-			
-			<div class="input-group mt-2" id="{{ form.existingFile.vars.id }}">
-				<div class="input-group-prepend">
-					<a href="#" class="input-group-text select_files_colorbox"><i class="fas fa-camera-retro" aria-hidden="true"></i></a>
-				</div>
-				{{ form_widget(form.existingFile, {'attr':{'class': 'existing_music_colorbox form-control'}}) }}
-				<div class="input-group-append">
-				<a href="#" class="input-group-text remove_files_colorbox"><i class="fas fa-times" aria-hidden="true"></i></a>
-				</div>
-			</div>
+			{{ form_widget(form.music_selector, {'attr':{'class': 'existing_music_colorbox form-control'}}) }}
 		</div>
 		<div class="tab-pane fade" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
 			{{ form_errors(form.embeddedCode) }}

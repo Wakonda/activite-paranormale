@@ -12,28 +12,6 @@
 	{{ macro_index.select2_autocomplete() }}
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
-
-	<script>
-		$(function()
-		{
-			$("#{{ form.vars['id'] }}_existingFile").click(function(e)
-			{
-				e.preventDefault();
-				$('#selectMusicFileModal_{{ form.vars.id }} .modal-body').load('{{ path("Music_Admin_ChooseExistingFile") }}',function(){
-					$('#selectMusicFileModal_{{ form.vars.id }}').modal({show:true});
-				});
-			});
-
-			$("#{{ form.vars['id'] }}_musicPieceFile").change(function(){
-				$("#{{ form.vars['id'] }}_existingFile").val("");
-			});
-			
-			$("#{{ form.existingFile.vars.id }} .remove_files_colorbox").click(function(e) {
-				$("#{{ form.existingFile.vars.id }} .existing_music_colorbox").val("");
-				e.preventDefault();
-			});
-		});
-	</script>
 {% endblock %}
 
 {% block tbody_admin_table %}

@@ -1,16 +1,16 @@
 <script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/jquery.dataTables.css') }}" type="text/css" media="screen" />
 <script>
+	document.querySelector("div.mediaVideoContainer a.file_link").addEventListener("click", (e) => {
+		e.preventDefault();
+		parent.$("div.mediaVideoContainer input.music_piece_file").val("");
+		parent.$("div.mediaVideoContainer input.existing_photo_colorbox").val(e.target.innerHTML);
+		$('.selectFileModal').modal('hide');
+		return false;
+	});
+	
 	$(function()
 	{
-		$("a.file_link").click(function()
-		{
-			parent.$("input.media_video").val("");
-			parent.$("input.existing_video_colorbox").val($(this).text());
-			$('.selectVideoFileModal').modal('hide');
-			return false;
-		});
-
 		$('table.index_admin').dataTable({
 			"bFilter": false,
 			"bInfo": false,
@@ -19,6 +19,7 @@
 	}); 
 </script>
 
+<h2 class="title"><b>Choose an existing file</b></h2>
 <table class="table table-striped table-bordered index_admin">
 	<thead>
 		<tr>

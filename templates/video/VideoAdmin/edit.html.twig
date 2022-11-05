@@ -15,21 +15,8 @@
 		{
 			{{ macro_video.updateListForm(form) }}
 
-			$("#{{ form.vars['id'] }}_existingFile .select_files_colorbox").click(function(e)
-			{
-				e.preventDefault();
-				$('#selectVideoFileModal_{{ form.vars.id }} .modal-body').load('{{ path("Video_Admin_ChooseExistingFile") }}',function(){
-					$('#selectVideoFileModal_{{ form.vars.id }}').modal({show:true});
-				});
-			});
-
-			$("#{{ form.vars['id'] }}_mediaVideo").change(function(){
-				$("#{{ form.vars['id'] }}_existingFile").val("");
-			});
-			
-			$("#{{ form.existingFile.vars.id }} .remove_files_colorbox").click(function(e) {
-				$("#{{ form.existingFile.vars.id }} .existing_video_colorbox").val("");
-				e.preventDefault();
+			$("#{{ form.mediaVideo.vars.id }}").change(function(){
+				$("#{{ form.mediaVideo_selector.vars.id }}").val("");
 			});
 		});
 	</script>

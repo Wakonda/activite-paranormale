@@ -25,11 +25,6 @@
 			$("#{{ form.vars['id'] }}_musicPieceFile").change(function(){
 				$("#{{ form.vars['id'] }}_existingFile").val("");
 			});
-			
-			$("#{{ form.existingFile.vars.id }} .remove_files_colorbox").click(function(e) {
-				$("#{{ form.existingFile.vars.id }} .existing_music_colorbox").val("");
-				e.preventDefault();
-			});
 		});
 	</script>
 {% endblock %}

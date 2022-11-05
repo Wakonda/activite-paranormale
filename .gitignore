@@ -56,6 +56,8 @@ yarn-error.log
 /public/extended/photo/webdirectory/*
 /public/extended/photo/witchcraft/*
 /public/extended/photo/witchcrafttools/*
+/public/extended/flash/Music/MP3/*
+/public/extended/flash/Video/KAWAplayer_v1/videos/*
 
 /public/extended/user/*
 /public/extended/witchcraft/grimoire/*

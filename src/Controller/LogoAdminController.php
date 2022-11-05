@@ -27,7 +27,7 @@ class LogoAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Logo_Admin_Index"; 
 	protected $showRoute = "Logo_Admin_Show";
-	protected $illustrations = [["field" => "image"]];
+	protected $illustrations = [["field" => "image", "selectorFile" => "image_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

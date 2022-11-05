@@ -80,12 +80,12 @@ class MusicAdminType extends AbstractType
 				'translation_domain' => 'validators', "attr" => ["class" => "form-control"]
 			])
             ->add('musicPieceFile',  FileType::class, array('data_class' => null, 'required' => true))
+			->add('music_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => "Music_Admin_ChooseExistingFile", 'data' => $builder->getData()->getMusicPieceFile()])
             ->add('musicPiece', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('hourDuration', IntegerType::class, array('mapped' => false))
 			->add('minuteDuration', IntegerType::class, array('mapped' => false))
 			->add('secondDuration', IntegerType::class, array('mapped' => false))
             ->add('embeddedCode', TextareaType::class, array('required' => false))
-			->add('existingFile', TextType::class, array('mapped' => false, 'required' => false, 'attr' => array('class' => 'existing_file')))
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["ISRC", "AllMusic song ID", "MusicBrainz recording ID", "YouTube video ID"]])
         ;

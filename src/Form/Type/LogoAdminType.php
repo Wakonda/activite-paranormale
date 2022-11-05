@@ -30,17 +30,18 @@ class LogoAdminType extends AbstractType
 			->add('publishedAt', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
             ->add('image', FileType::class, array("required" => true, 'data_class' => null))
 			->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-											'choice_label'=>'title', 
-											'required' => true,
-										    'query_builder' => function(EntityRepository $er) 
-														{
-															return $er->createQueryBuilder('u')
-																	->orderBy('u.title', 'ASC');
-														},
-											'constraints' => array(new NotBlank())
-											))
+					'choice_label'=>'title', 
+					'required' => true,
+					'query_builder' => function(EntityRepository $er) 
+								{
+									return $er->createQueryBuilder('u')
+											->orderBy('u.title', 'ASC');
+								},
+					'constraints' => array(new NotBlank())
+					))
 			->add('isActive', CheckboxType::class, array('required' => true))
 			->add('folder', TextType::class, array('required' => true))
+			->add('image_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getImage()])
         ;
 
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) {
