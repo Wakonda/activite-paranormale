@@ -18,6 +18,7 @@ admin:
         Disable: "Disable"
         Archived: "Archived"
         CurrentFile: "Current file:"
+        EnterURL: "Enter a URL"
     index:
         Welcome: "Welcome"
         InfoGene: "General information"

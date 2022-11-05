@@ -6,7 +6,7 @@
 				<a href="#" class="input-group-text select_files_colorbox"><i class="fas fa-camera-retro" aria-hidden="true"></i></a>
 			</div>
 			{% endif %}
-			{{ form_widget(form, {'attr':{'class': 'existing_photo_colorbox form-control'}}) }}
+			{{ form_widget(form, {'attr':{'class': 'existing_photo_colorbox form-control', 'placeholder': "admin.general.EnterURL"|trans([], "validators") }}) }}
 			<div class="input-group-append">
 			<a href="#" class="input-group-text remove_files_colorbox"><i class="fas fa-times" aria-hidden="true"></i></a>
 			</div>
