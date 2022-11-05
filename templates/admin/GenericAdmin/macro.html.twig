@@ -133,11 +133,11 @@
 						{% endif %}
 					}
 				{% endif %}
-					
+
 				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
 			}
 		};
-		
+
 		xmlHttp.overrideMimeType("application/json");
 		xmlHttp.open("GET", "{{ path('Admin_WikidataGeneric') }}?locale=" + locale + "&code=" + code, true);
 		xmlHttp.send();

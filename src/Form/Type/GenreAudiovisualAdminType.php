@@ -23,7 +23,6 @@ class GenreAudiovisualAdminType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-            ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
 			->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
@@ -38,7 +37,7 @@ class GenreAudiovisualAdminType extends AbstractType
 			))
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'GenreAudiovisual_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
+			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'GenreAudiovisual_Admin_ShowImageSelectorColorbox'])
 		;
     }
 

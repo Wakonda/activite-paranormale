@@ -27,11 +27,12 @@ class GenreAudiovisualAdminController extends AdminGenericController
 	
 	protected $indexRoute = "GenreAudiovisual_Admin_Index"; 
 	protected $showRoute = "GenreAudiovisual_Admin_Show";
-	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
+
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -137,9 +138,19 @@ class GenreAudiovisualAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
-		$entity->setPhoto($entityToCopy->getPhoto());
 		$entity->setWikidata($entityToCopy->getWikidata());
 		$entity->setLanguage($language);
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
+		}
 
 		$request->setLocale($language->getAbbreviation());
 

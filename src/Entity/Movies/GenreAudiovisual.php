@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use App\Entity\Language;
+use App\Entity\FileManagement;
 
 /**
  * App\Entity\GenreAudiovisual
@@ -30,6 +31,12 @@ class GenreAudiovisual
      * @ORM\Column(type="string", length=255)
      */
     private $photo;
+
+    /**
+     * @ORM\OneToOne(targetEntity="App\Entity\FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $illustration;
 	
     /**
      * @var string $title
@@ -269,5 +276,25 @@ class GenreAudiovisual
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    /**
+     * Set illustration
+     *
+     * @param string $illustration
+     */
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * Get illustration
+     *
+     * @return string 
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }

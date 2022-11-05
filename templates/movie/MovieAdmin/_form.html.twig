@@ -51,7 +51,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.movieBiographies, "biographies.admin.Biographies"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-{{ dump(form.movieBiographies) }}
     <ul id="biography-fields-list"
         data-prototype="{{ form_widget(form.movieBiographies.vars.prototype)|e }}"
         data-widget-tags="{{ '<li></li>'|e }}"

@@ -16,7 +16,13 @@
 	<div class="form-table-cell">{{ entity.title }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Photo"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.photo|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>

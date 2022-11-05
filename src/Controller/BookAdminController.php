@@ -31,11 +31,12 @@ class BookAdminController extends AdminGenericController
 	protected $indexRoute = "Book_Admin_Index"; 
 	protected $showRoute = "Book_Admin_Show";
 	protected $formName = 'ap_book_bookadmintype';
-	protected $illustrations = [['field' => 'photo', 'selectorFile' => 'photo_selector']];
+
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -128,6 +129,16 @@ class BookAdminController extends AdminGenericController
 		
 		
 		return $this->archiveGenericArchive($id, $additionalFiles);
+	}
+
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('Book_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
 	}
 
 	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)

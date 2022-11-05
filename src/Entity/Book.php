@@ -32,6 +32,12 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     private $photo;
 
     /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $illustration;
+
+    /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Biography", inversedBy="books", cascade={"persist"})
      * @ORM\JoinTable(name="book_biography",
      *      joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="cascade")},
@@ -442,5 +448,25 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    /**
+     * Set illustration
+     *
+     * @param string $illustration
+     */
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * Get illustration
+     *
+     * @return string 
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }

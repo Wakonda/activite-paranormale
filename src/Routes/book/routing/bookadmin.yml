@@ -41,3 +41,11 @@ Book_Admin_IndexDatatables:
     controller: App\Controller\BookAdminController::indexDatatablesAction
     requirements:
         _method: get
+
+Book_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\BookAdminController::showImageSelectorColorboxAction
+
+Book_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\BookAdminController::loadImageSelectorColorboxAction

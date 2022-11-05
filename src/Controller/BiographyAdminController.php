@@ -29,7 +29,7 @@ class BiographyAdminController extends AdminGenericController
 	protected $indexRoute = "Biography_Admin_Index"; 
 	protected $showRoute = "Biography_Admin_Show";
 	protected $formName = 'ap_quotation_biographyadmintype';
-	
+
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
@@ -100,7 +100,7 @@ class BiographyAdminController extends AdminGenericController
 			$illustration->setLicense($ci->getLicense());
 			$illustration->setAuthor($ci->getAuthor());
 			$illustration->setUrlSource($ci->getUrlSource());
-			
+
 			$entity->setIllustration($illustration);
 		}
 

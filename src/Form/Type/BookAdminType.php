@@ -27,7 +27,7 @@ class BookAdminType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('photo', FileType::class, array('data_class' => null, 'required' => false))
+			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Book_Admin_ShowImageSelectorColorbox'])
             ->add('text', TextareaType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label'=>'title',
@@ -46,7 +46,6 @@ class BookAdminType extends AbstractType
 						'constraints' => array(new NotBlank()),
 						'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()))
 		    ->add('authors', Select2EntityType::class, [
 				'multiple' => true,
 				'remote_route' => 'Biography_Admin_Autocomplete',
