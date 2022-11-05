@@ -39,7 +39,7 @@
 	<div class="form-table-cell">{{ entity.presentation }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Civility"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.civility }}</div>
+	<div class="form-table-cell">{{ ("user.admin." ~ (entity.civility|ucfirst))|trans([], "validators") }}</div>
 	
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Country"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.country is not empty ? entity.country.title : "" }}</div>
