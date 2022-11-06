@@ -40,12 +40,13 @@
 			$res = [];
 			
 			foreach($datas as $data) {
-				
-				// dd($data);
 				$subRes = [];
 				switch($data["type"]) {
 					case "url":
-						$wd = $this->em->getRepository("\App\Entity\WebDirectory")->getWebdirectoryByUrl($data["url"], $locale);
+						$wd = null;
+						
+						if(!empty($this->em))
+							$wd = $this->em->getRepository("\App\Entity\WebDirectory")->getWebdirectoryByUrl($data["url"], $locale);
 						$licence = null;
 						
 						if(!empty($wd))

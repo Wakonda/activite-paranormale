@@ -19,7 +19,8 @@ class UsefulLinkRepository extends EntityRepository
 		   ->where("l.abbreviation = :locale")
 		   ->setParameter("locale", $locale)
 		   ->andWhere("c.category = :category")
-		   ->setParameter("category", $category);
+		   ->setParameter("category", $category)
+		   ->orderBy("c.id", "desc");
 		   
 		return $qb->getQuery();
 	}
