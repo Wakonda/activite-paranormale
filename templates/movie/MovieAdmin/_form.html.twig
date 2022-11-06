@@ -154,7 +154,7 @@
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 				let data = JSON.parse(xmlHttp.responseText);
-				
+
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
 				document.getElementById("url_{{ form.introduction.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.introduction.vars.id }}").dispatchEvent(new Event("change"));
@@ -184,7 +184,7 @@
 					document.getElementById("{{ form.costUnit.vars.id }}").value = data.cost.unit;
 				}
 				
-				if(typeof data.duration == "undefined" && data.duration.unit == "minute") {
+				if(typeof data.duration !== "undefined" && data.duration.unit == "minute") {
 					document.getElementById("{{ form.duration.vars.id }}").value = data.duration.amount;
 				}
 				
@@ -205,10 +205,8 @@
 					for(wikidata in data.person[role]) {
 						if(wikidatas.includes(data.person[role][wikidata].title + "_" + wikidata))
 							continue;
-					console.log(wikidatas, data.person[role])
+
 						var id = addNewBiography(document.querySelector('.add-another-collection-widget').getAttribute("data-list-selector"));
-						
-						console.log(data.person[role][wikidata].title + "_" + wikidata)
 
 						document.getElementById("{{ form.movieBiographies.vars.id }}_" + id + "_occupation").value = role;
 
