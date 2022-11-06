@@ -17,6 +17,7 @@ use App\Service\PaginatorNativeSQL;
 
 use App\Entity\News;
 use App\Entity\Theme;
+use App\Entity\Page;
 
 require_once realpath(__DIR__."/../../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php");
 
@@ -140,7 +141,7 @@ class NewsMobileController extends AbstractController
 			
 			$datas[$result["id"]."_".$result["classname"]]["showRoute"] = $route;
 		}
-		// dd($datas);
+
 		$stopTimer = microtime(true);
 
 		$execution_time = round($stopTimer - $startTimer, 7) * 1000;
@@ -206,5 +207,13 @@ class NewsMobileController extends AbstractController
 		$request->setLocale($language);
 		$session->set('_locale', $language);
 		return $this->redirect($this->generateUrl('ap_newsmobile_index', array("page" => 1)));
+    }
+
+	public function pageAction(Request $request, String $page)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $page);
+
+        return $this->render('mobile/Page/page.html.twig', array('entity' => $entity));
     }
 }

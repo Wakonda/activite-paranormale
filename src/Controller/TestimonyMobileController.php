@@ -74,7 +74,7 @@ class TestimonyMobileController extends AbstractController
 	public function newAction(Request $request)
 	{
 		$entity = new Testimony();
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND"));
+		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 		$form = $this->createForm(TestimonyType::class, $entity, array('locale' => $request->getLocale()));
 
 		return $this->render('mobile/Testimony/new.html.twig', array('form' => $form->createView()));

@@ -95,7 +95,7 @@
 		 -
 		<a href="//templededelphes.netlify.app/"><i class="fab fa-shopify"></i> {{ "index.mainMenu.Store"|trans([], "validators") }}</a>
 		 -
-		<a href="{{ path('Page_PrivacyPolicy') }}"><i class="fas fa-balance-scale"></i> {{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a>
+		<a href="{{ path('ap_pagemobile_page', {page: 'privacyPolicy'}) }}"><i class="fas fa-balance-scale"></i> {{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a>
 		-
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" width="42" alt="fr" /></a>
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" width="42" alt="en" /></a>

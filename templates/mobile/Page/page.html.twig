@@ -1,0 +1,13 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block page_title %}{{ entity.title }}{% endblock %}
+
+{% block meta_plus %}
+{% endblock %}
+
+{% block body_content %}
+	<div class="read-content">
+		{{ entity.text|raw }}
+	</div>
+{% endblock %}

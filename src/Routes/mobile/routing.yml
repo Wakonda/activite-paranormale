@@ -131,3 +131,7 @@ ap_newsmobile_selectlanguage:
     controller: App\Controller\NewsMobileController::selectLanguageAction
     requirements:
        page: \d+
+
+ap_pagemobile_page:
+    path:  /mobile/page/{page}
+    controller: App\Controller\NewsMobileController::pageAction
