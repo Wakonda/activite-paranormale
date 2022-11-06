@@ -35,7 +35,7 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 
 		$conn = $this->em->getConnection();
 
-		/*$sql = "SELECT id, photo FROM Book WHERE illustration_id IS NULL";
+		$sql = "SELECT id, photo FROM Book WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAll($sql);
 		
 		foreach($datas as $data)
@@ -46,7 +46,7 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 			$conn->exec("UPDATE Book SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
 		}
 		
-		die("End Book");*/
+		die("End Book");
 
 		$conn = $this->em->getConnection();
 

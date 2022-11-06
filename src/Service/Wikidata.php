@@ -31,19 +31,23 @@
 
 			$datas = json_decode($content);
 
-			$birthDate = $datas->entities->$code->claims->P569[0]->mainsnak->datavalue->value->time;
-			$birthDate = date_parse($birthDate);
-			
 			$res["socialNetwork"] = ["twitter" => null];
 
 			if(property_exists($datas->entities->$code->claims, "P2002")) {
 				$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
 			}
 			
+			$birthDate = null;
+			
+			if(property_exists($datas->entities->$code->claims, "P569")) {
+				$birthDate = $datas->entities->$code->claims->P569[0]->mainsnak->datavalue->value->time;
+				$birthDate = date_parse($birthDate);
+			}
+			
 			$res["birthDate"] = [
-				"year" => $birthDate["year"],
-				"month" => $birthDate["month"],
-				"day" => $birthDate["day"]
+				"year" => !empty($birthDate) ? $birthDate["year"] : null,
+				"month" => !empty($birthDate) ? $birthDate["month"] : null,
+				"day" => !empty($birthDate) ? $birthDate["day"] : null
 			];
 
 			$res["deathDate"] = [
@@ -64,6 +68,8 @@
 					"day" => $deathDate["day"]
 				];
 			}
+			
+			$res["nationality"]["country"]["id"] = null;
 			
 			if(property_exists($datas->entities->$code->claims, "P27")) {
 				$country = $datas->entities->$code->claims->P27;

@@ -69,7 +69,7 @@
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 				let data = JSON.parse(xmlHttp.responseText);
-				
+
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
 				document.getElementById("{{ form.birthDate.day.vars.id }}").value = data.birthDate.day;
 				document.getElementById("{{ form.birthDate.month.vars.id }}").value = data.birthDate.month;

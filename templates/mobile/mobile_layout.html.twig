@@ -69,7 +69,7 @@
 				{% block body_content %}{% endblock %}
 				
 				<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
-				<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto"></ins>
+				<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto" data-full-width-responsive="true"></ins>
 				<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
 				{% set ads = advertising(728, 90) %}
@@ -83,8 +83,9 @@
 		{% block sub_content %}{% endblock %}
 
       <footer class="py-3 px-4 mt-2">
-        <i class="far fa-copyright"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }} - <a href="{{ path('Index_Index') }}"><i class="fas fa-desktop" aria-hidden="true"></i> {{ "mobile.main.Desktop"|trans([], "validators") }}</a>
-		 - 
+        <i class="far fa-copyright"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}
+    	<span class="external-link">- <a href="{{ path('Index_Index') }}"><i class="fas fa-desktop" aria-hidden="true"></i> {{ "mobile.main.Desktop"|trans([], "validators") }}</a></span>
+		<span class="external-link">- 
 		{% if app.request.locale == "fr" %}
 			<a href="//forum-fr.activite-paranormale.com/" title="Forum"><i class="fas fa-users"></i> Forum</a>
 		{% elseif app.request.locale == "es" %}
@@ -92,9 +93,12 @@
 		{% else %}
 			<a href="//forum-en.activite-paranormale.com/" title="Forum"><i class="fas fa-users"></i> Forum</a>
 		{% endif %}
+		</span>
+		<span class="external-link">
 		 -
 		<a href="//templededelphes.netlify.app/"><i class="fab fa-shopify"></i> {{ "index.mainMenu.Store"|trans([], "validators") }}</a>
-		 -
+		</span>
+		-
 		<a href="{{ path('ap_pagemobile_page', {page: 'privacyPolicy'}) }}"><i class="fas fa-balance-scale"></i> {{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a>
 		-
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" width="42" alt="fr" /></a>

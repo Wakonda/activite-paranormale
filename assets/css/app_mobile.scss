@@ -459,3 +459,6 @@ a.social-share {
 .social-share.flipboard {
 	background-color: $flipboard-color;
 }
+
+.ads-responsive { width: 320px; height: 100px; }
+@media (min-width: 768px) and (min-height: 768px)  { .ads-responsive { width: 728px; height: 90px; } }
