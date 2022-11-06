@@ -136,7 +136,7 @@
 			foreach($xpath->query('//span[contains(attribute::class, "mw-ext-cite-error")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
-			// dump($this->sectionName, $this->keepTitle);die;
+
 			if(!$this->keepTitle) {
 				foreach($xpath->query('//h2') as $e ) {
 					$e->parentNode->removeChild($e);

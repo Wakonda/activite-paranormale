@@ -470,7 +470,7 @@ abstract class AdminGenericController extends AbstractController
 			{
 				$internationalName = $formChild->get('internationalName')->getData();
 				$newBiography = $formChild->getData();
-				dump($newBiography);
+
 				if($internationalName == "+") {
 					$generator = new \Ausi\SlugGenerator\SlugGenerator;
 					$newBiography->getBiography()->setInternationalName($generator->generate($newBiography->getBiography()->getTitle()).uniqid());

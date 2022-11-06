@@ -196,7 +196,6 @@
 				
 				{% for movieBiographyField in form.movieBiographies %}
 					{% if movieBiographyField.vars.value.biography is not empty %}
-					alert("{{ movieBiographyField.vars.value.biography.wikidata }}")
 						wikidatas.push("{{ movieBiographyField.vars.value.biography.title }}_{{ movieBiographyField.vars.value.biography.wikidata }}");
 					{% endif %}
 				{% endfor %}
