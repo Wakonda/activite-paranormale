@@ -427,7 +427,7 @@ class EventMessageController extends AbstractController
 		$currentEvent = [];
 
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
-		
+
 		foreach($entities as $entity) {
 			$yearEvent = $entity->getYearFrom();
 			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
@@ -449,7 +449,7 @@ class EventMessageController extends AbstractController
 		}
 		
 		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
-		
+
 		foreach($entities as $entity) {
 			$type = EventMessage::DEATH_DATE_TYPE;
 
