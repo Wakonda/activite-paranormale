@@ -185,7 +185,12 @@
 			foreach ($imgs as $img)
 			{
 				$old_src = $img->getAttribute('src');
-				$new_src_url = $baseURL.$old_src;
+				
+				if(preg_match("/^(https?)?:?\/\//i", $old_src))
+					$new_src_url = $old_src;
+				else
+					$new_src_url = $baseURL.$old_src;
+				
 				$img->setAttribute('src', $new_src_url);
 			}
 			return $doc->saveHTML();

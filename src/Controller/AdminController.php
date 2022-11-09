@@ -94,7 +94,6 @@ class AdminController extends AbstractController
 	// Blogger
 	public function bloggerTagsAction(Request $request, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
 	{
-		// dd($request->request->all(), $request->query->all());
 		$twig = $this->get("twig");
 		
 		$type = $request->query->get("type");
