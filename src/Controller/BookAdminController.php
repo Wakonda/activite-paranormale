@@ -12,6 +12,9 @@ use App\Entity\Book;
 use App\Entity\Language;
 use App\Entity\Biography;
 use App\Entity\BookTags;
+use App\Entity\LiteraryGenre;
+use App\Entity\Theme;
+use App\Entity\State;
 use App\Form\Type\BookAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
@@ -161,5 +164,46 @@ class BookAdminController extends AdminGenericController
 		}
 
 		return new JsonResponse($output);
+	}
+
+	public function reloadByLanguageAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+		
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = [];
+
+		$literaryGenreArray = [];
+		
+		if(!empty($language)) {
+			$literaryGenres = $em->getRepository(LiteraryGenre::class)->findByLanguage($language, ['title' => 'ASC']);
+			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
+			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
+		}
+		else {
+			$literaryGenres = $em->getRepository(LiteraryGenre::class)->findAll();
+			$themes = $em->getRepository(Theme::class)->findAll();
+			$states = $em->getRepository(State::class)->findAll();
+		}
+
+		$themeArray = [];
+		$stateArray = [];
+		
+		foreach($themes as $theme)
+			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
+
+		$translateArray['theme'] = $themeArray;
+
+		foreach($states as $state)
+			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
+
+		$translateArray['state'] = $stateArray;
+		
+		foreach($literaryGenres as $literaryGenre)
+			$literaryGenreArray[] = ["id" => $literaryGenre->getId(), "title" => $literaryGenre->getTitle()];
+
+		$translateArray['literaryGenre'] = $literaryGenreArray;
+
+		return new JsonResponse($translateArray);
 	}
 }

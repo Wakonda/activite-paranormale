@@ -29,6 +29,10 @@ class BookAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Book_Admin_ShowImageSelectorColorbox'])
             ->add('text', TextareaType::class, array('required' => false))
+			->add('genre', EntityType::class, ['class'=>'App\Entity\LiteraryGenre',
+					'required' => true,
+					'constraints' => [new NotBlank()],
+					'query_builder' => function(\App\Repository\LiteraryGenreRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label'=>'title',
 				'required' => true,

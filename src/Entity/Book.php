@@ -105,6 +105,11 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     protected $bookEditions;
 
 	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\LiteraryGenre")
+     */
+    protected $genre;
+
+	/**
 	 * @var string $wikidata
 	 *
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
@@ -468,5 +473,15 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    public function setGenre($genre)
+    {
+        $this->genre = $genre;
+    }
+
+    public function getGenre()
+    {
+        return $this->genre;
     }
 }

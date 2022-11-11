@@ -27,6 +27,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "book.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "book.admin.LiteraryGenre"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
 

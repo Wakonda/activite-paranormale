@@ -45,7 +45,7 @@ class MovieAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];
-// dd($builder->getData()->getMovieBiographies());
+
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('introduction', TextareaType::class, array('required' => false))
@@ -54,10 +54,10 @@ class MovieAdminType extends AbstractType
             ->add('fullStreaming', TextareaType::class, array('required' => false))
             ->add('duration', IntegerType::class, array('required' => false))
             ->add('releaseYear', DatePartialType::class, array('required' => false))
-			->add('genre', EntityType::class, array('class'=>'App\Entity\Movies\GenreAudiovisual',
+			->add('genre', EntityType::class, ['class'=>'App\Entity\Movies\GenreAudiovisual',
 					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(\App\Repository\GenreAudiovisualRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}))
+					'constraints' => [new NotBlank()],
+					'query_builder' => function(\App\Repository\GenreAudiovisualRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 					'choice_label'=>'title',
 					'required' => true,

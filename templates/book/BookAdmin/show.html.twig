@@ -48,6 +48,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Theme"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.theme.title }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "book.admin.LiteraryGenre"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.genre is not empty %}{{ entity.genre.title }}{% endif %}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "book.admin.State"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.state }}</div>
 	

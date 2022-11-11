@@ -1,25 +1,33 @@
 {% macro updateListForm(form) %}
 	$("#{{ form.vars['id'] }}_language").change(function()
 	{
-		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+		var currentState = $("#{{ form.state.vars.id }}").find('option:selected').data('intl');
 
 		$.ajax({
 			type: "POST",
-			url: "{{ path('News_Admin_ReloadThemeByLanguage') }}",
+			url: "{{ path('Book_Admin_ReloadByLanguage') }}",
 			data: { "id" : $(this).val() },
 			success: function(data)
 			{
 				var theme = data.theme;
-				$("#{{form.vars['id'] }}_theme option").remove();
+				$("#{{ form.theme.vars.id }} option").remove();
 				$.each(theme, function(index, element)
 				{
-					$("#{{form.vars['id'] }}_theme").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+					$("#{{ form.theme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 				});
+
 				var state = data.state;
-				$("#{{form.vars['id'] }}_state option").remove();
+				$("#{{ form.state.vars.id }} option").remove();
 				$.each(state, function(index, element)
 				{
-					$("#{{form.vars['id'] }}_state").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+					$("#{{ form.state.vars.id }}").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+				});
+
+				var literaryGenre = data.literaryGenre;
+				$("#{{ form.genre.vars.id }} option").remove();
+				$.each(literaryGenre, function(index, element)
+				{
+					$("#{{ form.genre.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 				});
 			}
 		});

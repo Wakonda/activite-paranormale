@@ -49,3 +49,7 @@ Book_Admin_ShowImageSelectorColorbox:
 Book_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\BookAdminController::loadImageSelectorColorboxAction
+
+Book_Admin_ReloadByLanguage:
+    path: /reload_by_language
+    controller: App\Controller\BookAdminController::reloadByLanguageAction

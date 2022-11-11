@@ -10,6 +10,7 @@ book:
         Authors: "Auteurs"
         Language: "Langue"
         Theme: "Thème"
+        LiteraryGenre: "Genre littéraire"
         State: "Etat"
         Sources: "Sources"
     biography:

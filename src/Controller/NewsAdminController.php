@@ -131,7 +131,7 @@ class NewsAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			
 			if($entity->getArchive())
 				$row["DT_RowClass"] = "deleted";
@@ -146,8 +146,8 @@ class NewsAdminController extends AdminGenericController
 			$row[] =  $state->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('News_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br>
-			 <a href='".$this->generateUrl('News_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br>
+			 <a href='".$this->generateUrl('News_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('News_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
 			";
 			$output['aaData'][] = $row;
 		}
@@ -180,7 +180,7 @@ class NewsAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 		{
@@ -200,26 +200,23 @@ class NewsAdminController extends AdminGenericController
 			$licences = $em->getRepository(Licence::class)->findAll();
 		}
 
-		$themeArray = array();
-		$stateArray = array();
-		$licenceArray = array();
+		$themeArray = [];
+		$stateArray = [];
+		$licenceArray = [];
 		
 		foreach($themes as $theme)
-		{
 			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
-		}
+
 		$translateArray['theme'] = $themeArray;
 
 		foreach($states as $state)
-		{
 			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
-		}
+
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
-		{
 			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
-		}
+
 		$translateArray['licence'] = $licenceArray;
 		
 		$response = new Response(json_encode($translateArray));
@@ -252,9 +249,9 @@ class NewsAdminController extends AdminGenericController
 		$em->flush();
 
 		if($state->getInternationalName() == "Validate")
-			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsPublished', array(), 'validators'));
+			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsPublished', [], 'validators'));
 		else
-			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsRefused', array(), 'validators'));
+			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
 		
 		return $this->redirect($this->generateUrl('News_Admin_Show', array('id' => $id)));
 	}
