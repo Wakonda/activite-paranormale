@@ -1,0 +1,49 @@
+LiteraryGenre_Admin_Index:
+    path:  /
+    controller: App\Controller\LiteraryGenreAdminController::indexAction
+
+LiteraryGenre_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\LiteraryGenreAdminController::showAction
+
+LiteraryGenre_Admin_New:
+    path:  /new
+    controller: App\Controller\LiteraryGenreAdminController::newAction
+
+LiteraryGenre_Admin_Create:
+    path:  /create
+    controller: App\Controller\LiteraryGenreAdminController::createAction
+    requirements:
+        _method: post
+
+LiteraryGenre_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\LiteraryGenreAdminController::editAction
+
+LiteraryGenre_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\LiteraryGenreAdminController::updateAction
+    requirements:
+        _method: post
+
+LiteraryGenre_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\LiteraryGenreAdminController::deleteAction
+
+LiteraryGenre_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\LiteraryGenreAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+LiteraryGenre_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\LiteraryGenreAdminController::showImageSelectorColorboxAction
+
+LiteraryGenre_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\LiteraryGenreAdminController::loadImageSelectorColorboxAction
+
+LiteraryGenre_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\LiteraryGenreAdminController::internationalizationAction

@@ -73,6 +73,15 @@ bookEdition:
         Translator: "Traducteur"
         Preface: "Préface"
         BookParticipation: "Participation"
+literaryGenre:
+    admin:
+        Title: "Titre"
+        Photo: "Photo"
+        Text: "Texte"
+        Fiction: "Fiction"
+        Language: "Langue"
+        Sources: "Sources"
+        InternationalName: "Nom international"
 publisher:
     admin:
         Title: "Titre"

@@ -86,6 +86,7 @@ admin:
         BookEdition: "Edición"
         Store: "Tienda"
         Advertising: "Anuncio"
+        LiteraryGenre: "Género literario"
     show:
         Internationalization: "Internacionalización"
         ReallyWantRemoveDatas: "¿Está seguro de que desea eliminar estos datos?"

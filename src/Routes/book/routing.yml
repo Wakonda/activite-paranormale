@@ -67,3 +67,7 @@ BookEdition_Admin:
 Publisher_Admin:
     resource: "routing/publisheradmin.yml"
     prefix:   /admin/publisher
+
+LiteraryGenre_Admin:
+    resource: "routing/literarygenreadmin.yml"
+    prefix:   /admin/literarygenre

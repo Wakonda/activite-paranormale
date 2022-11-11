@@ -1,0 +1,55 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.LiteraryGenre"|trans([], "validators") }}{% endblock %}
+
+{% block edit_admin_route %}{{ path('LiteraryGenre_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('LiteraryGenre_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('LiteraryGenre_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('LiteraryGenre_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.Title"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.title }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.Photo"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
+
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.InternationalName"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.internationalName }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.Language"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.Sources"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
+	
+	<div class="form-table-cell form-table-cell-head">{{ "literaryGenre.admin.Fiction"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.fiction %}
+			<span class="text-success"><i class="fas fa-check" aria-hidden="true"></i></span>
+		{% else %}
+			<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>
+		{% endif %}
+	</div>
+{% endblock %}
+
+{% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "LiteraryGenre_Admin_Internationalization", "showRoute": "LiteraryGenre_Admin_Show", "editRoute": "LiteraryGenre_Admin_Edit"})) }}
+{% endblock %}
