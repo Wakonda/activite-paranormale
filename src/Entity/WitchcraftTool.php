@@ -90,7 +90,7 @@ class WitchcraftTool
 
     /**
     * @ORM\OneToOne(targetEntity=History::class, cascade={"remove"})
-    * @ORM\JoinColumn(name="history_id", referencedColumnName="id", onDelete="CASCADE")
+    * @ORM\JoinColumn(name="history_id", referencedColumnName="id", onDelete="SET NULL")
     */
     protected $history;
 

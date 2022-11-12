@@ -18,12 +18,19 @@ class BookSearchType extends AbstractType
 		$builder->setMethod('GET');
         $builder
             ->add('keywords', TextType::class, ['required' => false])
-            ->add('theme', EntityType::class, ['label' => 'Thème', 
+            ->add('theme', EntityType::class, [
 					'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'required' => false,
 					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) {
 						return $repository->getThemeByLanguage($language);
+					}])
+            ->add('genre', EntityType::class, [
+					'class'=>'App\Entity\LiteraryGenre',
+					'choice_label'=>'title',
+					'required' => false,
+					'query_builder' => function(\App\Repository\LiteraryGenreRepository $repository) use ($language) {
+						return $repository->getGenreByLanguage($language);
 					}])
 			->add('sort', ChoiceType::class, ['required' => false, 'choices' => ["book.search.PublicationDateUp" => "publicationDate#asc", "book.search.PublicationDateDown" => "publicationDate#desc"], "data" => "publicationDate#desc", 'translation_domain' => 'validators'])
 		;

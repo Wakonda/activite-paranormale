@@ -33,7 +33,7 @@ class MusicGenre
 
     /**
      * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $illustration;
 

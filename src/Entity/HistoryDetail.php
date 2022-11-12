@@ -24,6 +24,7 @@ class HistoryDetail
 
     /**
     * @ORM\ManyToOne(targetEntity=History::class, inversedBy="historyDetails")
+    * @ORM\JoinColumn(onDelete="CASCADE")
     */
     protected $history;
 
