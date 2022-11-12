@@ -1,0 +1,71 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ genre.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="Movie"/></span>{{ genre.title }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ genre.photoIllustrationFilename|imgsize(550, genre.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, genre.photoIllustrationCaption)|raw }}</p>
+	{{ genre.text|raw }}
+	<hr class="hr2">
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row no-gutters">
+				<div class="col-md-4 align-self-center text-center store_embedded_image">
+					{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
+					{% if dataStore is not empty %}
+						{{ dataStore|raw }}
+					{% else %}
+						{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
+					{% endif %}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body">
+						<h5 class="card-title text-center">{{ entity.title }}</h5>
+						<hr>
+						<p class="card-text mb-0 text-center">
+							{% if entity.genre is not empty %}
+								<i class="fas fa-leaf"></i> <a href="{{ path('ByGenreBook_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.title}) }}">{{ entity.genre.title }}</a><br>
+							{% endif %}
+							<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}
+							{% set authorsArray = [] %}
+							{% for author in entity.authors %}
+								{% set correctBio = biography_correct_language(author) %}
+								{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+							{% endfor %}
+						</p>
+						<p class="card-text mb-0 text-center my-3">{% if entity.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>
+
+						<hr>
+					</div>
+					<div class="card-footer text-center">
+						<a class="btn read" href="{{ path('Book_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
+							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger font-italic text-center">{{ "movie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+
+		{% if pagination.paginationData.pageCount > 1 %}
+			<br>
+			<hr class="hr2"/>
+		{% endif %}
+	</div>
+
+	{% if genre.source is not empty %}
+		<br>
+		<h3>{{ "book.read.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(genre.source, genre.language) }}
+	{% endif %}
+
+	{{ "google"|advertisement|raw }}
+{% endblock %}

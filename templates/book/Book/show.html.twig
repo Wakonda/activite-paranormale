@@ -44,6 +44,13 @@
 				<td class="td_form_table">{{ "book.read.Theme"|trans([], "validators") }}</td>
 				<td class="tdGene"><a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></td>
 			</tr>
+			
+			{% if entity.genre is not empty %}
+				<tr>
+					<td class="td_form_table">{{ "book.read.Genre"|trans([], "validators") }}</td>
+					<td class="tdGene"><a href="{{ path('ByGenreBook_Index', { idGenre: entity.genre.id, titleGenre: entity.genre.title }) }}">{{ entity.genre.title }}</a></td>
+				</tr>
+			{% endif %}
 		</tbody>
 	</table>
 

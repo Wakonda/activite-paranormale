@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -21,6 +22,13 @@ use App\Entity\TagWord;
 
 class BookAdminType extends AbstractType
 {
+    public $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];
@@ -32,6 +40,12 @@ class BookAdminType extends AbstractType
 			->add('genre', EntityType::class, ['class'=>'App\Entity\LiteraryGenre',
 					'required' => true,
 					'constraints' => [new NotBlank()],
+					'group_by' => function($choice, $key, $value) {
+						if($choice->getFiction())
+							return $this->translator->trans("book.admin.Fiction", [], "validators");
+						
+						return $this->translator->trans("book.admin.Nonfiction", [], "validators");
+					},
 					'query_builder' => function(\App\Repository\LiteraryGenreRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label'=>'title',

@@ -31,6 +31,12 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+		$output->writeln("Remove empty FileManagement");
+		
+		$conn->exec("DELETE FROM filemanagement WHERE titleFile	= '' and realNameFile = '';");
+		
+		die("End remove");
+		
 		$output->writeln("Start Book migration");
 
 		$conn = $this->em->getConnection();

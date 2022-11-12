@@ -13,6 +13,8 @@ book:
         LiteraryGenre: "Género literario"
         State: "Estado"
         Sources: "Fuentes"
+        Fiction: "Ficción"
+        Nonfiction: "No ficción"
     biography:
         Title: "Título"
         Language: "Lengua"
@@ -28,6 +30,9 @@ book:
         Validate: "Validar"
         Read: "Leer"
         NoMatchingRecordsFound: "No se encontraron resultados"
+        LiteraryGenre: "Género literario"
+        Fiction: "Ficción"
+        Nonfiction: "No ficción"
     read:
         Authors: "Autores"
         PublishedOn: "Publicó el"
@@ -37,6 +42,7 @@ book:
         CodeCopiedWithSuccess: "El código ha sido copiado con éxito"
         BookEditions: "Ediciones"
         Sources: "Fuentes"
+        LiteraryGenre: "Género literario"
     byPublisher:
         VisitThePublishersWebsite: "Visitar la página web del editor"
     world:
