@@ -91,11 +91,19 @@ class BookRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere("(b.title LIKE :keyword OR b.text LIKE :keyword)")
 			   ->setParameter("keyword", "%".$datas["keywords"]."%");
 		}
+
 		if(isset($datas["theme"]))
 		{
 			$qb->join('b.theme', 't')
 			   ->andWhere("t.id = :theme")
 			   ->setParameter("theme", $datas["theme"]->getId());
+		}
+
+		if(isset($datas["genre"]))
+		{
+			$qb->join('b.genre', 'g')
+			   ->andWhere("g.id = :genre")
+			   ->setParameter("genre", $datas["genre"]->getId());
 		}
 
 		$qb->orderBy('b.writingDate', 'DESC')
