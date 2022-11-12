@@ -37,7 +37,7 @@
 					{% if dataStore is not empty %}
 						{{ dataStore|raw }}
 					{% else %}
-						{{ entity.photo|imgsize(null, entity.getAssetImagePath())|raw }}
+						{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
 					{% endif %}
 				</div>
 				<div class="col-md-8 content-card">
@@ -45,6 +45,9 @@
 						<h5 class="card-title text-center">{{ entity.title }}</h5>
 						<hr>
 						<p class="card-text mb-0 text-center">
+							{% if entity.genre is not empty %}
+								<i class="fas fa-leaf"></i> <a href="{{ path('ByGenreBook_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.title}) }}">{{ entity.genre.title }}</a><br>
+							{% endif %}
 							<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}
 							{% set authorsArray = [] %}
 							{% for author in entity.authors %}

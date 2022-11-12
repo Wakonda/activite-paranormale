@@ -113,6 +113,23 @@ class BookRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery();
 	}
 
+	public function getBooksByGenre($idGenre, $nbMessageByPage, $page)
+	{
+		$offset = ($page - 1) * $nbMessageByPage;
+		
+		$qb = $this->createQueryBuilder("b");
+		$qb->innerjoin("b.genre", "p")
+		   ->where("p.id = :idGenre")
+		   ->setParameter("idGenre", $idGenre)
+		   ->andWhere("b.archive = false");
+
+		$qb->orderBy('b.title', 'ASC')
+		   ->setFirstResult($offset)
+		   ->setMaxResults($nbMessageByPage);
+
+		return $qb->getQuery();
+	}
+
 	public function getBooksByBiographyInternationalName($internationalName)
 	{
 		$qb = $this->createQueryBuilder("d");

@@ -58,7 +58,7 @@ class MovieRepository extends MappedSuperclassBaseRepository
 	public function getMoviesByGenre($idGenre, $nbMessageByPage, $page)
 	{
 		$offset = ($page - 1) * $nbMessageByPage;
-		
+
 		$qb = $this->createQueryBuilder("b");
 		$qb->innerjoin("b.genre", "p")
 		   ->where("p.id = :idGenre")

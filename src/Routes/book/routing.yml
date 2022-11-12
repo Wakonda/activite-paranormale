@@ -55,6 +55,14 @@ ByPublisherBook_Index:
         idPublisher: \d+
         page: \d+
 
+ByGenreBook_Index:
+    path: /book/genre/{idGenre}/{titleGenre}/{page}
+    controller: App\Controller\BookController::byGenreAction
+    defaults:
+        page: 1
+    requirements:
+        idGenre: \d+
+
 # Administration
 Book_Admin:
     resource: "routing/bookadmin.yml"

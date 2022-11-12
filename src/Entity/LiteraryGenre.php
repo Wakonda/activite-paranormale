@@ -17,6 +17,7 @@ use App\Entity\FileManagement;
  */
 class LiteraryGenre
 {
+	use \App\Entity\GenericEntityTrait;
     /**
      * @var integer $id
      *

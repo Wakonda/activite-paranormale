@@ -12,6 +12,7 @@ use App\Entity\BookEdition;
 use App\Entity\Language;
 use App\Entity\Theme;
 use App\Entity\Publisher;
+use App\Entity\LiteraryGenre;
 use App\Form\Type\BookSearchType;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Service\APImgSize;
@@ -77,6 +78,25 @@ class BookController extends AbstractController
 		$pagination->setCustomParameters(['align' => 'center']);
 	
 		return $this->render("book/Book/byPublisher.html.twig", ['pagination' => $pagination, "publisher" => $publisher]);
+	}
+
+	public function byGenreAction(Request $request, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$nbMessageByPage = 12;
+
+		$genre = $em->getRepository(LiteraryGenre::class)->find($idGenre);
+		$query = $em->getRepository(Book::class)->getBooksByGenre($idGenre, $nbMessageByPage, $page);
+
+		$pagination = $paginator->paginate(
+			$query, /* query NOT result */
+			$page, /*page number*/
+			12 /*limit per page*/
+		);
+
+		$pagination->setCustomParameters(['align' => 'center']);
+	
+		return $this->render("book/Book/byGenre.html.twig", ['pagination' => $pagination, "genre" => $genre ]);
 	}
 
 	// Book of the world

@@ -19,7 +19,7 @@
 	{% if dataStore is not empty %}
 		<p class="text-center">{{ dataStore|raw }}</p>
 	{% else %}
-		<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, entity.photoIllustrationCaption)|raw }}</p>
 	{% endif %}
 	<br>
 	<table class="table">
