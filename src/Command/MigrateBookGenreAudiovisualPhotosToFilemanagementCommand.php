@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Book;
 use App\Entity\Movies\GenreAudiovisual;
 use App\Entity\FileManagement;
+use Ausi\SlugGenerator\SlugGenerator;
 
 class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 {
@@ -31,6 +32,21 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+		$output->writeln("Start Book migration");
+		
+		$books = $this->em->getRepository(Book::class)->findAll();
+		
+		foreach($books as $book) {
+			$generator = new SlugGenerator;
+			$in = $generator->generate($book->getTitle()).uniqid();
+			$book->setInternationalName($in);
+			$this->em->persist($book);
+		}
+
+		$this->em->flush();
+		
+		die("ok");
+		
 		$output->writeln("Remove empty FileManagement");
 		
 		$conn->exec("DELETE FROM filemanagement WHERE titleFile	= '' and realNameFile = '';");

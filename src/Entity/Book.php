@@ -25,6 +25,11 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
      */
     private $id;
 
+	/**
+	 * @ORM\Column(type="text", nullable=true)
+	 */
+	protected $introduction;
+
     /**
 	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -115,6 +120,13 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+	/**
+	 * @var string $internationalName
+	 *
+	 * @ORM\Column(name="internationalName", type="string", length=255)
+	 */
+	private $internationalName;
 
 	public function __construct()
 	{
@@ -483,5 +495,25 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     public function getGenre()
     {
         return $this->genre;
+    }
+
+    public function setInternationalName($internationalName)
+    {
+        $this->internationalName = $internationalName;
+    }
+
+    public function getInternationalName()
+    {
+        return $this->internationalName;
+    }
+
+    public function setIntroduction($introduction)
+    {
+        $this->introduction = $introduction;
+    }
+
+    public function getIntroduction()
+    {
+        return $this->introduction;
     }
 }

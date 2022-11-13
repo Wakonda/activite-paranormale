@@ -58,7 +58,6 @@ class BookAdminController extends AdminGenericController
 
 	public function postValidationAction($form, $entityBindded)
 	{
-		
 		(new TagsManagingGeneric($this->getDoctrine()->getManager()))->saveTags($form, $this->className, $this->entityName, new BookTags(), $entityBindded);
 	}
 
@@ -129,8 +128,7 @@ class BookAdminController extends AdminGenericController
 		foreach($entity->getBookEditions() as $fm) {
 			$additionalFiles[] = $fm->getRealNameFile();
 		}
-		
-		
+
 		return $this->archiveGenericArchive($id, $additionalFiles);
 	}
 
@@ -206,4 +204,75 @@ class BookAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
+	
+    public function internationalizationAction(Request $request, $id)
+    {
+		$formType = BookAdminType::class;
+		$entity = new Book();
+		
+		$em = $this->getDoctrine()->getManager();
+		$entityToCopy = $em->getRepository(Book::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		
+		$state = null;
+		
+		if(!empty($entityToCopy->getState()))
+			$state = $em->getRepository(State::class)->findOneBy(["internationalName" => $entityToCopy->getState()->getInternationalName(), "language" => $language]);
+		
+		$licence = null;
+		
+		if(!empty($entityToCopy->getLicence())) {
+			$licence = $em->getRepository(Licence::class)->findOneBy(["internationalName" => $entityToCopy->getLicence()->getInternationalName(), "language" => $language]);
+			
+			$entity->setLicence($licence);
+		}
+		
+		$theme = null;
+		
+		if(!empty($entityToCopy->getTheme()))
+			$theme = $em->getRepository(Theme::class)->findOneBy(["internationalName" => $entityToCopy->getTheme()->getInternationalName(), "language" => $language]);
+		
+		$genre = null;
+		
+		if(!empty($entityToCopy->getGenre()))
+			$genre = $em->getRepository(LiteraryGenre::class)->findOneBy(["internationalName" => $entityToCopy->getGenre()->getInternationalName(), "language" => $language]);
+		
+		$entity->setInternationalName($entityToCopy->getInternationalName());
+		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setWikidata($entityToCopy->getWikidata());
+		$entity->setWritingDate($entityToCopy->getWritingDate());
+		$entity->setPublicationDate($entityToCopy->getPublicationDate());
+		$entity->setLanguage($language);
+		$entity->setState($state);
+		$entity->setTheme($theme);
+		$entity->setGenre($genre);
+
+		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
+		
+		foreach($entityToCopy->getAuthors() as $mbToCopy) {
+			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getInternationalName(), "language" => $language]);
+			
+			if(empty($biography))
+				continue;
+			
+			$entity->addAuthor($biography);
+			$mbArray->add($biography);
+		}
+		
+		$entity->setAuthors($mbArray);
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
+		}
+
+		$twig = 'book/BookAdmin/new.html.twig';
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+    }
 }

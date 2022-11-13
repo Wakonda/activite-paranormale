@@ -15,6 +15,8 @@ book:
         Sources: "Fuentes"
         Fiction: "Ficción"
         Nonfiction: "No ficción"
+        InternationalName: "Nombre internacional"
+        Introduction: "Presentación"
     biography:
         Title: "Título"
         Language: "Lengua"
@@ -43,6 +45,7 @@ book:
         BookEditions: "Ediciones"
         Sources: "Fuentes"
         LiteraryGenre: "Género literario"
+        Introduction: "Presentación"
     byPublisher:
         VisitThePublishersWebsite: "Visitar la página web del editor"
     world:

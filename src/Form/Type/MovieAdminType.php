@@ -48,7 +48,7 @@ class MovieAdminType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('introduction', TextareaType::class, array('required' => false))
+            ->add('introduction', TextareaType::class, ['required' => false])
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('trailer', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('fullStreaming', TextareaType::class, array('required' => false))

@@ -6,6 +6,14 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "book.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
+<div class="form-table-cell form-table-cell-head">
+{{ form_label(form.introduction, "book.admin.Introduction"|trans([], "validators")) }}
+</div>
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.introduction.vars.id) }}
+	{{ form_errors(form.introduction) }}{{ form_widget(form.introduction) }}
+</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "book.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
 	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
@@ -13,7 +21,6 @@
 </div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
-{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form.illustration) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "book.admin.PublicationDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
@@ -38,3 +45,44 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "book.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector("#wikidata .fa-sync").classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("url_{{ form.introduction.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.introduction.vars.id }}").dispatchEvent(new Event("change"));
+				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+
+				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
+					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
+					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
+					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+				}
+
+				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+			}
+		}
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('Admin_WikidataGeneric') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

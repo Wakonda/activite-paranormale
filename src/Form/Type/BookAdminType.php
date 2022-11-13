@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -19,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Field\SourceEditType;
 use App\Entity\TagWord;
+use App\Form\EventListener\InternationalNameFieldListener;
 
 class BookAdminType extends AbstractType
 {
@@ -35,6 +37,7 @@ class BookAdminType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('introduction', TextareaType::class, ['required' => false])
 			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Book_Admin_ShowImageSelectorColorbox'])
             ->add('text', TextareaType::class, array('required' => false))
 			->add('genre', EntityType::class, ['class'=>'App\Entity\LiteraryGenre',
@@ -117,6 +120,8 @@ class BookAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
 		;
+		
+		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
 
     public function getBlockPrefix()

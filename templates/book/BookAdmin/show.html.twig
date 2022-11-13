@@ -24,6 +24,9 @@
 		{% endif %}
 	</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Introduction"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.introduction|raw }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "book.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
@@ -60,6 +63,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "book.admin.InternationalName"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.internationalName }}</div>
+
 	<a href="{{ path('Book_Show', { 'id' : entity.id, 'title_slug' : entity.title }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}
 
@@ -68,7 +74,8 @@
 		{{ render(controller('App\\Controller\\BookEditionAdminController::indexAction', { bookId: entity.id })) }}
 	</div>
 	<hr>
-
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Book_Admin_Internationalization", "showRoute": "Book_Admin_Show", "editRoute": "Book_Admin_Edit"})) }}
+	<hr>
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{% if entity.archive == false %}

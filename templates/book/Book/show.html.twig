@@ -53,6 +53,12 @@
 			{% endif %}
 		</tbody>
 	</table>
+	
+	{% if entity.introduction is not empty %}
+		<br>
+		<h3>{{ "book.read.Introduction"|trans([], "validators") }}</h3>
+		{{ entity.introduction|raw }}
+	{% endif %}
 
 	{% if entity.text is not empty %}
 		<br>
@@ -167,7 +173,7 @@
 		<h3>{{ "book.read.Sources"|trans([], "validators") }}</h3>
 		{{ source_document(entity.source) }}
 	{% endif %}
-	<br>
+
 	<hr class="hr2">
 	<p>
 		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} {% if entity.licence is not null %}- <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
