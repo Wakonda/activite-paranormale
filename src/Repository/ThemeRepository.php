@@ -45,9 +45,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$res = [];
 
 		foreach($qb->getQuery()->getResult() as $data)
-		{
 			$res[$data->getLanguage()->getTitle()][] = ["id" => $data->getId(), "title" => $data->getTitle(), "language" => $data->getLanguage()->getAbbreviation()];
-		}
 		
 		return $res;
 	}
@@ -63,10 +61,8 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$res = [];
 
 		foreach($qb->getQuery()->getResult() as $data)
-		{
 			$res[$data->getLanguage()->getTitle()][] = ["id" => $data->getId(), "title" => $data->getTitle(), "language" => $data->getLanguage()->getAbbreviation()];
-		}
-		
+
 		return $res;
 	}
 	

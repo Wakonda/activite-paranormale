@@ -50,6 +50,29 @@ Witchcraft_Validate:
     path: /grimoire/validate/{id}
     controller: App\Controller\WitchcraftController::validateAction
 
+Witchcraft_World:
+    path: /grimoire/world/{language}/{themeId}/{theme}
+    controller: App\Controller\WitchcraftController::worldAction
+    defaults:
+        language: all
+        themeId: 0
+        theme: null
+    requirements:
+        theme: ".+"
+
+Witchcraft_WorldDatatables:
+    path: /grimoire/worlddatatables/{language}/{themeId}
+    controller: App\Controller\WitchcraftController::worldDatatablesAction
+    defaults:
+        language: all
+        themeId: 0
+
+Witchcraft_SelectThemeForIndexWorld:
+    path: /grimoire/selectThemeForIndexWorldAction/{language}
+    controller: App\Controller\WitchcraftController::selectThemeForIndexWorldAction
+    defaults:
+        language: all
+
 WitchcraftTool_Index:
     path: /witchcrafttool/{page}
     controller: App\Controller\WitchcraftController::indexWitchcraftToolAction

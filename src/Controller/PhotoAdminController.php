@@ -119,7 +119,7 @@ class PhotoAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			
 			if($entity->getArchive())
 				$row["DT_RowClass"] = "deleted";
@@ -128,8 +128,8 @@ class PhotoAdminController extends AdminGenericController
 			$row[] = $entity->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getPublicationDate());
 			$row[] = "
-			 <a href='".$this->generateUrl('Photo_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Photo_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Photo_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Photo_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -143,7 +143,7 @@ class PhotoAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 		{
@@ -158,26 +158,23 @@ class PhotoAdminController extends AdminGenericController
 			$licences = $em->getRepository(Licence::class)->findAll();
 		}
 
-		$themeArray = array();
-		$stateArray = array();
-		$licenceArray = array();
+		$themeArray = [];
+		$stateArray = [];
+		$licenceArray = [];
 		
 		foreach($themes as $theme)
-		{
 			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
-		}
+
 		$translateArray['theme'] = $themeArray;
 
 		foreach($states as $state)
-		{
 			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle());
-		}
+
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
-		{
 			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
-		}
+
 		$translateArray['licence'] = $licenceArray;
 
 		return new JsonResponse($translateArray);
@@ -197,7 +194,7 @@ class PhotoAdminController extends AdminGenericController
 	{
 		$formType = PhotoAdminType::class;
 		$entity = new Photo();
-		
+
 		$em = $this->getDoctrine()->getManager();
 		$entityToCopy = $em->getRepository(Photo::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
@@ -224,7 +221,7 @@ class PhotoAdminController extends AdminGenericController
 			$illustration->setLicense($ci->getLicense());
 			$illustration->setAuthor($ci->getAuthor());
 			$illustration->setUrlSource($ci->getUrlSource());
-			
+
 			$entity->setIllustration($illustration);
 		}
 

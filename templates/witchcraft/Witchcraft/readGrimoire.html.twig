@@ -20,7 +20,11 @@
 	{% endif %}
 	
 	<hr class="hr2"/>
-	<p>{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}{{ entity.surTheme.menuGrimoire.title }} - <span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.menuGrimoire.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></span> - <span><i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }}</span></p>
+	<p>{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}{{ entity.surTheme.menuGrimoire.title }} - <span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.menuGrimoire.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></span> - <span><i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }}</span>
+		{% if is_current_languages(entity.language.abbreviation) == false %}
+			- <a href="{{ path('Witchcraft_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
+		{% endif %}
+	</p>
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':entity} %}
 	

@@ -49,7 +49,7 @@
 							$wd = $this->em->getRepository("\App\Entity\WebDirectory")->getWebdirectoryByUrl($data["url"], $locale);
 						$licence = null;
 						
-						if(!empty($wd))
+						if(!empty($wd) and !empty($wd->getLicence()))
 							$licence = "<a href='".$wd->getLicence()->getLink()."' target='_blank'>".$wd->getLicence()->getTitle()."</a>";
 						
 						if(!empty($data["title"]))

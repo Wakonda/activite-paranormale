@@ -16,6 +16,7 @@ use App\Entity\User;
 use App\Entity\State;
 use App\Form\Type\GrimoireUserParticipationType;
 use App\Service\APImgSize;
+use App\Service\APDate;
 use App\Service\APHtml2Pdf;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -310,5 +311,88 @@ class WitchcraftController extends AbstractController
 		$entity = $em->getRepository(WitchcraftTool::class)->find($id);
 		
 		return $this->render('witchcraft/WitchcraftTool/showWitchcraft.html.twig', ['entity' => $entity]);
+	}
+
+	public function worldAction($language, $themeId, $theme)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
+		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
+
+		$themes = $em->getRepository(SurThemeGrimoire::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
+
+		$theme = $em->getRepository(SurThemeGrimoire::class)->find($themeId);
+
+		$title = [];
+
+		if(!empty($currentLanguage))
+			$title[] = $currentLanguage->getTitle();
+
+		if(!empty($theme))
+			$title[] = $theme->getTitle();
+
+		return $this->render('witchcraft/Witchcraft/world.html.twig', array(
+			'flags' => $flags,
+			'themes' => $themes,
+			'title' => implode(" - ", $title),
+			'theme' => empty($theme) ? null : $theme
+		));
+	}
+
+	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$themeId = $request->query->get("theme_id");
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+			
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+		
+        $entities = $em->getRepository(Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
+		$iTotal = $em->getRepository(Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+
+		$output = array(
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => []
+		);
+
+		foreach($entities as $entity)
+		{
+			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
+			$row = [];
+			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
+			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
+			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getTitle())).'" >'.$entity->getTitle().'</a>';
+			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
+	}
+
+	public function selectThemeForIndexWorldAction(Request $request, $language)
+	{
+		$themeId = $request->request->get('theme_id');
+		$language = $request->request->get('language', 'all');
+
+		$em = $this->getDoctrine()->getManager();
+		$theme = $em->getRepository(SurThemeGrimoire::class)->find($themeId);
+		return new Response($this->generateUrl('Witchcraft_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
 	}
 }

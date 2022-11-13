@@ -12,6 +12,8 @@ use Doctrine\ORM\EntityRepository;
  */
 class GrimoireRepository extends EntityRepository
 {
+	protected $currentLanguages = ["fr", "en", "es"];
+
 	public function countEntree($id)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -89,7 +91,7 @@ class GrimoireRepository extends EntityRepository
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
-		   ->join('c.surTheme', 'st')
+		   ->leftjoin('c.surTheme', 'st')
 		   ->join('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
@@ -371,5 +373,59 @@ class GrimoireRepository extends EntityRepository
 		   ->setMaxResults(1);
 
 		return $qb->getQuery()->getOneOrNullResult();
+	}
+
+	public function getDatatablesForWorldIndex($language, $theme, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$aColumns = array( 'l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate');
+
+		$qb->join('c.language', 'l')
+		   ->join("c.illustration", "il")
+		   ->leftjoin('c.state', 's')
+		   ->andWhere('s.displayState = 1')
+		   ->andWhere("c.archive = false");
+		   
+		if(!empty($theme))
+		    $qb->andWhere('c.surTheme = :themeId')
+		       ->setParameter("themeId", $theme);
+
+		if($language == "all")
+		{
+			$currentLanguages = $this->currentLanguages;
+			$whereIn = array();
+			for($i = 0; $i < count($currentLanguages); $i++)
+			{
+				$whereIn[] = ':'.$currentLanguages[$i];
+				$qb->setParameter(':'.$currentLanguages[$i], $currentLanguages[$i]);
+			}
+
+			$qb->andWhere('l.abbreviation NOT IN ('.implode(", ", $whereIn).')');
+		}
+		else
+		{
+			$qb->andWhere('l.abbreviation = :language');
+			$qb->setParameter('language', $language);
+		}
+		
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('c.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("count(c)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
 	}
 }

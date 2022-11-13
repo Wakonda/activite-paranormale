@@ -146,4 +146,20 @@ class SurThemeGrimoireRepository extends EntityRepository
 		
 		return $res;
 	}
+	
+	public function getAllThemesWorld($excludeLanguages)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb ->join('c.language', 'l')
+			->where('l.abbreviation NOT IN (:excludeLanguages)')
+			->setParameter('excludeLanguages', $excludeLanguages)
+			->orderBy("c.title");
+
+		$res = [];
+
+		foreach($qb->getQuery()->getResult() as $data)
+			$res[$data->getLanguage()->getTitle()][] = ["id" => $data->getId(), "title" => $data->getTitle(), "language" => $data->getLanguage()->getAbbreviation()];
+		
+		return $res;
+	}
 }

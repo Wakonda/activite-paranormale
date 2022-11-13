@@ -45,10 +45,15 @@
 {% endblock %}
 
 {% block data_bottom %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Grimoire_Admin_Internationalization", "showRoute": "Grimoire_Admin_Show", "editRoute": "Grimoire_Admin_Edit"})) }}
+
 	{% if entity.state.isStateDisplayed() %}
 		{% if entity.archive == false %}
-		{% import "index/macro/macro_index.html.twig" as macro_index %}
-			{{ macro_index.blogger_form(entity, entity.surTheme.menuGrimoire.internationalName) }}
+			{% import "index/macro/macro_index.html.twig" as macro_index %}
+			
+			{% if entity.surTheme is not empty %}
+				{{ macro_index.blogger_form(entity, entity.surTheme.menuGrimoire.internationalName) }}
+			{% endif %}
 			{{ macro_index.shopify_form(entity, "magic") }}
 		{% endif %}
 	{% endif %}

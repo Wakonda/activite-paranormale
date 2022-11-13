@@ -71,3 +71,7 @@ Grimoire_Admin_ShowImageSelectorColorbox:
 Grimoire_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\GrimoireAdminController::loadImageSelectorColorboxAction
+
+Grimoire_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\GrimoireAdminController::internationalizationAction
