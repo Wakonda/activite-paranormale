@@ -27,7 +27,7 @@ class GenreAudiovisual
     private $id;
 
     /**
-	 * @Assert\File(maxSize="6000000")
+	 * Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255)
      */
     private $photo;
