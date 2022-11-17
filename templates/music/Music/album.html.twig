@@ -52,7 +52,7 @@
 							<td>
 							{% set occupationArray = [] %}
 							{% for occupation in member.occupations %}
-								{% set occupationArray = occupationArray|merge([("artist.biography."~occupation|capitalize)|trans([], "validators")]) %}
+								{% set occupationArray = occupationArray|merge([("artist.biography."~occupation|ucfirst)|trans([], "validators")]) %}
 							{% endfor %}
 							
 							{{ occupationArray|join(", ") }}
@@ -72,7 +72,7 @@
 							<td>
 							{% set occupationArray = [] %}
 							{% for occupation in member.occupations %}
-								{% set occupationArray = occupationArray|merge([("artist.biography."~occupation|capitalize)|trans([], "validators")]) %}
+								{% set occupationArray = occupationArray|merge([("artist.biography."~occupation|ucfirst)|trans([], "validators")]) %}
 							{% endfor %}
 							
 							{{ occupationArray|join(", ") }}

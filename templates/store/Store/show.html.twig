@@ -153,7 +153,7 @@
 				{% for occupation, biographies in biographyDatas %}
 					{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
 					<tr>
-						<td class="td_form_table">{{ (("movie.read."~(occupation)|capitalize)~"By")|trans([], "validators") }}</td>
+						<td class="td_form_table">{{ (("movie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
 						<td class="tdGene">
 							{% set persons = [] %}
 							{% for biography in biographies %}
@@ -252,7 +252,7 @@
 				{% for occupation, biographies in biographyDatas %}
 					{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
 					<tr>
-						<td class="td_form_table">{{ (("televisionSerie.read."~(occupation)|capitalize)~"By")|trans([], "validators") }}</td>
+						<td class="td_form_table">{{ (("televisionSerie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
 						<td class="tdGene">
 							{% set persons = [] %}
 							{% for biography in biographies %}

@@ -150,7 +150,7 @@
 							
 							{% for occupation, biographies in book_edition_biographies_by_occupation(bookEdition) %}
 								<tr>
-									<td class="td_form_table">{{ (("bookEdition.read."~(occupation)|capitalize))|trans([], "validators") }}</td>
+									<td class="td_form_table">{{ (("bookEdition.read."~(occupation)|ucfirst))|trans([], "validators") }}</td>
 									<td class="tdGene">
 										{% set persons = [] %}
 										{% for biography in biographies %}

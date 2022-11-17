@@ -30,7 +30,7 @@
 			{% if biographyDatas is not empty %}
 			<tr>
 				{% for occupation, biographies in biographyDatas %}
-					<td class="td_form_table theme_title_td">{{ (("televisionSerie.read."~(occupation)|capitalize)~"By")|trans([], "validators") }}</td>
+					<td class="td_form_table theme_title_td">{{ (("televisionSerie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
 					<td class="tdGene">
 						{% set persons = [] %}
 						{% for biography in biographies %}
