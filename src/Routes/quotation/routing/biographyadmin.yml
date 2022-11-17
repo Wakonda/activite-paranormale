@@ -67,3 +67,9 @@ Biography_Admin_Wikidata:
 Biography_Admin_Validate:
     path: /validate
     controller: App\Controller\BiographyAdminController::validateBiographyAction
+
+Biography_Admin_Quick:
+    path: /quick/{locale}/{wikidata}/{internationalName}
+    controller: App\Controller\BiographyAdminController::quickAction
+    defaults:
+        internationalName: null

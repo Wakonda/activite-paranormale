@@ -383,6 +383,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->addSelect("MAX(b.birthDate) AS birthDate")
 		   ->addSelect("MAX(b.deathDate) AS deathDate")
 		   ->addSelect("GROUP_CONCAT(l.title SEPARATOR '#') AS languages")
+		   ->addSelect("GROUP_CONCAT(l.id SEPARATOR '#') AS languages_id")
 		   ->addSelect("i.realNameFile AS illustration")
 		   ->addSelect("b.internationalName")
 		   ->addSelect("b.wikidata")

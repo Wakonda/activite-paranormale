@@ -1,5 +1,10 @@
 <script>
 	function selectBiography() {
+		if (typeof event.target.dataset.id !== "undefined") {
+			var $newOption = $("<option selected='selected'></option>").val(event.target.dataset.id).text(event.target.dataset.title);
+			$("#" + document.getElementById("validateBiographyModal").dataset.biography).append($newOption).trigger('change');
+		}
+
 		document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = event.target.dataset.internationalName;
 		$("#validateBiographyModal").modal("hide");
 	}
@@ -11,35 +16,35 @@
 		{% for entity in entities %}
 			<div class="col-12 mt-3">
 				<div class="card">
-					{% if entity.illustration is not empty %}
-						<div class="img-square-wrapper">
-							{{ entity.illustration|imgsize(550, path, true, {"class": "mx-auto d-block img-fluid"})|raw }}
-						</div>
-					{% endif %}
-                    <div class="card-body">
-                        <h4 class="card-title">{{ entity.title }}</h4>
-                        {% if entity.birthDate is not empty %} 
-							<p class="card-text"><b>{{ "biography.admin.BirthDate"|trans([], "validators") }}</b> {{ entity.birthDate|doPartialDate(app.request.locale) }}</p>
-						{% endif %}
-						{% if entity.deathDate is not empty %} 
-							<p class="card-text"><b>{{ "biography.admin.DeathDate"|trans([], "validators") }}</b> {{ entity.deathDate|doPartialDate(app.request.locale) }}</p>
-						{% endif %}
-						{% if entity.nationality is not empty %} 
-							<p class="card-text"><b>{{ "biography.admin.Nationality"|trans([], "validators") }}</b> {{ entity.nationality }}</p>
-						{% endif %}
-						{% if entity.languages is not empty %} 
-							<p class="card-text"><b>{{ "biography.admin.Language"|trans([], "validators") }}</b> {{ (entity.languages|split("#"))|join(", ") }}</p>
-						{% endif %}
-						</p>
-                    </div>
-					<div class="card-footer">
-						<a href="#" class="btn btn-success select-biography" data-international-name="{{ entity.internationalName }}" onclick="event.preventDefault();selectBiography();">{{ "biography.admin.Select"|trans([], "validators") }}</a>
+					<div id="content-biography">
+						{% include 'quotation/BiographyAdmin/quick_data.html.twig' %}
 					</div>
 				</div>
 			</div>
 		{% endfor %}
+		
+		{% set languageIds = entities[0].languages_id|split("#") %}
+
+		{% if entities|length == 1 %}
+			{% if language not in languageIds %}
+				<div id="iframe-container" class="w-100 card mt-2 mx-3"><iframe src="{{ path('Biography_Admin_Quick', {locale: language, wikidata: wikidata, internationalName: entities[0].internationalName}) }}" style="height: 55vh; border: none;"></iframe></div>
+			{% endif %}
+		{% endif %}
     </div>
 	{% else %}
-		<div class="alert alert-info">{{ "biography.admin.NonExistentBiography"|trans([], "validators") }}</div>
+		<div id="content-biography-container">
+			<div class="row">
+				<div class="col-12 mt-3">
+					<div class="card">
+						<div id="content-biography">
+							<div class="alert alert-info">{{ "biography.admin.NonExistentBiography"|trans([], "validators") }}</div>
+							{% if wikidata is not empty %}
+								<div id="iframe-container"><iframe src="{{ path('Biography_Admin_Quick', {locale: language, wikidata: wikidata}) }}" style="height: 55vh; border: none;"></iframe></div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 	{% endif %}
 </div>

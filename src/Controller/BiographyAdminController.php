@@ -251,10 +251,75 @@ class BiographyAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$wikidata = $request->query->get("wikidata");
 		$title = $request->query->get("title");
-		
+		$language = $request->query->get("language");
+
 		$entities = $em->getRepository(Biography::class)->getBiographyByWikidataOrTitle($title, $wikidata);
 		$path = (new Biography())->getAssetImagePath();
 
-		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path]);
+		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path, "language" => $language, "wikidata" => $wikidata]);
+	}
+	
+	public function quickAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $wikidata, $internationalName)
+	{
+		$formType = BiographyAdminType::class;
+		$entity = new Biography();
+		
+		$em = $this->getDoctrine()->getManager();
+		$language = $em->getRepository(Language::class)->find($locale);
+		
+		$entityToCopy = null;
+		
+		if(!empty($internationalName)) {
+			$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName]);
+		$country = null;
+		
+		if(!empty($entityToCopy->getNationality()))
+			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
+
+			$entity->setInternationalName($entityToCopy->getInternationalName());
+			$entity->setTitle($entityToCopy->getTitle());
+			$entity->setKind($entityToCopy->getKind());
+			$entity->setBirthDate($entityToCopy->getBirthDate());
+			$entity->setDeathDate($entityToCopy->getDeathDate());
+			$entity->setNationality($country);
+			$entity->setLinks($entityToCopy->getLinks());
+
+			if(!empty($ci = $entityToCopy->getIllustration())) {
+				$illustration = new FileManagement();
+				$illustration->setTitleFile($ci->getTitleFile());
+				$illustration->setCaption($ci->getCaption());
+				$illustration->setLicense($ci->getLicense());
+				$illustration->setAuthor($ci->getAuthor());
+				$illustration->setUrlSource($ci->getUrlSource());
+
+				$entity->setIllustration($illustration);
+			}
+		}
+		
+		$entity->setLanguage($language);
+		$entity->setWikidata($wikidata);
+		$entity->setInternationalName($internationalName);
+		
+		$form = $this->createForm($formType, $entity, ['action' => 'new', 'locale' => $request->getLocale()]);
+
+		if ($request->isMethod(Request::METHOD_POST)){
+			$twig = 'quotation/BiographyAdmin/quick.html.twig';
+			$res = $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $this->formName)]);
+			
+			if ("Symfony\Component\HttpFoundation\RedirectResponse" == get_class($res)) {
+				$path = (new Biography())->getAssetImagePath();
+				
+				// $entity = $em->getRepository(Biography::class)->find(2528);
+				
+				
+				$entities = $em->getRepository(Biography::class)->getBiographyByWikidataOrTitle($entity->getTitle(), $entity->getWikidata());
+				$data = $this->render("quotation/BiographyAdmin/quick_data.html.twig", ["entity" => $entities[0], "path" => $path, "entityNew" => $entity]);
+				return new JsonResponse(["state" => "success", "data" => $data->getContent()]);
+			} else {
+				return new JsonResponse(["state" => "failed", "data" => $res]);
+			}
+		}
+
+		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'locale' => $request->getLocale(), "wikidata" => $wikidata]);
 	}
 }

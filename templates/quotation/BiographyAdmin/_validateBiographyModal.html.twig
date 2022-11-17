@@ -1,5 +1,5 @@
  <div class="modal fade" id="validateBiographyModal" tabindex="-1" role="dialog" aria-labelledby="validateBiographyModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-xl" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="validateBiographyModalLabel">{{ "biography.admin.SelectBiography"|trans([], "validators") }}</h4>
@@ -29,6 +29,8 @@
 
 	function addBiographyValidationFormDisplayLink($tagFormLi, count) {
 		let internationalName = $tagFormLi.querySelector(".international-name");
+		let biography = $tagFormLi.querySelector(".biography");
+		
 		let element = $tagFormLi.querySelector("*");
 
 		if(typeof element.dataset.internationalName !== "undefined" && internationalName.value == "")
@@ -55,6 +57,7 @@
 
 						document.querySelector("#validateBiographyModal .modal-body").appendChild(document.createRange().createContextualFragment(data));
 						document.getElementById("validateBiographyModal").setAttribute("data-input", internationalName.getAttribute("id"));
+						document.getElementById("validateBiographyModal").setAttribute("data-biography", biography.getAttribute("id"));
 						$("#validateBiographyModal").modal("show");
 			
 						document.getElementById("create-new-biography").addEventListener("click", (e) => {
@@ -75,8 +78,11 @@
 						});
 					}
 				}
+				
+				let language = document.getElementById("{{ language }}").value;
+				let wikidata = element.dataset.wikidata;
 
-				xmlHttp.open("GET", "{{ path('Biography_Admin_Validate') }}?wikidata=" + element.dataset.wikidata + "&title=" + encodeURIComponent(element.dataset.title), false);
+				xmlHttp.open("GET", "{{ path('Biography_Admin_Validate') }}?wikidata=" + (typeof wikidata !== "undefined" ? wikidata : "") + "&title=" + encodeURIComponent(element.dataset.title) + "&language=" + language, false);
 				xmlHttp.send();
 		});
 	}
@@ -136,7 +142,7 @@
 		});
 
 		$collectionHolder = document.querySelectorAll('ul#biography-fields-list li.container-form-biography');
-console.log($collectionHolder)
+
 		$collectionHolder.forEach((e) => {
 			addBiographyValidationFormDisplayLink(e);
 		});

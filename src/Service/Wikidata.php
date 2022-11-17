@@ -110,14 +110,13 @@
 		
 		public function getGenericDatas(string $code, string $language)
 		{
-			// dd($code);
 			$res = [];
 			$languageWiki = $language."wiki";
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 			$datas = json_decode($content);
-// dd($datas);
+
 			$res["title"] = $datas->entities->$code->labels->$language->value;
 			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 
@@ -451,6 +450,8 @@
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
 			$datas = json_decode($content);
+			
+			$res["image"] = $this->getImage($datas, $code);
 			
 			if(property_exists($datas->entities->$code->claims, "P345")) {
 				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;

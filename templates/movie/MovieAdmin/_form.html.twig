@@ -135,7 +135,7 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "movie.admin.Identifiers"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
 
-{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { language: form.language.vars.id } %}
 
 <script>
 	document.getElementById("wikidata").addEventListener("click", (e) => {
@@ -189,6 +189,13 @@
 				}
 				
 				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
+
+				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
+					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
+					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
+					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+				}
 
 				let i = 0;
 				
