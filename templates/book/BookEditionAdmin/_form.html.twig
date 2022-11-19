@@ -81,7 +81,7 @@
 	{{ form_widget(form.file_selector) }}
 </div>
 
-{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { languageId: entity.book.language.id } %}
 
 <script>
 	for(const element of document.getElementsByClassName("googleBook"))

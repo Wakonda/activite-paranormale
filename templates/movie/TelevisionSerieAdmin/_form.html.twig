@@ -84,7 +84,7 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "televisionSerie.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
-{{ dump(entity)}}
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { language: form.language.vars.id } %}
 
 <script>
 	$(function() {
