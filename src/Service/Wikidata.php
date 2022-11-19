@@ -31,7 +31,7 @@
 
 			$datas = json_decode($content);
 
-			$res["socialNetwork"] = ["twitter" => null];
+			$res["socialNetwork"] = ["twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
 
 			if(property_exists($datas->entities->$code->claims, "P2002"))
 				$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
