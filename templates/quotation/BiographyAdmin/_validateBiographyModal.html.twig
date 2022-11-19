@@ -79,7 +79,7 @@
 					}
 				}
 				
-				let language = document.getElementById("{{ language }}").value;
+				let language = {% if languageId is defined %}{{ languageId }}{% else %}document.getElementById("{{ language }}").value{% endif %};
 				let wikidata = element.dataset.wikidata;
 
 				xmlHttp.open("GET", "{{ path('Biography_Admin_Validate') }}?wikidata=" + (typeof wikidata !== "undefined" ? wikidata : "") + "&title=" + encodeURIComponent(element.dataset.title) + "&language=" + language, false);

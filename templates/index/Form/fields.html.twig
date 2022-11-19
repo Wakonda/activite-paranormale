@@ -538,21 +538,33 @@
 					valuesToSave{{ form.vars.id }}.splice($("#{{ form.vars.id}}_container").data("currentValue"), 1);
 
 				editor{{ form.vars.id }}.getValue().type = $("#{{ form.vars.id}}_type .btn-secondary").data("value");
-				valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
+					
+				let save = true;
 
-				$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
-				$("#{{ form.vars.id}}_values").html("");
-
-				for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-					if(valuesToSave{{ form.vars.id }}[i].type == "url")
-						$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
-					else
-						$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
+				if($("#{{ form.vars.id }}").val() != "") {
+					let currentValues = [];
+					JSON.parse(document.getElementById("{{ form.vars.id }}").value).forEach(element => currentValues.push(JSON.stringify(element)))//.forEach(element => console.log(JSON.stringify(element)));
+					if(currentValues.includes(JSON.stringify(editor{{ form.vars.id }}.getValue())))
+						save = false;
 				}
 
-				var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
-				Object.keys(obj{{ form.vars.id }}).forEach(k => obj{{ form.vars.id }}[k] = "");
-				editor{{ form.vars.id }}.setValue(obj{{ form.vars.id }});
+				if(save) {
+					valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
+
+					$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
+					$("#{{ form.vars.id}}_values").html("");
+
+					for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
+						if(valuesToSave{{ form.vars.id }}[i].type == "url")
+							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+						else
+							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
+					}
+
+					var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
+					Object.keys(obj{{ form.vars.id }}).forEach(k => obj{{ form.vars.id }}[k] = "");
+					editor{{ form.vars.id }}.setValue(obj{{ form.vars.id }});
+				}
 			}
 		});
 

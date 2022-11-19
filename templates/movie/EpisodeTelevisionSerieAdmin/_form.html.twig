@@ -78,7 +78,7 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "episodeTelevisionSerie.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
-{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' %}
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { languageId: entity.televisionSerie.language.id } %}
 
 <script>
 	$(function() {
