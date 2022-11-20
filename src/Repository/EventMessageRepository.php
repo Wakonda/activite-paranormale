@@ -33,20 +33,28 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 	
 	public function getAllEventsBetweenTwoDates($language, $startDate, $endDate)
 	{
-		$qb = $this->createQueryBuilder('c');
+		$dayStart = str_pad($startDate->format("d"), 2, "0", STR_PAD_LEFT);
+		$monthStart = str_pad($startDate->format("m"), 2, "0", STR_PAD_LEFT);
 
-		$qb ->join('c.language', 'l')
+		$dayEnd = str_pad($endDate->format("d"), 2, "0", STR_PAD_LEFT);
+		$monthEnd = str_pad($endDate->format("m"), 2, "0", STR_PAD_LEFT);
+		
+		$qb = $this->createQueryBuilder('c');
+// dd($language, $startDate, $endDate);
+		$qb 
+		->join('c.language', 'l')
 		    ->join('c.state', 's')
 			->where('l.abbreviation = :lang')
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
 			->andWhere("c.yearFrom IS NOT NULL AND c.monthFrom IS NOT NULL AND c.dayFrom IS NOT NULL")
 			->andWhere("c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL")
-			->andWhere("CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN :startDate AND :endDate")
-			->andWhere("CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN :startDate AND :endDate")
-			->setParameter('startDate', $startDate)
-			->setParameter('endDate', $endDate)
-		    ->andWhere("c.archive = false");
+			->andWhere("CONCAT(LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd
+			            OR CONCAT(LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd")
+			->setParameter('monthDayStart', $monthStart."-".$dayStart)
+			->setParameter('monthDayEnd', $monthEnd."-".$dayEnd)
+		    ->andWhere("c.archive = false")
+			;
 
 		return $qb->getQuery()->getResult();
 	}
@@ -63,9 +71,12 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 			->where('l.abbreviation = :lang')
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
-			->andWhere("(CONCAT(c.yearFrom, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL) OR (c.monthTo IS NULL AND c.dayTo IS NULL AND CONCAT(c.yearFrom, '-', :monthDay) = CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0'))) OR (c.monthTo IS NULL AND c.dayTo IS NULL AND c.yearFrom IS NULL AND :monthDay = CONCAT(LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')))")
-			->orWhere("CONCAT(c.yearTo, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
-			->orWhere("c.yearFrom IS NULL AND c.yearTo IS NULL AND CONCAT('2000-', :monthDay) BETWEEN CONCAT('2000-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT('2000-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
+			->andWhere("
+			           (CONCAT(c.yearFrom, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL)
+			        OR (c.monthTo IS NULL AND c.dayTo IS NULL AND CONCAT(c.yearFrom, '-', :monthDay) = CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0'))) 
+					OR (c.monthTo IS NULL AND c.dayTo IS NULL AND c.yearFrom IS NULL AND :monthDay = CONCAT(LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')))
+			        OR CONCAT(c.yearTo, '-', :monthDay) BETWEEN CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))
+			        OR c.yearFrom IS NULL AND c.yearTo IS NULL AND CONCAT('2000-', :monthDay) BETWEEN CONCAT('2000-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) AND CONCAT('2000-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
 			->setParameter('monthDay', $month."-".$day)
 		    ->andWhere("c.archive = false")
 			->orderBy("c.yearFrom", "DESC")

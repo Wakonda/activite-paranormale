@@ -196,6 +196,30 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getResult();
 	}
 	
+	public function getAllEventsByDayAndMonthBetween($startDate, $endDate, $language)
+	{
+		$dayStart = str_pad($startDate->format("d"), 2, "0", STR_PAD_LEFT);
+		$monthStart = str_pad($startDate->format("m"), 2, "0", STR_PAD_LEFT);
+
+		$dayEnd = str_pad($endDate->format("d"), 2, "0", STR_PAD_LEFT);
+		$monthEnd = str_pad($endDate->format("m"), 2, "0", STR_PAD_LEFT);
+		
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $language)
+			->andWhere("(REGEXP(c.birthDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd
+			            OR REGEXP(c.deathDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd)")
+			->setParameter("regexp", "^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+			->setParameter('monthDayStart', $monthStart."-".$dayStart)
+			->setParameter('monthDayEnd', $monthEnd."-".$dayEnd)
+			->orderBy("EXTRACT(YEAR FROM c.birthDate)", "DESC")
+			->addOrderBy("EXTRACT(YEAR FROM c.deathDate)", "DESC");
+
+		return $qb->getQuery()->getResult();
+	}
+	
 	public function getAllEventsByMonthOrYear($year, $month, $language)
 	{
 		$qb = $this->createQueryBuilder('c');

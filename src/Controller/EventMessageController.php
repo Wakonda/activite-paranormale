@@ -59,14 +59,48 @@ class EventMessageController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$interval = \DateInterval::createFromDateString("1 day");
-			$period = new \DatePeriod(new \DateTime($entity->getDateFrom()), $interval, (new \DateTime($entity->getDateTo()))->modify("+1 day"));
+			$period = new \DatePeriod(new \DateTime($entity->getDateFromString()), $interval, (new \DateTime($entity->getDateToString()))->modify("+1 day"));
 			
 			foreach($period as $dt) {
-				$eventDates[] = $dt->format("Y-m-d");
+				if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
+				$eventDates[$dt->format("Y")][] = $dt->format("m-d");
 				
-				if(!isset($eventNumber[$dt->format("Y-m-d")]))
-					$eventNumber[$dt->format("Y-m-d")] = 0;
-				$eventNumber[$dt->format("Y-m-d")]++;
+						if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
+							$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
+						$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
+				}
+			}
+		}
+
+		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonthBetween($startDate, $endDate, $request->getLocale());
+
+		foreach($entities as $entity) {
+			if(!empty($dt = $entity->getBirthDate())) {
+				if(preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $dt)) {
+					$dt = new \DateTime($dt);
+					
+					if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
+						$eventDates[$dt->format("Y")][] = $dt->format("m-d");
+						
+						if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
+							$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
+						$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
+					}
+				}
+			}
+
+			if(!empty($dt = $entity->getDeathDate())) {
+				if(preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $dt)) {
+					$dt = new \DateTime($dt);
+					
+					if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
+						$eventDates[$dt->format("Y")][] = $dt->format("m-d");
+						
+						if(!isset($eventNumber[$dt->format("Y")][$dt->format("Y-m-d")]))
+							$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
+						$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
+					}
+				}
 			}
 		}
 
@@ -76,28 +110,25 @@ class EventMessageController extends AbstractController
 		$res = [];
 
 		foreach($period as $dt) {
-			$number = isset($eventNumber[$dt->format("Y-m-d")]) ? $eventNumber[$dt->format("Y-m-d")] : 0;
-			$color = $number > 0 ? "darkgreen" : "darkred";
+			$numberCurrent = 0;
+			$number = 0;
+			
+			if(isset($eventNumber[$dt->format("Y")][$dt->format("m-d")])) {
+				$numberCurrent = $eventNumber[$dt->format("Y")][$dt->format("m-d")];
+				unset($eventNumber[$dt->format("Y")][$dt->format("m-d")]);
+			}
+			if(!empty($eventNumber))
+				$number = array_sum(array_values(array_map(function($a) use($dt) {  return isset($a[$dt->format("m-d")]) ? $a[$dt->format("m-d")] : 0; }, $eventNumber)));
+
+			$color = $numberCurrent > 0 ? "darkgreen" : ($number > 0 ? "chocolate" : "darkred");
 			$res[] = [
-				"title" => '<span style="color: '.$color.'">'.$number."</span>", //'<i class="fas fa-play-circle fa-2x"></i>',
-				"color" => in_array($dt->format("Y-m-d"), $eventDates) ? 'darkgreen' : "darkred",
+				"title" => '<span style="color: '.$color.'">'.($numberCurrent + $number)."</span>", //'<i class="fas fa-play-circle fa-2x"></i>',
+				"color" => $color,
 				"url" => $this->generateUrl('EventMessage_SelectDayMonth', ['year' => $dt->format("Y"), 'month' => $dt->format("m"), 'day' => $dt->format("d")]),
 				"start" => $dt->format("Y-m-d"),
 				"end" => $dt->format("Y-m-d")
 			];
 		}
-
-		/*$res = [];
-
-		foreach($entities as $entity)
-		{
-			$res[] = [
-				"title" => $entity->getTitle(),
-				"url" => $this->generateUrl('EventMessage_Read', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]),
-				"start" => $entity->getDateFrom(),
-				"end" => $entity->getDateTo()
-			];
-		}*/
 
 		$response = new Response(json_encode($res));
 		$response->headers->set('Content-Type', 'application/json');
