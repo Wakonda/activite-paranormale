@@ -10,7 +10,7 @@
 	<br>
 	
 	{% if entity.price is not empty %}
-		<div class="text-center"><span class="price">{{ entity|format_price }}</span></div>
+		<div class="text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></div>
 		<br>
 	{% endif %}
 	

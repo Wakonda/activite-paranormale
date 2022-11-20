@@ -220,7 +220,13 @@ class StoreRepository extends EntityRepository
 			$qb->andWhere("b.category = :category")
 			   ->setParameter("category", $c);
 		}
-
+		
+		if(isset($datas["platform"]) and !empty($c = $datas["platform"]))
+		{
+			$qb->andWhere("b.platform = :platform")
+			   ->setParameter("platform", $c);
+		}
+// dd($datas);
 		$qb->setFirstResult($offset)
 		   ->setMaxResults($nbMessageByPage);
 

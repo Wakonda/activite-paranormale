@@ -11,7 +11,7 @@
 				<h5 class="card-title text-center">{{ entity.title }}</h5>
 				<hr>
 				{% if entity.price is not empty %}
-					<p class="card-text text-center"><span class="price">{{ entity|format_price }}</span></p>
+					<p class="card-text text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></p>
 				{% endif %}
 				<p class="text-center"><i class="fas fa-cash-register"></i> <a href="{{ path('Store_Index', {category: entity.category}) }}">{{ ("store.index."~(entity.category|ucfirst))|trans([], "validators") }}</a></p>
 				{% if entity.characteristic is not empty %}

@@ -48,5 +48,6 @@ store:
         Validate: "Validate"
         Read: "Read"
         NoMatchingRecordsFound: "No matching records found"
+        Platform: "Sold by"
     read:
         Description: "Description"

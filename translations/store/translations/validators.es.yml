@@ -48,5 +48,6 @@ store:
         Validate: "Validar"
         Read: "Leer"
         NoMatchingRecordsFound: "No se encontraron resultados"
+        Platform: "Vendido por"
     read:
         Description: "Descripción"
