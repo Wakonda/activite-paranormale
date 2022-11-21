@@ -23,12 +23,12 @@ class TestimonyType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('label' => 'Titre', 'required' => true/*, 'constraints' => array(new NotBlank())*/))
             ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 											'choice_label'=>'title',
 											'placeholder' => "",
-											'constraints' => array(new NotBlank()),
+											// 'constraints' => array(new NotBlank()),
 											'required' => true,
 											'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
 											))

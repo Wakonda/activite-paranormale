@@ -53,7 +53,7 @@ class TestimonyController extends AbstractController
         $entity = new Testimony();
 		$securityUser = $this->container->get('security.authorization_checker');
 		
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND"));
+		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 		
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $securityUser]);

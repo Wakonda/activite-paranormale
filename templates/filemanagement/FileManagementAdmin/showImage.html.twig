@@ -17,6 +17,15 @@
 						{{ entity.realNameFile|imgsize(550, 'extended/photo/testimony/', true, {"class": "mx-auto d-block img-fluid"})|raw }}
 					{% endif %}
 				</td>
+			{% else %}
+				<td>{{ entity.titleFile }}</td>
+				<td>
+					{% if mainEntity.archive %}
+						<a href="{{ path("FileManagement_Download", {id: entity.id, path: (mainEntity.getAssetImagePath()|url_encode), folder: "private" }) }}">{{ entity.realNameFile }}</a>
+					{% else %}
+						<a href="{{ path("FileManagement_Download", {id: entity.id, path: (mainEntity.getAssetImagePath()|url_encode) }) }}">{{ entity.realNameFile }}</a>
+					{% endif %}
+				</td>
 			{% endif %}
 		</tr>
 		{% endfor %}

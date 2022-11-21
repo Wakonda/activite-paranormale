@@ -174,6 +174,16 @@ class FileManagementController extends AbstractController
 			'className' =>$className
         ));
     }
+	
+    public function downloadAction($id, $path, $folder)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(FileManagement::class)->find($id);
+
+		$pathFile = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."$folder/".urldecode($path).$entity->getRealNameFile());
+
+        return $this->file($pathFile, $entity->getRealNameFile(), \Symfony\Component\HttpFoundation\ResponseHeaderBag::DISPOSITION_INLINE);
+    }
 
 	// WPAINT
 	public function saveImagePaintAction(Request $request, $idClassName, $className)

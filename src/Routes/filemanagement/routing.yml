@@ -32,6 +32,14 @@ FileManagement_SaveImagePaint:
     path: /filemanagement/saveImagePaint/{idClassName}/{className}
     controller: App\Controller\FileManagementController::saveImagePaintAction
 
+FileManagement_Download:
+    path: /filemanagement/download/{id}/{path}/{folder}
+    controller: App\Controller\FileManagementController::downloadAction
+    defaults:
+        folder: public
+    requirements:
+       id: \d+
+
 # Administration
 FileManagement_Admin:
     resource: "routing/filemanagementadmin.yml"

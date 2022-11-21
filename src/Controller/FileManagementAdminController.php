@@ -284,6 +284,33 @@ class FileManagementAdminController extends AbstractController
 
 		return $this->redirect($this->generateUrl("FileManagement_Admin_ListFiles", ["page" => $request->query->get("page"), "folder" => $request->query->get("folder")]));
 	}
+
+    public function showImageAction($idClassName, $className)
+    {
+		$em = $this->getDoctrine()->getManager();
+		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName);
+
+        return $this->render('filemanagement/FileManagementAdmin/showImage.html.twig', array(
+			'entities' => $entities,
+			'idClassName' => $idClassName,
+			'className' => $className,
+			'mainEntity' => $em->getRepository($entity->getMainEntityClassName())->find($idClassName)
+        ));
+    }
+
+    private function getNewEntity($em, $className, $idClassName)
+	{
+		switch($className)
+		{
+			case "Testimony":
+				$entity = new TestimonyFileManagement();
+				$entity->setTestimony($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
+				$className = TestimonyFileManagement::class;
+				break;
+		}
+		return [$entity, $className];
+	}
 	
 	private function listFolders($base_dir, $bd){
       $directories = array();
