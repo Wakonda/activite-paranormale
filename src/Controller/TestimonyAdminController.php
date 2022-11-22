@@ -157,12 +157,18 @@ class TestimonyAdminController extends AdminGenericController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
-		
+
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
 
 		$entity = $em->getRepository(Testimony::class)->find($id);
-		
+
 		$entity->setState($state);
+		
+		if($state->getInternationalName() == "Validate") {
+			if(empty($entity->getTitle()) or empty($entity->getTheme()))
+				return $this->redirect($this->generateUrl('Testimony_Admin_Edit', array('id' => $id)));
+		}
+		
 		$em->persist($entity);
 		$em->flush();
 		

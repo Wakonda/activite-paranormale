@@ -22,3 +22,7 @@ file:
         CaptionPhoto: "Leyenda - Foto"
         NotUsed: "No utilizado"
         MediaManagement: "Gestión de medios"
+    read:
+        OtherFiles: "Otros archivos"
+        Title: "Título"
+        Download: "Descargar"

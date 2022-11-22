@@ -18,16 +18,21 @@
 		{% set i = 0 %}
 		{% set j = 1 %}
 		{% for entity in entities %}
+			{% if entity.extensionFile|is_image %}
 			<li data-target="#carousel-filemanagement-show" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
 			{% set i = i + 1 %}
 			{% set j = j + 1 %}
+			{% endif %}
 		{% endfor %}
 		</ol>
+		
+		{% set otherFiles = [] %}
 
 		<!-- Wrapper for slides -->
 		<div class="carousel-inner" role="listbox">
 			{% set i = 0 %}
 			{% for entity in entities %}
+				{% if entity.extensionFile|is_image %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }} text-center">
 					{% if mainEntity.archive %}
 						{{ entity.realNameFile|imgsize(550, 'extended/photo/testimony/', true, null, null, true, true)|raw }}
@@ -36,7 +41,36 @@
 					{% endif %}
 					{% set i = i + 1 %}
 				</div>
+				{% else %}
+					{% set otherFiles = otherFiles|merge([entity]) %}
+				{% endif %}
 			{% endfor %}
 		</div>
 	</div>
+		
+		{% if otherFiles is not empty %}
+			<h3>{{ "file.read.OtherFiles"|trans([], "validators") }}</h3>
+			<table class="table table-bordered">
+				<thead>
+					<tr class="trGene">
+						<th>{{ "file.read.Title"|trans([], "validators") }}</th>
+						<th>{{ "file.read.Download"|trans([], "validators") }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for otherFile in otherFiles %}
+					<tr>
+						<td>{{ otherFile.titleFile }}</td>
+						<td>
+							{% if mainEntity.archive %}
+								<a href="{{ path('FileManagement_Download', {id: otherFile.id, path: (mainEntity.getAssetImagePath()|url_encode), folder: "private" }) }}" class="btn btn-info btn-sm d-inline-block"><i class="fas fa-cloud-download-alt"></i></a>
+							{% else %}
+								<a href="{{ path('FileManagement_Download', {id: otherFile.id, path: (mainEntity.getAssetImagePath()|url_encode) }) }}" class="btn btn-info btn-sm d-inline-block"><i class="fas fa-cloud-download-alt"></i></a>
+							{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
 {% endif %}

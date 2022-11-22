@@ -22,3 +22,7 @@ file:
         CaptionPhoto: "Caption - Photo"
         NotUsed: "Not used"
         MediaManagement: "Media management"
+    read:
+        OtherFiles: "Other files"
+        Title: "Title"
+        Download: "Download"
