@@ -59,7 +59,7 @@ class MovieAdminController extends AdminGenericController
 
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
-
+// dd($form->get('movieBiographies'), $form->getErrors(true));
 		if($form->isValid())
 			$this->saveNewBiographies($entityBindded, $form, "movieBiographies");
 	}

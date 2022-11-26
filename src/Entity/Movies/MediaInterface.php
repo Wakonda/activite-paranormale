@@ -11,4 +11,6 @@ interface MediaInterface
 	const DIRECTOROFPHOTOGRAPHY_OCCUPATION = "directorOfPhotography";
 	const FILMEDITOR_OCCUPATION = "filmEditor";
 	const COMPOSER_OCCUPATION = "composer";
+	const EXECUTIVEPRODUCER_OCCUPATION = "executiveProducer";
+	const COSTUMEDESIGNER_OCCUPATION = "costumeDesigner";
 }

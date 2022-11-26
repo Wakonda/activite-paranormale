@@ -79,6 +79,8 @@ biography:
         DirectorOfPhotography: "Photographer"
         FilmEditor: "Film editor"
         Composer: "Composer"
+        ExecutiveProducer: "Executive producer"
+        CostumeDesigner: "Costum designer"
     search:
         ArtistBiography: "Music"
         MovieBiography: "Movie"

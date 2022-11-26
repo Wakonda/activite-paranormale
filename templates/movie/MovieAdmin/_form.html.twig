@@ -57,7 +57,7 @@
         data-widget-counter="{{ form.movieBiographies|length }}"
 		class="list-unstyled">
 		{% for movieBiographyField in form.movieBiographies %}
-			{% if movieBiographyField.vars.value.biography is not empty %}
+			{% if movieBiographyField.vars.value is not empty and movieBiographyField.vars.value.biography is not empty %}
 				<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
 					<div data-wikidata="{{ movieBiographyField.vars.value.biography.wikidata }}" data-title="{{ movieBiographyField.vars.value.biography.title }}" data-international-name="{{ movieBiographyField.vars.value.biography.internationalName }}">
 						{{ form_errors(movieBiographyField) }}
@@ -202,7 +202,7 @@
 				let wikidatas = [];
 				
 				{% for movieBiographyField in form.movieBiographies %}
-					{% if movieBiographyField.vars.value.biography is not empty %}
+					{% if movieBiographyField.vars.value is not empty and movieBiographyField.vars.value.biography is not empty %}
 						wikidatas.push("{{ movieBiographyField.vars.value.biography.title }}_{{ movieBiographyField.vars.value.biography.wikidata }}");
 					{% endif %}
 				{% endfor %}
@@ -211,7 +211,7 @@
 					for(wikidata in data.person[role]) {
 						if(wikidatas.includes(data.person[role][wikidata].title + "_" + wikidata))
 							continue;
-
+console.log(wikidata, data.person[role][wikidata], role)
 						var id = addNewBiography(document.querySelector('.add-another-collection-widget').getAttribute("data-list-selector"));
 
 						document.getElementById("{{ form.movieBiographies.vars.id }}_" + id + "_occupation").value = role;

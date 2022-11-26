@@ -31,7 +31,9 @@ class MovieBiography extends EntityLinkBiography implements MediaInterface
 			self::DIRECTOR_OCCUPATION,
 			self::DIRECTOROFPHOTOGRAPHY_OCCUPATION,
 			self::FILMEDITOR_OCCUPATION,
-			self::COMPOSER_OCCUPATION
+			self::COMPOSER_OCCUPATION,
+			self::EXECUTIVEPRODUCER_OCCUPATION,
+			self::COSTUMEDESIGNER_OCCUPATION
 		];
 	}
 
