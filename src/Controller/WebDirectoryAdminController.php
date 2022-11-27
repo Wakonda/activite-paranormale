@@ -164,7 +164,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		
 		if(!empty($entityToCopy->getLicence()))
 			$licence = $em->getRepository(Licence::class)->findOneBy(["internationalName" => $entityToCopy->getLicence()->getInternationalName(), "language" => $language]);
-		
+
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setTitle($entityToCopy->getTitle());
 		$entity->setLink($entityToCopy->getLink());
@@ -172,7 +172,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$entity->setLogo($entityToCopy->getLogo());
 		$entity->setLicence($licence);
 		$entity->setWebsiteLanguage($websiteLanguage);
-		$entity->setSocialNetwork($entityToCopy->getSocialNetwork());
+		$entity->setSocialNetwork(($entityToCopy->getSocialNetwork()));
 		$entity->setFoundedYear($entityToCopy->getFoundedYear());
 		$entity->setDefunctYear($entityToCopy->getDefunctYear());
 		$entity->setWikidata($entityToCopy->getWikidata());

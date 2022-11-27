@@ -81,8 +81,8 @@ class WebDirectoryAdminType extends AbstractType
 		$socialNetworkLinkedinDefault = "";
 		$socialNetworkTumblrDefault = "";
 		$socialNetworkVimeoDefault = "";
-		
-		if($builder->getData()->getId() != null)
+
+		if($builder->getData() != null)
 		{
 			if($builder->getData()->getSocialNetwork() != null)
 			{
@@ -108,19 +108,19 @@ class WebDirectoryAdminType extends AbstractType
 							$socialNetworkYoutubeDefault = $socialNetwork->url;
 							break;
 						case "Instagram":
-							$socialNetworkDeliciousDefault = $socialNetwork->url;
+							$socialNetworkInstagramDefault = $socialNetwork->url;
 							break;
 						case "Pinterest":
-							$socialNetworkLinkedinDefault = $socialNetwork->url;
+							$socialNetworkPinterestDefault = $socialNetwork->url;
 							break;
 						case "Delicious":
-							$socialNetworkGooglePlusDefault = $socialNetwork->url;
+							$socialNetworkDeliciousDefault = $socialNetwork->url;
 							break;
 						case "Github":
 							$socialNetworkGithubDefault = $socialNetwork->url;
 							break;
 						case "Linkedin":
-							$socialNetworkYoutubeDefault = $socialNetwork->url;
+							$socialNetworkLinkedinDefault = $socialNetwork->url;
 							break;
 						case "Tumblr":
 							$socialNetworkTumblrDefault = $socialNetwork->url;
@@ -132,7 +132,7 @@ class WebDirectoryAdminType extends AbstractType
 				}
 			}
 		}
-		
+
 		$builder
 			->add('socialNetworkFacebook', TextType::class, array('label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Facebook', 'class' => 'social_network_select'), 'data' => $socialNetworkFacebookDefault, 'constraints' => array(new Url())))
 			->add('socialNetworkTwitter', TextType::class, array('label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Twitter', 'class' => 'social_network_select'), 'data' => $socialNetworkTwitterDefault, 'constraints' => array(new Url())))

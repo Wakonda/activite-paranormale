@@ -364,7 +364,7 @@ class WebDirectory
         return $this->licence;
     }
 
-    public function setLicence(Licence $licence)
+    public function setLicence(?Licence $licence)
     {
         $this->licence = $licence;
     }

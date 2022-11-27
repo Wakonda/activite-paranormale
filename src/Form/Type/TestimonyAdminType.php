@@ -27,22 +27,22 @@ class TestimonyAdminType extends AbstractType
 			->add('pseudoUsed', TextType::class)
 			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text'))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-											'choice_label'=>'title',
-											'required' => true,
-											'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
-											))
+				'choice_label'=>'title',
+				'required' => true,
+				'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
+			))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'query_builder' => function(\App\Repository\LanguageRepository $repository) { return $repository->getLangueOnForm();}
+				'choice_label'=>'title', 
+				'required' => true,
+				'query_builder' => function(\App\Repository\LanguageRepository $repository) { return $repository->getLangueOnForm();}
 			))
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'choice_attr' => function($val, $key, $index) {
-												return ['data-intl' => $val->getInternationalName()];
-											},
-											'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
+				'choice_label'=>'title', 
+				'required' => true,
+				'choice_attr' => function($val, $key, $index) {
+					return ['data-intl' => $val->getInternationalName()];
+				},
+				'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
 			))
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,
@@ -66,6 +66,9 @@ class TestimonyAdminType extends AbstractType
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
+			->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
+			->add('location', HiddenType::class)
+			->add('sightingDate', DateTimePartialType::class, ['required' => false])
 		;
     }
 

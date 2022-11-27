@@ -16,6 +16,7 @@
 </div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
+{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form.illustration) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.type, "eventMessage.admin.Type"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.type) }}{{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}</div>
