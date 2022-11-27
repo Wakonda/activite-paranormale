@@ -47,6 +47,8 @@ testimony:
         Country: "Country"
         Location: "Location"
         SightingDate: "Sighting Date / Time"
+        Introduction: "Have you seen a UFO, a ghost? Have you or someone close to you witnessed an unexplainable, supernatural, paranormal event? If so, tell us your story."
+        EmailConfidential: "Your email address (optional field) will not be displayed."
     waiting:
         Edit: "Edit"
         Validate: "Validate"

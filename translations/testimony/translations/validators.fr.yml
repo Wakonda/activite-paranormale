@@ -38,7 +38,7 @@ testimony:
         EmailAuthor: "Email"
         Licence: "Licence"
         IsAnonymous: "Publié anonymement ?"
-        NextStep: "Etape suivante"
+        NextStep: "Ajouter un fichier ou une photo"
         Draft: "Brouillon"
         Preview: "Prévisualiser"
         PublishedAnonymously: "Publié anonymement"
@@ -47,6 +47,8 @@ testimony:
         Country: "Pays"
         Location: "Lieu"
         SightingDate: "Date / heure d'observation"
+        Introduction: "Vous avez vu un OVNI, un fantôme ? Vous ou un de vos proches avez été témoin d’un événement inexplicable, surnaturel, paranormal ? Si c’est le cas, racontez-nous votre histoire."
+        EmailConfidential: "Votre adresse email (champ facultatif) ne sera pas affichée."
     waiting:
         Edit: "Modifier"
         Validate: "Valider"

@@ -47,6 +47,8 @@ testimony:
         Country: "País"
         Location: "Ubicación"
         SightingDate: "Fecha / hora de avistamiento"
+        Introduction: "¿Has visto un OVNI, un fantasma? ¿Usted o alguien cercano a usted ha sido testigo de un evento paranormal, sobrenatural e inexplicable? Si es así, cuéntanos tu historia."
+        EmailConfidential: "Su dirección de correo electrónico (campo opcional) no se mostrará."
     waiting:
         Edit: "Modificar"
         Validate: "Validar"

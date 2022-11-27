@@ -155,6 +155,8 @@ admin:
         Day: "Jour"
         Month: "Mois"
         Year: "Année"
+        Hour: "Heure"
+        Minute: "Minute"
     moderation:
         EventsToModerate: "Événements à modérer"
         NewsToModerate: "Articles / Archives à modérer"

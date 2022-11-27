@@ -29,9 +29,9 @@ class TestimonyType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('label' => 'Titre', 'required' => true/*, 'constraints' => array(new NotBlank())*/))
+            // ->add('title', TextType::class, array('label' => 'Titre', 'required' => true/*, 'constraints' => array(new NotBlank())*/))
             ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank())))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
+            /*->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'placeholder' => "",
 					// 'constraints' => array(new NotBlank()),
@@ -44,7 +44,7 @@ class TestimonyType extends AbstractType
 					'placeholder' => "",
 					'constraints' => array(new NotBlank()),
 					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-				))
+				))*/
 			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
 					'choice_label'=>'title', 
 					'required' => false,
@@ -57,7 +57,7 @@ class TestimonyType extends AbstractType
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false])
 			->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
-			->add('emailAuthor', TextType::class, array('constraints' => array(new NotBlank(), new Email())))
+			->add('emailAuthor', TextType::class, ["required" => false, 'constraints' => [new Email()]])
 			->add('save', SubmitType::class, array('label' => 'Create Post'))
 			->add('addFile', SubmitType::class, array('label' => 'Create Post'));
 			
