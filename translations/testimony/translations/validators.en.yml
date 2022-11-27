@@ -15,6 +15,8 @@ testimony:
         Refuse: "Refuse"
         TestimonyPublished: "Testimony published"
         TestimonyRefused: "Testimony refused"
+        Location: "Location"
+        SightingDate: "Sighting Date / Time"
     index:
         Testimony: "Testimony"
         NbrTotalTestimony: "Total number of testimonies: "
@@ -42,6 +44,9 @@ testimony:
         PublishedAnonymously: "Published anonymously"
         PostedWithMyUserAccount: "Posted with my user account"
         AnonymousMessage: "By posting anonymously, your testimony will not appear in your user account when it will be approved by our moderators."
+        Country: "Country"
+        Location: "Location"
+        SightingDate: "Sighting Date / Time"
     waiting:
         Edit: "Edit"
         Validate: "Validate"

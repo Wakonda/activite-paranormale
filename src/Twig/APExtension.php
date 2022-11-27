@@ -53,6 +53,7 @@
 				new TwigFilter('displayPrivatePDF', array($this, 'displayPrivatePDFFilter'), array('is_safe' => array('html'))),
 				new TwigFilter('dodate', array($this, 'dodateFilter')),
 				new TwigFilter('doPartialDate', array($this, 'doPartialDateFilter')),
+				new TwigFilter('doPartialDateTime', array($this, 'doPartialDateTimeFilter')),
 				new TwigFilter('doYearMonthDayDate', array($this, 'doYearMonthDayDateFilter')),
 				new TwigFilter('advertisement', array($this, 'advertisementFilter')),
 				new TwigFilter('linkfollow', array($this, 'linkFollowFilter')),
@@ -347,6 +348,11 @@
 		public function doPartialDateFilter(?string $partialDate, $language)
 		{
 			return (new \App\Service\APDate())->doPartialDate($partialDate, $language);
+		}
+		
+		public function doPartialDateTimeFilter(?string $partialDateTime, $language)
+		{
+			return (new \App\Service\APDate())->doPartialDateTime($partialDateTime, $language);
 		}
 		
 		public function doYearMonthDayDateFilter($day, $month, $year, $language)

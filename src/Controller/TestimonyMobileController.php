@@ -84,9 +84,9 @@ class TestimonyMobileController extends AbstractController
 	{
 		$entity  = new Testimony();
 		$form = $this->createForm(TestimonyType::class, $entity, array('locale' => $request->getLocale()));
-		
+
 		$form->handleRequest($request);
-		
+// dd($_POST, $request->request->all());		
 		if ($form->isSubmitted() && $form->isValid())
 		{
 			$em = $this->getDoctrine()->getManager();

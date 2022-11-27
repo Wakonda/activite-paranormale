@@ -75,6 +75,56 @@
 	</script>
 {% endblock %}
 
+{% block date_time_partial_widget %}
+	{{ form_errors(form.day) }}
+	{{ form_errors(form.month) }}
+	{{ form_errors(form.year) }}
+	{{ form_errors(form.hour) }}
+	{{ form_errors(form.minute) }}
+
+	<div class="input-group">
+		{{ form_widget(form.day, {'attr':{'class': 'form-control'}}) }}
+		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
+		{{ form_widget(form.month, {'attr':{'class': 'form-control'}}) }}
+		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
+		{{ form_widget(form.year, {'attr':{'class': 'form-control'}}) }}
+		<div class="input-group-append input-group-prepend"><span class="input-group-text"><i class="far fa-clock"></i></span></div>
+		{{ form_widget(form.hour, {'attr':{'class': 'form-control'}}) }}
+		<div class="input-group-append input-group-prepend"><span class="input-group-text">:</span></div>
+		{{ form_widget(form.minute, {'attr':{'class': 'form-control'}}) }}
+	</div>
+
+	<script>
+		document.getElementById("{{ form.day.vars.id }}").addEventListener("keyup", (e) => {
+			var targetElement = event.target || event.srcElement;
+			
+			if(targetElement.value.length == 2 || targetElement.value > 3)
+				document.getElementById("{{ form.month.vars.id }}").focus();
+		});
+		
+		document.getElementById("{{ form.month.vars.id }}").addEventListener("keyup", (e) => {
+			var targetElement = event.target || event.srcElement;
+			
+			if(targetElement.value.length == 2 || targetElement.value > 1)
+				document.getElementById("{{ form.year.vars.id }}").focus();
+		});
+		
+		document.getElementById("{{ form.year.vars.id }}").addEventListener("keyup", (e) => {
+			var targetElement = event.target || event.srcElement;
+			
+			if(targetElement.value.length == 4)
+				document.getElementById("{{ form.hour.vars.id }}").focus();
+		});
+		
+		document.getElementById("{{ form.hour.vars.id }}").addEventListener("keyup", (e) => {
+			var targetElement = event.target || event.srcElement;
+			
+			if(targetElement.value.length == 2)
+				document.getElementById("{{ form.minute.vars.id }}").focus();
+		});
+	</script>
+{% endblock %}
+
 {% block illustration_widget %}
 	{{ form_errors(form) }}
 	{{ form_errors(form.titleFile) }}

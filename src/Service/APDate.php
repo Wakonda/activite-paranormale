@@ -96,6 +96,28 @@
 			return $dateString;
 		}
 		
+		public function doPartialDateTime(?string $partialDateTime, $language)
+		{
+			$dateTimeArray = explode(" ", $partialDateTime);
+			
+			if(empty($partialDateTime))
+				return null;
+			
+			$dateString = $this->doPartialDate($dateTimeArray[0], $language);
+			
+			if(empty($dateTimeArray[1]))
+				return $dateString;
+			
+			$word = "at";
+			
+			if($language == "fr")
+				$word = "à";
+			elseif($language == "es")
+				$word = "a las";
+			
+			return $dateString." ${word} ".$dateTimeArray[1];
+		}
+		
 		public function doYearMonthDayDate($day, $month, $year, $language) {
 			if(empty($day) and empty($month) and empty($year))
 				return null;

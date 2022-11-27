@@ -3,6 +3,67 @@
 {% block title %}{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
 {% block page_title%}{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
 
+{% block header_mobile_plus %}
+<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/select2/dist/css/select2.min.css') }}" media="screen" />
+<script src="{{ asset('extended/js/select2/dist/js/select2.full.min.js') }}"></script>
+<script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
+<script>
+	$(function() {
+		$('#{{ form.location_selector.vars.id }}').select2({
+			allowClear: true,
+			placeholder: "",
+			ajax: {
+				url: ' https://nominatim.openstreetmap.org/search?',
+				dataType: 'json',
+				minimumInputLength: 3,
+				data: function (params) {
+					var query = {
+						q: params.term,
+						addressdetails: 1,
+						countrycodes: document.getElementById("{{ form.country.vars.id }}").value,
+						format: "json"
+					}
+
+					return query;
+				},
+				processResults: function (data) {
+					res = []
+
+					for(var i = 0; i < data.length; i++) {
+						let obj = new Object();
+						obj.id = i;
+						obj.text = data[i].display_name;
+						obj.address = JSON.stringify(data[i].address);
+						obj.lat = data[i].lat;
+						obj.lon = data[i].lon;
+						res.push(obj)
+					 }
+
+					return {
+						results: res
+					};
+				}
+			}
+		});
+
+		$('#{{ form.location_selector.vars.id }}').on('select2:select', function (e) {
+			let data = e.params.data;
+			let address = JSON.parse(data.address);
+			
+			address.value = data.text;
+			address.lon = data.lon;
+			address.lat = data.lat;
+			
+			document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address);
+		});
+
+		$('#{{ form.location_selector.vars.id }}').on('select2:clear', function (e) {
+			document.getElementById("{{ form.location.vars.id }}").value = "";
+		});
+	});
+</script>
+{% endblock %}
+
 {% block body_content %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
@@ -50,6 +111,27 @@
 			<div class="col-sm-10">
 				{{ form_errors(form.licence) }}
 				{{ form_widget(form.licence, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.sightingDate, "testimony.new.SightingDate"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.sightingDate) }}
+				{{ form_widget(form.sightingDate, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.country, "testimony.new.Country"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.country) }}
+				{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+		</div>
+		<div class="form-group row">
+			{{ form_label(form.location_selector, "testimony.new.Location"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
+			<div class="col-sm-10">
+				{{ form_errors(form.location_selector) }}
+				{{ form_widget(form.location_selector, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>
 		<div class="text-right">

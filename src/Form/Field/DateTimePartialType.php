@@ -7,18 +7,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-use App\Form\DataTransformer\DatePartialTransformer;
+use App\Form\DataTransformer\DateTimePartialTransformer;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
-class DatePartialType extends AbstractType
+class DateTimePartialType extends AbstractType
 {
     private $transformer;
 
-    public function __construct(DatePartialTransformer $transformer)
+    public function __construct(DateTimePartialTransformer $transformer)
     {
         $this->transformer = $transformer;
     }
@@ -30,7 +30,9 @@ class DatePartialType extends AbstractType
 		$builder
 			->add('day', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Day"], "translation_domain" => "validators"])
 			->add('month', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Month"], "translation_domain" => "validators"])
-			->add('year', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Year"], "translation_domain" => "validators"]);
+			->add('year', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Year"], "translation_domain" => "validators"])
+			->add('hour', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Hour"], "translation_domain" => "validators"])
+			->add('minute', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Minute"], "translation_domain" => "validators"]);
 	
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($options)
 		{
@@ -41,13 +43,19 @@ class DatePartialType extends AbstractType
 			$year = $form->get('year')->getData();
 			$month = $form->get('month')->getData();
 			$day = $form->get('day')->getData();
-
+			$hour = $form->get('hour')->getData();
+			$minute = $form->get('minute')->getData();
+// dd($hour);
 			if(empty($year) and (!empty($month) or !empty($day)) and !$options["allow_empty_year"]) {
 				$form->get('year')->addError(new FormError($notBlank->message));
 			}
 
 			if(empty($month) and !empty($day)) {
 				$form->get('month')->addError(new FormError($notBlank->message));
+			}
+
+			if(empty($hour) and !empty($minute)) {
+				$form->get('hour')->addError(new FormError($notBlank->message));
 			}
 			
 			if(!empty($month) and !empty($year)) {

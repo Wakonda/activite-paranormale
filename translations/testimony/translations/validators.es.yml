@@ -15,6 +15,8 @@ testimony:
         Refuse: "Rechazar"
         TestimonyPublished: "Testimonio publicado"
         TestimonyRefused: "Témoignage negó"
+        Location: "Ubicación"
+        SightingDate: "Fecha / hora de avistamiento"
     index:
         Testimony: "Testimonio"
         NbrTotalTestimony: "Número total de testimonios: "
@@ -42,6 +44,9 @@ testimony:
         PublishedAnonymously: "Publicado anónimamente"
         PostedWithMyUserAccount: "Publicado con mi cuenta de usuario"
         AnonymousMessage: "Cuando publicáis de forma anónima, su testimonio no aparecerá en su cuenta cuando sea aprobado por nuestro equipo de moderación."
+        Country: "País"
+        Location: "Ubicación"
+        SightingDate: "Fecha / hora de avistamiento"
     waiting:
         Edit: "Modificar"
         Validate: "Validar"
