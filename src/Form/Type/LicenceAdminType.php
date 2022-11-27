@@ -10,6 +10,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,6 +24,7 @@ class LicenceAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('logo', FileType::class, array('data_class' => null, 'required' => true))
+			->add('logo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'Licence_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
             ->add('link', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 

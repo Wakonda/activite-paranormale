@@ -27,7 +27,7 @@ class LicenceAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Licence_Admin_Index"; 
 	protected $showRoute = "Licence_Admin_Show";
-	protected $illustrations = [["field" => "logo"]];
+	protected $illustrations = [["field" => "logo", 'selectorFile' => 'logo_selector']];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
@@ -119,10 +119,10 @@ class LicenceAdminController extends AdminGenericController
     public function internationalizationAction(Request $request, $id)
     {
 		$formType = LicenceAdminType::class;
-		$entity = new Theme();
+		$entity = new Licence();
 		
 		$em = $this->getDoctrine()->getManager();
-		$entityToCopy = $em->getRepository(Theme::class)->find($id);
+		$entityToCopy = $em->getRepository(Licence::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
@@ -136,4 +136,14 @@ class LicenceAdminController extends AdminGenericController
 		$twig = 'index/LicenceAdmin/new.html.twig';
 		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit']);
     }
+
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('Licence_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
+	}
 }

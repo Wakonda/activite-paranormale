@@ -35,3 +35,15 @@ Licence_Admin_IndexDatatables:
     controller: App\Controller\LicenceAdminController::indexDatatablesAction
     requirements:
         _method: get
+
+Licence_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\LicenceAdminController::showImageSelectorColorboxAction
+
+Licence_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\LicenceAdminController::loadImageSelectorColorboxAction
+
+Licence_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\LicenceAdminController::internationalizationAction
