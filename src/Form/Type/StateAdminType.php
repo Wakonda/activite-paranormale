@@ -33,15 +33,17 @@ class StateAdminType extends AbstractType
 				'constraints' => array(new NotBlank())
 			))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => false,
-					'query_builder' => function(EntityRepository $er)
-						{
-							return $er->createQueryBuilder('u')
-									  ->orderBy('u.title', 'ASC');
-						},
-					'constraints' => array(new NotBlank())
-					));
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => false,
+				'query_builder' => function(EntityRepository $er)
+					{
+						return $er->createQueryBuilder('u')
+								  ->orderBy('u.title', 'ASC');
+					},
+				'constraints' => array(new NotBlank())
+			));
     }
 
     public function getBlockPrefix()

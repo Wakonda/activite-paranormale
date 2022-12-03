@@ -17,6 +17,7 @@ testimony:
         TestimonyRefused: "Testimony refused"
         Location: "Location"
         SightingDate: "Sighting Date / Time"
+        Country: "Country"
     index:
         Testimony: "Testimony"
         NbrTotalTestimony: "Total number of testimonies: "

@@ -27,7 +27,9 @@ class TagWordAdminType extends AbstractType
             ->add('source', SourceEditType::class, array('required' => false))
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-				'choice_label'=>'title', 
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
 				'required' => true,
 				'query_builder' => function(EntityRepository $er) 
 				{

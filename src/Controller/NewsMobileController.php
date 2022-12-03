@@ -115,32 +115,7 @@ class NewsMobileController extends AbstractController
 		$total = $pagination->getTotalItemCount();
 		$total_pages = ceil($total / $num_results_on_page);
 		
-		$datas = [];
-
-		foreach($pagination->getItems() as $result) {
-			$entity = $em->getRepository($this->getClassNameFromTableName($em, $result["classname"]))->find($result["id"]);
-			$datas[$result["id"]."_".$result["classname"]]["entity"] = $entity;
-			$route = $entity->getShowRoute();
-			switch ($result["classname"]) {
-				case "news":
-					$route = "ap_newsmobile_read";
-					break;
-				case "video":
-					$route = "ap_videomobile_read";
-					break;
-				case "photo":
-					$route = "ap_photomobile_read";
-					break;
-				case "testimony":
-					$route = "ap_testimonymobile_read";
-					break;
-				case "witchcraft":
-					$route = "ap_witchcraftmobile_read";
-					break;
-			}
-			
-			$datas[$result["id"]."_".$result["classname"]]["showRoute"] = $route;
-		}
+		$datas = $this->getDataSearch($em, $pagination);
 
 		$stopTimer = microtime(true);
 
@@ -164,12 +139,8 @@ class NewsMobileController extends AbstractController
 		$totalImage = $paginationImage->getTotalItemCount();
 		$total_pages_image = ceil($totalImage / $num_results_on_page);
 		
-		$dataImages = [];
+		$dataImages = $this->getDataSearch($em, $paginationImage);
 
-		foreach($paginationImage->getItems() as $result) {
-			$dataImages[$result["id"]."_".$result["classname"]] = $em->getRepository($this->getClassNameFromTableName($em, $result["classname"]))->find($result["id"]);
-		}
-		
 		$stopTimer = microtime(true);
 
 		$execution_time_image = round($stopTimer - $startTimer, 7) * 1000;
@@ -188,6 +159,39 @@ class NewsMobileController extends AbstractController
 			'execution_time' => $execution_time,
 			'execution_time_image' => $execution_time_image
 		]);
+	}
+	
+	private function getDataSearch($em, $pagination): Array
+	{
+		$datas = [];
+
+		foreach($pagination->getItems() as $result) {
+			$entity = $em->getRepository($this->getClassNameFromTableName($em, $result["classname"]))->find($result["id"]);
+			$datas[$result["id"]."_".$result["classname"]]["entity"] = $entity;
+			$route = $entity->getShowRoute();
+
+			switch ($result["classname"]) {
+				case "news":
+					$route = "ap_newsmobile_read";
+					break;
+				case "video":
+					$route = "ap_videomobile_read";
+					break;
+				case "photo":
+					$route = "ap_photomobile_read";
+					break;
+				case "testimony":
+					$route = "ap_testimonymobile_read";
+					break;
+				case "witchcraft":
+					$route = "ap_witchcraftmobile_read";
+					break;
+			}
+			
+			$datas[$result["id"]."_".$result["classname"]]["showRoute"] = $route;
+		}
+		
+		return $datas;
 	}
 
 	private function getClassNameFromTableName($em, $table)

@@ -39,7 +39,9 @@ class WitchcraftToolAdminType extends AbstractType
 			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'WitchcraftTool_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-				'choice_label'=>'title',
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
 				'required' => true,
 				'constraints' => array(new NotBlank()),
 				'query_builder' => function(EntityRepository $er)

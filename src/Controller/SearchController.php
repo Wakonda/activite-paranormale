@@ -87,7 +87,7 @@ class SearchController extends AbstractController
 		foreach($paginationImage->getItems() as $result) {
 			$dataImages[$result["id"]."_".$result["classname"]] = $em->getRepository($this->getClassNameFromTableName($em, $result["classname"]))->find($result["id"]);
 		}
-		
+
 		$stopTimer = microtime(true);
 
 		$execution_time_image = round($stopTimer - $startTimer, 7) * 1000;

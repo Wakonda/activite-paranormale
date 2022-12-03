@@ -17,6 +17,7 @@ testimony:
         TestimonyRefused: "Témoignage negó"
         Location: "Ubicación"
         SightingDate: "Fecha / hora de avistamiento"
+        Country: "País"
     index:
         Testimony: "Testimonio"
         NbrTotalTestimony: "Número total de testimonios: "

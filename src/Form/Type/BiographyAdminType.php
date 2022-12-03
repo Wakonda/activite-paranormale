@@ -37,14 +37,16 @@ class BiographyAdminType extends AbstractType
             ->add('text', TextareaType::class, array('required' => false))
             ->add('source', SourceEditType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er)
-					{
-						return $er->createQueryBuilder('u')
-								  ->orderBy('u.title', 'ASC');
-					},
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(EntityRepository $er)
+				{
+					return $er->createQueryBuilder('u')
+							  ->orderBy('u.title', 'ASC');
+				},
 			))
 			->add('kind', ChoiceType::class, array('multiple' => false, 'expanded' => false,
 					"choices" => array(

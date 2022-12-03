@@ -19,6 +19,8 @@
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
 	{{ macro_index.select2_autocomplete() }}
+	
+	{{ macro_testimony.location_selector(form) }}
 {% endblock %}
 
 {% block tbody_admin_table %}

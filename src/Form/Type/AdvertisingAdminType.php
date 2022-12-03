@@ -32,7 +32,9 @@ class AdvertisingAdminType extends AbstractType
 			->add('width', IntegerType::class, array("label" => "admin.advertising.Width", "required" => true, "constraints" => new NotBlank()))
 			->add('height', IntegerType::class, array("label" => "admin.advertising.Height", "required" => true, "constraints" => new NotBlank()))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
+					'choice_label' => function ($choice, $key, $value) {
+						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+					},
 					'required' => true,
 					'query_builder' => function(EntityRepository $er) 
 					{

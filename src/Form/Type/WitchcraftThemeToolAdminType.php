@@ -23,7 +23,9 @@ class WitchcraftThemeToolAdminType extends AbstractType
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()])
 			->add('internationalName', TextType::class, array('label'=>'Nom international', 'required' =>true, 'constraints' => array(new NotBlank())))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-				'choice_label'=>'title', 
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
 				'required' => true,
 				'constraints' => array(new NotBlank()),
 				'query_builder' => function(EntityRepository $er) 

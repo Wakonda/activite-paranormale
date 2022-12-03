@@ -159,7 +159,7 @@ class DocumentAdminController extends AdminGenericController
 		
 		if(!empty($language))
 		{
-			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			$documentFamilies = $em->getRepository(DocumentFamily::class)->findByLanguage($language, array('title' => 'ASC'));
 			
 			$currentLanguagesWebsite = array("fr", "en", "es");
@@ -171,21 +171,19 @@ class DocumentAdminController extends AdminGenericController
 		}
 		else
 		{
-			$themes = $em->getRepository(Theme::class)->findAll();
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$documentFamilies = $em->getRepository(DocumentFamily::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();
 			$states = $em->getRepository(State::class)->findAll();
 		}
 
-		$themeArray = array();
-		$stateArray = array();
-		$licenceArray = array();
+		$themeArray = [];
+		$stateArray = [];
+		$licenceArray = [];
 		
 		foreach($themes as $theme)
-		{
-			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
-		}
-		
+			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
+
 		$translateArray['theme'] = $themeArray;
 		
 		foreach($licences as $licence)

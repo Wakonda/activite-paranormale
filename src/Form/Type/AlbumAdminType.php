@@ -42,7 +42,9 @@ class AlbumAdminType extends AbstractType
             ->add('text', TextareaType::class, array('required' => false))
             ->add('source', SourceEditType::class, array('required' => false))
 			->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
+					'choice_label' => function ($choice, $key, $value) {
+						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+					},
 					'required' => true,
 					'query_builder' => function(EntityRepository $er) 
 					{

@@ -147,13 +147,13 @@ class PhotoAdminController extends AdminGenericController
 		
 		if(!empty($language))
 		{
-			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
 		}
 		else
 		{
-			$themes = $em->getRepository(Theme::class)->findAll();
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$states = $em->getRepository(State::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();
 		}
@@ -163,7 +163,7 @@ class PhotoAdminController extends AdminGenericController
 		$licenceArray = [];
 		
 		foreach($themes as $theme)
-			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
+			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
 
 		$translateArray['theme'] = $themeArray;
 

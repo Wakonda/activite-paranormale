@@ -175,12 +175,12 @@ class BookAdminController extends AdminGenericController
 		
 		if(!empty($language)) {
 			$literaryGenres = $em->getRepository(LiteraryGenre::class)->findByLanguage($language, ['title' => 'ASC']);
-			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
 		}
 		else {
 			$literaryGenres = $em->getRepository(LiteraryGenre::class)->findAll();
-			$themes = $em->getRepository(Theme::class)->findAll();
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$states = $em->getRepository(State::class)->findAll();
 		}
 
@@ -188,7 +188,7 @@ class BookAdminController extends AdminGenericController
 		$stateArray = [];
 		
 		foreach($themes as $theme)
-			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
+			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
 
 		$translateArray['theme'] = $themeArray;
 

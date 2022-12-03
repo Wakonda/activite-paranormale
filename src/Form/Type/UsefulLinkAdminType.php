@@ -31,15 +31,17 @@ class UsefulLinkAdminType extends AbstractType
             ->add('links', LinksEditType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('tags', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $tags)]])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
-					'required' => true,
-					'constraints' => [new NotBlank()],
-					'query_builder' => function(EntityRepository $er) 
-						{
-							return $er->createQueryBuilder('u')
-									->orderBy('u.title', 'ASC');
-						}
-					))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => [new NotBlank()],
+				'query_builder' => function(EntityRepository $er) 
+					{
+						return $er->createQueryBuilder('u')
+								->orderBy('u.title', 'ASC');
+					}
+			))
 			->add('licence', EntityType::class, ['class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 
 					'required' => true,

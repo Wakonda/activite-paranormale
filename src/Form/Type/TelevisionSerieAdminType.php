@@ -51,15 +51,17 @@ class TelevisionSerieAdminType extends AbstractType
 					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\GenreAudiovisualRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'constraints' => [new NotBlank()],
-					'query_builder' => function(EntityRepository $er)
-						{
-							return $er->createQueryBuilder('u')
-									  ->orderBy('u.title', 'ASC');
-						},
-				))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => [new NotBlank()],
+				'query_builder' => function(EntityRepository $er)
+					{
+						return $er->createQueryBuilder('u')
+								  ->orderBy('u.title', 'ASC');
+					},
+			))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'required' => true,

@@ -76,7 +76,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
 		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
-	
+
     public function editAction($id)
     {
 		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
@@ -112,7 +112,7 @@ class UsefulLinkAdminController extends AdminGenericController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 
 		foreach($entities as $entity)
@@ -163,39 +163,28 @@ class UsefulLinkAdminController extends AdminGenericController
 	public function reloadThemeByLanguageAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
-		
+
 		if(!empty($language))
 		{
-			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
-			
 			$currentLanguagesWebsite = array("fr", "en", "es");
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
 
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
 		}
 		else
-		{
-			$themes = $em->getRepository(Theme::class)->findAll();
-			$states = $em->getRepository(State::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();
-		}
-	
+
 		$licenceArray = [];
 
 		foreach($licences as $licence)
-		{
 			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
-		}
-		$translateArray['licence'] = $licenceArray;
-		
-		$response = new Response(json_encode($translateArray));
-		$response->headers->set('Content-Type', 'application/json');
 
-		return $response;
+		$translateArray['licence'] = $licenceArray;
+
+		return new JsonResponse($translateArray);
 	}
 }

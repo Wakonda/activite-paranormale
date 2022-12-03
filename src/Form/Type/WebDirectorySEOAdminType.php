@@ -19,13 +19,15 @@ class WebDirectorySEOAdminType extends AbstractType
             ->add('returnLink', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er) {
-						return $er->createQueryBuilder('u')
-								->orderBy('u.title', 'ASC');
-					}
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(EntityRepository $er) {
+					return $er->createQueryBuilder('u')
+							->orderBy('u.title', 'ASC');
+				}
 			))
         ;
     }

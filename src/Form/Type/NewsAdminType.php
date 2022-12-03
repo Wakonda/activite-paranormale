@@ -33,8 +33,10 @@ class NewsAdminType extends AbstractType
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('source', SourceEditType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('pseudoUsed', TextType::class, array('required' =>true, 'constraints' => [new NotBlank()]))
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
+            ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
+					'choice_label' => function ($choice, $key, $value) {
+						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+					},
 					'required' => true,
 					'constraints' => [new NotBlank()],
 					'query_builder' => function(EntityRepository $er) 

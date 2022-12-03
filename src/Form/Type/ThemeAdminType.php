@@ -23,15 +23,17 @@ class ThemeAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, array('label'=>'Titre', 'required' =>true, 'constraints' => array(new NotBlank())))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'query_builder' => function(EntityRepository $er)
-					{
-						return $er->createQueryBuilder('u')
-								  ->orderBy('u.title', 'ASC');
-					},
-					'constraints' => array(new NotBlank())
-					))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'query_builder' => function(EntityRepository $er)
+				{
+					return $er->createQueryBuilder('u')
+							  ->orderBy('u.title', 'ASC');
+				},
+				'constraints' => array(new NotBlank())
+			))
             ->add('pdfTheme', FileType::class, array('data_class' => null, 'required' => false))
 			->add('internationalName', TextType::class, array('label'=>'Nom international', 'required' =>true, 'constraints' => array(new NotBlank())))
 			->add('surTheme', EntityType::class, array('class'=>'App\Entity\SurTheme', 

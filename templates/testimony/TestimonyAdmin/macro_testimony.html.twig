@@ -31,3 +31,64 @@
 		});
 	});
 {% endmacro %}
+
+{% macro location_selector(form) %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/select2/dist/css/select2.min.css') }}" media="screen" />
+	<script src="{{ asset('extended/js/select2/dist/js/select2.full.min.js') }}"></script>
+	<script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
+	<script>
+		$(function() {
+			$('#{{ form.location_selector.vars.id }}').select2({
+				allowClear: true,
+				placeholder: "",
+				ajax: {
+					url: ' https://nominatim.openstreetmap.org/search?',
+					dataType: 'json',
+					minimumInputLength: 3,
+					data: function (params) {
+						var query = {
+							q: params.term,
+							addressdetails: 1,
+							countrycodes: document.getElementById("{{ form.country.vars.id }}").value,
+							format: "json"
+						}
+
+						return query;
+					},
+					processResults: function (data) {
+						res = []
+
+						for(var i = 0; i < data.length; i++) {
+							let obj = new Object();
+							obj.id = i;
+							obj.text = data[i].display_name;
+							obj.address = JSON.stringify(data[i].address);
+							obj.lat = data[i].lat;
+							obj.lon = data[i].lon;
+							res.push(obj)
+						 }
+
+						return {
+							results: res
+						};
+					}
+				}
+			});
+
+			$('#{{ form.location_selector.vars.id }}').on('select2:select', function (e) {
+				let data = e.params.data;
+				let address = JSON.parse(data.address);
+				
+				address.value = data.text;
+				address.lon = data.lon;
+				address.lat = data.lat;
+				
+				document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address);
+			});
+
+			$('#{{ form.location_selector.vars.id }}').on('select2:clear', function (e) {
+				document.getElementById("{{ form.location.vars.id }}").value = "";
+			});
+		});
+	</script>
+{% endmacro %}

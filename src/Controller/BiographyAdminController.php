@@ -234,18 +234,18 @@ class BiographyAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
-	
+
 	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
-		
+
 		$res = $wikidata->getBiographyDatas($code, $language->getAbbreviation());
 
 		return new JsonResponse($res);
 	}
-	
+
 	public function validateBiographyAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

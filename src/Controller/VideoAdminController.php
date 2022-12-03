@@ -162,7 +162,7 @@ class VideoAdminController extends AdminGenericController
 		
 		if(!empty($language))
 		{
-			$themes = $em->getRepository(Theme::class)->findByLanguage($language, array('title' => 'ASC'));
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			
 			$currentLanguagesWebsite = array("fr", "en", "es");
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
@@ -173,7 +173,7 @@ class VideoAdminController extends AdminGenericController
 		}
 		else
 		{
-			$themes = $em->getRepository(Theme::class)->findAll();
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$states = $em->getRepository(State::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();
 		}
@@ -183,21 +183,18 @@ class VideoAdminController extends AdminGenericController
 		$licenceArray = [];
 		
 		foreach($themes as $theme)
-		{
-			$themeArray[] = array("id" => $theme->getId(), "title" => $theme->getTitle());
-		}
+			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
+
 		$translateArray['theme'] = $themeArray;
 
 		foreach($states as $state)
-		{
 			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
-		}
+
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
-		{
 			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
-		}
+
 		$translateArray['licence'] = $licenceArray;
 
 		return new JsonResponse($translateArray);

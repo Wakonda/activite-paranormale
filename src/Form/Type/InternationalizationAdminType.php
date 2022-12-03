@@ -19,23 +19,23 @@ class InternationalizationAdminType extends AbstractType
 
         $builder
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label' => function ($choice, $key, $value) {
-						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
-					},
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er) use ($locales)
-						{
-							$qb = $er->createQueryBuilder('u')
-									  ->orderBy('u.title', 'ASC');
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(EntityRepository $er) use ($locales)
+					{
+						$qb = $er->createQueryBuilder('u')
+								  ->orderBy('u.title', 'ASC');
 
-							if(!empty($locales))
-								$qb->where("u.abbreviation NOT IN (:locales)")
-								   ->setParameter("locales", $locales);
-							
-							return $qb;
-						},
-					))
+						if(!empty($locales))
+							$qb->where("u.abbreviation NOT IN (:locales)")
+							   ->setParameter("locales", $locales);
+						
+						return $qb;
+					},
+				))
 		;
     }
 

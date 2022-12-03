@@ -37,15 +37,17 @@ class EventMessageAdminType extends AbstractType
 			->add('dateFrom', DatePartialType::class, array('required' => true, 'constraints' => [new NotBlank()], "mapped" => false, "allow_empty_year" => true))
 			->add('dateTo', DatePartialType::class, array('required' => false, "mapped" => false, "allow_empty_year" => true))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
-					'required' => true,
-					'query_builder' => function(EntityRepository $er) 
-								{
-									return $er->createQueryBuilder('u')
-											->orderBy('u.title', 'ASC');
-								},
-					'constraints' => array(new NotBlank())
-					))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'query_builder' => function(EntityRepository $er) 
+							{
+								return $er->createQueryBuilder('u')
+										->orderBy('u.title', 'ASC');
+							},
+				'constraints' => array(new NotBlank())
+			))
 			->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 

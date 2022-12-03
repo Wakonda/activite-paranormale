@@ -92,4 +92,34 @@ class SurThemeRepository extends EntityRepository
 		
 		return $qb->getQuery()->getSingleScalarResult();
 	}
+	
+	public function getByLanguageForList($locale, $currentLocale)
+	{
+		$qb = $this->createQueryBuilder("t");
+		
+		$qbCurrentLocale = $this->createQueryBuilder("tcl");
+		
+		if($locale != $currentLocale)
+		{
+			$qbCurrentLocale->select("tcl.title")
+			  ->join("tcl.language", "lcl")
+			  ->where("lcl.abbreviation = :currentLocale")
+			  ->andWhere("tcl.internationalName = t.internationalName");
+			
+			$qb->select("t.title AS title")
+			   ->addSelect("(".$qbCurrentLocale->getDQL().") AS localeTitle")
+		       ->setParameter("currentLocale", $currentLocale);
+		} else
+			$qb->select("t.title AS title");
+
+		$qb->addSelect("t.id")
+		   ->join("t.language", "lt")
+		   ->orderBy("t.title", "ASC");
+		   
+		if(!empty($locale))
+		   $qb->andWhere("lt.abbreviation = :locale")
+		      ->setParameter("locale", $locale);
+		   
+		return array_map(function($e) { return ["id" => $e["id"], "title" => $e["title"].((isset($e["localeTitle"]) and !empty($d = $e["localeTitle"]) and $e["localeTitle"] != $e["title"]) ? " [".$d."]" : "")]; }, $qb->getQuery()->getResult());
+	}
 }

@@ -26,7 +26,9 @@ class PresidentAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-				'choice_label'=>'title', 
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
 				'required' => true,
 				'constraints' => array(new NotBlank()),
 				'query_builder' => function(EntityRepository $er) 

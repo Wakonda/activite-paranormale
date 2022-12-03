@@ -128,16 +128,15 @@ class ThemeAdminController extends AdminGenericController
 		$translateArray = array();
 		
 		if(!empty($language))
-			$surThemes = $em->getRepository(SurTheme::class)->findByLanguage($language, array('title' => 'ASC'));
+			$surThemes = $em->getRepository(SurTheme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 		else
-			$surThemes = $em->getRepository(SurTheme::class)->findAll();
+			$surThemes = $em->getRepository(SurTheme::class)->getByLanguageForList(null, $request->getLocale());
 
 		$surThemeArray = array();
 
 		foreach($surThemes as $surTheme)
-		{
-			$surThemeArray[] = array("id" => $surTheme->getId(), "title" => $surTheme->getTitle());
-		}
+			$surThemeArray[] = ["id" => $surTheme["id"], "title" => $surTheme["title"]];
+
 		$translateArray['surTheme'] = $surThemeArray;
 
 		return new JsonResponse($translateArray);

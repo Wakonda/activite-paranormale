@@ -31,14 +31,16 @@ class DocumentAdminType extends AbstractType
             ->add('pdfDoc', FileType::class, array('data_class' => null, 'required' => true))
             ->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'query_builder' => function(EntityRepository $er)
-					{
-						return $er->createQueryBuilder('u')
-								  ->orderBy('u.title', 'ASC');
-					},
-					'constraints' => array(new NotBlank()
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'query_builder' => function(EntityRepository $er)
+				{
+					return $er->createQueryBuilder('u')
+							  ->orderBy('u.title', 'ASC');
+				},
+				'constraints' => array(new NotBlank()
 			)))
             ->add('documentFamily', EntityType::class, array('class'=>'App\Entity\DocumentFamily', 
 					'choice_label'=>'title',

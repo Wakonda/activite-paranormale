@@ -10,6 +10,15 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "testimony.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class':'form-control'}} ) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "testimony.admin.Country"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.location_selector, "testimony.admin.Location"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.location_selector) }}{{ form_widget(form.location_selector, {'attr':{'class':'form-control'}} ) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.sightingDate, "testimony.admin.SightingDate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.sightingDate) }}{{ form_widget(form.sightingDate, {'attr':{'class':'form-control'}} ) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "testimony.admin.State"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
 

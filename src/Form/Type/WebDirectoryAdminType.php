@@ -36,7 +36,9 @@ class WebDirectoryAdminType extends AbstractType
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
             ->add('language', EntityType::class, array(
 					'class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
+					'choice_label' => function ($choice, $key, $value) {
+						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+					},
 					'required' => true,
 					'constraints' => array(new NotBlank()),
 					'query_builder' => function(EntityRepository $er) 

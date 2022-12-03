@@ -51,7 +51,9 @@ class BookAdminType extends AbstractType
 					},
 					'query_builder' => function(\App\Repository\LiteraryGenreRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-				'choice_label'=>'title',
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
 				'required' => true,
 				'constraints' => array(new NotBlank()),
 				'query_builder' => function(EntityRepository $er)

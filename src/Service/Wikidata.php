@@ -509,7 +509,7 @@
 			$this->getIdsByProperty("P1040", $datas, $code, "filmEditor", $language, $personArray);
 
 			// costumier / costume designer
-			$this->getIdsByProperty("P2515", $datas, $code, "costumDesigner", $language, $personArray);
+			$this->getIdsByProperty("P2515", $datas, $code, "costumeDesigner", $language, $personArray);
 
 			// compositeur / composer
 			$this->getIdsByProperty("P86", $datas, $code, "composer", $language, $personArray);

@@ -59,15 +59,17 @@ class VideoAdminType extends AbstractType
 			->add('minuteDuration', IntegerType::class, array('mapped' => false))
 			->add('secondDuration', IntegerType::class, array('mapped' => false))
 			->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'query_builder' => function(EntityRepository $er) 
-					{
-						return $er->createQueryBuilder('u')
-								  ->orderBy('u.title', 'ASC');
-					},
-					'constraints' => array(new NotBlank())
-					))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'query_builder' => function(EntityRepository $er) 
+				{
+					return $er->createQueryBuilder('u')
+							  ->orderBy('u.title', 'ASC');
+				},
+				'constraints' => array(new NotBlank())
+			))
             ->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',

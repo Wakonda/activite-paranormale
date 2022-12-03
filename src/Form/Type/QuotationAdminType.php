@@ -24,15 +24,17 @@ class QuotationAdminType extends AbstractType
 
         $builder
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-										    'query_builder' => function(EntityRepository $er) 
-														{
-															return $er->createQueryBuilder('u')
-																	->orderBy('u.title', 'ASC');
-														},
-											))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(EntityRepository $er) 
+							{
+								return $er->createQueryBuilder('u')
+										->orderBy('u.title', 'ASC');
+							},
+			))
 		    ->add('authorQuotation', Select2EntityType::class, [
 				'multiple' => false,
 				'remote_route' => 'Biography_Admin_Autocomplete',
@@ -52,7 +54,6 @@ class QuotationAdminType extends AbstractType
 											// 'constraints' => array(new NotBlank()),
 											// 'query_builder' => function(\App\Repository\BiographyRepository $repository) use ($language) { return $repository->getBiographyByLanguage($language);}))
             ->add('textQuotation', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-
 			->add('source', SourceEditType::class, array('required' =>false))
 			->add('explanation', TextareaType::class, array('required' => false))
         ;

@@ -39,15 +39,17 @@ class MusicGenreAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er)
-						{
-							return $er->createQueryBuilder('u')
-									  ->orderBy('u.title', 'ASC');
-						},
-				))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(EntityRepository $er)
+					{
+						return $er->createQueryBuilder('u')
+								  ->orderBy('u.title', 'ASC');
+					},
+			))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'MusicGenre_Admin_ShowImageSelectorColorbox'))
             ->add('source', SourceEditType::class, array('required' => false))

@@ -9,12 +9,15 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\TagWord;
+use App\Form\Field\DateTimePartialType;
 
 class TestimonyAdminType extends AbstractType
 {
@@ -32,7 +35,9 @@ class TestimonyAdminType extends AbstractType
 				'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
 			))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-				'choice_label'=>'title', 
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
 				'required' => true,
 				'query_builder' => function(\App\Repository\LanguageRepository $repository) { return $repository->getLangueOnForm();}
 			))
@@ -66,6 +71,14 @@ class TestimonyAdminType extends AbstractType
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
+			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
+					'choice_label'=>'title', 
+					'required' => false,
+					'mapped' => false,
+					'choice_value' => function ($entity) {
+						return $entity ? $entity->getInternationalName() : '';
+					},
+					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false])

@@ -49,7 +49,7 @@ movie:
         FilmEditor: "Monteur"
         Composer: "Compositeur"
         ExecutiveProducer: "Producteur exécutif"
-        CostumDesigner: "Costumier"
+        CostumeDesigner: "Costumier"
         DirectorOfPhotographyBy: "Photographie"
         FilmEditorBy: "Montage"
         ComposerBy: "Musique"
@@ -98,7 +98,7 @@ biographies:
         FilmEditor: "Monteur"
         Composer: "Compositeur"
         ExecutiveProducer: "Producteur exécutif"
-        CostumDesigner: "Costumier"
+        CostumeDesigner: "Costumier"
 genreAudiovisual:
     admin:
         Title: "Titre"
@@ -132,7 +132,7 @@ televisionSerie:
         FilmEditor: "Monteur"
         Composer: "Compositeur"
         ExecutiveProducer: "Producteur exécutif"
-        CostumDesigner: "Costumier"
+        CostumeDesigner: "Costumier"
         Sources: "Sources"
         Episodes: "Épisodes"
         Episode: "Épisode"

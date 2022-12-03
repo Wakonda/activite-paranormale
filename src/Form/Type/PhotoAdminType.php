@@ -27,15 +27,17 @@ class PhotoAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
-					'required' => true,
-					'query_builder' => function(EntityRepository $er) 
-						{
-							return $er->createQueryBuilder('u')
-									->orderBy('u.title', 'ASC');
-						},
-					))
+            ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'query_builder' => function(EntityRepository $er) 
+					{
+						return $er->createQueryBuilder('u')
+								->orderBy('u.title', 'ASC');
+					},
+			))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 					'choice_label'=>'title',
 					'constraints' => array(new NotBlank()),

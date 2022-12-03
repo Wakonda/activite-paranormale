@@ -22,14 +22,16 @@ class DocumentFamilyAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
 			->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'required' => true,
-					'query_builder' => function(EntityRepository $er) 
-						{
-							return $er->createQueryBuilder('u')
-									->orderBy('u.title', 'ASC');
-						},
-					'constraints' => array(new NotBlank())
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'query_builder' => function(EntityRepository $er) 
+					{
+						return $er->createQueryBuilder('u')
+								->orderBy('u.title', 'ASC');
+					},
+				'constraints' => array(new NotBlank())
 			));
     }
 

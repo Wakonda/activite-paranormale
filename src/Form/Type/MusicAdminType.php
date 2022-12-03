@@ -38,17 +38,19 @@ class MusicAdminType extends AbstractType
             ->add('text', TextareaType::class, ['required' => false])
             ->add('source', SourceEditType::class, ['required' => false])
 			->add('language', EntityType::class, array('class'=>'App\Entity\Language',
-					'choice_label'=>'title',
-					'mapped' => false,
-					'required' => true,
-					"data" => $language,
-					'query_builder' => function(EntityRepository $er) 
-					{
-						return $er->createQueryBuilder('u')
-								  ->orderBy('u.title', 'ASC');
-					},
-					'constraints' => array(new NotBlank())
-				))
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'mapped' => false,
+				'required' => true,
+				"data" => $language,
+				'query_builder' => function(EntityRepository $er) 
+				{
+					return $er->createQueryBuilder('u')
+							  ->orderBy('u.title', 'ASC');
+				},
+				'constraints' => array(new NotBlank())
+			))
 		    ->add('album', Select2EntityType::class, [
 				'multiple' => false,
 				'remote_route' => 'Album_Admin_Autocomplete',

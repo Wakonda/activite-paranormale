@@ -29,7 +29,7 @@
 	<div class="search-result-box card-box mt-4">
 		<ul class="nav nav-tabs tabs-bordered" role="tablist">
 			<li class="nav-item"><a class="nav-link {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'active' : '' }}" id="web-tab" data-toggle="tab" href="#web" role="tab" aria-controls="web" aria-selected="true"><i class="fas fa-satellite"></i> Web <span class="badge badge-primary ml-1">{{ total }}</span></a></li>
-			<li class="nav-item"><a class="nav-link {{ app.request.query.get('type') == 'image' ? 'active' : '' }}" id="image-tab" data-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="image"><i class="far fa-image"></i> Image <span class="badge badge-primary ml-1">{{ totalImage }}</span></a></li>
+			<li class="nav-item"><a class="nav-link {{ app.request.query.get('type') == 'image' ? 'active' : '' }}" id="image-tab" data-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="image"><i class="far fa-image"></i> {{ "search.index.Image"|trans([], "validators") }} <span class="badge badge-primary ml-1">{{ totalImage }}</span></a></li>
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'show active' : '' }}" id="web" role="tabpanel" aria-labelledby="web-tab">
@@ -54,7 +54,7 @@
 							</div>
 						{% else %}
 							<div class="alert alert-info" role="alert">
-								Aucun document ne correspond aux termes de recherche spécifiés
+								{{ "search.index.NoResult"|trans([], "validators") }}
 							</div>
 						{% endfor %}
 
@@ -78,20 +78,20 @@
 					<div class="card-columns">
 						{% for item in paginationImage.items %}
 							<div class="card">
-								{{ resultImages[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
+								{{ resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].showRoute, true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
 								<div class="card-body text-center">
-									<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].title }}</h6>
+									<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].entity.title }}</h6>
 
-									{% set size = getimagesize(resultImages[item.id~"_"~item.classname].photoIllustrationFilename, resultImages[item.id~"_"~item.classname].getAssetImagePath()) %}
+									{% set size = getimagesize(resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename, resultImages[item.id~"_"~item.classname].showRoute) %}
 									<p class="card-text text-center"><small class="text-muted">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
-									<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">Consulter</a></p>
+									<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">{{ "search.index.Read"|trans([], "validators") }}</a></p>
 								</div>
 							</div>
 						{% endfor %}
 					</div>
 				{% else %}
 					<div class="alert alert-info" role="alert">
-						Aucun document ne correspond aux termes de recherche spécifiés
+						{{ "search.index.NoResult"|trans([], "validators") }}
 					</div>
 				{% endif %}
 				

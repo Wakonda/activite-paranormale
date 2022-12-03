@@ -88,7 +88,9 @@
 		{{ form_widget(form.month, {'attr':{'class': 'form-control'}}) }}
 		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
 		{{ form_widget(form.year, {'attr':{'class': 'form-control'}}) }}
-		<div class="input-group-append input-group-prepend"><span class="input-group-text"><i class="far fa-clock"></i></span></div>
+	</div>
+	<div class="input-group mt-2">
+		<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-clock"></i></span></div>
 		{{ form_widget(form.hour, {'attr':{'class': 'form-control'}}) }}
 		<div class="input-group-append input-group-prepend"><span class="input-group-text">:</span></div>
 		{{ form_widget(form.minute, {'attr':{'class': 'form-control'}}) }}
