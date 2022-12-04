@@ -662,8 +662,10 @@
 	<script>
 		function reload{{ form.vars.id }}(data) {
 			$("#{{ form.vars.id}}_values").html("");
-			for(var j = 0; j < data.identifiers.length; j++) {
-				$("#{{ form.vars.id}}_values").append("<tr data-id='"+ j + "'><td>" + data.identifiers[j].identifier + " (" + data.identifiers[j].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+			if(typeof data.identifiers !== "undefined") {
+				for(var j = 0; j < data.identifiers.length; j++) {
+					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ j + "'><td>" + data.identifiers[j].identifier + " (" + data.identifiers[j].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				}
 			}
 		}
 	

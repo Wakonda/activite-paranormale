@@ -129,7 +129,9 @@
 				let data = JSON.parse(xmlHttp.responseText);
 				
 				document.getElementById("{{ form.musicPiece.vars.id }}").value = data.title;
-				document.getElementById("{{ form.embeddedCode.vars.id }}").value = data.embeddedCode;
+				
+				if(typeof data.embeddedCode !== "undefined")
+					document.getElementById("{{ form.embeddedCode.vars.id }}").value = data.embeddedCode;
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 

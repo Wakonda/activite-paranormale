@@ -198,7 +198,7 @@ class MusicAdminController extends AdminGenericController
 		$code = $request->query->get("code");
 		
 		$res = $wikidata->getMusicDatas($code, $language->getAbbreviation());
-dd($res);
+
 		return new JsonResponse($res);
 	}
 }
