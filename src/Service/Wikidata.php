@@ -373,6 +373,8 @@
 			// website
 			$websitesArray = [];
 			$this->getIdsByProperty("P856", $datas, $code, "website", $language, $websitesArray);
+			
+			$res["image"] = $this->getImage($datas, $code, "P154");
 
 			$res["links"] = isset($websitesArray["website"]) ? key($websitesArray["website"]) : null;
 
@@ -425,18 +427,21 @@
 			
 			$this->getIdsByProperty("P527", $datas, $code, "member", $language, $personArray);
 
-			foreach($datas->entities->$code->claims->P527 as $member) {
-				$start = null;
-				$end = null;
-				
-				if(property_exists($member, "qualifiers")) {
-					if(property_exists($member->qualifiers, "P580"))
-						$start = $member->qualifiers->P580[0]->datavalue->value->time;
-					if(property_exists($member->qualifiers, "P582"))
-						$end = $member->qualifiers->P582[0]->datavalue->value->time;
+			if(property_exists($datas->entities->$code->claims, "P527"))
+			{
+				foreach($datas->entities->$code->claims->P527 as $member) {
+					$start = null;
+					$end = null;
+					
+					if(property_exists($member, "qualifiers")) {
+						if(property_exists($member->qualifiers, "P580"))
+							$start = $member->qualifiers->P580[0]->datavalue->value->time;
+						if(property_exists($member->qualifiers, "P582"))
+							$end = $member->qualifiers->P582[0]->datavalue->value->time;
+					}
+					
+					$personArray["member"][$member->mainsnak->datavalue->value->id] = ["title" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["title"], "objects" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["objects"], "start" => $start, "end" => $end];
 				}
-				
-				$personArray["member"][$member->mainsnak->datavalue->value->id] = ["title" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["title"], "objects" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["objects"], "start" => $start, "end" => $end];
 			}
 			
 			$res["person"] = $personArray;

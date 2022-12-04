@@ -47,7 +47,7 @@ class ArtistBiographiesAdminType extends AbstractType
 				'label' => 'biographies.admin.Biography',
 				'translation_domain' => 'validators',
 				"query_parameters" => $options["query_parameters"],
-				'attr' => ["data-req_params" => (!empty($options["req_params"]) ? json_encode($options["req_params"]) : null)]
+				'attr' => ["class" => "biography", "data-req_params" => (!empty($options["req_params"]) ? json_encode($options["req_params"]) : null)]
 			])
 			->add('occupation', ChoiceType::class, [
 				'choices'  => $occupationArray,
