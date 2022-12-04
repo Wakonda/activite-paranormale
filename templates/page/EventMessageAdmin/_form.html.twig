@@ -60,3 +60,50 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "eventMessage.admin.Source"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector('#wikidata .fa-sync').classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("{{ form.dateFrom.day.vars.id }}").value = data.dateFrom.day;
+				document.getElementById("{{ form.dateFrom.month.vars.id }}").value = data.dateFrom.month;
+				document.getElementById("{{ form.dateFrom.year.vars.id }}").value = data.dateFrom.year;
+				
+				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+				
+				document.getElementById("url_{{ form.abstractText.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.abstractText.vars.id }}").dispatchEvent(new Event("change"));
+				
+				document.getElementById("{{ form.longitude.vars.id }}").value = data.longitude;
+				document.getElementById("{{ form.latitude.vars.id }}").value = data.latitude;
+
+				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
+					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
+					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
+					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+				}
+					
+				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+			}
+		};
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('EventMessage_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

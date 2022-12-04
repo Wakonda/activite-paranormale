@@ -63,3 +63,7 @@ EventMessage_Admin_ShowImageSelectorColorbox:
 EventMessage_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\EventMessageAdminController::loadImageSelectorColorboxAction
+
+EventMessage_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\EventMessageAdminController::wikidataAction

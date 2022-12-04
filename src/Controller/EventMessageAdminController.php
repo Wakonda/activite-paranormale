@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -11,6 +12,7 @@ use Doctrine\ORM\Query\ResultSetMapping;
 
 use App\Entity\EventMessage;
 use App\Entity\State;
+use App\Entity\Language;
 use App\Form\Type\EventMessageAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -124,9 +126,7 @@ class EventMessageAdminController extends AdminGenericController
 			$output['aaData'][] = $row;
 		}
 
-		$response = new Response(json_encode($output));
-		$response->headers->set('Content-Type', 'application/json');
-		return $response;
+		return new JsonResponse($output);
 	}
 
 
@@ -177,5 +177,16 @@ class EventMessageAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
+	}
+
+	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$code = $request->query->get("code");
+
+		$res = $wikidata->getEventDatas($code, $language->getAbbreviation());
+
+		return new JsonResponse($res);
 	}
 }

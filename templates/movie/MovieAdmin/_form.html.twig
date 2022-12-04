@@ -211,7 +211,7 @@
 					for(wikidata in data.person[role]) {
 						if(wikidatas.includes(data.person[role][wikidata].title + "_" + wikidata))
 							continue;
-console.log(wikidata, data.person[role][wikidata], role)
+
 						var id = addNewBiography(document.querySelector('.add-another-collection-widget').getAttribute("data-list-selector"));
 
 						document.getElementById("{{ form.movieBiographies.vars.id }}_" + id + "_occupation").value = role;

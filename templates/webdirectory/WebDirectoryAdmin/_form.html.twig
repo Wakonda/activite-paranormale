@@ -68,10 +68,58 @@
 <div class="form-table-cell">{{ form_errors(form.socialNetworkVimeo) }}{{ form_widget(form.socialNetworkVimeo, { 'attr': {'class': 'form-control'} }) }}</div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
-{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "directory.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "directory.admin.Licence"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector('#wikidata .fa-sync').classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("{{ form.foundedYear.day.vars.id }}").value = data.foundedDate.day;
+				document.getElementById("{{ form.foundedYear.month.vars.id }}").value = data.foundedDate.month;
+				document.getElementById("{{ form.foundedYear.year.vars.id }}").value = data.foundedDate.year;
+				document.getElementById("{{ form.defunctYear.day.vars.id }}").value = data.defunctDate.day;
+				document.getElementById("{{ form.defunctYear.month.vars.id }}").value = data.defunctDate.month;
+				document.getElementById("{{ form.defunctYear.year.vars.id }}").value = data.defunctDate.year;
+				document.getElementById("{{ form.link.vars.id }}").value = data.link;
+				
+				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
+				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+				
+				document.getElementById("{{ form.licence.vars.id }}").value = data.licence;
+				document.getElementById("{{ form.socialNetworkTwitter.vars.id }}").value = data.socialNetwork.twitter;
+				document.getElementById("{{ form.socialNetworkFacebook.vars.id }}").value = data.socialNetwork.facebook;
+				document.getElementById("{{ form.socialNetworkGithub.vars.id }}").value = data.socialNetwork.github;
+				document.getElementById("{{ form.socialNetworkInstagram.vars.id }}").value = data.socialNetwork.instagram;
+
+				if(document.getElementById("{{ form.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.photo_selector.vars.id }}").value = data.image.url;
+				}
+					
+				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+			}
+		};
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('WebDirectory_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

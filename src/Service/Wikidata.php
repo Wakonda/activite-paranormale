@@ -6,6 +6,7 @@
 	use App\Entity\Biography;
 	use App\Entity\Country;
 	use App\Entity\Language;
+	use App\Entity\Licence;
 	
 	class Wikidata {
 		private $em;
@@ -89,13 +90,13 @@
 			return $res;
 		}
 		
-		private function getImage($datas, $code): array
+		private function getImage($datas, $code, $codeImage = "P18"): array
 		{
 			$imageArray = ["url" => null, "source" => null, "user" => null, "license" => null, "description" => null];
 
-			if(property_exists($datas->entities->$code->claims, "P18")) {
+			if(property_exists($datas->entities->$code->claims, $codeImage)) {
 				$maxWidth = 500;
-				$filename = urlencode($datas->entities->$code->claims->P18[0]->mainsnak->datavalue->value);
+				$filename = urlencode($datas->entities->$code->claims->$codeImage[0]->mainsnak->datavalue->value);
 				
 				$image = json_decode(file_get_contents("https://www.mediawiki.org/w/api.php?action=query&titles=File:${filename}&prop=imageinfo&iilimit=50&iiurlwidth=${maxWidth}&iiprop=timestamp%7Cuser%7Curl|size|extmetadata&format=json"));
 				$imageProperty = $image->query->pages->{'-1'}->imageinfo[0];
@@ -443,6 +444,135 @@
 			return $res;
 		}
 		
+		public function getEventDatas(string $code, string $language): array
+		{
+			$res = [];
+			$languageWiki = $language."wiki";
+			
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+
+			$datas = json_decode($content);
+
+			$res["title"] = $datas->entities->$code->labels->$language->value;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
+
+			$datas = json_decode($content);
+			
+			$res["image"] = $this->getImage($datas, $code);
+
+			$dateFrom = null;
+
+			if(property_exists($datas->entities->$code->claims, "P585")) {
+				$dateFrom = $datas->entities->$code->claims->P585[0]->mainsnak->datavalue->value->time;
+				$dateFrom = date_parse($dateFrom);
+			}
+			
+			$res["dateFrom"] = [
+				"year" => !empty($dateFrom) ? $dateFrom["year"] : null,
+				"month" => !empty($dateFrom) ? $dateFrom["month"] : null,
+				"day" => !empty($dateFrom) ? $dateFrom["day"] : null
+			];
+
+			$longitude = null;
+			$latitude = null;
+
+			if(property_exists($datas->entities->$code->claims, "P625")) {
+				$longitude = $datas->entities->$code->claims->P625[0]->mainsnak->datavalue->value->longitude;
+				$latitude = $datas->entities->$code->claims->P625[0]->mainsnak->datavalue->value->latitude;
+			}
+			
+			$res["longitude"] = $longitude;
+			$res["latitude"] = $latitude;
+
+			return $res;
+		}
+		
+		public function getWebDirectoryDatas(string $code, string $language): array
+		{
+			$res = [];
+			$languageWiki = $language."wiki";
+			
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+
+			$datas = json_decode($content);
+
+			$res["title"] = $datas->entities->$code->labels->$language->value;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
+
+			$datas = json_decode($content);
+			
+			$res["image"] = $this->getImage($datas, $code, "P154");
+
+			$res["socialNetwork"] = ["twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
+
+			if(property_exists($datas->entities->$code->claims, "P2002"))
+				$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
+			
+			if(property_exists($datas->entities->$code->claims, "P9100"))
+				$res["socialNetwork"]["github"] = "https://github.com/topics/".$datas->entities->$code->claims->P9100[0]->mainsnak->datavalue->value;
+			
+			if(property_exists($datas->entities->$code->claims, "P2013"))
+				$res["socialNetwork"]["facebook"] = "https://www.facebook.com/".$datas->entities->$code->claims->P2013[0]->mainsnak->datavalue->value;
+			
+			if(property_exists($datas->entities->$code->claims, "P2003"))
+				$res["socialNetwork"]["instagram"] = "https://www.instagram.com/".$datas->entities->$code->claims->P2003[0]->mainsnak->datavalue->value;
+			
+			$foundedDate = null;
+			
+			if(property_exists($datas->entities->$code->claims, "P571")) {
+				$foundedDate = $datas->entities->$code->claims->P571[0]->mainsnak->datavalue->value->time;
+				$foundedDate = date_parse($foundedDate);
+			}
+			
+			$res["foundedDate"] = [
+				"year" => !empty($foundedDate) ? $foundedDate["year"] : null,
+				"month" => !empty($foundedDate) ? $foundedDate["month"] : null,
+				"day" => !empty($foundedDate) ? $foundedDate["day"] : null
+			];
+			
+			$defunctDate = null;
+			
+			if(property_exists($datas->entities->$code->claims, "P576")) {
+				$defunctDate = $datas->entities->$code->claims->P576[0]->mainsnak->datavalue->value->time;
+				$defunctDate = date_parse($defunctDate);
+			}
+				
+			$res["defunctDate"] = [
+				"year" => !empty($defunctDate) ? $defunctDate["year"] : null,
+				"month" => !empty($defunctDate) ? $defunctDate["month"] : null,
+				"day" => !empty($defunctDate) ? $defunctDate["day"] : null
+			];
+			
+			$res["link"] = null;
+			
+			if(property_exists($datas->entities->$code->claims, "P856")) {
+				$value = $datas->entities->$code->claims->P856[0]->mainsnak->datavalue->value;
+				
+				$res["link"] = $value;
+			}
+			
+			$res["licence"] = null;
+			
+			if(property_exists($datas->entities->$code->claims, "P275")) {
+				$id = $datas->entities->$code->claims->P275[0]->mainsnak->datavalue->value->id;
+				$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids=${id}&languages=${language}&format=json"));
+				
+				if(property_exists($data->entities, "Q18810333") and property_exists($data->entities->Q18810333->labels, $language)) {
+					$languageEntity = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
+					$licence = $this->em->getRepository(Licence::class)->findOneBy(["title" => $data->entities->Q18810333->labels->$language->value, "language" => $languageEntity]);
+					
+					if(!empty($licence))
+						$res["licence"] = $licence->getId();
+				}
+			}
+
+			return $res;
+		}
+		
 		public function getMovieDatas(string $code, string $language): array
 		{
 			$res = [];
@@ -481,7 +611,7 @@
 			
 			if(property_exists($datas->entities->$code->claims, "P6127")) {
 				$value = $datas->entities->$code->claims->P6127[0]->mainsnak->datavalue->value;
-				
+
 				$res["identifiers"][] = [
 					"identifier" => "Letterboxd film ID",
 					"value" => $value

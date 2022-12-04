@@ -51,3 +51,7 @@ WebDirectory_Admin_ShowImageSelectorColorbox:
 WebDirectory_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\WebDirectoryAdminController::loadImageSelectorColorboxAction
+
+WebDirectory_Admin_Wikidata:
+    path: /wikidata
+    controller: App\Controller\WebDirectoryAdminController::wikidataAction
