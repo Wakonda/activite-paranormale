@@ -113,6 +113,8 @@
 					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
 					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
 				}
+				
+				document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
 
 				let i = 0;
 
@@ -155,8 +157,6 @@
 					addBiographyValidationFormDisplayLink(document.getElementById("{{ form.artistBiographies.vars.id }}_" + i).parentNode, data.person.member[wikidata].objects.length);
 					
 					$("#{{ form.artistBiographies.vars.id }}_" + i + "_biography").append($newOption).trigger('change');
-				
-					document.querySelector("#wikidata .fa-sync").classList.remove("fa-spin");
 					i++;
 				}
 			}

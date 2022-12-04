@@ -49,7 +49,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
 
 		foreach ($form->get('episodeTelevisionSerieBiographies') as $formChild)
-			if(empty($formChild->get('biography')->getData()))
+			if(empty($formChild->get('internationalName')->getData()))
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
 
 		if($form->isValid())
