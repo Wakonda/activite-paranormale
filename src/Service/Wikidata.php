@@ -982,7 +982,7 @@
 				$res[$key] = [
 					"alpha2" => $datasCountry->entities->$idCountry->claims->P297[0]->mainsnak->datavalue->value,
 					"alpga3" => $datasCountry->entities->$idCountry->claims->P298[0]->mainsnak->datavalue->value,
-					"id" => $this->countryToEntity($datasCountry->entities->$idCountry->claims->P297[0]->mainsnak->datavalue->value, $language)->getId()
+					"id" => !empty($c = $this->countryToEntity($datasCountry->entities->$idCountry->claims->P297[0]->mainsnak->datavalue->value, $language)) ? $c->getId() : null
 				];
 			}
 			
