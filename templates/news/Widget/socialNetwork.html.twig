@@ -28,8 +28,36 @@
 		<td class="reseauSociaux">
 			<a href="#" class="btn social-share flipboard share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Flipboard"><i class="fab fa-flipboard fa-lg fa-fw"></i></a>
 		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-toggle="modal" data-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
+		</td>
 	</tr>
 </table>
+
+<div class="modal fade" id="mastodonModal" tabindex="-1" aria-labelledby="mastodonModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title text-white" id="mastodonModalLabel"><i class="fab fa-mastodon"></i> Please enter your instance</h4>
+				<button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true"><i class="fas fa-times"></i></span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<p class="text-white h5">As Mastodon has many servers, you have to choose an instance</p>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text">https://</span>
+					</div>
+					<input type="text" class="form-control" placeholder="URL" id="url-mastodon-value" value="mastodon.social">
+				</div>
+			</div>
+			<div class="modal-footer border-top-0">
+				<button type="button" class="btn btn-primary share-mastodon"><i class="fas fa-share"></i> Partager</button>
+			</div>
+		</div>
+	</div>
+</div>
 
 <script>
 	function socialWindow(url) {
@@ -75,5 +103,17 @@
 		e.preventDefault();
 		url = "https://share.flipboard.com/bookmarklet/popout?v=2&title=" + title + "&url=" + pageUrl;
 		socialWindow(url);
+	});
+
+	document.querySelector(".share-mastodon").addEventListener("click", (e) => {
+		e.preventDefault();
+		e.stopPropagation();
+		
+		$("#mastodonModal").modal("hide");
+		
+		let url = document.getElementById("url-mastodon-value").value
+		url = url.replace(/^https?:\/\//, '').replace(/^\/+|\/+$/g, '');
+		
+		socialWindow("https://" + url + "/share?text=" + title + " " + pageUrl);
 	});
 </script>
