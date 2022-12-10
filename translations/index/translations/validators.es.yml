@@ -199,6 +199,11 @@ twitter:
     admin:
         NumberOfRemainingCharacters: "Número de caracteres restantes:"
         AddImage: "Añadir una imagen"
+mastodon:
+    index:
+        PleaseEnterYourInstance: "Por favor ingrese su instancia"
+        ChooseAnInstance: "Como Mastodon tiene muchos servidores, debe elegir una instancia"
+        Share: "Compartir"
 version:
     title:
         ActivateVersion: "Activar versión"

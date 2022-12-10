@@ -38,13 +38,13 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h4 class="modal-title text-white h4" id="mastodonModalLabel"><i class="fab fa-mastodon"></i> Please enter your instance</h4>
+				<h4 class="modal-title text-white h4" id="mastodonModalLabel"><i class="fab fa-mastodon"></i> {{ "mastodon.index.PleaseEnterYourInstance"|trans([], "validators") }}</h4>
 				<button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true"><i class="fas fa-times"></i></span>
 				</button>
 			</div>
 			<div class="modal-body">
-				<p class="text-white h5">As Mastodon has many servers, you have to choose an instance</p>
+				<p class="text-white h5">{{ "mastodon.index.ChooseAnInstance"|trans([], "validators") }}</p>
 				<div class="input-group">
 					<div class="input-group-prepend">
 						<span class="input-group-text">https://</span>
@@ -53,7 +53,7 @@
 				</div>
 			</div>
 			<div class="modal-footer border-top-0">
-				<button type="button" class="btn btn-primary share-mastodon"><i class="fas fa-share"></i> Partager</button>
+				<button type="button" class="btn btn-primary share-mastodon"><i class="fas fa-share"></i> {{ "mastodon.index.Share"|trans([], "validators") }}</button>
 			</div>
 		</div>
 	</div>
