@@ -23,7 +23,7 @@ ap_videomobile_index:
 
 ap_videomobile_selectthemeforindex:
     path: /mobile/video/selectThemeForIndex
-    controller: App\Controller\VideoMobileController::selectThemeForIndexAction
+    controller: App\Controller\VideoMobileController::selectThemeForIndexNewAction
 
 ap_videomobile_read:
     path:  /mobile/video/read/{id}

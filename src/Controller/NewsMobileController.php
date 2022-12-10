@@ -54,7 +54,7 @@ class NewsMobileController extends AbstractController
 	public function selectThemeForIndexNewAction(Request $request)
 	{
 		$themeId = $request->request->get('theme_news');
-		
+
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 

@@ -66,10 +66,12 @@
 					$("div#anonymously_message").html("");
 			}
 			
-			$("select#{{ form.vars.name }}_isAnonymous").change(function()
-			{
-				publishAnonymously($(this).val());
+			document.querySelector("select#{{ form.vars.name }}_isAnonymous").addEventListener("change", (e) => {
+				publishAnonymously(e.target.value)
 			});
+			
+			console.log(document.querySelector("select#{{ form.vars.name }}_isAnonymous").value);
+			console.log($("select#{{ form.vars.name }}_isAnonymous").val());
 			
 			publishAnonymously($("select#{{ form.vars.name }}_isAnonymous").val());
 		});

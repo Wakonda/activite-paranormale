@@ -14,28 +14,21 @@
 
 {% block additional_javascript %}
 	<script>
-		$(function ()
-		{
-			$('select.selected_theme_news').change(function()
+		document.querySelector("select.selected_theme_news").addEventListener("change", (e) => {
+			var form = document.querySelector("#choose_theme_news");
+			var formData =  new FormData(form);
+
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function()
 			{
-				var DATA = $("#choose_theme_news").serialize();
-				$.ajax(
+				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 				{
-					type: "POST",
-					url: "{{ path('ap_newsmobile_selectthemeforindexnew') }}",
-					data: DATA,
-					cache: false,
-					success: function(data)
-					{
-						document.location.href = data;
-					}
-				});
-				return false;
-			});
-			
-			$("div.media").click(function() {
-				document.location.href = $(this).find("a").attr("href");
-			});
+					document.location.href = xmlHttp.responseText;
+				}
+			}
+
+			xmlHttp.open("POST", "{{ path('ap_newsmobile_selectthemeforindexnew') }}"); 
+			xmlHttp.send(formData);
 		});
 	</script>
 {% endblock %}
@@ -73,7 +66,7 @@
 			<h4 class="media-heading"><a href="{{ path('ap_newsmobile_read', { 'id' : entity.id }) }}">{{ entity.title }}</a></h4>
 			<div class="text-justify">{{ entity.abstractText|raw }}</div>
 			<hr>
-			<i>{{ entity.theme.title }} - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }}</i>
+			<i class="fas fa-dragon"></i>  <i>{{ entity.theme.title }} - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }}</i>
 		</div>
 	</div>
 	{% else %}

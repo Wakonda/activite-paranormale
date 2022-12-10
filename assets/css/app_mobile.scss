@@ -478,5 +478,16 @@ a.social-share {
 	text-shadow: initial;
 }
 
+/********** MODAL ***********/
+.black_modal .modal-content {
+    background: black;
+    border: 1px solid #d7e13d;
+    box-shadow: 0 0 30px #d7e13d;
+}
+.black_modal .modal-body i {
+    font-size: 2rem;
+    color: #d7e13d;
+}
+
 .ads-responsive { width: 320px; height: 100px; }
 @media (min-width: 768px) and (min-height: 768px)  { .ads-responsive { width: 728px; height: 90px; } }

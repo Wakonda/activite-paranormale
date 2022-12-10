@@ -5,8 +5,8 @@
 
 {% block body_content %}
 	<div class="error_message">
-	
 	</div>
+
 	<form action="{{ path('FileManagement_UploadfileDropzone', {idClassName: entity.id, className: 'Testimony' }) }}" class="dropzone" id="my-awesome-dropzone">
 		<div class="fallback">
 			<input name="uploadFile" type="file" multiple />
@@ -20,16 +20,13 @@
 
 {% block additional_javascript %}
 	<script src="{{ asset('extended/js/dropzone-master/src/dropzone.js') }}"></script>
-	
-	
+
 	<script>
-	$(function() {
-		$("#validate_file").click(function() {
+		document.querySelector("#validate_file").addEventListener("click", (e) => {
 			var myDropzone = Dropzone.forElement(".dropzone");
 			myDropzone.processQueue();
-			
 		});
-	});
+
 	var previewTemplate =
 	'<div class="dz-preview dz-file-preview">' +
     '<div class="dz-image"><img data-dz-thumbnail /></div>' +
@@ -49,12 +46,11 @@
 		addRemoveLinks: true,
 		autoProcessQueue: false,
 		sending: function(file, xhr, formData){
-			formData.append('title', $(file.previewElement).find("input").val());
+			formData.append('title', file.previewElement.querySelector("input").value);
 		},
 		error: function(result, responseStatus, errorThrown){
-			alert("erreur")
-			$("div.error_message").html("");
-			$("div.error_message").append('<div class="alert alert-danger">' + responseStatus + '</div>');
+			document.querySelector("div.error_message").innerHTML = "";
+			document.querySelector("div.error_message").insertAdjacentHTML("beforeend",'<div class="alert alert-danger">' + responseStatus + '</div>');
 		},
 		queuecomplete: function(file, res){
 			if (this.files[0].status != Dropzone.SUCCESS)

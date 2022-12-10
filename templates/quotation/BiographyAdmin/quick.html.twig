@@ -34,11 +34,11 @@
 
 <script>
 	document.querySelector("#new-biography").addEventListener("submit", (e) => {
-	e.preventDefault();
-	let form = document.querySelector('#new-biography');
-	let formData = new FormData(form);
-		
-	var xmlHttp = new XMLHttpRequest();
+		e.preventDefault();
+		let form = document.querySelector('#new-biography');
+		let formData = new FormData(form);
+			
+		var xmlHttp = new XMLHttpRequest();
 		xmlHttp.onreadystatechange = function()
 		{
 			if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
