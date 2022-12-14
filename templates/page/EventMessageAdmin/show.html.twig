@@ -75,5 +75,7 @@
 	{% if entity.state.isWaiting() %}
 		<a href="{{ path('EventMessage_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "eventMessage.admin.Validate"|trans([], "validators") }}</a>
 		<a href="{{ path('EventMessage_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "eventMessage.admin.Refuse"|trans([], "validators") }}</a>
+	{% else %}
+		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "EventMessage_Admin_Internationalization", "showRoute": "EventMessage_Admin_Show", "editRoute": "EventMessage_Admin_Edit"})) }}
 	{% endif %}
 {% endblock %}

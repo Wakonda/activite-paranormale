@@ -34,12 +34,11 @@
 	<div>
 	<p>{{ picture.text|raw }}</p>	
 	</div>
-	
-	<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
 
+	<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
 	{{ (picture.photoIllustrationCaption|imgCaption( asset(picture.getAssetImagePath()~picture.photoIllustrationFilename)))|raw }}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	<p>
 		<i class="fas fa-dragon"></i> <a dir="{{ picture.language.direction }}" href="{{ path('Theme_Show', {id: picture.theme.id, theme: picture.theme.title}) }}">{{ picture.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ picture.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if picture.author is not empty and picture.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: picture.author.id}) }}">{{ picture.author }}</a>{% else %}{{ picture.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : picture.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~picture.licence.logo) }}" alt="{{ picture.licence.title }}" /></a>
 		{% if is_current_languages(picture.language.abbreviation) == false %}
@@ -65,10 +64,10 @@
 			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
 		{% endif %}
 	</div>
-	
+
 	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : picture.id, 'className': 'Photo' })) }}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
 

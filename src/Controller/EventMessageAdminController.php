@@ -13,6 +13,9 @@ use Doctrine\ORM\Query\ResultSetMapping;
 use App\Entity\EventMessage;
 use App\Entity\State;
 use App\Entity\Language;
+use App\Entity\Theme;
+use App\Entity\Licence;
+use App\Entity\FileManagement;
 use App\Form\Type\EventMessageAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -129,7 +132,6 @@ class EventMessageAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-
     public function indexStateAction(Request $request, $state)
     {
         $em = $this->getDoctrine()->getManager();
@@ -178,6 +180,70 @@ class EventMessageAdminController extends AdminGenericController
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
 	}
+	
+    public function internationalizationAction(Request $request, $id)
+    {
+		$formType = EventMessageAdminType::class;
+		$entity = new EventMessage();
+		
+		$em = $this->getDoctrine()->getManager();
+		$entityToCopy = $em->getRepository(EventMessage::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$entity->setLanguage($language);
+
+		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setInternationalName($entityToCopy->getInternationalName());
+		$entity->setWikidata($entityToCopy->getWikidata());
+		$entity->setType($entityToCopy->getType());
+		
+		$entity->setDayFrom($entityToCopy->getDayFrom());
+		$entity->setMonthFrom($entityToCopy->getMonthFrom());
+		$entity->setYearFrom($entityToCopy->getYearFrom());
+		
+		$entity->setDayTo($entityToCopy->getDayTo());
+		$entity->setMonthTo($entityToCopy->getMonthTo());
+		$entity->setYearTo($entityToCopy->getYearTo());
+		
+		$licence = null;
+		
+		if(!empty($entityToCopy->getLicence()))
+			$licence = $em->getRepository(Licence::class)->findOneBy(["internationalName" => $entityToCopy->getLicence()->getInternationalName(), "language" => $language]);
+		
+		$entity->setLicence($licence);
+		
+		$state = null;
+		
+		if(!empty($entityToCopy->getState()))
+			$state = $em->getRepository(State::class)->findOneBy(["internationalName" => $entityToCopy->getState()->getInternationalName(), "language" => $language]);
+		
+		$entity->setState($state);
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
+		}
+		
+		$entity->setThumbnail($entityToCopy->getThumbnail());
+		
+		$theme = null;
+		
+		if(!empty($entityToCopy->getTheme()))
+			$theme = $em->getRepository(Theme::class)->findOneBy(["internationalName" => $entityToCopy->getTheme()->getInternationalName(), "language" => $language]);
+		
+		$entity->setTheme($theme);
+		
+		$entity->setLatitude($entityToCopy->getLatitude());
+		$entity->setLongitude($entityToCopy->getLongitude());
+
+		$twig = 'page/EventMessageAdmin/new.html.twig';
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+    }
 
 	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
 	{

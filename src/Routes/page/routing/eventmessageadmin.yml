@@ -56,6 +56,10 @@ EventMessage_Admin_ChangeState:
     requirements:
         id: \d+
 
+EventMessage_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\EventMessageAdminController::internationalizationAction
+
 EventMessage_Admin_ShowImageSelectorColorbox:
     path:  /showImageSelectorColorbox
     controller: App\Controller\EventMessageAdminController::showImageSelectorColorboxAction

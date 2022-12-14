@@ -8,6 +8,7 @@
 {% endblock %}
 
 {% block body_content %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<div class="read-content">
 		{% set otherFiles = [] %}
 	
@@ -40,38 +41,47 @@
 		<div>{{ entity.text|raw }}</div>
 		<br>
 	
-	{% if otherFiles is not empty %}
-		<h3>{{ "file.read.OtherFiles"|trans([], "validators") }}</h3>
-		<table class="table table-bordered table-striped table-dark">
-			<thead>
-				<tr class="trGene text-center">
-					<th>{{ "file.read.Title"|trans([], "validators") }}</th>
-					<th>{{ "file.read.Download"|trans([], "validators") }}</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for otherFile in otherFiles %}
-				<tr>
-					<td>{{ otherFile.titleFile }}</td>
-					<td class="text-center">
-						{% if entity.archive %}
-							<a href="{{ path('FileManagement_Download', {id: otherFile.id, path: (entity.getAssetImagePath()|url_encode), folder: "private" }) }}" class="btn btn-info btn-sm d-inline-block"><i class="fas fa-cloud-download-alt text-white"></i></a>
-						{% else %}
-							<a href="{{ path('FileManagement_Download', {id: otherFile.id, path: (entity.getAssetImagePath()|url_encode) }) }}" class="btn btn-info btn-sm d-inline-block"><i class="fas fa-cloud-download-alt text-white"></i></a>
-						{% endif %}
-					</td>
-				</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-	{% endif %}
+		{% if otherFiles is not empty %}
+			<h3>{{ "file.read.OtherFiles"|trans([], "validators") }}</h3>
+			<table class="table table-bordered table-striped table-dark">
+				<thead>
+					<tr class="trGene text-center">
+						<th>{{ "file.read.Title"|trans([], "validators") }}</th>
+						<th>{{ "file.read.Download"|trans([], "validators") }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for otherFile in otherFiles %}
+					<tr>
+						<td>{{ otherFile.titleFile }}</td>
+						<td class="text-center">
+							{% if entity.archive %}
+								<a href="{{ path('FileManagement_Download', {id: otherFile.id, path: (entity.getAssetImagePath()|url_encode), folder: "private" }) }}" class="btn btn-info btn-sm d-inline-block"><i class="fas fa-cloud-download-alt text-white"></i></a>
+							{% else %}
+								<a href="{{ path('FileManagement_Download', {id: otherFile.id, path: (entity.getAssetImagePath()|url_encode) }) }}" class="btn btn-info btn-sm d-inline-block"><i class="fas fa-cloud-download-alt text-white"></i></a>
+							{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
 		<br>
 		<hr class="hr2">
-		<p class="mt-7"><i class="fas fa-dragon"></i> <a href="{{ path('ap_testimonymobile_index', {page: 1, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }} - <i class="fas fa-user"></i> {{ entity.pseudoUsed }} - <img class="align-middle d-inline" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></p>
+		<p class="mt-7"><i class="fas fa-dragon"></i> <a href="{{ path('ap_testimonymobile_index', {page: 1, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }} - <i class="fas fa-user"></i> {{ entity.pseudoUsed }} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle d-inline" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a></p>
 	</div>
 	
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
 	<br>
+{% endblock %}
+
+{% block additional_javascript %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	</script>
 {% endblock %}
 
 {% block sub_content %}

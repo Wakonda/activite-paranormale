@@ -15,9 +15,11 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
+use App\Form\EventListener\InternationalNameFieldListener;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -78,6 +80,8 @@ class EventMessageAdminType extends AbstractType
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
         ;
+
+		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
 
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event){
 			$data = $event->getData();

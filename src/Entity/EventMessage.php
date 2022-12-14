@@ -123,6 +123,13 @@ class EventMessage extends MappedSuperclassBase
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+	/**
+	 * @var string $internationalName
+	 *
+	 * @ORM\Column(name="internationalName", type="string", length=255)
+	 */
+	private $internationalName;
 	
 	public function __construct()
 	{
@@ -497,5 +504,25 @@ class EventMessage extends MappedSuperclassBase
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    /**
+     * Set internationalName
+     *
+     * @param string $internationalName
+     */
+    public function setInternationalName($internationalName)
+    {
+        $this->internationalName = $internationalName;
+    }
+
+    /**
+     * Get internationalName
+     *
+     * @return internationalName 
+     */
+    public function getInternationalName()
+    {
+        return $this->internationalName;
     }
 }

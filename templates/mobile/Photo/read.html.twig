@@ -8,17 +8,30 @@
 {% endblock %}
 
 {% block body_content %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<div class="read-content">
 		<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 		<br>
 		<div>{{ entity.text|raw }}</div>
-		<br>
+
+		<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
+		{{ (entity.photoIllustrationCaption|imgCaption( asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)))|raw }}
+
 		<hr class="hr2">
-		<p class="mt-7"><i class="fas fa-dragon"></i> <a href="{{ path('ap_photomobile_index', {page: 1, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }} - <i class="fas fa-user"></i> {{ entity.pseudoUsed }} - <img class="align-middle d-inline" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></p>
+		<p class="mt-7"><i class="fas fa-dragon"></i> <a href="{{ path('ap_photomobile_index', {page: 1, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|date_mobile(app.request.locale) }} - <i class="fas fa-user"></i> {{ entity.pseudoUsed }} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle d-inline" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a></p>
 	</div>
 	
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
 	<br>
+{% endblock %}
+
+{% block additional_javascript %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			$('#showColorboxByLicenceModal').modal('show');
+			e.preventDefault();
+		});
+	</script>
 {% endblock %}
 
 {% block sub_content %}

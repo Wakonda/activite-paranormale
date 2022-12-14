@@ -9,9 +9,11 @@
 
 {% block header_plus %}
 	<script>
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			$('#showColorboxByLicenceModal').modal('show');
-			e.preventDefault();
+		document.addEventListener("DOMContentLoaded", function(event) {
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
 		});
 	</script>
 {% endblock %}
@@ -38,7 +40,7 @@
 		{% endif %}
 
 		{% if previousAndNextEntities["next"] is not empty %}
-			<a class="previous_next_enable_right float-right" href="{{ path('Testimony_Show', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+			<a class="previous_next_enable_right float-right" href="{{ path('Testimony_Show', {id: previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
 		{% else %}
 			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
 		{% endif %}

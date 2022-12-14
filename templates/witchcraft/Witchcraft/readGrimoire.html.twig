@@ -18,33 +18,33 @@
 		<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
 		{{ source_document(entity.source, entity.language) }}
 	{% endif %}
-	
-	<hr class="hr2"/>
-	<p>{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}{{ entity.surTheme.menuGrimoire.title }} - <span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.menuGrimoire.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></span> - <span><i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }}</span>
+
+	<hr class="hr2">
+	<p>{% if entity.author is not empty or entity.pseudoUsed is not empty %}<i class="fas fa-user"></i> {% endif %}{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}{{ entity.surTheme.menuGrimoire.title }} - <span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.menuGrimoire.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></span> - <span><i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }}</span>
 		{% if is_current_languages(entity.language.abbreviation) == false %}
 			- <a href="{{ path('Witchcraft_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
 		{% endif %}
 	</p>
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':entity} %}
-	
+
 	<div class="hidden_for_print">
 		{% if previousAndNextEntities["previous"] is not empty %}
-			<a href="{{ path('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].title})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
+			<a href="{{ path('Witchcraft_ReadGrimoire', {surtheme: entity.surTheme.title, id: previousAndNextEntities["previous"].id, title_slug: previousAndNextEntities["previous"].title})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
 		{% else %}
 			<span class="previous_next_disable_left"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></span>
 		{% endif %}
 
 		{% if previousAndNextEntities["next"] is not empty %}
-			<a class="float-right" href="{{ path('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].title})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+			<a class="float-right" href="{{ path('Witchcraft_ReadGrimoire', {surtheme: entity.surTheme.title, id: previousAndNextEntities["next"].id, title_slug: previousAndNextEntities["next"].title})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
 		{% else %}
 			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
 		{% endif %}
 	</div>
-	
+
 	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Grimoire' })) }}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
 

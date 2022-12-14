@@ -12,9 +12,15 @@
 		<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 		<br>
 		<div>{{ entity.text|raw }}</div>
-		<br>
+
+		{% if entity.source is not empty %}
+			<br>
+			<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
+			{{ source_document(entity.source, entity.language) }}
+		{% endif %}
+
 		<hr class="hr2">
-		<p class="mt-7"><i class="fas fa-dragon"></i>  {{ entity.surTheme.menuGrimoire.title }} - <a href="{{ path('ap_witchcraftmobile_index', {theme: entity.surTheme.title}) }}">{{ entity.surTheme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|date_mobile(app.request.locale) }}</p>
+		<p class="mt-7">{% if entity.author is not empty or entity.pseudoUsed is not empty %}<i class="fas fa-user"></i> {% endif %}{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}<i class="fas fa-dragon"></i>  {{ entity.surTheme.menuGrimoire.title }} - <a href="{{ path('ap_witchcraftmobile_index', {theme: entity.surTheme.title}) }}">{{ entity.surTheme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|date_mobile(app.request.locale) }}</p>
 	</div>
 {% endblock %}
 

@@ -308,10 +308,7 @@ class BiographyAdminController extends AdminGenericController
 			
 			if ("Symfony\Component\HttpFoundation\RedirectResponse" == get_class($res)) {
 				$path = (new Biography())->getAssetImagePath();
-				
-				// $entity = $em->getRepository(Biography::class)->find(2528);
-				
-				
+
 				$entities = $em->getRepository(Biography::class)->getBiographyByWikidataOrTitle($entity->getTitle(), $entity->getWikidata());
 				$data = $this->render("quotation/BiographyAdmin/quick_data.html.twig", ["entity" => $entities[0], "path" => $path, "entityNew" => $entity]);
 				return new JsonResponse(["state" => "success", "data" => $data->getContent()]);

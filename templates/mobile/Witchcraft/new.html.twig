@@ -57,23 +57,18 @@
 
 {% block additional_javascript %}
 	<script>
-		$(function() {
-			function publishAnonymously(value)
-			{
-				if(value == 1)
-					$("div#anonymously_message").html("<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'witchcraft.new.AnonymousMessage'|trans([], 'validators') }}</div>");
-				else
-					$("div#anonymously_message").html("");
-			}
-			
-			document.querySelector("select#{{ form.vars.name }}_isAnonymous").addEventListener("change", (e) => {
-				publishAnonymously(e.target.value)
-			});
-			
-			console.log(document.querySelector("select#{{ form.vars.name }}_isAnonymous").value);
-			console.log($("select#{{ form.vars.name }}_isAnonymous").val());
-			
-			publishAnonymously($("select#{{ form.vars.name }}_isAnonymous").val());
+		function publishAnonymously(value)
+		{
+			if(value == 1)
+				document.querySelector("div#anonymously_message").innerHTML = "<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'witchcraft.new.AnonymousMessage'|trans([], 'validators') }}</div>";
+			else
+				document.querySelector("div#anonymously_message").innerHTML = "";
+		}
+		
+		document.querySelector("select#{{ form.vars.name }}_isAnonymous").addEventListener("change", (e) => {
+			publishAnonymously(e.target.value)
 		});
+
+		publishAnonymously(document.querySelector("select#{{ form.vars.name }}_isAnonymous").value);
 	</script>
 {% endblock %}
