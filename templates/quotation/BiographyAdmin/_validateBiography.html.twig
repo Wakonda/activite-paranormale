@@ -27,7 +27,7 @@
 
 		{% if entities|length == 1 %}
 			{% if language not in languageIds %}
-				<div id="iframe-container" class="w-100 card mt-2 mx-3"><iframe src="{{ path('Biography_Admin_Quick', {locale: language, wikidata: wikidata, internationalName: entities[0].internationalName}) }}" style="height: 55vh; border: none;"></iframe></div>
+				<div id="iframe-container" class="w-100 card mt-2 mx-3"><iframe src="{{ path('Biography_Admin_Quick', {locale: language, title: entities[0].title, wikidata: (wikidata is not empty ? wikidata : entities[0].wikidata), internationalName: entities[0].internationalName}) }}" style="height: 55vh; border: none;"></iframe></div>
 			{% endif %}
 		{% endif %}
     </div>
@@ -38,9 +38,7 @@
 					<div class="card">
 						<div id="content-biography">
 							<div class="alert alert-info">{{ "biography.admin.NonExistentBiography"|trans([], "validators") }}</div>
-							{% if wikidata is not empty %}
-								<div id="iframe-container"><iframe src="{{ path('Biography_Admin_Quick', {locale: language, wikidata: wikidata}) }}" style="height: 55vh; border: none;"></iframe></div>
-							{% endif %}
+							<div id="iframe-container"><iframe src="{{ path('Biography_Admin_Quick', {locale: language, title: title, wikidata: wikidata, internationalName: internationalName}) }}" style="height: 55vh; border: none;"></iframe></div>
 						</div>
 					</div>
 				</div>

@@ -415,8 +415,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->join("b.language", "l")
 		   ->leftjoin("b.illustration", "i")
 		   ->leftjoin("b.nationality", "n")
-		   ->groupBy("b.internationalName")
-		   ->addGroupBy("b.wikidata");
+		   ->groupBy("b.internationalName");
 		   
 		if(!empty($title))
 			$qb->where("b.title = :title")
@@ -424,7 +423,8 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   
 		if(!empty($wikidata))
 			$qb->orWhere("b.wikidata = :wikidata")
-		       ->setParameter("wikidata", $wikidata);
+		       ->setParameter("wikidata", $wikidata)
+		       ->addGroupBy("b.wikidata");
 
 		return $qb->getQuery()->getResult();
 	}

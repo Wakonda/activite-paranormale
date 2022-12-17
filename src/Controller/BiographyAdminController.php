@@ -256,21 +256,24 @@ class BiographyAdminController extends AdminGenericController
 		$entities = $em->getRepository(Biography::class)->getBiographyByWikidataOrTitle($title, $wikidata);
 		$path = (new Biography())->getAssetImagePath();
 
-		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path, "language" => $language, "wikidata" => $wikidata]);
+		$internationalName = (!empty($entities) ? $entities[0]["internationalName"] : null);
+
+		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path, "language" => $language, "wikidata" => $wikidata, "title" => $title, "internationalName" => $internationalName]);
 	}
 	
-	public function quickAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $wikidata, $internationalName)
+	public function quickAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title, $wikidata, $internationalName)
 	{
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
-		
+
 		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($locale);
-		
+
 		$entityToCopy = null;
 		
 		if(!empty($internationalName)) {
 			$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName]);
+
 		$country = null;
 		
 		if(!empty($entityToCopy->getNationality()))
@@ -296,6 +299,7 @@ class BiographyAdminController extends AdminGenericController
 			}
 		}
 		
+		$entity->setTitle($title);
 		$entity->setLanguage($language);
 		$entity->setWikidata($wikidata);
 		$entity->setInternationalName($internationalName);
@@ -317,6 +321,6 @@ class BiographyAdminController extends AdminGenericController
 			}
 		}
 
-		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'locale' => $request->getLocale(), "wikidata" => $wikidata]);
+		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'internationalName' => $internationalName, 'locale' => $request->getLocale(), "title" => $title, "wikidata" => $wikidata]);
 	}
 }

@@ -63,11 +63,11 @@ class EventMessageController extends AbstractController
 			
 			foreach($period as $dt) {
 				if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
-				$eventDates[$dt->format("Y")][] = $dt->format("m-d");
-				
-						if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
-							$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
-						$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
+					$eventDates[$dt->format("Y")][] = $dt->format("m-d");
+			
+					if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
+						$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
+					$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
 				}
 			}
 		}
@@ -152,8 +152,8 @@ class EventMessageController extends AbstractController
 		$sSearch = $request->query->get('sSearch');
 		$language = $request->getLocale();
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -163,7 +163,7 @@ class EventMessageController extends AbstractController
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
 		}
-		
+
         $entities = $em->getRepository(EventMessage::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(EventMessage::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
@@ -171,7 +171,7 @@ class EventMessageController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 
 		foreach($entities as $entity)
@@ -186,7 +186,7 @@ class EventMessageController extends AbstractController
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(150, $img);
 
-			$row = array();
+			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].'; height:'.$img[1].'">';			
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $dateString;
@@ -404,8 +404,8 @@ class EventMessageController extends AbstractController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -423,13 +423,13 @@ class EventMessageController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 
 		foreach($entities as $entity)
 		{
 			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
-			$row = array();
+			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';

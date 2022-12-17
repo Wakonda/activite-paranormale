@@ -56,7 +56,7 @@
 		}
 
 		xmlHttp.overrideMimeType("application/json");
-		xmlHttp.open("post", "{{ path('Biography_Admin_Quick', {locale: locale, wikidata: wikidata}) }}"); 
+		xmlHttp.open("post", "{{ path('Biography_Admin_Quick', {locale: locale, title: title, internationalName: internationalName, wikidata: wikidata}) }}"); 
 		xmlHttp.send(formData);
 	});
 </script>
