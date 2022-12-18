@@ -3,6 +3,7 @@ ap_newsmobile_index:
     path:  /mobile/index/{page}/{theme}
     controller: App\Controller\NewsMobileController::indexAction
     defaults:
+        page: 1
         theme: null
     requirements:
        page: \d+
