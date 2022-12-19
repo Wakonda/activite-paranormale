@@ -69,11 +69,7 @@ class EventMessageAdminType extends AbstractType
 			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'EventMessage_Admin_ShowImageSelectorColorbox'))
 			->add('thumbnail', FileType::class, array('data_class' => null, 'required' => false))
 			->add('thumbnail_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getThumbnail()])
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-					'choice_label'=>'title',
-					'constraints' => array(new NotBlank()),
-					'required' => true,
-					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('longitude', TextType::class, array('required' => false))
 			->add('latitude', TextType::class, array('required' => false))
             ->add('type', ChoiceType::class, ['choices' => ['eventMessage.dayMonth.'.ucfirst(EventMessage::BIRTH_DATE_TYPE) => EventMessage::BIRTH_DATE_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::DEATH_DATE_TYPE) => EventMessage::DEATH_DATE_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::EVENT_TYPE) => EventMessage::EVENT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CELEBRATION_TYPE) => EventMessage::CELEBRATION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CONVENTION_TYPE) => EventMessage::CONVENTION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::SAINT_TYPE) => EventMessage::SAINT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::HOROSCOPE_TYPE) => EventMessage::HOROSCOPE_TYPE], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])

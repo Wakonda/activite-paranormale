@@ -38,11 +38,7 @@ class PhotoAdminType extends AbstractType
 								->orderBy('u.title', 'ASC');
 					},
 			))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-					'choice_label'=>'title',
-					'constraints' => array(new NotBlank()),
-					'required' => true,
-					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 

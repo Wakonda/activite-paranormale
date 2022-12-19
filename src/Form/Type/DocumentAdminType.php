@@ -61,11 +61,7 @@ class DocumentAdminType extends AbstractType
 					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
 			))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-					'choice_label'=>'title',
-					'required' => true,
-					'constraints' => [new NotBlank()],
-					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
 					'choice_label'=>'title',
 					'required' => true,

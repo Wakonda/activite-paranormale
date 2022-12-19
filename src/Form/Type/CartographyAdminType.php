@@ -44,27 +44,23 @@ class CartographyAdminType extends AbstractType
 					},
 				'constraints' => array(new NotBlank())
 				))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-											'choice_label'=>'title',
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-											'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-											'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-											))
+				'choice_label'=>'title', 
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
+			))
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'constraints' => array(new NotBlank()),
-											'choice_attr' => function($val, $key, $index) {
-												return ['data-intl' => $val->getInternationalName()];
-											},
-											'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}))
-											
+				'choice_label'=>'title', 
+				'required' => true,
+				'constraints' => array(new NotBlank()),
+				'choice_attr' => function($val, $key, $index) {
+					return ['data-intl' => $val->getInternationalName()];
+				},
+				'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}))
+				
 			->add('linkGMaps', UrlType::class, array('required' => true, 'constraints' => [new NotBlank()]))
 			->add('tags', Select2EntityType::class, [
 				'multiple' => true,

@@ -36,7 +36,7 @@ class AlbumAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];
-// dd($language);
+
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('required' => false))

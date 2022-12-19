@@ -202,13 +202,14 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 			$qb->select("t.title AS title");
 
 		$qb->addSelect("t.id")
+		   ->addSelect("t.internationalName")
 		   ->join("t.language", "lt")
 		   ->orderBy("t.title", "ASC");
 		   
 		if(!empty($locale))
 		   $qb->andWhere("lt.abbreviation = :locale")
 		      ->setParameter("locale", $locale);
-		   
-		return array_map(function($e) { return ["id" => $e["id"], "title" => $e["title"].((isset($e["localeTitle"]) and !empty($d = $e["localeTitle"]) and $e["localeTitle"] != $e["title"]) ? " [".$d."]" : "")]; }, $qb->getQuery()->getResult());
+
+		return array_map(function($e) { return ["id" => $e["id"], "internationalName" => $e["internationalName"], "title" => $e["title"].((isset($e["localeTitle"]) and !empty($d = $e["localeTitle"]) and $e["localeTitle"] != $e["title"]) ? " [".$d."]" : "")]; }, $qb->getQuery()->getResult());
 	}
 }

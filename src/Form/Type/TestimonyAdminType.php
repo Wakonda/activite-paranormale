@@ -29,11 +29,7 @@ class TestimonyAdminType extends AbstractType
             ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true))
 			->add('pseudoUsed', TextType::class)
 			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text'))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-				'choice_label'=>'title',
-				'required' => true,
-				'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
-			))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";

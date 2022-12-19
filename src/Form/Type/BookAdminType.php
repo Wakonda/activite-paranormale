@@ -63,11 +63,7 @@ class BookAdminType extends AbstractType
 					},
 				))
 			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-						'choice_label'=>'title',
-						'required' => true,
-						'constraints' => array(new NotBlank()),
-						'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('wikidata', TextType::class, ['required' => false])
 		    ->add('authors', Select2EntityType::class, [
 				'multiple' => true,

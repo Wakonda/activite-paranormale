@@ -44,11 +44,7 @@ class NewsTheDailyTruthAdminType extends AbstractType
 										->orderBy('u.title', 'ASC');
 							},
 				))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-					'choice_label'=>'title',
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}))
+            ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 
 					'required' => true,
