@@ -38,7 +38,6 @@ class TagWord
     protected $text;
 
     /**
-	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
