@@ -76,7 +76,10 @@
 			$dom->loadHTML($html, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED);
 
 			$xpath = new \DOMXPath($dom);
-			foreach($xpath->query('//div[contains(attribute::class, "thumb")]') as $e ) {
+			foreach($xpath->query('//div[contains(attribute::class, "thumb")]') as $e )
+				$e->parentNode->removeChild($e);
+
+			foreach($xpath->query('//div[contains(attribute::class, "listen")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
 			foreach($xpath->query('//sup[contains(attribute::class, "need_ref_tag")]') as $e ) {
