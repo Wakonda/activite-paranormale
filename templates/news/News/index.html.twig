@@ -21,23 +21,22 @@
 
 {% block APBlog_body %}
 	<script>
-		$(function ()
-		{
-			$('select.selected_theme_news').change(function()
-			{
-				var DATA = $("#choose_theme_news").serialize();
-				$.ajax(
+		window.addEventListener('DOMContentLoaded', function() {
+			document.querySelector("select.selected_theme_news").addEventListener("change", (e) => {
+				var form = document.querySelector("#choose_theme_news");
+				var formData =  new FormData(form);
+
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function()
 				{
-					type: "POST",
-					url: "{{ path('News_SelectThemeForIndexNew') }}",
-					data: DATA,
-					cache: false,
-					success: function(data)
+					if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 					{
-						document.location.href = data;
+						document.location.href = xmlHttp.responseText;
 					}
-				});
-				return false;
+				}
+
+				xmlHttp.open("POST", "{{ path('News_SelectThemeForIndexNew') }}"); 
+				xmlHttp.send(formData);
 			});
 		});
 	</script>
