@@ -41,7 +41,7 @@
 <script>
 	document.querySelector("#{{ form.language.vars.id }}_select_language").addEventListener("click", (e) => {
 		e.preventDefault();
-		window.location.href = "{{ route }}?locale=" + document.querySelector("#{{ form.language.vars.id }}").value;
+		window.location.href = "{{ route }}?fromId={{ entity.id }}&locale=" + document.querySelector("#{{ form.language.vars.id }}").value;
 	});
 
 	$(function ()

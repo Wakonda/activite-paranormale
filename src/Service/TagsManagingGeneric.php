@@ -64,7 +64,7 @@
 						}
 
 						if(!in_array($tagWord->getId(), $tagsIdExisted))
-						{		
+						{
 							$tags = clone $newTagobject;
 							$tags->setNameClass($nameClass);
 							$tags->setIdClass($entityBindded->getId());

@@ -252,7 +252,7 @@ class MovieAdminController extends AdminGenericController
     {
 		$formType = MovieAdminType::class;
 		$entity = new Movie();
-		
+
 		$em = $this->getDoctrine()->getManager();
 		$entityToCopy = $em->getRepository(Movie::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));

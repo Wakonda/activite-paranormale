@@ -8,6 +8,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
 
+use Symfony\Component\HttpFoundation\Request;
+
 class TagWordTransformer implements DataTransformerInterface
 {
     private $entityManager;
@@ -27,14 +29,33 @@ class TagWordTransformer implements DataTransformerInterface
     {
 		if(is_array($entity))
 			return $entity;
+		
+		$request = Request::createFromGlobals();
 
 		$className = array_reverse(explode("\\", get_class($entity)));
 		$tags = $this->entityManager->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));
 		
-		$tagArray = array();
+		$tagArray = [];
+		
+		if($request->query->has("fromId")) {
+			$entityToCopy = $this->entityManager->getRepository(get_class($entity))->find($request->query->get("fromId"));
+			
+			$tags = $this->entityManager->getRepository(Tags::class)->findBy(array('idClass' => $entityToCopy->getId(), 'nameClass' => $className));
+			$tw = [];
 
-		foreach($tags as $tag)
-			$tagArray[$tag->getTagWord()->getId()] = $tag->getTagWord()->getTitle();
+			foreach($tags as $tag) {
+				$tagWord = $this->entityManager->getRepository(\App\Entity\TagWord::class)->findOneBy(array('internationalName' => $tag->getTagWord()->getInternationalName(), 'language' => $entity->getLanguage()));
+
+				$t = new \App\Entity\Tags();
+				$t->setNameClass($className);
+				$t->setIdClass($entity->getId());
+
+				$tagArray[$tagWord->getId()] = $tagWord->getTitle();
+			}
+		} else {
+			foreach($tags as $tag)
+				$tagArray[$tag->getTagWord()->getId()] = $tag->getTagWord()->getTitle();
+		}
 
         return $tagArray;
     }
