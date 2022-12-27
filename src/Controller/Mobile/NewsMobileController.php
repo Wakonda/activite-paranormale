@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -18,6 +19,12 @@ use App\Service\PaginatorNativeSQL;
 use App\Entity\News;
 use App\Entity\Theme;
 use App\Entity\Page;
+use App\Entity\User;
+use App\Entity\State;
+use App\Entity\Licence;
+use App\Entity\Language;
+use App\Entity\FileManagement;
+use App\Form\Type\NewsUserParticipationType;
 
 require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php");
 
@@ -220,4 +227,68 @@ class NewsMobileController extends AbstractController
 
         return $this->render('mobile/Page/page.html.twig', array('entity' => $entity));
     }
+
+	public function newAction(Request $request)
+	{
+        $entity = new News();
+
+		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
+
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
+
+        return $this->render('mobile/News/new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+        ));
+	}
+
+	public function createAction(Request $request, TranslatorInterface $translator)
+	{
+		$securityUser = $this->container->get('security.authorization_checker');
+		$em = $this->getDoctrine()->getManager();
+
+		$entity = new News();
+
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
+        $form->handleRequest($request);
+		
+		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+
+		$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
+		
+		$entity->setState($state);
+		$entity->setLanguage($language);
+
+		$user = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+		$entity->setAuthor($user);
+		$entity->setIsAnonymous(0);
+
+        if ($form->isValid())
+		{
+			if(is_object($ci = $entity->getIllustration()))
+			{
+				$titleFile = uniqid()."_".$ci->getClientOriginalName();
+				$illustration = new FileManagement();
+				$illustration->setTitleFile($titleFile);
+				$illustration->setRealNameFile($titleFile);
+				$illustration->setExtensionFile(pathinfo($ci->getClientOriginalName(), PATHINFO_EXTENSION));
+				
+				$ci->move($entity->getTmpUploadRootDir(), $titleFile);
+				
+				$entity->setIllustration($illustration);
+			}
+
+			$em->persist($entity);
+			$em->flush();
+
+			$this->addFlash('success', $translator->trans('news.validate.ThankForYourParticipationText', array(), 'validators'));
+			
+			return $this->redirect($this->generateUrl('ap_newsmobile_index'));
+        }
+
+        return $this->render('news/News/new.html.twig', array(
+            'entity' => $entity,
+            'form'   => $form->createView()
+        ));
+	}
 }

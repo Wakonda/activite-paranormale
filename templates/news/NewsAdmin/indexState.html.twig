@@ -55,7 +55,7 @@
 				<td>{{ entity.title }}</td>
 				<td>{{ entity.publicationDate|date('Y-m-d') }}</td>
 				<td>{{ entity.pseudoUsed }}</td>
-				<td>{{ entity.theme.title }}</td>
+				<td>{{ entity.theme is not empty ? entity.theme.title : "" }}</td>
 				<td>{{ entity.archive }}</td>
 				<td>{% if entity.language.logo is defined %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" />{% endif %}</td>
 				<td>

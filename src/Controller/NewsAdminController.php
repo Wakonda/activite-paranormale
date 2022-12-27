@@ -245,6 +245,12 @@ class NewsAdminController extends AdminGenericController
 		$entity = $em->getRepository(News::class)->find($id);
 		
 		$entity->setState($state);
+
+		if($state->getInternationalName() == "Validate") {
+			if(empty($entity->getTheme()))
+				return $this->redirect($this->generateUrl('News_Admin_Edit', array('id' => $id)));
+		}
+		
 		$em->persist($entity);
 		$em->flush();
 

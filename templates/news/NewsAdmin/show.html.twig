@@ -46,7 +46,7 @@
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "news.admin.Theme"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.theme.title }}</div>
+	<div class="form-table-cell">{{ entity.theme is not empty ? entity.theme.title : "" }}<</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "news.admin.Archive"|trans([], "validators") }}</div>
 	<div class="form-table-cell">

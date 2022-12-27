@@ -1,7 +1,7 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.vars.language.id }}").change(function()
+	$("#{{ form.language.vars.id }}").change(function()
 	{
-		var currentState = $("#{{form.vars.state.id }}").find('option:selected').data('intl');
+		var currentState = $("#{{form.state.vars.id }}").find('option:selected').data('intl');
 
 		$.ajax({
 			type: "POST",
@@ -10,22 +10,22 @@
 			success: function(data)
 			{
 				var theme = data.theme;
-				$("#{{ form.vars.theme.id }} option").remove();
+				$("#{{ form.theme.vars.id }} option").remove();
 				$.each(theme, function(index, element)
 				{
-					$("#{{ form.vars.theme.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+					$("#{{ form.theme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 				});
 				var state = data.state;
-				$("#{{ form.vars.state.id }} option").remove();
+				$("#{{ form.state.vars.id }} option").remove();
 				$.each(state, function(index, element)
 				{
-					$("#{{ form.vars.state.id }}").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+					$("#{{ form.state.vars.id }}").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
 				});
 				var licence = data.licence;
-				$("#{{form.vars.licence.id }} option").remove();
+				$("#{{form.licence.vars.id }} option").remove();
 				$.each(licence, function(index, element)
 				{
-					$("#{{ form.vars.licence.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+					$("#{{ form.licence.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 				});
 			}
 		});

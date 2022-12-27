@@ -32,29 +32,27 @@ class NewsUserParticipationType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
-            ->add('abstractText', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank()), 'attr' => array('class' => 'edit')))
+            ->add('abstractText', TextareaType::class, array('required' => false, 'attr' => array('class' => 'edit')))
             ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
-											'choice_label'=>'title',
-											'placeholder' => "",
-											'constraints' => array(new NotBlank()),
-											'required' => true,
-											'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
-											))
+				'choice_label'=>'title',
+				'required' => false,
+				'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
+			))
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
-											'choice_label'=>'title', 
-											'required' => true,
-											'placeholder' => "",
-											'constraints' => array(new NotBlank()),
-											'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-											))
+				'choice_label'=>'title', 
+				'required' => true,
+				'placeholder' => "",
+				'constraints' => array(new NotBlank()),
+				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
+			))
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn')
 			))
 			->add('illustration', FileType::class, array('data_class' => null, 'required' => false))
 			;
 			
-		if($securityUser->isGranted('IS_AUTHENTICATED_FULLY'))
+		if(!empty($securityUser) and $securityUser->isGranted('IS_AUTHENTICATED_FULLY'))
 		{
 			$builder
 			->add('preview', SubmitType::class, array(

@@ -154,3 +154,11 @@ ap_newsmobile_selectlanguage:
 ap_pagemobile_page:
     path:  /mobile/page/{page}
     controller: App\Controller\Mobile\NewsMobileController::pageAction
+
+ap_newsmobile_new:
+    path: /mobile/news/new
+    controller: App\Controller\Mobile\NewsMobileController::newAction
+
+ap_newsmobile_create:
+    path: /mobile/news/create
+    controller: App\Controller\Mobile\NewsMobileController::createAction
