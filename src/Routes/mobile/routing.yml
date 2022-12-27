@@ -1,7 +1,7 @@
 # News and Archive
 ap_newsmobile_index:
     path:  /mobile/index/{page}/{theme}
-    controller: App\Controller\NewsMobileController::indexAction
+    controller: App\Controller\Mobile\NewsMobileController::indexAction
     defaults:
         page: 1
         theme: null
@@ -11,12 +11,13 @@ ap_newsmobile_index:
 
 ap_newsmobile_selectthemeforindexnew:
     path: /mobile/selectThemeForIndexNew
-    controller: App\Controller\NewsMobileController::selectThemeForIndexNewAction
+    controller: App\Controller\Mobile\NewsMobileController::selectThemeForIndexNewAction
 
 ap_videomobile_index:
     path:  /mobile/video/{page}/{theme}
-    controller: App\Controller\VideoMobileController::indexAction
+    controller: App\Controller\Mobile\VideoMobileController::indexAction
     defaults:
+        page: 1
         theme: null
     requirements:
        page: \d+
@@ -24,29 +25,30 @@ ap_videomobile_index:
 
 ap_videomobile_selectthemeforindex:
     path: /mobile/video/selectThemeForIndex
-    controller: App\Controller\VideoMobileController::selectThemeForIndexNewAction
+    controller: App\Controller\Mobile\VideoMobileController::selectThemeForIndexNewAction
 
 ap_videomobile_read:
     path:  /mobile/video/read/{id}
-    controller: App\Controller\VideoMobileController::readAction
+    controller: App\Controller\Mobile\VideoMobileController::readAction
     requirements:
        id: \d+
 
 ap_newsmobile_read:
     path:  /mobile/read/{id}
-    controller: App\Controller\NewsMobileController::readAction
+    controller: App\Controller\Mobile\NewsMobileController::readAction
     requirements:
        id: \d+
 
 ap_newsmobile_search:
     path:  /mobile/search
-    controller: App\Controller\NewsMobileController::searchAction
+    controller: App\Controller\Mobile\NewsMobileController::searchAction
 
 # Photo
 ap_photomobile_index:
     path:  /mobile/photo/{page}/{theme}
-    controller: App\Controller\PhotoMobileController::indexAction
+    controller: App\Controller\Mobile\PhotoMobileController::indexAction
     defaults:
+        page: 1
         theme: null
     requirements:
        page: \d+
@@ -54,11 +56,11 @@ ap_photomobile_index:
 
 ap_photomobile_selectthemeforindexphoto:
     path: /mobile/photo/selectThemeForIndexPhoto
-    controller: App\Controller\PhotoMobileController::selectThemeForIndexPhotoAction
+    controller: App\Controller\Mobile\PhotoMobileController::selectThemeForIndexPhotoAction
 
 ap_photomobile_read:
     path:  /mobile/photo/read/{id}
-    controller: App\Controller\PhotoMobileController::readAction
+    controller: App\Controller\Mobile\PhotoMobileController::readAction
     requirements:
        id: \d+
 
@@ -80,8 +82,9 @@ ap_storemobile_read:
 # Testimony
 ap_testimonymobile_index:
     path:  /mobile/testimony/{page}/{theme}
-    controller: App\Controller\TestimonyMobileController::indexAction
+    controller: App\Controller\Mobile\TestimonyMobileController::indexAction
     defaults:
+        page: 1
         theme: null
     requirements:
        page: \d+
@@ -89,34 +92,34 @@ ap_testimonymobile_index:
 
 ap_testimonymobile_selectthemeforindextestimony:
     path: /mobile/testimony/selectThemeForIndexTestimony
-    controller: App\Controller\TestimonyMobileController::selectThemeForIndexTestimonyAction
+    controller: App\Controller\Mobile\TestimonyMobileController::selectThemeForIndexTestimonyAction
 
 ap_testimonymobile_read:
     path:  /mobile/testimony/read/{id}
-    controller: App\Controller\TestimonyMobileController::readAction
+    controller: App\Controller\Mobile\TestimonyMobileController::readAction
     requirements:
        id: \d+
 
 ap_testimonymobile_new:
     path:  /mobile/testimony/new
-    controller: App\Controller\TestimonyMobileController::newAction
+    controller: App\Controller\Mobile\TestimonyMobileController::newAction
 
 ap_testimonymobile_create:
     path:  /mobile/testimony/create
-    controller: App\Controller\TestimonyMobileController::createAction
+    controller: App\Controller\Mobile\TestimonyMobileController::createAction
 
 ap_testimonymobile_addfile:
     path:  /mobile/testimony/file/{id}
-    controller: App\Controller\TestimonyMobileController::addFileAction
+    controller: App\Controller\Mobile\TestimonyMobileController::addFileAction
 
 ap_testimonymobile_validatefile:
     path:  /mobile/testimony/validatefile
-    controller: App\Controller\TestimonyMobileController::validateFileAction
+    controller: App\Controller\Mobile\TestimonyMobileController::validateFileAction
 
 # Witchcraft
 ap_witchcraftmobile_index:
     path:  /mobile/witchcraft/{page}/{theme}
-    controller: App\Controller\WitchcraftMobileController::indexAction
+    controller: App\Controller\Mobile\WitchcraftMobileController::indexAction
     defaults:
         theme: null
         page: 1
@@ -126,28 +129,28 @@ ap_witchcraftmobile_index:
 
 ap_witchcraftmobile_selectthemeforindexwitchcraft:
     path: /mobile/witchcraft/selectThemeForIndexWitchcraft
-    controller: App\Controller\WitchcraftMobileController::selectThemeForIndexWitchcraftAction
+    controller: App\Controller\Mobile\WitchcraftMobileController::selectThemeForIndexWitchcraftAction
 
 ap_witchcraftmobile_read:
     path:  /mobile/witchcraft/read/{id}
-    controller: App\Controller\WitchcraftMobileController::readAction
+    controller: App\Controller\Mobile\WitchcraftMobileController::readAction
     requirements:
        id: \d+
 
 ap_witchcraftmobile_new:
     path:  /mobile/witchcraft/new
-    controller: App\Controller\WitchcraftMobileController::newAction
+    controller: App\Controller\Mobile\WitchcraftMobileController::newAction
 
 ap_witchcraftmobile_create:
     path:  /mobile/witchcraft/create
-    controller: App\Controller\WitchcraftMobileController::createAction
+    controller: App\Controller\Mobile\WitchcraftMobileController::createAction
 
 ap_newsmobile_selectlanguage:
     path:  /mobile/selectlanguage/{language}
-    controller: App\Controller\NewsMobileController::selectLanguageAction
+    controller: App\Controller\Mobile\NewsMobileController::selectLanguageAction
     requirements:
        page: \d+
 
 ap_pagemobile_page:
     path:  /mobile/page/{page}
-    controller: App\Controller\NewsMobileController::pageAction
+    controller: App\Controller\Mobile\NewsMobileController::pageAction
