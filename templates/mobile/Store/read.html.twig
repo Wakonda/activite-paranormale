@@ -1,0 +1,310 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block page_title %}{{ entity.title }}{% endblock %}
+
+{% block body_content %}
+	{% if entity.imageEmbeddedCode is not empty %}
+		<p class="text-center">{{ entity.imageEmbeddedCode|raw }}</p>
+	{% endif %}
+	<br>
+	
+	{% if entity.price is not empty %}
+		<div class="text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></div>
+		<br>
+	{% endif %}
+	
+	<div class="text-center">
+		{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
+			<a class="btn btn-warning text-dark" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
+				<span class="mr-2"><i class="fab fa-amazon fa-fw"></i></span>
+				<b class="align-middle">{{ "store.index.BuyOnAmazon"|trans([], "validators") }}</b>
+			</a>
+		{% else %}
+			<a class="btn btn-danger" href="{{ entity.url }}" rel="nofollow" target="_blank">
+				<span class="mr-2"><i class="fab fa-alipay fa-fw"></i></span>
+				<b class="align-middle">{{ "store.index.BuyOnAliexpress"|trans([], "validators") }}</b>
+			</a>
+		{% endif %}
+	</div>
+	<br>
+	
+	{% if entity.text is not empty %}
+		<h3>{{ "store.read.Description"|trans([], "validators") }}</h3>
+		{{ entity.text|raw }}
+	{% endif %}
+
+	{% if entity.characteristic is not empty %}
+		<h3>{{ "store.index.Characteristic"|trans([], "validators") }}</h3>
+		{% for label, characteristic in entity.characteristic %}
+			<table class="table table-bordered table-dark table-striped">
+				<tbody>
+					<tr>
+						<td class="td_form_table">{{ ("store.index."~(label|ucfirst))|trans([], "validators") }}</td>
+						<td class="tdGene">{{ ("store.characteristic."~(characteristic|ucfirst))|trans([], "validators") }}</td>
+					</tr>
+				</tbody>
+			</table>
+		{% endfor %}
+	{% endif %}
+	
+	{% set url = null %}
+	
+	{% if entity.isBookCategory() and entity.book is not empty %}
+		{% set book = entity.book.book %}
+		{% set bookEdition = entity.book %}
+		{% set url = path('Book_Show', { id: book.id, title_slug: book.urlSlug }) %}
+		<table class="table table-bordered table-dark table-striped">
+			<tbody>
+				<tr>
+					<td class="td_form_table">{{ "book.read.Authors"|trans([], "validators") }}</td>
+					<td class="tdGene">
+						{% set authorsArray = [] %}
+						{% for author in book.authors %}
+							{% set correctBio = biography_correct_language(author) %}
+							
+							{% if correctBio is null %}
+								{% set correctBio = author %}
+							{% endif %}
+							{% set authorsArray = authorsArray|merge([author.title]) %}
+						{% endfor %}
+						{{ (authorsArray|join(", "))|raw }}
+					</td>
+				</tr>
+				
+				<tr>
+					<td class="td_form_table">{{ "book.read.Theme"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ book.theme.title }}</td>
+				</tr>
+				{% if bookEdition.isbn10 is not empty %}
+				<tr>
+					<td class="td_form_table">ISBN-10</td>
+					<td class="tdGene">{{ bookEdition.isbn10 }}</td>
+				</tr>
+				{% endif %}
+				{% if bookEdition.isbn13 is not empty %}
+				<tr>
+					<td class="td_form_table">ISBN-13</td>
+					<td class="tdGene">{{ bookEdition.isbn13 }}</td>
+				</tr>
+				{% endif %}
+				{% if bookEdition.numberPage is not empty %}
+				<tr>
+					<td class="td_form_table">{{ "bookEdition.read.NumberPage"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ bookEdition.numberPage }}</td>
+				</tr>
+				{% endif %}
+				{% if bookEdition.publicationDate is not empty %}
+				<tr>
+					<td class="td_form_table">{{ "bookEdition.read.PublishedOn"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ bookEdition.publicationDate|dodate(false, app.request.locale) }}</td>
+				</tr>
+				{% endif %}
+				{% if bookEdition.format is not empty %}
+				<tr>
+					<td class="td_form_table">{{ "bookEdition.read.Format"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ ("bookEdition.generic."~(bookEdition.format|ucfirst))|trans([], "validators") }}</td>
+				</tr>
+				{% endif %}
+				{% if bookEdition.publisher is not empty %}
+				<tr>
+					<td class="td_form_table">{{ "bookEdition.read.Publisher"|trans([], "validators") }}</td>
+					<td class="tdGene">
+						{% set img = bookEdition.publisher.photo|imgsize(200, bookEdition.publisher.getAssetImagePath(), true, null, null, false) %}
+						{% if img is not empty %}{{ img|raw }}{% else %}{{ bookEdition.publisher.title }}{% endif %}
+					</td>
+				</tr>
+				{% endif %}
+				{% if bookEdition.backCover is not empty %}
+				<tr>
+					<td class="td_form_table">{{ "bookEdition.read.BackCover"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ bookEdition.backCover|raw }}</td>
+				</tr>
+				{% endif %}
+			</tbody>
+		</table>
+	{% endif %}
+	
+	{% if entity.isMovieCategory() %}
+		{% set movie = entity.movie %}
+		{% set biographyDatas = movie_biographies_by_occupation(movie) %}
+		{% set url = path('Movie_Show', { id: movie.id, title_slug: movie.urlSlug }) %}
+		
+		<h3>{{ "movie.read.Datasheet"|trans([], "validators") }}</h3>
+		
+		<table class="table table-bordered table-dark table-striped">
+			<tbody>
+				<tr>
+					<td class="td_form_table">{{ "movie.read.Duration"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ movie.duration|default("-") }} {{ 'movie.index.Minute'|trans({ 'number': (movie.duration|default(0)) }, "validators") }}</td>
+				</tr>
+				<tr>
+					<td class="td_form_table">{{ "movie.read.ReleaseYear"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ (movie.releaseYear|doPartialDate(app.request.locale))|default("-") }}</td>
+				</tr>
+				<tr>
+					<td class="td_form_table">{{ "movie.read.Genre"|trans([], "validators") }}</td>
+					<td class="tdGene"><a href="{{ path('ByGenreMovie_Index', {idGenre: movie.genre.id, titleGenre: movie.genre.title}) }}">{{ movie.genre }}</a></td>
+				</tr>
+				<tr>
+					<td class="td_form_table">{{ "movie.read.Country"|trans([], "validators") }}</td>
+					<td class="tdGene">{% if movie.country is not null %}<img id="flagC" src="{{ asset(movie.country.getAssetImagePath()) }}{{ movie.country.flag }}" alt="" width="20" /> - {{ movie.country.title }}{% endif %}</td>
+				</tr>
+				{% for occupation, biographies in biographyDatas %}
+					{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
+					<tr>
+						<td class="td_form_table">{{ (("movie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
+						<td class="tdGene">
+							{% set persons = [] %}
+							{% for biography in biographies %}
+								{% set persons = persons|merge([biography.title]) %}
+							{% endfor %}
+							{{ (persons|join(", "))|raw }}
+						</td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+	
+		<h3>{{ "movie.read.Trailer"|trans([], "validators") }}</h3>
+		{{ movie.trailer|raw }}
+		
+		{% if biographyDatas|length > 0 %}
+		<h3>{{ "movie.read.Cast"|trans([], "validators") }}</h3>
+		<table class="table table-bordered table-dark table-striped">
+			<thead>
+				<tr>
+					<th>{{ "movie.read.Actor"|trans([], "validators") }}</th>
+					<th>{{ "movie.read.Role"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for occupation, biographies in biographyDatas %}
+					{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
+						{% for biography in biographies %}
+							<tr>
+								<td>{{ biography.title }}</td>
+								<td>{{ biography.role }}</td>
+							</tr>
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+	{% endif %}
+	
+	{% if entity.isAlbumCategory() %}
+		{% set album = entity.album %}
+		{% set musics = music_by_album(album.artist) %}
+		{% set url = path('Music_Listen', { id: album.id, artist: album.artist.title, artistId: album.artist.id, album: album.title }) %}
+		<hr>
+		<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" /> {{ (musics|duration_entities)|default('-') }}</p>
+		<hr>
+		<ul class="fa-ul">
+			<li><span class="fa-li"><i class="fas fa-music"></i></span> <span class="font-weight-bold">{{ "music.listen.NbrTitle"|trans([], "validators") }}</span> {{ musics|length }}</li>
+			<li><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> <span class="font-weight-bold">{{ "music.listen.ReleaseDate"|trans([], "validators") }}</span> {{ album.releaseYear|doPartialDate(app.request.locale) }}</li>
+		</ul>
+		<hr>
+		<table class="table table-bordered table-dark table-striped">
+			<thead>
+				<tr>
+					<th class="label_form">{{ "music.listen.Title"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "music.listen.Listen"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for music in musics %}
+					<tr>
+					<td class="tdGene">{{ music.musicPiece }}</td>
+					<td><i class="far fa-clock"></i> {{ (music.length|string_duration)|default('-') }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<th class="label_form">{{ "music.listen.Title"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "music.listen.Listen"|trans([], "validators") }}</th>
+				</tr>
+			</tfoot>
+		</table>
+	{% endif %}
+	
+	{% if entity.isTelevisionSerieCategory() %}
+		{% set televisionSerie = entity.televisionSerie %}
+		{% set url = path('TelevisionSerie_Show', { id: televisionSerie.id, title_slug: televisionSerie.urlSlug }) %}
+		
+		<h3>{{ "televisionSerie.read.Datasheet"|trans([], "validators") }}</h3>
+		
+		{% set biographyDatas = televisionserie_biographies_by_occupation(televisionSerie) %}
+
+		<table class="table table-bordered table-dark table-striped">
+			<tbody>
+				<tr>
+					<td class="td_form_table">{{ "televisionSerie.read.Genre"|trans([], "validators") }}</td>
+					<td class="tdGene">{{ televisionSerie.genre }}</td>
+				</tr>
+				<tr>
+					<td class="td_form_table">{{ "televisionSerie.read.Country"|trans([], "validators") }}</td>
+					<td class="tdGene">{% if televisionSerie.country is not null %}<img id="flagC" src="{{ asset(televisionSerie.country.getAssetImagePath()) }}{{ televisionSerie.country.flag }}" alt="" width="20" /> - {{ televisionSerie.country.title }}{% endif %}</td>
+				</tr>
+				{% for occupation, biographies in biographyDatas %}
+					{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
+					<tr>
+						<td class="td_form_table">{{ (("televisionSerie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
+						<td class="tdGene">
+							{% set persons = [] %}
+							{% for biography in biographies %}
+								{% set persons = persons|merge([biography.title]) %}
+							{% endfor %}
+							{{ (persons|join(", "))|raw }}
+						</td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+
+		{% if biographyDatas|length > 0 %}
+		<h3>{{ "televisionSerie.read.Cast"|trans([], "validators") }}</h3>
+		<table class="table table-bordered table-dark table-striped">
+			<thead>
+				<tr>
+					<th>{{ "televisionSerie.read.Actor"|trans([], "validators") }}</th>
+					<th>{{ "televisionSerie.read.Role"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for occupation, biographies in biographyDatas %}
+					{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
+						{% for biography in biographies %}
+							<tr>
+								<td>{{ biography.title }}</td>
+								<td>{{ biography.role }}</td>
+							</tr>
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+			</tbody>
+		</table>
+		{% endif %}
+	{% endif %}
+	
+	{#{% if url is not null %}
+	<div class="text-center">
+		<a class="btn read" href="{{ url }}">
+			<span class="mr-2"><i class="fas fa-plus fa-fw"></i></span>
+			<b class="align-middle">{{ "store.index.MoreInformationOn"|trans([], "validators") }}</b>
+		</a>
+	</div>
+	{% endif %}#}
+
+	<hr class="hr2">
+	<p class="mt-7">
+		<span><i class="fas fa-dragon"></i> <a href="{{ path('Store_Index', {category: entity.category}) }}">{{ ("store.index."~(entity.category|ucfirst))|trans([], "validators") }}</a></span>
+	</p>
+	
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+	<br>
+{% endblock %}

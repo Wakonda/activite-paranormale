@@ -1,0 +1,36 @@
+<div class="col-sm-4 mt-7 mb-7">
+	{% if entity.imageEmbeddedCode is not empty %}
+		<div class="store_embedded_image">{{ entity.imageEmbeddedCode|raw }}</div>
+	{% endif %}
+</div>
+
+<div class="col-sm-8 mt-7">
+	<h4 class="media-heading">{{ entity.title }}</h4>
+	<hr>
+	{% if entity.price is not empty %}
+		<p><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></p>
+	{% endif %}
+	<p><i class="fas fa-cash-register"></i> <a href="{{ path('ap_storemobile_index', {category: entity.category}) }}">{{ ("store.index."~(entity.category|ucfirst))|trans([], "validators") }}</a></p>
+	{% if entity.characteristic is not empty %}
+		{% for label, characteristic in entity.characteristic %}
+			{{ ("store.index."~(label|ucfirst))|trans([], "validators") }} <b>{{ ("store.characteristic."~(characteristic|ucfirst))|trans([], "validators") }}</b>
+		{% endfor %}
+	{% endif %}
+	
+	<hr>
+	<a class="btn btn-info text-white" href="{{ path('ap_storemobile_read', {'id': entity.id}) }}">
+		<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+		<b class="align-middle">{{ "store.search.Read"|trans([], "validators") }}</b>
+	</a>
+	{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
+		<a class="btn btn-warning text-dark" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
+			<span class="mr-2"><i class="fab fa-amazon fa-fw"></i></span>
+			<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
+		</a>
+	{% else %}
+		<a class="btn btn-danger text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
+			<span class="mr-2"><i class="fab fa-alipay fa-fw"></i></span>
+			<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
+		</a>
+	{% endif %}
+</div>

@@ -62,6 +62,21 @@ ap_photomobile_read:
     requirements:
        id: \d+
 
+# Store
+ap_storemobile_index:
+    path:  /mobile/store/{page}
+    controller: App\Controller\Mobile\StoreMobileController::indexAction
+    defaults:
+        page: 1
+    requirements:
+       page: \d+
+
+ap_storemobile_read:
+    path:  /mobile/store/read/{id}
+    controller: App\Controller\Mobile\StoreMobileController::showAction
+    requirements:
+       id: \d+
+
 # Testimony
 ap_testimonymobile_index:
     path:  /mobile/testimony/{page}/{theme}

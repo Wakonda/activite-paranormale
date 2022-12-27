@@ -491,3 +491,9 @@ a.social-share {
 
 .ads-responsive { width: 320px; height: 100px; }
 @media (min-width: 768px) and (min-height: 768px)  { .ads-responsive { width: 728px; height: 90px; } }
+
+/********* STORE ********/
+div.store_embedded_image a img, div.advertising_image a img {
+	max-width: 100%;
+	height: auto;
+}

@@ -1,0 +1,35 @@
+{% extends "mobile/mobile_layout.html.twig" %}
+
+{% block title %}{{ "index.mainMenu.Store"|trans([], "validators") }}{% endblock %}
+{% block page_title%}{{ "index.mainMenu.Store"|trans([], "validators") }}{% endblock %}
+
+{% block body_content %}
+	<h3>{{ "store.search.SearchSort"|trans([], "validators") }}</h3>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('ap_storemobile_index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal clearfix', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "store.search.Category"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.search.Platform"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-right mt-3">{{ "store.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+
+	{% for entity in pagination.items %}
+	<div class="row media-container m-0 mt-3">
+		{% include "mobile/Store/_product.html.twig" with { entity: entity } %}
+		</div>
+	{% else %}
+
+	<br>
+	<div class="alert alert-danger"><i class="fas fa-exclamation-triangle" aria-hidden="true"></i> {{ "mobile.news.NoNews"|trans([], "validators") }}</div>
+	{% endfor %}
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+{% endblock %}
