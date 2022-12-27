@@ -218,7 +218,7 @@ class NewsController extends AbstractController
 		$securityUser = $this->container->get('security.authorization_checker');
         $entity = new News();
 
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND"));
+		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 		
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
