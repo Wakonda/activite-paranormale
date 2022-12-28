@@ -29,7 +29,7 @@ class NewsAdminType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-            ->add('abstractText', TextareaType::class, array('required' =>true, 'constraints' => [new NotBlank()]))
+            ->add('abstractText', TextareaType::class, array('required' => false))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('source', SourceEditType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('pseudoUsed', TextType::class, array('required' =>true, 'constraints' => [new NotBlank()]))

@@ -79,12 +79,31 @@ class BiographyAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		
 		$country = null;
+		$entity->setTitle($entityToCopy->getTitle());
+
+		if(!empty($wikicode = $entityToCopy->getWikidata())) {
+			$wikidata = new \App\Service\Wikidata($em);
+			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
+			
+			if(!empty($data))
+			{
+				$sourceArray = [[
+					"author" => null,
+					"url" => $data["url"],
+					"type" => "url",
+				]];
+				
+				$entity->setSource(json_encode($sourceArray));
+				
+				if(!empty($title = $data["title"]))
+					$entity->setTitle($title);
+			}
+		}
 		
 		if(!empty($entityToCopy->getNationality()))
 			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
 		
 		$entity->setInternationalName($entityToCopy->getInternationalName());
-		$entity->setTitle($entityToCopy->getTitle());
 		$entity->setKind($entityToCopy->getKind());
 		$entity->setLanguage($language);
 		$entity->setBirthDate($entityToCopy->getBirthDate());

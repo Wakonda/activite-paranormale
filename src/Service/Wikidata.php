@@ -15,6 +15,21 @@
 		{
 			$this->em = $em;
 		}
+		
+		public function getTitleAndUrl(string $code, string $language): array
+		{
+			$res = [];
+			$languageWiki = $language."wiki";
+
+			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+
+			$datas = json_decode($content);
+
+			$res["title"] = $datas->entities->$code->labels->$language->value;
+			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			
+			return $res;
+		}
 
 		public function getBiographyDatas(string $code, string $language): array
 		{
