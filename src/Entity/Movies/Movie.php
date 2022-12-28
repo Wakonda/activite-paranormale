@@ -273,7 +273,7 @@ class Movie extends MappedSuperclassBase
         return $this->country;
     }
 
-    public function setCountry(Country $country)
+    public function setCountry(?Country $country)
     {
         $this->country = $country;
     }

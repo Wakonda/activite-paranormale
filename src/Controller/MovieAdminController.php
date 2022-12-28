@@ -300,6 +300,25 @@ class MovieAdminController extends AdminGenericController
 		$entity->setSocialNetworkIdentifiers($entityToCopy->getSocialNetworkIdentifiers());
 		$entity->setIdentifiers($entityToCopy->getIdentifiers());
 		
+		if(!empty($wikicode = $entityToCopy->getWikidata())) {
+			$wikidata = new \App\Service\Wikidata($em);
+			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
+			
+			if(!empty($data))
+			{
+				$sourceArray = [[
+					"author" => null,
+					"url" => $data["url"],
+					"type" => "url",
+				]];
+				
+				$entity->setSource(json_encode($sourceArray));
+				
+				if(!empty($title = $data["title"]))
+					$entity->setTitle($title);
+			}
+		}
+		
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		
 		foreach($entityToCopy->getMovieBiographies() as $mbToCopy) {

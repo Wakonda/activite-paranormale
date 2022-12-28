@@ -469,6 +469,7 @@ abstract class AdminGenericController extends AbstractController
 			foreach ($form->get($field) as $formChild)
 			{
 				$internationalName = $formChild->get('internationalName')->getData();
+				$wikidata = $formChild->get('wikidata')->getData();
 				$newBiography = $formChild->getData();
 
 				if($internationalName == "+") {
@@ -476,6 +477,7 @@ abstract class AdminGenericController extends AbstractController
 					$newBiography->getBiography()->setInternationalName($generator->generate($newBiography->getBiography()->getTitle()).uniqid());
 					$newBiography->getBiography()->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
 					$newBiography->getBiography()->setKind(Biography::PERSON);
+					$newBiography->getBiography()->setWikidata($wikidata);
 					
 					$em->persist($newBiography->getBiography());
 				} else {
@@ -486,6 +488,7 @@ abstract class AdminGenericController extends AbstractController
 						$b->setInternationalName($internationalName);
 						$b->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
 						$b->setKind(Biography::PERSON);
+						$b->setWikidata($wikidata);
 						$b->setTitle($newBiography->getBiography()->getTitle());
 						$b->setBirthDate($newBiography->getBiography()->getBirthDate());
 						$b->setDeathDate($newBiography->getBiography()->getDeathDate());

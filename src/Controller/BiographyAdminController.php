@@ -280,8 +280,10 @@ class BiographyAdminController extends AdminGenericController
 		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path, "language" => $language, "wikidata" => $wikidata, "title" => $title, "internationalName" => $internationalName]);
 	}
 	
-	public function quickAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title, $wikidata, $internationalName)
+	public function quickAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title)
 	{
+		$wikidata = $request->query->get("wikidata");
+		$internationalName = $request->query->get("internationalName");
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
 
@@ -290,31 +292,36 @@ class BiographyAdminController extends AdminGenericController
 
 		$entityToCopy = null;
 		
-		if(!empty($internationalName)) {
-			$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName]);
+		if(!empty($internationalName) or !empty($wikidata)) {
+			if(!empty($internationalName))
+				$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName]);
+			else
+				$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["wikidata" => $wikidata]);
 
-		$country = null;
-		
-		if(!empty($entityToCopy->getNationality()))
-			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
+			if(!empty($entityToCopy)) {
+				$country = null;
+			
+				if(!empty($entityToCopy->getNationality()))
+					$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
 
-			$entity->setInternationalName($entityToCopy->getInternationalName());
-			$entity->setTitle($entityToCopy->getTitle());
-			$entity->setKind($entityToCopy->getKind());
-			$entity->setBirthDate($entityToCopy->getBirthDate());
-			$entity->setDeathDate($entityToCopy->getDeathDate());
-			$entity->setNationality($country);
-			$entity->setLinks($entityToCopy->getLinks());
+				$entity->setInternationalName($entityToCopy->getInternationalName());
+				$entity->setTitle($entityToCopy->getTitle());
+				$entity->setKind($entityToCopy->getKind());
+				$entity->setBirthDate($entityToCopy->getBirthDate());
+				$entity->setDeathDate($entityToCopy->getDeathDate());
+				$entity->setNationality($country);
+				$entity->setLinks($entityToCopy->getLinks());
 
-			if(!empty($ci = $entityToCopy->getIllustration())) {
-				$illustration = new FileManagement();
-				$illustration->setTitleFile($ci->getTitleFile());
-				$illustration->setCaption($ci->getCaption());
-				$illustration->setLicense($ci->getLicense());
-				$illustration->setAuthor($ci->getAuthor());
-				$illustration->setUrlSource($ci->getUrlSource());
+				if(!empty($ci = $entityToCopy->getIllustration())) {
+					$illustration = new FileManagement();
+					$illustration->setTitleFile($ci->getTitleFile());
+					$illustration->setCaption($ci->getCaption());
+					$illustration->setLicense($ci->getLicense());
+					$illustration->setAuthor($ci->getAuthor());
+					$illustration->setUrlSource($ci->getUrlSource());
 
-				$entity->setIllustration($illustration);
+					$entity->setIllustration($illustration);
+				}
 			}
 		}
 		

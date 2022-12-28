@@ -54,6 +54,7 @@ class BiographiesAdminType extends AbstractType
 				'label' => 'biographies.admin.Occupation', 'translation_domain' => 'validators', "attr" => ["class" => "form-control list-occupation"]
 			])
 			->add('internationalName', HiddenType::class, ["attr" => ["class" => "international-name"], "mapped" => false])
+			->add('wikidata', HiddenType::class, ["attr" => ["class" => "wikidata"], "mapped" => false])
 			;
 			
 			if($options["role_field"])
