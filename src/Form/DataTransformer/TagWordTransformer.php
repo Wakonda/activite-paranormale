@@ -46,6 +46,9 @@ class TagWordTransformer implements DataTransformerInterface
 			foreach($tags as $tag) {
 				$tagWord = $this->entityManager->getRepository(\App\Entity\TagWord::class)->findOneBy(array('internationalName' => $tag->getTagWord()->getInternationalName(), 'language' => $entity->getLanguage()));
 
+				if(empty($tagWord))
+					continue;
+
 				$t = new \App\Entity\Tags();
 				$t->setNameClass($className);
 				$t->setIdClass($entity->getId());

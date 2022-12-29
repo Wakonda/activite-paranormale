@@ -139,21 +139,6 @@
 {% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { language: form.language.vars.id } %}
 
 <script>
-	{% if app.request.query.has("fromId") %}
-		{% if entity.source is not empty %}
-			{% set data = json_decode(entity.source) %}
-
-			{% if data[0] is defined and data[0].url is defined %}
-				window.onload = function(){
-					document.getElementById("url_{{ form.introduction.vars.id }}").value = "{{ data[0].url }}";
-					document.getElementById("url_{{ form.introduction.vars.id }}").dispatchEvent(new Event("change"));
-					document.getElementById("url_{{ form.text.vars.id }}").value = "{{ data[0].url }}";
-					document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
-				};
-			{% endif %}
-		{% endif %}
-	{% endif %}
-
 	document.getElementById("wikidata").addEventListener("click", (e) => {
 		e.preventDefault();
 

@@ -10,6 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Movies\GenreAudiovisual;
 use App\Entity\Language;
+use App\Entity\FileManagement;
 use App\Form\Type\GenreAudiovisualAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -140,6 +141,25 @@ class GenreAudiovisualAdminController extends AdminGenericController
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setWikidata($entityToCopy->getWikidata());
 		$entity->setLanguage($language);
+
+		if(!empty($wikicode = $entityToCopy->getWikidata())) {
+			$wikidata = new \App\Service\Wikidata($em);
+			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
+			
+			if(!empty($data))
+			{
+				$sourceArray = [[
+					"author" => null,
+					"url" => $data["url"],
+					"type" => "url",
+				]];
+				
+				$entity->setSource(json_encode($sourceArray));
+				
+				if(!empty($title = $data["title"]))
+					$entity->setTitle($title);
+			}
+		}
 
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();

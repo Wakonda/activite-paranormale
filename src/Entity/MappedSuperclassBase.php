@@ -228,7 +228,7 @@ class MappedSuperclassBase implements SearchEngineInterface
         return $this->theme;
     }
 
-    public function setTheme(Theme $theme)
+    public function setTheme(?Theme $theme)
     {
         $this->theme = $theme;
     }

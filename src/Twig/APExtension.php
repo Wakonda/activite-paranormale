@@ -173,11 +173,14 @@
 			$svg = new \App\Service\ImageSVG($p);
 
 			$info = ($svg->isSVG()) ? $svg->getSize() : getimagesize($p);
+			
+			if(empty($info))
+				return null;
 
 			$eX = 0.0;
 			$info[0] = intval($info[0]);
 			$info[1] = intval($info[1]);
-	
+
 			if($info[0] > $width)
 			{
 				$eX = $width / $info[0];

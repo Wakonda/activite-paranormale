@@ -207,6 +207,26 @@ class CartographyAdminController extends AdminGenericController
 		$entity->setLinkGMaps($entityToCopy->getLinkGMaps());
 		$entity->setWikidata($entityToCopy->getWikidata());
 
+
+		if(!empty($wikicode = $entityToCopy->getWikidata())) {
+			$wikidata = new \App\Service\Wikidata($em);
+			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
+			
+			if(!empty($data))
+			{
+				$sourceArray = [[
+					"author" => null,
+					"url" => $data["url"],
+					"type" => "url",
+				]];
+				
+				$entity->setSource(json_encode($sourceArray));
+				
+				if(!empty($title = $data["title"]))
+					$entity->setTitle($title);
+			}
+		}
+
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'cartography/CartographyAdmin/new.html.twig';

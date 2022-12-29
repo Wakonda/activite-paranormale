@@ -12,7 +12,7 @@
 	<div class="input-group-prepend">
 		<span class="input-group-text"><i class="fab fa-wikipedia-w"></i></span>
 	</div>
-	<input type="text" id="url_{{ fieldId }}" class="form-control"/>
+	<input type="text" id="url_{{ fieldId }}" class="form-control wikidata-url"/>
 	<select id="sections_{{ fieldId }}" name="sections[]" multiple="multiple" style="min-width: 25%"></select>
 	<button type="button" class="btn btn-success" id="import_url_{{ fieldId }}"><i class="fas fa-check" id="import_url_icon_{{ fieldId }}"></i></button>
 </div>
@@ -21,7 +21,25 @@
 <script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
 <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 <script>
+
 	$(function() {
+		{% if app.request.query.has("fromId") and sourceField is not empty %}
+			var data = document.getElementById("{{ sourceField }}").value;
+
+			if(data !== null && data != "") {
+				data = JSON.parse(data);
+				
+				if(typeof data[0] !== "undefined" && typeof data[0].url !== "undefined") {
+					window.onload = function(){
+						document.querySelectorAll(".wikidata-url").forEach(e => {
+							e.value = data[0].url;
+							e.dispatchEvent(new Event("change"));
+						});
+					};
+				}
+			}
+		{% endif %}
+
 		$('#sections_{{ fieldId }}').select2();
 		$("#url_{{ fieldId }}").on("change paste", function(e) {
 			e.preventDefault();

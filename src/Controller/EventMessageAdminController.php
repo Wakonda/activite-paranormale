@@ -218,6 +218,25 @@ class EventMessageAdminController extends AdminGenericController
 		
 		$entity->setState($state);
 
+		if(!empty($wikicode = $entityToCopy->getWikidata())) {
+			$wikidata = new \App\Service\Wikidata($em);
+			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
+			
+			if(!empty($data))
+			{
+				$sourceArray = [[
+					"author" => null,
+					"url" => $data["url"],
+					"type" => "url",
+				]];
+				
+				$entity->setSource(json_encode($sourceArray));
+				
+				if(!empty($title = $data["title"]))
+					$entity->setTitle($title);
+			}
+		}
+
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();
 			$illustration->setTitleFile($ci->getTitleFile());

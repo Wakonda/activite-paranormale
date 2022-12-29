@@ -303,7 +303,7 @@ class MovieAdminController extends AdminGenericController
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
 			$wikidata = new \App\Service\Wikidata($em);
 			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
-			
+
 			if(!empty($data))
 			{
 				$sourceArray = [[
@@ -318,7 +318,7 @@ class MovieAdminController extends AdminGenericController
 					$entity->setTitle($title);
 			}
 		}
-		
+
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		
 		foreach($entityToCopy->getMovieBiographies() as $mbToCopy) {

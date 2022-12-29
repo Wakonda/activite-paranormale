@@ -54,19 +54,6 @@
 <div class="form-table-cell">{{ form_errors(form.socialNetworkLinkedin) }}{{ form_widget(form.socialNetworkLinkedin, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <script>
-	{% if app.request.query.has("fromId") %}
-		{% if entity.source is not empty %}
-			{% set data = json_decode(entity.source) %}
-
-			{% if data[0] is defined and data[0].url is defined %}
-				window.onload = function(){
-					document.getElementById("url_{{ form.text.vars.id }}").value = "{{ data[0].url }}";
-					document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
-				};
-			{% endif %}
-		{% endif %}
-	{% endif %}
-
 	document.getElementById("wikidata").addEventListener("click", (e) => {
 		e.preventDefault();
 		let locale = document.getElementById("{{ form.language.vars.id }}").value;
