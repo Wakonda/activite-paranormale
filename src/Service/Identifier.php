@@ -79,6 +79,7 @@
 				self::ALLMUSIC_ARTIST_ID => "https://www.allmusic.com/artist/${value}",
 				self::ISNI => "https://isni.org/isni/${value}",
 				self::VIAF_ID => "https://viaf.org/viaf/${value}",
+				self::YOUTUBE_VIDEO_ID => "https://www.youtube.com/watch?v=${value}",
 				self::ENCYCLOPAEDIA_METALLUM_ARTIST_ID => "https://www.metal-archives.com/artists//${value}"
 			];
 		}

@@ -263,7 +263,7 @@
 				$value = $datas->entities->$code->claims->P1729[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "AllMusic album ID",
+					"identifier" => Identifier::ALLMUSIC_ALBUM_ID,
 					"value" => $value
 				];
 			}
@@ -272,7 +272,7 @@
 				$value = $datas->entities->$code->claims->P5749[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "Amazon Standard Identification Number",
+					"identifier" => Identifier::AMAZON_STANDARD_IDENTIFICATION_NUMBER,
 					"value" => $value
 				];
 			}
@@ -281,7 +281,7 @@
 				$value = $datas->entities->$code->claims->P436[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "MusicBrainz release group ID",
+					"identifier" => Identifier::MUSICBRAINZ_RELEASE_GROUP_ID,
 					"value" => $value
 				];
 			}
@@ -290,7 +290,7 @@
 				$value = $datas->entities->$code->claims->P2205[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "Spotify album ID",
+					"identifier" => Identifier::SPOTIFY_ALBUM_ID,
 					"value" => $value
 				];
 			}
@@ -315,9 +315,9 @@
 
 			if(isset($res["identifiers"])) {
 				$identifiers = $res["identifiers"];
-				$found_key = array_search('YouTube video ID', array_column($identifiers, 'identifier'));
+				$found_key = array_search(Identifier::YOUTUBE_VIDEO_ID, array_column($identifiers, 'identifier'));
 
-				if(isset($identifiers[$found_key]) and $identifiers[$found_key]["identifier"] == "YouTube video ID" and !empty($d = $identifiers[$found_key]["value"])) {
+				if(isset($identifiers[$found_key]) and $identifiers[$found_key]["identifier"] == Identifier::YOUTUBE_VIDEO_ID and !empty($d = $identifiers[$found_key]["value"])) {
 					$res["embeddedCode"] = '<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/'.$d.'" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
 				}
 			}
@@ -375,7 +375,7 @@
 				$value = $dataSong->entities->$idSong->claims->P1243[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "ISRC",
+					"identifier" => Identifier::ISRC,
 					"value" => $value
 				];
 			}
@@ -384,7 +384,7 @@
 				$value = $dataSong->entities->$idSong->claims->P1730[0]->mainsnak->datavalue->value;
 
 				$res["identifiers"][] = [
-					"identifier" => "AllMusic song ID",
+					"identifier" => Identifier::ALLMUSIC_SONG_ID,
 					"value" => $value
 				];
 			}
@@ -393,7 +393,7 @@
 				$value = $dataSong->entities->$idSong->claims->P4404[0]->mainsnak->datavalue->value;
 
 				$res["identifiers"][] = [
-					"identifier" => "MusicBrainz recording ID",
+					"identifier" => Identifier::MUSICBRAINZ_RECORDING_ID,
 					"value" => $value
 				];
 			}
@@ -402,7 +402,7 @@
 				$value = $dataSong->entities->$idSong->claims->P1651[0]->mainsnak->datavalue->value;
 	
 				$res["identifiers"][] = [
-					"identifier" => "YouTube video ID",
+					"identifier" => Identifier::YOUTUBE_VIDEO_ID,
 					"value" => $value
 				];
 			}
@@ -443,7 +443,7 @@
 				$value = $datas->entities->$code->claims->P1902[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "Spotify artist ID",
+					"identifier" => Identifier::SPOTIFY_ARTIST_ID,
 					"value" => $value
 				];
 			}
@@ -452,7 +452,7 @@
 				$value = $datas->entities->$code->claims->P434[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "MusicBrainz artist ID",
+					"identifier" => Identifier::MUSICBRAINZ_ARTIST_ID,
 					"value" => $value
 				];
 			}
@@ -461,7 +461,7 @@
 				$value = $datas->entities->$code->claims->P1728[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "AllMusic artist ID",
+					"identifier" => Identifier::ALLMUSIC_ARTIST_ID,
 					"value" => $value
 				];
 			}
@@ -470,7 +470,7 @@
 				$value = $datas->entities->$code->claims->P213[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "ISNI",
+					"identifier" => Identifier::ISNI,
 					"value" => $value
 				];
 			}
@@ -479,7 +479,7 @@
 				$value = $datas->entities->$code->claims->P214[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "VIAF ID",
+					"identifier" => Identifier::VIAF_ID,
 					"value" => $value
 				];
 			}
@@ -661,7 +661,7 @@
 				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "IMDb ID",
+					"identifier" => Identifier::IMDB_ID,
 					"value" => $value
 				];
 			}
@@ -670,7 +670,7 @@
 				$value = $datas->entities->$code->claims->P1258[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "Rotten Tomatoes ID",
+					"identifier" => Identifier::ROTTEN_TOMATOES_ID,
 					"value" => $value
 				];
 			}
@@ -679,7 +679,7 @@
 				$value = $datas->entities->$code->claims->P6127[0]->mainsnak->datavalue->value;
 
 				$res["identifiers"][] = [
-					"identifier" => "Letterboxd film ID",
+					"identifier" => Identifier::LETTERBOXD_FILM_ID,
 					"value" => $value
 				];
 			}
@@ -822,7 +822,7 @@
 				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "IMDb ID",
+					"identifier" => Identifier::IMDB_ID,
 					"value" => $value
 				];
 			}
@@ -831,7 +831,7 @@
 				$value = $datas->entities->$code->claims->P1258[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "Rotten Tomatoes ID",
+					"identifier" => Identifier::ROTTEN_TOMATOES_ID,
 					"value" => $value
 				];
 			}
@@ -884,7 +884,7 @@
 				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "IMDb ID",
+					"identifier" => Identifier::IMDB_ID,
 					"value" => $value
 				];
 			}
@@ -893,7 +893,7 @@
 				$value = $datas->entities->$code->claims->P1258[0]->mainsnak->datavalue->value;
 				
 				$res["identifiers"][] = [
-					"identifier" => "Rotten Tomatoes ID",
+					"identifier" => Identifier::ROTTEN_TOMATOES_ID,
 					"value" => $value
 				];
 			}
@@ -934,7 +934,7 @@
 								$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P345[0]->mainsnak->datavalue->value;
 								
 								$identifiers[] = [
-									"identifier" => "IMDb ID",
+									"identifier" => Identifier::IMDB_ID,
 									"value" => $value
 								];
 							}
@@ -943,7 +943,7 @@
 								$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P1258[0]->mainsnak->datavalue->value;
 								
 								$identifiers[] = [
-									"identifier" => "Rotten Tomatoes ID",
+									"identifier" => Identifier::ROTTEN_TOMATOES_ID,
 									"value" => $value
 								];
 							}
