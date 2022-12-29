@@ -298,7 +298,19 @@
 		</table>
 		<div class="clear"></div>
 	{% endif %}
-	
+
+	{% if entity.identifiers is not empty %}
+		{% set datas = json_decode(entity.identifiers) %}
+		{% if datas is not empty %}
+			<h3>{{ "biography.index.Identifiers"|trans([], "validators") }}</h3>
+			<ul class="fa-ul">
+				{% for data in datas %}
+					<li><span class="fa-li"><i class="fas fa-fast-forward"></i></span> {{ data.identifier }} (<i><a href="{{ url_identifier(data.identifier, data.value) }}" target="_blank">{{ data.value }}</a></i>)</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	{% endif %}
+
 	{% if entity.source is not empty %}
 		<h3>{{ "biography.index.Sources"|trans([], "validators") }}</h3>
 		{{ source_document(entity.source, entity.language) }}

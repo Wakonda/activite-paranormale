@@ -78,7 +78,7 @@ class AlbumAdminType extends AbstractType
 				))
 			->add('wikidata', TextType::class, array('required' => false))
 			->add('tracklist', HiddenType::class, ['mapped' => false, 'required' => false])
-            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["Amazon Standard Identification Number", "MusicBrainz release group ID", "AllMusic album ID", "Spotify album ID"]])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getAlbumIdentifiers()])
 			->add('reviewScores', ReviewScoresEditType::class, ['required' => false, 'enum' => ["Music Story", "AllMusic"]])
 		;
     }

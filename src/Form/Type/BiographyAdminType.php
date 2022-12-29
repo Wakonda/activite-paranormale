@@ -13,6 +13,7 @@ use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
 use App\Form\EventListener\InternationalNameFieldListener;
 use App\Entity\Biography;
+use App\Form\Field\IdentifiersEditType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -65,6 +66,7 @@ class BiographyAdminType extends AbstractType
 					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
+			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()])
 		;
 		
 		$socialNetworkWebsiteDefault = "";

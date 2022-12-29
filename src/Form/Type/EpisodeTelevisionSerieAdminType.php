@@ -74,7 +74,7 @@ class EpisodeTelevisionSerieAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
 			->add('wikidata', TextType::class, ['required' => false])
-            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["IMDb ID", "Rotten Tomatoes ID"]])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getTelevisionSerieIdentifiers()])
 		;
     }
 

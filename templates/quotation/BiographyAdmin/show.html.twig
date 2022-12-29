@@ -61,6 +61,18 @@
 			{% endif %}
 		{% endfor %}
 	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Identifiers"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% set datas = json_decode(entity.identifiers) %}
+		{% if datas is not empty %}
+			<ul>
+				{% for data in datas %}
+					<li>{{ data.identifier }} (<i>{{ data.value }}</i>)</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
+	</div>
 	
 	<a href="{{ path('Biography_Show', { 'id' : entity.id, 'title' : entity.title }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}

@@ -89,7 +89,7 @@ class MusicAdminType extends AbstractType
 			->add('secondDuration', IntegerType::class, array('mapped' => false))
             ->add('embeddedCode', TextareaType::class, array('required' => false))
 			->add('wikidata', TextType::class, ['required' => false])
-            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["ISRC", "AllMusic song ID", "MusicBrainz recording ID", "YouTube video ID"]])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getMusicIdentifiers()])
         ;
 
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){

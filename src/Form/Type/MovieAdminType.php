@@ -121,7 +121,7 @@ class MovieAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
             ->add('source', SourceEditType::class, array('required' => false))
-            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["IMDb ID", "Rotten Tomatoes ID", "Letterboxd film ID"]])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getMovieIdentifiers()])
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('boxOffice', NumberType::class, array('required' => true, 'translation_domain' => 'validators', "required" => false))
 			->add('boxOfficeUnit', ChoiceType::class, array('choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'))

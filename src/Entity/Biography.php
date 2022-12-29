@@ -124,6 +124,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
      */
     private $links;
 
+    /**
+     * @ORM\Column(name="identifiers", type="text", nullable=true)
+     */
+    private $identifiers;
+
 	public function __toString()
 	{
 		return $this->title;
@@ -443,5 +448,15 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 			return null;
 
         return $this->links;
+    }
+
+    public function setIdentifiers($identifiers)
+    {
+        $this->identifiers = $identifiers;
+    }
+
+    public function getIdentifiers()
+    {
+        return $this->identifiers;
     }
 }

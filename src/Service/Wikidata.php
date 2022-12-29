@@ -7,6 +7,7 @@
 	use App\Entity\Country;
 	use App\Entity\Language;
 	use App\Entity\Licence;
+	use App\Service\Identifier;
 	
 	class Wikidata {
 		private $em;
@@ -100,6 +101,51 @@
 
 				$countryId = $country[0]->mainsnak->datavalue->value->id;
 				$res["nationality"] = $this->getCountry($datas, $code, "P27", $language);
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P345")) {
+				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => Identifier::IMDB_ID,
+					"value" => $value
+				];
+			}
+			
+			if(property_exists($datas->entities->$code->claims, "P434")) {
+				$value = $datas->entities->$code->claims->P434[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => Identifier::MUSICBRAINZ_ARTIST_ID,
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P213")) {
+				$value = $datas->entities->$code->claims->P213[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => Identifier::ISNI,
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P214")) {
+				$value = $datas->entities->$code->claims->P214[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => Identifier::VIAF_ID,
+					"value" => $value
+				];
+			}
+
+			if(property_exists($datas->entities->$code->claims, "P1989")) {
+				$value = $datas->entities->$code->claims->P1989[0]->mainsnak->datavalue->value;
+				
+				$res["identifiers"][] = [
+					"identifier" => Identifier::ENCYCLOPAEDIA_METALLUM_ARTIST_ID,
+					"value" => $value
+				];
 			}
 
 			return $res;

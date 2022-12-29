@@ -44,6 +44,7 @@ biography:
         YouMustValidateThisBiography: "You must validate this biography"
         BiographyValidated: "Biography validated"
         NonExistentBiography: "Non-existent biography"
+        Identifiers: "Identifiers"
     index:
         Quotations: "Quotations"
         NoQuotation: "No quotation"
@@ -63,6 +64,7 @@ biography:
         Nationality: "Nationality:"
         Occupations: "Occupations:"
         Links: "Links"
+        Identifiers: "Identifiers"
     occupation:
         Actor: "Actor"
         Producer: "Producer"

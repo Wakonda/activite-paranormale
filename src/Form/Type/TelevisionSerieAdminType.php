@@ -102,7 +102,7 @@ class TelevisionSerieAdminType extends AbstractType
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
 			->add('episode', HiddenType::class, ['mapped' => false, 'required' => false])
-            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => ["IMDb ID", "Rotten Tomatoes ID"]])
+            ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getTelevisionSerieIdentifiers()])
 		;
 		
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());

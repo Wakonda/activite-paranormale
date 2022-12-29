@@ -138,7 +138,7 @@
 		{% endfor %}
 		</ol>
 	{% endif %}
-	
+
 	{% if entity.identifiers is not empty %}
 		{% set datas = json_decode(entity.identifiers) %}
 		{% if datas is not empty %}
