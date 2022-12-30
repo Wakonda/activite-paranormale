@@ -1,6 +1,7 @@
 {% if entity is not null %}
 	<h3>{{ entity.title }}</h3>
-	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
+
 	{{ entity.text|raw }}
 
 	<p class="text-center"><a href="{{ path('President_Archive_Index') }}"><img src="{{ asset('extended/photo/word-president-archive.png') }}" width="30" alt=">Message archive" class="align-middle"/> {{ "president.index.ArchivedMessages"|trans([], "validators") }}</a></p>

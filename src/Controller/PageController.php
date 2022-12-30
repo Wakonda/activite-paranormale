@@ -79,7 +79,7 @@ class PageController extends AbstractController
 
         return $this->render('page/Page/wordPresident.html.twig', array('entity' => $entity));
     }
-	
+
 	public function wordPresidentArchiveAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

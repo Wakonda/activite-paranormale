@@ -34,6 +34,20 @@ class MigrateUpdateBookCommand extends Command
     {
 		$output->writeln("Start Book migration");
 
+		$conn = $this->em->getConnection();
+		$sql = "SELECT id, photo FROM president WHERE illustration_id IS NULL";
+		$datas = $conn->fetchAll($sql);
+
+		foreach($datas as $data)
+		{
+			$conn->exec("INSERT INTO `filemanagement` (`titleFile`, `realNameFile`, `extensionFile`, `kindFile`, `discr`, `caption`) VALUES ('".str_replace("'", "\'", $data['photo'])."', '".str_replace("'", "\'", $data['photo'])."', '".pathinfo(str_replace("'", "\'", $data['photo']), PATHINFO_EXTENSION)."', 'file', 'filemanagement', NULL)");
+			$fmId = $conn->fetchColumn("SELECT LAST_INSERT_ID()");
+
+			$conn->exec("UPDATE president SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
+		}
+		
+		echo "End president";
+die("pp");
 		$datas = $this->em->getRepository(EventMessage::class)->findAll();
 		
 		foreach($datas as $data) {

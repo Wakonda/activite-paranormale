@@ -15,6 +15,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class President
 {
+	use \App\Entity\GenericEntityTrait;
+
     /**
      * @var integer $id
      *
@@ -87,10 +89,16 @@ class President
     protected $history;
 
     /**
-	 * @Assert\File(maxSize="6000000")
+	 * Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
+
+    /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $illustration;
 
 	/**
 	 * @ORM\Column(type="integer", length=100, options={"default" = 1})
@@ -155,6 +163,16 @@ class President
         return $this->numberOfDays;
     }
 
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    public function getIllustration()
+    {
+        return $this->illustration;
+    }
+
     /**
      * Set photo
      *
@@ -192,45 +210,6 @@ class President
     public function getTmpUploadRootDir() {
         // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function uploadMediaPdt() {
-        // the file property can be empty if the field is not required
-        if (null === $this->photo) {
-            return;
-        }
-
-		if(is_object($this->photo))
-		{
-			$NameFile = basename($this->photo->getClientOriginalName());
-			$reverseNF = strrev($NameFile);
-			$explodeNF = explode(".", $reverseNF, 2);
-			$NNFile = strrev($explodeNF[1]);
-			$ExtFile = strrev($explodeNF[0]);
-			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
-			if(!$this->id){
-				$this->photo->move($this->getTmpUploadRootDir(), $NewNameFile);
-			}else{
-				if (is_object($this->photo))
-					$this->photo->move($this->getUploadRootDir(), $NewNameFile);
-			}
-			if (is_object($this->photo))
-				$this->setPhoto($NewNameFile);
-		} elseif(filter_var($this->photo, FILTER_VALIDATE_URL)) {
-			$parser = new \App\Service\APParseHTML();
-			$html = $parser->getContentURL($this->photo);
-			$pi = pathinfo($this->photo);
-			$extension = $res = pathinfo(parse_url($this->photo, PHP_URL_PATH), PATHINFO_EXTENSION);
-			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
-			$filename = uniqid()."_".$filename;
-
-			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
-			$this->setPhoto($filename);
-		}
     }
 	
     /**
