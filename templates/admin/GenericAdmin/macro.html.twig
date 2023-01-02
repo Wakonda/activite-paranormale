@@ -21,7 +21,6 @@
 <script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
 <script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 <script>
-
 	$(function() {
 		{% if app.request.query.has("fromId") and sourceField is not empty %}
 			var data = document.getElementById("{{ sourceField }}").value;

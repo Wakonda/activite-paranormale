@@ -603,14 +603,18 @@
 				if(save) {
 					valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
 
-					$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
+					var arr = valuesToSave{{ form.vars.id }};
+					var clean = arr.filter((arr, index, self) =>
+						index === self.findIndex((t) => (t.type === arr.type && t.url === arr.url)));
+
+					$("#{{ form.vars.id }}").val(JSON.stringify(clean));
 					$("#{{ form.vars.id}}_values").html("");
 
-					for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-						if(valuesToSave{{ form.vars.id }}[i].type == "url")
-							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					for(var i = 0; i < clean.length; i++) {
+						if(clean[i].type == "url")
+							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + clean[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 						else
-							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
+							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + clean[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
 					}
 
 					var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
