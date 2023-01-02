@@ -28,6 +28,6 @@ class DatePartialTransformer implements DataTransformerInterface
 		if(!empty($day))
 			$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		
-		return implode(array_filter([strval($dataPartialArray["year"]), $month,$day]), "-");
+		return implode("-", array_filter([strval($dataPartialArray["year"]), $month,$day]));
     }
 }

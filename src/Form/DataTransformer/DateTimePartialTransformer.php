@@ -38,8 +38,8 @@ class DateTimePartialTransformer implements DataTransformerInterface
 		if(!empty($day))
 			$minute = str_pad($minute, 2, "0", STR_PAD_LEFT);
 			
-		$time = implode(array_filter([$hour, $minute]), ":");
+		$time = implode(":", array_filter([$hour, $minute]));
 		
-		return implode(array_filter([strval($dataPartialArray["year"]), $month, $day]), "-").(!empty($time) ? " ".$time : "");
+		return implode("-", array_filter([strval($dataPartialArray["year"]), $month, $day])).(!empty($time) ? " ".$time : "");
     }
 }

@@ -263,9 +263,9 @@
 				$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge badge-info float-right" data-toggle="modal" data-target="#fileManagementModal"><i class="fas fa-info fa-fw"></i></a>' : '';
 				
 				if(empty($imgContent))
-					$res = '<div class="image">'.$res.'<p>'.implode(array_filter($caption["source"]), ", ").$caption["caption"].'</p></div>'.(!empty($c = $caption["caption"]) ? $modal : '');
+					$res = '<div class="image">'.$res.'<p>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</p></div>'.(!empty($c = $caption["caption"]) ? $modal : '');
 				else
-					$res = '<figure class="image">'.$res.'<figcaption>'.implode(array_filter($caption["source"]), ", ").$caption["caption"].'</figcaption></figure>'.(!empty($c = $caption["caption"]) ? $modal : '');
+					$res = '<figure class="image">'.$res.'<figcaption>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</figcaption></figure>'.(!empty($c = $caption["caption"]) ? $modal : '');
 			}
 			
 			return $res;
