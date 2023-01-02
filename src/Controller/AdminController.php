@@ -219,8 +219,10 @@ class AdminController extends AbstractController
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "President":
-					$imgProperty = $entity->getPhoto();
+					$imgProperty = $entity->getPhotoIllustrationFilename();
 					$img = $entity->getAssetImagePath().$imgProperty;
+
+					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
 					$text = $entity->getText();
 					break;
 				case "Cartography":

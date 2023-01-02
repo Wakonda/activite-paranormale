@@ -150,7 +150,7 @@
 			];
 		}
 		
-		public function getSymboleValues(): array {
+		public static function getSymboleValues(): array {
 			$res = [];
 			
 			foreach(self::getCurrencies() as $currency)

@@ -334,6 +334,7 @@ class BiographyAdminController extends AdminGenericController
 
 		if ($request->isMethod(Request::METHOD_POST)){
 			$twig = 'quotation/BiographyAdmin/quick.html.twig';
+
 			$res = $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $this->formName)]);
 			
 			if ("Symfony\Component\HttpFoundation\RedirectResponse" == get_class($res)) {

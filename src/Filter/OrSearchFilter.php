@@ -23,20 +23,14 @@ final class OrSearchFilter extends AbstractContextAwareFilter
     private $searchParameterName;
     private $em;
 
-    public function __construct(ManagerRegistry $managerRegistry, ?RequestStack $requestStack = null, LoggerInterface $logger = null, array $properties = null, NameConverterInterface $nameConverter = null, string $searchParameterName = 'orsearch', EntityManagerInterface $em)
-    {
-        parent::__construct($managerRegistry, $requestStack, $logger, $properties, $nameConverter);
-
-        $this->searchParameterName = $searchParameterName;
-        $this->em = $em;
-    }
-
     protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
     {
-        if (null === $value || $property !== $this->searchParameterName) {
-            return;
-        }
-		
+		if($property != "or_search")
+			return;
+
+		if(empty($value))
+			return;
+
 		$properties = [];
 
 		$reader = new AnnotationReader();
@@ -64,7 +58,7 @@ final class OrSearchFilter extends AbstractContextAwareFilter
     private function addWhere($queryBuilder, $word, $parameterName, $properties, $resourceClass)
     {
 		$wordArray = explode(" ", $word);
-		$subQueryBuilder = $this->em->createQueryBuilder();
+		$subQueryBuilder = $this->managerRegistry->getManager()->createQueryBuilder();
 		
 		$aliasSubQuery = "subQuery".uniqid();
 		$subQueryBuilder->select($aliasSubQuery.".id")->from($resourceClass, $aliasSubQuery);
@@ -108,7 +102,7 @@ final class OrSearchFilter extends AbstractContextAwareFilter
 			$subQueryBuilder->join($key, $value);
 
         $subQueryBuilder->andWhere('(' . $orExp . ')');
-		
+
 		$queryBuilder->andWhere($aliasQueryBuilder.".id IN (".$subQueryBuilder->getDQL().")");
     }
 
@@ -119,16 +113,17 @@ final class OrSearchFilter extends AbstractContextAwareFilter
         if (null===$props) {
             throw new InvalidArgumentException('Properties must be specified');
         }
-        return [
-            $this->searchParameterName => [
+
+        $description['or_search'] = [
                 'property' => implode(', ', array_keys($props)),
                 'type' => 'string',
                 'required' => false,
                 'swagger' => [
                     'description' => 'Selects entities where each search term is found somewhere in at least one of the specified properties',
                 ]
-            ]
-        ];
+            ];
+			
+		return $description;
     }
 	
     protected function isPropertyNested(string $property): bool
