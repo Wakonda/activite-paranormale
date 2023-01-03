@@ -77,6 +77,8 @@
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 				let data = JSON.parse(xmlHttp.responseText);
 
+				if(data.length == 0)
+					return;
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
 				document.getElementById("{{ form.dateFrom.day.vars.id }}").value = data.dateFrom.day;
 				document.getElementById("{{ form.dateFrom.month.vars.id }}").value = data.dateFrom.month;

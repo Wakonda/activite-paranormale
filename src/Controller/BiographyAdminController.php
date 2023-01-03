@@ -111,6 +111,7 @@ class BiographyAdminController extends AdminGenericController
 		$entity->setNationality($country);
 		$entity->setLinks($entityToCopy->getLinks());
 		$entity->setWikidata($entityToCopy->getWikidata());
+		$entity->setIdentifiers($entityToCopy->getIdentifiers());
 
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();

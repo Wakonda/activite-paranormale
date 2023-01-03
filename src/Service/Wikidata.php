@@ -25,6 +25,9 @@
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 			$datas = json_decode($content);
+			
+			if(!property_exists($datas->entities->$code->labels, $language))
+				return [];
 
 			$res["title"] = $datas->entities->$code->labels->$language->value;
 			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
@@ -34,16 +37,9 @@
 
 		public function getBiographyDatas(string $code, string $language): array
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
 
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
-			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
 			$datas = json_decode($content);
@@ -180,15 +176,11 @@
 		
 		public function getGenericDatas(string $code, string $language)
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
 
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			if(empty($res))
+				return [];
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -201,15 +193,8 @@
 		
 		public function getAlbumDatas(string $code, string $language)
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -412,15 +397,8 @@
 		
 		public function getArtistDatas(string $code, string $language): array
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
@@ -512,15 +490,12 @@
 		
 		public function getEventDatas(string $code, string $language): array
 		{
-			$res = [];
-			$languageWiki = $language."wiki";
+			$res = $this->getTitleAndUrl($code, $language);
 			
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			if(empty($res))
+				return [];
+			
+			$languageWiki = $language."wiki";
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
@@ -557,15 +532,8 @@
 		
 		public function getWebDirectoryDatas(string $code, string $language): array
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-			
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
@@ -641,15 +609,8 @@
 		
 		public function getMovieDatas(string $code, string $language): array
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-			
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
@@ -792,15 +753,8 @@
 		
 		public function getEpisodeTelevisionSerieDatas(string $code, string $language)
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -860,15 +814,8 @@
 
 		public function getTelevisionSerieDatas(string $code, string $language)
 		{
-			$res = [];
+			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
-
-			$datas = json_decode($content);
-
-			$res["title"] = $datas->entities->$code->labels->$language->value;
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
 
@@ -1054,13 +1001,13 @@
 			$language = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 			return $this->em->getRepository(Country::class)->findOneBy(["internationalName" => strtolower($code), "language" => $language]);
 		}
-		
+
 		private function getUrl(object $datas, string $code, string $languageWiki): ?string {
 			$siteLinks = $datas->entities->$code->sitelinks;
 			
 			if(property_exists($siteLinks, $languageWiki))
 				return $siteLinks->$languageWiki->url;
-			
+
 			return null;
 		}
 	}

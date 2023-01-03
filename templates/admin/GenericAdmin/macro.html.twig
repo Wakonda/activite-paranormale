@@ -128,7 +128,12 @@
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 				let data = JSON.parse(xmlHttp.responseText);
-				
+
+				if(data.length == 0) {
+					document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+					return;
+				}
+
 				document.getElementById("{{ titleFieldId }}").value = data.title;
 				document.getElementById("url_{{ textFieldId }}").value = data.url;
 				document.getElementById("url_{{ textFieldId }}").dispatchEvent(new Event("change"));

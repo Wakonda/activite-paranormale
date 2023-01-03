@@ -70,7 +70,8 @@ class AdminController extends AbstractController
 	
 	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $wikipedia)
 	{
-		$wikipedia->setUrl($request->query->get("url"));
+		$url = $request->query->get("url");
+		$wikipedia->setUrl($url);
 		
 		$res = [];
 		
