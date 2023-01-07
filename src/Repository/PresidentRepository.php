@@ -85,30 +85,32 @@ class PresidentRepository extends EntityRepository
 	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
 	{
 		$qb = $this->createQueryBuilder('c');
-		$qb->orderBy('c.publicationDate', 'DESC');
+		$qb->orderBy('c.id', 'DESC')
+		   ->join("c.illustration", "il")
+		   ->where("il.realNameFile IS NOT NULL");
 
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
 
-			$qb->where("c.photo LIKE :search")
+			$qb->andWhere("il.titleFile LIKE :search")
 			   ->setParameter('search', $search);
 		}
 		if($count)
 		{
-			$qb->select("COUNT(DISTINCT c.photo)");
+			$qb->select("COUNT(DISTINCT il.realNameFile)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}
 		else
-			$qb->groupBy('c.photo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+			$qb->groupBy('il.realNameFile')->orderBy("c.id", "DESC")->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{
 			$photo = new \StdClass();
-			$photo->photo = $entity->getPhoto();
+			$photo->photo = $entity->getIllustration()->getTitleFile();
 			$photo->path = $entity->getAssetImagePath();
 			
 			$res[] = $photo;

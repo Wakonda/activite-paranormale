@@ -11,6 +11,7 @@ use App\Entity\President;
 use App\Entity\Language;
 use App\Entity\Licence;
 use App\Entity\State;
+use App\Entity\FileManagement;
 use App\Form\Type\PresidentAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -178,7 +179,18 @@ class PresidentAdminController extends AdminGenericController
 		$entity->setState($state);
 		
 		$entity->setLanguage($language);
-		$entity->setPhoto($entityToCopy->getPhoto());
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+			
+			$entity->setIllustration($illustration);
+		}
+
 		$entity->setNumberOfDays($entityToCopy->getNumberOfDays());
 
 		$request->setLocale($language->getAbbreviation());
