@@ -42,6 +42,16 @@ div.card-body {
   margin-bottom: 20px;
 }
 
+.dropdown-menu {
+  background-image: linear-gradient(to bottom, #3c3c3c 0, #222 100%);
+}
+
+nav.navbar .nav-item a.dropdown-item {
+  color: #B9C322 !important;
+}
+.dropdown-item:hover, .dropdown-item:focus, .dropdown-item:active {
+    background-color: black;
+}
 .theme-showcase > p > .btn {
   margin: 5px 0;
 }
