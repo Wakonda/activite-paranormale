@@ -31,6 +31,9 @@
 		<td class="reseauSociaux">
 			<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-toggle="modal" data-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
 		</td>
+		<td class="reseauSociaux">
+			<a href="#" class="btn social-share weibo share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Sina Weibo"><i class="fab fa-weibo fa-lg fa-fw"></i></a>
+		</td>
 	</tr>
 </table>
 
@@ -102,6 +105,13 @@
 		e.stopPropagation();
 		e.preventDefault();
 		url = "https://share.flipboard.com/bookmarklet/popout?v=2&title=" + title + "&url=" + pageUrl;
+		socialWindow(url);
+	});
+
+	document.querySelector(".share-data.weibo").addEventListener("click", (e) => {
+		e.stopPropagation();
+		e.preventDefault();
+		url = "https://service.weibo.com/share/share.php?title=" + title + "&url=" + pageUrl;
 		socialWindow(url);
 	});
 
