@@ -47,11 +47,17 @@ class Mastodon {
 			case "fr":
 				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_FR_ACCESS_TOKEN"];
 				break;
+			case "en":
+				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_EN_ACCESS_TOKEN"];
+				break;
+			case "es":
+				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_ES_ACCESS_TOKEN"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr"];
+		return ["fr", "en", "es"];
 	}
 }
