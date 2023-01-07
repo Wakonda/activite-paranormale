@@ -71,25 +71,39 @@ class AdminController extends AbstractController
 	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $wikipedia)
 	{
 		$url = $request->query->get("url");
-		$wikipedia->setUrl($url);
 		
 		$res = [];
 		
 		$res[] = ["id" => 0, "text" => $translator->trans('admin.wikipedia.Header', [], 'validators', $request->getLocale())];
 		
-		foreach($wikipedia->getSections() as $text => $id)
-			$res[] = ["id" => $id, "text" => $text];
+		if(str_contains(parse_url($url, PHP_URL_HOST), "wikimonde")) {
+			$data = new \App\Service\Wikimonde();
+			$data->setUrl($url);
+		} else {
+			$data->setUrl($url);
+		}
 
+		foreach($data->getSections() as $text => $id)
+			$res[] = ["id" => $id, "text" => $text];
+// dd($res);
 		return new JsonResponse($res);
 	}
 	
 	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $wikipedia)
 	{
-		$wikipedia->setUrl($request->request->get("url"));
+		$url = $request->request->get("url");
+
+		if(str_contains(parse_url($url, PHP_URL_HOST), "wikimonde")) {
+			$data = new \App\Service\Wikimonde();
+			$data->setUrl($url);
+		} else {
+			$data->setUrl($url);
+		}
 		$sections = $request->request->get("sections", []);
+
 		$source = ["author" => "", "title" => "", "url" => $request->request->get("url"), "type" => "url"];
 
-		return new JsonResponse(["content" => $wikipedia->getContentBySections($sections), "source" => $source]);
+		return new JsonResponse(["content" => $data->getContentBySections($sections), "source" => $source]);
 	}
 
 	// Blogger
