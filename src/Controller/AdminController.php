@@ -68,7 +68,7 @@ class AdminController extends AbstractController
 		]);
 	}
 	
-	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $wikipedia)
+	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $data)
 	{
 		$url = $request->query->get("url");
 		
@@ -85,11 +85,11 @@ class AdminController extends AbstractController
 
 		foreach($data->getSections() as $text => $id)
 			$res[] = ["id" => $id, "text" => $text];
-// dd($res);
+
 		return new JsonResponse($res);
 	}
 	
-	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $wikipedia)
+	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $data)
 	{
 		$url = $request->request->get("url");
 
