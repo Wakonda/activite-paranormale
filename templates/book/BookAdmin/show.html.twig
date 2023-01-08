@@ -39,6 +39,15 @@
 		<p><a href="{{ path('Biography_Admin_Show', {id: author.id}) }}" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: author.id}) }}" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> {{ author.title }}</p>
 	{% endfor %}
 	</div>
+	
+	{% if entity.fictionalCharacters is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "book.admin.FictionalCharacters"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+		{% for author in entity.fictionalCharacters %}
+			<p><a href="{{ path('Biography_Admin_Show', {id: author.id}) }}" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: author.id}) }}" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> {{ author.title }}</p>
+		{% endfor %}
+		</div>
+	{% endif %}
 
 	{% if entity.wikidata is not empty %}
 		<div class="form-table-cell form-table-cell-head">Wikidata</div>

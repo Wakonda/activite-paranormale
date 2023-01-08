@@ -52,6 +52,16 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
      */
 	protected $authors;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\Biography", cascade={"persist"})
+     * @ORM\JoinTable(name="book_fictional_character_biography",
+     *      joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_fictional_character_id", referencedColumnName="id", onDelete="cascade")}     
+     *      )
+	 * @Groups("api_read")
+     */
+	protected $fictionalCharacters;
+
 	// Store
     /**
      * @var float $price
@@ -384,6 +394,26 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
 	public function getAuthors()
 	{
 		return $this->authors;
+	}
+
+	public function addFictionalCharacter(Biography $biography)
+	{
+		$this->fictionalCharacters[] = $biography;
+	}
+
+    public function setFictionalCharacters($fictionalCharacters)
+    {
+        $this->fictionalCharacters = $fictionalCharacters;
+    }
+
+	public function removeFictionalCharacter(Biography $biography)
+	{
+		$this->fictionalCharacters->removeElement($biography);
+	}
+
+	public function getFictionalCharacters()
+	{
+		return $this->fictionalCharacters;
 	}
 
     public function getPublisher()

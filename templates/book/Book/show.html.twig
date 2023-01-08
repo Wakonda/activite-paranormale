@@ -67,6 +67,16 @@
 			{{ entity.text|raw }}
 		</div>
 	{% endif %}
+	
+	{% if entity.fictionalCharacters is not empty %}
+		<h3>{{ "book.read.Characters"|trans([], "validators") }}</h3>
+		
+		<ul>
+		{% for author in entity.fictionalCharacters %}
+			<li><a href="{{ path('Biography_Show', {id: author.id, title: author.title}) }}">{{ author.title }}</a></li>
+		{% endfor %}
+		</ul>
+	{% endif %}
 
 	{% if entity.bookEditions is not empty %}
 	<h3>{{ "book.read.BookEditions"|trans([], "validators") }}</h3>	

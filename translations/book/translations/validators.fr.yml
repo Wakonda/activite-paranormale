@@ -17,6 +17,7 @@ book:
         Nonfiction: "Non-fiction"
         InternationalName: "Nom international"
         Introduction: "Présentation"
+        FictionalCharacters: "Personnages de fiction"
     biography:
         Title: "Titre"
         Language: "Langue"
@@ -46,6 +47,7 @@ book:
         Sources: "Sources"
         Genre: "Genre littéraire"
         Introduction: "Présentation"
+        Characters: "Personnages"
     byPublisher:
         VisitThePublishersWebsite: "Visiter le site Internet de l'éditeur"
     world:

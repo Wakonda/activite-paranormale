@@ -52,8 +52,14 @@ class BookAdminController extends AdminGenericController
 			if(empty($formChild->get('internationalName')->getData()))
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
 
-		if($form->isValid())
+		foreach ($form->get('fictionalCharacters') as $formChild)
+			if(empty($formChild->get('internationalName')->getData()))
+				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
+
+		if($form->isValid()) {
 			$this->saveNewBiographies($entityBindded, $form, "authors", false);
+			$this->saveNewBiographies($entityBindded, $form, "fictionalCharacters", false);
+		}
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -260,6 +266,20 @@ class BookAdminController extends AdminGenericController
 		}
 		
 		$entity->setAuthors($mbArray);
+
+		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
+		
+		foreach($entityToCopy->getFictionalCharacters() as $mbToCopy) {
+			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getInternationalName(), "language" => $language]);
+			
+			if(empty($biography))
+				continue;
+			
+			$entity->addFictionalCharacter($biography);
+			$mbArray->add($biography);
+		}
+		
+		$entity->setFictionalCharacters($mbArray);
 
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
 			$wikidata = new \App\Service\Wikidata($em);

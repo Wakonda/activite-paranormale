@@ -49,6 +49,9 @@ class BookAdminType extends AbstractType
 						
 						return $this->translator->trans("book.admin.Nonfiction", [], "validators");
 					},
+					'choice_attr' => function ($choice, $key, $value) {
+						return ["data-fiction" => $choice->getFiction() ? 1 : 0];
+					},
 					'query_builder' => function(\App\Repository\LiteraryGenreRepository $repository) use ($language) { return $repository->getGenreByLanguage($language);}])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {
@@ -66,6 +69,27 @@ class BookAdminType extends AbstractType
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('wikidata', TextType::class, ['required' => false])
 		    ->add('authors', Select2EntityType::class, [
+				'multiple' => true,
+				'remote_route' => 'Biography_Admin_Autocomplete',
+				'class' => 'App\Entity\Biography',
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'allow_add' => [
+					'enabled' => true,
+					'new_tag_text' => ' (+)',
+					'new_tag_prefix' => '__',
+					'tag_separators' => '[","]'
+				],
+				'cache' => false,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'language' => $language,
+				"required" => true,
+				'constraints' => [new NotBlank()]
+			])
+		    ->add('fictionalCharacters', Select2EntityType::class, [
 				'multiple' => true,
 				'remote_route' => 'Biography_Admin_Autocomplete',
 				'class' => 'App\Entity\Biography',

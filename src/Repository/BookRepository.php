@@ -135,7 +135,9 @@ class BookRepository extends MappedSuperclassBaseRepository
 		$qb = $this->createQueryBuilder("d");
 		
 		$qb->leftjoin('d.authors', 'b')
+		   ->leftjoin('d.fictionalCharacters', 'f')
 		   ->where('b.internationalName = :internationalName')
+		   ->orWhere('f.internationalName = :internationalName')
 		   ->setParameter('internationalName', $internationalName);
 
 		return $qb->getQuery()->getResult();
