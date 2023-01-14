@@ -107,8 +107,7 @@ class BookAdminType extends AbstractType
 				'cache' => false,
 				'req_params' => ['locale' => 'parent.children[language]'],
 				'language' => $language,
-				"required" => true,
-				'constraints' => [new NotBlank()]
+				"required" => false
 			])
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
 				'choice_label'=>'title', 

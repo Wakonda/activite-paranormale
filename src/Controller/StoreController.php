@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Stores\Store;
 use App\Form\Type\StoreSearchType;
@@ -56,4 +57,12 @@ class StoreController extends AbstractController
 			"entities" => $entities
 		));
 	}
+
+    public function randomAction(Request $request)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(Store::class)->getRandom($request->getLocale(), [Store::BOOK_CATEGORY]);
+		
+        return new Response($entity->getimageEmbeddedCode());
+    }
 }

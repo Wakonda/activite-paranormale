@@ -246,4 +246,35 @@ class StoreRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getRandom($locale, Array $categories)
+	{
+		$qb = $this->createQueryBuilder("o");
+
+		$qb->select("COUNT(o) AS countRow")
+		   ->join('o.language', 'l')
+		   ->where('l.abbreviation = :locale')
+		   ->setParameter('locale', $locale);
+		
+		if(!empty($categories))
+			$qb->andWhere("o.category IN (:categories)")
+		       ->setParameter("categories", $categories);
+		
+		$max = max($qb->getQuery()->getSingleScalarResult() - 1, 0);
+		$offset = rand(0, $max);
+
+		$qb = $this->createQueryBuilder("o");
+
+		$qb->join('o.language', 'l')
+		   ->where('l.abbreviation = :locale')
+		   ->setParameter('locale', $locale)
+		   ->setFirstResult($offset)
+		   ->setMaxResults(1);
+		
+		if(!empty($categories))
+			$qb->andWhere("o.category IN (:categories)")
+		       ->setParameter("categories", $categories);
+
+		return $qb->getQuery()->getOneOrNullResult();
+	}
 }

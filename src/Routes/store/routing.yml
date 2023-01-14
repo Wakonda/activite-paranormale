@@ -14,6 +14,10 @@ Store_Show:
     requirements:
         id: \d+
 
+Store_Random:
+    path: /store/random
+    controller: App\Controller\StoreController::randomAction
+
 # Administration
 Store_Admin:
     resource: "routing/storeadmin.yml"

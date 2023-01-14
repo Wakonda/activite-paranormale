@@ -80,10 +80,11 @@ class EventMessageAdminController extends AdminGenericController
 	
     public function editAction(Request $request, $id)
     {
+		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
 		$formType = EventMessageAdminType::class;
 
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType, ['locale' => $request->getLocale()]);
+		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
