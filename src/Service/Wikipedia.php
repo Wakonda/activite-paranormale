@@ -79,6 +79,12 @@
 			foreach($xpath->query('//div[contains(attribute::class, "thumb")]') as $e )
 				$e->parentNode->removeChild($e);
 
+			foreach($xpath->query('//table[contains(attribute::class, "sidebar")]') as $e )
+				$e->parentNode->removeChild($e);
+
+			foreach($xpath->query('//table[contains(@class, "toccolours")]') as $e )
+				$e->parentNode->removeChild($e);
+
 			foreach($xpath->query('//div[contains(attribute::class, "listen")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
