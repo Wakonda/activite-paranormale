@@ -29,7 +29,7 @@
 			if(!property_exists($datas->entities->$code->labels, $language))
 				return [];
 
-			$res["title"] = $datas->entities->$code->labels->$language->value;
+			$res["title"] = ucfirst($datas->entities->$code->labels->$language->value);
 			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
 			
 			return $res;
