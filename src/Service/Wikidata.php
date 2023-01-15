@@ -26,11 +26,26 @@
 
 			$datas = json_decode($content);
 			
-			if(!property_exists($datas->entities->$code->labels, $language))
-				return [];
+			$title = null;
+			$url = null;
 
-			$res["title"] = ucfirst($datas->entities->$code->labels->$language->value);
-			$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			if(!property_exists($datas->entities->$code->labels, $language)) {
+				$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids={$code}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+
+				$datas = json_decode($content);
+				$titleArray = (array) $datas->entities->$code->labels;
+
+				if(isset($titleArray["en"]))
+					$title = $titleArray["en"]->value;
+				else
+					$title = reset($titleArray)->value;
+			} else {
+				$title = $datas->entities->$code->labels->$language->value;
+				$url = $this->getUrl($datas, $code, $languageWiki);
+			}
+
+			$res["title"] = ucfirst($title);
+			$res["url"] = $url;
 			
 			return $res;
 		}
