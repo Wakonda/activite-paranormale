@@ -155,7 +155,8 @@
 						{% endif %}
 						
 						{% if illustrationForm.caption is defined %}
-							tinymce.get("{{ illustrationForm.caption.vars.id }}").setContent(data.image.url);
+							if(data.image.description =! null)
+								tinymce.get("{{ illustrationForm.caption.vars.id }}").setContent(data.image.description);
 						{% endif %}
 					}
 				{% endif %}

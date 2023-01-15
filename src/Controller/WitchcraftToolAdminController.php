@@ -192,7 +192,7 @@ class WitchcraftToolAdminController extends AdminGenericController
 			$wikidata = new \App\Service\Wikidata($em);
 			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
 			
-			if(!empty($data))
+			if(!empty($data) and !empty($data["url"]))
 			{
 				$sourceArray = [[
 					"author" => null,

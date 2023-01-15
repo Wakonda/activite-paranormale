@@ -183,7 +183,7 @@
 							   "source" => $imageProperty->descriptionshorturl,
 							   "user" => $imageProperty->user,
 							   "license" => $imageProperty->extmetadata->LicenseShortName->value,
-							   "description" => property_exists($imageProperty->extmetadata, "ImageDescription") ? $imageProperty->extmetadata->ImageDescription->value : null];
+							   "description" => property_exists($imageProperty->extmetadata, "ImageDescription") ? $imageProperty->extmetadata->ImageDescription->value : ""];
 			}
 			
 			return $imageArray;
