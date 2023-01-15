@@ -153,6 +153,10 @@
 						{% if illustrationForm.urlSource is defined %}
 							document.getElementById("{{ illustrationForm.urlSource.vars.id }}").value = data.image.url;
 						{% endif %}
+						
+						{% if illustrationForm.caption is defined %}
+							tinymce.get("{{ illustrationForm.caption.vars.id }}").setContent(data.image.url);
+						{% endif %}
 					}
 				{% endif %}
 

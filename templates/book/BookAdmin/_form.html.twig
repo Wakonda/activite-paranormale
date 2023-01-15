@@ -90,6 +90,7 @@
 					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
 					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
 					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+					tinymce.get("{{ form.illustration.caption.vars.id }}").setContent(data.image.description);
 				}
 
 				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");

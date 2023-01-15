@@ -173,7 +173,7 @@
 				$image = json_decode(file_get_contents("https://www.mediawiki.org/w/api.php?action=query&titles=File:${filename}&prop=imageinfo&iilimit=50&iiurlwidth=${maxWidth}&iiprop=timestamp%7Cuser%7Curl|size|extmetadata&format=json"));
 				$imageProperty = $image->query->pages->{'-1'}->imageinfo[0];
 				$url = null;
-				
+
 				if($imageProperty->width > $maxWidth)
 					$url = $imageProperty->thumburl;
 				else
@@ -183,7 +183,7 @@
 							   "source" => $imageProperty->descriptionshorturl,
 							   "user" => $imageProperty->user,
 							   "license" => $imageProperty->extmetadata->LicenseShortName->value,
-							   "description" => $imageProperty->extmetadata->Categories->value];
+							   "description" => property_exists($imageProperty->extmetadata, "ImageDescription") ? $imageProperty->extmetadata->ImageDescription->value : null];
 			}
 			
 			return $imageArray;
