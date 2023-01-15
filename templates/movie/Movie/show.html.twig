@@ -44,6 +44,7 @@
 				<td class="tdGene">{{ entity.cost|format_price(entity.costUnit, app.request.locale) }}</td>
 			</tr>
 			{% endif %}
+
 			{% if entity.reviewScores is not empty %}
 			<tr>
 				<td class="td_form_table">{{ "movie.read.ReviewScores"|trans([], "validators") }}</td>

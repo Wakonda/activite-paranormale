@@ -35,6 +35,10 @@ class MigrateUpdateBookCommand extends Command
 		$output->writeln("Start Book migration");
 
 		$conn = $this->em->getConnection();
+		
+		// OK
+		$conn->exec("UPDATE movie SET reviewScores = null WHERE reviewScores = 'undefined';");
+
 		$sql = "SELECT id, photo FROM president WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAll($sql);
 
@@ -47,7 +51,8 @@ class MigrateUpdateBookCommand extends Command
 		}
 		
 		echo "End president";
-die("pp");
+
+		// OK
 		$datas = $this->em->getRepository(EventMessage::class)->findAll();
 		
 		foreach($datas as $data) {
@@ -57,18 +62,14 @@ die("pp");
 		}
 		
 		$this->em->flush();
-		
-		die("ok");
 
-
+		// OK
 		$genres = $this->em->getRepository(LiteraryGenre::class)->findBy(["wikidata" => "Q35760"]);
 		$genreArray = [];
 		
 		foreach($genres as $genre) {
 			$genreArray[$genre->getLanguage()->getAbbreviation()] = $genre;
 		}
-		
-		
 		$books = $this->em->getRepository(Book::class)->findAll();
 
 		foreach($books as $book) {
