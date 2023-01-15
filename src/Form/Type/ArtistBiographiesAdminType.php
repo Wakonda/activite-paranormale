@@ -53,6 +53,7 @@ class ArtistBiographiesAdminType extends AbstractType
 				'choices'  => $occupationArray,
 				'label' => 'biographies.admin.Occupation', 'translation_domain' => 'validators', "attr" => ["class" => "form-control list-occupation"]
 			])
+			->add('wikidata', HiddenType::class, ["attr" => ["class" => "wikidata"], "mapped" => false])
             ->add('role', TextType::class, array('label' => 'biographies.admin.StageName', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control role-biography"], "label_attr" => ["class" => "role-biography"]))
             ->add('startYear', DatePartialType::class, array('label' => 'biographies.admin.StartYear', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control"]))
             ->add('endYear', DatePartialType::class, array('label' => 'biographies.admin.EndYear', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control"]))

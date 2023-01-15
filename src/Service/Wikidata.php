@@ -478,11 +478,12 @@
 						if(property_exists($member->qualifiers, "P582"))
 							$end = $member->qualifiers->P582[0]->datavalue->value->time;
 					}
-					
-					$personArray["member"][$member->mainsnak->datavalue->value->id] = ["title" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["title"], "objects" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["objects"], "start" => $start, "end" => $end];
+
+					if(isset($personArray["member"][$member->mainsnak->datavalue->value->id]))
+						$personArray["member"][$member->mainsnak->datavalue->value->id] = ["title" => $personArray["member"][$member->mainsnak->datavalue->value->id]["title"], "objects" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["objects"], "start" => $start, "end" => $end];
 				}
 			}
-			
+
 			$res["person"] = $personArray;
 			
 			return $res;

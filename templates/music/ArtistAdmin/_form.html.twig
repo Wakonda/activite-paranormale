@@ -54,6 +54,7 @@
 					{{ form_widget(artistBiographyField.endYear) }}
 					
 					{{ form_widget(artistBiographyField.internationalName) }}
+					{{ form_widget(artistBiographyField.wikidata) }}
 				</div>
 			</li>
 		{% endfor %}
@@ -127,6 +128,8 @@
 
 					document.getElementById("{{ form.artistBiographies.vars.id }}_" + i).setAttribute("data-wikidata", wikidata);
 					document.getElementById("{{ form.artistBiographies.vars.id }}_" + i).setAttribute("data-title", data.person.member[wikidata].title);
+
+					document.getElementById("{{ form.artistBiographies.vars.id }}_" + i + "_wikidata").value = wikidata;
 
 					if(data.person.member[wikidata].start != null) {
 						let dateArray = data.person.member[wikidata].start.split("T")[0].substr(1).split("-");
