@@ -269,34 +269,71 @@
 	{% endif %}
 	
 	{% set artists = artist_by_biography(entity) %}
-	{% if artists|length > 0 %}
-		<h3><i class="fas fa-music fa-sm"></i> {{ "biography.index.Artists"|trans([], "validators") }}</h3>
-		<table class="doc_datatables dt-responsive w-100">
-			<thead>
-				<tr>
-					<th>{{ "artist.biography.Title"|trans([], "validators") }}</th>
-					<th>{{ "artist.biography.Occupations"|trans([], "validators") }}</th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for artist in artists %}
-					<tr class="trGene">
-						<td class="tdGene"><a href="{{ path('Music_Album', {id: artist.artistId, title_slug: artist.artistTitle}) }}">{{ artist.artistTitle }}</a></td>
-						<td class="tdGene">
-						{% set occupationArray = [] %}
-						{% for occupation in artist.occupations|split("|") %}
-							{% if ("artist.biography."~(occupation|ucfirst))|trans([], "validators") not in occupationArray %}
-								{% set occupationArray = occupationArray|merge([(("artist.biography."~(occupation|ucfirst))|trans([], "validators"))]) %}
-							{% endif %}
-						{% endfor %}
-						
-						{{ (occupationArray|join(", "))|raw }}
-						</td>
+	{% set musics = music_by_biography(entity) %}
+	
+	{% if artists|length > 0 or musics|length > 0 %}
+		<h3><i class="fas fa-music fa-sm"></i> {{ "biography.index.Music"|trans([], "validators") }}</h3>
+		
+		{% if artists|length > 0 %}
+			<h4><i class="fas fa-microphone-alt"></i> {{ "biography.index.Artists"|trans([], "validators") }}</h4>
+			<table class="doc_datatables dt-responsive w-100">
+				<thead>
+					<tr>
+						<th>{{ "artist.biography.Title"|trans([], "validators") }}</th>
+						<th>{{ "artist.biography.Occupations"|trans([], "validators") }}</th>
 					</tr>
-				{% endfor %}
-			</tbody>
-		</table>
-		<div class="clear"></div>
+				</thead>
+				<tbody>
+					{% for artist in artists %}
+						<tr class="trGene">
+							<td class="tdGene"><a href="{{ path('Music_Album', {id: artist.artistId, title_slug: artist.artistTitle}) }}">{{ artist.artistTitle }}</a></td>
+							<td class="tdGene">
+							{% set occupationArray = [] %}
+							{% for occupation in artist.occupations|split("|") %}
+								{% if ("artist.biography."~(occupation|ucfirst))|trans([], "validators") not in occupationArray %}
+									{% set occupationArray = occupationArray|merge([(("artist.biography."~(occupation|ucfirst))|trans([], "validators"))]) %}
+								{% endif %}
+							{% endfor %}
+							
+							{{ (occupationArray|join(", "))|raw }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="clear"></div>
+		{% endif %}
+		
+		{% if musics|length > 0 %}
+			<h4><i class="fas fa-microphone"></i> {{ "biography.index.GuestMusicians"|trans([], "validators") }}</h4>
+			<table class="doc_datatables dt-responsive w-100">
+				<thead>
+					<tr>
+						<th>{{ "artist.biography.Title"|trans([], "validators") }}</th>
+						<th>{{ "artist.biography.Occupations"|trans([], "validators") }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for music in musics %}
+						<tr class="trGene">
+							<td class="tdGene"><a href="{{ path('Music_Music', {id: music.musicId, music: music.musicTitle}) }}">{{ music.musicTitle }}</a></td>
+							<td class="tdGene">
+							{% set occupationArray = [] %}
+							{% for occupation in music.occupations|split("|") %}
+								{% if ("artist.biography."~(occupation|ucfirst))|trans([], "validators") not in occupationArray %}
+									{% set occupationArray = occupationArray|merge([(("artist.biography."~(occupation|ucfirst))|trans([], "validators"))]) %}
+								{% endif %}
+							{% endfor %}
+							
+							{{ (occupationArray|join(", "))|raw }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="clear"></div>
+		{% endif %}
+		<br>
 	{% endif %}
 
 	{% if entity.identifiers is not empty %}

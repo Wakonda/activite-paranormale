@@ -8,10 +8,12 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 
 use App\Entity\Music;
 use App\Entity\Album;
 use App\Entity\Language;
+use App\Entity\MusicBiography;
 use App\Form\Type\MusicAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -51,10 +53,36 @@ class MusicAdminController extends AdminGenericController
 			$form->get('musicPieceFile')->addError(new FormError($translator->trans('admin.error.NotBlankVideoOrAudio', array(), 'validators')));
 			$form->get('embeddedCode')->addError(new FormError($translator->trans('admin.error.NotBlankVideoOrAudio', array(), 'validators')));
 		}
+		foreach ($form->get('musicBiographies') as $formChild)
+			if(empty($formChild->get('internationalName')->getData()))
+				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
+
+		if($form->isValid())
+			$this->saveNewBiographies($entityBindded, $form, "musicBiographies");
 	}
 
 	public function postValidationAction($form, $entityBindded)
 	{
+		$em = $this->getDoctrine()->getManager();
+		$originalMusics = new ArrayCollection($em->getRepository(MusicBiography::class)->findBy(["music" => $entityBindded->getId()]));
+		
+		foreach($originalMusics as $originalMusic)
+		{
+			if(false === $entityBindded->getMusicBiographies()->contains($originalMusic))
+			{
+				$em->remove($originalMusic);
+			}
+		}
+
+		foreach($entityBindded->getMusicBiographies() as $mb)
+		{
+			if(!empty($mb->getBiography())) {
+				$mb->setMusic($entityBindded);
+				$em->persist($mb);
+			}
+		}
+
+		$em->flush();
 	}
 
     public function indexAction()

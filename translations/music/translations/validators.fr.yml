@@ -60,6 +60,7 @@ biographies:
         StartYear: "Année d'arrivée"
         EndYear: "Année de départ"
         StageName: "Nom de scène"
+        GuestMusicians: "Musiciens invités"
 music:
     admin:
         Album: "Album"
@@ -114,6 +115,7 @@ music:
         DownloadFile: "Télécharger le fichier"
         AudioFile: "Fichier audio"
         Video: "Vidéo"
+        GuestMusicians: "Musiciens invités"
 album:
     admin:
         Title: "Titre"

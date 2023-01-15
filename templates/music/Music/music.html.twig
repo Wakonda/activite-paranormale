@@ -56,6 +56,29 @@
 			<h3>{{ "music.music.Video"|trans([], "validators") }}</h3>
 			{{ entity.embeddedCode|raw }}
 		{% endif %}
+
+		{% if entity.musicBiographies|length > 0 %}
+			<h3>{{ "music.music.GuestMusicians"|trans([], "validators") }}</h3>
+			{% set members = biography_by_music(entity) %}
+
+			<table class="table">
+				<tbody>
+					{% for member in members %}
+						<tr>
+							<td><a href="{{ path('Biography_Show', {id: member.biographyId, title: member.biographyTitle}) }}" title="{{ member.biographyTitle }}">{{ member.stageName }}</a>{% if  member.biographyTitle != member.stageName %} (<i>{{ member.biographyTitle }}</i>) {% endif %}</td>
+							<td>
+							{% set occupationArray = [] %}
+							{% for occupation in member.occupations %}
+								{% set occupationArray = occupationArray|merge([("artist.biography."~occupation|ucfirst)|trans([], "validators")]) %}
+							{% endfor %}
+							
+							{{ occupationArray|join(", ") }}
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+		{% endif %}
 	
 		{% if album is not empty %}
 			{% set datas = get_store_by_entity(album, "album", "AlbumStore") %}

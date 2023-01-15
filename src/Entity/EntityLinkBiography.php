@@ -19,6 +19,7 @@ use App\Service\APPurifierHTML;
 	"book_edition_biography" = "BookEditionBiography",
 	"movie_biography" = "App\Entity\Movies\MovieBiography",
 	"televisionserie_biography" = "App\Entity\Movies\TelevisionSerieBiography",
+	"music_biography" = "App\Entity\MusicBiography",
   })
  */
 class EntityLinkBiography

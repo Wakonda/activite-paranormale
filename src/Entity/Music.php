@@ -77,6 +77,15 @@ class Music
      * @ORM\Column(name="identifiers", type="text", nullable=true)
      */
     private $identifiers;
+
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\MusicBiography", mappedBy="music", cascade={"persist"})
+     * @ORM\JoinTable(name="music_biography",
+     *      joinColumns={@ORM\JoinColumn(name="music_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_id", referencedColumnName="id", onDelete="cascade")}     
+     *      )
+	 */
+	private $musicBiographies;
 	
 	public function getTitle(): string {
 		$album = !empty($this->album) ? $this->album->getTitle() : null;
@@ -348,4 +357,14 @@ class Music
     {
         return $this->identifiers;
     }
+
+	public function getMusicBiographies()
+	{
+		return $this->musicBiographies;
+	}
+
+	public function setMusicBiographies($musicBiographies)
+	{
+		$this->musicBiographies = $musicBiographies;
+	}
 }

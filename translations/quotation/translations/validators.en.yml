@@ -59,6 +59,8 @@ biography:
         Movies: "Movies"
         TelevisionSeries: "Television series"
         Artists: "Artists"
+        GuestMusicians: "Guest musicians"
+        Music: "Music"
         BirthDate: "Birth date:"
         DeathDate: "Death date:"
         Nationality: "Nationality:"

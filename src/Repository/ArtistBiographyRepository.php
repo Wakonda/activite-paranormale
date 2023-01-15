@@ -15,7 +15,7 @@ class ArtistBiographyRepository extends EntityRepository
 	public function getArtistsByBiography($biography)
 	{
 		$qb = $this->createQueryBuilder("mb");
-		
+
 		$qb->select("m.title AS artistTitle, m.id AS artistId, GROUP_CONCAT(mb.occupation SEPARATOR '|') AS occupations")
 		   ->where("mb.biography = :biography")
 		   ->setParameter("biography", $biography)
@@ -25,6 +25,7 @@ class ArtistBiographyRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
 	public function getBiographiesByArtist($artist)
 	{
 		$qb = $this->createQueryBuilder("mb");

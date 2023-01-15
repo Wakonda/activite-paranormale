@@ -104,11 +104,51 @@
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.musicBiographies, "biographies.admin.GuestMusicians"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+    <ul id="biography-fields-list"
+        data-prototype="{{ form_widget(form.musicBiographies.vars.prototype)|e }}"
+        data-widget-tags="{{ '<li></li>'|e }}"
+        data-widget-counter="{{ form.musicBiographies|length }}"
+		class="list-unstyled">
+		{% for biographyField in form.musicBiographies %}
+			<li class="border p-2 bg-light mb-2 clearfix container-form-biography">
+				<div data-wikidata="{{ biographyField.vars.value.biography.wikidata }}" data-title="{{ biographyField.vars.value.biography.title }}" data-international-name="{{ biographyField.vars.value.biography.internationalName }}">
+					{{ form_errors(biographyField) }}
+					
+					{{ form_label(biographyField.biography, "biographies.admin.Biography"|trans([], "validators")) }}
+					{{ form_widget(biographyField.biography) }}
+					
+					{{ form_label(biographyField.occupation, "biographies.admin.Occupation"|trans([], "validators")) }}
+					{{ form_widget(biographyField.occupation) }}
+					
+					{{ form_label(biographyField.role, "biographies.admin.Role"|trans([], "validators")) }}
+					{{ form_widget(biographyField.role) }}
+					
+					{{ form_widget(biographyField.internationalName) }}
+				</div>
+			</li>
+		{% endfor %}
+	</ul>
+	
+    <button type="button"
+        class="add-another-collection-widget btn btn-success float-right"
+        data-list-selector="#biography-fields-list"><i class="fas fa-plus"></i></button>
+		
+	<div class="d-none">
+	{% if entity.id is null and not form.musicBiographies.isRendered() %}
+		{{ form_widget(form.musicBiographies) }}
+	{% endif %}
+	</div>
+</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "music.admin.Identifiers"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "music.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
+
+{% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { languageId: form.language.vars.id } %}
 
 <script>
 	document.getElementById("wikidata").addEventListener("click", (e) => {

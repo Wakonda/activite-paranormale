@@ -18,12 +18,14 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Field\SourceEditType;
 use App\Form\Field\IdentifiersEditType;
 use App\Entity\Artist;
 use App\Entity\Album;
+use App\Entity\MusicBiography;
 
 class MusicAdminType extends AbstractType
 {
@@ -89,6 +91,7 @@ class MusicAdminType extends AbstractType
 			->add('secondDuration', IntegerType::class, array('mapped' => false))
             ->add('embeddedCode', TextareaType::class, array('required' => false))
 			->add('wikidata', TextType::class, ['required' => false])
+			->add('musicBiographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => BiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => MusicBiography::class, "query_parameters" => ["locale" => $language]]))
             ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getMusicIdentifiers()])
         ;
 
