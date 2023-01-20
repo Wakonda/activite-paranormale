@@ -91,6 +91,7 @@ class AdminController extends AbstractController
 	
 	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $data)
 	{
+		// dd($request->request->get("sections", []), $_POST, $_GET);
 		$url = $request->request->get("url");
 
 		if(str_contains(parse_url($url, PHP_URL_HOST), "wikimonde")) {

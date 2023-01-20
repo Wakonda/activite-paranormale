@@ -1,4 +1,4 @@
-{% macro import_wikipedia(fieldId, sourceField = null) %}
+{% macro import_wikipedia(fieldId, sourceField = null, options = {}) %}
 <style>
 	.select2-container--default {
 		height: calc(1.5em + .75rem + 2px);
@@ -8,6 +8,7 @@
 		overflow: auto;
 	}
 </style>
+
 <div class="input-group mb-2">
 	<div class="input-group-prepend">
 		<span class="input-group-text"><i class="fab fa-wikipedia-w"></i></span>
@@ -60,41 +61,56 @@
 				success: function(data)
 				{
 					$('#sections_{{ fieldId }}').html("").select2({"data": data, closeOnSelect: false});
+
+					{% if options.onlyHeader is defined %}
+						if (typeof data[0] !== "undefined") {
+							$("#sections_{{ fieldId }}").val(data[0].id).trigger("change");
+							document.getElementById("import_url_{{ fieldId }}").click();
+						}
+					{% endif %}
 				}
 			});
 		});
 
-		$("#import_url_{{ fieldId }}").click(function(e) {
+		document.getElementById("import_url_{{ fieldId }}").addEventListener("click", (e) => {
 			e.preventDefault();
 			let url = $("#url_{{ fieldId }}").val();
 			let sections = $("#sections_{{ fieldId }}").val();
-			
-			$("#import_url_icon_{{ fieldId }}").removeClass("fa-check").addClass("fa-sync fa-spin");
 
-			$.ajax({
-				type: "POST",
-				url: "{{ path('Admin_ImportWikipedia') }}",
-				data: { "url" : url, "sections": sections },
-				beforeSend: function( xhr ) {
-					{% if sourceField is not null %}
-						var data = editor{{ sourceField }}.getValue();
-						data.type = "url"
-						data.url = url
-						editor{{ sourceField }}.setValue(data)
-					{% endif %}
-				},
-				success: function(data)
-				{
+			let xmlHttp = new XMLHttpRequest();
+			
+			document.querySelector("#import_url_icon_{{ fieldId }}").classList.remove("fa-check");
+			document.querySelector("#import_url_icon_{{ fieldId }}").classList.add("fa-sync", "fa-spin");
+			
+			{% if sourceField is not null %}
+				var data = editor{{ sourceField }}.getValue();
+				data.type = "url"
+				data.url = url
+				editor{{ sourceField }}.setValue(data)
+			{% endif %}
+			
+			xmlHttp.onreadystatechange = function() {
+				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+					var data = JSON.parse(xmlHttp.response);
 					tinymce.get("{{ fieldId }}").setContent(data.content);
 
 					{% if sourceField is not null %}
 						document.getElementById('add_source_{{ sourceField }}').click();
 					{% endif %}
-				},
-				complete: function(data) {
-					$("#import_url_icon_{{ fieldId }}").addClass("fa-check").removeClass("fa-sync fa-spin");
+
+					document.querySelector("#import_url_icon_{{ fieldId }}").classList.add("fa-check");
+					document.querySelector("#import_url_icon_{{ fieldId }}").classList.remove("fa-sync", "fa-spin");
 				}
-			});
+			}
+			
+			var formData = new FormData(); 
+			formData.append("url", url);
+			
+			for(var i = 0; i < sections.length; i++)
+				formData.append("sections[]", sections[i]);
+
+			xmlHttp.open("POST", "{{ path('Admin_ImportWikipedia') }}", true);
+			xmlHttp.send(formData);
 		});
 	});
 </script>

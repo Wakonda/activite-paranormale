@@ -10,7 +10,7 @@
 {{ form_label(form.introduction, "movie.admin.Introduction"|trans([], "validators")) }}
 </div>
 <div class="form-table-cell">
-	{{ macro_admin.import_wikipedia(form.introduction.vars.id) }}
+	{{ macro_admin.import_wikipedia(form.introduction.vars.id, null, {onlyHeader: true}) }}
 	{{ form_errors(form.introduction) }}{{ form_widget(form.introduction) }}
 </div>
 
@@ -247,6 +247,17 @@
 		xmlHttp.open("GET", "{{ path('Movie_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
 		xmlHttp.send();
 	});
+	
+/*(function() {
+    const send = XMLHttpRequest.prototype.send
+    XMLHttpRequest.prototype.send = function() { 
+        this.addEventListener('load', function() {alert("ok")
+            console.log('global handler', this.responseText)
+            // add your global handler here
+        })
+        return send.apply(this, arguments)
+    }
+})()*/
 	
 	$(function() {
 		$(".container-form-biography select.list-occupation").each(function() {
