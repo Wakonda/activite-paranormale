@@ -77,7 +77,7 @@ class FileManagement
     private $author;
 
     /**
-     * @ORM\Column(name="urlSource", type="string", length=255, nullable=true)
+     * @ORM\Column(name="urlSource", type="string", length=500, nullable=true)
      */
     private $urlSource;
 

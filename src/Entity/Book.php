@@ -198,45 +198,6 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
     }
 
     /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function uploadPhoto() {
-        // the file property can be empty if the field is not required
-        if (null === $this->photo) {
-            return;
-        }
-
-		if(is_object($this->photo))
-		{
-			$NameFile = basename($this->photo->getClientOriginalName());
-			$reverseNF = strrev($NameFile);
-			$explodeNF = explode(".", $reverseNF, 2);
-			$NNFile = strrev($explodeNF[1]);
-			$ExtFile = strrev($explodeNF[0]);
-			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
-			if(!$this->id){
-				$this->photo->move($this->getTmpUploadRootDir(), $NewNameFile);
-			}else{
-				if (is_object($this->photo))
-					$this->photo->move($this->getUploadRootDir(), $NewNameFile);
-			}
-			if (is_object($this->photo))
-				$this->setPhoto($NewNameFile);
-		} elseif(filter_var($this->photo, FILTER_VALIDATE_URL)) {
-			$parser = new \App\Service\APParseHTML();
-			$html = $parser->getContentURL($this->photo);
-			$pi = pathinfo($this->photo);
-			$extension = $res = pathinfo(parse_url($this->photo, PHP_URL_PATH), PATHINFO_EXTENSION);
-			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
-			$filename = uniqid()."_".$filename;
-
-			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
-			$this->setPhoto($filename);
-		}
-    }
-
-    /**
      * Set price
      *
      * @param float $price
