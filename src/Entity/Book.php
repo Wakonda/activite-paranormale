@@ -31,7 +31,7 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
 	protected $introduction;
 
     /**
-	 * @Assert\File(maxSize="6000000")
+	 * Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
