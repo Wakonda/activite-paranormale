@@ -10,7 +10,7 @@
 {{ form_label(form.introduction, "book.admin.Introduction"|trans([], "validators")) }}
 </div>
 <div class="form-table-cell">
-	{{ macro_admin.import_wikipedia(form.introduction.vars.id) }}
+	{{ macro_admin.import_wikipedia(form.introduction.vars.id, null, {onlyHeader: true}) }}
 	{{ form_errors(form.introduction) }}{{ form_widget(form.introduction) }}
 </div>
 
