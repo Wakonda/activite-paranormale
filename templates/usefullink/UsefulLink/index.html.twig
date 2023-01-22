@@ -39,6 +39,11 @@
 			<div class="card-body">
 			{% for data in pagination.items %}
 				<h3>{{ data.title }}</h3>
+				
+				{% if data.photoIllustrationFilename is not empty %}
+					<p class="image">{{ data.photoIllustrationFilename|imgsize(550, data.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, data.photoIllustrationCaption)|raw }}</p>
+				{% endif %}
+
 				<div>
 					{{ data.text|raw }}
 				</div>

@@ -57,7 +57,7 @@
 	});
 	
 	function selectGenreElement(e) {
-			document.querySelectorAll(".fictional_character_container").forEach(el => el.style.display = "block");
+		document.querySelectorAll(".fictional_character_container").forEach(el => el.style.display = "block");
 		if(e.options[e.options.selectedIndex].dataset.fiction == '0')
 			document.querySelectorAll(".fictional_character_container").forEach(el => el.style.display = "none");
 	}

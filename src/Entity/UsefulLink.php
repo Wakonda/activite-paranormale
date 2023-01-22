@@ -13,8 +13,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class UsefulLink
 {
+	use \App\Entity\GenericEntityTrait;
+
 	const DEVELOPMENT_FAMILY = "development";
 	const RESOURCE_FAMILY = "resource";
+	const TOOL_FAMILY = "tool";
+	const USEFULLINK_FAMILY = "usefullink";
+	const TECHNICAL_FAMILY = "technical";
 
     /**
      * @var integer $id
@@ -69,6 +74,50 @@ class UsefulLink
      * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
      */
     protected $licence;
+
+	/**
+	 * @var string $internationalName
+	 *
+	 * @ORM\Column(name="internationalName", type="string", length=255)
+	 */
+	private $internationalName;
+
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Blog")
+     */
+	private $website;
+
+    /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $illustration;
+	
+	public function isDevelopment(): bool {
+		return self::DEVELOPMENT_FAMILY == $this->category;
+	}
+	
+	public function isTool(): bool {
+		return self::TOOL_FAMILY == $this->category;
+	}
+	
+	public function isUsefulLink(): bool {
+		return self::USEFULLINK_FAMILY == $this->category;
+	}
+	
+	public function isTechnical(): bool {
+		return self::TECHNICAL_FAMILY == $this->category;
+	}
+
+	public function getAssetImagePath()
+	{
+		return "extended/photo/usefullink/";
+	}
+
+    public function getTmpUploadRootDir() {
+        // the absolute directory path where uploaded documents should be saved
+        return __DIR__ . '/../../public/'.$this->getAssetImagePath();
+    }
 
 	public function getEntityName()
 	{
@@ -218,5 +267,45 @@ class UsefulLink
     public function setLicence(Licence $licence)
     {
         $this->licence = $licence;
+    }
+
+    public function setInternationalName($internationalName)
+    {
+        $this->internationalName = $internationalName;
+    }
+
+    public function getInternationalName()
+    {
+        return $this->internationalName;
+    }
+
+    public function setWebsite($website)
+    {
+        $this->website = $website;
+    }
+
+    public function getWebsite()
+    {
+        return $this->website;
+    }
+
+    /**
+     * Set illustration
+     *
+     * @param string $illustration
+     */
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    /**
+     * Get illustration
+     *
+     * @return string 
+     */
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }

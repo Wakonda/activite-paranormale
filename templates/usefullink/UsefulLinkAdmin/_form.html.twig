@@ -4,17 +4,49 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "usefullink.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.links, "usefullink.admin.Link"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.links) }}{{ form_widget(form.links, { 'attr': {'class': 'form-control'} }) }}</div>
-
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "usefullink.admin.Category"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "usefullink.admin.Tags"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell form-table-cell-head linkContainer">{{ form_label(form.links, "usefullink.admin.Link"|trans([], "validators")) }}</div>
+<div class="form-table-cell linkContainer">{{ form_errors(form.links) }}{{ form_widget(form.links, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head photoContainer">{{ form_label(form.illustration, "usefullink.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell photoContainer">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head websiteContainer">{{ form_label(form.website, "usefullink.admin.Website"|trans([], "validators")) }}</div>
+<div class="form-table-cell websiteContainer">{{ form_errors(form.website) }}{{ form_widget(form.website, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head tagsContainer">{{ form_label(form.tags, "usefullink.admin.Tags"|trans([], "validators")) }}</div>
+<div class="form-table-cell tagsContainer">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "usefullink.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "usefullink.admin.Licence"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<script>
+	document.getElementById("{{ form.category.vars.id }}").addEventListener("change", (e) => {
+		categoryContainer(e.target.value);
+	});
+	
+	categoryContainer(document.getElementById("{{ form.category.vars.id }}").value);
+	
+	function categoryContainer(value) {
+		document.querySelectorAll(".linkContainer").forEach(el => el.style.display = "none");
+		document.querySelectorAll(".photoContainer").forEach(el => el.style.display = "none");
+		document.querySelectorAll(".websiteContainer").forEach(el => el.style.display = "none");
+		document.querySelectorAll(".tagsContainer").forEach(el => el.style.display = "none");
+
+		if ("{{ constant('App\\Entity\\UsefulLink::TECHNICAL_FAMILY') }}" == value)
+			document.querySelectorAll(".websiteContainer").forEach(el => el.style.display = "block");
+
+		if ("{{ constant('App\\Entity\\UsefulLink::DEVELOPMENT_FAMILY') }}" == value)
+			document.querySelectorAll(".tagsContainer").forEach(el => el.style.display = "block");
+
+		if ("{{ constant('App\\Entity\\UsefulLink::DEVELOPMENT_FAMILY') }}" == value || "{{ constant('App\\Entity\\UsefulLink::USEFULLINK_FAMILY') }}" == value || "{{ constant('App\\Entity\\UsefulLink::TOOL_FAMILY') }}" == value) {
+			document.querySelectorAll(".linkContainer").forEach(el => el.style.display = "block");
+			document.querySelectorAll(".photoContainer").forEach(el => el.style.display = "block");
+		}
+	}
+</script>

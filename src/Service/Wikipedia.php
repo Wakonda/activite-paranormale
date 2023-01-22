@@ -100,6 +100,9 @@
 			foreach($xpath->query('//table[contains(attribute::class, "biography")][contains(attribute::class, "vcard")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
+			foreach($xpath->query('//table[contains(attribute::class, "plainlinks")][contains(attribute::class, "ambox")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
 			foreach($xpath->query('//div[contains(attribute::class, "mw-references-wrap")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}

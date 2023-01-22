@@ -142,7 +142,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 			return base64_encode(file_get_contents($f));
 
 		return null;
-	} 
+	}
 	
 	public function __clone()
 	{

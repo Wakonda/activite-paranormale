@@ -43,3 +43,11 @@ UsefulLink_Admin_GenerateLinkStore:
 UsefulLink_Admin_ReloadThemeByLanguage:
     path: /reload_theme_by_language
     controller: App\Controller\UsefulLinkAdminController::reloadThemeByLanguageAction
+
+UsefulLink_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\UsefulLinkAdminController::showImageSelectorColorboxAction
+
+UsefulLink_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\UsefulLinkAdminController::loadImageSelectorColorboxAction

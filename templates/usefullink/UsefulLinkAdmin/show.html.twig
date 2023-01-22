@@ -20,29 +20,45 @@
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Category"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ ("usefullink.admin." ~ entity.category|capitalize)|trans([], "validators") }}</div>
 
-	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Link"|trans([], "validators") }}</div>
-	<div class="form-table-cell">
-		<ul>
-		{% for data in json_decode(entity.links) %}
-			{% if data.title is not empty %}
-				<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
-			{% else %}
-				<li><a href="{{ data.url }}" target="_blank">{{ data.url|urlclean }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
-			{% endif %}
-		{% endfor %}
-		</ul>
-	</div>
+	{% if entity.links is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Link"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+			<ul>
+			{% for data in json_decode(entity.links) %}
+				{% if data.title is not empty %}
+					<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
+				{% else %}
+					<li><a href="{{ data.url }}" target="_blank">{{ data.url|urlclean }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
+				{% endif %}
+			{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
 
-	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Tags"|trans([], "validators") }}</div>
-	<div class="form-table-cell">
-		{% if entity.tags is not empty %}
+	{% if entity.illustration is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Photo"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		</div>
+	{% endif %}
+
+	{% if entity.website is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Website"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.website.title }}</div>
+	{% endif %}
+	
+	{% if entity.tags is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Tags"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
 			<ul>
 			{% for data in json_decode(entity.tags) %}
 				<li>{{ data.value }}</li>
 			{% endfor %}
 			</ul>
-		{% endif %}
-	</div>
+		</div>
+	{% endif %}
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>

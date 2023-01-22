@@ -110,7 +110,7 @@ class MusicAdminType extends AbstractType
 			$event->getForm()->get('minuteDuration')->setData($minute);
 			$event->getForm()->get('secondDuration')->setData($second);
 		});
-		
+
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($builder) {
 			$data = $event->getData();
 			$form = $event->getForm();

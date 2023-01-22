@@ -12,6 +12,11 @@ usefullink:
         Search: "Buscar"
         Language: "Lengua"
         Licence: "Licencia"
+        Photo: "Foto"
+        Website: "Sitio web"
+        Technical: "Información Técnica
+        Tool: "Herramienta"
+        Usefullink: "Enlace útil"
     index:
         Copy: "Copiar"
         Copied: "¡Copiado!"

@@ -72,7 +72,7 @@
 			];
 
 			$curl = curl_init($this->url."api/save_article");
-		 
+
 			curl_setopt($curl, CURLOPT_POST, true);
 			curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
 			curl_setopt($curl, CURLOPT_HTTPAUTH, CURLAUTH_ANY);
@@ -84,6 +84,8 @@
 			$errors = curl_error($curl);
 			curl_close($curl);
 			
+			die($res);
+dd($errors, $res);
 			return json_decode($res);
 		}
 		

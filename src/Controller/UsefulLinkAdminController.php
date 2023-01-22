@@ -23,8 +23,11 @@ class UsefulLinkAdminController extends AdminGenericController
 	protected $showRoute = "UsefulLink_Admin_Show";
 	protected $formName = 'ap_usefullink_usefullinkadmintype';
 
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
+
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -186,5 +189,15 @@ class UsefulLinkAdminController extends AdminGenericController
 		$translateArray['licence'] = $licenceArray;
 
 		return new JsonResponse($translateArray);
+	}
+
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('UsefulLink_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
 	}
 }
