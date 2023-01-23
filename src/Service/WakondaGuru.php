@@ -83,9 +83,7 @@
 			$res = curl_exec($curl);
 			$errors = curl_error($curl);
 			curl_close($curl);
-			
-			die($res);
-dd($errors, $res);
+
 			return json_decode($res);
 		}
 		

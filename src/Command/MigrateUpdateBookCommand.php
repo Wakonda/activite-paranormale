@@ -36,8 +36,11 @@ class MigrateUpdateBookCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
+		
+		$conn->exec("UPDATE blog SET category = 'blog';");
+		
 		// OK
-		$conn->exec("UPDATE movie SET reviewScores = null WHERE reviewScores = 'undefined';");
+		/*$conn->exec("UPDATE movie SET reviewScores = null WHERE reviewScores = 'undefined';");
 
 		$sql = "SELECT id, photo FROM president WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAll($sql);
@@ -80,7 +83,7 @@ class MigrateUpdateBookCommand extends Command
 			$this->em->persist($book);
 		}
 
-		$this->em->flush();
+		$this->em->flush();*/
 
         return 0;
     }

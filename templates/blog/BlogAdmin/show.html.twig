@@ -32,6 +32,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "blog.admin.LanguageOfBlog"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.languageOfBlog.logo }}" alt="" width="20" height="13" /></div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "blog.admin.category"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.category }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "blog.admin.Active"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
 		{% if entity.active %}

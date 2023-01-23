@@ -13,3 +13,8 @@ blog:
         LanguageOfBlog: "Language of blog"
         WritingDate: "Writing date"
         Active: "Active"
+        Category: "Category"
+        Blog: "Blog"
+        Website: "Website"
+        Forum: "Forum"
+        Store: "Store"

@@ -14,6 +14,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Blog
 {
+	const WEBSITE_CATEGORY = "website";
+	const FORUM_CATEGORY = "forum";
+	const STORE_CATEGORY = "store";
+	const BLOG_CATEGORY = "blog";
+
     /**
      * @var integer $id
      *
@@ -73,6 +78,13 @@ class Blog
 	 * @ORM\Column(name="active", type="boolean")
 	 */
 	private $active;
+
+    /**
+     * @var string $category
+     *
+     * @ORM\Column(name="category", type="string")
+     */
+    private $category;
 	
 	public function __construct()
 	{
@@ -292,5 +304,15 @@ class Blog
 	public function getActive()
 	{
 		return $this->active;
+	}
+	
+	public function setCategory($category)
+	{
+		$this->category = $category;
+	}
+	
+	public function getCategory()
+	{
+		return $this->category;
 	}
 }

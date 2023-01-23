@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+use App\Entity\Blog;
+
 /**
  * BlogRepository
  *
@@ -18,6 +20,8 @@ class BlogRepository extends EntityRepository
         $qb ->join('a.language', 't')
 		    ->where('t.abbreviation = :lang')
 			->setParameter('lang', $lang)
+			->andWhere("a.category = :blog")
+			->setParameter("blog", Blog::BLOG_CATEGORY)
 		    ->orderBy('a.title', 'ASC');
         return $qb->getQuery()->getResult();
 	}
