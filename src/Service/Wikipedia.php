@@ -192,6 +192,8 @@
 				return "";
 			},
 			$html);
+			
+			$html = preg_replace ("!\s++!u", ' ', $html);
 
 			return $html;
 		}
