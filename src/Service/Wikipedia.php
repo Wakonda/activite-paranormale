@@ -85,6 +85,9 @@
 			foreach($xpath->query('//table[contains(@class, "toccolours")]') as $e )
 				$e->parentNode->removeChild($e);
 
+			foreach($xpath->query('//a[contains(@class, "extiw")]') as $e )
+				$e->parentNode->removeChild($e);
+
 			foreach($xpath->query('//div[contains(attribute::class, "listen")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
