@@ -41,7 +41,7 @@
 				<h3>{{ data.title }}</h3>
 				
 				{% if data.photoIllustrationFilename is not empty %}
-					<p class="image">{{ data.photoIllustrationFilename|imgsize(550, data.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, data.photoIllustrationCaption)|raw }}</p>
+					<p class="image mb-2">{{ data.photoIllustrationFilename|imgsize(550, data.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, data.photoIllustrationCaption)|raw }}</p>
 				{% endif %}
 
 				<div>

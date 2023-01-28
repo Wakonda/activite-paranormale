@@ -2044,7 +2044,9 @@ a.tags_display {
     border-radius: 15px;
     margin-right: 6px;
 }
-
+pre {
+	overflow: auto;
+}
 /************ HISTORY *******/
 .text-prewrap pre {
   white-space: pre-line !important;

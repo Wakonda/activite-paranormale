@@ -15,7 +15,7 @@
 	<div class="form-table-cell">{{ entity.title }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Text"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ (entity.text|prism_formatter)|raw }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Category"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ ("usefullink.admin." ~ entity.category|capitalize)|trans([], "validators") }}</div>
@@ -68,8 +68,10 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{% import "index/macro/macro_index.html.twig" as macro_index %}
-	{{ macro_index.wakondaguru_form(entity) }}
+	{% if constant('App\\Entity\\UsefulLink::RESOURCE_FAMILY') != entity.category %}
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+		{{ macro_index.wakondaguru_form(entity) }}
+	{% endif %}
 {% endblock %}
 
 {% block js_specific %}
