@@ -183,6 +183,7 @@ class PresidentAdminController extends AdminGenericController
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();
 			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
 			$illustration->setCaption($ci->getCaption());
 			$illustration->setLicense($ci->getLicense());
 			$illustration->setAuthor($ci->getAuthor());

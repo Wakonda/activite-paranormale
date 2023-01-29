@@ -4,17 +4,19 @@ namespace App\Service;
 
 class Mastodon {
 	private $MASTODON_ACCESS_TOKEN = null;
+	private $MASTODON_URL = null;
 
 	public function postMessage(string $url, string $message, string $locale) {
 		$this->setLanguage($locale);
 
 		$accessToken = $this->MASTODON_ACCESS_TOKEN;
+		$urlMastodon = $this->MASTODON_URL;
 
 		$res = new \stdClass;
 
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, 'https://mastodon.social/api/v1/statuses');
+		curl_setopt($ch, CURLOPT_URL, "https://${urlMastodon}/api/v1/statuses");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, ['status' => $message." ".$url]);
@@ -46,12 +48,15 @@ class Mastodon {
 		{
 			case "fr":
 				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_FR_ACCESS_TOKEN"];
+				$this->MASTODON_URL = $_ENV["MASTODON_FR_URL"];
 				break;
 			case "en":
 				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_EN_ACCESS_TOKEN"];
+				$this->MASTODON_URL = $_ENV["MASTODON_EN_URL"];
 				break;
 			case "es":
 				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_ES_ACCESS_TOKEN"];
+				$this->MASTODON_URL = $_ENV["MASTODON_ES_URL"];
 				break;
 		}
 	}

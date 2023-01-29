@@ -36,6 +36,8 @@ class MigrateImportWakondaGuruCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
+		$conn->exec("UPDATE FileManagement SET realNameFile = titleFile WHERE realNameFile IS NULL AND titleFile IS NOT NULL;");
+		
 		$conn->exec("UPDATE UsefulLink SET category = 'usefullink' WHERE category = 'resource'");
 
 		/*if (($handle = fopen(__DIR__.DIRECTORY_SEPARATOR."wakondaguru.csv", "r")) !== FALSE) {
