@@ -295,6 +295,11 @@
 				if(!empty($item->getAttribute("src"))) {
 					$img = realPath($this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$item->getAttribute("src"));
 
+					if($img === false) {
+						$file = "file_no_exist_".$this->container->get('request_stack')->getCurrentRequest()->getLocale().".png";
+						$img = "extended/photo/".$file;
+					}
+
 					$content = file_get_contents($img);
 					$f = finfo_open();
 					$mime_type = finfo_buffer($f, $content, FILEINFO_MIME_TYPE);
