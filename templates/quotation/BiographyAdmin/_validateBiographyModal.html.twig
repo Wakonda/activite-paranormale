@@ -44,6 +44,45 @@
 		else
 			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-secondary mt-2 float-left choose-biography" title="{{ 'biography.admin.YouMustValidateThisBiography'|trans([], 'validators') }}"><i class="far fa-minus-square state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 
+		var $duplicateButton = new DOMParser().parseFromString('<button type="button" class="btn btn-warning mt-2 mr-2 float-left duplicate-biography" title="{{ 'biography.admin.Duplicate'|trans([], 'validators') }}"><i class="fas fa-clone"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
+		$tagFormLi.appendChild($duplicateButton);///
+		
+		$duplicateButton.addEventListener('click', (e) => {
+			var idContainer = addNewBiography(document.querySelector('.add-another-collection-widget').getAttribute("data-list-selector"));
+
+			var divContainer = $tagFormLi.querySelector("div");
+			
+			var wikidataCopy = divContainer.dataset.wikidata;
+			var titleCopy = divContainer.dataset.title;
+
+			var formContainer = '<form name="temp_form">' + divContainer.outerHTML + "</form>";
+
+			var temp = document.createElement('div');
+			temp.innerHTML = formContainer;
+			var htmlObject = temp.firstChild;
+			
+			const regex = /[\d]/;
+
+			var data = new FormData(htmlObject);
+			for (var [key, value] of data) {
+				newKey = key.replace(regex, idContainer);
+				let keyObject = document.querySelector("[name='" + key + "']");
+				let newKeyObject = document.querySelector("[name='" + newKey + "']");
+
+				if(document.querySelector("[name='" + key + "']").classList.contains("select2entity")) {
+					var $newOption = $("<option selected='selected'></option>").val(keyObject.value).text(keyObject.options[keyObject.selectedIndex].text);
+					$("[name='" + newKey + "']").append($newOption).trigger('change');
+				}
+				document.querySelector("[name='" + newKey + "']").value = document.querySelector("[name='" + key + "']").value
+			}
+			
+			var newContainer = document.getElementById(divContainer.getAttribute("id").replace(regex, idContainer)).parentNode;
+			var divNewContainer = newContainer.querySelector("div");
+			divNewContainer.setAttribute('data-wikidata', wikidataCopy);
+			divNewContainer.setAttribute('data-title', titleCopy);
+			addBiographyValidationFormDisplayLink(newContainer, idContainer)
+		});
+
 		$tagFormLi.appendChild($validateFormButton);
 		
 		addDeleteButtonFormDeleteLink($tagFormLi);
@@ -54,7 +93,7 @@
 			xmlHttp.onreadystatechange = function() {
 				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 					let data = xmlHttp.responseText;
-
+console.log(data)
 					document.querySelector("#validateBiographyModal .modal-body").appendChild(document.createRange().createContextualFragment(data));
 					document.getElementById("validateBiographyModal").setAttribute("data-input", internationalName.getAttribute("id"));
 					document.getElementById("validateBiographyModal").setAttribute("data-biography", biography.getAttribute("id"));
@@ -91,7 +130,7 @@
 		var list = document.querySelector(selector);
 		var counter = list.getAttribute('data-widget-counter') || list.children.length;
 		var newWidget = list.getAttribute('data-prototype');
-
+//console.log(selector, list, newWidget)
 		newWidget = newWidget.replace(/__name__/g, counter);
 		counter++;
 		list.setAttribute('data-widget-counter', counter);

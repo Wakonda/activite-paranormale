@@ -95,7 +95,7 @@ class NewsAdminController extends AdminGenericController
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = NewsAdminType::class;
-		
+
 		$twig = 'news/NewsAdmin/edit.html.twig';
 		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }

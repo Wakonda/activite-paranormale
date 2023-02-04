@@ -45,6 +45,7 @@ biography:
         BiographyValidated: "Biografía validada"
         NonExistentBiography: "Biografía inexistente"
         Identifiers: "Número de identificación"
+        Duplicate: "Duplicar"
     index:
         Quotations: "Citas"
         NoQuotation: "No cita"
