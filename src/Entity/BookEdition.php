@@ -118,6 +118,10 @@ class BookEdition implements Interfaces\PhotoIllustrationInterface
 		return $this->book->getTitle()." - ".$this->isbn13;
 	}
 	
+	public function getLanguage() {
+		return $this->book->getLanguage();
+	}
+	
     /**
      * Get id
      *
@@ -232,7 +236,7 @@ class BookEdition implements Interfaces\PhotoIllustrationInterface
      *
      * @param App\Entity\Biography $biographies
      */
-	public function addBiography(Biography $biography)
+	public function addBiography($biography)
 	{
 		$this->biographies[] = $biography;
 	}
