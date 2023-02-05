@@ -453,13 +453,13 @@
 {% endmacro %}
 
 {% macro tinymce_init_js() %}
-	<script src="{{ asset('extended/js/tinymce/js/tinymce/tinymce.min.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce6/js/tinymce/tinymce.min.js') }}"></script>
 {% endmacro %}
 
 {% macro tinymce_js(id) %}
-	{% set language = "fr_FR" %}
-	{% if app.request.locale == "en" %}
-		{% set language = "en_GB" %}
+	{% set language = null %}
+	{% if app.request.locale == "fr" %}
+		{% set language = "fr_FR" %}
 	{% elseif app.request.locale == "es" %}
 		{% set language = "es" %}
 	{% endif %}
@@ -468,14 +468,14 @@
 	tinymce.init({
 		selector:'#{{ id }}',
 		height: 250,
-		language: '{{ language }}',
+		{% if language is not null %}
+			language: '{{ language }}',
+		{% endif %}
 		menubar: false,
 		statusbar: false,
 		browser_spellcheck: true,
-		plugins: [
-			'lists link image charmap textcolor media'
-		],
-		toolbar: 'bold italic underline | forecolor backcolor insert | alignleft aligncenter alignright alignjustify | bullist numlist | link image | undo redo |',
+		plugins: 'lists link image charmap textcolor media',
+		toolbar: 'bold italic underline | forecolor backcolor insert | alignleft aligncenter alignright alignjustify | bullist numlist | link image | undo redo',
 		setup: function (editor) {
 			editor.on('change', function () {
 				tinymce.triggerSave();
@@ -486,9 +486,9 @@
 {% endmacro %}
 
 {% macro tinymce_light_js(id) %}
-	{% set language = "fr_FR" %}
-	{% if app.request.locale == "en" %}
-		{% set language = "en_GB" %}
+	{% set language = null %}
+	{% if app.request.locale == "fr" %}
+		{% set language = "fr_FR" %}
 	{% elseif app.request.locale == "es" %}
 		{% set language = "es" %}
 	{% endif %}
@@ -496,14 +496,14 @@
 	<script>
 	tinymce.init({
 		selector:'#{{ id }}',
-		height: 100,
-		language: '{{ language }}',
+		height: 150,
+		{% if language is not null %}
+			language: '{{ language }}',
+		{% endif %}
 		menubar: false,
 		statusbar: false,
 		browser_spellcheck: true,
-		plugins: [
-			'lists link image charmap textcolor media code'
-		],
+		plugins: 'lists link image charmap media code',
 		toolbar: 'bold italic underline | link | undo redo | code',
 		setup: function (editor) {
 			editor.on('change', function () {
@@ -515,19 +515,14 @@
 {% endmacro %}
 
 {% macro tinymce_admin_js(selector, uploadRoute) %}
-	{% set language = "fr_FR" %}
-	{% if app.request.locale == "en" %}
-		{% set language = "en_GB" %}
+	{% set language = null %}
+	{% if app.request.locale == "fr" %}
+		{% set language = "fr_FR" %}
 	{% elseif app.request.locale == "es" %}
 		{% set language = "es" %}
 	{% endif %}
 
 	<script>
-		{% if uploadRoute != "" %}
-			$("body").append('<iframe id="{{ selector }}_form_target" name="{{ selector }}_form_target" style="display:none"></iframe>');
-			$("#{{ selector }}_form_target").after('<form id="{{ selector }}_form_upload" action="" target="{{ selector }}_form_target" method="post" enctype="multipart/form-data" style="width:0px;height:0;overflow:hidden"><input name="image" type="file"></form>');
-		{% endif %}
-
 		tinymce.init({
 			statusbar: false,
 			extended_valid_elements : "a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]",
@@ -535,31 +530,26 @@
 			block_formats: 'Header 3=h3;Header 4=h4;Header 5=h5;Header 6=h6',
 			menubar: false,
 			browser_spellcheck: true,
-			language: '{{ language }}',
+			{% if language is not null %}
+				language: '{{ language }}',
+			{% endif %}
 			selector:'#{{ selector }}',
 			entity_encoding: "raw",
-			toolbar: 'bold italic underline | formatselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist | link image media replacePWithBr code | undo redo | fullscreen',
-			plugins: [
-				'lists link image charmap textcolor media, code, paste, fullscreen'
-			],
+			toolbar: 'bold italic underline | blocks | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist | link image media replacePWithBr code | undo redo | fullscreen',
+			plugins: 'lists link image charmap media code fullscreen',
 			paste_preprocess : function(pl, o) {
-				//<(\w+)\s*(?:(?:(?:(?!class=|id=|name=)[^>]))*((?:class|id|name)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!class=|id=|name=)[^>]))*((?:class|id|name)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!class=|id=|name=)[^>]))*((?:class|id|name)=['"][^'"]*['"]\s*)?)[^>]*>
+				o.content = o.content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/gi, '');
 				o.content = o.content.replace(/<(\w+)\s*(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)[^>]*>/gi, '<$1 $2$3$4>');
-				
 				o.content = o.content.replace(/<[a-z][a-z0-9]*\s*?>\s*<\/[a-z][a-z0-9]*>/gi, '');
-			
-				//o.content = o.content.replace(/<(\w+)\s*(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)+>/gi, '<$1>');
-				//o.content = o.content.replace(/<\s*([a-z][a-z0-9]*)\s.*?>/gi, '<$1>');
-				
 				o.content = o.content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/gi, '');
 				o.content = o.content.replace(/<p>[\n\r]+<\/p>/g, '');
-				o.content = o.content.replace(/(<p>\s*<\/p>)+/gi, '');
+				o.content = o.content.replace(/(<p>\s*<\/p>)*/gi, '');
 			},
 			setup: function (editor) {
-				editor.addButton('replacePWithBr', {
+				editor.ui.registry.addButton('replacePWithBr', {
 					tooltip: "Replace paragraph with line break",
-					image: "{{ asset('extended/css/admin/notes_remove-128.png') }}",
-					onclick: function () {
+					icon: "line-height",
+					onAction: (_) => {
 						var selection = editor.selection.getContent();
 						selection = selection.replace(/(<p.*?>)/igm, '').replace(/<\/p>/igm, '<br>');
 						selection  = "<p>"+selection+"</p>";
@@ -571,22 +561,33 @@
 				file_picker_types: 'file image',
 				image_caption: true,
 				relative_urls: false,
-				file_picker_callback: function(callback, value, meta) {
-					// Provide image and alt text for the image dialog
-					if (meta.filetype == 'image' || meta.filetype == 'file') {
-						document.querySelector("form#{{ selector }}_form_upload input").click();
+				file_picker_callback: function (cb, value, meta) {
+					var input = document.createElement('input');
+					input.setAttribute('type', 'file');
+					input.addEventListener('change', (e) => {
+						const file = e.target.files[0];
 
-						handler = function() {
-							var form = document.querySelector("form#{{ selector }}_form_upload");
-							var action = form.getAttribute("action");
-							action = "{{ uploadRoute }}?fileType=" + meta.filetype;
-							form.setAttribute("action", action);
-							form.submit();
-							document.querySelector("form#{{ selector }}_form_upload input").removeEventListener('change', handler, false);
-						};
+						var formdata = new FormData();
+						formdata.append("image", file);
+						
+						var xhr = new XMLHttpRequest();
 
-						document.querySelector("form#{{ selector }}_form_upload input").addEventListener('change', handler, false);
-					}
+						xhr.open("POST", "{{ uploadRoute }}?fileType=" + meta.filetype, true);    
+						
+						xhr.send(formdata);
+						
+						xhr.onreadystatechange = function() {
+							if(xhr.readyState == 4 && xhr.status == 200)
+							{
+								var json = JSON.parse(xhr.response);
+								console.log(json)
+								cb(json.title);
+							}
+						}
+						return
+					});
+
+					input.click();
 				}
 			{% endif %}
 		});

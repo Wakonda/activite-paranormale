@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 use App\Entity\Language;
 use App\Entity\State;
@@ -43,7 +44,7 @@ abstract class AdminGenericController extends AbstractController
 		if((is_subclass_of($entity, "App\Entity\MappedSuperclassBase") || method_exists($entity, "setLanguage")) and empty($entity->getLanguage()))
 		{
 			$em = $this->getDoctrine()->getManager();
-			$language = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $request->getLocale()));
+			$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 			$entity->setLanguage($language);
 		}
 
@@ -51,7 +52,7 @@ abstract class AdminGenericController extends AbstractController
 		{
 			if(!empty($language))
 			{
-				$state = $em->getRepository(State::class)->findOneBy(array("language" => $language, "internationalName" => "Validate"));
+				$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => "Validate"]);
 				if(!empty($state))	
 					$entity->setState($state);
 			}
@@ -63,8 +64,8 @@ abstract class AdminGenericController extends AbstractController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -75,7 +76,7 @@ abstract class AdminGenericController extends AbstractController
 			}
 		}
 
-		$searchByColumns = array();
+		$searchByColumns = [];
 		$iColumns = $request->query->get('iColumns');
 
 		for($i=0; $i < $iColumns; $i++)
@@ -93,14 +94,14 @@ abstract class AdminGenericController extends AbstractController
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns);
 		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
-		);
+			"aaData" => []
+		];
 		
-		return array('entities' => $entities, 'output' => $output);
+		return ['entities' => $entities, 'output' => $output];
 	}
 	
     public function indexGenericAction($twig)
@@ -124,10 +125,10 @@ abstract class AdminGenericController extends AbstractController
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render($twig, array_merge($optionsRender, array(
+        return $this->render($twig, array_merge($optionsRender, [
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        )));
+        ]));
     }
 	
     /**
@@ -139,10 +140,10 @@ abstract class AdminGenericController extends AbstractController
 		$this->defaultValueForMappedSuperclassBase($request, $entity);
         $form = $this->createForm($formType, $entity, $options);
 
-        return $this->render($twig, array(
+        return $this->render($twig, [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
     /**
@@ -167,13 +168,13 @@ abstract class AdminGenericController extends AbstractController
 
 			$this->postValidationAction($form, $entity);
 
-            return $this->redirect($this->generateUrl($this->showRoute, array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl($this->showRoute, ['id' => $entity->getId()]));
         }
 
-        return $this->render($twig, array(
+        return $this->render($twig, [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
     /**
@@ -193,11 +194,11 @@ abstract class AdminGenericController extends AbstractController
         $editForm = $this->createForm($formType, $entity, $options);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render($twig, array(
+        return $this->render($twig, [
             'entity'      => $entity,
             'form'   => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -228,14 +229,14 @@ abstract class AdminGenericController extends AbstractController
 			
 			$this->postValidationAction($editForm, $entity);
 
-            return $this->redirect($this->generateUrl($this->showRoute, array('id' => $id)));
+            return $this->redirect($this->generateUrl($this->showRoute, ['id' => $id]));
         }
 
-        return $this->render($twig, array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
+        return $this->render($twig, [
+            'entity' => $entity,
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -256,7 +257,7 @@ abstract class AdminGenericController extends AbstractController
 
     private function createDeleteForm($id)
     {
-        return $this->createFormBuilder(array('id' => $id))
+        return $this->createFormBuilder(['id' => $id])
             ->add('id', HiddenType::class)
             ->getForm()
         ;
@@ -266,9 +267,9 @@ abstract class AdminGenericController extends AbstractController
     {
 		$file = $request->files->get('image');
 
-		$mimeTypeAvailable = array('image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg');
+		$mimeTypeAvailable = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg'];
 		
-		if(in_array($file->getMimeType(), $mimeTypeAvailable))
+		if(in_array($file->getClientMimeType(), $mimeTypeAvailable))
 		{
 			$newNameFile = uniqid().'-'.$file->getClientOriginalName();
 			$file->move($entity->getAssetImagePath(), $newNameFile);
@@ -276,17 +277,14 @@ abstract class AdminGenericController extends AbstractController
 			$filelink = '/'.$entity->getAssetImagePath().$newNameFile;
 			$img = $imgSize->adaptImageSize(550, $entity->getAssetImagePath().$newNameFile);
 
-			return new Response("<script>
-			top.$('.mce-btn.mce-open').parent().find('.mce-textbox').val('".$filelink."');
-			top.$('.mce-last.mce-formitem').parent().find('input[aria-label=\'Width\']').val('".$img[0]."');
-			</script>");
+			return new JsonResponse(["title" => $filelink]);
 		}
-		return new Response("<script>alert('Error');</script>");
+		return new JsonResponse(["title" => "Error"]);
     }
 
     public function showImageSelectorColorboxGenericAction($urlAjax)
     {
-		return $this->render('index/Form/showImageSelectorColorbox.html.twig', array('url_ajax' => $urlAjax));
+		return $this->render('index/Form/showImageSelectorColorbox.html.twig', ['url_ajax' => $urlAjax]);
     }
 
     public function loadImageSelectorColorboxGenericAction(Request $request)
@@ -302,7 +300,7 @@ abstract class AdminGenericController extends AbstractController
 
 		$entities = $em->getRepository($this->className)->getFileSelectorColorboxAdmin($start, $number_photo_by_page, $search);
 		
-		return $this->render('index/Form/showImageSelectorColorboxResult.html.twig', array('entities' => $entities, 'last_page' => $number_pages, 'current_page' => $current_page));
+		return $this->render('index/Form/showImageSelectorColorboxResult.html.twig', ['entities' => $entities, 'last_page' => $number_pages, 'current_page' => $current_page]);
     }
 
 	protected function getLanguageByDefault($request, $formName)
@@ -321,7 +319,7 @@ abstract class AdminGenericController extends AbstractController
 	private function uploadFile($entity, $form, $entityOriginal = null)
 	{
 		$regex = '/[^a-zA-Z0-9_-]+/';
-// return;
+
 		foreach($this->illustrations as $illustration)
 		{
 			$fieldName = $illustration["field"];
@@ -358,7 +356,6 @@ abstract class AdminGenericController extends AbstractController
 				}
 
 				$entity->$getter()->setRealNameFile($existingFile);
-				
 				$entity->$getter()->setExtensionFile(pathinfo($existingFile, PATHINFO_EXTENSION));
 
 				return;
@@ -400,7 +397,7 @@ abstract class AdminGenericController extends AbstractController
 		$em->persist($entity);
 		$em->flush();
 
-		return $this->redirect($this->generateUrl($this->showRoute, array('id' => $id)));
+		return $this->redirect($this->generateUrl($this->showRoute, ['id' => $id]));
 	}
 	
 	private function moveFiles($baseFrom, $baseTo, $entity, $additionalFiles = []): void
@@ -464,7 +461,6 @@ abstract class AdminGenericController extends AbstractController
 					$em->persist($newBiography);
 				}
 			}
-			
 		} else {
 			foreach ($form->get($field) as $formChild)
 			{
@@ -478,11 +474,11 @@ abstract class AdminGenericController extends AbstractController
 					$newBiography->getBiography()->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
 					$newBiography->getBiography()->setKind(Biography::PERSON);
 					$newBiography->getBiography()->setWikidata($wikidata);
-					
+
 					$em->persist($newBiography->getBiography());
 				} else {
 					$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName, "language" => $entityBindded->getLanguage()]);
-					
+
 					if(empty($biography)) {
 						$b = new Biography();
 						$b->setInternationalName($internationalName);
@@ -493,7 +489,7 @@ abstract class AdminGenericController extends AbstractController
 						$b->setBirthDate($newBiography->getBiography()->getBirthDate());
 						$b->setDeathDate($newBiography->getBiography()->getDeathDate());
 						$b->setLinks($newBiography->getBiography()->getLinks());		$country = null;
-			
+
 						if(!empty($n = $newBiography->getBiography()->getNationality())) {
 							$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $n->getInternationalName(), "language" => $entityBindded->getLanguage()]);
 							$b->setNationality($country);
@@ -508,9 +504,9 @@ abstract class AdminGenericController extends AbstractController
 							$illustration->setAuthor($ci->getAuthor());
 							$illustration->setUrlSource($ci->getUrlSource());
 							$illustration->setExtensionFile(pathinfo($ci->getRealNameFile(), PATHINFO_EXTENSION));
-							
+
 							$b->setIllustration($illustration);
-		
+
 							$em->persist($ci);
 						}
 						$em->persist($b);

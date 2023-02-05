@@ -1,9 +1,9 @@
 {% macro tinymce(selector) %}
 	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
 
-	{% set language = "fr_FR" %}
-	{% if app.request.locale == "en" %}
-		{% set language = "en_GB" %}
+	{% set language = null %}
+	{% if app.request.locale == "fr" %}
+		{% set language = "fr_FR" %}
 	{% elseif app.request.locale == "es" %}
 		{% set language = "es" %}
 	{% endif %}
@@ -12,27 +12,27 @@
 	tinymce.init({
 		selector:'{{ selector }}',
 		codesample_languages: [
-			{text: 'HTML/XML', value: 'markup'},
-			{text: 'JavaScript', value: 'javascript'},
-			{text: 'CSS', value: 'css'},
-			{text: 'PHP', value: 'php'},
-			{text: 'Ruby', value: 'ruby'},
-			{text: 'Python', value: 'python'},
-			{text: 'Java', value: 'java'},
+			{text: 'Batch', value: 'batch'},
 			{text: 'C', value: 'c'},
 			{text: 'C#', value: 'csharp'},
-			{text: 'Batch', value: 'batch'},
 			{text: 'C++', value: 'cpp'},
+			{text: 'CSS', value: 'css'},
+			{text: 'HTML/XML', value: 'markup'},
+			{text: 'Java', value: 'java'},
+			{text: 'JavaScript', value: 'javascript'},
+			{text: 'PHP', value: 'php'},
+			{text: 'Python', value: 'python'},
+			{text: 'Ruby', value: 'ruby'},
 			{text: 'Visual Basic', value: 'visual-basic'}
 		],
 		height: 250,
-		language: '{{ language }}',
+		{% if language is not null %}
+			language: '{{ language }}',
+		{% endif %}
 		menubar: false,
 		statusbar: false,
 		browser_spellcheck: true,
-		plugins: [
-			'lists link image charmap textcolor media code codesample'
-		],
+		plugins: 'lists link image charmap media code codesample',
 		toolbar: 'bold italic underline | link | undo redo | code codesample',
 		setup: function (editor) {
 			editor.on('change', function () {
