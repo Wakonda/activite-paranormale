@@ -97,7 +97,7 @@
 					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
 					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
 					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
-					console.log(data.image.description)
+
 					if(data.image.description != null)
 						tinymce.get("{{ form.illustration.caption.vars.id }}").setContent(data.image.description);
 				}

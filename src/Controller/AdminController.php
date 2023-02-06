@@ -680,7 +680,7 @@ class AdminController extends AbstractController
 				"title" => $entity->getTitle(),
 				"text" => $entity->getText(),
 				"illustration" => $illustration,
-				"tags" => implode(",", array_map(function($e) { return $e->value; }, json_decode($entity->getTags()))),
+				"tags" => !empty($entity->getTags()) ? implode(",", array_map(function($e) { return $e->value; }, json_decode($entity->getTags()))) : null,
 				"sources" => $entity->getLinks(),
 				"identifier" => $entity->getInternationalName(),
 				"category" => $entity->getCategory()
