@@ -2,6 +2,7 @@
 
 {% block title %}{{ "mobile.main.News"|trans([], "validators") }}{% endblock %}
 {% block page_title%}
+	<span class="float-left"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mr-2" alt="News" /></span>
 	{{ "mobile.main.News"|trans([], "validators") }}
 	{% if app.request.attributes.get('theme') != "" %}
 		{{ (" - "~app.request.attributes.get('theme')) }}

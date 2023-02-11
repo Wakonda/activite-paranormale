@@ -9,9 +9,9 @@
 {% block APBlog_body %}
 	<p>{{ ("testimony.index.Text"|trans({'%url%' : path('Testimony_New') }, "validators"))|raw }}</p>
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/testimony-devil-angel.jpg') }}" alt="Angel devil girl" /></p>
-	<hr />
+	<hr>
 	{{ "testimony.index.NbrTotalTestimony"|trans([], "validators") }}<span class="badge badge-danger">{{ countEntities }}</span>
-	<hr />
+	<hr>
 	{% set nbrTheme1 = theme|length - 1 %}
 	
 	{% set i = 0 %}
@@ -36,6 +36,6 @@
 		{% endfor %}
 	</div>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

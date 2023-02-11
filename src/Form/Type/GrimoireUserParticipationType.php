@@ -27,7 +27,7 @@ class GrimoireUserParticipationType extends AbstractType
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
             ->add('text', TextareaType::class, array('label' => 'Texte', 'required' => true, 'constraints' => array(new NotBlank())))
-            ->add('surTheme', EntityType::class, array('class'=>'App\Entity\SurThemeGrimoire', 
+            /*->add('surTheme', EntityType::class, array('class'=>'App\Entity\SurThemeGrimoire', 
 					'choice_label'=>'title', 
 					'required' => true,
 					'group_by' => 'getMenuGrimoireTitle',
@@ -40,7 +40,7 @@ class GrimoireUserParticipationType extends AbstractType
 								->setParameter('language', $language)
 								->orderBy('u.title', 'ASC');
 					}
-			))
+			))*/
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn')
 			));

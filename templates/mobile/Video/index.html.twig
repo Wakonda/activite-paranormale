@@ -1,7 +1,8 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ "mobile.main.Video"|trans([], "validators") }}{% endblock %}
-{% block page_title%}
+{% block page_title %}
+	<span class="float-left"><img src="{{ asset('extended/photo/movie.svg') }}" width="25" class="mr-2" alt="Movie"/>
 	{{ "mobile.main.Video"|trans([], "validators") }}
 	{% if app.request.attributes.get('theme') != "" %}
 		{{ (" - "~app.request.attributes.get('theme')) }}

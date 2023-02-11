@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block page_title%}{{ entity.title }}{% endblock %}
+{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/spells-icon.png') }}" width="25" class="mr-2" alt="Spells"/></span>{{ entity.title }}{% endblock %}
 
 {% block meta_plus %}
 	<link rel="canonical" href="{{ url('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : entity.id, 'title_slug' : entity.title}) }}">

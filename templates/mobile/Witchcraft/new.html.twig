@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ "witchcraft.new.AddRitual"|trans([], "validators") }}{% endblock %}
-{% block page_title%}{{ "witchcraft.new.AddRitual"|trans([], "validators") }}{% endblock %}
+{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mr-2" alt="Anger"/></span>{{ "witchcraft.new.AddRitual"|trans([], "validators") }}{% endblock %}
 
 {% block body_content %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
@@ -22,13 +22,6 @@
 			<div class="col-sm-10">
 				{{ form_errors(form.text) }}
 				{{ form_widget(form.text, {'attr':{'class' : 'form-control'}}) }}
-			</div>
-		</div>
-		<div class="form-group row">
-			{{ form_label(form.surTheme, "witchcraft.new.Theme"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
-			<div class="col-sm-10">
-				{{ form_errors(form.surTheme) }}
-				{{ form_widget(form.surTheme, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>
 		{% if app.user is null %}

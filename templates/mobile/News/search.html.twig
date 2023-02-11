@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ "mobile.main.Search"|trans([], "validators") }}{% endblock %}
-{% block page_title%}{{ "mobile.main.Search"|trans([], "validators") }}{% endblock %}
+{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/search-icon.png') }}" width="25" class="mr-2" alt="Search"/></span>{{ "mobile.main.Search"|trans([], "validators") }}{% endblock %}
 
 {% block meta_plus %}
 	<link rel="canonical" href="{{ url('Search_Query') }}">
@@ -14,7 +14,7 @@
 {% block body_content %}
 	<div class="read-content">
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/search.jpg') }}" alt="Search" /></p>
-	<hr />
+	<hr>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 
 	{{ form_start(form, {'action': path('ap_newsmobile_search'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
