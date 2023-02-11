@@ -46,6 +46,10 @@ div.card-body {
   background-image: linear-gradient(to bottom, #3c3c3c 0, #222 100%);
 }
 
+nav.navbar .nav-item div.dropdown-menu {
+  background-color: initial;
+}
+
 nav.navbar .nav-item a.dropdown-item {
   color: #B9C322 !important;
 }
