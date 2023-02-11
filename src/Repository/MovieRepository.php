@@ -197,7 +197,7 @@ class MovieRepository extends MappedSuperclassBaseRepository
 		return $res;
 	}
 	
-	public function getAutocomplete($locale, $query)
+	public function getAutocomplete($locale, $query, $id = null)
 	{
 		$qb = $this->createQueryBuilder("pf");
 		
@@ -214,6 +214,11 @@ class MovieRepository extends MappedSuperclassBaseRepository
 			$query = "%".$query."%";
 			$qb->andWhere("pf.title LIKE :query")
 			   ->setParameter("query", $query);
+		}
+		
+		if(!empty($id)) {
+			$qb->andWhere("pf.id != :id")
+			   ->setParameter("id", $id);
 		}
 		
 		$qb->orderBy("pf.title", "ASC")

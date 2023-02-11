@@ -226,13 +226,14 @@ class MovieAdminController extends AdminGenericController
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
-		
+		$id = $request->query->get("id", null);
+
 		if(is_numeric($locale)) {
 			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
 		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(Movie::class)->getAutocomplete($locale, $query);
+		$datas =  $this->getDoctrine()->getManager()->getRepository(Movie::class)->getAutocomplete($locale, $query, $id);
 		
 		$results = array();
 		

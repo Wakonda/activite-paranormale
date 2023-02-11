@@ -93,6 +93,7 @@ class MovieAdminType extends AbstractType
 				'allow_clear' => true,
 				'delay' => 250,
 				'cache' => false,
+				'query_parameters' => ["id" => $builder->getData()->getId()],
 				'req_params' => ['locale' => 'parent.children[language]'],
 				'language' => $language
 			])
