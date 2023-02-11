@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ "index.mainMenu.Store"|trans([], "validators") }}{% endblock %}
-{% block page_title%}{{ "index.mainMenu.Store"|trans([], "validators") }}{% endblock %}
+{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mr-2" alt="Store"/></span>{{ "index.mainMenu.Store"|trans([], "validators") }}{% endblock %}
 
 {% block body_content %}
 	<h3>{{ "store.search.SearchSort"|trans([], "validators") }}</h3>

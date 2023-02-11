@@ -174,6 +174,12 @@ class GrimoireAdminController extends AdminGenericController
 		$entity = $em->getRepository($this->className)->find($id);
 		
 		$entity->setState($state);
+		
+		if($state->getInternationalName() == "Validate") {
+			if(empty($entity->getSurTheme()))
+				return $this->redirect($this->generateUrl('Grimoire_Admin_Edit', array('id' => $id)));
+		}	
+		
 		$em->persist($entity);
 		$em->flush();
 

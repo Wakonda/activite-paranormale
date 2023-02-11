@@ -39,8 +39,6 @@
 			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "witchcraft.new.Text"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.surTheme, "witchcraft.new.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.surTheme) }}{{ form_widget(form.surTheme, {'attr':{'class' : 'form-control'}}) }}</div>
 			{% if app.user is null %}
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "witchcraft.new.Pseudo"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}</div>

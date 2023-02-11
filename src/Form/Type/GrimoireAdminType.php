@@ -36,7 +36,7 @@ class GrimoireAdminType extends AbstractType
 								  ->orderBy('u.title', 'ASC');
 					}
 			))
-            ->add('source', SourceEditType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('source', SourceEditType::class, ['required' => false])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
@@ -48,7 +48,7 @@ class GrimoireAdminType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				}
 			))
-			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'Grimoire_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Grimoire_Admin_ShowImageSelectorColorbox'))
         ;
     }
 

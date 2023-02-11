@@ -124,7 +124,8 @@ class Grimoire
 	
 	public function __clone()
 	{
-		$this->illustration = clone $this->illustration;
+		if(!empty($this->illustration))
+			$this->illustration = clone $this->illustration;
 	}
 
     public function getPhotoIllustrationCaption(): ?Array

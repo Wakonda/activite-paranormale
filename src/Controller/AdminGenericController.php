@@ -223,7 +223,7 @@ abstract class AdminGenericController extends AbstractController
 		$this->validationForm($request, $ccv, $translator, $editForm, $entity, $entityOriginal);
 
         if ($editForm->isValid()) {
-			$this->uploadFile($entity, $editForm, $entityOriginal);
+			//$this->uploadFile($entity, $editForm, $entityOriginal);
             $em->persist($entity);
             $em->flush();
 			
@@ -349,9 +349,12 @@ abstract class AdminGenericController extends AbstractController
 					$existingFile = $filename;
 				}
 
+				if(empty($existingFile))
+					return;
+
 				if(!empty($existingFile)) {
 					$entity->$getter()->setTitleFile($existingFile);
-				} elseif(!empty($existingFile = $entityOriginal->getIllustration()->getTitleFile())) {
+				} elseif(!empty($entityOriginal->getIllustration()) and !empty($existingFile = $entityOriginal->getIllustration()->getTitleFile())) {
 					$entity->$getter()->setTitleFile($existingFile);
 				}
 

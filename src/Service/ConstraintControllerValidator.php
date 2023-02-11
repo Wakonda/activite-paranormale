@@ -49,6 +49,7 @@
 
 		public function fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $illustrations = [])
 		{
+			// 
 			if(!empty($illustrations))
 			{
 				foreach($illustrations as $illustration)
@@ -59,7 +60,10 @@
 					$currentFile = $entityOriginal->$getFieldName();
 
 					$url = null;
-
+					
+					if(empty($currentFile) and !$form->get($fieldName)->get($illustration['selectorFile'])->getConfig()->getRequired())
+						continue;
+					
 					if(isset($illustration['selectorFile']) and ($fileUrl = $form->get($fieldName)->get($illustration['selectorFile'])->getData()) != null)
 						$url = $fileUrl;
 

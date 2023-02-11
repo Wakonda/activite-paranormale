@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block page_title %}{{ entity.title }}{% endblock %}
+{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mr-2" alt="Store"/></span>{{ entity.title }}{% endblock %}
 
 {% block body_content %}
 	{% if entity.imageEmbeddedCode is not empty %}
