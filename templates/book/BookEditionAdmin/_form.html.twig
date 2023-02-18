@@ -12,7 +12,7 @@
 	<div id="error_data_{{ form.isbn10.vars.id }}" class="alert alert-danger" style="display: none;">{{ "admin.error.NotDataFound"|trans([], "validators") }}</div>
 	<div class="input-group">{{ form_errors(form.isbn10) }}{{ form_widget(form.isbn10, { 'attr': {'class': 'form-control'} }) }}
 		<div class="input-group-append">
-			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn10.vars.id }}" type="button"><i class="fas fa-sync"></i></button>
+			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn10.vars.id }}" type="button"><i class="fas fa-arrows-rotate"></i></button>
 		</div>
 	</div>
 </div>
@@ -22,7 +22,7 @@
 	<div id="error_data_{{ form.isbn13.vars.id }}" class="alert alert-danger" style="display: none;">{{ "admin.error.NotDataFound"|trans([], "validators") }}</div>
 	<div class="input-group">{{ form_errors(form.isbn13) }}{{ form_widget(form.isbn13, { 'attr': {'class': 'form-control'} }) }}
 		<div class="input-group-append">
-			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn13.vars.id }}" type="button"><i class="fas fa-sync"></i></button>
+			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn13.vars.id }}" type="button"><i class="fas fa-arrows-rotate"></i></button>
 		</div>
 	</div>
 </div>
@@ -96,7 +96,7 @@
 
 			let xmlHttp = new XMLHttpRequest();
 
-			document.querySelector('button[data-field="' + field + '"] .fa-sync').classList.add("fa-spin");
+			document.querySelector('button[data-field="' + field + '"] .fa-arrows-rotate').classList.add("fa-spin");
 			
 			xmlHttp.onreadystatechange = function() {
 				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -122,7 +122,7 @@
 						document.getElementById("error_data_" + field).style.display = "block";
 					}
 					
-					document.querySelector('button[data-field="' + field + '"] .fa-sync').classList.remove("fa-spin");
+					document.querySelector('button[data-field="' + field + '"] .fa-arrows-rotate').classList.remove("fa-spin");
 				}
 			};
 			

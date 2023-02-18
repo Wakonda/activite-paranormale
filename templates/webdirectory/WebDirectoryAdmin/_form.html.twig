@@ -86,7 +86,7 @@
 
 		let xmlHttp = new XMLHttpRequest();
 		
-		document.querySelector('#wikidata .fa-sync').classList.add("fa-spin");
+		document.querySelector('#wikidata .fa-arrows-rotate').classList.add("fa-spin");
 		
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
@@ -114,7 +114,7 @@
 					document.getElementById("{{ form.photo_selector.vars.id }}").value = data.image.url;
 				}
 					
-				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+				document.querySelector('#wikidata .fa-arrows-rotate').classList.remove("fa-spin");
 			}
 		};
 		

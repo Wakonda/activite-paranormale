@@ -223,7 +223,7 @@ abstract class AdminGenericController extends AbstractController
 		$this->validationForm($request, $ccv, $translator, $editForm, $entity, $entityOriginal);
 
         if ($editForm->isValid()) {
-			//$this->uploadFile($entity, $editForm, $entityOriginal);
+			$this->uploadFile($entity, $editForm, $entityOriginal);
             $em->persist($entity);
             $em->flush();
 			

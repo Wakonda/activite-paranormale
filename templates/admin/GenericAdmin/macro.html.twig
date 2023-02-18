@@ -80,7 +80,7 @@
 			let xmlHttp = new XMLHttpRequest();
 			
 			document.querySelector("#import_url_icon_{{ fieldId }}").classList.remove("fa-check");
-			document.querySelector("#import_url_icon_{{ fieldId }}").classList.add("fa-sync", "fa-spin");
+			document.querySelector("#import_url_icon_{{ fieldId }}").classList.add("fa-arrows-rotate", "fa-spin");
 			
 			{% if sourceField is not null %}
 				var data = editor{{ sourceField }}.getValue();
@@ -99,7 +99,7 @@
 					{% endif %}
 
 					document.querySelector("#import_url_icon_{{ fieldId }}").classList.add("fa-check");
-					document.querySelector("#import_url_icon_{{ fieldId }}").classList.remove("fa-sync", "fa-spin");
+					document.querySelector("#import_url_icon_{{ fieldId }}").classList.remove("fa-arrows-rotate", "fa-spin");
 				}
 			}
 			
@@ -121,7 +121,7 @@
 <div class="form-table-cell">
 	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
 		<div class="input-group-append">
-			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-sync"></i></button>
+			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-arrows-rotate"></i></button>
 		</div>
 	</div>
 </div>
@@ -139,14 +139,14 @@
 
 		let xmlHttp = new XMLHttpRequest();
 		
-		document.querySelector('#wikidata .fa-sync').classList.add("fa-spin");
+		document.querySelector('#wikidata .fa-arrows-rotate').classList.add("fa-spin");
 		
 		xmlHttp.onreadystatechange = function() {
 			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 				let data = JSON.parse(xmlHttp.responseText);
 
 				if(data.length == 0) {
-					document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+					document.querySelector('#wikidata .fa-arrows-rotate').classList.remove("fa-spin");
 					return;
 				}
 
@@ -177,7 +177,7 @@
 					}
 				{% endif %}
 
-				document.querySelector('#wikidata .fa-sync').classList.remove("fa-spin");
+				document.querySelector('#wikidata .fa-arrows-rotate').classList.remove("fa-spin");
 			}
 		};
 

@@ -750,7 +750,10 @@ class AdminController extends AbstractController
 				"source" => $entity->getAuthorQuotation()->getSource(),
 				"nationality" => $entity->getAuthorQuotation()->getNationality()->getInternationalName(),
 				"birthDate" => $entity->getAuthorQuotation()->getBirthDate(),
-				"nationality" => $entity->getAuthorQuotation()->getDeathDate()
+				"nationality" => $entity->getAuthorQuotation()->getDeathDate(),
+				"illustration" => [
+					// "data" => 
+				]
 			],
 			"source" => ["identifier" => $sourceIdentifier],
 			"tags" => $entity->getTags()
