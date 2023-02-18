@@ -742,10 +742,20 @@ class AdminController extends AbstractController
 		$data = [
 			"text" => $entity->getTextQuotation(),
 			"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
-			"biography" => ["wikidata" => $entity->getAuthorQuotation()->getWikidata()],
-			"source" => ["identifier" => $sourceIdentifier]
+			"biography" => [
+				"wikidata" => $entity->getAuthorQuotation()->getWikidata(),
+				"title" => $entity->getAuthorQuotation()->getTitle(),
+				"text" => $entity->getAuthorQuotation()->getText(),
+				"internationalName" => $entity->getAuthorQuotation()->getInternationalName(),
+				"source" => $entity->getAuthorQuotation()->getSource(),
+				"nationality" => $entity->getAuthorQuotation()->getNationality()->getInternationalName(),
+				"birthDate" => $entity->getAuthorQuotation()->getBirthDate(),
+				"nationality" => $entity->getAuthorQuotation()->getDeathDate()
+			],
+			"source" => ["identifier" => $sourceIdentifier],
+			"tags" => $entity->getTags()
 		];
-	
+dd($data);
 		$api = new \App\Service\Muse();
 		$api->addPost($data, $api->getOauth2Token());
 		

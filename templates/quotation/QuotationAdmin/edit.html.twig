@@ -12,6 +12,9 @@
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_admin_js(form.explanation.vars.id, path('Quotation_Admin_WYSIWYG_UploadFile')) }}
 	{{ macro_index.select2_autocomplete() }}
+
+	{% import "quotation/QuotationAdmin/macro_quotation.html.twig" as macro_quotation %}
+	{{ macro_quotation.tagify("#" ~ form.tags.vars.id) }}
 {% endblock %}
 
 {% block tbody_admin_table %}

@@ -14,5 +14,8 @@
 	{{ form_errors(form.explanation) }}{{ form_widget(form.explanation) }}
 </div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "quotation.admin.Tags"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "quotation.admin.Source"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control textarea120'} }) }}</div>

@@ -57,6 +57,13 @@ class Quotation
      */
     protected $images;
 
+    /**
+     * @var string $tags
+     *
+     * @ORM\Column(name="tags", type="json", nullable=true)
+     */
+    private $tags;
+
 	public function __construct()
 	{
 		$this->images = new ArrayCollection();
@@ -167,4 +174,14 @@ class Quotation
         $image->setQuotation(null);
         $this->images->removeElement($image);
     }
+	
+	public function getTags()
+	{
+		return $this->tags;
+	}
+	
+	public function setTags($tags)
+	{
+		$this->tags = $tags;
+	}
 }

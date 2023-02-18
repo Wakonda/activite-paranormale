@@ -35,6 +35,17 @@
 	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></div>
 
+	{% if entity.tags is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Tags"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+			<ul>
+			{% for data in json_decode(entity.tags) %}
+				<li>{{ data.value }}</li>
+			{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
 	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Images"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
 	{% if entity.images is not empty %}

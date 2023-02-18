@@ -38,3 +38,13 @@
 		</div>
 	</div>
 {% endmacro %}
+
+{% macro tagify(selector) %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/tagify/tagify.min.css') }}" media="screen" />
+	<script src="{{ asset('extended/js/tagify/tagify.min.js') }}"></script>
+
+	<script>
+		var input = document.querySelector('{{ selector }}');
+		new Tagify(input, {enforceWhitelist: false});
+	</script>
+{% endmacro %}

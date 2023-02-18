@@ -56,6 +56,7 @@ class QuotationAdminType extends AbstractType
             ->add('textQuotation', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('source', SourceEditType::class, array('required' =>false))
 			->add('explanation', TextareaType::class, array('required' => false))
+            ->add('tags', TextType::class, ['required' => false])
         ;
     }
 

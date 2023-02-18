@@ -14,6 +14,7 @@ quotation:
         Explanation: "Explanation"
         ForSameAuthor: "for the same author"
         Images: "Images"
+        Tags: "Tags"
     imageGenerator:
         Generate: "Generate an image"
         Image: "Image"
