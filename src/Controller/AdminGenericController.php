@@ -170,7 +170,7 @@ abstract class AdminGenericController extends AbstractController
 
             return $this->redirect($this->generateUrl($this->showRoute, ['id' => $entity->getId()]));
         }
-
+// dd($form->createView());
         return $this->render($twig, [
             'entity' => $entity,
             'form'   => $form->createView()

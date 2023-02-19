@@ -9,6 +9,8 @@
 			data: { "id" : $(this).val() },
 			success: function(data)
 			{
+				$("#{{ form.tags.vars.id }}").empty().trigger("change");
+
 				var documentFamily = data.documentFamily;
 				$("#{{form.vars['id'] }}_documentFamily option").remove();
 				$.each(documentFamily, function(index, element)

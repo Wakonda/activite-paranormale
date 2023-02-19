@@ -48,11 +48,6 @@ class QuotationAdminType extends AbstractType
 				'req_params' => ['locale' => 'parent.children[language]'],
 				'language' => $language
 			])
-            // ->add('authorQuotation', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Biography',
-											// 'choice_label'=>'title',
-											// 'required' => true,
-											// 'constraints' => array(new NotBlank()),
-											// 'query_builder' => function(\App\Repository\BiographyRepository $repository) use ($language) { return $repository->getBiographyByLanguage($language);}))
             ->add('textQuotation', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('source', SourceEditType::class, array('required' =>false))
 			->add('explanation', TextareaType::class, array('required' => false))

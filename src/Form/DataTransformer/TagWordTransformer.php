@@ -31,6 +31,9 @@ class TagWordTransformer implements DataTransformerInterface
 			return $entity;
 		
 		$request = Request::createFromGlobals();
+		
+		if(empty($entity))
+			return null;
 
 		$className = array_reverse(explode("\\", get_class($entity)));
 		$tags = $this->entityManager->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));

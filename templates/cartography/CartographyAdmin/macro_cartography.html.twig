@@ -9,6 +9,8 @@
 			data: { "id" : $(this).val() },
 			success: function(data)
 			{
+				$("#{{ form.tags.vars.id }}").empty().trigger("change");
+
 				var theme = data.theme;
 				$("#{{form.vars['id'] }}_theme option").remove();
 				$.each(theme, function(index, element)
