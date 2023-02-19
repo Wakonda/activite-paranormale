@@ -41,15 +41,22 @@
 		public function addPost($data, $token)
 		{
 			$ch = curl_init();
+			
+			$url = $this->url."api/quotes";
 
-			curl_setopt($ch, CURLOPT_URL, $this->url."api/quotes");
-			curl_setopt($ch, CURLOPT_POST, true);
+			if(isset($data["identifier"]) and !empty($idt = $data["identifier"])) {
+				$url .= "/".$idt;
+				curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
+			} else {
+				curl_setopt($ch, CURLOPT_POST, true);
+			}
+
 			curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+			curl_setopt($ch, CURLOPT_URL, $url);
+			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($ch, CURLOPT_HTTPHEADER, array("Content-Type: application/ld+json", "Authorization: Bearer {$token}"));
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-			
-			$response = curl_exec($ch);
-		 
+
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);

@@ -64,6 +64,11 @@ class Quotation
      */
     private $tags;
 
+    /**
+     * @ORM\Column(name="identifier", type="text", nullable=true)
+     */
+    private $identifier;
+
 	public function __construct()
 	{
 		$this->images = new ArrayCollection();
@@ -173,6 +178,16 @@ class Quotation
     {
         $image->setQuotation(null);
         $this->images->removeElement($image);
+    }
+
+    public function setIdentifier($identifier)
+    {
+        $this->identifier = $identifier;
+    }
+
+    public function getIdentifier()
+    {
+        return $this->identifier;
     }
 	
 	public function getTags()

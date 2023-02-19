@@ -738,31 +738,51 @@ class AdminController extends AbstractController
 			elseif(isset($source["isbn10"]) and !empty($isbn10 = $source["isbn10"]))
 				$sourceIdentifier = $isbn10;
 		}
+		
+		$biography = $entity->getAuthorQuotation();
+
+		$birthDate = explode("-", $biography->getBirthDate());
+		$deathDate = explode("-", $biography->getDeathDate());
 
 		$data = [
 			"text" => $entity->getTextQuotation(),
+			"identifier" => !empty($idt = $entity->getIdentifier()) ? $idt : "",
 			"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
 			"biography" => [
-				"wikidata" => $entity->getAuthorQuotation()->getWikidata(),
-				"title" => $entity->getAuthorQuotation()->getTitle(),
-				"text" => $entity->getAuthorQuotation()->getText(),
-				"internationalName" => $entity->getAuthorQuotation()->getInternationalName(),
-				"source" => $entity->getAuthorQuotation()->getSource(),
-				"nationality" => $entity->getAuthorQuotation()->getNationality()->getInternationalName(),
-				"birthDate" => $entity->getAuthorQuotation()->getBirthDate(),
-				"nationality" => $entity->getAuthorQuotation()->getDeathDate(),
-				"illustration" => [
-					// "data" => 
+				"title" => $biography->getTitle(),
+				"text" => $biography->getText(),
+				"dayBirth" => (isset($birthDate[2]) and !empty($birthDate[2])) ? intval($birthDate[2]) : null,
+				"monthBirth" => (isset($birthDate[1]) and !empty($birthDate[1])) ? intval($birthDate[1]) : null,
+				"yearBirth" => (isset($birthDate[0]) and !empty($birthDate[0])) ? intval($birthDate[0]) : null,
+				"dayDeath" => (isset($deathDate[2]) and !empty($deathDate[2])) ? intval($deathDate[2]) : null,
+				"monthDeath" => (isset($deathDate[1]) and !empty($deathDate[1])) ? intval($deathDate[1]) : null,
+				"yearDeath" => (isset($deathDate[0]) and !empty($deathDate[0])) ? intval($deathDate[0]) : null,
+				"country" => ["internationalName" => !empty($n = $biography->getNationality()) ? $n->getInternationalName() : null],
+				"language" => ["abbreviation" => $biography->getLanguage()->getAbbreviation()],
+				"wikidata" => $biography->getWikidata(),
+				"fileManagement" => [
+					"imgBase64" => $entity->getAuthorQuotation()->getImgBase64(),
+					"photo" => $entity->getAuthorQuotation()->getIllustration()->getRealNameFile(),
+					"description" => "<a href='".$biography->getIllustration()->getUrlSource()."'>Source</a>, ".$biography->getIllustration()->getLicense().", ".$biography->getIllustration()->getAuthor()
 				]
 			],
-			"source" => ["identifier" => $sourceIdentifier],
-			"tags" => $entity->getTags()
+			// "source" => ["identifier" => $sourceIdentifier],
+			// "tags" => $entity->getTags()
 		];
-dd($data);
+
 		$api = new \App\Service\Muse();
-		$api->addPost($data, $api->getOauth2Token());
+		$result = $api->addPost($data, $api->getOauth2Token());
+
 		
-		$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
+		if($result->{"@type"} == "hydra:Error")
+			$session->getFlashBag()->add('error', $result->{"hydra:title"});
+		else {
+			$entity->setIdentifier($result->identifier);
+			$em->persist($entity);
+			$em->flush();
+			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
+		}
+
 		
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
