@@ -290,7 +290,7 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getPublisher()->getTitle()) ? "<b>".$translator->trans('bookEdition.admin.Publisher', [], 'validators', $language)." : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getPublicationDate()) ? "<b>".$translator->trans('bookEdition.admin.PublicationDate', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."<br>" : "");
 					$text .= "<br>".$translator->trans('store.admin.MoreBooksOn', [], 'validators', $language)." <a href='https://templededelphes.netlify.app/'>Temple de Delphe</a>";
-					$text .= !empty($entity->getBook()->getBook()->getSource()) ? "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getBook()->getBook()->getSource(), $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</span>" : "";
+					$text .= !empty($entity->getBook()->getBook()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getBook()->getBook()->getSource(), $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</span>" : "";
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
 					break;
 				case "AlbumStore":
@@ -783,7 +783,6 @@ class AdminController extends AbstractController
 			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}
 
-		
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
