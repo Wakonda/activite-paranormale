@@ -86,7 +86,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGenericAction($id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
     }
 	
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)

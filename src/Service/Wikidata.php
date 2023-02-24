@@ -162,28 +162,32 @@
 			return $res;
 		}
 		
+		public function getImageInfos($filename): array {
+			$maxWidth = 500;
+
+			$image = json_decode(file_get_contents("https://www.mediawiki.org/w/api.php?action=query&titles=File:${filename}&prop=imageinfo&iilimit=50&iiurlwidth=${maxWidth}&iiprop=timestamp%7Cuser%7Curl|size|extmetadata&format=json"));
+			$imageProperty = $image->query->pages->{'-1'}->imageinfo[0];
+			$url = null;
+
+			if($imageProperty->width > $maxWidth)
+				$url = $imageProperty->thumburl;
+			else
+				$url = $imageProperty->url;
+			
+			return ["url" => $url, 
+				    "source" => $imageProperty->descriptionshorturl,
+				    "user" => $imageProperty->user,
+				    "license" => $imageProperty->extmetadata->LicenseShortName->value,
+				    "description" => property_exists($imageProperty->extmetadata, "ImageDescription") ? strip_tags($imageProperty->extmetadata->ImageDescription->value) : ""];
+		}
+		
 		private function getImage($datas, $code, $codeImage = "P18"): array
 		{
 			$imageArray = ["url" => null, "source" => null, "user" => null, "license" => null, "description" => null];
 
 			if(property_exists($datas->entities->$code->claims, $codeImage)) {
-				$maxWidth = 500;
 				$filename = urlencode($datas->entities->$code->claims->$codeImage[0]->mainsnak->datavalue->value);
-				
-				$image = json_decode(file_get_contents("https://www.mediawiki.org/w/api.php?action=query&titles=File:${filename}&prop=imageinfo&iilimit=50&iiurlwidth=${maxWidth}&iiprop=timestamp%7Cuser%7Curl|size|extmetadata&format=json"));
-				$imageProperty = $image->query->pages->{'-1'}->imageinfo[0];
-				$url = null;
-
-				if($imageProperty->width > $maxWidth)
-					$url = $imageProperty->thumburl;
-				else
-					$url = $imageProperty->url;
-				
-				$imageArray = ["url" => $url, 
-							   "source" => $imageProperty->descriptionshorturl,
-							   "user" => $imageProperty->user,
-							   "license" => $imageProperty->extmetadata->LicenseShortName->value,
-							   "description" => property_exists($imageProperty->extmetadata, "ImageDescription") ? $imageProperty->extmetadata->ImageDescription->value : ""];
+				$imageArray = $this->getImageInfos($filename);
 			}
 			
 			return $imageArray;

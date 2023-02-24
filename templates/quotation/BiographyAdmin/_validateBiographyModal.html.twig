@@ -93,7 +93,7 @@
 			xmlHttp.onreadystatechange = function() {
 				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
 					let data = xmlHttp.responseText;
-console.log(data)
+
 					document.querySelector("#validateBiographyModal .modal-body").appendChild(document.createRange().createContextualFragment(data));
 					document.getElementById("validateBiographyModal").setAttribute("data-input", internationalName.getAttribute("id"));
 					document.getElementById("validateBiographyModal").setAttribute("data-biography", biography.getAttribute("id"));
@@ -130,7 +130,7 @@ console.log(data)
 		var list = document.querySelector(selector);
 		var counter = list.getAttribute('data-widget-counter') || list.children.length;
 		var newWidget = list.getAttribute('data-prototype');
-//console.log(selector, list, newWidget)
+
 		newWidget = newWidget.replace(/__name__/g, counter);
 		counter++;
 		list.setAttribute('data-widget-counter', counter);

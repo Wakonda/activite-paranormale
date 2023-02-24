@@ -83,6 +83,10 @@ Admin_WikidataGeneric:
     path: /admin/wikidata_generic
     controller: App\Controller\AdminController::wikidataGenericAction
 
+Admin_WikidataGenericLoadImage:
+    path: /admin/wikidata_generic_load_image
+    controller: App\Controller\AdminController::wikidataGenericLoadImageAction
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index

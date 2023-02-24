@@ -930,6 +930,18 @@ class AdminController extends AbstractController
 		return new JsonResponse($res);
 	}
 	
+	public function wikidataGenericLoadImageAction(Request $request, \App\Service\Wikidata $wikidata)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$url = $request->query->get("url");
+		
+		$filename = explode(":", trim($url, "https://"))[1];
+
+		$res = $wikidata->getImageInfos($filename);
+
+		return new JsonResponse($res);
+	}
+	
 	private function getImageName(Request $request, $entity, $url = true)
 	{
 		$imageName = null;

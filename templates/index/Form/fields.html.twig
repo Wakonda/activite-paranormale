@@ -25,21 +25,28 @@
 		</div>
 
 		<script>
-			$(function()
-			{
-				{% if base_path is not null %}
-					$("#{{ form.vars.id }}_container div .select_files_colorbox").on('click',function(e){
-						e.preventDefault();
-						$('#selectFileModal_{{ form.vars.id }} .modal-body').load('{{ path(base_path) }}',function(){
-							$('#selectFileModal_{{ form.vars.id }}').modal({show:true});
-						});
-					});
-				{% endif %}
-
-				$("#{{ form.vars.id }}_container .remove_files_colorbox").click(function(e) {
-					$("#{{ form.vars.id }}_container .existing_photo_colorbox").val("");
+			{% if base_path is not null %}
+				document.querySelector("#{{ form.vars.id }}_container div .select_files_colorbox").addEventListener('click', (e) => {
 					e.preventDefault();
+					
+					document.querySelector('#selectFileModal_{{ form.vars.id }} .modal-body').innerHTML = "";
+
+					fetch("{{ path(base_path) }}")
+					.then(function(response) {
+						return response.text();
+					})
+					.then(function(res) {
+						var content = new DOMParser().parseFromString("<div>" + res + "</div>", 'text/html').documentElement.querySelector('body').firstChild;
+						document.querySelector('#selectFileModal_{{ form.vars.id }} .modal-body').appendChild(document.createRange().createContextualFragment(content.outerHTML));
+
+						$('#selectFileModal_{{ form.vars.id }}').modal({show:true});
+					})
 				});
+			{% endif %}
+
+			document.querySelector("#{{ form.vars.id }}_container .remove_files_colorbox").addEventListener("click", (e) => {
+				e.preventDefault();
+				document.querySelector("#{{ form.vars.id }}_container .existing_photo_colorbox").value = "";
 			});
 		</script>
     {% endapply %}
@@ -159,6 +166,29 @@
 
 	{{ form_label(form.caption, "file.admin.Caption"|trans([], "validators")) }}
 	{{ form_widget(form.caption, {'attr':{'class': 'form-control'}}) }}
+	
+	<script>
+		document.getElementById("{{ form.urlSource.vars.id }}").addEventListener('paste', (event) => {
+			let paste = (event.clipboardData || window.clipboardData).getData('text');
+
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open('GET', "{{ path('Admin_WikidataGenericLoadImage') }}?url=" + encodeURIComponent(paste), true);
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4) {
+					if(xmlhttp.status == 200) {
+						var obj = JSON.parse(xmlhttp.responseText);
+						
+						document.getElementById("{{ form.photo_selector.vars.id }}").value = obj.url;
+						document.getElementById("{{ form.license.vars.id }}").value = obj.license;
+						document.getElementById("{{ form.author.vars.id }}").value = obj.user;
+						
+						tinymce.get("{{ form.caption.vars.id }}").setContent(obj.description);
+					 }
+				}
+			};
+			xmlhttp.send(null);
+		});
+	</script>
 {% endblock %}
 
 {% block links_edit_widget %}
