@@ -744,6 +744,20 @@ class AdminController extends AbstractController
 		$birthDate = explode("-", $biography->getBirthDate());
 		$deathDate = explode("-", $biography->getDeathDate());
 
+		$generator = new \Ausi\SlugGenerator\SlugGenerator;
+
+		$tagArray = !empty($entity->getTags()) ? array_map(function($e) use($generator, $entity) { return ["id" => 19, "identifier" => $generator->generate($e->value)."-".$entity->getLanguage()->getAbbreviation(), "title" => $e->value, "slug" => $generator->generate($e->value), "internationalName" => $generator->generate($e->value)]; }, json_decode($entity->getTags())) : [];
+
+		$fileManagement = [];
+
+		if(!empty($biography->getImgBase64())) {
+			$fileManagement = [
+				"imgBase64" => $biography->getImgBase64(),
+				"photo" => !empty($f = $biography->getIllustration()) ? $f->getRealNameFile() : null,
+				"description" => !empty($f = $biography->getIllustration()) ? "<a href='".$f->getUrlSource()."'>Source</a>, ".$f->getLicense().", ".$f->getAuthor() : null
+			];
+		}
+
 		$data = [
 			"text" => $entity->getTextQuotation(),
 			"identifier" => !empty($idt = $entity->getIdentifier()) ? $idt : "",
@@ -757,23 +771,18 @@ class AdminController extends AbstractController
 				"dayDeath" => (isset($deathDate[2]) and !empty($deathDate[2])) ? intval($deathDate[2]) : null,
 				"monthDeath" => (isset($deathDate[1]) and !empty($deathDate[1])) ? intval($deathDate[1]) : null,
 				"yearDeath" => (isset($deathDate[0]) and !empty($deathDate[0])) ? intval($deathDate[0]) : null,
-				"country" => ["internationalName" => !empty($n = $biography->getNationality()) ? $n->getInternationalName() : null],
+				"country" => ["internationalName" => !empty($n = $biography->getNationality()) ? $n->getInternationalName() : ""],
 				"language" => ["abbreviation" => $biography->getLanguage()->getAbbreviation()],
 				"wikidata" => $biography->getWikidata(),
-				"fileManagement" => [
-					"imgBase64" => $entity->getAuthorQuotation()->getImgBase64(),
-					"photo" => $entity->getAuthorQuotation()->getIllustration()->getRealNameFile(),
-					"description" => "<a href='".$biography->getIllustration()->getUrlSource()."'>Source</a>, ".$biography->getIllustration()->getLicense().", ".$biography->getIllustration()->getAuthor()
-				]
+				"fileManagement" => $fileManagement
 			],
 			// "source" => ["identifier" => $sourceIdentifier],
-			// "tags" => $entity->getTags()
+			"tags" => $tagArray
 		];
 
 		$api = new \App\Service\Muse();
 		$result = $api->addPost($data, $api->getOauth2Token());
 
-		
 		if($result->{"@type"} == "hydra:Error")
 			$session->getFlashBag()->add('error', $result->{"hydra:title"});
 		else {
