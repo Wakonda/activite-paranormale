@@ -177,12 +177,20 @@
 				if (xmlhttp.readyState == 4) {
 					if(xmlhttp.status == 200) {
 						var obj = JSON.parse(xmlhttp.responseText);
+					
+						document.getElementById("{{ form.photo_selector.vars.id }}").value = "";
+						document.getElementById("{{ form.license.vars.id }}").value = "";
+						document.getElementById("{{ form.author.vars.id }}").value = "";
+
+						tinymce.get("{{ form.caption.vars.id }}").setContent("");
 						
-						document.getElementById("{{ form.photo_selector.vars.id }}").value = obj.url;
-						document.getElementById("{{ form.license.vars.id }}").value = obj.license;
-						document.getElementById("{{ form.author.vars.id }}").value = obj.user;
-						
-						tinymce.get("{{ form.caption.vars.id }}").setContent(obj.description);
+						if(typeof obj.url !== "undefined") {
+							document.getElementById("{{ form.photo_selector.vars.id }}").value = obj.url;
+							document.getElementById("{{ form.license.vars.id }}").value = obj.license;
+							document.getElementById("{{ form.author.vars.id }}").value = obj.user;
+
+							tinymce.get("{{ form.caption.vars.id }}").setContent(obj.description);
+						}
 					 }
 				}
 			};

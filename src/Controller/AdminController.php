@@ -935,9 +935,17 @@ class AdminController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$url = $request->query->get("url");
 		
-		$filename = explode(":", trim($url, "https://"))[1];
-
-		$res = $wikidata->getImageInfos($filename);
+		$urlHost = parse_url($url, PHP_URL_HOST);
+		
+		$res = [];
+		
+		if(str_contains($urlHost, "wikipedia") or str_contains($urlHost, "wikidata")) {
+			$filename = explode(":", trim($url, "https://"))[1];
+			$res = $wikidata->getImageInfos($filename);
+		} elseif(str_contains($urlHost, "pixabay")) {
+			$pixabay = new \App\Service\Pixabay();
+			$res = $pixabay->getImageInfos($url);
+		}
 
 		return new JsonResponse($res);
 	}
