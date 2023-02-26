@@ -57,30 +57,44 @@ class StoreAdminController extends AdminGenericController
 	private function setEntity($entity, String $category, Int $id)
 	{
 		$em = $this->getDoctrine()->getManager();
+
+		$mainEntity = null;
+		$language = null;
 		
 		switch($category)
 		{
 			case "book":
-				$entity->setBook($em->getRepository("App\Entity\BookEdition")->find($id));
+				$mainEntity = $em->getRepository("App\Entity\BookEdition")->find($id);
+				$language = $mainEntity->getBook()->getLanguage();
+				$entity->setBook($mainEntity);
 				$entity->setTitle($entity->getBook()->getBook()->getTitle());
 				break;
 			case "album":
-				$entity->setAlbum($em->getRepository("App\Entity\Album")->find($id));
+				$mainEntity = $em->getRepository("App\Entity\Album")->find($id);
+				$language = $mainEntity->getLanguage();
+				$entity->setAlbum($mainEntity);
 				$entity->setTitle($entity->getAlbum()->getTitle());
 				break;
 			case "movie":
-				$entity->setMovie($em->getRepository("App\Entity\Movies\Movie")->find($id));
+				$mainEntity = $em->getRepository("App\Entity\Movies\Movie")->find($id);
+				$language = $mainEntity->getLanguage();
+				$entity->setMovie($mainEntity);
 				$entity->setTitle($entity->getMovie()->getTitle());
 				break;
 			case "televisionSerie":
-				$entity->setTelevisionSerie($em->getRepository("App\Entity\Movies\TelevisionSerie")->find($id));
+				$mainEntity = $em->getRepository("App\Entity\Movies\TelevisionSerie")->find($id);
+				$language = $mainEntity->getLanguage();
+				$entity->setTelevisionSerie($mainEntity);
 				$entity->setTitle($entity->getTelevisionSerie()->getTitle());
 				break;
 			case "witchcraftTool":
-				$entity->setWitchcraftTool($em->getRepository("App\Entity\WitchcraftTool")->find($id));
+				$mainEntity = $em->getRepository("App\Entity\WitchcraftTool")->find($id);
+				$entity->setWitchcraftTool($mainEntity);
 				$entity->setTitle($entity->getWitchcraftTool()->getTitle());
 				break;
 		}
+
+		return [$mainEntity, $language];
 	}
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
@@ -109,12 +123,16 @@ class StoreAdminController extends AdminGenericController
 		$formType = StoreAdminType::class;
 		$entity = new $class();
 		$entity->setCategory($category);
+		$mainEntity = null;
+		$language = null;
 		
-		if ($request->query->has("id"))
-			$this->setEntity($entity, $category, $request->query->get("id"));
+		if ($request->query->has("id")) {
+			list($mainEntity, $language) = $this->setEntity($entity, $category, $request->query->get("id"));
+			$entity->setLanguage(!empty($language) ? $language: null);
+		}
 
 		$twig = 'store/StoreAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale(), "data_class" => $class]);
+		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
     }
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
