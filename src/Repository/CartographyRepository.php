@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class CartographyRepository extends MappedSuperclassBaseRepository
 {
-	public function getAllCartographyPlacesByLanguage($language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	public function getAllCartographyPlacesByLanguage($language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $datas = [], $count = false)
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -25,6 +25,11 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 			$search = "%".$sSearch."%";
 			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
+		}
+		if(!empty($theme = $datas["theme"])) {
+			$qb->join("c.theme", "t")
+		       ->andWhere('t.internationalName = :internationalName')
+			   ->setParameter('internationalName', $theme->getInternationalName());
 		}
 		if($count)
 		{

@@ -63,7 +63,7 @@ class ThemeController extends AbstractController
 			],
 			$translator->trans('cartography.index.Cartography', [], 'validators') => [
 				"number" => $em->getRepository(Cartography::class)->countAllEntitiesPublicationByTheme($id),
-				"path" => $this->generateUrl("Cartography_Index")
+				"path" => $this->generateUrl("Cartography_Index", ["idTheme" => $id, "theme" => $theme])
 			],
 			$translator->trans('eventMessage.index.Event', [], 'validators') => [
 				"number" => $em->getRepository(EventMessage::class)->countAllEntitiesPublicationByTheme($id),
@@ -83,7 +83,7 @@ class ThemeController extends AbstractController
 			],
 			$translator->trans('document.index.Document', [], 'validators') => [
 				"number" => $em->getRepository(Document::class)->countAllEntitiesPublicationByTheme($id),
-				"path" => $this->generateUrl("Document_Index", ["themeId" => $id])
+				"path" => $this->generateUrl("Document_Index", ["themeId" => $id, "theme" => $theme])
 			],
 			$translator->trans('movie.index.Movie', [], 'validators') => [
 				"number" => $em->getRepository(Movie::class)->countAllEntitiesPublicationByTheme($id),

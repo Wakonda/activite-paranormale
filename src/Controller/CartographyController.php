@@ -12,17 +12,27 @@ use App\Entity\Language;
 use App\Entity\Theme;
 use App\Service\APImgSize;
 use App\Service\APDate;
+use App\Form\Type\CartographySearchType;
 
 class CartographyController extends AbstractController
 {
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $idTheme)
     {
 		$em = $this->getDoctrine()->getManager();
-		$entities = [];//$em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale());
+		
+		$theme = null;
+		
+		if(!empty($idTheme))
+			$theme = $em->getRepository(Theme::class)->find($idTheme);
 
-        return $this->render('cartography/Cartography/index.html.twig', array(
-			'entities' => $entities,
-		));
+		$obj = new \stdclass();
+		$obj->theme = $theme;
+
+		$form = $this->createForm(CartographySearchType::class, $obj, ["locale" => $request->getLocale()]);
+
+        return $this->render('cartography/Cartography/index.html.twig', [
+			"form" => $form->createView()
+		]);
     }
 
 	public function showAction($id)
@@ -33,9 +43,9 @@ class CartographyController extends AbstractController
 		if($entity->getArchive())
 			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $entity->getId(), "className" => base64_encode(get_class($entity))]));
 
-        return $this->render('cartography/Cartography/show.html.twig', array(
+        return $this->render('cartography/Cartography/show.html.twig', [
 			'entity' => $entity,
-		));
+		]);
     }
 	
 	public function nbrGMapByLangAction($lang)
@@ -50,7 +60,7 @@ class CartographyController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
-		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
+		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
 		$theme = $em->getRepository(Theme::class)->find($themeId);
@@ -63,12 +73,12 @@ class CartographyController extends AbstractController
 		if(!empty($theme))
 			$title[] = $theme->getTitle();
 
-		return $this->render('cartography/Cartography/world.html.twig', array(
+		return $this->render('cartography/Cartography/world.html.twig', [
 			'flags' => $flags,
 			'themes' => $themes,
 			'title' => implode(" - ", $title),
 			'theme' => empty($theme) ? null : $theme
-		));
+		]);
 	}
 
 	public function selectThemeForIndexWorldAction(Request $request, $language)
@@ -78,7 +88,7 @@ class CartographyController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
-		return new Response($this->generateUrl('Cartography_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('Cartography_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
 	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
@@ -89,8 +99,8 @@ class CartographyController extends AbstractController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -104,17 +114,17 @@ class CartographyController extends AbstractController
         $entities = $em->getRepository(Cartography::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Cartography::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
-		);
+			"aaData" => []
+		];
 
 		foreach($entities as $entity)
 		{
 			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
-			$row = array();
+			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
@@ -136,8 +146,8 @@ class CartographyController extends AbstractController
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($order = $request->query->get('order')); $i++)
 		{
@@ -145,15 +155,21 @@ class CartographyController extends AbstractController
 			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
-        $entities = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
-		$iTotal = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+		$form = $this->createForm(CartographySearchType::class, null, ["locale" => $request->getLocale()]);
+		
+		parse_str($request->query->get($form->getName()), $datas);
 
-		$output = array(
+		$form->submit($datas[$form->getName()]);
+
+        $entities = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData());
+		$iTotal = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData(), true);
+
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
-		);
+			"aaData" => []
+		];
 
 		foreach($entities as $entity)
 		{

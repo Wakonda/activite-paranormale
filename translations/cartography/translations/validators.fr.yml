@@ -21,6 +21,8 @@ cartography:
         Latitud: "Latitude"
         Theme: "Thème"
         Picture: "Image"
+        TotalNumber: "Nombre total : "
+        Validate: "Valider"
     show:
         MoreDetails: "Plus de détails"
         Longitud: "Longitude :"

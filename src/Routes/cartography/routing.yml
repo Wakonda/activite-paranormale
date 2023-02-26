@@ -1,6 +1,12 @@
 Cartography_Index:
-    path:  /cartography
+    path:  /cartography/{idTheme}/{theme}
     controller: App\Controller\CartographyController::indexAction
+    defaults:
+        theme: null
+        idTheme: null
+    requirements:
+        theme: ".+"
+        idTheme: \d+
 
 Cartography_Show:
     path:  /cartography/show/{id}/{title_slug}

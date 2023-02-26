@@ -1,7 +1,22 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "book.index.Book"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "book.index.Book"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block title %}
+	{{ "book.index.Book"|trans([], "validators") }}
+
+	{% if app.request.attributes.get('theme') != "" %}
+		{{ (" - "~app.request.attributes.get('theme')) }}
+	{% endif %}
+{% endblock %}
+
+{% block h2_title %}
+	<h2>
+		<span class="float-left"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "book.index.Book"|trans([], "validators") }}
+
+		{% if app.request.attributes.get('theme') != "" %}
+			{{ (" - "~app.request.attributes.get('theme')) }}
+		{% endif %}		
+	</h2>
+{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ "store-girl-angel-wallpaper.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>

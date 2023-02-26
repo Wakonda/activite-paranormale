@@ -1,7 +1,22 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "movie.index.Movie"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ "movie.index.Movie"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block title %}
+	{{ "movie.index.Movie"|trans([], "validators") }}
+
+	{% if app.request.attributes.get('theme') != "" %}
+		{{ (" - "~app.request.attributes.get('theme')) }}
+	{% endif %}
+{% endblock %}
+
+{% block h2_title %}
+	<h2>
+		<span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ "movie.index.Movie"|trans([], "validators") }}
+
+		{% if app.request.attributes.get('theme') != "" %}
+			{{ (" - "~app.request.attributes.get('theme')) }}
+		{% endif %}
+	</h2>
+{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ "movie.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>

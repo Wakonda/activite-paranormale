@@ -6,7 +6,7 @@ document:
         Date: "Fecha"
         Category: "Categoría"
         Language: "Lengua"
-        TotalNumberArticles: "Número total de documentos:"
+        TotalNumberArticles: "Número total de documentos: "
     abstract:
         DownloadFile: "Descargar el archivo"
         ReadFile: "Leer el archivo"
