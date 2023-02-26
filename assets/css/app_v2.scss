@@ -1177,6 +1177,10 @@ h2 span img {
 .mx-auto {
   margin-left: auto !important;
 }
+.pt-0,
+.py-0 {
+  padding-top: 0 !important;
+}
 .pb-0,
 .py-0 {
   padding-bottom: 0 !important;
@@ -2113,6 +2117,10 @@ figcaption {
     background-color: #bbc42d;
     text-align: left;
     border-radius: 0.25rem;
+}
+
+button {
+	font-family: "Times New Roman", Arial, Helvetica, sans-serif;
 }
 
 #accordionBookEdition button {
