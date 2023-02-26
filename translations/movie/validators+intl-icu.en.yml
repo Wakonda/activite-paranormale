@@ -26,6 +26,7 @@ movie:
         ReleaseYear: "Release year"
         Sort: "Sort"
         NoMatchingRecordsFound: "No matching records found"
+        Theme: "Theme"
     read:
         Datasheet: "Datasheet"
         Duration: "Duration"
@@ -171,6 +172,7 @@ televisionSerie:
         PublicationDateDown: "Publication date ↓"
         TitleUp: "Title ↑"
         TitleDown: "Title ↓"
+        Theme: "Theme"
     biography:
         Title: "Title"
         Occupations: "Occupations"

@@ -1,10 +1,14 @@
 Movie_Index:
-    path: /movie/{page}
+    path: /movie/{page}/{idTheme}/{theme}
     controller: App\Controller\MovieController::indexAction
     defaults:
         page: 1
+        theme: null
+        idTheme: null
     requirements:
         page: \d+
+        theme: ".+"
+        idTheme: \d+
 
 Movie_Show:
     path: /movie/read/{id}/{title_slug}
@@ -23,12 +27,16 @@ ByGenreMovie_Index:
         idGenre: \d+
 
 TelevisionSerie_Index:
-    path: /television_serie/{page}
+    path: /television_serie/{page}/{idTheme}/{theme}
     controller: App\Controller\TelevisionSerieController::indexAction
     defaults:
         page: 1
+        theme: null
+        idTheme: null
     requirements:
         page: \d+
+        theme: ".+"
+        idTheme: \d+
 
 TelevisionSerie_Show:
     path: /television_serie/{id}/{title_slug}

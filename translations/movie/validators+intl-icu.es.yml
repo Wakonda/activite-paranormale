@@ -25,6 +25,7 @@ movie:
         ReleaseYear: "Año de lanzamiento"
         Sort: "Ordenar"
         NoMatchingRecordsFound: "Ningún dato disponible"
+        Theme: "Tema"
     read:
         Datasheet: "Ficha técnica"
         Duration: "Duración"
@@ -171,6 +172,7 @@ televisionSerie:
         PublicationDateDown: "Fecha de publicación ↓"
         TitleUp: "Título ↑"
         TitleDown: "Título ↓"
+        Theme: "Tema"
     biography:
         Title: "Título"
         Occupations: "Ocupaciónes"

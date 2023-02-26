@@ -24,8 +24,9 @@ class TelevisionSerieRepository extends MappedSuperclassBaseRepository
 		{
 			$sort = explode("#", $datas["sort"]);
 			$qb->orderBy("b.".$sort[0], $sort[1]);
-		}
-		
+		} else
+			$qb->orderBy('b.writingDate', 'DESC');
+
 		if(isset($datas["keywords"]))
 		{
 			$qb->andWhere("(b.title LIKE :keyword OR b.text LIKE :keyword)")
@@ -39,7 +40,10 @@ class TelevisionSerieRepository extends MappedSuperclassBaseRepository
 			   ->setParameter("genre", $datas["genre"]->getId());
 		}
 
-		$qb->orderBy('b.writingDate', 'DESC');
+		if(isset($datas["theme"])) {
+			$qb->andWhere("b.theme = :themeId")
+			   ->setParameter("themeId", $datas["theme"]);
+		}
 
 		return $qb->getQuery();
 	}

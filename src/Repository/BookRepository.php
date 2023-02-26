@@ -70,10 +70,8 @@ class BookRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 	
-	public function getBooks($datas, $nbMessageByPage, $page, $locale)
+	public function getBooks($datas, $locale)
 	{
-		$offset = ($page - 1) * $nbMessageByPage;
-
 		$qb = $this->createQueryBuilder("b");
 		$qb->innerjoin("b.language", "l")
 		   ->where("l.abbreviation = :abbreviation")
@@ -84,7 +82,8 @@ class BookRepository extends MappedSuperclassBaseRepository
 		{
 			$sort = explode("#", $datas["sort"]);
 			$qb->orderBy("b.".$sort[0], $sort[1]);
-		}
+		} else
+			$qb->orderBy('b.writingDate', 'DESC');
 
 		if(isset($datas["keywords"]))
 		{
@@ -105,10 +104,6 @@ class BookRepository extends MappedSuperclassBaseRepository
 			   ->andWhere("g.id = :genre")
 			   ->setParameter("genre", $datas["genre"]->getId());
 		}
-
-		$qb->orderBy('b.writingDate', 'DESC')
-		   ->setFirstResult($offset)
-		   ->setMaxResults($nbMessageByPage);
 
 		return $qb->getQuery();
 	}

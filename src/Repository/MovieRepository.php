@@ -13,10 +13,8 @@ use Doctrine\ORM\EntityRepository;
 class MovieRepository extends MappedSuperclassBaseRepository
 {
 	
-	public function getMovies($datas, $nbMessageByPage, $page, $locale)
+	public function getMovies($datas, $locale)
 	{
-		$offset = ($page - 1) * $nbMessageByPage;
-
 		$qb = $this->createQueryBuilder("b");
 		$qb->innerjoin("b.language", "l")
 		   ->where("l.abbreviation = :abbreviation")
@@ -27,8 +25,9 @@ class MovieRepository extends MappedSuperclassBaseRepository
 		{
 			$sort = explode("#", $datas["sort"]);
 			$qb->orderBy("b.".$sort[0], $sort[1]);
-		}
-		
+		} else 
+			$qb->orderBy('b.writingDate', 'DESC');
+
 		if(isset($datas["keywords"]))
 		{
 			$qb->andWhere("(b.title LIKE :keyword OR b.text LIKE :keyword)")
@@ -47,10 +46,11 @@ class MovieRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere("b.releaseYear = :releaseYear")
 			   ->setParameter("releaseYear", $datas["releaseYear"]);
 		}
-
-		$qb->orderBy('b.writingDate', 'DESC')
-		   ->setFirstResult($offset)
-		   ->setMaxResults($nbMessageByPage);
+		
+		if(isset($datas["theme"])) {
+			$qb->andWhere("b.theme = :themeId")
+			   ->setParameter("themeId", $datas["theme"]);
+		}
 
 		return $qb->getQuery();
 	}

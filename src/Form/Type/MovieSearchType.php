@@ -26,6 +26,13 @@ class MovieSearchType extends AbstractType
 					'query_builder' => function(\App\Repository\GenreAudiovisualRepository $repository) use ($language) {
 						return $repository->getGenreByLanguage($language);
 					}])
+            ->add('theme', EntityType::class, [
+					'class'=>'App\Entity\Theme',
+					'choice_label'=>'title',
+					'required' => false,
+					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) {
+						return $repository->getThemeByLanguage($language);
+					}])
 			->add('releaseYear', IntegerType::class, ['required' =>false, 'translation_domain' => 'validators'])
 			->add('sort', ChoiceType::class, ['required' => false, 'choices' => ["movie.search.TitleUp" => "title#asc", "movie.search.TitleDown" => "title#desc", "movie.search.ReleaseYearUp" => "releaseYear#asc", "movie.search.ReleaseYearDown" => "releaseYear#desc", "movie.search.PublicationDateUp" => "publicationDate#asc", "movie.search.PublicationDateDown" => "publicationDate#desc"], "data" => "publicationDate#desc", 'translation_domain' => 'validators'])
 		;

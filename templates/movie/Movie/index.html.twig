@@ -19,6 +19,9 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.releaseYear, "movie.search.ReleaseYear"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.releaseYear) }}{{ form_widget(form.releaseYear, {'attr':{'class' : 'form-control'}}) }}</div>
 
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "movie.search.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "movie.search.Sort"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>

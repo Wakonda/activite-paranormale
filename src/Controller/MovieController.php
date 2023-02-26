@@ -18,20 +18,22 @@ use App\Service\APDate;
 
 class MovieController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page)
+    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $idTheme)
     {
 		$em = $this->getDoctrine()->getManager();
 
-		$nbMessageByPage = 12;
+		$datas = [];
 
-		$form = $this->createForm(MovieSearchType::class, null, ["locale" => $request->getLocale()]);
+		if(!empty($idTheme))
+			$datas["theme"] = $em->getRepository(Theme::class)->find($idTheme);
+
+		$form = $this->createForm(MovieSearchType::class, $datas, ["locale" => $request->getLocale()]);
 		$form->handleRequest($request);
-		$datas = null;
 
 		if ($form->isSubmitted() && $form->isValid())
 			$datas = $form->getData();
 
-		$query = $em->getRepository(Movie::class)->getMovies($datas, $nbMessageByPage, $page, $request->getLocale());
+		$query = $em->getRepository(Movie::class)->getMovies($datas, $request->getLocale());
 
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */

@@ -37,11 +37,11 @@ class ThemeController extends AbstractController
 		$theme = $em->getRepository(Theme::class)->getTheme($language);
 		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($language);
 
-		return $this->render('index/Theme/index.html.twig', array(
+		return $this->render('index/Theme/index.html.twig', [
 			'nbrTheme' => $nbrTheme,
 			'surTheme' => $surTheme,
 			'theme' => $theme
-		));		
+		]);
 	}	
 	
 	public function showAction(TranslatorInterface $translator, $theme, $id)
@@ -53,54 +53,54 @@ class ThemeController extends AbstractController
 		$abbreviationLanguage = $entity->getLanguage()->getAbbreviation();
 
 		$publications = [
-			$translator->trans('news.index.Actualite', array(), 'validators') => [
+			$translator->trans('news.index.Actualite', [], 'validators') => [
 				"number" => $em->getRepository(News::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => (!in_array($abbreviationLanguage, explode(",", $_ENV["LANGUAGES"]))) ? $this->generateUrl("News_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("News_Index", ["page" => 1, "theme" => $theme])
 			],
-			$translator->trans('book.index.Book', array(), 'validators') => [
+			$translator->trans('book.index.Book', [], 'validators') => [
 				"number" => $em->getRepository(Book::class)->countAllEntitiesPublicationByTheme($id),
-				"path" => $this->generateUrl("Book_Index")
+				"path" => $this->generateUrl("Book_Index", ["idTheme" => $id, "theme" => $theme])
 			],
-			$translator->trans('cartography.index.Cartography', array(), 'validators') => [
+			$translator->trans('cartography.index.Cartography', [], 'validators') => [
 				"number" => $em->getRepository(Cartography::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => $this->generateUrl("Cartography_Index")
 			],
-			$translator->trans('eventMessage.index.Event', array(), 'validators') => [
+			$translator->trans('eventMessage.index.Event', [], 'validators') => [
 				"number" => $em->getRepository(EventMessage::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => $this->generateUrl("EventMessage_Tab", ["id" => $id, "theme" => $theme])
 			],
-			$translator->trans('photo.index.Photo', array(), 'validators') => [
+			$translator->trans('photo.index.Photo', [], 'validators') => [
 				"number" => $em->getRepository(Photo::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => (!in_array($abbreviationLanguage, explode(",", $_ENV["LANGUAGES"]))) ? $this->generateUrl("Photo_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("Photo_TabPicture", ["id" => $id, "theme" => $theme])
 			],
-			$translator->trans('testimony.index.Testimony', array(), 'validators') => [
+			$translator->trans('testimony.index.Testimony', [], 'validators') => [
 				"number" => $em->getRepository(Testimony::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => $this->generateUrl("Testimony_Tab", ["id" => $id, "theme" => $theme])
 			],
-			$translator->trans('video.index.Video', array(), 'validators') => [
+			$translator->trans('video.index.Video', [], 'validators') => [
 				"number" => $em->getRepository(Video::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => (!in_array($abbreviationLanguage, explode(",", $_ENV["LANGUAGES"]))) ? $this->generateUrl("Video_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("Video_Tab", ["id" => $id, "theme" => $theme])
 			],
-			$translator->trans('document.index.Document', array(), 'validators') => [
+			$translator->trans('document.index.Document', [], 'validators') => [
 				"number" => $em->getRepository(Document::class)->countAllEntitiesPublicationByTheme($id),
-				"path" => $this->generateUrl("Document_Index")
+				"path" => $this->generateUrl("Document_Index", ["themeId" => $id])
 			],
-			$translator->trans('movie.index.Movie', array(), 'validators') => [
+			$translator->trans('movie.index.Movie', [], 'validators') => [
 				"number" => $em->getRepository(Movie::class)->countAllEntitiesPublicationByTheme($id),
-				"path" => $this->generateUrl("Movie_Index")
+				"path" => $this->generateUrl("Movie_Index", ["idTheme" => $id, "theme" => $theme])
 			],
-			$translator->trans('televisionSerie.index.TelevisionSerie', array(), 'validators') => [
+			$translator->trans('televisionSerie.index.TelevisionSerie', [], 'validators') => [
 				"number" => $em->getRepository(TelevisionSerie::class)->countAllEntitiesPublicationByTheme($id),
-				"path" => $this->generateUrl("TelevisionSerie_Index")
+				"path" => $this->generateUrl("TelevisionSerie_Index", ["idTheme" => $id, "theme" => $theme])
 			]
 		];
 		
 		uksort($publications, function($a, $b) { $generator = new SlugGenerator; return $generator->generate($a) <=> $generator->generate($b); });
 
-		return $this->render('index/Theme/show.html.twig', array(
+		return $this->render('index/Theme/show.html.twig', [
 			"entity" => $entity,
 			"publications" => $publications
-		));		
+		]);
 	}	
 	
 	public function saveAction($theme, $id)
@@ -110,9 +110,9 @@ class ThemeController extends AbstractController
 		
 		$entity = $em->getRepository(Theme::class)->find($id);
 		
-		return $this->render('index/Theme/save.html.twig', array(
+		return $this->render('index/Theme/save.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 
 	public function downloadAction($id)

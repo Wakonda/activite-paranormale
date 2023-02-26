@@ -29,6 +29,13 @@ class TelevisionSerieSearchType extends AbstractType
 					'query_builder' => function(\App\Repository\GenreAudiovisualRepository $repository) use ($language) {
 						return $repository->getGenreByLanguage($language);
 					}])
+            ->add('theme', EntityType::class, [
+					'class'=>'App\Entity\Theme',
+					'choice_label'=>'title',
+					'required' => false,
+					'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) {
+						return $repository->getThemeByLanguage($language);
+					}])
 			->add('sort', ChoiceType::class, ['required' => false, 'choices' => ["televisionSerie.search.TitleUp" => "title#asc", "televisionSerie.search.TitleDown" => "title#desc", "televisionSerie.search.PublicationDateUp" => "publicationDate#asc", "televisionSerie.search.PublicationDateDown" => "publicationDate#desc"], "data" => "publicationDate#desc", 'translation_domain' => 'validators'])
 		;
     }

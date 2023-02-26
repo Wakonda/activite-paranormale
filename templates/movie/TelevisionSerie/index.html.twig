@@ -16,6 +16,9 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "televisionSerie.search.Genre"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, {'attr':{'class' : 'form-control'}}) }}</div>
 
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "televisionSerie.search.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "televisionSerie.search.Sort"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>

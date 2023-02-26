@@ -13,7 +13,6 @@ class DocumentSearchType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		// dd($builder->getData());
 		$language = $options['locale'];
 		$builder->setMethod('GET');
         $builder

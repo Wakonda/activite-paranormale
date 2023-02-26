@@ -18,13 +18,17 @@ use App\Service\APImgSize;
 
 class TelevisionSerieController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page)
+    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $idTheme)
     {
 		$em = $this->getDoctrine()->getManager();
 
-		$form = $this->createForm(TelevisionSerieSearchType::class, null, ["locale" => $request->getLocale()]);
+		$datas = [];
+
+		if(!empty($idTheme))
+			$datas["theme"] = $em->getRepository(Theme::class)->find($idTheme);
+
+		$form = $this->createForm(TelevisionSerieSearchType::class, $datas, ["locale" => $request->getLocale()]);
 		$form->handleRequest($request);
-		$datas = null;
 
 		if ($form->isSubmitted() && $form->isValid())
 			$datas = $form->getData();

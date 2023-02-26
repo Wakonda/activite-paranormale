@@ -1,10 +1,14 @@
 Book_Index:
-    path: /book/{page}
+    path: /book/{page}/{idTheme}/{theme}
     controller: App\Controller\BookController::indexAction
     defaults:
         page: 1
+        theme: null
+        idTheme: null
     requirements:
         page: \d+
+        theme: ".+"
+        idTheme: \d+
 
 Book_Show:
     path: /book/read/{id}/{title_slug}
