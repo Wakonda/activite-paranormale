@@ -10,3 +10,7 @@ UsefulLink_Index:
 UsefulLink_Admin:
     resource: "routing/usefullinkadmin.yml"
     prefix:   /admin/usefullink
+
+KnowledgeBase_Admin:
+    resource: "routing/knowledgebaseadmin.yml"
+    prefix:   /admin/knowledgebase

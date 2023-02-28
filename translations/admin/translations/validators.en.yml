@@ -87,6 +87,7 @@ admin:
         Store: "Store"
         Advertising: "Advertising"
         LiteraryGenre: "Literary genre"
+        KnowledgeBase: "Knowledge base"
     show:
         Internationalization: "Internationalization"
         ReallyWantRemoveDatas: "Are you sure you want to delete this data?"

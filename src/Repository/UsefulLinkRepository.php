@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+use App\Entity\UsefulLink;
+
 /**
  * UsefulLinkRepository
  *
@@ -51,12 +53,16 @@ class UsefulLinkRepository extends EntityRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-
+// dd($filter);
 		if(!empty($filter)) {
 			if(isset($filter["category_filter"]) and !empty($value = $filter["category_filter"])) {
 				$qb->andWhere("c.category = :valueCategory")
 				   ->setParameter("valueCategory", $value);
-			}
+			} else {
+			$qb->andWhere("c.category != :valueCategory")
+			   ->setParameter("valueCategory", UsefulLink::RESOURCE_FAMILY);
+		}
+
 			if(isset($filter["tags_filter"]) and !empty($value = $filter["tags_filter"])) {
 				$qb->andWhere("JSON_CONTAINS(JSON_EXTRACT(LOWER(c.tags), '$[*].value'), LOWER('\"".$value."\"'), '$') = true");
 			}

@@ -87,6 +87,7 @@ admin:
         Store: "Boutique"
         Advertising: "Publicité"
         LiteraryGenre: "Genre littéraire"
+        KnowledgeBase: "Base de connaissance"
     show:
         Internationalization: "Internationalisation"
         ReallyWantRemoveDatas: "Souhaitez-vous réellement supprimer ces données ?"

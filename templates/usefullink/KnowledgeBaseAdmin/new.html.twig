@@ -1,0 +1,19 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.KnowledgeBase"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('KnowledgeBase_Admin_Index') }}{% endblock %}
+
+{% block create_admin_route %}{{ path('KnowledgeBase_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	
+	{% import "usefullink/UsefulLinkAdmin/macro_usefullink.html.twig" as macro_usefullink %}
+	{{ macro_usefullink.tinymce("#" ~ form.text.vars.id) }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'usefullink/KnowledgeBaseAdmin/_form.html.twig' %}
+{% endblock %}
