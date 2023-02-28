@@ -20,13 +20,13 @@ class ContactAdminController extends AdminGenericController
 {
 	protected $entityName = 'Contact';
 	protected $className = Contact::class;
-	
+
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
-	
+
 	protected $indexRoute = "Contact_Admin_Index"; 
 	protected $showRoute = "Contact_Admin_Show";
-	
+
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 	}
@@ -55,20 +55,19 @@ class ContactAdminController extends AdminGenericController
 
         $entity = $em->getRepository($this->className)->find($id);
 
-        if (!$entity) {
+        if (!$entity)
             throw $this->createNotFoundException('Unable to find Contact entity.');
-        }
-		
+
 		$entity->setStateContact(1);
 		$em->persist($entity);
 		$em->flush();
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('contact/ContactAdmin/show.html.twig', array(
+        return $this->render('contact/ContactAdmin/show.html.twig', [
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
 	/**
@@ -78,7 +77,7 @@ class ContactAdminController extends AdminGenericController
 	 public function countNonReadAction()
 	 {
 		$em = $this->getDoctrine()->getManager();
-		$countNonRead = count($em->getRepository($this->className)->findBy(array('stateContact' => '0')));
+		$countNonRead = $em->getRepository($this->className)->count(['stateContact' => '0']));
 		return new Response($countNonRead);
 	 }
 	
@@ -89,12 +88,12 @@ class ContactAdminController extends AdminGenericController
     public function newAction(Request $request)
     {
         $entity = new Contact();
-        $form   = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
+        $form = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
 
-        return $this->render('contact/ContactAdmin/new.html.twig', array(
+        return $this->render('contact/ContactAdmin/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
     /**
@@ -103,8 +102,8 @@ class ContactAdminController extends AdminGenericController
      */
     public function createAction(Request $request)
     {
-        $entity  = new Contact();
-        $form    = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
+        $entity = new Contact();
+        $form = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
@@ -112,13 +111,13 @@ class ContactAdminController extends AdminGenericController
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('Contact_Admin_Show', array('id' => $entity->getId())));
+            return $this->redirect($this->generateUrl('Contact_Admin_Show', ['id' => $entity->getId()]));
         }
 
-        return $this->render('contact/ContactAdmin/new.html.twig', array(
+        return $this->render('contact/ContactAdmin/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
     /**
@@ -131,18 +130,17 @@ class ContactAdminController extends AdminGenericController
 
         $entity = $em->getRepository($this->className)->find($id);
 
-        if (!$entity) {
+        if (!$entity)
             throw $this->createNotFoundException('Unable to find Contact entity.');
-        }
 
         $editForm = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('contact/ContactAdmin/edit.html.twig', array(
-            'entity'      => $entity,
-            'form'   => $editForm->createView(),
+        return $this->render('contact/ContactAdmin/edit.html.twig', [
+            'entity' => $entity,
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -155,9 +153,8 @@ class ContactAdminController extends AdminGenericController
 
         $entity = $em->getRepository($this->className)->find($id);
 
-        if (!$entity) {
+        if (!$entity)
             throw $this->createNotFoundException('Unable to find Contact entity.');
-        }
 
         $editForm   = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
         $deleteForm = $this->createDeleteForm($id);
@@ -168,14 +165,14 @@ class ContactAdminController extends AdminGenericController
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('contact_edit', array('id' => $id)));
+            return $this->redirect($this->generateUrl('contact_edit', ['id' => $id]));
         }
 
-        return $this->render('contact/ContactAdmin/edit.html.twig', array(
-            'entity'      => $entity,
-            'edit'   => $editForm->createView(),
+        return $this->render('contact/ContactAdmin/edit.html.twig', [
+            'entity' => $entity,
+            'edit' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -187,9 +184,8 @@ class ContactAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 
-		if (!$entity) {
+		if (!$entity)
 			throw $this->createNotFoundException('Unable to find Contact entity.');
-		}
 
 		$em->remove($entity);
 		$em->flush();
@@ -199,7 +195,7 @@ class ContactAdminController extends AdminGenericController
 
     private function createDeleteForm($id)
     {
-        return $this->createFormBuilder(array('id' => $id))
+        return $this->createFormBuilder(['id' => $id])
             ->add('id', \Symfony\Component\Form\Extension\Core\Type\HiddenType::class)
             ->getForm()
         ;
@@ -212,21 +208,22 @@ class ContactAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] =  $entity->getId();
 			$row[] =  $entity->getPseudoContact();
 			$row[] =  $date->doDate($request->getLocale(), $entity->getDateContact());
 			$row[] =  $entity->getSubjectContact();
 
 			if($entity->getStateContact())
-				$state = '<span class="text-success"><i class="fas fa-check" aria-hidden="true"></i></span>';
+				$state = '<span class="text-success"><i class="fas fa-check"></i></span>';
 			else
-				$state = '<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>';
+				$state = '<span class="text-danger"><i class="fas fa-times"></i></span>';
 
 			$row[] =  $state;
-			$row[] = "
-			 <a href='".$this->generateUrl('Contact_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			";
+
+			$delete = "<a onclick=\"return confirm('".$translator->trans('admin.index.Show', [], 'validators')."')\" href='".$this->generateUrl('Contact_Admin_Delete', ['id' => $entity->getId()])."'><i class='fas fa-trash'></i> ".$translator->trans('admin.general.Delete', [], 'validators')."</a><br>";
+
+			$row[] = "<a href='".$this->generateUrl('Contact_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>${delete}";
 			$output['aaData'][] = $row;
 		}
 

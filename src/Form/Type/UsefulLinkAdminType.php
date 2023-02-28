@@ -63,8 +63,7 @@ class UsefulLinkAdminType extends AbstractType
 			])
             ->add('category', ChoiceType::class, ['choices' => 
 			[
-				'usefullink.admin.'.ucfirst(UsefulLink::DEVELOPMENT_FAMILY) => UsefulLink::DEVELOPMENT_FAMILY, 
-				'usefullink.admin.'.ucfirst(UsefulLink::RESOURCE_FAMILY) => UsefulLink::RESOURCE_FAMILY,
+				'usefullink.admin.'.ucfirst(UsefulLink::DEVELOPMENT_FAMILY) => UsefulLink::DEVELOPMENT_FAMILY,
 				'usefullink.admin.'.ucfirst(UsefulLink::TOOL_FAMILY) => UsefulLink::TOOL_FAMILY,
 				'usefullink.admin.'.ucfirst(UsefulLink::USEFULLINK_FAMILY) => UsefulLink::USEFULLINK_FAMILY,
 				'usefullink.admin.'.ucfirst(UsefulLink::TECHNICAL_FAMILY) => UsefulLink::TECHNICAL_FAMILY
