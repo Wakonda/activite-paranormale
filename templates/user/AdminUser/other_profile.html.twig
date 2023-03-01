@@ -42,8 +42,8 @@
 				<div class="form-table-cell w-100">{{ user.presentation|raw }}</div>
 			</div>
 			{% endif %}
-	
-			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") == false or user is null or user.id != app.user.id %}
+
+			{% if (is_granted("IS_AUTHENTICATED_REMEMBERED") == false or user is null or user.id != app.user.id) and user.donation is not null %}
 				<br>
 				<h3>{{ "user.donation.RewardThisAuthor"|trans([], "validators") }}</h3>
 				<p>{{ "user.donation.RewardThisAuthorSentence"|trans([], "validators") }}</p>

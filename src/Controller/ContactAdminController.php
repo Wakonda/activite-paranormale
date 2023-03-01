@@ -77,7 +77,7 @@ class ContactAdminController extends AdminGenericController
 	 public function countNonReadAction()
 	 {
 		$em = $this->getDoctrine()->getManager();
-		$countNonRead = $em->getRepository($this->className)->count(['stateContact' => '0']));
+		$countNonRead = $em->getRepository($this->className)->count(['stateContact' => '0']);
 		return new Response($countNonRead);
 	 }
 	
@@ -92,7 +92,7 @@ class ContactAdminController extends AdminGenericController
 
         return $this->render('contact/ContactAdmin/new.html.twig', [
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -215,13 +215,13 @@ class ContactAdminController extends AdminGenericController
 			$row[] =  $entity->getSubjectContact();
 
 			if($entity->getStateContact())
-				$state = '<span class="text-success"><i class="fas fa-check"></i></span>';
+				$state = '<i class="fas fa-check text-success""></i>';
 			else
-				$state = '<span class="text-danger"><i class="fas fa-times"></i></span>';
+				$state = '<i class="fas fa-times text-danger"></i>';
 
 			$row[] =  $state;
 
-			$delete = "<a onclick=\"return confirm('".$translator->trans('admin.index.Show', [], 'validators')."')\" href='".$this->generateUrl('Contact_Admin_Delete', ['id' => $entity->getId()])."'><i class='fas fa-trash'></i> ".$translator->trans('admin.general.Delete', [], 'validators')."</a><br>";
+			$delete = "<a onclick=\"return confirm('".$translator->trans('admin.show.ReallyWantRemoveDatas', [], 'validators')."')\" href='".$this->generateUrl('Contact_Admin_Delete', ['id' => $entity->getId()])."'><i class='fas fa-trash'></i> ".$translator->trans('admin.general.Delete', [], 'validators')."</a><br>";
 
 			$row[] = "<a href='".$this->generateUrl('Contact_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>${delete}";
 			$output['aaData'][] = $row;

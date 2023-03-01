@@ -490,18 +490,20 @@ class UserController extends AbstractController
 	{
 		$res = [];
 
-		foreach(json_decode($user->getDonation(), true) as $donation) {
-			if(strtolower($donation["donation"]) == "paypal")
-				$res[] = ["title" => $donation["donation"], "address" => $donation["address"], "qrcode" => null];
-			else {
-				$qrCode = \QRCode::getMinimumQRCode($donation["address"], \QR_ERROR_CORRECT_LEVEL_L);
-				
-				ob_start();
-				imagegif($qrCode->createImage(6, 4));
-				$contents = ob_get_contents();
-				ob_end_clean();
+		if(!empty($user->getDonation())) {
+			foreach(json_decode($user->getDonation(), true) as $donation) {
+				if(strtolower($donation["donation"]) == "paypal")
+					$res[] = ["title" => $donation["donation"], "address" => $donation["address"], "qrcode" => null];
+				else {
+					$qrCode = \QRCode::getMinimumQRCode($donation["address"], \QR_ERROR_CORRECT_LEVEL_L);
+					
+					ob_start();
+					imagegif($qrCode->createImage(6, 4));
+					$contents = ob_get_contents();
+					ob_end_clean();
 
-				$res[] = ["title" => $donation["donation"], "address" => $donation["address"], "qrcode" => base64_encode($contents)];
+					$res[] = ["title" => $donation["donation"], "address" => $donation["address"], "qrcode" => base64_encode($contents)];
+				}
 			}
 		}
 		
