@@ -12,7 +12,7 @@
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'action': path('apuser_update'), 'attr':{'class' : 'form-horizontal apuser_update', novalidate: 'novalidate'}}) }}
 		<p class="image">{{ user.avatar|imgsize(550, user.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
-		<br />
+		<br>
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ "user.register.Pseudo"|trans([], "validators") }}</div>
 			<div class="form-table-cell">{{ user.username }}</div>
@@ -42,7 +42,14 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.birthDate, "user.register.BirthDate"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">
 				{{ form_errors(form.birthDate) }}
-				{{ form_widget(form.birthDate, {'attr':{'class' : 'form-control'}}) }}
+
+				<div class="input-group">
+					{{ form_widget(form.birthDate.day, {'attr':{'class' : 'form-control'}}) }}
+				<div class="input-group-prepend input-group-append"><span class="input-group-text">/</span></div>
+					{{ form_widget(form.birthDate.month, {'attr':{'class' : 'form-control'}}) }}
+				<div class="input-group-prepend input-group-append"><span class="input-group-text">/</span></div>
+					{{ form_widget(form.birthDate.year, {'attr':{'class' : 'form-control'}}) }}
+				</div>
 			</div>
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.city, "user.register.City"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">
@@ -65,41 +72,41 @@
 				{{ form_widget(form.presentation, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>
-	
-	<br>
-	<h3>{{ "user.donation.ReceiveRewards"|trans([], "validators") }}</h3>
-	<div class="form-table form-table-4cols form-table-collapse">
-		<div class="form-table-cell form-table-cell-head">{{ form_label(form.paypal) }}</div>
-		<div class="form-table-cell">
-			{{ form_errors(form.paypal) }}
-			{{ form_widget(form.paypal, {'attr':{'class' : 'form-control'}}) }}
+		<br>
+		<h3>{{ "user.donation.ReceiveRewards"|trans([], "validators") }}</h3>
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.paypal) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.paypal) }}
+				{{ form_widget(form.paypal, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.bitcoin) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.bitcoin) }}
+				{{ form_widget(form.bitcoin, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.ethereum) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.ethereum) }}
+				{{ form_widget(form.ethereum, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.dogecoin) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.dogecoin) }}
+				{{ form_widget(form.dogecoin, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.cardano) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.cardano) }}
+				{{ form_widget(form.cardano, {'attr':{'class' : 'form-control'}}) }}
+			</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.zilliqa) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.zilliqa) }}
+				{{ form_widget(form.zilliqa, {'attr':{'class' : 'form-control'}}) }}
+			</div>
 		</div>
-		<div class="form-table-cell form-table-cell-head">{{ form_label(form.bitcoin) }}</div>
-		<div class="form-table-cell">
-			{{ form_errors(form.bitcoin) }}
-			{{ form_widget(form.bitcoin, {'attr':{'class' : 'form-control'}}) }}
-		</div>
-		<div class="form-table-cell form-table-cell-head">{{ form_label(form.ethereum) }}</div>
-		<div class="form-table-cell">
-			{{ form_errors(form.ethereum) }}
-			{{ form_widget(form.ethereum, {'attr':{'class' : 'form-control'}}) }}
-		</div>
-		<div class="form-table-cell form-table-cell-head">{{ form_label(form.dogecoin) }}</div>
-		<div class="form-table-cell">
-			{{ form_errors(form.dogecoin) }}
-			{{ form_widget(form.dogecoin, {'attr':{'class' : 'form-control'}}) }}
-		</div>
-		<div class="form-table-cell form-table-cell-head">{{ form_label(form.cardano) }}</div>
-		<div class="form-table-cell">
-			{{ form_errors(form.cardano) }}
-			{{ form_widget(form.cardano, {'attr':{'class' : 'form-control'}}) }}
-		</div>
-		<div class="form-table-cell form-table-cell-head">{{ form_label(form.zilliqa) }}</div>
-		<div class="form-table-cell">
-			{{ form_errors(form.zilliqa) }}
-			{{ form_widget(form.zilliqa, {'attr':{'class' : 'form-control'}}) }}
-		</div>
-	</div>
+
 		{{ form_rest(form) }}
 		{{ form_errors(form) }}
 		<div class="clearfix">
@@ -108,7 +115,7 @@
 		</div>
 		</div>
 	{{ form_end(form) }}
-	
-	<hr class="hr2"/>
+
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

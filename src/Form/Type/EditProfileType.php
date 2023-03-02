@@ -30,7 +30,7 @@ class EditProfileType extends AbstractType
 		$locale = $options["locale"];
         $builder
             ->add('email', EmailType::class)
-			->add("civility", ChoiceType::class, array('expanded' => true, 'required' => false, 'multiple' => false, 'translation_domain' => 'validators',  'choices'   => array(
+			->add("civility", ChoiceType::class, array('expanded' => false, 'required' => false, 'multiple' => false, 'translation_domain' => 'validators',  'choices'   => array(
 				'user.register.Man' => 'man',
 				'user.register.Woman' => 'woman',
 				'user.register.Other' => 'other',
