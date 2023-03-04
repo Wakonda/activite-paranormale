@@ -52,6 +52,10 @@ Quotation_Admin_GenerateImage:
     path: /generate_image/{id}
     controller: App\Controller\QuotationAdminController::generateImageAction
 
+Quotation_Admin_GenerateImageAjax:
+    path: /generate_image_ajax/{id}
+    controller: App\Controller\QuotationAdminController::generateImageAjaxAction
+
 Quotation_Admin_RemoveImage:
     path: /remove_image/{id}/{quotationImageId}
     controller: App\Controller\QuotationAdminController::removeImageAction

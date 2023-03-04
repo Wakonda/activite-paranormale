@@ -184,14 +184,18 @@ class QuotationAdminController extends AdminGenericController
 			$image->setStrokeWidth(1);
 			$image->setStrokeColor($strokeColor);
 			$gutter = 50;
-			$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2, $rectangleColor, 0.5);
-			$image->textBox("“".$entity->getTextQuotation()."”\n___\n".$entity->getAuthorQuotation()->getTitle(), array(
+			$fontSizeAuthor = 20;
+			$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2 + $fontSizeAuthor, $rectangleColor, 0.5);
+			
+			$image->textBox("“".html_entity_decode($entity->getTextQuotation())."”", array(
 				'width' => $image->getWidth() - $gutter * 2,
 				'height' => $image->getHeight() - $gutter * 2,
 				'fontSize' => $data["font_size"],
 				'x' => $gutter,
 				'y' => $gutter
 			));
+
+			$image->textBox($entity->getAuthorQuotation()->getTitle(), array('width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2));
 			
 			$fileName = uniqid()."_".$data['image']->getClientOriginalName();
 
@@ -213,6 +217,63 @@ class QuotationAdminController extends AdminGenericController
 		
 		$twig = 'quotation/QuotationAdmin/show.html.twig';
 		return $this->showGenericAction($id, $twig, ["imageGeneratorForm" => $imageGeneratorForm->createView()]);
+	}
+	
+	public function generateImageAjaxAction(Request $request, PHPImage $image, $id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($this->className)->find($id);
+		
+		$url = $request->request->get("url");
+		$size = $request->request->get("size");
+			
+			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'Edmundsbury_Serif.ttf';
+
+			$textColor = [0, 0, 0];
+			$strokeColor = [255, 255, 255];
+			$rectangleColor = [255, 255, 255];
+			
+			// if($data["invert_colors"]) {
+				$textColor = [255, 255, 255];
+				$strokeColor = [0, 0, 0];
+				$rectangleColor = [0, 0, 0];
+			// }
+
+			$bg = $url;
+			$image->setDimensionsFromImage($bg);
+			$image->draw($bg);
+			$image->setAlignHorizontal('center');
+			$image->setAlignVertical('center');
+			$image->setFont($font);
+			$image->setTextColor($textColor);
+			$image->setStrokeWidth(1);
+			$image->setStrokeColor($strokeColor);
+			$gutter = 50;
+			$fontSizeAuthor = 20;
+			$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2 + $fontSizeAuthor, $rectangleColor, 0.5);
+			
+			$image->textBox("“".html_entity_decode($entity->getTextQuotation())."”", array(
+				'width' => $image->getWidth() - $gutter * 2,
+				'height' => $image->getHeight() - $gutter * 2,
+				'fontSize' => $size,
+				'x' => $gutter,
+				'y' => $gutter
+			));
+
+			$image->textBox($entity->getAuthorQuotation()->getTitle(), array('width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2));
+			
+			$fileName = uniqid()."_image.png";
+
+			ob_start (); 
+
+			  imagepng ($image->getResource());
+			  $image_data = ob_get_contents (); 
+
+			ob_end_clean (); 
+
+			$image_data_base64 = base64_encode ($image_data);
+			
+			return new JsonResponse(["content" => $image_data_base64]);
 	}
 
 	public function removeImageAction(Request $request, $id, $quotationImageId)

@@ -661,13 +661,76 @@
 				</div>
 				<div id="collapseMuse" class="collapse" aria-labelledby="headingMuse" data-parent="#accordionParentMuse">
 					<div class="card-body">
-						<form action="{{ path('Admin_Muse', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
-							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
-						</form>
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">{{ "admin.general.Send"|trans([], "validators") }}</button>
+
 					</div>
 				</div>
 			</div>
 		</div>
+		
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+		<form id="form" method="post" enctype="multipart/form-data">
+  <div class="form-group">
+    <label for="url">Pixabay URL</label>
+    <input type="text" name="url" class="form-control" id="url">
+  </div>
+  <div class="form-group">
+    <label for="size">Size</label>
+    <input type="text" name="size" class="form-control" id="size">
+  </div>
+		<button type="submit">Générer</button>
+
+		</form>
+		
+		<img src="" id="img_preview" />
+		
+		<form action="{{ path('Admin_Muse', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
+							<input type="text" value="" name="image_generated" id="image_generated" />
+							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						</form>
+<script>
+
+
+
+document.querySelector("#form").addEventListener("submit", function(e){
+e.preventDefault();
+
+document.getElementById("img_preview").style.display = "none";
+
+var data = new FormData();
+
+data.append('url', document.getElementById("url").value);
+data.append('size', document.getElementById("size").value);
+
+var xhr = new XMLHttpRequest();
+xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4){
+	
+		let data = JSON.parse(xhr.responseText)
+		document.getElementById("img_preview").style.display = "block";
+		document.getElementById("img_preview").setAttribute("src", "data:image/png;base64," + data.content);
+		document.getElementById("image_generated").value = data.content;
+    }
+};
+xhr.open('POST', '{{ path("Quotation_Admin_GenerateImageAjax", {id: entity.id}) }}');
+xhr.send(data);
+});
+</script>
+	  
+
+      </div>
+    </div>
+  </div>
+</div>
 	{% endif %}
 {% endmacro %}
 

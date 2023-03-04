@@ -91,7 +91,6 @@ class AdminController extends AbstractController
 	
 	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $data)
 	{
-		// dd($request->request->get("sections", []), $_POST, $_GET);
 		$url = $request->request->get("url");
 
 		if(str_contains(parse_url($url, PHP_URL_HOST), "wikimonde")) {
@@ -725,7 +724,7 @@ class AdminController extends AbstractController
 	public function museAction(Request $request, TranslatorInterface $translator, SessionInterface $session, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$entity = $em->getRepository(urldecode($path))->find($id);
 
 		$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
@@ -746,7 +745,7 @@ class AdminController extends AbstractController
 
 		$generator = new \Ausi\SlugGenerator\SlugGenerator;
 
-		$tagArray = !empty($entity->getTags()) ? array_map(function($e) use($generator, $entity) { return ["id" => 19, "identifier" => $generator->generate($e->value)."-".$entity->getLanguage()->getAbbreviation(), "title" => $e->value, "slug" => $generator->generate($e->value), "internationalName" => $generator->generate($e->value)]; }, json_decode($entity->getTags())) : [];
+		$tagArray = !empty($entity->getTags()) ? array_map(function($e) use($generator, $entity) { return ["identifier" => $generator->generate($e->value)."-".$entity->getLanguage()->getAbbreviation(), "title" => $e->value, "slug" => $generator->generate($e->value), "internationalName" => $generator->generate($e->value)]; }, json_decode($entity->getTags())) : [];
 
 		$fileManagement = [];
 
@@ -755,6 +754,16 @@ class AdminController extends AbstractController
 				"imgBase64" => $biography->getImgBase64(),
 				"photo" => !empty($f = $biography->getIllustration()) ? $f->getRealNameFile() : null,
 				"description" => !empty($f = $biography->getIllustration()) ? "<a href='".$f->getUrlSource()."'>Source</a>, ".$f->getLicense().", ".$f->getAuthor() : null
+			];
+		}
+		
+		$api = new \App\Service\Muse();
+
+		if($request->request->has("image_generated") and !empty($img = $request->request->get("image_generated"))) {
+			$images[] = [
+				"imgBase64" => $img,
+				"identifier" => md5(base64_decode($img)),
+				"image" => md5(base64_decode($img)).".png"
 			];
 		}
 
@@ -777,10 +786,9 @@ class AdminController extends AbstractController
 				"fileManagement" => $fileManagement
 			],
 			// "source" => ["identifier" => $sourceIdentifier],
-			"tags" => $tagArray
+			"tags" => $tagArray,
 		];
 
-		$api = new \App\Service\Muse();
 		$result = $api->addPost($data, $api->getOauth2Token());
 
 		if($result->{"@type"} == "hydra:Error")
@@ -789,6 +797,10 @@ class AdminController extends AbstractController
 			$entity->setIdentifier($result->identifier);
 			$em->persist($entity);
 			$em->flush();
+			
+			if(!empty($images))
+				$result = $api->addImage($data, $images[0], $api->getOauth2Token());
+			
 			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}
 
