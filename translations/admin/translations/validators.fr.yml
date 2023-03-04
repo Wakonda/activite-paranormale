@@ -21,6 +21,8 @@ admin:
         EnterURL: "Entrer une URL"
         ChooseExistingFile: "Sélectionner un fichier existant"
         File: "Fichier"
+        Size: "Taille"
+        Generate: "Générer"
     index:
         Welcome: "Accueil"
         InfoGene: "Informations générales"
