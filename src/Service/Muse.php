@@ -34,7 +34,7 @@
 				echo 'Error:' . curl_error($ch);
 			}
 			curl_close($ch);
-
+// dd($result);
 			return json_decode($result)->token;
 		}
 		
@@ -59,7 +59,7 @@
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);
-
+// dd($json_response);
 			return json_decode($json_response);
 		}
 		
@@ -93,7 +93,7 @@
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);
-
+dd($json_response);
 			return json_decode($json_response);
 		}
 

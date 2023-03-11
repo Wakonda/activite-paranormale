@@ -800,7 +800,7 @@ class AdminController extends AbstractController
 			
 			if(!empty($images))
 				$result = $api->addImage($data, $images[0], $api->getOauth2Token());
-			
+			dd($result);
 			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}
 

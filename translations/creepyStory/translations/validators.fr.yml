@@ -1,0 +1,13 @@
+creepyStory:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Photo: "Photo"
+        Language: "Langue"
+        Theme: "Thème"
+        PseudoUsed: "Pseudo utilisé"
+        PublicationDate: "Date de publication"
+        State: "Etat"
+        Licence: "Licence"
+        WritingDate: "Date de rédaction"
+        Source: "Source"

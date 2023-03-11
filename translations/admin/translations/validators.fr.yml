@@ -90,6 +90,7 @@ admin:
         Advertising: "Publicité"
         LiteraryGenre: "Genre littéraire"
         KnowledgeBase: "Base de connaissance"
+        CreepyStory: "Histoire effrayante"
     show:
         Internationalization: "Internationalisation"
         ReallyWantRemoveDatas: "Souhaitez-vous réellement supprimer ces données ?"

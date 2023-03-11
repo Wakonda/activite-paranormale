@@ -1,0 +1,45 @@
+CreepyStory_Admin_Index:
+    path:  /
+    controller: App\Controller\CreepyStoryAdminController::indexAction
+
+CreepyStory_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\CreepyStoryAdminController::showAction
+
+CreepyStory_Admin_New:
+    path:  /new
+    controller: App\Controller\CreepyStoryAdminController::newAction
+
+CreepyStory_Admin_Create:
+    path:  /create
+    controller: App\Controller\CreepyStoryAdminController::createAction
+    requirements:
+        _method: post
+
+CreepyStory_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\CreepyStoryAdminController::editAction
+
+CreepyStory_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\CreepyStoryAdminController::updateAction
+    requirements:
+        _method: post
+
+CreepyStory_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\CreepyStoryAdminController::deleteAction
+
+CreepyStory_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\CreepyStoryAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+CreepyStory_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\CreepyStoryAdminController::showImageSelectorColorboxAction
+
+CreepyStory_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\CreepyStoryAdminController::loadImageSelectorColorboxAction

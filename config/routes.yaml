@@ -117,3 +117,7 @@ Store:
 Advertising:
     resource: "../src/Routes/advertising/routing.yml"
     prefix:   /
+
+CreepyStory:
+    resource: "../src/Routes/creepystory/routing.yml"
+    prefix:   /

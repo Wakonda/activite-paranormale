@@ -1,0 +1,4 @@
+# Administration
+CreepyStory_Admin:
+    resource: "routing/creepystoryadmin.yml"
+    prefix:   /admin/creepystory
