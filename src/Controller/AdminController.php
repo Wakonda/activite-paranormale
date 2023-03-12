@@ -632,26 +632,46 @@ class AdminController extends AbstractController
 	}
 	
 	// The Daily Truth
-	public function thedailytruthAction(Request $request, int $id, string $path, string $routeToRedirect)
+	public function thedailytruthAction(Request $request, SessionInterface $session, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		
 		$entity = $em->getRepository(urldecode($path))->find($id);
-		
-		$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
+
+		$illustration = [];
+
+		if(!empty($img = $entity->getIllustration())) {
+			$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
+			$caption = ["license" => $img->getLicense(), "author" => $img->getAuthor(), "urlSource" => '<a href="'.$img->getUrlSource().'">'.parse_url($img->getUrlSource(), PHP_URL_HOST).'</a>'];
+
+			$illustration = [
+				"content" => base64_encode(file_get_contents($path)),
+				"name" => $entity->getIllustration()->getRealNameFile(),
+				"caption" => implode(", ", $caption)
+			];
+		}
 
 		$data = [
+			"identifier" => $entity->getIdentifier(),
 			"title" => $entity->getTitle(),
-			"text" => '<div id="abstract">'.$entity->getAbstractText().'</div>'.$entity->getText(),
+			"text" => $entity->getText(),
 			"slug" => $entity->getSlug(),
 			"source" => $entity->getSource(),
 			"tags" => json_encode($request->request->get("thedailytruth_tags")),
-			"media" => json_encode(["content" => base64_encode(file_get_contents($path)), "caption" => $entity->getIllustration()->getCaption(), "name" => $entity->getIllustration()->getRealNameFile()]),
+			"media" => json_encode($illustration),
 		];
 		
 		$api = new TheDailyTruth();
-		$api->addPost($data, $api->getOauth2Token());
+		$result = $api->addPost($data, $api->getOauth2Token());
 		
+		if(!empty($result) and property_exists($result, "identifier")) {
+			$entity->setIdentifier($result->identifier);
+			$em->persist($entity);
+			$em->flush();
+			$session->getFlashBag()->add('success', $translator->trans('admin.thedailytruth.Success', [], 'validators'));
+		} else
+			$session->getFlashBag()->add('error', $translator->trans('admin.thedailytruth.Failed', [], 'validators')." ".$result);
+
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
 	}
 	
@@ -800,7 +820,7 @@ class AdminController extends AbstractController
 			
 			if(!empty($images))
 				$result = $api->addImage($data, $images[0], $api->getOauth2Token());
-			dd($result);
+
 			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}
 

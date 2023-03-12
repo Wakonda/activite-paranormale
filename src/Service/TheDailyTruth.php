@@ -65,6 +65,9 @@
 			$json_response = curl_exec($curl);
 			$errors = curl_error($curl);
 			curl_close($curl);
+			
+			if(!empty($errors))
+				return $errors;
 
 			return json_decode($json_response);
 		}

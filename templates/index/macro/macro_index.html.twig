@@ -608,7 +608,8 @@
 				<div id="collapseTheDailyTruth" class="collapse" aria-labelledby="headingTheDailyTruth" data-parent="#accordionParentTheDailyTruth">
 					<div class="card-body">
 						<form action="{{ path('Admin_TheDailyTruth', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
-							{% set tags = thedailytruth_tags() %}
+							{% set tags = themes_by_language(entity.language.abbreviation) %}
+
 							<select multiple name="thedailytruth_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}">{{ tag }}</option>

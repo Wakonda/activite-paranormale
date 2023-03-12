@@ -152,6 +152,9 @@ admin:
         Success: "Article published with success in Wakonda.GURU"
     pinterest:
         Success: "Article published with success in Pinterest"
+    thedailytruth:
+        Success: "Article published with success in The Daily Truth"
+        Failed: "Failed to send to The Daily Truth"
     wikipedia:
         Header: "Header"
     date:
