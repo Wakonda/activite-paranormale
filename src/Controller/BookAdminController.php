@@ -128,11 +128,12 @@ class BookAdminController extends AdminGenericController
 	public function archiveAction($id)
 	{
 		$additionalFiles = [];
-		
+
+		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 		
 		foreach($entity->getBookEditions() as $fm) {
-			$additionalFiles[] = $fm->getRealNameFile();
+			$additionalFiles[] = $fm->getIllustration()->getRealNameFile();
 		}
 
 		return $this->archiveGenericArchive($id, $additionalFiles);
