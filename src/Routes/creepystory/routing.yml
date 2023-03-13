@@ -1,3 +1,27 @@
+CreepyStory_Index:
+    path:  /creepy_story
+    controller: App\Controller\CreepyStoryController::indexAction
+
+CreepyStory_Tab:
+    path:  /creepy_story/tab/{id}/{theme}
+    controller: App\Controller\CreepyStoryController::tabAction
+    requirements:
+        theme: ".+"
+
+CreepyStory_TabDatatables:
+    path: /creepy_story/tabdatatables/{themeId}
+    controller: App\Controller\CreepyStoryController::tabDatatablesAction
+
+CreepyStory_Read:
+    path: /creepy_story/read/{id}/{title_slug}
+    controller: App\Controller\CreepyStoryController::readAction
+    defaults:
+        title_slug: null
+
+CreepyStory_Pdfversion:
+    path: /creepy_story/pdfversion/{id}
+    controller: App\Controller\CreepyStoryController::pdfVersionAction
+
 # Administration
 CreepyStory_Admin:
     resource: "routing/creepystoryadmin.yml"

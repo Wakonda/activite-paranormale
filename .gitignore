@@ -53,6 +53,7 @@ yarn-error.log
 /public/extended/photo/theme/*
 /public/extended/photo/user/*
 /public/extended/photo/video/*
+/public/extended/photo/creepystory/*
 /public/extended/photo/webdirectory/*
 /public/extended/photo/witchcraft/*
 /public/extended/photo/witchcrafttools/*

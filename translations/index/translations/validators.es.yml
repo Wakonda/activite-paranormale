@@ -57,6 +57,7 @@ index:
         ClassifiedAds: "Anuncio clasificado"
         Book: "Libro"
         Development: "Desarrollo"
+        CreepyStory: "Historia espeluznante"
     donate:
         DonateInCryptocurrency: "Donar en criptomoneda"
         CryptocurrencyDonation: "Donación de cripto"

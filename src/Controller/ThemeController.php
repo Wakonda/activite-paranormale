@@ -16,6 +16,7 @@ use App\Entity\Photo;
 use App\Entity\Testimony;
 use App\Entity\Video;
 use App\Entity\Document;
+use App\Entity\CreepyStory;
 use App\Entity\Movies\Movie;
 use App\Entity\Movies\TelevisionSerie;
 use Symfony\Component\HttpFoundation\Request;
@@ -92,6 +93,10 @@ class ThemeController extends AbstractController
 			$translator->trans('televisionSerie.index.TelevisionSerie', [], 'validators') => [
 				"number" => $em->getRepository(TelevisionSerie::class)->countAllEntitiesPublicationByTheme($id),
 				"path" => $this->generateUrl("TelevisionSerie_Index", ["idTheme" => $id, "theme" => $theme])
+			],
+			$translator->trans('creepyStory.index.CreepyStory', [], 'validators') => [
+				"number" => $em->getRepository(CreepyStory::class)->countAllEntitiesPublicationByTheme($id),
+				"path" => $this->generateUrl("CreepyStory_Tab", ["id" => $id, "theme" => $theme])
 			]
 		];
 		
@@ -102,7 +107,7 @@ class ThemeController extends AbstractController
 			"publications" => $publications
 		]);
 	}	
-	
+
 	public function saveAction($theme, $id)
 	{
 		$em = $this->getDoctrine()->getManager();

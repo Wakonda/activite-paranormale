@@ -12,6 +12,124 @@ use Doctrine\ORM\EntityRepository;
  */
 class CreepyStoryRepository extends MappedSuperclassBaseRepository
 {
+	public function countCreepyStory($lang)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("count(c)")
+			->join('c.language', 'o')
+			->where('o.abbreviation = :lang')
+			->join('c.state', 's')
+			->andWhere('s.displayState = 1')
+			->setParameter('lang', $lang)
+			->andWhere("c.archive = false");
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
+	
+	public function nbrByTheme($lang, $theme)
+	{
+		$qb = $this->createQueryBuilder('o');
+		$qb->select("count(o)")
+			->join('o.language', 'c')
+			->join('o.theme', 't')
+			->where('c.abbreviation = :lang')
+			->setParameter('lang', $lang)
+			->andWhere('t.title = :theme')
+			->join('o.state', 's')
+			->setParameter('theme', $theme)
+			->andWhere("o.archive = false");
+
+		return $qb->getQuery()->getSingleScalarResult();	
+	}
+
+	public function getTab($themeId, $lang, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder('o');
+
+		$aColumns = array('il.titleFile','o.title', 'o.publicationDate');
+
+		$qb->join('o.language', 'c')
+		   ->join('o.theme', 't')
+		   ->join("o.illustration", "il")
+		   ->where('t.id = :themeId')
+		   ->setParameter('themeId', $themeId)
+		   ->andWhere('c.abbreviation = :lang')
+		   ->setParameter('lang', $lang)
+		   ->join('o.state', 's')
+		   ->andWhere('s.displayState = 1')
+		   ->orderBy('o.publicationDate')
+		   ->andWhere("o.archive = false");
+
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('o.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("count(o)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getPreviousAndNextEntities($entity, $language)
+	{
+		$qb = $this->createQueryBuilder('n');
+		$qb->orderBy('n.publicationDate', 'DESC')->orderBy('n.id', 'DESC')
+		   ->where('n.publicationDate <= :publicationDate')
+		   ->andWhere('n.id != '.$entity->getId())
+		   ->setParameter('publicationDate', $entity->getPublicationDate())
+		   ->join('n.language', 'l')
+		   ->andWhere('l.abbreviation = :language')
+		   ->andWhere("n.archive = false")
+		   ->setParameter('language', $language)
+		   ->setMaxResults(1);
+
+		$previousEntity = $qb->getQuery()->getOneOrNullResult();
+
+		$qb = $this->createQueryBuilder('n');
+		$qb->orderBy('n.publicationDate', 'DESC')->orderBy('n.id', 'ASC')
+		   ->where('n.publicationDate >= :publicationDate')->andWhere('n.id != '.$entity->getId())
+		   ->setParameter('publicationDate', $entity->getPublicationDate())
+		   ->join('n.language', 'l')
+		   ->andWhere('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("n.archive = false")
+		   ->setMaxResults(1);
+
+		$nextEntity = $qb->getQuery()->getOneOrNullResult();
+
+		return array("previous" => $previousEntity, "next" => $nextEntity);
+	}
+	
+	public function getSameTopics($entity)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->join('c.language', 'l')
+		   ->join('c.state', 's')
+		   ->where('l.abbreviation = :lang')
+		   ->setParameter('lang', $entity->getLanguage()->getAbbreviation())
+		   ->andWhere('s.displayState = 1')
+		   ->andWhere("c.id != :id")
+		   ->setParameter("id", $entity->getId())
+		   ->join('c.theme', 'o')
+	       ->andWhere('o.id = :themeId')
+		   ->setParameter('themeId', $entity->getTheme()->getId())
+		   ->andWhere("c.archive = false")
+		   ->orderBy('c.publicationDate', 'desc')
+		   ->setMaxResults(3);
+
+		return $qb->getQuery()->getResult();
+	}
+
 	// ADMINISTRATION
 	public function countAdmin()
 	{

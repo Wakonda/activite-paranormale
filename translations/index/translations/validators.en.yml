@@ -57,6 +57,7 @@ index:
         ClassifiedAds: "Classified ads"
         Book: "Book"
         Development: "Development"
+        CreepyStory: "Creepy story"
     donate:
         DonateInCryptocurrency: "Donate in cryptocurrency"
         CryptocurrencyDonation: "Crypto donation"

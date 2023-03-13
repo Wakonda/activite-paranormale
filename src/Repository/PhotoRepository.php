@@ -25,7 +25,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
-	
+
 	public function nbrPictureByTheme($lang, $theme)
 	{
 		$qb = $this->createQueryBuilder('o');
@@ -204,12 +204,12 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 		return array("previous" => $previousEntity, "next" => $nextEntity);
 	}
-	
+
 	// For mobile
 	public function countEntitiesByTheme($lang, $theme)
 	{
 		$qb = $this->createQueryBuilder('c');
-	
+
 		$qb->select("count(c)")
 		   ->join('c.language', 'l')
 		   ->join('c.state', 's')
@@ -226,11 +226,11 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
-	
+
 	public function getEntitiesPagination($page, $theme, $locale)
 	{
 		$qb = $this->createQueryBuilder('o');
-		
+
 		$qb->join('o.state', 's')
 			->join('o.language', 'l')
 			->where('l.abbreviation = :locale')
@@ -302,7 +302,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getResult();
 	}
-	
+
 	public function getSameTopics($entity)
 	{
 		$qb = $this->createQueryBuilder('c');

@@ -1,0 +1,67 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.js') }}"></script>
+
+	<script>
+		$(function ()
+		{
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block meta_plus %}
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_photomobile_read', {'id' : entity.id}) }}">
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}
+	<br>
+	<div>
+	<p>{{ entity.text|raw }}</p>	
+	</div>
+
+	<br>
+	<h3>{{ "creepyStory.index.Sources"|trans([], "validators") }}</h3>
+	{{ source_document(entity.source, entity.language) }}
+
+	<hr class="hr2">
+	<p>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', { id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+		
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
+	</p>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with { titleNetwork: entity.title, url: app.request.server.get("REQUEST_URI"), entity: entity } %}
+
+	<div class="hidden_for_print">
+		{% if previousAndNextEntities["previous"] is not empty %}
+			<a href="{{ path('Photo_Read', {'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].getUrlSlug()})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
+		{% else %}
+			<span class="previous_next_disable_left"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></span>
+		{% endif %}
+
+		{% if previousAndNextEntities["next"] is not empty %}
+			<a class="previous_next_enable_right float-right" href="{{ path('Photo_Read', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+		{% else %}
+			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+		{% endif %}
+	</div>
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+	{{ render(controller("App\\Controller\\CreepyStoryController::getSameTopicsAction", { id: entity.id })) }}
+{% endblock %}

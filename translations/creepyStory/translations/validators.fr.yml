@@ -11,3 +11,13 @@ creepyStory:
         Licence: "Licence"
         WritingDate: "Date de rédaction"
         Source: "Source"
+    index:
+        CreepyStory: "Histoire effrayante"
+        CountCreepyStory: "Nombre total : "
+        Theme: "Thème"
+        Number: "Nombre"
+        Sources: "Sources"
+    tab:
+        Photo: "Photo"
+        Title: "Titre"
+        PublicationDate: "Date de publication"
