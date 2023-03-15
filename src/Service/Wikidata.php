@@ -81,9 +81,9 @@
 			}
 			
 			$res["birthDate"] = [
-				"year" => !empty($birthDate) ? $birthDate["year"] : null,
-				"month" => !empty($birthDate) ? $birthDate["month"] : null,
-				"day" => !empty($birthDate) ? $birthDate["day"] : null
+				"year" => (!empty($birthDate) and !empty($birthDate["year"])) ? $birthDate["year"] : null,
+				"month" => (!empty($birthDate) and !empty($birthDate["month"])) ? $birthDate["month"] : null,
+				"day" => (!empty($birthDate) and !empty($birthDate["day"])) ? $birthDate["day"] : null
 			];
 
 			$res["deathDate"] = [
@@ -99,9 +99,9 @@
 				$deathDate = date_parse($deathDate);
 				
 				$res["deathDate"] = [
-					"year" => $deathDate["year"],
-					"month" => $deathDate["month"],
-					"day" => $deathDate["day"]
+					"year" => !empty($deathDate["year"]) ? $deathDate["year"] : null,
+					"month" => !empty($deathDate["year"]) ? $deathDate["month"] : null,
+					"day" => !empty($deathDate["year"]) ? $deathDate["day"] : null
 				];
 			}
 			
