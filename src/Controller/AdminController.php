@@ -789,7 +789,7 @@ class AdminController extends AbstractController
 
 		$data = [
 			"text" => $entity->getTextQuotation(),
-			"identifier" => !empty($idt = $entity->getIdentifier()) ? $idt : "",
+			"identifier" => "",//!empty($idt = $entity->getIdentifier()) ? $idt : "",
 			"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
 			"biography" => [
 				"title" => $biography->getTitle(),
@@ -817,9 +817,9 @@ class AdminController extends AbstractController
 			$entity->setIdentifier($result->identifier);
 			$em->persist($entity);
 			$em->flush();
-			
+
 			if(!empty($images))
-				$result = $api->addImage($data, $images[0], $api->getOauth2Token());
+				$result = $api->addImage($result->identifier, $images[0], $api->getOauth2Token());
 
 			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}
