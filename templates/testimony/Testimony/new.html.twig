@@ -27,11 +27,11 @@
 					document.querySelector("div#anonymously_message").innerHTML = "";
 			}
 			
-			document.querySelector("select#{{ form.vars.name }}_isAnonymous").addEventListener("change", (e) => {
+			document.querySelector("select#{{ form.isAnonymous.vars.id }}").addEventListener("change", (e) => {
 				publishAnonymously(e.target.value);
 			});
 			
-			publishAnonymously(document.querySelector("select#{{ form.vars.name }}_isAnonymous").value);
+			publishAnonymously(document.querySelector("select#{{ form.isAnonymous.vars.id }}").value);
 		});
 	</script>
 {% endblock %}
