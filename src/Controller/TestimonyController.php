@@ -67,10 +67,10 @@ class TestimonyController extends AbstractController
 
     public function createAction(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
-		return $this->generateCreateUpdate($request, $session);
+		return $this->generateCreateUpdate($request, $session, $security, $authorizationChecker);
     }
 
-	public function addFileAction($id, SessionInterface $session)
+	public function addFileAction($id, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
@@ -156,6 +156,8 @@ class TestimonyController extends AbstractController
 			
 			if($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 				return $this->redirect($this->generateUrl('Testimony_Waiting', array('id' => $entity->getId())));
+			elseif($form->get('save')->isClicked())
+				return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 			elseif($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 				return $this->redirect($this->generateUrl('Profile_Show'));
 			

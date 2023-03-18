@@ -81,6 +81,7 @@ class TestimonyType extends AbstractType
 				'translation_domain' => 'validators'
 			));
 		}
+
 		$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
 			$form = $event->getForm();
 

@@ -36,6 +36,11 @@
 {% endblock %}
 
 {% block APBlog_body %}
+	<div class="alert alert-info"><i class="fas fa-ghost"></i> {{ "testimony.new.Introduction"|trans([], "validators") }}</div>
+
+	{% import "testimony/TestimonyAdmin/macro_testimony.html.twig" as macro_testimony %}
+	{{ macro_testimony.location_selector(form) }}
+
 	{% include 'index/Licence/showColorboxModal.html.twig' %}
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}new-testimony.jpg" alt="Dream" width="550" /></p>
@@ -43,15 +48,24 @@
 	<hr class="hr2">
 	{{ form_start(form, {'action': path('Testimony_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "testimony.new.Title"|trans([], "validators") ) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
+			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "testimony.new.Title"|trans([], "validators") ) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>#}
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "testimony.new.Testimony"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "testimony.new.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "testimony.new.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>#}
+			
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sightingDate, "testimony.new.SightingDate"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.sightingDate) }}{{ form_widget(form.sightingDate) }}</div>
+			
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "testimony.new.Country"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'}}) }}</div>
+			
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.location_selector, "testimony.new.Location"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.location_selector) }}{{ form_widget(form.location_selector) }}</div>
 			{% if app.user is null %}
-				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "testimony.new.Pseudo"|trans([], "validators")) }}</div>
-				<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}</div>
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "testimony.new.Country"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}</div>
 
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.emailAuthor, "testimony.new.EmailAuthor"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">{{ form_errors(form.emailAuthor) }}{{ form_widget(form.emailAuthor, {'attr':{'class' : 'form-control'}}) }}</div>
@@ -62,17 +76,26 @@
 					<p id="anonymously_message"></p>
 				</div>
 			{% endif %}
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "testimony.new.Licence"|trans([], "validators")) }}</div>
+			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "testimony.new.Licence"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">
 				{{ form_errors(form.licence) }}{{ form_widget(form.licence, {'attr':{'class' : 'form-control'}}) }}
 				<p><a href="" id="help_licence_link">{{ "licence.showColorbox.WhatLicensesChoose"|trans([], "validators") }}</a></p>
-			</div>
+			</div>#}
 			{#
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
 			#}
+
+			{% if app.user is null %}
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.emailAuthor, "testimony.admin.EmailAuthor"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">
+					<div class="alert alert-warning"><i class="fas fa-at"></i> {{ "testimony.new.EmailConfidential"|trans([], "validators") }}</div>
+					{{ form_errors(form.emailAuthor) }}
+					{{ form_widget(form.emailAuthor, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}
+				</div>
+			{% endif %}
 		</div>
-		
+
 		<div class="clearfix">
 			<div class="mt-3">
 				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -81,6 +104,7 @@
 				{% endif %}
 				<div class="float-right">
 					{{ form_widget(form.nextStep, { 'label': "testimony.new.NextStep"|trans([], "validators") }) }}
+					{{ form_widget(form.save, { 'label': "testimony.addFile.Finish"|trans([], "validators") }) }}
 				</div>
 			</div>
 		</div>
