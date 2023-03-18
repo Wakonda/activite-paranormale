@@ -16,21 +16,22 @@
 				$('#showColorboxLicencesModal').modal('show');
 				e.preventDefault();
 			});
-
+		});
+		
+		document.addEventListener('DOMContentLoaded', function() {
 			function publishAnonymously(value)
 			{
 				if(value == 1)
-					$("p#anonymously_message").html("{{ 'testimony.new.AnonymousMessage'|trans([], 'validators') }}");
+					document.querySelector("div#anonymously_message").innerHTML = "<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'testimony.new.AnonymousMessage'|trans([], 'validators') }}</div>";
 				else
-					$("p#anonymously_message").html("");
+					document.querySelector("div#anonymously_message").innerHTML = "";
 			}
 			
-			$("select#{{ form.vars.name }}_isAnonymous").change(function()
-			{
-				publishAnonymously($(this).val());
+			document.querySelector("select#{{ form.vars.name }}_isAnonymous").addEventListener("change", (e) => {
+				publishAnonymously(e.target.value);
 			});
 			
-			publishAnonymously($("select#{{ form.vars.name }}_isAnonymous").val());
+			publishAnonymously(document.querySelector("select#{{ form.vars.name }}_isAnonymous").value);
 		});
 	</script>
 {% endblock %}
@@ -73,7 +74,7 @@
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.isAnonymous, "testimony.new.IsAnonymous"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">
 					{{ form_errors(form.isAnonymous) }}{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-control'}}) }}
-					<p id="anonymously_message"></p>
+					<div id="anonymously_message"></div>
 				</div>
 			{% endif %}
 			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "testimony.new.Licence"|trans([], "validators")) }}</div>
