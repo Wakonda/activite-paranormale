@@ -34,7 +34,7 @@
 	<div class="form-table-cell">{{ entity.publicationDate|dodate(false, app.request.locale) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.PseudoUsed"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.pseudoUsed }}</div>
+	<div class="form-table-cell">{{ entity.authorToString }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.EmailAuthor"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.emailAuthor }}</div>

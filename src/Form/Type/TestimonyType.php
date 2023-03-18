@@ -27,6 +27,7 @@ class TestimonyType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];
+		$user = $options["user"];
 
         $builder
             // ->add('title', TextType::class, array('label' => 'Titre', 'required' => true/*, 'constraints' => array(new NotBlank())*/))
@@ -56,11 +57,30 @@ class TestimonyType extends AbstractType
 			->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false])
-			->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
-			->add('emailAuthor', TextType::class, ["required" => false, 'constraints' => [new Email()]])
 			->add('save', SubmitType::class, array('label' => 'Create Post'))
 			->add('addFile', SubmitType::class, array('label' => 'Create Post'));
 			
+		if(!is_object($user))
+		{
+			$builder
+				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
+				->add('emailAuthor', TextType::class, array('required' => false, 'constraints' => array(new Email())));
+		}
+		else
+		{
+			$builder->add('isAnonymous', ChoiceType::class, array(
+				'choices'   => array(
+					'testimony.new.PublishedAnonymously' => 1,
+					'testimony.new.PostedWithMyUserAccount' => 0
+				),
+				'multiple'  => false,
+				'expanded'  => false,
+				'constraints' => array(new NotBlank()),
+				'placeholder' => false,
+				'data' => 0,
+				'translation_domain' => 'validators'
+			));
+		}
 		$builder->addEventListener(FormEvents::PRE_SUBMIT, function (FormEvent $event) {
 			$form = $event->getForm();
 
@@ -71,6 +91,15 @@ class TestimonyType extends AbstractType
 					TextType::class, 
 					['required' => false, 'mapped' => false]
 				);
+			}
+		});
+
+		$builder->addEventListener(FormEvents::SUBMIT, function (FormEvent $event) {
+			$form = $event->getForm();
+
+			if ($form->has('location_selector')) {
+				$form->remove('location_selector');
+				$form->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false]);
 			}
 		});
     }
@@ -84,7 +113,8 @@ class TestimonyType extends AbstractType
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'App\Entity\Testimony',
-			'locale' => null
+			'locale' => null,
+			'user' => null
 		));
 	}
 }

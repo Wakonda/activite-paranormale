@@ -7,6 +7,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Security;
 
 use App\Entity\Testimony;
 use App\Entity\TestimonyTags;
@@ -48,15 +50,14 @@ class TestimonyController extends AbstractController
     }
 	
 	// USER PARTICIPATION
-    public function newAction(Request $request)
+    public function newAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new Testimony();
-		$securityUser = $this->container->get('security.authorization_checker');
 		
 		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 		
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $securityUser]);
+		$user = $security->getUser();
+        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
 
         return $this->render('testimony/Testimony/new.html.twig', array(
             'entity' => $entity,
@@ -64,7 +65,7 @@ class TestimonyController extends AbstractController
         ));
     }
 
-    public function createAction(Request $request, SessionInterface $session)
+    public function createAction(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
 		return $this->generateCreateUpdate($request, $session);
     }
@@ -74,10 +75,9 @@ class TestimonyController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $security->getUser();
 		
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or $session->get("testimony") != $entity->getId())
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$authorizationChecker->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or $session->get("testimony") != $entity->getId())
 			throw new \Exception("You are not authorized to edit this document.");
 
 		return $this->render('testimony/Testimony/addFile.html.twig', array('entity' => $entity));
@@ -108,10 +108,10 @@ class TestimonyController extends AbstractController
         ));
     }
 
-	public function generateCreateUpdate(Request $request, SessionInterface $session, $id = 0)
+	public function generateCreateUpdate(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $security->getUser();
 		
 		if(empty($id))
 			$entity  = new Testimony();
@@ -123,15 +123,14 @@ class TestimonyController extends AbstractController
 
 		}
 
-		$securityUser = $this->container->get('security.authorization_checker');
-        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $securityUser]);
+        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
 		
-		if($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
+		if($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Draft', 'language' => $language));
-		elseif($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
+		elseif($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Draft', 'language' => $language));
 		else
 			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
@@ -140,9 +139,7 @@ class TestimonyController extends AbstractController
 		$entity->setLanguage($language);
 
 		if(is_object($user))
-		{
 			$entity->setAuthor($user);
-		}
 		else
 		{
 			$anonymousUser = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
@@ -157,14 +154,10 @@ class TestimonyController extends AbstractController
 			
 			$this->postValidationAction($form, $entity);
 			
-			if($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
-			{
+			if($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 				return $this->redirect($this->generateUrl('Testimony_Waiting', array('id' => $entity->getId())));
-			}
-			elseif($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
-			{
+			elseif($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 				return $this->redirect($this->generateUrl('Profile_Show'));
-			}
 			
 			$session->set('testimony', $entity->getId());
 			
@@ -190,18 +183,17 @@ class TestimonyController extends AbstractController
         ));
 	}
 	
-	public function validateAction(Request $request, SessionInterface $session, $id)
+	public function validateAction(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(Testimony::class)->find($id);
 		
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $security->getUser();
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or (!$securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $session->get("testimony") != $entity->getId()))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$authorizationChecker->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or (!$authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $session->get("testimony") != $entity->getId()))
 			throw new \Exception("You are not authorized to edit this document.");
 		
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
@@ -214,10 +206,9 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
-		$securityUser = $this->container->get('security.authorization_checker');
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $security->getUser();
 		$em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository(Testimony::class)->find($id);
@@ -225,10 +216,10 @@ class TestimonyController extends AbstractController
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
-		if($entity->getState()->getDisplayState() == 1 or ($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $user->getId() != $entity->getAuthor()->getId()))
+		if($entity->getState()->getDisplayState() == 1 or ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new \Exception("You are not authorized to edit this article.");
 
-        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $securityUser]);
+        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
 
         return $this->render('testimony/Testimony/new.html.twig', array(
             'entity' => $entity,

@@ -51,8 +51,7 @@ class TestimonyUserParticipationType extends AbstractType
 		{
 			$builder
 				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
-				->add('emailAuthor', TextType::class, array('required' => false, 'constraints' => array(new Email())))
-				;
+				->add('emailAuthor', TextType::class, array('required' => false, 'constraints' => array(new Email())));
 		}
 		else
 		{

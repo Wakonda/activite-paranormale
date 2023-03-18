@@ -136,7 +136,7 @@ class TestimonyAdminController extends AdminGenericController
 			
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
-			$row[] = $entity->getPseudoUsed();
+			$row[] = $entity->authorToString();
 			$row[] = $entity->getState()->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getWritingDate());
 			$row[] = "

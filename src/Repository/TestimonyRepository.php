@@ -110,11 +110,16 @@ class TestimonyRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.pseudoUsed', 's.title', 'c.writingDate', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.pseudoUsed', 's.title', 'c.writingDate', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if($sortByColumn[0] == 2) {
+			$qb->leftjoin("c.author", "ca")
+			   ->orderBy("IF(c.pseudoUsed IS NULL, ca.username, c.pseudoUsed)", $sortDirColumn[0]);
+		}
 
 		if(!empty($sSearch))
 		{
@@ -169,7 +174,7 @@ class TestimonyRepository extends MappedSuperclassBaseRepository
 
 		$nextEntity = $qb->getQuery()->getOneOrNullResult();
 
-		return array("previous" => $previousEntity, "next" => $nextEntity);
+		return ["previous" => $previousEntity, "next" => $nextEntity];
 	}
 
 	// For mobile

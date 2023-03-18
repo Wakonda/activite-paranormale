@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Security\Core\Security;
 
 use App\Form\Type\TestimonyType;
 use App\Entity\Testimony;
@@ -71,22 +72,25 @@ class TestimonyMobileController extends AbstractController
 		));
 	}
 
-	public function newAction(Request $request)
+	public function newAction(Request $request, Security $security)
 	{
 		$entity = new Testimony();
 		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
-		$form = $this->createForm(TestimonyType::class, $entity, array('locale' => $request->getLocale()));
 
+		$user = $security->getUser();
+		$form = $this->createForm(TestimonyType::class, $entity, ['locale' => $request->getLocale(), "user" => $user]);
+		
 		return $this->render('mobile/Testimony/new.html.twig', array('form' => $form->createView()));
 	}
 
-	public function createAction(Request $request, TranslatorInterface $translator)
+	public function createAction(Request $request, TranslatorInterface $translator, Security $security)
 	{
 		$entity  = new Testimony();
-		$form = $this->createForm(TestimonyType::class, $entity, array('locale' => $request->getLocale()));
+		$user = $security->getUser();
+		$form = $this->createForm(TestimonyType::class, $entity, ['locale' => $request->getLocale(), "user" => $user]);
 
 		$form->handleRequest($request);
-// dd($_POST, $request->request->all());		
+	
 		if ($form->isSubmitted() && $form->isValid())
 		{
 			$em = $this->getDoctrine()->getManager();
@@ -95,9 +99,15 @@ class TestimonyMobileController extends AbstractController
 
 			$entity->setState($state);
 			$entity->setLanguage($language);
-			$anonymousUser = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
-			$entity->setAuthor($anonymousUser);
-			$entity->setIsAnonymous(1);
+			
+			if(is_object($user))
+				$entity->setAuthor($user);
+			else
+			{
+				$anonymousUser = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+				$entity->setAuthor($anonymousUser);
+				$entity->setIsAnonymous(1);
+			}
 			
 			$em->persist($entity);
 			$em->flush();
@@ -105,7 +115,7 @@ class TestimonyMobileController extends AbstractController
 			if($form->get('addFile')->isClicked())
 				return $this->redirect($this->generateUrl('ap_testimonymobile_addfile', array('id' => $entity->getId())));
 
-			$this->addFlash('success', $translator->trans('testimony.validate.ThankForYourParticipationText', array(), 'validators'));
+			$this->addFlash('success', $translator->trans('testimony.validate.ThankForYourParticipationText', [], 'validators'));
 
 			return $this->redirect($this->generateUrl('ap_newsmobile_index', array('page' => 1)));
 		}
@@ -122,8 +132,8 @@ class TestimonyMobileController extends AbstractController
 
 	public function validateFileAction(TranslatorInterface $translator)
 	{
-		$this->addFlash('success', $translator->trans('testimony.validate.ThankForYourParticipationText', array(), 'validators'));
+		$this->addFlash('success', $translator->trans('testimony.validate.ThankForYourParticipationText', [], 'validators'));
 			
-		return $this->redirect($this->generateUrl('ap_newsmobile_index', array('page' => 1)));
+		return $this->redirect($this->generateUrl('ap_newsmobile_index', ['page' => 1]));
 	}
 }
