@@ -67,9 +67,7 @@ class NewsUserParticipationType extends AbstractType
 		if(!is_object($user))
 		{
 			$builder
-				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
-				->add('emailAuthor', 'text', array('constraints' => array(new NotBlank(), new Email())))
-				;
+				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())));
 		}
 		else
 		{

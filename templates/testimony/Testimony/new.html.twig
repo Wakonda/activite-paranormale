@@ -18,6 +18,7 @@
 			});
 		});
 		
+		{% if form.isAnonymous is defined %}
 		document.addEventListener('DOMContentLoaded', function() {
 			function publishAnonymously(value)
 			{
@@ -33,6 +34,7 @@
 			
 			publishAnonymously(document.querySelector("select#{{ form.isAnonymous.vars.id }}").value);
 		});
+		{% endif %}
 	</script>
 {% endblock %}
 
@@ -65,11 +67,8 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.location_selector, "testimony.new.Location"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.location_selector) }}{{ form_widget(form.location_selector) }}</div>
 			{% if app.user is null %}
-				<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "testimony.new.Country"|trans([], "validators")) }}</div>
-				<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}</div>
-
-				<div class="form-table-cell form-table-cell-head">{{ form_label(form.emailAuthor, "testimony.new.EmailAuthor"|trans([], "validators")) }}</div>
-				<div class="form-table-cell">{{ form_errors(form.emailAuthor) }}{{ form_widget(form.emailAuthor, {'attr':{'class' : 'form-control'}}) }}</div>
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "testimony.new.Pseudo"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}</div>
 			{% else %}
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.isAnonymous, "testimony.new.IsAnonymous"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">

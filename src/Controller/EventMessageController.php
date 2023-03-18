@@ -137,10 +137,10 @@ class EventMessageController extends AbstractController
 	
 	public function tabAction(Request $request, $id, $theme)
 	{
-		return $this->render('page/EventMessage/tab.html.twig', array(
+		return $this->render('page/EventMessage/tab.html.twig', [
 			'themeDisplay' => $theme,
 			'themeId' => $id
-		));	
+		]);	
 	}
 
 	public function tabDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $themeId)
@@ -167,12 +167,12 @@ class EventMessageController extends AbstractController
         $entities = $em->getRepository(EventMessage::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(EventMessage::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -225,11 +225,11 @@ class EventMessageController extends AbstractController
 		
 		$entity = $em->getRepository(EventMessage::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
-			return $this->redirect($this->generateUrl('EventMessage_Read', array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())));
+			return $this->redirect($this->generateUrl('EventMessage_Read', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]));
 
-		return $this->render('page/EventMessage/waiting.html.twig', array(
+		return $this->render('page/EventMessage/waiting.html.twig', [
             'entity' => $entity,
-        ));
+        ]);
 	}
 
     public function editAction(Request $request, $id)
@@ -248,10 +248,10 @@ class EventMessageController extends AbstractController
 
         $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
 
-        return $this->render('page/EventMessage/new.html.twig', array(
+        return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
 	public function updateAction(Request $request, $id)
@@ -273,8 +273,8 @@ class EventMessageController extends AbstractController
 		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 		
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
-		$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 		
 		$entity->setState($state);
 		$em->persist($entity);
@@ -302,19 +302,21 @@ class EventMessageController extends AbstractController
         $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
         $form->handleRequest($request);
 		
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
-		$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 		
 		$entity->setState($state);
 		$entity->setLanguage($language);
+		
+		$entity->setType(EventMessage::EVENT_TYPE);
 
 		if(is_object($user))
 		{
 			if($entity->getIsAnonymous() == 1)
 			{
 				if($form->get('validate')->isClicked())
-					$user = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+					$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
 				
 				$entity->setAuthor($user);
 				$entity->setPseudoUsed("Anonymous");
@@ -327,13 +329,16 @@ class EventMessageController extends AbstractController
 		}
 		else
 		{
-			$user = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+			$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
 			$entity->setAuthor($user);
 			$entity->setIsAnonymous(0);
 		}
 
         if ($form->isValid())
 		{
+			$generator = new \Ausi\SlugGenerator\SlugGenerator;
+			$entity->setInternationalName($generator->generate($entity->getTitle()).uniqid());
+			
 			if(is_object($ci = $entity->getIllustration()))
 			{
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();
@@ -364,7 +369,7 @@ class EventMessageController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
-		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
+		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
 

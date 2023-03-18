@@ -16,19 +16,21 @@
 	
 	<script>
 		document.addEventListener('DOMContentLoaded', function() {
-			function publishAnonymously(value)
-			{
-				if(value == 1)
-					document.querySelector("div#anonymously_message").innerHTML = "<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'news.new.AnonymousMessage'|trans([], 'validators') }}</div>";
-				else
-					document.querySelector("div#anonymously_message").innerHTML = "";
-			}
-			
-			document.querySelector("select#{{ form.isAnonymous.vars.id }}").addEventListener("change", (e) => {
-				publishAnonymously(e.target.value);
-			});
-			
-			publishAnonymously(document.querySelector("select#{{ form.isAnonymous.vars.id }}").value);
+			{% if form.isAnonymous is defined %}
+				function publishAnonymously(value)
+				{
+					if(value == 1)
+						document.querySelector("div#anonymously_message").innerHTML = "<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'news.new.AnonymousMessage'|trans([], 'validators') }}</div>";
+					else
+						document.querySelector("div#anonymously_message").innerHTML = "";
+				}
+				
+				document.querySelector("select#{{ form.isAnonymous.vars.id }}").addEventListener("change", (e) => {
+					publishAnonymously(e.target.value);
+				});
+				
+				publishAnonymously(document.querySelector("select#{{ form.isAnonymous.vars.id }}").value);
+			{% endif %}
 			
 			var map = L.map('map-canvas').setView([43.009198, -97.106824], 15);
 
