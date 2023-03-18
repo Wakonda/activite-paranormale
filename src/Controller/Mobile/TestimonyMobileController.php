@@ -99,8 +99,8 @@ class TestimonyMobileController extends AbstractController
 
 			$entity->setState($state);
 			$entity->setLanguage($language);
-			
-			if(is_object($user))
+
+			if(is_object($user) and !$entity->getIsAnonymous())
 				$entity->setAuthor($user);
 			else
 			{

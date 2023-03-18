@@ -11,6 +11,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\Security\Core\Security;
 
 use App\Form\Type\SearchEngineType;
 use App\Service\SearchEngine;
@@ -228,13 +229,13 @@ class NewsMobileController extends AbstractController
         return $this->render('mobile/Page/page.html.twig', array('entity' => $entity));
     }
 
-	public function newAction(Request $request)
+	public function newAction(Request $request, Security $security)
 	{
         $entity = new News();
 
 		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $security->getUser()]);
 
         return $this->render('mobile/News/new.html.twig', array(
             'entity' => $entity,
@@ -242,14 +243,14 @@ class NewsMobileController extends AbstractController
         ));
 	}
 
-	public function createAction(Request $request, TranslatorInterface $translator)
+	public function createAction(Request $request, TranslatorInterface $translator, Security $security)
 	{
-		$securityUser = $this->container->get('security.authorization_checker');
 		$em = $this->getDoctrine()->getManager();
 
 		$entity = new News();
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
+		$user = $security->getUser();
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ['language' => $request->getLocale(), "user" => $user]);
         $form->handleRequest($request);
 		
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
@@ -259,12 +260,17 @@ class NewsMobileController extends AbstractController
 		$entity->setState($state);
 		$entity->setLanguage($language);
 
-		$user = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
-		$entity->setAuthor($user);
-		$entity->setIsAnonymous(0);
-
         if ($form->isValid())
 		{
+			if(is_object($user) and !$entity->getIsAnonymous())
+				$entity->setAuthor($user);
+			else
+			{
+				$anonymousUser = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+				$entity->setAuthor($anonymousUser);
+				$entity->setIsAnonymous(1);
+			}
+			
 			if(is_object($ci = $entity->getIllustration()))
 			{
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();

@@ -15,21 +15,20 @@
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>	
 	
 	<script>
-		$(function() {
+		document.addEventListener('DOMContentLoaded', function() {
 			function publishAnonymously(value)
 			{
 				if(value == 1)
-					$("p#anonymously_message").html("{{ 'news.new.AnonymousMessage'|trans([], 'validators') }}");
+					document.querySelector("div#anonymously_message").innerHTML = "<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'news.new.AnonymousMessage'|trans([], 'validators') }}</div>";
 				else
-					$("p#anonymously_message").html("");
+					document.querySelector("div#anonymously_message").innerHTML = "";
 			}
 			
-			$("select#{{ form.vars.name }}_isAnonymous").change(function()
-			{
-				publishAnonymously($(this).val());
+			document.querySelector("select#{{ form.isAnonymous.vars.id }}").addEventListener("change", (e) => {
+				publishAnonymously(e.target.value);
 			});
 			
-			publishAnonymously($("select#{{ form.vars.name }}_isAnonymous").val());
+			publishAnonymously(document.querySelector("select#{{ form.isAnonymous.vars.id }}").value);
 			
 			var map = L.map('map-canvas').setView([43.009198, -97.106824], 15);
 
@@ -47,9 +46,9 @@
 
 				marker = L.marker([e.latlng.lat, e.latlng.lng]);
 				map.addLayer(marker);
-				
-				$("#{{ form.longitude.vars.id }}").val(e.latlng.lng);
-				$("#{{ form.latitude.vars.id }}").val(e.latlng.lat);
+
+				document.getElementById("{{ form.longitude.vars.id }}").value = e.latlng.lng;
+				document.getElementById("{{ form.latitude.vars.id }}").value = e.latlng.lat;
 			});
 		});
 	</script>
@@ -98,7 +97,7 @@
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.isAnonymous, "eventMessage.new.IsAnonymous"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">
 					{{ form_errors(form.isAnonymous) }}{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-control'}}) }}
-					<p id="anonymously_message"></p>
+					<div id="anonymously_message"></div>
 				</div>
 			{% endif %}
 		</div>

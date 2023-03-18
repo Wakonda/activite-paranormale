@@ -45,8 +45,8 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "news.new.Title"|trans([], "validators") ) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
 
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.abstractText, "news.new.Abstract"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.abstractText) }}{{ form_widget(form.abstractText, {'attr':{'class':'form-control'}}) }}</div>
+			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.abstractText, "news.new.Abstract"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.abstractText) }}{{ form_widget(form.abstractText, {'attr':{'class':'form-control'}}) }}</div>#}
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "news.new.Text"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
@@ -61,8 +61,9 @@
 				</div>
 			</div>
 
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "news.new.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "news.new.Theme"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>#}
+
 			{% if app.user is null %}
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "news.new.Pseudo"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}</div>
@@ -73,11 +74,12 @@
 					<p id="anonymously_message"></p>
 				</div>
 			{% endif %}
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "news.new.Licence"|trans([], "validators")) }}</div>
+
+			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "news.new.Licence"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">
 				{{ form_errors(form.licence) }}{{ form_widget(form.licence, {'attr':{'class' : 'form-control'}}) }}
 				<p><a href="" id="help_licence_link">{{ "licence.showColorbox.WhatLicensesChoose"|trans([], "validators") }}</a></p>
-			</div>
+			</div>#}
 			{#
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>

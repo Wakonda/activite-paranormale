@@ -110,7 +110,7 @@ class RegistrationFormType extends AbstractType
 			{
 				$formatArray = array('image/png', 'image/jpeg', 'image/gif');
 
-				if(!in_array($data->getAvatar()->getMimeType(), $formatArray))
+				if(!in_array($data->getAvatar()->getClientMimeType(), $formatArray))
 					$form->get('avatar')->addError(new FormError('news.error.FileFormat'));
 
 				if($data->getAvatar()->getSize() > $data->getAvatar()->getMaxFilesize())

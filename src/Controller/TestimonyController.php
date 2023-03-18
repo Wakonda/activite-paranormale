@@ -120,7 +120,6 @@ class TestimonyController extends AbstractController
 			
 			if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 				throw new \Exception("You are not authorized to edit this document.");
-
 		}
 
         $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
@@ -138,7 +137,7 @@ class TestimonyController extends AbstractController
 		$entity->setState($state);
 		$entity->setLanguage($language);
 
-		if(is_object($user))
+		if(is_object($user) and !$entity->getIsAnonymous())
 			$entity->setAuthor($user);
 		else
 		{

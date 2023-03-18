@@ -32,9 +32,9 @@ class NewsUserParticipationType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
-            ->add('abstractText', TextareaType::class, array('required' => false, 'attr' => array('class' => 'edit')))
+            // ->add('abstractText', TextareaType::class, array('required' => false, 'attr' => array('class' => 'edit')))
             ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank())))
-            ->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
+            /*->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 				'choice_label'=>'title',
 				'required' => false,
 				'query_builder' => function(\App\Repository\ThemeRepository $repository) use ($language) { return $repository->getThemeByLanguage($language);}
@@ -45,7 +45,7 @@ class NewsUserParticipationType extends AbstractType
 				'placeholder' => "",
 				'constraints' => array(new NotBlank()),
 				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-			))
+			))*/
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn')
 			))
@@ -68,7 +68,7 @@ class NewsUserParticipationType extends AbstractType
 		{
 			$builder
 				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
-				// ->add('emailAuthor', 'text', array('constraints' => array(new NotBlank(), new Email())))
+				->add('emailAuthor', 'text', array('constraints' => array(new NotBlank(), new Email())))
 				;
 		}
 		else
@@ -96,7 +96,7 @@ class NewsUserParticipationType extends AbstractType
 			{
 				$formatArray = array('image/png', 'image/jpeg', 'image/gif');
 
-				if(!in_array($data->getIllustration()->getMimeType(), $formatArray))
+				if(!in_array($data->getIllustration()->getClientMimeType(), $formatArray))
 					$form->get('illustration')->addError(new FormError('news.error.FileFormat'));
 
 				if($data->getIllustration()->getSize() > $data->getIllustration()->getMaxFilesize())

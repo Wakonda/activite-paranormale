@@ -75,7 +75,7 @@ class EventMessageUserParticipationType extends AbstractType
 			{
 				$formatArray = array('image/png', 'image/jpeg', 'image/gif');
 
-				if(!in_array($data->getPhoto()->getMimeType(), $formatArray))
+				if(!in_array($data->getPhoto()->getClientMimeType(), $formatArray))
 					$form->get('photo')->addError(new FormError('eventMessage.error.FileFormat'));
 
 				if($data->getPhoto()->getSize() > $data->getPhoto()->getMaxFilesize())
