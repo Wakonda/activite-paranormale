@@ -105,7 +105,24 @@
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" width="42" alt="fr" /></a>
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" width="42" alt="en" /></a>
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/spanishFlagMobile.png') }}" width="42" alt="es" /></a>
-      </footer>
+      
+		<div class="float-right">
+			{% if app.request.locale == "fr" %}
+				<a class="btn social-share facebook btn-sm" href="https://www.facebook.com/activiteparanormale" target="_blank"><i class="fab fa-facebook-square fa-xl"></i></a>
+				<a class="btn social-share twitter btn-sm" href="https://twitter.com/ActiviteP" target="_blank"><i class="fab fa-twitter-square fa-xl"></i></a>
+				<a class="btn social-share mastodon btn-sm" href="https://mastodon.social/web/@activiteparanormale" target="_blank"><i class="fab fa-mastodon fa-xl"></i></a>
+			{% elseif app.request.locale == "en" %}
+				<a class="btn social-share facebook btn-sm" href="https://www.facebook.com/Paranormal-Activity-1223137671144385" target="_blank"><i class="fab fa-facebook-square fa-xl"></i></a>
+				<a class="btn social-share twitter btn-sm" href="https://twitter.com/paractivityAP" target="_blank"><i class="fab fa-twitter-square fa-xl"></i></a>
+				<a class="btn social-share mastodon btn-sm" href="https://masto.nu/web/@paranormalactivity" target="_blank"><i class="fab fa-mastodon fa-xl"></i></a>
+			{% elseif app.request.locale == "es" %}
+				<a class="btn social-share facebook btn-sm" href="https://www.facebook.com/Actividad-paranormal-2263453033942094" target="_blank"><i class="fab fa-facebook-square fa-xl"></i></a>
+				<a class="btn social-share twitter btn-sm" href="https://twitter.com/ActividadAP" target="_blank"><i class="fab fa-twitter-square fa-xl"></i></a>
+				<a class="btn social-share mastodon btn-sm" href="https://masto.ai/web/@actividadparanormal" target="_blank"><i class="fab fa-mastodon fa-xl"></i></a>
+			{% endif %}
+			<a class="btn social-share github btn-sm bg-dark" href="https://github.com/Wakonda/activite-paranormale" target="_blank"><i class="fab fa-github-square fa-xl"></i></a>	
+		</div>
+	  </footer>
     </div>
 	{% block additional_javascript %}{% endblock %}
 	
