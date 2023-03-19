@@ -52,11 +52,11 @@ class NewsMobileController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 		
-		return $this->render('mobile/News/index.html.twig', array(
+		return $this->render('mobile/News/index.html.twig', [
 			'themes' => $themes,
 			'currentPage' => $page,
 			'pagination' => $pagination
-		));
+		]);
     }
 	
 	public function selectThemeForIndexNewAction(Request $request)
@@ -66,7 +66,7 @@ class NewsMobileController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
-		return new Response($this->generateUrl('ap_newsmobile_index', array('page' => 1, 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('ap_newsmobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
 	public function readAction($id)
@@ -77,9 +77,9 @@ class NewsMobileController extends AbstractController
 		if($entity->getArchive())
 			throw new GoneHttpException("Archived");
 		
-		return $this->render('mobile/News/read.html.twig', array(
+		return $this->render('mobile/News/read.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 	
 	public function searchAction(Request $request, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
@@ -218,7 +218,7 @@ class NewsMobileController extends AbstractController
     {
 		$request->setLocale($language);
 		$session->set('_locale', $language);
-		return $this->redirect($this->generateUrl('ap_newsmobile_index', array("page" => 1)));
+		return $this->redirect($this->generateUrl('ap_newsmobile_index', ["page" => 1]));
     }
 
 	public function pageAction(Request $request, String $page)
@@ -226,7 +226,7 @@ class NewsMobileController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $page);
 
-        return $this->render('mobile/Page/page.html.twig', array('entity' => $entity));
+        return $this->render('mobile/Page/page.html.twig', ['entity' => $entity]);
     }
 
 	public function newAction(Request $request, Security $security)
@@ -237,10 +237,10 @@ class NewsMobileController extends AbstractController
 
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $security->getUser()]);
 
-        return $this->render('mobile/News/new.html.twig', array(
+        return $this->render('mobile/News/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
 	}
 
 	public function createAction(Request $request, TranslatorInterface $translator, Security $security)
@@ -253,9 +253,9 @@ class NewsMobileController extends AbstractController
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ['language' => $request->getLocale(), "user" => $user]);
         $form->handleRequest($request);
 		
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
-		$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 		
 		$entity->setState($state);
 		$entity->setLanguage($language);
@@ -266,7 +266,7 @@ class NewsMobileController extends AbstractController
 				$entity->setAuthor($user);
 			else
 			{
-				$anonymousUser = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+				$anonymousUser = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
 				$entity->setAuthor($anonymousUser);
 				$entity->setIsAnonymous(1);
 			}
@@ -287,14 +287,14 @@ class NewsMobileController extends AbstractController
 			$em->persist($entity);
 			$em->flush();
 
-			$this->addFlash('success', $translator->trans('news.validate.ThankForYourParticipationText', array(), 'validators'));
+			$this->addFlash('success', $translator->trans('news.validate.ThankForYourParticipationText', [], 'validators'));
 			
 			return $this->redirect($this->generateUrl('ap_newsmobile_index'));
         }
 
-        return $this->render('news/News/new.html.twig', array(
+        return $this->render('mobile/News/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
 	}
 }

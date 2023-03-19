@@ -35,11 +35,11 @@ class PhotoMobileController extends AbstractController
 		
 		$pagination->setCustomParameters(['align' => 'center']);
 		
-		return $this->render('mobile/Photo/index.html.twig', array(
+		return $this->render('mobile/Photo/index.html.twig', [
 			'pagination' => $pagination,
 			'currentPage' => $page,
 			'themes' => $themes
-		));
+		]);
     }
 	
 	public function selectThemeForIndexPhotoAction(Request $request)
@@ -49,7 +49,7 @@ class PhotoMobileController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
-		return new Response($this->generateUrl('ap_photomobile_index', array('page' => 1, 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('ap_photomobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 	
 	public function readAction($id)
@@ -57,8 +57,8 @@ class PhotoMobileController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Photo::class)->find($id);
 		
-		return $this->render('mobile/Photo/read.html.twig', array(
+		return $this->render('mobile/Photo/read.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 }

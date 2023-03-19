@@ -31,9 +31,9 @@ class NewsUserParticipationType extends AbstractType
 		$securityUser = $options["securityUser"];
 
         $builder
-            ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => [new NotBlank()]))
             // ->add('abstractText', TextareaType::class, array('required' => false, 'attr' => array('class' => 'edit')))
-            ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => array(new NotBlank())))
+            ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true, 'constraints' => [new NotBlank()]))
             /*->add('theme', EntityType::class, array('label' => 'Thème', 'class'=>'App\Entity\Theme',
 				'choice_label'=>'title',
 				'required' => false,
@@ -43,7 +43,7 @@ class NewsUserParticipationType extends AbstractType
 				'choice_label'=>'title', 
 				'required' => true,
 				'placeholder' => "",
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
 			))*/
 			->add('validate', SubmitType::class, array(
@@ -67,7 +67,7 @@ class NewsUserParticipationType extends AbstractType
 		if(!is_object($user))
 		{
 			$builder
-				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())));
+				->add('pseudoUsed', TextType::class, array('constraints' => [new NotBlank()]));
 		}
 		else
 		{
@@ -78,7 +78,7 @@ class NewsUserParticipationType extends AbstractType
 				),
 				'multiple'  => false,
 				'expanded'  => false,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'placeholder' => false,
 				'data' => 0,
 				'translation_domain' => 'validators'
@@ -92,7 +92,7 @@ class NewsUserParticipationType extends AbstractType
 
 			if(is_object($data->getIllustration()))
 			{
-				$formatArray = array('image/png', 'image/jpeg', 'image/gif');
+				$formatArray = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
 				if(!in_array($data->getIllustration()->getClientMimeType(), $formatArray))
 					$form->get('illustration')->addError(new FormError('news.error.FileFormat'));
@@ -110,12 +110,12 @@ class NewsUserParticipationType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\News',
 			'translation_domain' => 'validators',
 			'language' => 'fr',
 			'user' => null,
 			'securityUser' => null
-		));
+		]);
 	}
 }
