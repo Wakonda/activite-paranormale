@@ -53,7 +53,12 @@ class BookRepository extends MappedSuperclassBaseRepository
 
 	public function countForDoublons($entity)
 	{
-		$authorIds = array_map(function($e) { return $e->getId(); }, $entity->getAuthors()->getValues());
+		$authorIds = [];
+
+		if(!empty($datas = $entity->getAuthors())) {
+			$datas = is_array($datas) ? $datas : $datas->getValues();
+			$authorIds = array_map(function($e) { return $e->getId(); }, $datas);
+		}
 
 		$qb = $this->createQueryBuilder("b");
 		$qb->select("count(b)")
