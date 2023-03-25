@@ -336,17 +336,22 @@ class BiographyAdminController extends AdminGenericController
 		$form = $this->createForm($formType, $entity, ['action' => 'new', 'locale' => $request->getLocale()]);
 
 		if ($request->isMethod(Request::METHOD_POST)){
-			$twig = 'quotation/BiographyAdmin/quick.html.twig';
+			$form->handleRequest($request);
+			$this->validationForm($request, $ccv, $translator, $form, $entity, $entity);
 
-			$res = $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $this->formName)]);
-			
-			if ("Symfony\Component\HttpFoundation\RedirectResponse" == get_class($res)) {
+			if ($form->isValid()) {
+				$this->uploadFile($entity, $form);
+				$em->persist($entity);
+				$em->flush();
+				
 				$path = (new Biography())->getAssetImagePath();
 
 				$entities = $em->getRepository(Biography::class)->getBiographyByWikidataOrTitle($entity->getTitle(), $entity->getWikidata());
 				$data = $this->render("quotation/BiographyAdmin/quick_data.html.twig", ["entity" => $entities[0], "path" => $path, "entityNew" => $entity]);
 				return new JsonResponse(["state" => "success", "data" => $data->getContent()]);
 			} else {
+				$twig = 'quotation/BiographyAdmin/quick.html.twig';
+				$res = $this->render($twig, ['entity' => $entity, 'form' => $form->createView(), "locale" => $request->getLocale(), "title" => $title, "wikidata" => $wikidata, 'internationalName' => $internationalName]);
 				return new JsonResponse(["state" => "failed", "data" => $res]);
 			}
 		}

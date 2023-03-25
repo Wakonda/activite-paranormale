@@ -316,7 +316,7 @@ abstract class AdminGenericController extends AbstractController
 		return $abbreviation;
 	}
 	
-	private function uploadFile($entity, $form, $entityOriginal = null)
+	protected function uploadFile($entity, $form, $entityOriginal = null)
 	{
 		$regex = '/[^a-zA-Z0-9_-]+/';
 

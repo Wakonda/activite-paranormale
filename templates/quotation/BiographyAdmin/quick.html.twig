@@ -1,67 +1,73 @@
-{{ encore_entry_link_tags('app_admin') }}
+<!doctype html>
+<html>
+	<head>
+		{{ encore_entry_link_tags('app_admin') }}
 
-{{ encore_entry_script_tags('app_admin') }}
-<style>
-	body {
-		background: white !important;
-	}
-	.back-to-top {
-		display: none !important;
-	}
-</style>
-
-{% import "quotation/BiographyAdmin/macro_biography.html.twig" as macro_biography %}
-
-<script>
-	$(function()
-	{
-		{{ macro_biography.updateListForm(form) }}
-	});
-</script>
-
-{% import "index/macro/macro_index.html.twig" as macro_index %}
-{{ macro_index.tinymce_init_js() }}
-{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
-{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
-
-{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
-{{ form_start(form, {'action': '', 'attr':{id: 'new-biography', 'class' : 'form-horizontal bg-white', novalidate: 'novalidate'}}) }}
-<div class="form-table form-table-4cols form-table-collapse">
-	{% include 'quotation/BiographyAdmin/_form.html.twig' %}
-</div>
-<button class="btn btn-success mt-2" type="submit">{{ "admin.general.Create"|trans([], "validators") }}</button>
-{{ form_rest(form) }}
-
-<script>
-	document.querySelector("#new-biography").addEventListener("submit", (e) => {
-		e.preventDefault();
-		
-		for (var i = 0; i < tinymce.editors.length; i++) {
-			tinymce.editors[i].save();
-		}
-		
-		let form = document.querySelector('#new-biography');
-		let formData = new FormData(form);
-			
-		var xmlHttp = new XMLHttpRequest();
-		xmlHttp.onreadystatechange = function()
-		{
-			if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
-			{
-				let data = JSON.parse(xmlHttp.responseText);
-
-				if(data.state == "success") {
-					window.parent.document.getElementById("content-biography").innerHTML = data.data;
-					
-					if(window.parent.document.getElementById("content-biography-container") != null)
-						window.parent.document.getElementById("content-biography-container").classList.remove("d-none");
-					window.parent.document.getElementById("iframe-container").classList.add("d-none");
-				}
+		{{ encore_entry_script_tags('app_admin') }}
+		<style>
+			body {
+				background: white !important;
 			}
-		}
+			.back-to-top {
+				display: none !important;
+			}
+		</style>
 
-		xmlHttp.overrideMimeType("application/json");
-		xmlHttp.open("post", "{{ path('Biography_Admin_Quick', {locale: locale, title: title, internationalName: internationalName, wikidata: wikidata}) }}"); 
-		xmlHttp.send(formData);
-	});
-</script>
+		{% import "quotation/BiographyAdmin/macro_biography.html.twig" as macro_biography %}
+
+		<script>
+			$(function()
+			{
+				{{ macro_biography.updateListForm(form) }}
+			});
+		</script>
+	</head>
+	<body>
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+		{{ macro_index.tinymce_init_js() }}
+		{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+		{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
+
+		{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+		{{ form_start(form, {'action': '', 'attr':{id: 'new-biography', 'class' : 'form-horizontal bg-white', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			{% include 'quotation/BiographyAdmin/_form.html.twig' %}
+		</div>
+		<button class="btn btn-success mt-2" type="submit">{{ "admin.general.Create"|trans([], "validators") }}</button>
+		{{ form_rest(form) }}
+
+		<script>
+			document.querySelector("#new-biography").addEventListener("submit", (e) => {
+				e.preventDefault();
+				
+				/*for (var i = 0; i < tinymce.editors.length; i++) {
+					tinymce.editors[i].save();
+				}*/
+				
+				let form = document.querySelector('#new-biography');
+				let formData = new FormData(form);
+					
+				var xmlHttp = new XMLHttpRequest();
+				xmlHttp.onreadystatechange = function()
+				{
+					if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+					{
+						let data = JSON.parse(xmlHttp.responseText);
+
+						if(data.state == "success") {
+							window.parent.document.getElementById("content-biography").innerHTML = data.data;
+							
+							if(window.parent.document.getElementById("content-biography-container") != null)
+								window.parent.document.getElementById("content-biography-container").classList.remove("d-none");
+							window.parent.document.getElementById("iframe-container").classList.add("d-none");
+						}
+					}
+				}
+
+				xmlHttp.overrideMimeType("application/json");
+				xmlHttp.open("post", "{{ path('Biography_Admin_Quick', {locale: locale, title: title, internationalName: internationalName, wikidata: wikidata}) }}"); 
+				xmlHttp.send(formData);
+			});
+		</script>
+	</body>
+</html>

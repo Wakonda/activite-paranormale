@@ -396,7 +396,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getResult();
 	}
 	
-	public function getBiographyByWikidataOrTitle(string $title, string $wikidata)
+	public function getBiographyByWikidataOrTitle(?string $title = null, ?string $wikidata = null)
 	{
 		if(empty($title) and empty($wikidata))
 			return [];
