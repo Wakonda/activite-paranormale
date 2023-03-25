@@ -35,20 +35,23 @@
 {% endif %}
 
 <script>
-	$(".page").on("click", function(event)
-	{
-		var DATA = 'page=' + $(this).text();
-		$.ajax(
+	[...document.querySelectorAll(".page")].forEach(el => el.addEventListener("click", (e) => {
+		e.preventDefault();
+		
+		var DATA = 'page=' + e.target.innerText;
+		
+		var xmlHttp = new XMLHttpRequest();
+		xmlHttp.onreadystatechange = function()
 		{
-			type: "POST",
-			url: "{{ path('APCommentBundle_pagination', { 'idClassName' : idClassName, 'className': className }) }}",
-			data: DATA,
-			cache: false,
-			success: function(data)
+			if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			{
-				$('#list_messages').html(data);
+				document.getElementById("list_messages").innerHTML = "";
+				document.querySelector("#list_messages").appendChild(document.createRange().createContextualFragment(xmlHttp.responseText));
 			}
-		});
-		event.preventDefault();
-	});
+		}
+
+		xmlHttp.open("post", "{{ path('APCommentBundle_pagination', { 'idClassName' : idClassName, 'className': className }) }}", true); 
+		xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xmlHttp.send(DATA);
+	}));
 </script>
