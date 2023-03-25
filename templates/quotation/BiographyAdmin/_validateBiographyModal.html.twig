@@ -45,7 +45,7 @@
 			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-secondary mt-2 float-left choose-biography" title="{{ 'biography.admin.YouMustValidateThisBiography'|trans([], 'validators') }}"><i class="far fa-minus-square state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 
 		var $duplicateButton = new DOMParser().parseFromString('<button type="button" class="btn btn-warning mt-2 mr-2 float-left duplicate-biography" title="{{ 'biography.admin.Duplicate'|trans([], 'validators') }}"><i class="fas fa-clone"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
-		$tagFormLi.appendChild($duplicateButton);///
+		$tagFormLi.appendChild($duplicateButton);
 		
 		$duplicateButton.addEventListener('click', (e) => {
 			var idContainer = addNewBiography(document.querySelector('.add-another-collection-widget').getAttribute("data-list-selector"));

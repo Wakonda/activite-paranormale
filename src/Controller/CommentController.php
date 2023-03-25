@@ -121,7 +121,7 @@ class CommentController extends AbstractController
 		else
 			$page = 1;
 
-		if(!is_object($user)) // S'il s'agit d'un utilisateur connecté
+		if(!is_object($user))
 			$anonymousComment = true;
 		else
 			$anonymousComment = false;
@@ -148,7 +148,7 @@ class CommentController extends AbstractController
 
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
         
-		if(!is_object($user)) // S'il s'agit d'un utilisateur connecté
+		if(!is_object($user))
 		{
 			$anonymousComment = true;
 		}
@@ -159,16 +159,16 @@ class CommentController extends AbstractController
 		$commentType = $this->createForm(CommentType::class, $entity, ['userType' => $anonymousComment]);
         
         $commentType->handleRequest($request);
-
+// dd($request->isXmlHttpRequest());
 		if($request->isXmlHttpRequest())
 		{
             if($commentType->isValid())
             {
-				if(!is_object($user)) // S'il s'agit d'un utilisateur connecté
+				if(!is_object($user))
 				{
 					$entity->setAnonymousComment(1);
 				}
-				else // Non anonyme
+				else
 				{
 					$entity->setAnonymousComment(0);
 					$entity->setAuthorComment($user);

@@ -86,7 +86,7 @@
 				}
 			});
 		
-			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", function(e) {
+			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
 				e.preventDefault();
 				oTable.ajax.reload();
 			});

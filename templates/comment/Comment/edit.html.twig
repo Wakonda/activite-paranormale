@@ -1,7 +1,7 @@
 {% import "index/macro/macro_index.html.twig" as macro_index %}
 
 {{ macro_index.tinymce_init_js() }}
-{{ macro_index.tinymce_js(commentType.vars.name~'_messageComment') }}
+{{ macro_index.tinymce_js(commentType.messageComment.vars.id) }}
 
 <div id="comment_refresh">
 	{% form_theme commentType 'index/CSS/form_div_layout.html.twig' %}
@@ -31,24 +31,45 @@
 	<div id="list_messages">
 		{% include 'comment/Comment/list.html.twig' %}
 	</div>
-	
-	<script>
-		$("#{{ commentType.vars.id }}").submit(function(event)
-		{
-			var DATA = $('#{{ commentType.vars.id }}').serialize();
 
-			$.ajax(
-			{
-				type: "POST",
-				url: "{{ path('APCommentBundle_create', { 'idClassName' : idClassName, 'className': className }) }}",
-				data: DATA,
-				cache: false,
-				success: function(data)
-				{
-					$('#comment_refresh').html(data);
-				}
-			});
-			event.preventDefault();
+	<script>
+		document.querySelector("#{{ commentType.vars.id }}").addEventListener("submit", (e) => {
+			submitForm(e)
 		});
+
+		function submitForm(e)
+		{
+			e.preventDefault();
+			
+			let form = document.querySelector('#{{ commentType.vars.id }}');
+			let formData = new FormData(form);
+
+			document.querySelector(".submitcomment").disabled = true;
+			document.querySelector(".submitcomment").innerHTML = "<i class='fas fa-arrows-rotate fa-spin'></i>";
+
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function()
+			{
+				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+				{
+					document.getElementById('comment_refresh').innerHTML = xmlHttp.responseText;
+					tinymce.remove("#{{ commentType.messageComment.vars.id }}")
+					loadTinyMCE{{ commentType.messageComment.vars.id }}("#{{ commentType.messageComment.vars.id }}")
+					
+					document.querySelector("#{{ commentType.vars.id }}").addEventListener("submit", (e) => {
+						e.preventDefault()
+						
+						submitForm(e)
+					});
+
+					document.querySelector(".submitcomment").disabled = false;
+					document.querySelector(".submitcomment").innerHTML = '{{ "comment.edit.Validate"|trans([], "validators") }}';
+				}
+			}
+
+			xmlHttp.open("post", "{{ path('APCommentBundle_create', { 'idClassName' : idClassName, 'className': className }) }}"); 
+			xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+			xmlHttp.send(formData);
+		}
 	</script>
 </div>
