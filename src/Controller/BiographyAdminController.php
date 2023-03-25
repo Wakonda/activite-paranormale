@@ -335,7 +335,7 @@ class BiographyAdminController extends AdminGenericController
 		
 		$form = $this->createForm($formType, $entity, ['action' => 'new', 'locale' => $request->getLocale()]);
 
-		if ($request->isMethod(Request::METHOD_POST)){
+		if ($request->isMethod(Request::METHOD_POST)) {
 			$form->handleRequest($request);
 			$this->validationForm($request, $ccv, $translator, $form, $entity, $entity);
 

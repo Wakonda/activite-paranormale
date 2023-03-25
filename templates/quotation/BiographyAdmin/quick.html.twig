@@ -39,11 +39,10 @@
 		<script>
 			document.querySelector("#new-biography").addEventListener("submit", (e) => {
 				e.preventDefault();
-				
-				/*for (var i = 0; i < tinymce.editors.length; i++) {
-					tinymce.editors[i].save();
-				}*/
-				
+
+				for (var i = 0; i < tinymce.get().length; i++)
+					tinymce.get()[i].save();
+
 				let form = document.querySelector('#new-biography');
 				let formData = new FormData(form);
 					
