@@ -242,8 +242,10 @@ class GrimoireRepository extends EntityRepository
 
 		$qb->select("COUNT(o) AS countRow")
 		   ->join('o.language', 'l')
+		   ->join('o.state', 's')
 		   ->where('l.abbreviation = :locale')
 		   ->andWhere('o.archive = false')
+		   ->andWhere('s.displayState = 1')
 		   ->setParameter('locale', $locale);
 		
 		$max = max($qb->getQuery()->getSingleScalarResult() - 1, 0);
@@ -252,8 +254,10 @@ class GrimoireRepository extends EntityRepository
 		$qb = $this->createQueryBuilder("o");
 
 		$qb->join('o.language', 'l')
+		   ->join('o.state', 's')
 		   ->where('l.abbreviation = :locale')
 		   ->andWhere('o.archive = false')
+		   ->andWhere('s.displayState = 1')
 		   ->setParameter('locale', $locale)
 		   ->setFirstResult($offset)
 		   ->setMaxResults(1);
