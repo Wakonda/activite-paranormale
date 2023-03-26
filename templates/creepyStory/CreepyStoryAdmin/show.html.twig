@@ -49,9 +49,11 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "creepyStory.admin.Source"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
-{#
+
+	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>
+
 	<a href="{{ path('CreepyStory_Read', { 'id' : entity.id, 'title_slug': entity.urlSlug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
-#}
 {% endblock %}
 
 {% block data_bottom %}

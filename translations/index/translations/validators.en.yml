@@ -92,6 +92,7 @@ index:
         EpisodeTelevisionSerie: "Episode (television serie)"
         Grimoire: "Witchcraft"
         WitchcraftTool: "Witchcraft tool"
+        CreepyStory: "Creepy story"
     archive:
         Archive: "Archive"
         DocArchive: "Total number of documents archived: "

@@ -92,6 +92,7 @@ index:
         EpisodeTelevisionSerie: "Episodio (serie de televisión)"
         Grimoire: "Brujería"
         WitchcraftTool: "Herramienta de brujería"
+        CreepyStory: "Historia espeluznante"
     archive:
         Archive: "Archivo"
         DocArchive: "Número total de documentos archivados: "

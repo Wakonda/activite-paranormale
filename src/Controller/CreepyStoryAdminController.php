@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\CreepyStory;
+use App\Entity\CreepyStoryTags;
 use App\Entity\Language;
 use App\Entity\Licence;
 use App\Entity\State;
@@ -16,6 +17,7 @@ use App\Entity\FileManagement;
 use App\Form\Type\CreepyStoryAdminType;
 use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
+use App\Service\TagsManagingGeneric;
 
 /**
  * CreepyStory controller.
@@ -42,6 +44,7 @@ class CreepyStoryAdminController extends AdminGenericController
 
 	public function postValidationAction($form, $entityBindded)
 	{
+		(new TagsManagingGeneric($this->getDoctrine()->getManager()))->saveTags($form, $this->className, $this->entityName, new CreepyStoryTags(), $entityBindded);
 	}
 
     public function indexAction()
@@ -93,6 +96,9 @@ class CreepyStoryAdminController extends AdminGenericController
 	
     public function deleteAction($id)
     {
+		$tags = $em->getRepository(CreepyStoryTags::class)->findBy(["entity" => $id]);
+		foreach($tags as $entity) {$em->remove($entity); }
+
 		return $this->deleteGenericAction($id);
     }
 	
@@ -117,8 +123,8 @@ class CreepyStoryAdminController extends AdminGenericController
 			$row[] = $entity->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getPublicationDate());
 			$row[] = "
-			 <a href='".$this->generateUrl('CreepyStory_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('CreepyStory_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('CreepyStory_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('CreepyStory_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -137,8 +143,8 @@ class CreepyStoryAdminController extends AdminGenericController
 		if(!empty($language))
 		{
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
 		}
 		else
 		{
@@ -157,12 +163,12 @@ class CreepyStoryAdminController extends AdminGenericController
 		$translateArray['theme'] = $themeArray;
 
 		foreach($states as $state)
-			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle());
+			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle()];
 
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
 
 		$translateArray['licence'] = $licenceArray;
 

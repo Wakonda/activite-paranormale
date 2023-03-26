@@ -22,7 +22,8 @@ use Doctrine\ORM\Mapping as ORM;
 	"movie_tags" = "MovieTags",
 	"televisionserie_tags" = "TelevisionSerieTags",
 	"book_tags" = "BookTags",
-	"episodetelevisionserie_tags" = "EpisodeTelevisionSerieTags"
+	"episodetelevisionserie_tags" = "EpisodeTelevisionSerieTags",
+	"creepystory_tags" = "CreepyStoryTags"
   })
  */
 class Tags

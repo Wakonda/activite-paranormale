@@ -20,7 +20,6 @@ use App\Entity\FileManagement;
 use App\Form\Type\NewsAdminType;
 use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
-use App\Service\TwitterAPI;
 use App\Service\TagsManagingGeneric;
 use App\Service\APImgSize;
 
@@ -107,7 +106,7 @@ class NewsAdminController extends AdminGenericController
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\NewsVote")->findBy(["news" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
-		$tags = $em->getRepository("\App\Entity\NewsTags")->findBy(["entity" => $id]);
+		$tags = $em->getRepository(NewsTags::class)->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
 
 		return $this->deleteGenericAction($id);
@@ -127,7 +126,7 @@ class NewsAdminController extends AdminGenericController
 		$informationArray = $this->indexDatatablesGenericAction($request);
 		$output = $informationArray['output'];
 
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
 		foreach($informationArray['entities'] as $entity)
 		{
@@ -142,12 +141,12 @@ class NewsAdminController extends AdminGenericController
 			$row[] =  $entity->getPseudoUsed();
 			$row[] =  $entity->getTheme()->getTitle();
 			
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => $entity->getState()->getInternationalName(), 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
 			$row[] =  $state->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('News_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
-			 <a href='".$this->generateUrl('News_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('News_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('News_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
 			";
 			$output['aaData'][] = $row;
 		}
@@ -164,10 +163,10 @@ class NewsAdminController extends AdminGenericController
         $entities = $em->getRepository($this->className)->getNewsByStateAdmin($state);
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
 		
-        return $this->render('news/NewsAdmin/indexState.html.twig', array(
+        return $this->render('news/NewsAdmin/indexState.html.twig', [
             'entities' => $entities,
 			'state' => $state
-        ));
+        ]);
     }
 
     public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
@@ -186,12 +185,12 @@ class NewsAdminController extends AdminGenericController
 		{
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			
-			$currentLanguagesWebsite = array("fr", "en", "es");
+			$currentLanguagesWebsite = ["fr", "en", "es"];
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
-				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
 		}
 		else
 		{
@@ -210,12 +209,12 @@ class NewsAdminController extends AdminGenericController
 		$translateArray['theme'] = $themeArray;
 
 		foreach($states as $state)
-			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
+			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName()];
 
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
 
 		$translateArray['licence'] = $licenceArray;
 		
@@ -248,7 +247,7 @@ class NewsAdminController extends AdminGenericController
 
 		if($state->getInternationalName() == "Validate") {
 			if(empty($entity->getTheme()))
-				return $this->redirect($this->generateUrl('News_Admin_Edit', array('id' => $id)));
+				return $this->redirect($this->generateUrl('News_Admin_Edit', ['id' => $id]));
 		}
 		
 		$em->persist($entity);
@@ -259,7 +258,7 @@ class NewsAdminController extends AdminGenericController
 		else
 			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
 		
-		return $this->redirect($this->generateUrl('News_Admin_Show', array('id' => $id)));
+		return $this->redirect($this->generateUrl('News_Admin_Show', ['id' => $id]));
 	}
 	
 	public function archiveAction($id)

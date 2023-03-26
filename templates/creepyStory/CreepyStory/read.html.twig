@@ -44,6 +44,8 @@
 
 	{% include 'news/Widget/socialNetwork.html.twig' with { titleNetwork: entity.title, url: app.request.server.get("REQUEST_URI"), entity: entity } %}
 
+	{{ getTagsByEntityForDisplay(entity) }}
+
 	<div class="hidden_for_print">
 		{% if previousAndNextEntities["previous"] is not empty %}
 			<a href="{{ path('Photo_Read', {'id' : previousAndNextEntities["previous"].id, 'title_slug' : previousAndNextEntities["previous"].getUrlSlug()})}}" title="{{ previousAndNextEntities["previous"].title }}"><i class="fas fa-angle-double-left"></i> {{ "generality.read.Previous"|trans([], "validators") }} <i class="fas fa-angle-double-left"></i></a>
