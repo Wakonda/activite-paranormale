@@ -43,7 +43,7 @@ class WitchcraftToolAdminController extends AdminGenericController
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
-			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		//Default values
 		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $entityBindded->getLanguage(), "internationalName" => "magic"]);
@@ -117,13 +117,13 @@ class WitchcraftToolAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('WitchcraftTool_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('WitchcraftTool_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('WitchcraftTool_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('WitchcraftTool_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -137,14 +137,14 @@ class WitchcraftToolAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 			$themes = $em->getRepository(WitchcraftThemeTool::class)->findByLanguage($language, array('title' => 'ASC'));
 		else
 			$themes = $em->getRepository(WitchcraftThemeTool::class)->findAll();
 
-		$themeArray = array();
+		$themeArray = [];
 
 		foreach($themes as $theme)
 		{

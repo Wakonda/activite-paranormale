@@ -151,8 +151,8 @@ class ArchiveController extends AbstractController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -172,12 +172,12 @@ class ArchiveController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 
 		foreach($entities as $entity)
 		{
-			$row = array();		
+			$row = [];		
 			$row[] = '<a href="'.$this->generateUrl("Archive_Read", ['id' => $entity->getId(), "className" => base64_encode($className)]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 

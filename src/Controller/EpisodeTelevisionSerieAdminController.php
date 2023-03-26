@@ -46,11 +46,11 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
-			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		foreach ($form->get('episodeTelevisionSerieBiographies') as $formChild)
 			if(empty($formChild->get('internationalName')->getData()))
-				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
+				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
 		if($form->isValid())
 			$this->saveNewBiographies($entityBindded, $form, "episodeTelevisionSerieBiographies");
@@ -152,8 +152,8 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -165,7 +165,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		}
 
 		// Search on individual column
-		$searchByColumns = array();
+		$searchByColumns = [];
 		$iColumns = $request->query->get('iColumns');
 
 		for($i=0; $i < $iColumns; $i++)
@@ -190,8 +190,8 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 			$row[] = $entity->getSeason();
 			$row[] = $entity->getEpisodeNumber();
 			$row[] = "
-			 <a href='".$this->generateUrl('EpisodeTelevisionSerie_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('EpisodeTelevisionSerie_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('EpisodeTelevisionSerie_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('EpisodeTelevisionSerie_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -205,7 +205,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 		{
@@ -218,14 +218,14 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 			$countries = $em->getRepository(Country::class)->findAll();
 		}
 
-		$genreArray = array();
+		$genreArray = [];
 		
 		foreach($genres as $genre)
 			$genreArray[] = array("id" => $genre->getId(), "title" => $genre->getTitle());
 
 		$translateArray['genre'] = $genreArray;
 
-		$countryArray = array();
+		$countryArray = [];
 		
 		foreach($countries as $country)
 			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());

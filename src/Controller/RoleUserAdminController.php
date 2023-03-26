@@ -33,7 +33,7 @@ class RoleUserAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
-			$form->get('authorQuotation')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('authorQuotation')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -98,13 +98,13 @@ class RoleUserAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = $entity->getInternationalName();
 			$row[] = "
-			 <a href='".$this->generateUrl('RoleUser_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('RoleUser_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />";
+			 <a href='".$this->generateUrl('RoleUser_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('RoleUser_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />";
 
 			$output['aaData'][] = $row;
 		}

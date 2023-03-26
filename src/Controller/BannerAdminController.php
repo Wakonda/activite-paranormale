@@ -36,7 +36,7 @@ class BannerAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository(Banner::class)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
-			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -101,7 +101,7 @@ class BannerAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getAssetImagePath().$entity->getImage().'" alt="" width="100px">';
@@ -116,8 +116,8 @@ class BannerAdminController extends AdminGenericController
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			
 			$row[] = "
-			 <a href='".$this->generateUrl('Banner_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Banner_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Banner_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Banner_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;

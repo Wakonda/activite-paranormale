@@ -40,7 +40,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
-			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -106,15 +106,15 @@ class WebDirectoryAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = '<a href="'.$entity->getLink().'">'.$entity->getLink().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getAssetImagePath().$entity->getLogo().'" alt="" width="100px">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('WebDirectory_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('WebDirectory_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('WebDirectory_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('WebDirectory_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -128,14 +128,14 @@ class WebDirectoryAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
 		else
 			$licences = $em->getRepository(Licence::class)->findAll();
 
-		$licenceArray = array();
+		$licenceArray = [];
 
 		foreach($licences as $licence)
 		{

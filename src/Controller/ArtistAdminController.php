@@ -45,11 +45,11 @@ class ArtistAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository(Artist::class)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
-			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		foreach ($form->get('artistBiographies') as $formChild)
 			if(empty($formChild->get('internationalName')->getData()))
-				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
+				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 		
 		if($form->isValid())
 			$this->saveNewBiographies($entityBindded, $form, "artistBiographies");
@@ -138,15 +138,15 @@ class ArtistAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = (!empty($genre = $entity->getGenre())) ? $genre->getTitle() : "";
 			$row[] = '<a href="'.$entity->getWebsite().'">'.$entity->getWebsite().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			<a href='".$this->generateUrl('Artist_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			<a href='".$this->generateUrl('Artist_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			<a href='".$this->generateUrl('Artist_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			<a href='".$this->generateUrl('Artist_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -167,7 +167,7 @@ class ArtistAdminController extends AdminGenericController
 		
 		$datas =  $this->getDoctrine()->getManager()->getRepository(Artist::class)->getAutocomplete($locale, $query);
 		
-		$results = array();
+		$results = [];
 		
 		foreach($datas as $data)
 		{
@@ -281,7 +281,7 @@ class ArtistAdminController extends AdminGenericController
 		else
 			$countries = $em->getRepository(Country::class)->findAll();
 
-		$countryArray = array();
+		$countryArray = [];
 		
 		foreach($countries as $country)
 			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());

@@ -47,15 +47,15 @@ class MusicAdminController extends AdminGenericController
 			$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 			if($searchForDoublons > 0)
-				$form->get('musicPiece')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+				$form->get('musicPiece')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 		}
 		if(empty($entityBindded->getMusicPieceFile()) and empty($entityBindded->getEmbeddedCode())) {
-			$form->get('musicPieceFile')->addError(new FormError($translator->trans('admin.error.NotBlankVideoOrAudio', array(), 'validators')));
-			$form->get('embeddedCode')->addError(new FormError($translator->trans('admin.error.NotBlankVideoOrAudio', array(), 'validators')));
+			$form->get('musicPieceFile')->addError(new FormError($translator->trans('admin.error.NotBlankVideoOrAudio', [], 'validators')));
+			$form->get('embeddedCode')->addError(new FormError($translator->trans('admin.error.NotBlankVideoOrAudio', [], 'validators')));
 		}
 		foreach ($form->get('musicBiographies') as $formChild)
 			if(empty($formChild->get('internationalName')->getData()))
-				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
+				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
 		if($form->isValid())
 			$this->saveNewBiographies($entityBindded, $form, "musicBiographies");
@@ -149,13 +149,13 @@ class MusicAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getAlbum()->getArtist()->getTitle();
 			$row[] = $entity->getMusicPiece();
 			$row[] = "
-			 <a href='".$this->generateUrl('Music_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Music_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Music_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Music_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -170,7 +170,7 @@ class MusicAdminController extends AdminGenericController
 	
 		$finder = new Finder();
 		$finder->files()->in($webPath);
-		$filesArray = array();
+		$filesArray = [];
 		
 		foreach ($finder as $file)
 		{
@@ -206,11 +206,11 @@ class MusicAdminController extends AdminGenericController
 
 		foreach($entities as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getMusicPiece();
 			$row[] = "
-			 <a href='".$this->generateUrl('Music_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Music_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Music_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Music_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;

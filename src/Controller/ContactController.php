@@ -37,7 +37,7 @@ class ContactController extends AbstractController
 		$session = $request->getSession();
 		
 		if($params["captcha"] != $session->get("captcha_word"))
-			$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', array(), 'validators')));
+			$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
 
 		if ($form->isValid()) {
 			$message = (new \Swift_Message($entity->getSubjectContact()))
@@ -66,7 +66,7 @@ class ContactController extends AbstractController
 	{
 		$entity = new Contact();
 		
-		$entity->setSubjectContact($translator->trans('index.leftMenu.OfferLink', array(), 'validators'));
+		$entity->setSubjectContact($translator->trans('index.leftMenu.OfferLink', [], 'validators'));
 		
         $form = $this->createForm(ContactType::class, $entity);
 

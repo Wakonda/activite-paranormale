@@ -31,8 +31,8 @@ class MusicController extends AbstractController
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($order = $request->query->get('order')); $i++)
 		{
@@ -53,7 +53,7 @@ class MusicController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 		
 		foreach($entities as $entity)

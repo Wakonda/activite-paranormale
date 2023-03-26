@@ -54,8 +54,8 @@ class BiographyController extends AbstractController
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($order = $request->query->get('order')); $i++)
 		{
@@ -76,7 +76,7 @@ class BiographyController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 		
 		foreach($entities as $entity)
@@ -84,7 +84,7 @@ class BiographyController extends AbstractController
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(250, $img);
 
-			$row = array();
+			$row = [];
 			$row[] = '<a href="'.$this->generateUrl("Biography_Show", array('id' => $entity->getId(), 'title' => $entity->getTitle())).'" >'.$entity->getTitle().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';
 
@@ -122,8 +122,8 @@ class BiographyController extends AbstractController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -141,13 +141,13 @@ class BiographyController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 		
 		foreach($entities as $entity)
 		{
 			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
-			$row = array();
+			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';
 			$row[] = '<a href="'.$this->generateUrl("Biography_Show", array('id' => $entity->getId(), 'title' => $entity->getTitle())).'" >'.$entity->getTitle().'</a>';

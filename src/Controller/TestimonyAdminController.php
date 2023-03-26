@@ -129,7 +129,7 @@ class TestimonyAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			
 			if($entity->getArchive())
 				$row["DT_RowClass"] = "deleted";
@@ -140,8 +140,8 @@ class TestimonyAdminController extends AdminGenericController
 			$row[] = $entity->getState()->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getWritingDate());
 			$row[] = "
-			 <a href='".$this->generateUrl('Testimony_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br>
-			 <a href='".$this->generateUrl('Testimony_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br>
+			 <a href='".$this->generateUrl('Testimony_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('Testimony_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
 			";
 
 			$output['aaData'][] = $row;
@@ -173,9 +173,9 @@ class TestimonyAdminController extends AdminGenericController
 		$em->flush();
 		
 		if($state->getInternationalName() == "Validate")
-			$session->getFlashBag()->add('success', $translator->trans('testimony.admin.TestimonyPublished', array(), 'validators'));
+			$session->getFlashBag()->add('success', $translator->trans('testimony.admin.TestimonyPublished', [], 'validators'));
 		else
-			$session->getFlashBag()->add('success', $translator->trans('testimony.admin.TestimonyRefused', array(), 'validators'));
+			$session->getFlashBag()->add('success', $translator->trans('testimony.admin.TestimonyRefused', [], 'validators'));
 		
 		return $this->redirect($this->generateUrl('Testimony_Admin_Show', array('id' => $id)));
 	}

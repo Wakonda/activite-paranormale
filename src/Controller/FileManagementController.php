@@ -106,11 +106,11 @@ class FileManagementController extends AbstractController
 		$authorizedExtensionsArray = array('jpg', 'png', 'pdf', 'doc', 'jpeg', 'mp4', 'mp3', 'flv', 'ogg', 'gif', 'wmv', 'ppt', 'pptx', 'docx');
 
 		if($file['uploadFile'] == null)
-			$errorMsg = $translator->trans('file.uploadFile.NoFileSelected', array(), 'validators');
+			$errorMsg = $translator->trans('file.uploadFile.NoFileSelected', [], 'validators');
 		elseif($file['uploadFile']->getSize() > $file['uploadFile']->getMaxFilesize())
-			$errorMsg = $translator->trans('file.uploadFile.FileTooLarge', array(), 'validators');
+			$errorMsg = $translator->trans('file.uploadFile.FileTooLarge', [], 'validators');
 		elseif(!in_array($file['uploadFile']->guessExtension(), $authorizedExtensionsArray))
-			$errorMsg = $translator->trans('file.uploadFile.UnauthorizedExtension', array(), 'validators');
+			$errorMsg = $translator->trans('file.uploadFile.UnauthorizedExtension', [], 'validators');
 		else
 		{
 			$em = $this->getDoctrine()->getManager();

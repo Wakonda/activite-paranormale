@@ -313,7 +313,7 @@ class FileManagementAdminController extends AbstractController
 	}
 	
 	private function listFolders($base_dir, $bd){
-      $directories = array();
+      $directories = [];
       foreach(scandir($base_dir) as $file) {
             if($file == '.' || $file == '..') continue;
 			
@@ -327,7 +327,7 @@ class FileManagementAdminController extends AbstractController
       return $directories;
 	}
 
-	private function getDirContents($dir, &$results = array()) {
+	private function getDirContents($dir, &$results = []) {
 		if (!is_dir($dir))
 			return [];
 

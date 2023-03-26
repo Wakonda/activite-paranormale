@@ -46,11 +46,11 @@ class BookEditionAdminController extends AdminGenericController
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
-			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', array(), 'validators')));
+			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		foreach ($form->get('biographies') as $formChild)
 			if(empty($formChild->get('internationalName')->getData()))
-				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', array(), 'validators')));
+				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
 		if($form->isValid())
 			$this->saveNewBiographies($entityBindded, $form, "biographies");
@@ -159,13 +159,13 @@ class BookEditionAdminController extends AdminGenericController
 
 		foreach($entities as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getPublisher()->getTitle();
 			$row[] = $entity->getIsbn10();
 			$row[] = $entity->getIsbn13();
 			$row[] = "
-			 <a href='".$this->generateUrl('BookEdition_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('BookEdition_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('BookEdition_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('BookEdition_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -189,7 +189,7 @@ class BookEditionAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = array();
+		$translateArray = [];
 		
 		if(!empty($language))
 		{
@@ -202,14 +202,14 @@ class BookEditionAdminController extends AdminGenericController
 			$countries = $em->getRepository(Country::class)->findAll();
 		}
 
-		$genreArray = array();
+		$genreArray = [];
 		
 		foreach($genres as $genre)
 			$genreArray[] = array("id" => $genre->getId(), "title" => $genre->getTitle());
 
 		$translateArray['genre'] = $genreArray;
 
-		$countryArray = array();
+		$countryArray = [];
 		
 		foreach($countries as $country)
 			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());
@@ -231,7 +231,7 @@ class BookEditionAdminController extends AdminGenericController
 		
 		$datas =  $this->getDoctrine()->getManager()->getRepository(BookEdition::class)->getAutocomplete($locale, $query);
 		
-		$results = array();
+		$results = [];
 		
 		foreach($datas as $data)
 		{

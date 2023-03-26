@@ -219,8 +219,8 @@ class StoreAdminController extends AdminGenericController
 			$row[] = ucfirst($entity->getPlatform());
 			$row[] = $translator->trans('store.admin.'.ucfirst($entity->getCategory()), [], 'validators');
 			$row[] = "
-			 <a href='".$this->generateUrl('Store_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Store_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', array(), 'validators')."</a><br />";
+			 <a href='".$this->generateUrl('Store_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Store_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />";
 
 			$output['aaData'][] = $row;
 		}
@@ -253,7 +253,7 @@ class StoreAdminController extends AdminGenericController
 				break;
 		}
 		
-		$results = array();
+		$results = [];
 		
 		foreach($datas as $data)
 		{

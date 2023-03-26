@@ -26,8 +26,8 @@ class QuotationController extends AbstractController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -45,12 +45,12 @@ class QuotationController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 
 		foreach($entities as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', array('id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()))."'><i> ".$entity->getAuthorQuotation()."</a>";
 			$output['aaData'][] = $row;

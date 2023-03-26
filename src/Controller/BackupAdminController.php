@@ -44,7 +44,7 @@ class BackupAdminController extends AbstractController
 	{
 		unlink($this->getPath().DIRECTORY_SEPARATOR.$filename);
 
-		$session->getFlashBag()->add('success', $translator->trans('backup.index.FileDeleted', array(), 'validators'), array(), 'validators');
+		$session->getFlashBag()->add('success', $translator->trans('backup.index.FileDeleted', [], 'validators'), [], 'validators');
 		
 		return $this->redirect($this->generateUrl("Backup_Admin_Index"));
 	}
@@ -63,9 +63,9 @@ class BackupAdminController extends AbstractController
 			$dump = new IMysqldump\Mysqldump($dsn, $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 			$dump->start($this->getPath().DIRECTORY_SEPARATOR.$filename);
 			
-			$session->getFlashBag()->add('success', $translator->trans('backup.index.FileGenerated', array(), 'validators'), array(), 'validators');
+			$session->getFlashBag()->add('success', $translator->trans('backup.index.FileGenerated', [], 'validators'), [], 'validators');
 		} catch (\Exception $e) {
-			$session->getFlashBag()->add('success', 'mysqldump-php error: ' . $e->getMessage(), array(), 'validators');
+			$session->getFlashBag()->add('success', 'mysqldump-php error: ' . $e->getMessage(), [], 'validators');
 		}
 
 		return $this->redirect($this->generateUrl("Backup_Admin_Index"));

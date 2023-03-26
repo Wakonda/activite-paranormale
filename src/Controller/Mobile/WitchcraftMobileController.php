@@ -40,14 +40,14 @@ class WitchcraftMobileController extends AbstractController
 		
 		$menuGrimoires = $em->getRepository(MenuGrimoire::class)->getSurThemeGrimoire($locale);
 		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->getSurThemeByLanguage($locale);
-		$themeArray = array();
+		$themeArray = [];
 		
 		foreach($menuGrimoires as $menuGrimoire) {
-			$themeArray[$menuGrimoire->getTitle()] = array();
+			$themeArray[$menuGrimoire->getTitle()] = [];
 		}
 		
 		foreach($themeArray as $key => $value) {
-			$subArray = array();
+			$subArray = [];
 			
 			foreach($surThemeGrimoires as $surThemeGrimoire) {
 				if($surThemeGrimoire->getMenuGrimoire()->getTitle() == $key) {
@@ -140,7 +140,7 @@ class WitchcraftMobileController extends AbstractController
 			$em->persist($entity);
 			$em->flush();
 
-			$this->addFlash('success', $translator->trans('witchcraft.validate.ThankForYourParticipationText', array(), 'validators'));
+			$this->addFlash('success', $translator->trans('witchcraft.validate.ThankForYourParticipationText', [], 'validators'));
 			
 			return $this->redirect($this->generateUrl('ap_witchcraftmobile_index'));
 		}

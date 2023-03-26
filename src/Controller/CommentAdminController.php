@@ -82,7 +82,7 @@ class CommentAdminController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 			
 			$row[] =  $entity[0]->getId();
 			$row[] =  $entity["user"];
@@ -97,7 +97,7 @@ class CommentAdminController extends AdminGenericController
 				$row[] = '<i class="fas fa-question-circle text-primary" aria-hidden="true"></i>';
 			
 			$row[] = "
-			 <a href='".$this->generateUrl('Comment_Admin_Show', array('id' => $entity[0]->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Comment_Admin_Show', array('id' => $entity[0]->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
 			";
 			$output['aaData'][] = $row;
 		}

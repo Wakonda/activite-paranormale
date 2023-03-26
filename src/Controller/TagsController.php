@@ -42,12 +42,12 @@ class TagsController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 		
 		foreach($entities as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = ((method_exists($entity->getEntity(), "getArchive") and $entity->getEntity()->getArchive()) ? '<i class="fas fa-key text-warning"></i>' : '').$translator->trans('index.className.'.$entity->getEntity()->getRealClass(), [], 'validators');
 			$row[] = '<a href="'.$this->generateUrl($entity->getEntity()->getShowRoute(), array('id' => $entity->getEntity()->getId(), 'title_slug' => $entity->getEntity()->getUrlSlug())).'" >'.$entity->getEntity()->getTitle().'</a>'.((method_exists($entity->getEntity(), "getSubTitle") and !empty($st = $entity->getEntity()->getSubTitle())) ? "<br>".$st : "");
 			$row[] = (!empty($theme = $entity->getEntity()->getTheme())) ? $theme->getTitle() : "";
@@ -71,7 +71,7 @@ class TagsController extends AbstractController
 		
 		$tagWords = $em->getRepository(TagWord::class)->searchTagWordAdmin($search, $locale);
 		
-		$res = array();
+		$res = [];
 		
 		foreach($tagWords as $tagWord)
 		{

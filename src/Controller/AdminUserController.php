@@ -48,7 +48,7 @@ class AdminUserController extends AdminGenericController
 
 		foreach($informationArray['entities'] as $entity)
 		{
-			$row = array();
+			$row = [];
 
 			$row[] = $entity->getId();
 			$row[] = $entity->getUsername();
@@ -62,7 +62,7 @@ class AdminUserController extends AdminGenericController
 			$row[] = $state;
 			
 			$row[] = "
-			 <a href='".$this->generateUrl('apadminuser_show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', array(), 'validators')."</a><br>
+			 <a href='".$this->generateUrl('apadminuser_show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
 			";
 			$output['aaData'][] = $row;
 		}
@@ -108,8 +108,8 @@ class AdminUserController extends AdminGenericController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -129,14 +129,14 @@ class AdminUserController extends AdminGenericController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 		
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $language));
 
 		foreach($entities as $entity)
 		{
-			$row = array();
+			$row = [];
 			
 			if($entity->getState()->getDisplayState() == 1)
 				$url = $this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title' => $entity->getTitle()));
@@ -190,8 +190,8 @@ class AdminUserController extends AdminGenericController
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -211,15 +211,15 @@ class AdminUserController extends AdminGenericController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 
 		foreach($entities as $entity)
 		{
-			$row = array();
+			$row = [];
 			$row[] = $entity->getMessageComment();
 			$row[] = $date->doDateTime($language, $entity->getDateComment());
-			$row[] = '<a href="'.$this->generateUrl($entity->getEntityLinked()->getShowRoute(), array("title" => $entity->getEntityLinked()->getTitle(), "id" => $entity->getEntityLinked()->getId())).'">'.$translator->trans('user.contributionUserComments.Link', array(), 'validators').'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getEntityLinked()->getShowRoute(), array("title" => $entity->getEntityLinked()->getTitle(), "id" => $entity->getEntityLinked()->getId())).'">'.$translator->trans('user.contributionUserComments.Link', [], 'validators').'</a>';
 			$output['aaData'][] = $row;
 		}
 

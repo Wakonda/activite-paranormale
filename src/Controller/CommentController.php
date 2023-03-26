@@ -203,7 +203,6 @@ class CommentController extends AbstractController
     }
 	
 	public function paginationAction(Request $request, $idClassName, $className) {
-		// dd($_POST, $_GET);
 		$em = $this->getDoctrine()->getManager();
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 		$countComment = $em->getRepository($classNameComment)->countComment($idClassName);

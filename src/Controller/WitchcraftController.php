@@ -58,8 +58,8 @@ class WitchcraftController extends AbstractController
 		$sSearch = $request->query->get('sSearch');
 		$language = $request->getLocale();
 
-		$sortByColumn = array();
-		$sortDirColumn = array();
+		$sortByColumn = [];
+		$sortDirColumn = [];
 			
 		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
 		{
@@ -77,7 +77,7 @@ class WitchcraftController extends AbstractController
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => array()
+			"aaData" => []
 		);
 		
 		foreach($entities as $entity)
@@ -85,7 +85,7 @@ class WitchcraftController extends AbstractController
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(150, $img);
 			
-			$row = array();
+			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';			
 			$row[] = '<a href="'.$this->generateUrl("Witchcraft_ReadGrimoire", array('id' => $entity->getId(), 'title_slug' => $entity->getTitle(), 'surtheme' => $entity->getSurTheme()->getTitle())).'" >'.$entity->getTitle().'</a>';
 
