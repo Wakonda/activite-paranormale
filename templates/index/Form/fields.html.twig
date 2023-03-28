@@ -177,7 +177,10 @@
 				if (xmlhttp.readyState == 4) {
 					if(xmlhttp.status == 200) {
 						var obj = JSON.parse(xmlhttp.responseText);
-					
+
+						if(obj.length == 0)
+							return;
+
 						document.getElementById("{{ form.photo_selector.vars.id }}").value = "";
 						document.getElementById("{{ form.license.vars.id }}").value = "";
 						document.getElementById("{{ form.author.vars.id }}").value = "";

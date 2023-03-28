@@ -981,7 +981,9 @@ class AdminController extends AbstractController
 		$res = [];
 		
 		if(str_contains($urlHost, "wikipedia") or str_contains($urlHost, "wikidata")) {
-			$filename = explode(":", trim($url, "https://"))[1];
+			$urlArray = explode(":", $url);
+			$filename = $urlArray[count($urlArray) - 1];
+
 			$res = $wikidata->getImageInfos($filename);
 		} elseif(str_contains($urlHost, "pixabay")) {
 			$pixabay = new \App\Service\Pixabay();
