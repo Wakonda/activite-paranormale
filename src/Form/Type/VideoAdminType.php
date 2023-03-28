@@ -140,7 +140,6 @@ class VideoAdminType extends AbstractType
 			// For Video
 			$mediaVideo = $form->get('mediaVideo')->getNormData();
 			$embeddedCode = $form->get('embeddedCode')->getNormData();
-			$existingFile = $form->get('existingFile')->getNormData();
 
 			if($form->get('platform')->getNormData() != "AP")
 			{
