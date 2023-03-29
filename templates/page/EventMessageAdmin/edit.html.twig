@@ -14,6 +14,7 @@
 	{{ macro_index.tinymce_admin_js(form.abstractText.vars.id, path('EventMessage_Admin_WYSIWYG_UploadFile')) }}
 	{{ macro_index.tinymce_admin_js(form.text.vars.id, path('EventMessage_Admin_WYSIWYG_UploadFile')) }}
 	{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
+	{{ macro_index.select2_autocomplete() }}
 {% endblock %}
 
 {% block tbody_admin_table %}

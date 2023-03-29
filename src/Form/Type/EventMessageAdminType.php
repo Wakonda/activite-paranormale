@@ -25,6 +25,9 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use App\Entity\EventMessage;
+use App\Entity\TagWord;
+
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class EventMessageAdminType extends AbstractType
 {
@@ -75,6 +78,28 @@ class EventMessageAdminType extends AbstractType
             ->add('type', ChoiceType::class, ['choices' => ['eventMessage.dayMonth.'.ucfirst(EventMessage::EVENT_TYPE) => EventMessage::EVENT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CELEBRATION_TYPE) => EventMessage::CELEBRATION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CONVENTION_TYPE) => EventMessage::CONVENTION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::SAINT_TYPE) => EventMessage::SAINT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::HOROSCOPE_TYPE) => EventMessage::HOROSCOPE_TYPE], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
+		    ->add('tags', Select2EntityType::class, [
+				'multiple' => true,
+				'allow_add' => [
+					'enabled' => true,
+					'new_tag_text' => '',
+					'new_tag_prefix' => '__',
+					'tag_separators' => '[","]'
+				],
+				'remote_route' => 'TagWord_Admin_Autocomplete',
+				'class' => TagWord::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'language' => $language,
+				'mapped' => false,
+				'data' => $builder->getData(),
+				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
+			])
         ;
 
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
