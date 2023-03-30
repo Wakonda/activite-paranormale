@@ -16,8 +16,10 @@ use App\Entity\Language;
 use App\Entity\Theme;
 use App\Entity\Licence;
 use App\Entity\FileManagement;
+use App\Entity\EventMessageTags;
 use App\Form\Type\EventMessageAdminType;
 use App\Service\ConstraintControllerValidator;
+use App\Service\TagsManagingGeneric;
 
 /**
  * EventMessage controller.
@@ -46,6 +48,7 @@ class EventMessageAdminController extends AdminGenericController
 
 	public function postValidationAction($form, $entityBindded)
 	{
+		(new TagsManagingGeneric($this->getDoctrine()->getManager()))->saveTags($form, $this->className, $this->entityName, new EventMessageTags(), $entityBindded);
 	}
 
     public function indexAction()
