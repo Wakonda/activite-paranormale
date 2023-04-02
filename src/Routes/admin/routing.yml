@@ -20,6 +20,10 @@ Admin_Facebook:
     path: /admin/facebook/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::facebookAction
 
+Admin_Instagram:
+    path: /admin/instagram/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::instagramAction
+
 Admin_TheDailyTruth:
     path: /admin/thedailytruth/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::thedailytruthAction

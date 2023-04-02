@@ -272,6 +272,73 @@
 	</script>
 {% endmacro %}
 
+{% macro instagram_form(entity) %}
+	{% if isInstagramAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentInstagram">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingInstagram">
+				<span class="panel-title">
+				<a href="#" role="button" data-toggle="collapse" data-target="#collapseInstagram" aria-expanded="true" aria-controls="collapseInstagram">
+				<i class="fab fa-instagram-square" aria-hidden="true"></i> Instagram
+				</a>
+				</span>
+			</div>
+			
+			<div id="collapseInstagram" class="collapse" aria-labelledby="headingInstagram" data-parent="#accordionParentInstagram">
+				<div class="card-body">
+					<form action="{{ path('Admin_Instagram', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<div id="tags_instagram">
+							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+						</div>
+						<br>
+						{% set tags = get_tags(entity, false, true) %}
+						<textarea id="instagram_area" name="instagram_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						<br>
+						<input type="url" placeholder="https://example.com" name="instagram_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro instagram_form_js() %}
+	<script>
+		$(function()
+		{
+			var datas = $("#instagram_area").text().split(" ");
+			$("div#tags_instagram a").each(function() {
+				
+				for(var i = 0; i < datas.length; i++)
+				{
+					if($(this).text().toLowerCase() == datas[i].toLowerCase())
+						datas[i] = "#" + datas[i];
+				}
+			});
+			
+			$("#instagram_area").val(datas.join(" "));
+
+			$("div#tags_instagram a").click(function(event) {
+				event.preventDefault();
+				var textToInsert = "#" + $(this).data('tag');
+				var position = $('#instagram_area').prop("selectionStart");
+				var textareaContent = $('#instagram_area').val();
+				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+				$('#instagram_area').val(output);
+				$("#instagram_area").keyup();
+			});
+		});
+	</script>
+{% endmacro %}
+
 {% macro mastodon_form(entity) %}
 	{% if isMastodonAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentMastodon">

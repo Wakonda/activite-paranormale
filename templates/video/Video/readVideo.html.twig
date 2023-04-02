@@ -9,12 +9,11 @@
 	<script>
 		$(function()
 		{
-			$("#confirm_colorbox").click(function(event)
-			{
+			document.getElementById("confirm_colorbox").addEventListener("click", (e) => {
 				$('#checkVideo').modal('show');
-				event.preventDefault();
+				e.preventDefault();
 			});
-			
+
 			// Video embedded
 			{% if video.mediaVideo is not empty %}
 				var videoTagRef = document.getElementById("video_embedded");

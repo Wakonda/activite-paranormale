@@ -46,6 +46,79 @@ class BiographyAdminController extends AdminGenericController
 
 	public function postValidationAction($form, $entityBindded)
 	{
+		$biographies = $this->getDoctrine()->getManager()->getRepository($this->className)->findBy(["internationalName" => $entityBindded->getInternationalName()]);
+		
+		$datas = [];
+		
+		foreach ($biographies as $biography) {
+			if(!empty($d = $biography->getBirthDate()))
+				$datas["birthDate"] = $d;
+			if(!empty($d = $biography->getDeathDate()))
+				$datas["deathDate"] = $d;
+			if(!empty($d = $biography->getNationality()))
+				$datas["nationality"] = $d;
+			if(!empty($d = $biography->getWikidata()))
+				$datas["wikidata"] = $d;
+			
+			$illustration = !empty($entityBindded->getIllustration()) ? $entityBindded->getIllustration() : $biography->getIllustration();
+
+			if(!empty($d = $illustration)) {
+				$datas["illustration"] = [
+					"titleFile" => $d->getTitleFile(),
+					"realNameFile" => $d->getRealNameFile(),
+					"extensionFile" => $d->getExtensionFile(),
+					"kindFile" => $d->getKindFile(),
+					"caption" => $d->getCaption(),
+					"license" => $d->getLicense(),
+					"author" => $d->getAuthor(),
+					"urlSource" => $d->getUrlSource()
+				];
+			}
+
+			if(!empty($biography->getLinks()))
+				foreach(json_decode($biography->getLinks(), true) as $link)
+					if(!empty($link["url"]))
+						$datas["links"][] = ["link" => $link["link"], "url" => $link["url"], "label" => $link["label"]];
+
+			if(!empty($biography->getIdentifiers()))
+				foreach(json_decode($biography->getIdentifiers(), true) as $identifier)
+					if(!empty($identifier["value"]))
+						$datas["identifiers"][] = ["identifier" => $identifier["identifier"], "value" => $identifier["value"]];
+		}
+		
+		$datas["links"] = array_map("unserialize", array_unique(array_map("serialize", $datas["links"])));
+		$datas["identifiers"] = array_map("unserialize", array_unique(array_map("serialize", $datas["identifiers"])));
+
+        $em = $this->getDoctrine()->getManager();
+
+		foreach ($biographies as $biography) {
+			$biography->setBirthDate($datas["birthDate"]);
+			$biography->setDeathDate($datas["deathDate"]);
+			$biography->setNationality($datas["nationality"]);
+			$biography->setWikidata($datas["wikidata"]);
+
+			$biography->setLinks(json_encode($datas["links"]));
+			$biography->setIdentifiers(json_encode($datas["identifiers"]));
+			
+			if(!empty($datas["illustration"]) and !empty($datas["illustration"]["realNameFile"]) and empty($biography->getIllustration())) {
+					$illustration = new FileManagement();
+					$illustration->setTitleFile($datas["illustration"]["titleFile"]);
+					$illustration->setRealNameFile($datas["illustration"]["realNameFile"]);
+					$illustration->setExtensionFile($datas["illustration"]["extensionFile"]);
+					$illustration->setKindFile($datas["illustration"]["kindFile"]);
+					$illustration->setCaption($datas["illustration"]["caption"]);
+					$illustration->setLicense($datas["illustration"]["license"]);
+					$illustration->setAuthor($datas["illustration"]["author"]);
+					$illustration->setUrlSource($datas["illustration"]["urlSource"]);
+					$em->persist($illustration);
+		
+					$biography->setIllustration($illustration);
+			}
+
+			$em->persist($biography);
+		}
+		
+		$em->flush();
 	}
 
     public function indexAction()

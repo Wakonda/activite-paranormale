@@ -109,6 +109,7 @@
 				new TwigFunction('isTumblrAvailable', array($this, 'isTumblrAvailable')),
 				new TwigFunction('isPinterestAvailable', array($this, 'isPinterestAvailable')),
 				new TwigFunction('isShopifyAvailable', array($this, 'isShopifyAvailable')),
+				new TwigFunction('isInstagramAvailable', array($this, 'isInstagramAvailable')),
 				new TwigFunction('themes_by_language', array($this, 'getThemesByLanguage')),
 				new TwigFunction('grimoire_themes_by_language', array($this, 'getSurThemesGrimoireByLanguage')),
 				new TwigFunction('allAvailableLanguages', array($this, 'getAllAvailableLanguages')),
@@ -843,6 +844,12 @@
 		public function isFacebookAvailable($entity): bool
 		{
 			$api = new \App\Service\Facebook();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+		}
+
+		public function isInstagramAvailable($entity): bool
+		{
+			$api = new \App\Service\Instagram();
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 

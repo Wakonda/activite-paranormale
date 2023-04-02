@@ -145,6 +145,9 @@ admin:
     facebook:
         Success: "Message envoyé sur Facebook avec succès"
         Failed: "Echec lors de l'envoi sur Facebook"
+    instagram:
+        Success: "Message envoyé sur Instagram avec succès"
+        Failed: "Echec lors de l'envoi sur Instagram"
     tumblr:
         Success: "Article publié sur Tumblr avec succès"
     muse:

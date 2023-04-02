@@ -144,6 +144,9 @@ admin:
     facebook:
         Success: "Message sent to Facebook successfully"
         Failed: "Failed to send to Facebook"
+    instagram:
+        Success: "Message sent to Instagram successfully"
+        Failed: "Failed to send to Instagram"
     tumblr:
         Success: "Article published with success in Tumblr"
     muse:

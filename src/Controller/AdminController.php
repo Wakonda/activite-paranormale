@@ -23,6 +23,7 @@ use App\Service\TheDailyTruth;
 use App\Service\FunctionsLibrary;
 use App\Service\Facebook;
 use App\Service\Mastodon;
+use App\Service\Instagram;
 
 class AdminController extends AbstractController
 {
@@ -942,6 +943,29 @@ class AdminController extends AbstractController
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+	
+	// Instagram
+	public function instagramAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$requestParams = $request->request;
+		
+		$path = urldecode($path);
+		
+		$entity = $em->getRepository($path)->find($id);
+		
+		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+		
+		$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
+
+		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area"), $entity->getLanguage()->getAbbreviation()));
+
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
+		
+		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	// Mastodon

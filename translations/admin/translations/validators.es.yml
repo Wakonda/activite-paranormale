@@ -144,6 +144,9 @@ admin:
     facebook:
         Success: "Mensaje enviado a Facebook con éxito"
         Failed: "Error al enviar a Facebook"
+    instagram:
+        Success: "Mensaje enviado a Instagram con éxito"
+        Failed: "Error al enviar a Instagram"
     tumblr:
         Success: "Artículo publicado en Tumblr con éxito"
     wakondaguru:
