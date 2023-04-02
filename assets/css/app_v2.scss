@@ -10,6 +10,7 @@ $flipboard-color: #e12828;
 $github-color: #333333;
 $mastodon-color: #5843D7;
 $weibo-color: #DF2029;
+$instagram-color: #bc2a8d;
 
 body {
 	margin: 0;
@@ -465,6 +466,9 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 }
 .social-share.weibo {
 	background-color: $weibo-color;
+}
+.social-share.instagram {
+	background-color: $instagram-color;
 }
 
 #mastodonModal .modal-content {

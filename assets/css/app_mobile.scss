@@ -7,6 +7,7 @@ $whatsapp-color: #4AC959;
 $flipboard-color: #e12828;
 $mastodon-color: #595aff;
 $weibo-color: #DF2029;
+$instagram-color: #bc2a8d;
 
 * {
 	cursor: url(images_v2/greenNormalPoint.cur), auto;
@@ -484,6 +485,9 @@ a.social-share {
 }
 .social-share.weibo {
 	background-color: $weibo-color;
+}
+.social-share.instagram {
+	background-color: $instagram-color;
 }
 
 #mastodonModal .modal-content {
