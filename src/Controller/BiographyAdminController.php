@@ -47,7 +47,10 @@ class BiographyAdminController extends AdminGenericController
 	public function postValidationAction($form, $entityBindded)
 	{
 		$biographies = $this->getDoctrine()->getManager()->getRepository($this->className)->findBy(["internationalName" => $entityBindded->getInternationalName()]);
-		
+
+		if(count($biographies) == 1)
+			return;
+
 		$datas = [];
 		
 		foreach ($biographies as $biography) {
@@ -86,19 +89,29 @@ class BiographyAdminController extends AdminGenericController
 						$datas["identifiers"][] = ["identifier" => $identifier["identifier"], "value" => $identifier["value"]];
 		}
 		
-		$datas["links"] = array_map("unserialize", array_unique(array_map("serialize", $datas["links"])));
-		$datas["identifiers"] = array_map("unserialize", array_unique(array_map("serialize", $datas["identifiers"])));
+		if(isset($datas["links"]))
+			$datas["links"] = array_map("unserialize", array_unique(array_map("serialize", $datas["links"])));
+
+		if(isset($datas["identifiers"]))
+			$datas["identifiers"] = array_map("unserialize", array_unique(array_map("serialize", $datas["identifiers"])));
 
         $em = $this->getDoctrine()->getManager();
 
 		foreach ($biographies as $biography) {
-			$biography->setBirthDate($datas["birthDate"]);
-			$biography->setDeathDate($datas["deathDate"]);
-			$biography->setNationality($datas["nationality"]);
-			$biography->setWikidata($datas["wikidata"]);
+			if(isset($datas["birthDate"]))
+				$biography->setBirthDate($datas["birthDate"]);
+			if(isset($datas["deathDate"]))
+				$biography->setDeathDate($datas["deathDate"]);
+			if(isset($datas["nationality"]))
+				$biography->setNationality($datas["nationality"]);
+			if(isset($datas["wikidata"]))
+				$biography->setWikidata($datas["wikidata"]);
 
-			$biography->setLinks(json_encode($datas["links"]));
-			$biography->setIdentifiers(json_encode($datas["identifiers"]));
+			if(isset($datas["links"]))
+				$biography->setLinks(json_encode($datas["links"]));
+		
+			if(isset($datas["identifiers"]))
+				$biography->setIdentifiers(json_encode($datas["identifiers"]));
 			
 			if(!empty($datas["illustration"]) and !empty($datas["illustration"]["realNameFile"]) and empty($biography->getIllustration())) {
 					$illustration = new FileManagement();
@@ -117,7 +130,7 @@ class BiographyAdminController extends AdminGenericController
 
 			$em->persist($biography);
 		}
-		
+
 		$em->flush();
 	}
 
