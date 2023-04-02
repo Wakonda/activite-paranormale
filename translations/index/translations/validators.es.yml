@@ -58,6 +58,7 @@ index:
         Book: "Libro"
         Development: "Desarrollo"
         CreepyStory: "Historia espeluznante"
+        GoodiesShop: "Tienda de mercadería"
     donate:
         DonateInCryptocurrency: "Donar en criptomoneda"
         CryptocurrencyDonation: "Donación de cripto"

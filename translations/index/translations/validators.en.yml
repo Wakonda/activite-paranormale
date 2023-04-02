@@ -58,6 +58,7 @@ index:
         Book: "Book"
         Development: "Development"
         CreepyStory: "Creepy story"
+        GoodiesShop: "Goodies shop"
     donate:
         DonateInCryptocurrency: "Donate in cryptocurrency"
         CryptocurrencyDonation: "Crypto donation"
