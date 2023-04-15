@@ -39,6 +39,16 @@ Admin_BloggerPost:
     path: /admin/bloggerpost
     controller: App\Controller\AdminController::bloggerPostAction
 
+Admin_Diaspora:
+    path: /admin/diaspora/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::diasporaAction
+    defaults:
+        method: "POST"
+
+Admin_DiasporaPost:
+    path: /admin/diasporapost
+    controller: App\Controller\AdminController::diasporaPostAction
+
 Admin_BloggerTags:
     path: /admin/bloggertags/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::bloggerTagsAction

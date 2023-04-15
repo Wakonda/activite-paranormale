@@ -24,6 +24,7 @@ use App\Service\FunctionsLibrary;
 use App\Service\Facebook;
 use App\Service\Mastodon;
 use App\Service\Instagram;
+use App\Service\Diaspora;
 
 class AdminController extends AbstractController
 {
@@ -469,6 +470,83 @@ class AdminController extends AbstractController
 			$session->getFlashBag()->add('error', $translator->trans('admin.blogger.Error', array("%code%" => $response["http_code"]), 'validators'));
 		
 		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+	}
+	
+	// Diaspora
+	public function diasporaAction(Request $request, Diaspora $diaspora, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	{
+		$session = $request->getSession();
+		$session->set("id_diaspora", $id);
+
+		$path = urldecode($path);
+		$session->set("path_diaspora", $path);
+		$session->set("routeToRedirect_diaspora", $routeToRedirect);
+		$session->set("diaspora_area", $request->request->get("diaspora_area"));
+		$session->set("diaspora_url", $request->request->get("diaspora_url"));
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($path)->find($id);
+		$redirectURL = $router->generate("Admin_DiasporaPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
+		$session->set("diaspora_redirect_uri", $redirectURL);
+
+		$accessToken = null;
+
+		if(file_exists($diaspora->FILE_PATH)) {
+			$tokenInfos = json_decode(file_get_contents($diaspora->FILE_PATH));
+
+			if(property_exists($tokenInfos, "access_token"))
+			{
+				if(!empty($at = $tokenInfos->access_token)) {
+					$response = $diaspora->getUserInfo($at);
+					
+					if(!property_exists($response, "error"))
+						$accessToken = $tokenInfos->access_token;
+					else {
+						$response = $diaspora->getAuthTokenByRefreshToken($tokenInfos->refresh_token, $request->getLocale());
+						
+						if(!property_exists($response, "error"))
+							$accessToken = $tokenInfos->access_token;
+					}
+				}
+			}
+		}
+
+		if(empty($accessToken))
+			$code = $diaspora->getCode($redirectURL, $request->getLocale());
+
+		$session->set("diaspora_access_token", $accessToken);
+
+		return $this->redirect($this->generateUrl('Admin_DiasporaPost'));
+	}
+
+	public function diasporaPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, Diaspora $diaspora, TranslatorInterface $translator, UrlGeneratorInterface $router)
+	{
+		$session = $request->getSession();
+
+		$id = $session->get("id_diaspora");
+		$path = $session->get("path_diaspora");
+		$routeToRedirect = $session->get("routeToRedirect_diaspora");
+		$redirectUri = $session->get("diaspora_redirect_uri");
+
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository($path)->find($id);
+		
+		if(!$session->has("diaspora_access_token")) {
+			$code = $request->query->get("code");
+			$accessToken = $diaspora->getAccessToken($redirectUri, $code, $request->getLocale());
+		} else
+			$accessToken = $session->get("diaspora_access_token");
+
+		$text = $session->get("diaspora_area")." ".$session->get("diaspora_url");
+
+		$result = $diaspora->postMessage($text, $accessToken, $request->getLocale());
+
+		if(property_exists($result, "error"))
+			$session->getFlashBag()->add('error', $translator->trans('admin.diaspora.Error', [], 'validators')." (".$result->error.": ".$result->error_description.")");
+		else
+			$session->getFlashBag()->add('success', $translator->trans('admin.diaspora.Success', [], 'validators'));
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 
 	// Shopify

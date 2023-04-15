@@ -145,6 +145,9 @@ admin:
     facebook:
         Success: "Message envoyé sur Facebook avec succès"
         Failed: "Echec lors de l'envoi sur Facebook"
+    diaspora:
+        Success: "Message envoyé sur Diaspora avec succès"
+        Failed: "Echec lors de l'envoi sur Diaspora"
     instagram:
         Success: "Message envoyé sur Instagram avec succès"
         Failed: "Echec lors de l'envoi sur Instagram"

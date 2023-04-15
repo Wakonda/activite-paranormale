@@ -102,6 +102,7 @@
 				new TwigFunction('isTwitterAvailable', array($this, 'isTwitterAvailable')),
 				new TwigFunction('isBloggerAvailable', array($this, 'isBloggerAvailable')),
 				new TwigFunction('isFacebookAvailable', array($this, 'isFacebookAvailable')),
+				new TwigFunction('isDiasporaAvailable', array($this, 'isDiasporaAvailable')),
 				new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
 				new TwigFunction('isTheDailyTruthAvailable', array($this, 'isTheDailyTruthAvailable')),
 				new TwigFunction('isWakondaGuruAvailable', array($this, 'isWakondaGuruAvailable')),
@@ -844,6 +845,12 @@
 		public function isFacebookAvailable($entity): bool
 		{
 			$api = new \App\Service\Facebook();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+		}
+
+		public function isDiasporaAvailable($entity): bool
+		{
+			$api = new \App\Service\Diaspora();
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 
