@@ -467,9 +467,9 @@ class AdminController extends AbstractController
 			}
 		}
 		else
-			$session->getFlashBag()->add('error', $translator->trans('admin.blogger.Error', array("%code%" => $response["http_code"]), 'validators'));
+			$session->getFlashBag()->add('error', $translator->trans('admin.blogger.Error', ["%code%" => $response["http_code"]], 'validators'));
 		
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	// Diaspora
@@ -492,29 +492,31 @@ class AdminController extends AbstractController
 		$accessToken = null;
 
 		if(file_exists($diaspora->FILE_PATH)) {
-			$tokenInfos = json_decode(file_get_contents($diaspora->FILE_PATH));
+			$tokenInfos = json_decode(file_get_contents($diaspora->FILE_PATH), true);
+			$locale = $entity->getLanguage()->getAbbreviation();
 
-			if(property_exists($tokenInfos, "access_token"))
+			if(!empty($tokenInfos) and isset($tokenInfos[$locale]["access_token"]))
 			{
-				if(!empty($at = $tokenInfos->access_token)) {
+				if(!empty($at = $tokenInfos[$locale]["access_token"])) {
 					$response = $diaspora->getUserInfo($at);
 					
 					if(!property_exists($response, "error"))
-						$accessToken = $tokenInfos->access_token;
+						$accessToken = $tokenInfos[$locale]["access_token"];
 					else {
-						$response = $diaspora->getAuthTokenByRefreshToken($tokenInfos->refresh_token, $request->getLocale());
+						$response = $diaspora->getAuthTokenByRefreshToken($tokenInfos[$locale]["refresh_token"], $locale);
 						
 						if(!property_exists($response, "error"))
-							$accessToken = $tokenInfos->access_token;
+							$accessToken = $tokenInfos[$locale]["access_token"];
 					}
 				}
 			}
 		}
 
-		if(empty($accessToken))
-			$code = $diaspora->getCode($redirectURL, $request->getLocale());
-
-		$session->set("diaspora_access_token", $accessToken);
+		if(empty($accessToken)) {
+			$code = $diaspora->getCode($redirectURL, $locale);
+			$session->set("diaspora_access_token_".$locale, null);
+		} else
+			$session->set("diaspora_access_token_".$locale, $accessToken);
 
 		return $this->redirect($this->generateUrl('Admin_DiasporaPost'));
 	}
@@ -530,16 +532,16 @@ class AdminController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($path)->find($id);
-		
-		if(!$session->has("diaspora_access_token")) {
+
+		if(empty($session->get("diaspora_access_token_".$entity->getLanguage()->getAbbreviation())) and !$session->has("diaspora_access_token_".$entity->getLanguage()->getAbbreviation())) {
 			$code = $request->query->get("code");
-			$accessToken = $diaspora->getAccessToken($redirectUri, $code, $request->getLocale());
+			$accessToken = $diaspora->getAccessToken($redirectUri, $code, $entity->getLanguage()->getAbbreviation());
 		} else
-			$accessToken = $session->get("diaspora_access_token");
+			$accessToken = $session->get("diaspora_access_token_".$entity->getLanguage()->getAbbreviation());
 
 		$text = $session->get("diaspora_area")." ".$session->get("diaspora_url");
 
-		$result = $diaspora->postMessage($text, $accessToken, $request->getLocale());
+		$result = $diaspora->postMessage($text, $accessToken, $entity->getLanguage()->getAbbreviation());
 
 		if(property_exists($result, "error"))
 			$session->getFlashBag()->add('error', $translator->trans('admin.diaspora.Error', [], 'validators')." (".$result->error.": ".$result->error_description.")");
@@ -658,9 +660,9 @@ class AdminController extends AbstractController
 			}
 		}
 		else
-			$session->getFlashBag()->add('error', $translator->trans('admin.shopify.Error', array("%code%" => $response["http_code"]), 'validators'));
+			$session->getFlashBag()->add('error', $translator->trans('admin.shopify.Error', ["%code%" => $response["http_code"]], 'validators'));
 		
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	// Pinterest
@@ -671,7 +673,7 @@ class AdminController extends AbstractController
 
 		$entity = $em->getRepository(urldecode($path))->find($id);
 		
-		$currentURL = $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$currentURL = $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 		$image = $this->getImageName($request, $entity, false);
 		
 		$image = $request->getUriForPath($entity->getAssetImagePath().$image);
@@ -683,7 +685,7 @@ class AdminController extends AbstractController
 		else
 			$session->getFlashBag()->add('error', $res);
 
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
 	// Twitter
@@ -701,7 +703,7 @@ class AdminController extends AbstractController
 		if($requestParams->get("add_image") == 'on')
 			$image = $this->getImageName($request, $entity, false);
 
-		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
 		
@@ -714,7 +716,7 @@ class AdminController extends AbstractController
 		else
 			$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
 	// The Daily Truth
@@ -758,7 +760,7 @@ class AdminController extends AbstractController
 		} else
 			$session->getFlashBag()->add('error', $translator->trans('admin.thedailytruth.Failed', [], 'validators')." ".$result);
 
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $id)));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
 	// Wakonda.GURU
@@ -991,13 +993,13 @@ class AdminController extends AbstractController
 		}
 		
 		// Fix Tumblr bugs 
-		$body = str_replace(array("\r\n", "\n", "\t", "\r"), ' ', $body);
+		$body = str_replace(["\r\n", "\n", "\t", "\r"], ' ', $body);
 		
 		$tumblr->addPost($title, $body, $tags);
 		
 		$session->getFlashBag()->add('success', $translator->trans('admin.tumblr.Success', [], 'validators'));
 		
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	// Facebook
@@ -1012,7 +1014,7 @@ class AdminController extends AbstractController
 		$image = false;
 		$url = $requestParams->get("facebook_url", null);
 
-		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
 
@@ -1020,7 +1022,7 @@ class AdminController extends AbstractController
 		
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	// Instagram
@@ -1058,7 +1060,7 @@ class AdminController extends AbstractController
 		$image = false;
 		$url = $requestParams->get("mastodon_url", null);
 
-		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), array("id" => $entity->getId(), "title_slug" => $entity->getTitle()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$res = $mastodon->postMessage($currentURL, $request->request->get("mastodon_area"), $entity->getLanguage()->getAbbreviation());
 
@@ -1066,7 +1068,7 @@ class AdminController extends AbstractController
 		
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
-		return $this->redirect($this->generateUrl($routeToRedirect, array("id" => $entity->getId())));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	public function wikidataGenericAction(Request $request, \App\Service\Wikidata $wikidata)

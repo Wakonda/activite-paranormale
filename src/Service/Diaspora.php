@@ -3,12 +3,13 @@
 namespace App\Service;
 
 class Diaspora {
-	// https://developers.facebook.com/docs/facebook-login/guides/access-tokens/get-long-lived
+	// https://diaspora.github.io/api-documentation/authentication.html
 
 	private $DIASPORA_URL = null;
 	private $DIASPORA_CLIENT_ID = null;
 	private $DIASPORA_CLIENT_SECRET = null;
 	private $DIASPORA_CLIENT_NAME = null;
+	private $DIASPORA_SCOPE = null;
 	
 	public $FILE_PATH = "../private/diaspora_openid.txt";
 	
@@ -80,8 +81,8 @@ class Diaspora {
 	{
 		$this->setLanguage($locale);
 
-		$scope = "openid+public:modify+private:modify+contacts:read";
-		
+		$scope = $this->DIASPORA_SCOPE;
+
 		$redirect_uri = urlencode($redirect_uri);
 
 		$loginUrl = "{$this->DIASPORA_URL}api/openid_connect/authorizations/new?response_type=code&client_id={$this->DIASPORA_CLIENT_ID}&redirect_uri=${redirect_uri}&scope=${scope}";
@@ -127,7 +128,10 @@ class Diaspora {
 		}
 		curl_close($ch);
 
-		file_put_contents($this->FILE_PATH, json_encode($result));
+		$tokenInfos = json_decode(file_get_contents($this->FILE_PATH), true);
+		$tokenInfos[$locale] = $result;
+
+		file_put_contents($this->FILE_PATH, json_encode($tokenInfos));
 
 		return $result["access_token"];
 	}
@@ -186,7 +190,10 @@ class Diaspora {
 		}
 		curl_close($ch);
 
-		file_put_contents($this->FILE_PATH, json_encode($result));
+		$tokenInfos = json_decode(file_get_contents($this->FILE_PATH), true);
+		$tokenInfos[$locale] = $result;
+
+		file_put_contents($this->FILE_PATH, json_encode($tokenInfos));
 
 		return $result->access_token;
 	}
@@ -229,12 +236,20 @@ class Diaspora {
 				$this->DIASPORA_CLIENT_ID = $_ENV["DIASPORA_FR_CLIENT_ID"];
 				$this->DIASPORA_CLIENT_SECRET = $_ENV["DIASPORA_FR_CLIENT_SECRET"];
 				$this->DIASPORA_CLIENT_NAME = $_ENV["DIASPORA_FR_CLIENT_NAME"];
+				$this->DIASPORA_SCOPE = $_ENV["DIASPORA_FR_SCOPE"];
+				break;
+			case "en":
+				$this->DIASPORA_URL = $_ENV["DIASPORA_EN_URL"];
+				$this->DIASPORA_CLIENT_ID = $_ENV["DIASPORA_EN_CLIENT_ID"];
+				$this->DIASPORA_CLIENT_SECRET = $_ENV["DIASPORA_EN_CLIENT_SECRET"];
+				$this->DIASPORA_CLIENT_NAME = $_ENV["DIASPORA_EN_CLIENT_NAME"];
+				$this->DIASPORA_SCOPE = $_ENV["DIASPORA_EN_SCOPE"];
 				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr"];
+		return ["fr", "en"];
 	}
 }
