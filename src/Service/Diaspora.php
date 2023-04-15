@@ -42,7 +42,7 @@ class Diaspora {
 		$this->setLanguage($locale);
 
 		$postFields = [
-			"client_name" => "ActivityParanormalApp",
+			"client_name" => $this->DIASPORA_CLIENT_NAME,
 			"redirect_uris" => [
 				$url
 			]
@@ -216,7 +216,7 @@ class Diaspora {
 			$result = curl_error($ch);
 		}
 		curl_close($ch);
-// dd($result, $access_token);
+
 		return json_decode($result);
 	}
 
