@@ -11,6 +11,7 @@ $github-color: #333333;
 $mastodon-color: #5843D7;
 $weibo-color: #DF2029;
 $instagram-color: #bc2a8d;
+$diaspora-color: darkorange;
 
 body {
 	margin: 0;
@@ -469,6 +470,10 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 }
 .social-share.instagram {
 	background-color: $instagram-color;
+}
+.social-share.diaspora {
+	background-color: $diaspora-color;
+	color: black;
 }
 
 #mastodonModal .modal-content {

@@ -9,6 +9,7 @@ $github-color: #333333;
 $mastodon-color: #5843D7;
 $weibo-color: #DF2029;
 $instagram-color: #bc2a8d;
+$diaspora-color: darkorange;
 
 body {
 	padding-top: 56px;
@@ -430,6 +431,10 @@ a.social-share {
 }
 .social-share.instagram {
 	background-color: $instagram-color;
+}
+.social-share.diaspora {
+	background-color: $diaspora-color;
+	color: black;
 }
 #mastodonModal .modal-content {
     background-color: var(--mastodon-modal-bg, #282C37);
