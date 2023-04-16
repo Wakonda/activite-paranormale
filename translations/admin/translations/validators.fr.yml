@@ -147,7 +147,7 @@ admin:
         Failed: "Echec lors de l'envoi sur Facebook"
     diaspora:
         Success: "Message envoyé sur Diaspora avec succès"
-        Failed: "Echec lors de l'envoi sur Diaspora"
+        Error: "Echec lors de l'envoi sur Diaspora"
     instagram:
         Success: "Message envoyé sur Instagram avec succès"
         Failed: "Echec lors de l'envoi sur Instagram"
