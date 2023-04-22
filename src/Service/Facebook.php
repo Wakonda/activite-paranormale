@@ -12,14 +12,16 @@ class Facebook {
 	private $FACEBOOK_USER_ID = null;
 	private $FACEBOOK_ACCESS_TOKEN = null;
 
-	public function getLongLiveAccessToken() {
+	public function getLongLiveAccessToken(string $locale) {
+		$this->setLanguage($locale);
+
 		$accessToken = ""; // Token généré à partir de la page : https://developers.facebook.com/tools/explorer/
 		$pageId = $this->FACEBOOK_PAGE_ID;
 		$appId = $this->FACEBOOK_APP_ID;
 		$secretKey = $this->FACEBOOK_SECRET_KEY;
 		$apiGraphVersion = $this->FACEBOOK_GRAPH_VERSION;
 		$userId = $this->FACEBOOK_USER_ID; // GET me?fields=id,name
-		
+
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id=${appId}&client_secret=${secretKey}&fb_exchange_token=${accessToken}");
