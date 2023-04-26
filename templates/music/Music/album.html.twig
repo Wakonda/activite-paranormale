@@ -19,7 +19,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	{% set img = artist.photoIllustrationFilename|imgsize(550, artist.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, artist.photoIllustrationCaption, false) %}
+	{% set img = artist.photoIllustrationFilename|imgsize(null, artist.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, artist.photoIllustrationCaption, false) %}
 
 	{% if img is not null %}
 	<p class="image">{{ img|raw }}</p>

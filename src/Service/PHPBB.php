@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 	
 class PHPBB {
 	private $PHPBB_URL = null;
+	private $PHPBB_BASE_URL = "app.php/";
 	private $PHPBB_USERNAME = null;
 	private $PHPBB_PASSWORD = null;
 	
@@ -21,7 +22,7 @@ class PHPBB {
 	{
 		$this->setLanguage($language);
 
-		$url = $this->PHPBB_URL."/login";
+		$url = $this->PHPBB_URL."/".$this->PHPBB_BASE_URL."login";
 
 		$ch = curl_init();
 
@@ -50,7 +51,7 @@ class PHPBB {
 
 		$curl = curl_init();
 
-		$url = $this->PHPBB_URL."/get_account/".$username;
+		$url = $this->PHPBB_URL."/".$this->PHPBB_BASE_URL."get_account/".$username;
 
 		curl_setopt($curl, CURLOPT_HTTPHEADER, array("Accept-Type: application/json", "Authorization: Bearer {$token}"));
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
@@ -70,7 +71,7 @@ class PHPBB {
 	{
 		$ch = curl_init();
 		
-		$url = $this->PHPBB_URL."/save";
+		$url = $this->PHPBB_URL."/".$this->PHPBB_BASE_URL."save";
 
 		$data = [
 			"username" => $username,

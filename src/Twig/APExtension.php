@@ -203,9 +203,9 @@
 					$options = [];
 
 				if(is_array($options) and array_key_exists("class", $options))
-					$options["class"] = $options["class"]." img-fluid";
+					$options["class"] = $options["class"]." img-fluid bg-light";
 				else if (!array_key_exists("class", $options))
-					$options["class"] = "img-fluid";
+					$options["class"] = "img-fluid bg-light";
 			}
 			
 			if(!empty($options))
