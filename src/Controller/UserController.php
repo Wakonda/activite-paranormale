@@ -53,11 +53,11 @@ class UserController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 		$lastUser = $em->getRepository(User::class)->findUserByUsernameOrEmail($lastUsername);
 
-		return $this->render('user/Security/login.html.twig', array(
+		return $this->render('user/Security/login.html.twig', [
 				'error'         => $error,
 				'last_username' => $lastUsername,
 				'last_user' => $lastUser
-		));
+		]);
     }
 
     public function showAction()
@@ -151,10 +151,10 @@ class UserController extends AbstractController
 
         $editForm = $this->createForm(EditProfileType::class, $user, ["locale" => $request->getLocale()]);
 
-        return $this->render('user/EditProfile/edit.html.twig', array(
+        return $this->render('user/EditProfile/edit.html.twig', [
 			'user' => $user,
             'form'   => $editForm->createView(),
-        ));
+        ]);
     }
 
     public function updateAction(Request $request)
@@ -186,10 +186,10 @@ class UserController extends AbstractController
             return $this->redirect($this->generateUrl('Profile_Show'));
         }
 
-        return $this->render('user/EditProfile/edit.html.twig', array(
+        return $this->render('user/EditProfile/edit.html.twig', [
             'user'      => $user,
             'form'   => $editForm->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -217,18 +217,18 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 			
-			$url = $this->generateUrl('fos_user_resetting_reset', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+			$url = $this->generateUrl('fos_user_resetting_reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 			
 			$message = (new \Swift_Message($translator->trans("resetting.email.subject", [], 'FOSUserBundle')))
 				->setTo($user->getEmail())
 				->setFrom($_ENV["MAILER_USER"])
-				->setBody($this->renderView('user/Resetting/email.txt.twig', array('user' => $user, 'confirmationUrl' => $url)), 'text/html')
+				->setBody($this->renderView('user/Resetting/email.txt.twig', ['user' => $user, 'confirmationUrl' => $url]), 'text/html')
 			;
 
 			$mailer->send($message);
         }
 
-        return $this->redirect($this->generateUrl('Resetting_Check_Email', array('username' => $username)));
+        return $this->redirect($this->generateUrl('Resetting_Check_Email', ['username' => $username]));
     }
 
     /**
@@ -247,9 +247,9 @@ class UserController extends AbstractController
             return new RedirectResponse($this->generateUrl('Resetting_Request'));
         }
 
-        return $this->render('user/Resetting/check_email.html.twig', array(
+        return $this->render('user/Resetting/check_email.html.twig', [
             'tokenLifetime' => ceil($this->retryTtl / 3600),
-        ));
+        ]);
     }
 
     /**
@@ -284,10 +284,10 @@ class UserController extends AbstractController
 			return $this->redirect($this->generateUrl('Profile_Show'));
         }
 
-        return $this->render('user/Resetting/reset.html.twig', array(
+        return $this->render('user/Resetting/reset.html.twig', [
             'token' => $token,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     public function registerAction(Request $request, TranslatorInterface $translator, SessionInterface $session, \Swift_Mailer $mailer)
@@ -313,12 +313,12 @@ class UserController extends AbstractController
 				$em->persist($user);
 				$em->flush();
 
-				$url = $this->generateUrl('Registration_Confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+				$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 				$message = (new \Swift_Message($translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle')))
 					->setTo($user->getEmail())
 					->setFrom($_ENV["MAILER_USER"])
-					->setBody($this->renderView('user/Registration/email.html.twig', array('user' => $user, 'confirmationUrl' => $url)), 'text/html')
+					->setBody($this->renderView('user/Registration/email.html.twig', ['user' => $user, 'confirmationUrl' => $url]), 'text/html')
 				;
 
 				$mailer->send($message);
@@ -328,9 +328,9 @@ class UserController extends AbstractController
             }
         }
 
-        return $this->render('user/Registration/register.html.twig', array(
+        return $this->render('user/Registration/register.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 	
 	public function resendEmailConfirmationAction(TranslatorInterface $translator, SessionInterface $session, \Swift_Mailer $mailer, $id)
@@ -338,12 +338,12 @@ class UserController extends AbstractController
         $em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
 
-		$url = $this->generateUrl('Registration_Confirm', array('token' => $user->getConfirmationToken()), UrlGeneratorInterface::ABSOLUTE_URL);
+		$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$message = (new \Swift_Message($translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle')))
 			->setTo($user->getEmail())
 			->setFrom($_ENV["MAILER_USER"])
-			->setBody($this->renderView('user/Registration/email.html.twig', array('user' => $user, 'confirmationUrl' => $url)), 'text/html')
+			->setBody($this->renderView('user/Registration/email.html.twig', ['user' => $user, 'confirmationUrl' => $url]), 'text/html')
 		;
 
 		$mailer->send($message);
@@ -371,9 +371,9 @@ class UserController extends AbstractController
             return new RedirectResponse($router->generate('Security_Login'));
         }
 
-        return $this->render('user/Registration/check_email.html.twig', array(
+        return $this->render('user/Registration/check_email.html.twig', [
             'user' => $user,
-        ));
+        ]);
     }
 
     /**
@@ -399,10 +399,10 @@ class UserController extends AbstractController
 		$em->persist($user);
 		$em->flush();
 
-        return $this->render('user/Registration/confirmed.html.twig', array(
+        return $this->render('user/Registration/confirmed.html.twig', [
             'user' => $user,
             'targetUrl' => $this->getTargetUrlFromSession($request->getSession()),
-        ));
+        ]);
     }
 
     /**
@@ -435,9 +435,9 @@ class UserController extends AbstractController
             return $this->redirect($this->generateUrl("Profile_Show"));
         }
 
-        return $this->render('user/ChangePassword/change_password.html.twig', array(
+        return $this->render('user/ChangePassword/change_password.html.twig', [
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
 	public function countUserAction()
@@ -463,12 +463,12 @@ class UserController extends AbstractController
 
 		list($contributionsArray, $contributionsInProgressArray, $contributionsUnpublishedArray) = $this->getUserContributions($apuser, $user);
 		
-		return $this->render('user/AdminUser/contribution.html.twig', array(
+		return $this->render('user/AdminUser/contribution.html.twig', [
 			'user' => $user,
 			'contributionsArray' => $contributionsArray,
 			'contributionsInProgressArray' => $contributionsInProgressArray,
 			'contributionsUnpublishedArray' => $contributionsUnpublishedArray
-		));	
+		]);
     }
 
 	public function viewProfileAction(APUser $apuser, $id)
@@ -478,12 +478,12 @@ class UserController extends AbstractController
 		
 		list($contributionsArray, $contributionsInProgressArray, $contributionsUnpublishedArray) = $this->getUserContributions($apuser, $user);
 		
-		return $this->render('user/AdminUser/other_profile.html.twig', array(
+		return $this->render('user/AdminUser/other_profile.html.twig', [
 			'user' => $user,
 			'contributionsArray' => $contributionsArray,
 			'contributionsInProgressArray' => $contributionsInProgressArray,
 			'contributionsUnpublishedArray' => $contributionsUnpublishedArray
-		));	
+		]);
 	}
 	
 	public function donationUser(Request $request, $user)
