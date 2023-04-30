@@ -40,24 +40,22 @@
 					aoData.push( { "name" : "theme_id", "value": "{{ theme is defined and theme is not empty ? theme.id : '' }}" } );
 				}
 			});
-			
-			{% if block("select_theme_for_index_world") is not empty %}
-				$('select.selected_theme_news').change(function()
-				{
-					var DATA = $("#choose_theme_news").serialize() + '&language=' + $(this).find(':selected').data('language');
 
-					$.ajax(
-					{
-						type: "POST",
-						url: "{{ path(block('select_theme_for_index_world')) }}",
-						data: DATA,
-						cache: false,
-						success: function(data)
-						{
-							document.location.href = data;
+			{% if block("select_theme_for_index_world") is not empty %}
+				document.querySelector('select.selected_theme_news').addEventListener("change", (e) => {
+					var chooseThemeNews = new URLSearchParams(new FormData(document.getElementById("choose_theme_news"))).toString()
+					var selectedLanguage = e.target.options[e.target.selectedIndex].dataset.language;
+					var data = chooseThemeNews + '&language=' + selectedLanguage;
+
+					var xhr = new XMLHttpRequest();
+					xhr.open('POST', '{{ path(block('select_theme_for_index_world')) }}', true);
+					xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xhr.onreadystatechange = function() {
+						if (xhr.readyState === 4 && xhr.status === 200) {
+							document.location.href = xhr.responseText;
 						}
-					});
-					return false;
+					};
+					xhr.send(data);
 				});
 			{% endif %}
 		});
@@ -105,10 +103,10 @@
 				</div>
 			</div>
 		</form>
-		<hr />
+		<hr>
 	{% endif %}
 
-	<br />
+	<br>
 	<table class="index_world dt-responsive w-100">
 		<thead>
 			<tr>
@@ -135,6 +133,6 @@
 	</table>
 	<div class="clear"></div>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

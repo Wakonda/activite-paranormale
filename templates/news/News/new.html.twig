@@ -10,8 +10,7 @@
 	
 	<script>
 		$(function() {
-			$('a#help_licence_link').click(function(e)
-			{
+			document.getElementById('help_licence_link').addEventListener("click", (e) => {
 				$('#showColorboxLicencesModal').modal('show');
 				e.preventDefault();
 			});
