@@ -431,8 +431,11 @@
 			// website
 			$websitesArray = [];
 			$this->getIdsByProperty("P856", $datas, $code, "website", $language, $websitesArray);
-			
+
 			$res["image"] = $this->getImage($datas, $code, "P154");
+
+			if(empty($res["image"]["url"]))
+				$res["image"] = $this->getImage($datas, $code, "P18");
 
 			$res["links"] = isset($websitesArray["website"]) ? key($websitesArray["website"]) : null;
 
@@ -1029,5 +1032,15 @@
 				return $siteLinks->$languageWiki->url;
 
 			return null;
+		}
+
+		public function getWikidataId(string $title, string $language) {
+			$url = "https://${language}.wikipedia.org/w/api.php?action=query&prop=pageprops&titles=" . urlencode($title) . "&format=json";
+			$json = file_get_contents($url);
+			$data = json_decode($json, true);
+			$pageId = key($data['query']['pages']);
+			$wikidataId = $data['query']['pages'][$pageId]['pageprops']['wikibase_item'];
+			
+			return $wikidataId;
 		}
 	}
