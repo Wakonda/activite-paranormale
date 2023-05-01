@@ -245,7 +245,7 @@ class ArtistAdminController extends AdminGenericController
 				]];
 				
 				$entity->setSource(json_encode($sourceArray));
-				
+
 				if(!empty($title = $data["title"]))
 					$entity->setTitle($title);
 			}

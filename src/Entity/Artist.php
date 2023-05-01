@@ -32,7 +32,6 @@ class Artist
      */
     private $title;
 
-
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\MusicGenre")
      */
@@ -41,7 +40,7 @@ class Artist
     /**
      * @var string $website
      *
-     * @ORM\Column(name="website", type="string", length=255)
+     * @ORM\Column(name="website", type="string", length=255, nullable=true)
      */
     private $website;
 
@@ -202,7 +201,6 @@ class Artist
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -212,7 +210,6 @@ class Artist
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
@@ -247,8 +244,6 @@ class Artist
     }
 
     /**
-     * Set illustration
-     *
      * @param string $illustration
      */
     public function setIllustration($illustration)
@@ -257,8 +252,6 @@ class Artist
     }
 
     /**
-     * Get illustration
-     *
      * @return string 
      */
     public function getIllustration()

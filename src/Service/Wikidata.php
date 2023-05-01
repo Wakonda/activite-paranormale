@@ -424,9 +424,11 @@
 			$datas = json_decode($content);
 
 			// country of origin
-			$country = $datas->entities->$code->claims->P495;
-			$countryId = $country[0]->mainsnak->datavalue->value->id;
-			$res["origin"] = $this->getCountry($datas, $code, "P495", $language);
+			if(property_exists($datas->entities->$code->claims, "P495")) {
+				$country = $datas->entities->$code->claims->P495;
+				$countryId = $country[0]->mainsnak->datavalue->value->id;
+				$res["origin"] = $this->getCountry($datas, $code, "P495", $language);
+			}
 			
 			// website
 			$websitesArray = [];
@@ -497,7 +499,7 @@
 					if(property_exists($member, "qualifiers")) {
 						if(property_exists($member->qualifiers, "P580"))
 							$start = $member->qualifiers->P580[0]->datavalue->value->time;
-						if(property_exists($member->qualifiers, "P582"))
+						if(property_exists($member->qualifiers, "P582") and property_exists($member->qualifiers->P582[0], "datavalue"))
 							$end = $member->qualifiers->P582[0]->datavalue->value->time;
 					}
 
@@ -1036,10 +1038,15 @@
 
 		public function getWikidataId(string $title, string $language) {
 			$url = "https://${language}.wikipedia.org/w/api.php?action=query&prop=pageprops&titles=" . urlencode($title) . "&format=json";
+			
 			$json = file_get_contents($url);
 			$data = json_decode($json, true);
 			$pageId = key($data['query']['pages']);
-			$wikidataId = $data['query']['pages'][$pageId]['pageprops']['wikibase_item'];
+			
+			if(!isset($data['query']['pages'][$pageId]['pageprops']['wikibase_item']))
+				return null;
+			
+			$wikidataId = $data['query']['pages'][$pageId]['pageprops']['wikibase_item'];//dd($wikidataId, $pageId);
 			
 			return $wikidataId;
 		}

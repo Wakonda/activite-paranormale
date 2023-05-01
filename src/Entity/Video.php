@@ -207,7 +207,6 @@ class Video extends MappedSuperclassBase
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -217,7 +216,6 @@ class Video extends MappedSuperclassBase
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
@@ -226,7 +224,6 @@ class Video extends MappedSuperclassBase
      * @ORM\PreUpdate()
      */
     public function uploadPhoto() {
-        // the file property can be empty if the field is not required
         if (null === $this->photo) {
             return;
         }

@@ -73,7 +73,7 @@
 
 			$dom = new \DOMDocument();
 			libxml_use_internal_errors(true);
-			$dom->loadHTML($html, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED);
+			$dom->loadHTML("<html>".$html."</html>", LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED );
 
 			$xpath = new \DOMXPath($dom);
 			foreach($xpath->query('//div[contains(attribute::class, "thumb")]') as $e )
@@ -151,6 +151,15 @@
 			foreach($xpath->query('//span[contains(attribute::class, "mw-ext-cite-error")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
+			foreach($xpath->query('//style') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//link') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//div[contains(attribute::class, "searchaux")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
 
 			if(!$this->keepTitle) {
 				foreach($xpath->query('//h2') as $e ) {
@@ -162,6 +171,8 @@
 			}
 
 			$html = $dom->saveHTML();
+
+			$html = preg_replace('~<(?:!DOCTYPE|/?(?:html|body|head))[^>]*>\s*~i', '', $html);
 			
 			$htmlArray = [];
 			
@@ -176,7 +187,7 @@
 						return strip_tags($matches[0]);
 					},
 					$html);
-					
+				
 			foreach($xpath->query('//h1|//h2|//h3|//h4|//h5|//h6') as $heading) {
 				$html = str_replace($heading->ownerDocument->saveHTML($heading), "<{$heading->tagName}>".trim(strip_tags($dom->saveHTML($heading)))."</{$heading->tagName}>", $html);
 			}
@@ -194,7 +205,7 @@
 			$html);
 			
 			$html = preg_replace ("!\s++!u", ' ', $html);
-
+	
 			return $html;
 		}
 		
