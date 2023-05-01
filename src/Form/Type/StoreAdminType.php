@@ -53,7 +53,7 @@ class StoreAdminType extends AbstractType
 		$fields = [];
 		
 		$builder
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
@@ -63,8 +63,8 @@ class StoreAdminType extends AbstractType
 					return $er->createQueryBuilder('u')
 							  ->orderBy('u.title', 'ASC');
 				},
-				'constraints' => array(new NotBlank())
-			));
+				'constraints' => [new NotBlank()]
+			]);
 
 		switch($options["data_class"])
 		{
@@ -151,18 +151,18 @@ class StoreAdminType extends AbstractType
 		}
 
         $builder
-            ->add('title', TextType::class, array('required' =>true, 'constraints' => array(new NotBlank())))
-            ->add('text', TextareaType::class, array('required' => false))
-            ->add('imageEmbeddedCode', TextareaType::class, array('required' =>true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
+            ->add('text', TextareaType::class, ['required' => false])
+            ->add('imageEmbeddedCode', TextareaType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
 			->add('url', UrlType::class)
-			->add('amazonCode', TextType::class, array('required' => true))
-			->add('currencyPrice', ChoiceType::class, array('choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'))
-			->add('price', NumberType::class, array('required' => true, 'translation_domain' => 'validators', "required" => false))
-			->add('platform', ChoiceType::class, array('choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => array(new NotBlank()), 'translation_domain' => 'validators'))
+			->add('amazonCode', TextType::class, ['required' => true])
+			->add('currencyPrice', ChoiceType::class, ['choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'])
+			->add('price', NumberType::class, ['required' => true, 'translation_domain' => 'validators', "required" => false])
+			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
 		;
 		
 		if(!empty($fields))
-			$builder->add('characteristic', StoreEditType::class, array('required' => false, "fields" => $fields));
+			$builder->add('characteristic', StoreEditType::class, ['required' => false, "fields" => $fields]);
 
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event)
 		{
@@ -193,9 +193,9 @@ class StoreAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Store',
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

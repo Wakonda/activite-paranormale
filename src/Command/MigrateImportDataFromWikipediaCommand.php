@@ -19,6 +19,8 @@ use App\Entity\MusicGenre;
 use App\Service\Wikipedia;
 use App\Service\Wikidata;
 
+// Example: php bin/console app:migrate-import-wikipedia --locale=en --url=https://en.wikipedia.org/wiki/List_of_symphonic_metal_bands --theme=1
+
 class MigrateImportDataFromWikipediaCommand extends Command
 {
     private $em;

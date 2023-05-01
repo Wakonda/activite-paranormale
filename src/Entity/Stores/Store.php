@@ -152,15 +152,33 @@ class Store
 	public function isWitchcraftToolCategory(): bool {
 		return $this->category == self::WITCHCRAFT_TOOL_CATEGORY;
 	}
-
-	const partnerId = "activiparano-21";
 	
     /**
 	 * @Groups("api_read")
      */
 	public function getExternalAmazonStoreLink()
 	{
-		return "http://www.amazon.fr/dp/".$this->amazonCode."/ref=nosim?tag=".self::partnerId;
+		$idPartner = null;
+		$urlPartner = $_ENV["AMAZON_FR_URL"];
+		
+		if(!empty($html = $this->imageEmbeddedCode)) {
+			$dom = new \DOMDocument();
+			libxml_use_internal_errors(true);
+			$dom->loadHTML($html, LIBXML_HTML_NODEFDTD | LIBXML_HTML_NOIMPLIED );
+
+			$xpath = new \DOMXPath($dom);
+
+			$url = $xpath->query('//a')->item(0)->getAttribute("href");
+
+			$urlPart = parse_str(parse_url($url)['query'], $resultUrl);
+			
+			$idPartner = $urlPart["tag"];
+		}
+		
+		$urlPartner = $_ENV["AMAZON_".strtoupper($this->language->getAbbreviation())."_URL"];
+		$idPartner = !empty($idPartner) ? $_ENV["AMAZON_".strtoupper($this->language->getAbbreviation())."_PARTNER_ID"] : $idPartner;
+
+		return $urlPartner.$this->amazonCode."/ref=nosim?tag=".$idPartner;
 	}
 
 	public function getAssetImagePath()
