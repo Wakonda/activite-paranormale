@@ -274,6 +274,8 @@ class AdminController extends AbstractController
 						$imgProperty = strtolower($entity->getCategory()).".jpg";
 						$img = $entity->getAssetImagePath()."category/".$imgProperty;
 					}
+					
+					// dd($imgProperty, $img);
 					$text = $entity->getText()."<br>";
 					$text .= $entity->getImageEmbeddedCode()."<br>";
 					break;
@@ -412,8 +414,10 @@ class AdminController extends AbstractController
 				$text .= "<hr>";
 				if(\App\Entity\Stores\Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #E52F20; padding: 0.375rem 0.75rem;background-color: #E52F20;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
-				else
+				elseif(\App\Entity\Stores\Store::AMAZON_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
+				elseif(\App\Entity\Stores\Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
+					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
 			}
 
 			$img = $imgSize->adaptImageSize(550, $img);
