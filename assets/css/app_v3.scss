@@ -612,16 +612,16 @@ a.navbar-brand:hover, a.navbar-brand:focus {
     color: #d7e13d;
     padding: 11px;
 }
-.amazon:hover, .read:hover, .witchcraft:hover, .submitcomment:hover {
+.amazon:hover, .read:hover, .witchcraft:hover, .submitcomment:hover, .spreadshop:hover {
     opacity: .8;
 }
-.amazon, .read, .witchcraft, .aliexpress {
+.amazon, .read, .witchcraft, .aliexpress, .spreadshop {
     background: #ffad1d;
 	padding-left: 0.25rem;
 	color: black !important;
 	font-family: Comic Sans MS,Trebuchet MS,Times,Times New Roman,serif;
 }
-.amazon span, .read span, .witchcraft span, .aliexpress span {
+.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span {
     background: white;
     border-radius: 5px;
     padding: 0.23rem;
@@ -638,6 +638,9 @@ a.navbar-brand:hover, a.navbar-brand:focus {
 .aliexpress {
     margin-right: 15px;
     background: #E52F20;
+}
+.spreadshop {
+    background: #a73c9e;
 }
 
 /************ HISTORY *******/

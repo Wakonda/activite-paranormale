@@ -267,8 +267,13 @@ class AdminController extends AbstractController
 					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
 					break;
 				case "Store":
-					$imgProperty = strtolower($entity->getCategory()).".jpg";
-					$img = $entity->getAssetImagePath()."category/".$imgProperty;
+					if(!empty($entity->getPhoto())) {
+						$imgProperty = $entity->getPhoto();
+						$img = $entity->getAssetImagePath().$imgProperty;
+					} else {
+						$imgProperty = strtolower($entity->getCategory()).".jpg";
+						$img = $entity->getAssetImagePath()."category/".$imgProperty;
+					}
 					$text = $entity->getText()."<br>";
 					$text .= $entity->getImageEmbeddedCode()."<br>";
 					break;
