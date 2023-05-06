@@ -16,6 +16,7 @@ use App\Entity\Language;
 /**
  * App\Entity\Store
  *
+ * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
  * @ORM\InheritanceType("SINGLE_TABLE")
  * @ORM\DiscriminatorColumn(name="type", type="string")
@@ -32,6 +33,7 @@ class Store
 	
 	const ALIEXPRESS_PLATFORM = "aliexpress";
 	const AMAZON_PLATFORM = "amazon";
+	const SPREADSHOP_PLATFORM = "spreadshop";
 	
 	const BOOK_CATEGORY = "book";
 	const CLOTH_CATEGORY = "cloth";
@@ -69,7 +71,7 @@ class Store
     private $url;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
 	 * @Groups("api_read")
      */
     private $imageEmbeddedCode;
@@ -121,6 +123,12 @@ class Store
     private $characteristic;
 
     /**
+	 * @Assert\File(maxSize="6000000")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
      * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
      */
     private $socialNetworkIdentifiers;
@@ -168,11 +176,14 @@ class Store
 
 			$xpath = new \DOMXPath($dom);
 
-			$url = $xpath->query('//a')->item(0)->getAttribute("href");
+			if(!empty($xpath->query('//a')->item(0))) {
+				$url = $xpath->query('//a')->item(0)->getAttribute("href");
 
-			$urlPart = parse_str(parse_url($url)['query'], $resultUrl);
-			
-			$idPartner = $urlPart["tag"];
+				$urlPart = parse_str(parse_url($url)['query'], $resultUrl);
+				
+				$idPartner = $resultUrl["tag"];
+			}
+
 		}
 		
 		$urlPartner = $_ENV["AMAZON_".strtoupper($this->language->getAbbreviation())."_URL"];
@@ -185,11 +196,6 @@ class Store
 	{
 		return "extended/photo/store/";
 	}
-
-    public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
-        return __DIR__ . '/../../public/'.$this->getAssetImagePath();
-    }
 
     /**
      * Get id
@@ -409,5 +415,83 @@ class Store
     public function getSocialNetworkIdentifiers()
     {
         return $this->socialNetworkIdentifiers;
+    }
+	
+	/**
+     * Set photo
+     *
+     * @param string $photo
+     */
+    public function setPhoto($photo)
+    {
+        $this->photo = $photo;
+    }
+
+    /**
+     * Get photo
+     *
+     * @return string 
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+	public function getFullPicturePath() {
+        return null === $this->photo ? null : $this->getUploadRootDir(). $this->photo;
+    }
+
+    public function getUploadRootDir() {
+        // the absolute directory path where uploaded documents should be saved
+        return $this->getTmpUploadRootDir();
+    }
+
+	public function getAssetPhotoPath()
+	{
+		return "extended/photo/store/";
+	}
+
+    public function getTmpUploadRootDir() {
+        // the absolute directory path where uploaded documents should be saved
+        return __DIR__ . '/../../../public/'.$this->getAssetPhotoPath();
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function uploadPhoto() {
+        // the file property can be empty if the field is not required
+        if (null === $this->photo) {
+            return;
+        }
+
+		if(is_object($this->photo))
+		{
+			$NameFile = basename($this->photo->getClientOriginalName());
+			$reverseNF = strrev($NameFile);
+			$explodeNF = explode(".", $reverseNF, 2);
+			$NNFile = strrev($explodeNF[1]);
+			$ExtFile = strrev($explodeNF[0]);
+			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
+			if(!$this->id){
+				$this->photo->move($this->getTmpUploadRootDir(), $NewNameFile);
+			}else{
+				if (is_object($this->photo))
+					$this->photo->move($this->getUploadRootDir(), $NewNameFile);
+			}
+			if (is_object($this->photo))
+				$this->setPhoto($NewNameFile);
+		} elseif(filter_var($this->photo, FILTER_VALIDATE_URL)) {
+			$parser = new \App\Service\APParseHTML();
+			$html = $parser->getContentURL($this->photo);
+			$pi = pathinfo($this->photo);
+			$extension = $res = pathinfo(parse_url($this->photo, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
+			$filename = uniqid()."_".$filename;
+
+			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
+			$this->setPhoto($filename);
+		}
     }
 }

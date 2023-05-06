@@ -3,6 +3,7 @@ store:
         Store: "Store"
         BuyOnAmazon: "Buy on Amazon"
         BuyOnAliexpress: "Buy on Aliexpress"
+        BuyOnSpreadshop: "Buy on sur Spreadshop"
         BuyOn: "Buy on"
         Book: "Book"
         Cloth: "Cloth"
@@ -37,6 +38,7 @@ store:
         AddProduct: "Add a product"
         Product: "Product"
         MoreBooksOn: "More books on"
+        Photo: "Photo"
     characteristic:
         VinylDisc: "Vinyl disc"
         Cd: "CD"

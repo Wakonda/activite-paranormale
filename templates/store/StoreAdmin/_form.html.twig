@@ -35,7 +35,30 @@
 <div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.imageEmbeddedCode, "store.admin.ImageEmbeddedCode"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.imageEmbeddedCode) }}{{ form_widget(form.imageEmbeddedCode, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.imageEmbeddedCode) }}
+	<ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<a class="nav-link active" id="pills-audio-tab" data-toggle="pill" href="#pills-audio" role="tab" aria-controls="pills-audio" aria-selected="true"><i class="fa-solid fa-code"></i> {{ "store.admin.ImageEmbeddedCode"|trans([], "validators") }}</a>
+		</li>
+		<li class="nav-item" role="presentation">
+			<a class="nav-link" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="false"><i class="fas fa-video fa-fw"></i> {{ "store.admin.Photo"|trans([], "validators") }}</a>
+		</li>
+	</ul>
+	<div class="tab-content" id="pills-tabContent">
+		<div class="tab-pane fade show active" id="pills-audio" role="tabpanel" aria-labelledby="pills-audio-tab">
+			{{ form_label(form.imageEmbeddedCode, "store.admin.ImageEmbeddedCode"|trans([], "validators")) }}
+			{{ form_widget(form.imageEmbeddedCode, { 'attr': {'class': 'form-control'} }) }}
+		</div>
+		<div class="tab-pane fade" id="pills-video" role="tabpanel" aria-labelledby="pills-video-tab">
+			{{ form_errors(form.photo) }}
+
+			{{ form_widget(form.photo, { 'attr': {'class': 'form-control'} }) }}
+			{{ form_widget(form.photo_selector, {'attr':{'class': 'form-control'}}) }}
+		</div>
+	</div>
+</div>
+
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "store.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
@@ -127,7 +150,7 @@
 		for(const elem of urlContainer)
 			elem.style.display = "none";
 			
-		if(value == "{{ constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') }}")
+		if(value == "{{ constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') }}" || value == "{{ constant('App\\Entity\\Stores\\Store::SPREADSHOP_PLATFORM') }}")
 			for (const elem of urlContainer)
 				elem.style.display = "block";
 	}

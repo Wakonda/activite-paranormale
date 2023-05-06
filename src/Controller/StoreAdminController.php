@@ -34,6 +34,7 @@ class StoreAdminController extends AdminGenericController
 	protected $indexRoute = "Store_Admin_Index"; 
 	protected $showRoute = "Store_Admin_Show";
 	protected $formName = 'ap_store_storeadmintype';
+	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
 
 	private function getDataClass(String $category): String
 	{
@@ -99,6 +100,7 @@ class StoreAdminController extends AdminGenericController
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
+		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
 	public function postValidationAction($form, $entityBindded)
@@ -266,5 +268,15 @@ class StoreAdminController extends AdminGenericController
 		}
 
         return new JsonResponse($results);
+	}
+
+	public function showImageSelectorColorboxAction()
+	{
+		return $this->showImageSelectorColorboxGenericAction('Store_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorboxAction(Request $request)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request);
 	}
 }

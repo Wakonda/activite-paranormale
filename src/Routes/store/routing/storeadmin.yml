@@ -44,6 +44,14 @@ Store_Admin_IndexDatatables:
     defaults:
         type: ""
 
+Store_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\StoreAdminController::showImageSelectorColorboxAction
+
+Store_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\StoreAdminController::loadImageSelectorColorboxAction
+
 Store_Admin_Autocomplete:
     path:  /autocomplete
     controller: App\Controller\StoreAdminController::autocompleteAction

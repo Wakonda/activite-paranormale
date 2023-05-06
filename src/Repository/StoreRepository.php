@@ -277,4 +277,39 @@ class StoreRepository extends EntityRepository
 
 		return $qb->getQuery()->getOneOrNullResult();
 	}
+
+	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->orderBy('c.title', 'ASC');
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+
+			$qb->where("c.photo LIKE :search")
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("COUNT(DISTINCT c.photo)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->groupBy('c.photo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		$entities = $qb->getQuery()->getResult();
+		$res = array();
+		
+		foreach($entities as $entity)
+		{
+			$photo = new \StdClass();
+			$photo->photo = $entity->getPhoto();
+			$photo->path = $entity->getAssetImagePath();
+			
+			$res[] = $photo;
+		}
+		
+		return $res;
+	}
 }

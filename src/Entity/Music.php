@@ -206,8 +206,8 @@ class Music
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setMusicPieceFile($filename);
 		}
-    }	
-	
+    }
+
     /**
      * Set musicPiece
      *

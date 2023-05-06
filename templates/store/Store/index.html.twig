@@ -5,9 +5,9 @@
 
 {% block APBlog_body %}
 	{% if app.request.query.has("category") %}
-	<p class="image">{{ (app.request.query.get("category") ~ ".jpg")|imgsize(550, 'extended/photo/store/category/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+		<p class="image">{{ (app.request.query.get("category") ~ ".jpg")|imgsize(550, 'extended/photo/store/category/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
 	{% else %}
-	<p class="image">{{ "store_woman.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+		<p class="image">{{ "store_woman.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
 	{% endif %}
 	
 	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', {'internationalName' : 'book'})) }}

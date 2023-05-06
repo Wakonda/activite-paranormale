@@ -978,21 +978,21 @@ div.bx-pager {
     padding: 11px;
 }
 
-.amazon, .read, .witchcraft, .aliexpress {
+.amazon, .read, .witchcraft, .aliexpress, .spreadshop {
 	background: #ffad1d;
     padding: 0.25rem;
     color: black !important;
 	border-radius: .25rem;
 	display: inline-block;
 }
-.amazon span, .read span, .witchcraft span, .aliexpress span {
+.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span {
     background: white;
     border-radius: 5px;
     padding: 0.23rem;
 	float: left;
 }
 
-.amazon:hover, .read:hover, .witchcraft:hover, .aliexpress:hover {
+.amazon:hover, .read:hover, .witchcraft:hover, .aliexpress:hover, .spreadshop:hover {
     opacity: 0.8;
 }
 .read {
@@ -1005,6 +1005,10 @@ div.bx-pager {
 
 .aliexpress {
     background: #E52F20;
+}
+
+.spreadshop {
+    background: #ff00eb;
 }
 
 a.tags_display {

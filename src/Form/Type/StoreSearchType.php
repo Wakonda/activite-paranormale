@@ -26,7 +26,7 @@ class StoreSearchType extends AbstractType
 				"store.index.".ucfirst(Store::TELEVISION_SERIE_CATEGORY) => Store::TELEVISION_SERIE_CATEGORY,
 				"store.index.".ucfirst(Store::WITCHCRAFT_TOOL_CATEGORY) => Store::WITCHCRAFT_TOOL_CATEGORY
 			], 'expanded' => false, 'multiple' => false, "required" => false, 'translation_domain' => 'validators'])
-			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
+			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
 		;
     }
 

@@ -4,7 +4,9 @@
 {% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mr-2" alt="Store"/></span>{{ entity.title }}{% endblock %}
 
 {% block body_content %}
-	{% if entity.imageEmbeddedCode is not empty %}
+	{% if entity.photo is not empty %}
+		{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
+	{% elseif entity.imageEmbeddedCode is not empty %}
 		<p class="text-center">{{ entity.imageEmbeddedCode|raw }}</p>
 	{% endif %}
 	<br>
@@ -20,10 +22,15 @@
 				<span class="mr-2"><i class="fab fa-amazon fa-fw"></i></span>
 				<b class="align-middle">{{ "store.index.BuyOnAmazon"|trans([], "validators") }}</b>
 			</a>
-		{% else %}
+		{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') %}
 			<a class="btn btn-danger" href="{{ entity.url }}" rel="nofollow" target="_blank">
 				<span class="mr-2"><i class="fab fa-alipay fa-fw"></i></span>
 				<b class="align-middle">{{ "store.index.BuyOnAliexpress"|trans([], "validators") }}</b>
+			</a>
+		{% else %}
+			<a class="btn btn-success text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
+				<span class="mr-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
+				<b class="align-middle">{{ "store.index.BuyOnSpreadshop"|trans([], "validators") }}</b>
 			</a>
 		{% endif %}
 	</div>

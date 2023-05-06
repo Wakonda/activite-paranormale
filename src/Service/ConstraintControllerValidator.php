@@ -37,7 +37,7 @@
 					else
 						$fileToSave = $newFile;
 
-					if($form->get($fieldName)->isRequired() and empty($currentFile) and empty($existingFile) and $entityBindded->$getFieldName() == "")
+					if($form->get($fieldName)->isRequired() and $form->get($fieldName)->isRequired() and empty($currentFile) and empty($existingFile) and $entityBindded->$getFieldName() == "")
 					{
 						$form->get($fieldName)->addError(new FormError($this->translator->trans('admin.error.NotBlank', array(), 'validators')));
 					}

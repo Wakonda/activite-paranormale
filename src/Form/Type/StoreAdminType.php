@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -64,7 +65,9 @@ class StoreAdminType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				},
 				'constraints' => [new NotBlank()]
-			]);
+			])
+			->add('photo',  FileType::class, ['data_class' => null, 'required' => false])
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => "Store_Admin_ShowImageSelectorColorbox", 'data' => $builder->getData()->getPhoto()]);
 
 		switch($options["data_class"])
 		{
@@ -153,12 +156,12 @@ class StoreAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => false])
-            ->add('imageEmbeddedCode', TextareaType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
+            ->add('imageEmbeddedCode', TextareaType::class, ['required' => true])
 			->add('url', UrlType::class)
 			->add('amazonCode', TextType::class, ['required' => true])
 			->add('currencyPrice', ChoiceType::class, ['choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'])
 			->add('price', NumberType::class, ['required' => true, 'translation_domain' => 'validators', "required" => false])
-			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
+			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
 		;
 		
 		if(!empty($fields))
@@ -169,6 +172,9 @@ class StoreAdminType extends AbstractType
 			$data = $event->getData();
 			$form = $event->getForm();
 			$notBlank = new NotBlank();
+
+			if(empty($form->get("photo_selector")->getData()) and empty($form->get("photo")->getData()) and empty($form->get("imageEmbeddedCode")->getData()))
+				$form->get('imageEmbeddedCode')->addError(new FormError($notBlank->message));
 			
 			if($data->getPlatform() == Store::AMAZON_PLATFORM and empty($data->getAmazonCode()))
 				$form->get('amazonCode')->addError(new FormError($notBlank->message));
