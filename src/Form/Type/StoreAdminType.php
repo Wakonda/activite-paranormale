@@ -150,7 +150,7 @@ class StoreAdminType extends AbstractType
 					]);
 				break;
 			default:
-				$builder->add('category', ChoiceType::class, ['choices' => ["store.admin.".ucfirst(Store::CLOTH_CATEGORY) => Store::CLOTH_CATEGORY, "store.admin.".ucfirst(Store::FUNNY_CATEGORY) => Store::FUNNY_CATEGORY], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators']);
+				$builder->add('category', ChoiceType::class, ['choices' => ["store.admin.".ucfirst(Store::CLOTH_CATEGORY) => Store::CLOTH_CATEGORY, "store.admin.".ucfirst(Store::FUNNY_CATEGORY) => Store::FUNNY_CATEGORY, "store.admin.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY) => Store::GOTHIC_CLOTH_CATEGORY], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators']);
 		}
 
         $builder

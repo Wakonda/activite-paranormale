@@ -37,6 +37,7 @@ class Store
 	
 	const BOOK_CATEGORY = "book";
 	const CLOTH_CATEGORY = "cloth";
+	const GOTHIC_CLOTH_CATEGORY = "gothicCloth";
 	const FUNNY_CATEGORY = "funny";
 	const ALBUM_CATEGORY = "album";
 	const MOVIE_CATEGORY = "movie";

@@ -24,7 +24,9 @@ class StoreSearchType extends AbstractType
 				"store.index.".ucfirst(Store::ALBUM_CATEGORY) => Store::ALBUM_CATEGORY,
 				"store.index.".ucfirst(Store::MOVIE_CATEGORY) => Store::MOVIE_CATEGORY,
 				"store.index.".ucfirst(Store::TELEVISION_SERIE_CATEGORY) => Store::TELEVISION_SERIE_CATEGORY,
-				"store.index.".ucfirst(Store::WITCHCRAFT_TOOL_CATEGORY) => Store::WITCHCRAFT_TOOL_CATEGORY
+				"store.index.".ucfirst(Store::WITCHCRAFT_TOOL_CATEGORY) => Store::WITCHCRAFT_TOOL_CATEGORY,
+				"store.index.".ucfirst(Store::FUNNY_CATEGORY) => Store::FUNNY_CATEGORY,
+				"store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY) => Store::GOTHIC_CLOTH_CATEGORY
 			], 'expanded' => false, 'multiple' => false, "required" => false, 'translation_domain' => 'validators'])
 			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
 		;
