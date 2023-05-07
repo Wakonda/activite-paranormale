@@ -10,7 +10,7 @@ video:
         Theme: "Thème"
         Thumbnail: "Thumbnail"
         Text: "Texte"
-        WritingDate: "Date de redaction"
+        WritingDate: "Date de rédaction"
         PublicationDate: "Date de publication"
         Licence: "Licence"
         State: "Etat"

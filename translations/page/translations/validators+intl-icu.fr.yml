@@ -7,7 +7,7 @@ page:
         PseudoUsed: "Pseudo utilisé"
         Licence: "Licence"
         State: "Etat"
-        WritingDate: "Date de redaction"
+        WritingDate: "Date de rédaction"
         PublicationDate: "Date de publication"
 president:
     admin:
