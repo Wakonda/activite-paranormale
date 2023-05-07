@@ -33,7 +33,7 @@ class MigrateGothicClothCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
-		$conn->exec("UPDATE store SET category = 'gothicCloth' WHERE category = 'cloth';");
+		$conn->exec("UPDATE Store SET category = 'gothicCloth' WHERE category = 'cloth';");
 
         return 0;
     }
