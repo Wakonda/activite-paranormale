@@ -95,6 +95,7 @@
 			{{ macro_index.blogger_form(entity, "news") }}
 			{{ macro_index.facebook_form(entity) }}
 			{{ macro_index.mastodon_form(entity) }}
+			{{ macro_index.diaspora_form(entity) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}
@@ -104,4 +105,5 @@
 	{{ macro_index.twitter_form_js() }}
 	{{ macro_index.facebook_form_js() }}
 	{{ macro_index.mastodon_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
 {% endblock %}
