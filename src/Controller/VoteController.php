@@ -83,22 +83,22 @@ class VoteController extends AbstractController
     {
 		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
-		
+
 		$averageVote = $em->getRepository($classNameVote)->averageVote($className, $idClassName);
-		
+
 		if($averageVote == null)
 			$averageVote = null;
 
 		$form = $this->createForm(VoteType::class, $entity, ["averageVote" => $averageVote]);
 		$countVoteByClassName = $em->getRepository($classNameVote)->countVoteByClassName($classNameVote, $idClassName);
 
-        return $this->render('vote/Vote/index.html.twig', array(
+        return $this->render('vote/Vote/index.html.twig', [
 			'className' => $className,
 			'idClassName' => $idClassName,
 			'countVoteByClassName' => $countVoteByClassName,
 			'averageVote' => $averageVote,
 			'form' => $form->createView(),
-		));
+		]);
     }
 	
 	public function editAction(Request $request, $className, $idClassName)
@@ -120,7 +120,7 @@ class VoteController extends AbstractController
 			$em->persist($entity);
 			$em->flush();
 		}
-		
+
 		$averageVote = $em->getRepository($classNameVote)->averageVote($classNameVote, $idClassName);
 		$countVoteByClassName = $em->getRepository($classNameVote)->countVoteByClassName($classNameVote, $idClassName);
 

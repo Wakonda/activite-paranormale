@@ -172,7 +172,7 @@ class UsefulLinkAdminController extends AdminGenericController
 
 		if(!empty($language))
 		{
-			$currentLanguagesWebsite = array("fr", "en", "es");
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
 

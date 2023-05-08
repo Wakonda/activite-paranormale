@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class GrimoireRepository extends EntityRepository
 {
-	protected $currentLanguages = ["fr", "en", "es"];
+	protected $currentLanguages = explode(",", $_ENV["LANGUAGES"]);
 
 	public function countEntree($id)
 	{

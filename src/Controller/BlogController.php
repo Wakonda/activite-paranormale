@@ -14,8 +14,8 @@ class BlogController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$blogs = $em->getRepository(Blog::class)->getBlogByLang($request->getLocale());
 
-		return $this->render('blog/Blog/index.html.twig', array(
+		return $this->render('blog/Blog/index.html.twig', [
 			'blogs' => $blogs, 
-		));
+		]);
     }
 }

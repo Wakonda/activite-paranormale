@@ -141,7 +141,7 @@ class CartographyAdminController extends AdminGenericController
 		{
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			
-			$currentLanguagesWebsite = array("fr", "en", "es");
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
 

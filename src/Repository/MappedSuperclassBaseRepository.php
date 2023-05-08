@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class MappedSuperclassBaseRepository extends EntityRepository
 {
-	protected $currentLanguages = array("fr", "en", "es");
+	protected $currentLanguages = explode(",", $_ENV["LANGUAGES"]);
 
 	public function countArchivedEntriesGeneric($qb)
 	{

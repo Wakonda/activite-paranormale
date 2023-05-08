@@ -19,9 +19,9 @@ class LogoController extends AbstractController
 		
 		$entity = $em->getRepository(Logo::class)->getOneLogoByLanguageAndIsActive($request->getLocale());
 	
-		return $this->render("page/Logo/displayLogo.html.twig", array(
+		return $this->render("page/Logo/displayLogo.html.twig", [
 			"entity" => $entity
-		));
+		]);
 	}
 	
 	public function readLogoAction($id)
@@ -30,8 +30,8 @@ class LogoController extends AbstractController
 		
 		$entity = $em->getRepository(Logo::class)->find($id);
 	
-		return $this->render("page/Logo/readLogo.html.twig", array(
+		return $this->render("page/Logo/readLogo.html.twig", [
 			"entity" => $entity
-		));
+		]);
 	}
 }

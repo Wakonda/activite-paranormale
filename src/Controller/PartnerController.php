@@ -24,8 +24,8 @@ class PartnerController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
-        return $this->render('partner/Partner/index.html.twig', array(
+        return $this->render('partner/Partner/index.html.twig', [
 				'pagination' => $pagination
-		));
+		]);
     }
 }

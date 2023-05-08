@@ -144,8 +144,8 @@ class VideoAdminController extends AdminGenericController
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = $entity->getTheme()->getTitle();
 			$row[] = "
-			 <a href='".$this->generateUrl('Video_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Video_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />";
+			 <a href='".$this->generateUrl('Video_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('Video_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>";
 
 			$output['aaData'][] = $row;
 		}
@@ -156,20 +156,20 @@ class VideoAdminController extends AdminGenericController
 	public function reloadListsByLanguageAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
-		
+
 		if(!empty($language))
 		{
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
-			
-			$currentLanguagesWebsite = array("fr", "en", "es");
-			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
-				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
 
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+
+			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
 		}
 		else
 		{
@@ -188,12 +188,12 @@ class VideoAdminController extends AdminGenericController
 		$translateArray['theme'] = $themeArray;
 
 		foreach($states as $state)
-			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
+			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName()];
 
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
 
 		$translateArray['licence'] = $licenceArray;
 
@@ -211,9 +211,9 @@ class VideoAdminController extends AdminGenericController
 		foreach ($finder as $file)
 			$filesArray[] = $file->getRelativePathname();
 	
-		return $this->render('video/VideoAdmin/chooseExistingFile.html.twig', array(
+		return $this->render('video/VideoAdmin/chooseExistingFile.html.twig', [
 			"filesArray" => $filesArray
-		));	
+		]);
     }
 
 	public function showImageSelectorColorboxAction()
@@ -252,7 +252,7 @@ class VideoAdminController extends AdminGenericController
 		
 		if(!empty($theme))
 			$entity->setTheme($theme);
-		
+
 		$entity->setLanguage($language);
 
 		$request->setLocale($language->getAbbreviation());

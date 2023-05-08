@@ -185,7 +185,7 @@ class NewsAdminController extends AdminGenericController
 		{
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			
-			$currentLanguagesWebsite = ["fr", "en", "es"];
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 

@@ -17,7 +17,7 @@ class PageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "about");
 
-        return $this->render('page/Page/about.html.twig', array('entity' => $entity));
+        return $this->render('page/Page/about.html.twig', ['entity' => $entity]);
     }
 
 	public function copyrightAction(Request $request)
@@ -35,7 +35,7 @@ class PageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "cookie");
 
-        return $this->render('page/Page/cookie.html.twig', array('entity' => $entity));
+        return $this->render('page/Page/cookie.html.twig', ['entity' => $entity]);
     }
 
 	public function faqAction(Request $request)
@@ -43,7 +43,7 @@ class PageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "faq");
 
-        return $this->render('page/Page/faq.html.twig', array('entity' => $entity));
+        return $this->render('page/Page/faq.html.twig', ['entity' => $entity]);
     }
 
 	public function privacyPolicyAction(Request $request)
@@ -51,7 +51,7 @@ class PageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "privacyPolicy");
 
-        return $this->render('page/Page/privacyPolicy.html.twig', array('entity' => $entity));
+        return $this->render('page/Page/privacyPolicy.html.twig', ['entity' => $entity]);
     }
 
 	public function descriptionMetaTagAction(Request $request)
@@ -77,23 +77,23 @@ class PageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(President::class)->getPresidentIndex($request->getLocale());
 
-        return $this->render('page/Page/wordPresident.html.twig', array('entity' => $entity));
+        return $this->render('page/Page/wordPresident.html.twig', ['entity' => $entity]);
     }
 
 	public function wordPresidentArchiveAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(President::class)->getPresidentArchive($request->getLocale());
-		
-		return $this->render('page/Page/wordPresidentArchive.html.twig', array('entities' => $entities));
+
+		return $this->render('page/Page/wordPresidentArchive.html.twig', ['entities' => $entities]);
 	}
 	
 	public function wordPresidentReadArchiveAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(President::class)->find($id);
-		
-		return $this->render('page/Page/wordPresidentReadArchive.html.twig', array('entity' => $entity));
+
+		return $this->render('page/Page/wordPresidentReadArchive.html.twig', ['entity' => $entity]);
 	}
 	
 	// GENERIC
@@ -102,7 +102,7 @@ class PageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $internationalName);
 
-        return $this->render('page/Page/generic.html.twig', array('entity' => $entity, "isTitle" => $isTitle));
+        return $this->render('page/Page/generic.html.twig', ['entity' => $entity, "isTitle" => $isTitle]);
     }
 
 	// RSS Feed

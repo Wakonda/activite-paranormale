@@ -162,7 +162,7 @@ class DocumentAdminController extends AdminGenericController
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			$documentFamilies = $em->getRepository(DocumentFamily::class)->findByLanguage($language, array('title' => 'ASC'));
 			
-			$currentLanguagesWebsite = array("fr", "en", "es");
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
 

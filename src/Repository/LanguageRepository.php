@@ -26,7 +26,7 @@ class LanguageRepository extends EntityRepository
 	public function displayFlagWithoutWorld()
 	{
 		$query = $this->_em->createQuery('SELECT a FROM App\Entity\Language a WHERE a.abbreviation NOT IN (:languages) ORDER BY a.abbreviation ASC');
-		$query->setParameter('languages', ["fr", "en", "es", "all"]);
+		$query->setParameter('languages', array_merge(explode(",", $_ENV["LANGUAGES"]), ["all"]));
 
 		return $query->getResult();
 	}
