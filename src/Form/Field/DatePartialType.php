@@ -56,9 +56,10 @@ class DatePartialType extends AbstractType
 				
 				$month = str_pad($month, 2, "0", STR_PAD_LEFT);
 				$day = str_pad($day, 2, "0", STR_PAD_LEFT);
+				$year = ($year < 0 ? "-" : "").str_pad(abs($year), 4, "0", STR_PAD_LEFT);
 				
 				$value = $year."-".$month."-".$day;
-				$date = \DateTime::createFromFormat('Y-m-d', $value);
+				$date = new \DateTime($value);
 
 				if(!($date && $date->format('Y-m-d') === $value))
 					$form->get('year')->addError(new FormError('This value is not a valid date.'));

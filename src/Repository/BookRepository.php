@@ -165,7 +165,7 @@ class BookRepository extends MappedSuperclassBaseRepository
 
 		if($language == "all")
 		{
-			$currentLanguages = $this->currentLanguages;
+			$currentLanguages = $this->currentLanguages();
 			$whereIn = array();
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{

@@ -231,7 +231,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		   ->leftjoin('o.state', 's')
 		   ->andWhere('s.displayState = 1');
 
-		$currentLanguages = $this->currentLanguages;
+		$currentLanguages = $this->currentLanguages();
 		$whereIn = array();
 		for($i = 0; $i < count($currentLanguages); $i++)
 		{
