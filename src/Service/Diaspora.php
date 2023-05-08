@@ -190,12 +190,13 @@ class Diaspora {
 		}
 		curl_close($ch);
 
+		$result = json_decode($result, true);
 		$tokenInfos = json_decode(file_get_contents($this->FILE_PATH), true);
 		$tokenInfos[$locale] = $result;
 
 		file_put_contents($this->FILE_PATH, json_encode($tokenInfos));
 
-		return $result->access_token;
+		return $result["access_token"];
 	}
 	
 	public function postMessage(string $message, string $access_token, string $locale)

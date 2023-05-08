@@ -14,11 +14,11 @@ class LicenceController extends AbstractController
     public function showColorboxAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
-		$entities = $em->getRepository(Licence::class)->findBy(array('language' => $language));
+		$entities = $em->getRepository(Licence::class)->findBy(['language' => $language]);
 
-        return $this->render('index/Licence/showColorbox.html.twig', array('entities' => $entities));
+        return $this->render('index/Licence/showColorbox.html.twig', ['entities' => $entities]);
     }
 
     public function showColorboxByLicenceAction($id)
@@ -26,6 +26,6 @@ class LicenceController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Licence::class)->find($id);
 
-        return $this->render('index/Licence/showColorboxByLicence.html.twig', array('entity' => $entity));
+        return $this->render('index/Licence/showColorboxByLicence.html.twig', ['entity' => $entity]);
     }
 }

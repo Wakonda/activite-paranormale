@@ -497,24 +497,25 @@ class AdminController extends AbstractController
 		$entity = $em->getRepository($path)->find($id);
 		$redirectURL = $router->generate("Admin_DiasporaPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
 		$session->set("diaspora_redirect_uri", $redirectURL);
+		$locale = $entity->getLanguage()->getAbbreviation();
 
 		$accessToken = null;
 
 		if(file_exists($diaspora->FILE_PATH)) {
 			$tokenInfos = json_decode(file_get_contents($diaspora->FILE_PATH), true);
-			$locale = $entity->getLanguage()->getAbbreviation();
 
 			if(!empty($tokenInfos) and isset($tokenInfos[$locale]["access_token"]))
 			{
 				if(!empty($at = $tokenInfos[$locale]["access_token"])) {
 					$response = $diaspora->getUserInfo($at);
-					
-					if(!property_exists($response, "error"))
+
+					if(!property_exists($response, "error")) {
 						$accessToken = $tokenInfos[$locale]["access_token"];
-					else {
+					}
+					elseif(isset($tokenInfos[$locale]["refresh_token"])) {
 						$response = $diaspora->getAuthTokenByRefreshToken($tokenInfos[$locale]["refresh_token"], $locale);
-						
-						if(!property_exists($response, "error"))
+
+						if(!isset($response["error"]))
 							$accessToken = $tokenInfos[$locale]["access_token"];
 					}
 				}
@@ -522,8 +523,8 @@ class AdminController extends AbstractController
 		}
 
 		if(empty($accessToken)) {
-			$code = $diaspora->getCode($redirectURL, $locale);
 			$session->set("diaspora_access_token_".$locale, null);
+			$code = $diaspora->getCode($redirectURL, $locale);
 		} else
 			$session->set("diaspora_access_token_".$locale, $accessToken);
 
@@ -542,7 +543,7 @@ class AdminController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($path)->find($id);
 
-		if(empty($session->get("diaspora_access_token_".$entity->getLanguage()->getAbbreviation())) and !$session->has("diaspora_access_token_".$entity->getLanguage()->getAbbreviation())) {
+		if(empty($session->get("diaspora_access_token_".$entity->getLanguage()->getAbbreviation())) or !$session->has("diaspora_access_token_".$entity->getLanguage()->getAbbreviation())) {
 			$code = $request->query->get("code");
 			$accessToken = $diaspora->getAccessToken($redirectUri, $code, $entity->getLanguage()->getAbbreviation());
 		} else

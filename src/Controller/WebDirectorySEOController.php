@@ -14,8 +14,8 @@ class WebDirectorySEOController extends AbstractController
 
 		$entities = $em->getRepository(WebDirectorySEO::class)->findAll();
 		
-        return $this->render('webdirectoryseo/WebDirectorySEO/index.html.twig', array(
+        return $this->render('webdirectoryseo/WebDirectorySEO/index.html.twig', [
 			'entities' => $entities
-		));
+		]);
     }
 }

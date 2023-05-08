@@ -16,6 +16,6 @@ class HistoryController extends AbstractController
 		
 		$entity = $em->getRepository(History::class)->find($id);
 
-        return $this->render('index/History/show.html.twig', array('entities' => $entity->getHistoryDetails(), 'titleEntity' => $titleEntity, 'path' => base64_decode($path)));
+        return $this->render('index/History/show.html.twig', ['entities' => $entity->getHistoryDetails(), 'titleEntity' => $titleEntity, 'path' => base64_decode($path)]);
     }
 }
