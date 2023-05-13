@@ -32,9 +32,9 @@ class BiographyAdminType extends AbstractType
     {
 		$action = $options['action'];
 		$language = $options['locale'];
-		
+
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('text', TextareaType::class, array('required' => false))
             ->add('source', SourceEditType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
@@ -42,33 +42,33 @@ class BiographyAdminType extends AbstractType
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(EntityRepository $er)
 				{
 					return $er->createQueryBuilder('u')
 							  ->orderBy('u.title', 'ASC');
 				},
 			))
-			->add('kind', ChoiceType::class, array('multiple' => false, 'expanded' => false,
-					"choices" => array(
+			->add('kind', ChoiceType::class, ['multiple' => false, 'expanded' => false,
+					"choices" => [
 						"biography.form.Person" => Biography::PERSON,
 						"biography.form.FictionalCharacter" => Biography::FICTIONAL_CHARACTER,
 						"biography.form.Other" => Biography::OTHER
-					),
+					],
 					'translation_domain' => 'validators'
-			))
+			])
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Biography_Admin_ShowImageSelectorColorbox'))
 			->add('birthDate', DatePartialType::class, ['required' => false])
 			->add('deathDate', DatePartialType::class, ['required' => false])
-			->add('nationality', EntityType::class, array('class'=>'App\Entity\Country', 
-					'choice_label'=>'title', 
+			->add('nationality', EntityType::class, array('class'=>'App\Entity\Country',
+					'choice_label'=>'title',
 					'required' => false,
 					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
 			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()])
 		;
-		
+
 		$socialNetworkWebsiteDefault = "";
 		$socialNetworkFacebookDefault = "";
 		$socialNetworkTwitterDefault = "";
@@ -109,7 +109,7 @@ class BiographyAdminType extends AbstractType
 				}
 			}
 		}
-		
+
 		$builder
 			->add('socialNetworkFacebook', TextType::class, array('label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Facebook', 'class' => 'social_network_select'), 'data' => $socialNetworkFacebookDefault, 'constraints' => array(new Url())))
 			->add('socialNetworkTwitter', TextType::class, array('label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Twitter', 'class' => 'social_network_select'), 'data' => $socialNetworkTwitterDefault, 'constraints' => array(new Url())))
@@ -118,7 +118,7 @@ class BiographyAdminType extends AbstractType
 			->add('socialNetworkInstagram', TextType::class, array('label' => 'Instagram', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Instagram', 'class' => 'social_network_select'), 'data' => $socialNetworkInstagramDefault, 'constraints' => array(new Url())))
 			->add('socialNetworkPinterest', TextType::class, array('label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Pinterest', 'class' => 'social_network_select'), 'data' => $socialNetworkPinterestDefault, 'constraints' => array(new Url())))
 			->add('socialNetworkLinkedin', TextType::class, array('label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Linkedin', 'class' => 'social_network_select'), 'data' => $socialNetworkLinkedinDefault, 'constraints' => array(new Url())))
-		
+
 			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'))
 		;
 
@@ -129,16 +129,16 @@ class BiographyAdminType extends AbstractType
 	{
 		$data = $event->getData();
 
-		$linkJson = array(
-			array("link" => "Facebook", "url" => $data['socialNetworkFacebook'], "label" => "FacebookAccount"),
-			array("link" => "Twitter", "url" => $data['socialNetworkTwitter'], "label" => "TwitterAccount"),
-			array("link" => "Link", "url" => $data['socialNetworkWebsite'], "label" => "Website"),
-			array("link" => "Youtube", "url" => $data['socialNetworkYoutube'], "label" => "YoutubeAccount"),
-			array("link" => "Instagram", "url" => $data['socialNetworkInstagram'], "label" => "InstagramAccount"),
-			array("link" => "Pinterest", "url" => $data['socialNetworkPinterest'], "label" => "PinterestAccount"),
-			array("link" => "Linkedin", "url" => $data['socialNetworkLinkedin'], "label" => "LinkedInAccount")
-		);
-		
+		$linkJson = [
+			["link" => "Facebook", "url" => $data['socialNetworkFacebook'], "label" => "FacebookAccount"],
+			["link" => "Twitter", "url" => $data['socialNetworkTwitter'], "label" => "TwitterAccount"],
+			["link" => "Link", "url" => $data['socialNetworkWebsite'], "label" => "Website"],
+			["link" => "Youtube", "url" => $data['socialNetworkYoutube'], "label" => "YoutubeAccount"],
+			["link" => "Instagram", "url" => $data['socialNetworkInstagram'], "label" => "InstagramAccount"],
+			["link" => "Pinterest", "url" => $data['socialNetworkPinterest'], "label" => "PinterestAccount"],
+			["link" => "Linkedin", "url" => $data['socialNetworkLinkedin'], "label" => "LinkedInAccount"]
+		];
+
 		$data["links"] = json_encode($linkJson);
 		
 		$event->setData($data);
@@ -151,10 +151,10 @@ class BiographyAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Biography',
 			'action' => null,
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

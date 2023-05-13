@@ -9,8 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use App\Form\Field\SourceEditType;
+use App\Entity\Quotation;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
@@ -28,13 +30,24 @@ class QuotationAdminType extends AbstractType
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(EntityRepository $er) 
 							{
 								return $er->createQueryBuilder('u')
 										->orderBy('u.title', 'ASC');
 							},
 			))
+			->add('family', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => true,
+					"choices" => [
+						"quotation.index.Quotation" => Quotation::QUOTATION_FAMILY,
+						"quotation.index.Proverb" => Quotation::PROVERB_FAMILY
+					],
+					'translation_domain' => 'validators'
+			])
+			->add('country', EntityType::class, ['class'=>'App\Entity\Country',
+					'choice_label'=>'title', 
+					'required' => false,
+					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
 		    ->add('authorQuotation', Select2EntityType::class, [
 				'multiple' => false,
 				'remote_route' => 'Biography_Admin_Autocomplete',
@@ -48,7 +61,7 @@ class QuotationAdminType extends AbstractType
 				'req_params' => ['locale' => 'parent.children[language]'],
 				'language' => $language
 			])
-            ->add('textQuotation', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('textQuotation', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
 			->add('source', SourceEditType::class, array('required' =>false))
 			->add('explanation', TextareaType::class, array('required' => false))
             ->add('tags', TextType::class, ['required' => false])

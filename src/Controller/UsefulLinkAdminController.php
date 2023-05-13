@@ -111,12 +111,12 @@ class UsefulLinkAdminController extends AdminGenericController
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $request->query->all());
 		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $request->query->all(), true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -160,7 +160,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$form = $this->createForm(\App\Form\Type\GenerateLinkStoreAdminType::class);
 		$partnerId = \App\Entity\Stores\Store::partnerId;
 		
-		return $this->render('usefullink/UsefulLinkAdmin/generateLinkStore.html.twig', array('form' => $form->createView(), "partnerId" => $partnerId));
+		return $this->render('usefullink/UsefulLinkAdmin/generateLinkStore.html.twig', ['form' => $form->createView(), "partnerId" => $partnerId]);
 	}
 
 	public function reloadThemeByLanguageAction(Request $request)
@@ -174,9 +174,9 @@ class UsefulLinkAdminController extends AdminGenericController
 		{
 			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
-				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
 		}
 		else
 			$licences = $em->getRepository(Licence::class)->findAll();
@@ -184,7 +184,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$licenceArray = [];
 
 		foreach($licences as $licence)
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
 
 		$translateArray['licence'] = $licenceArray;
 

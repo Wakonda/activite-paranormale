@@ -1,6 +1,7 @@
 quotation:
     index:
         Quotation: "Cita"
+        Proverb: "Proverbio"
     list:
         Author: "Autor"
         Quotation: "Cita"

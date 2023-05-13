@@ -61,7 +61,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	 * @Groups("api_read")
      */
     private $deathDate;
-	
+
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Country")
 	 * @Groups("api_read")

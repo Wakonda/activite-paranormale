@@ -76,6 +76,11 @@ class Quotation
 	 * @ORM\Column(type="string", nullable=true) 
 	 */
 	protected $family;
+	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     */
+    protected $country;
 
 	public function __construct()
 	{
@@ -216,5 +221,15 @@ class Quotation
 	public function setFamily($family)
 	{
 		$this->family = $family;
+	}
+	
+	public function getCountry()
+	{
+		return $this->country;
+	}
+	
+	public function setCountry($country)
+	{
+		$this->country = $country;
 	}
 }
