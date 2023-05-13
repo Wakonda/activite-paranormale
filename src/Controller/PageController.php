@@ -27,7 +27,7 @@ class PageController extends AbstractController
 		
 		$images = json_decode(file_get_contents($this->getParameter('kernel.project_dir') . '/public/extended/photo/pictures.json'), true);
 
-        return $this->render('page/Page/copyright.html.twig', array('entity' => $entity, "images" => $images));
+        return $this->render('page/Page/copyright.html.twig', ['entity' => $entity, "images" => $images]);
     }
 
 	public function cookieAction(Request $request)

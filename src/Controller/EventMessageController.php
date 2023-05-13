@@ -26,7 +26,7 @@ class EventMessageController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(EventMessage::class)->getLastEventsToDisplayIndex($request->getLocale());
 
-        return $this->render('page/EventMessage/slider.html.twig', array('entities' => $entities));
+        return $this->render('page/EventMessage/slider.html.twig', ['entities' => $entities]);
     }
 
     public function readAction(Request $request, $id, $title_slug)
@@ -37,7 +37,7 @@ class EventMessageController extends AbstractController
 		if($entity->getArchive())
 			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $entity->getId(), "className" => base64_encode(get_class($entity))]));
 
-        return $this->render('page/EventMessage/read.html.twig', array('entity' => $entity));
+        return $this->render('page/EventMessage/read.html.twig', ['entity' => $entity]);
     }
 	
 	public function calendarAction()
@@ -106,7 +106,7 @@ class EventMessageController extends AbstractController
 
 		$interval = \DateInterval::createFromDateString("1 day");
 		$period = new \DatePeriod($startDate, $interval, $endDate);
-		
+
 		$res = [];
 
 		foreach($period as $dt) {
@@ -118,11 +118,11 @@ class EventMessageController extends AbstractController
 				unset($eventNumber[$dt->format("Y")][$dt->format("m-d")]);
 			}
 			if(!empty($eventNumber))
-				$number = array_sum(array_values(array_map(function($a) use($dt) {  return isset($a[$dt->format("m-d")]) ? $a[$dt->format("m-d")] : 0; }, $eventNumber)));
+				$number = array_sum(array_values(array_map(function($a) use($dt) { return isset($a[$dt->format("m-d")]) ? $a[$dt->format("m-d")] : 0; }, $eventNumber)));
 
 			$color = $numberCurrent > 0 ? "darkgreen" : ($number > 0 ? "chocolate" : "darkred");
 			$res[] = [
-				"title" => '<span style="color: '.$color.'">'.($numberCurrent + $number)."</span>", //'<i class="fas fa-play-circle fa-2x"></i>',
+				"title" => '<span style="color: '.$color.'">'.($numberCurrent + $number)."</span>",
 				"color" => $color,
 				"url" => $this->generateUrl('EventMessage_SelectDayMonth', ['year' => $dt->format("Y"), 'month' => $dt->format("m"), 'day' => $dt->format("d")]),
 				"start" => $dt->format("Y-m-d"),
@@ -154,7 +154,7 @@ class EventMessageController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
+
 		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
 		{
 			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
@@ -188,7 +188,7 @@ class EventMessageController extends AbstractController
 
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].'; height:'.$img[1].'">';			
-			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $dateString;
 
 			$output['aaData'][] = $row;
@@ -204,14 +204,14 @@ class EventMessageController extends AbstractController
     {
 		$securityUser = $this->container->get('security.authorization_checker');
         $entity = new EventMessage();
-		
+
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
 
-        return $this->render('page/EventMessage/new.html.twig', array(
+        return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 	
 	public function createAction(Request $request)
@@ -222,7 +222,7 @@ class EventMessageController extends AbstractController
 	public function waitingAction($id)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$entity = $em->getRepository(EventMessage::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
 			return $this->redirect($this->generateUrl('EventMessage_Read', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]));
@@ -242,7 +242,7 @@ class EventMessageController extends AbstractController
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
         $entity = $em->getRepository(EventMessage::class)->find($id);
-		
+
 		if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 			throw new \Exception("You are not authorized to edit this document.");
 
@@ -272,14 +272,14 @@ class EventMessageController extends AbstractController
 
 		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
-		
+
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
-		
+
 		$entity->setState($state);
 		$em->persist($entity);
 		$em->flush();
-		
+
 		return $this->render('page/EventMessage/validate_externaluser_text.html.twig');
 	}
 
@@ -301,14 +301,13 @@ class EventMessageController extends AbstractController
 
         $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
         $form->handleRequest($request);
-		
-		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
-		
+
 		$entity->setState($state);
 		$entity->setLanguage($language);
-		
+
 		$entity->setType(EventMessage::EVENT_TYPE);
 
 		if(is_object($user))
@@ -346,22 +345,22 @@ class EventMessageController extends AbstractController
 				$illustration->setTitleFile($titleFile);
 				$illustration->setRealNameFile($titleFile);
 				$illustration->setExtensionFile(pathinfo($ci->getClientOriginalName(), PATHINFO_EXTENSION));
-				
+
 				$ci->move($entity->getTmpUploadRootDir(), $titleFile);
-				
+
 				$entity->setIllustration($illustration);
 			}
 
 			$em->persist($entity);
 			$em->flush();
 			
-			return $this->redirect($this->generateUrl('EventMessage_Validate', array('id' => $entity->getId())));
+			return $this->redirect($this->generateUrl('EventMessage_Validate', ['id' => $entity->getId()]));
         }
 
-        return $this->render('page/EventMessage/new.html.twig', array(
+        return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
 	}
 
 	// Event of the world
@@ -372,7 +371,6 @@ class EventMessageController extends AbstractController
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
-
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
 		$title = [];
@@ -383,12 +381,12 @@ class EventMessageController extends AbstractController
 		if(!empty($theme))
 			$title[] = $theme->getTitle();
 
-		return $this->render('page/EventMessage/world.html.twig', array(
+		return $this->render('page/EventMessage/world.html.twig', [
 			'flags' => $flags,
 			'themes' => $themes,
 			'title' => implode(" - ", $title),
 			'theme' => empty($theme) ? null : $theme
-		));
+		]);
 	}
 
 	public function selectThemeForIndexWorldAction(Request $request, $language)
@@ -398,7 +396,7 @@ class EventMessageController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
-		return new Response($this->generateUrl('EventMessage_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('EventMessage_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
 	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
@@ -411,7 +409,7 @@ class EventMessageController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
+
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
 			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
@@ -420,16 +418,16 @@ class EventMessageController extends AbstractController
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
 		}
-		
+
         $entities = $em->getRepository(EventMessage::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(EventMessage::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -437,7 +435,7 @@ class EventMessageController extends AbstractController
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
-			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
 			$output['aaData'][] = $row;
@@ -447,11 +445,11 @@ class EventMessageController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
+
 	public function getAllEventsByDayAndMonthAction(Request $request, TranslatorInterface $translator, $year, $month, $day)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
 
@@ -483,7 +481,7 @@ class EventMessageController extends AbstractController
 				];
 			}
 		}
-		
+
 		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
 
 		foreach($entities as $entity) {
@@ -491,9 +489,9 @@ class EventMessageController extends AbstractController
 
 			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("m-d") == $month."-".$day)
 				$type = EventMessage::BIRTH_DATE_TYPE;
-			
+
 			$get = "get".ucfirst($type);
-			
+
 			$yearEvent = (new \DateTime($entity->$get()))->format("Y");
 			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
 			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
@@ -517,7 +515,7 @@ class EventMessageController extends AbstractController
 			"currentDate" => $currentDate
 		]);
 	}
-	
+
 	public function getAllEventsByYearOrMonthAction(Request $request, TranslatorInterface $translator, $year, $month)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -530,7 +528,7 @@ class EventMessageController extends AbstractController
 		$currentEvent = [];
 
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByMonthOrYear($year, $month, $request->getLocale());
-		
+
 		foreach($entities as $entity) {
 			$res[$entity->getType()][] = [
 				"title" => $entity->getTitle(),
@@ -540,7 +538,7 @@ class EventMessageController extends AbstractController
 				"endDate" => ($entity->getDayFrom() == $entity->getDayTo()) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 			];
 		}
-		
+
 		$entities = $em->getRepository(Biography::class)->getAllEventsByMonthOrYear($year, $month, $request->getLocale());
 
 		foreach($entities as $entity) {
@@ -548,30 +546,30 @@ class EventMessageController extends AbstractController
 
 			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y-m") == $year."-".$month)
 				$type = EventMessage::BIRTH_DATE_TYPE;
-			
+
 			$get = "get".ucfirst($type);
-			
+
 			$startDateArray = explode("-", $entity->getBirthDate());
 			$startArray = ["year" => null, "month" => null, "day" => null];
-			
+
 			if(isset($startDateArray[0]))
 				$startArray["year"] = $startDateArray[0];
-			
+
 			if(isset($startDateArray[1]))
 				$startArray["month"] = $startDateArray[1];
-			
+
 			if(isset($startDateArray[2]))
 				$startArray["day"] = $startDateArray[2];
-			
+
 			$endDateArray = explode("-", $entity->getDeathDate());
 			$endArray = ["year" => null, "month" => null, "day" => null];
-			
+
 			if(isset($endDateArray[0]))
 				$endArray["year"] = $endDateArray[0];
-			
+
 			if(isset($endDateArray[1]))
 				$endArray["month"] = $endDateArray[1];
-			
+
 			if(isset($endDateArray[2]))
 				$endArray["day"] = $endDateArray[2];
 
@@ -599,7 +597,7 @@ class EventMessageController extends AbstractController
 		$currentEvent = [];
 
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByMonthOrYear($year, null, $request->getLocale());
-		
+
 		foreach($entities as $entity) {
 			$res[$entity->getType()][] = [
 				"title" => $entity->getTitle(),
@@ -609,7 +607,7 @@ class EventMessageController extends AbstractController
 				"endDate" => ($entity->getDayFrom() == $entity->getDayTo()) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 			];
 		}
-		
+
 		$entities = $em->getRepository(Biography::class)->getAllEventsByMonthOrYear($year, null, $request->getLocale());
 
 		foreach($entities as $entity) {
@@ -617,30 +615,30 @@ class EventMessageController extends AbstractController
 
 			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y") == $year)
 				$type = EventMessage::BIRTH_DATE_TYPE;
-			
+
 			$get = "get".ucfirst($type);
-			
+
 			$startDateArray = explode("-", $entity->getBirthDate());
 			$startArray = ["year" => null, "month" => null, "day" => null];
-			
+
 			if(isset($startDateArray[0]))
 				$startArray["year"] = $startDateArray[0];
-			
+
 			if(isset($startDateArray[1]))
 				$startArray["month"] = $startDateArray[1];
-			
+
 			if(isset($startDateArray[2]))
 				$startArray["day"] = $startDateArray[2];
-			
+
 			$endDateArray = explode("-", $entity->getDeathDate());
 			$endArray = ["year" => null, "month" => null, "day" => null];
-			
+
 			if(isset($endDateArray[0]))
 				$endArray["year"] = $endDateArray[0];
-			
+
 			if(isset($endDateArray[1]))
 				$endArray["month"] = $endDateArray[1];
-			
+
 			if(isset($endDateArray[2]))
 				$endArray["day"] = $endDateArray[2];
 
@@ -657,39 +655,32 @@ class EventMessageController extends AbstractController
 			"currentDate" => $currentDate
 		]);
 	}
-	
-	private function romanNumerals($num){ 
-		$n = intval($num); 
-		$res = ''; 
 
-		/*** roman_numerals array  ***/ 
-		$roman_numerals = array( 
-			'M'  => 1000, 
-			'CM' => 900, 
-			'D'  => 500, 
-			'CD' => 400, 
-			'C'  => 100, 
-			'XC' => 90, 
-			'L'  => 50, 
-			'XL' => 40, 
-			'X'  => 10, 
-			'IX' => 9, 
-			'V'  => 5, 
-			'IV' => 4, 
-			'I'  => 1); 
+	private function romanNumerals($num) { 
+		$n = intval($num);
+		$res = '';
 
-		foreach ($roman_numerals as $roman => $number){ 
-			/*** divide to get  matches ***/ 
-			$matches = intval($n / $number); 
+		$roman_numerals = [
+			'M'  => 1000,
+			'CM' => 900,
+			'D'  => 500,
+			'CD' => 400,
+			'C'  => 100,
+			'XC' => 90,
+			'L'  => 50,
+			'XL' => 40,
+			'X'  => 10,
+			'IX' => 9,
+			'V'  => 5,
+			'IV' => 4,
+			'I'  => 1];
 
-			/*** assign the roman char * $matches ***/ 
-			$res .= str_repeat($roman, $matches); 
-
-			/*** substract from the number ***/ 
+		foreach ($roman_numerals as $roman => $number) {
+			$matches = intval($n / $number);
+			$res .= str_repeat($roman, $matches);
 			$n = $n % $number; 
-		} 
+		}
 
-		/*** return the res ***/ 
 		return $res; 
 	}
 

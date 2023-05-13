@@ -14,6 +14,9 @@ use Doctrine\Common\Collections\ArrayCollection;
  */
 class Quotation
 {
+	const QUOTATION_FAMILY = "quotation";
+	const PROVERB_FAMILY = "proverb";
+
     /**
      * @var integer $id
      *
@@ -68,6 +71,11 @@ class Quotation
      * @ORM\Column(name="identifier", type="text", nullable=true)
      */
     private $identifier;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true) 
+	 */
+	protected $family;
 
 	public function __construct()
 	{
@@ -198,5 +206,15 @@ class Quotation
 	public function setTags($tags)
 	{
 		$this->tags = $tags;
+	}
+	
+	public function getFamily()
+	{
+		return $this->family;
+	}
+	
+	public function setFamily($family)
+	{
+		$this->family = $family;
 	}
 }

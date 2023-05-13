@@ -47,11 +47,11 @@ class GrimoireAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		$em = $this->getDoctrine()->getManager();
-		$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Validate', 'language' => $entityBindded->getLanguage()));
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Validate', 'language' => $entityBindded->getLanguage()]);
 		
 		if(empty($state)) {
 			$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => "en"]);
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Validate', 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Validate', 'language' => $language]);
 		}
 
 		$entityBindded->setState($state);
@@ -125,7 +125,7 @@ class GrimoireAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$informationArray = $this->indexDatatablesGenericAction($request);
 		$output = $informationArray['output'];
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
 		foreach($informationArray['entities'] as $entity)
 		{
@@ -134,13 +134,13 @@ class GrimoireAdminController extends AdminGenericController
 			$row[] = $entity->getTitle();
 			$row[] = !empty($entity->getSurTheme()) ? $entity->getSurTheme()->getTitle() : null;
 			
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => $entity->getState()->getInternationalName(), 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
 			$row[] =  $state->getTitle();
 			
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('Grimoire_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Grimoire_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Grimoire_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Grimoire_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -158,10 +158,10 @@ class GrimoireAdminController extends AdminGenericController
         $entities = $em->getRepository($this->className)->getByStateAdmin($state);
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
 		
-        return $this->render('witchcraft/GrimoireAdmin/indexState.html.twig', array(
+        return $this->render('witchcraft/GrimoireAdmin/indexState.html.twig', [
             'entities' => $entities,
 			'state' => $state
-        ));
+        ]);
     }
 
 	public function changeStateAction(Request $request, TranslatorInterface $translator, SessionInterface $session, $id, $state)
@@ -177,7 +177,7 @@ class GrimoireAdminController extends AdminGenericController
 		
 		if($state->getInternationalName() == "Validate") {
 			if(empty($entity->getSurTheme()))
-				return $this->redirect($this->generateUrl('Grimoire_Admin_Edit', array('id' => $id)));
+				return $this->redirect($this->generateUrl('Grimoire_Admin_Edit', ['id' => $id]));
 		}	
 		
 		$em->persist($entity);
@@ -188,7 +188,7 @@ class GrimoireAdminController extends AdminGenericController
 		else
 			$session->getFlashBag()->add('success', $translator->trans('grimoire.admin.RitualRefused', [], 'validators'));
 		
-		return $this->redirect($this->generateUrl('Grimoire_Admin_Show', array('id' => $id)));
+		return $this->redirect($this->generateUrl('Grimoire_Admin_Show', ['id' => $id]));
 	}
 
 	public function countByStateAction($state)
@@ -206,15 +206,15 @@ class GrimoireAdminController extends AdminGenericController
 		$translateArray = [];
 		
 		if(!empty($language))
-			$grimoires = $em->getRepository(SurThemeGrimoire::class)->findByLanguage($language, array('title' => 'ASC'));
+			$grimoires = $em->getRepository(SurThemeGrimoire::class)->findByLanguage($language, ['title' => 'ASC']);
 		else
-			$grimoires = $em->getRepository(SurThemeGrimoire::class)->findByLanguage($language, array('title' => 'ASC'));
+			$grimoires = $em->getRepository(SurThemeGrimoire::class)->findByLanguage($language, ['title' => 'ASC']);
 
 		$grimoireArray = [];
 
 		foreach($grimoires as $grimoire)
 		{
-			$grimoireArray[$grimoire->getMenuGrimoire()->getTitle()][] = array("id" => $grimoire->getId(), "title" => $grimoire->getTitle());
+			$grimoireArray[$grimoire->getMenuGrimoire()->getTitle()][] = ["id" => $grimoire->getId(), "title" => $grimoire->getTitle()];
 		}
 		$translateArray['grimoire'] = $grimoireArray;
 
@@ -227,7 +227,7 @@ class GrimoireAdminController extends AdminGenericController
 	protected function defaultValueForMappedSuperclassBase(Request $request, $entity)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$language = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		$entity->setLanguage($language);
 	}
 	
