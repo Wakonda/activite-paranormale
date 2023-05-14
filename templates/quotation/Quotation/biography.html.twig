@@ -60,7 +60,7 @@
 		{% set infos = infos|merge(["<b>"~"biography.index.DeathDate"|trans([], "validators")~"</b> "~entity.deathDate|doPartialDate(app.request.locale)]) %}
 	{% endif %}
 	{% if entity.nationality is not empty %}
-		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20px' height='13px'>"~" "~entity.nationality.title]) %}
+		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20' height='13'>"~" "~entity.nationality.title]) %}
 	{% endif %}
 	
 	{% set occupationArray = [] %}
@@ -124,7 +124,7 @@
 				{% for document in documents %}
 					<tr class="trGene">
 						<td class='tdGene'><a href="{{ url('DocumentBundle_AbstractDocument', { 'id' : document.id, 'title_slug' : document.getUrlSlug() }) }}"><span class="italic">{{ document.title }}</span></a></td>
-						<td class='tdGene'><img src="{{ asset(document.language.getAssetImagePath()) }}{{ document.language.logo }}" alt="" width="20px" height="13px" /></td></tr>
+						<td class='tdGene'><img src="{{ asset(document.language.getAssetImagePath()) }}{{ document.language.logo }}" alt="" width="20" height="13" /></td></tr>
 					</tr>
 				{% endfor %}
 			</tbody>
@@ -155,7 +155,7 @@
 									{{ book.photo|imgsize(150, book.getAssetImagePath())|raw }}
 								{% endif %}
 							</td>
-							<td class='tdGene'><img src="{{ asset(book.language.getAssetImagePath()) }}{{ book.language.logo }}" alt="" width="20px" height="13px" /></td>
+							<td class='tdGene'><img src="{{ asset(book.language.getAssetImagePath()) }}{{ book.language.logo }}" alt="" width="20" height="13" /></td>
 							<td class='tdGene'>
 							<a class="btn read w-auto" href="{{ path('Book_Show', {'id': book.id, 'title_slug': book.getUrlSlug()}) }}">
 								<span><i class="fas fa-book fa-fw"></i></span>

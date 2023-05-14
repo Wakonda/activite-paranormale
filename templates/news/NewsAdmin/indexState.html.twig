@@ -57,7 +57,7 @@
 				<td>{{ entity.pseudoUsed }}</td>
 				<td>{{ entity.theme is not empty ? entity.theme.title : "" }}</td>
 				<td>{{ entity.archive }}</td>
-				<td>{% if entity.language.logo is defined %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" />{% endif %}</td>
+				<td>{% if entity.language.logo is defined %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" />{% endif %}</td>
 				<td>
 					<a href="{{ path('News_Admin_Show', { 'id': entity.id }) }}"><i class="fas fa-book" aria-hidden="true"></i> {{ "admin.general.Read"|trans([], "validators") }}</a><br />
 					<a href="{{ path('News_Admin_Edit', { 'id': entity.id }) }}"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a><br />

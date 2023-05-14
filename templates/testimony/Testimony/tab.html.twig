@@ -34,7 +34,7 @@
 			{% for entity in entities %}
 				<tr class="trGene">
 					<td class="tdGene"><a href="{{ path('Testimony_Show', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}" >{{ entity.title }}</a></td>
-					<td class="tdGene"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20px" height="13px" /></td>
+					<td class="tdGene"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></td>
 					<td class="tdGene" data-order="{{ entity.writingDate|date("U") }}">{{ entity.writingDate|dodate(false, app.request.locale) }}</td>
 				</tr>
 			{% endfor %}
