@@ -8,12 +8,14 @@
 {% block delete_admin_route %}{{ path('Quotation_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
 
 {% block additional_new_entry %}
-	<li class="nav-item dropdown">
-	<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="far fa-address-book" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}...</a>
-		<div class="dropdown-menu">
-			<a class="dropdown-item" href="{{ path('Quotation_Admin_CreateSameAuthor', {'biographyId': entity.authorQuotation.id}) }}">{{ "quotation.admin.ForSameAuthor"|trans([], "validators") }}</a>
-		</div>
-	</li>
+	{% if entity.isQuotationFamily() %}
+		<li class="nav-item dropdown">
+		<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#"><i class="far fa-address-book" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}...</a>
+			<div class="dropdown-menu">
+				<a class="dropdown-item" href="{{ path('Quotation_Admin_CreateSameAuthor', {'biographyId': entity.authorQuotation.id}) }}">{{ "quotation.admin.ForSameAuthor"|trans([], "validators") }}</a>
+			</div>
+		</li>
+	{% endif %}
 {% endblock %}
 
 {% block tbody_admin_table %}

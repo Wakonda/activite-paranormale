@@ -6,6 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use App\Form\Field\SourceEditType;
@@ -46,7 +49,7 @@ class QuotationAdminType extends AbstractType
 			])
 			->add('country', EntityType::class, ['class'=>'App\Entity\Country',
 					'choice_label'=>'title', 
-					'required' => false,
+					'required' => true,
 					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
 		    ->add('authorQuotation', Select2EntityType::class, [
 				'multiple' => false,
@@ -58,6 +61,7 @@ class QuotationAdminType extends AbstractType
 				'allow_clear' => true,
 				'delay' => 250,
 				'cache' => false,
+				'required' => true,
 				'req_params' => ['locale' => 'parent.children[language]'],
 				'language' => $language
 			])
@@ -66,6 +70,19 @@ class QuotationAdminType extends AbstractType
 			->add('explanation', TextareaType::class, array('required' => false))
             ->add('tags', TextType::class, ['required' => false])
         ;
+
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event)
+		{
+			$data = $event->getData();
+			$form = $event->getForm();
+			$notBlank = new NotBlank();
+
+			if($data->isQuotationFamily() and empty($form->get("authorQuotation")->getData()))
+				$form->get('authorQuotation')->addError(new FormError($notBlank->message));
+
+			if($data->isProverbFamily() and empty($form->get("country")->getData()))
+				$form->get('country')->addError(new FormError($notBlank->message));
+		});
     }
 
     public function getBlockPrefix()

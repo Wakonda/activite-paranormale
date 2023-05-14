@@ -16,6 +16,8 @@ quotation:
         ForSameAuthor: "para el mismo autor"
         Images: "Imágenes"
         Tags: "Etiquetas"
+        Family: "Familia"
+        Country: "País"
     imageGenerator:
         Generate: "Generar una imagen"
         Image: "Image"

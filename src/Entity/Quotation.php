@@ -87,11 +87,11 @@ class Quotation
 		$this->images = new ArrayCollection();
 	}
 	
-	public function isQuotationFamily(): boolean {
+	public function isQuotationFamily(): bool {
 		return $this->family == self::QUOTATION_FAMILY;
 	}
 	
-	public function isProverbFamily(): boolean {
+	public function isProverbFamily(): bool {
 		return $this->family == self::PROVERB_FAMILY;
 	}
 

@@ -44,6 +44,12 @@ class QuotationAdminController extends AdminGenericController
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('authorQuotation')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
+
+		if($entityBindded->isProverbFamily())
+			$entityBindded->setAuthorQuotation(null);
+
+		if($entityBindded->isQuotationFamily())
+			$entityBindded->setCountry(null);
 	}
 
 	public function postValidationAction($form, $entityBindded)
