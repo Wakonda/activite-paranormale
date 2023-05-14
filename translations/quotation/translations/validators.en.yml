@@ -5,11 +5,14 @@ quotation:
     list:
         Author: "Author"
         Quotation: "Quotation"
+        Country: "Country"
+        Proverb: "Proverb"
     read:
         Explanation: "Explanation"
     admin:
         Author: "Author"
         Quotation: "Quotation"
+        Proverb: "Proverb"
         Source: "Source"
         Language: "Language"
         Explanation: "Explanation"
@@ -18,6 +21,7 @@ quotation:
         Tags: "Tags"
         Family: "Family"
         Country: "Country"
+        Origin: "Origin"
     imageGenerator:
         Generate: "Generate an image"
         Image: "Image"

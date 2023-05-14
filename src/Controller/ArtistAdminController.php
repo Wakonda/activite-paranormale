@@ -145,8 +145,8 @@ class ArtistAdminController extends AdminGenericController
 			$row[] = '<a href="'.$entity->getWebsite().'">'.$entity->getWebsite().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			<a href='".$this->generateUrl('Artist_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			<a href='".$this->generateUrl('Artist_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			<a href='".$this->generateUrl('Artist_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			<a href='".$this->generateUrl('Artist_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -275,19 +275,19 @@ class ArtistAdminController extends AdminGenericController
 		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
-		
+
 		if(!empty($language))
-			$countries = $em->getRepository(Country::class)->findByLanguage($language, array('title' => 'ASC'));
+			$countries = $em->getRepository(Country::class)->findByLanguage($language, ['title' => 'ASC']);
 		else
 			$countries = $em->getRepository(Country::class)->findAll();
 
 		$countryArray = [];
 		
 		foreach($countries as $country)
-			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());
+			$countryArray[] = ["id" => $country->getId(), "title" => $country->getTitle()];
 
 		$translateArray['country'] = $countryArray;
-		
+
 		if(!empty($language))
 			$musicGenres = $em->getRepository(MusicGenre::class)->getAllGenresByLocale($language->getAbbreviation());
 		else

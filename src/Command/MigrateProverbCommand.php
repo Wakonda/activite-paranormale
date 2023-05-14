@@ -7,9 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-use App\Entity\Stores\Store;
-
-class MigrateGothicClothCommand extends Command
+class MigrateProverbCommand extends Command
 {
     private $em;
 
@@ -20,7 +18,7 @@ class MigrateGothicClothCommand extends Command
     }
 
     // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:migrate-gothic-cloth';
+    protected static $defaultName = 'app:migrate-proverb';
 
     protected function configure()
     {
@@ -33,7 +31,7 @@ class MigrateGothicClothCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
-		$conn->exec("UPDATE Store SET category = 'gothicCloth' WHERE category = 'cloth';");
+		$conn->exec("UPDATE Quotation SET family = 'quotation' WHERE family IS NULL;");
 
         return 0;
     }

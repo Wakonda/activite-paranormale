@@ -1,9 +1,9 @@
 Quotation_ListQuotation:
-    path:  /quotation
+    path:  /quotation/{family}
     controller: App\Controller\QuotationController::listQuotationAction
 
 Quotation_listQuotationDatatables:
-    path:  /listquotationdatatables
+    path:  /listquotationdatatables/{family}
     controller: App\Controller\QuotationController::listQuotationDatatablesAction
 
 Quotation_ReadQuotation:
@@ -11,6 +11,18 @@ Quotation_ReadQuotation:
     controller: App\Controller\QuotationController::readQuotationAction
     requirements:
         id: \d+
+
+Proverb_Country_Show:
+    path:  /quotation/proverb/{id}/{title}
+    controller: App\Controller\QuotationController::proverbCountryAction
+    requirements:
+        id: \d+
+
+Proverb_listProverbByCountryDatatables:
+    path:  /listproverbbycountrydatatables/{countryId}
+    controller: App\Controller\QuotationController::listProverbByCountryDatatablesAction
+    requirements:
+        countryId: \d+
 
 Quotation_quotationsServerSide:
     path:  /quotation_server_side/{authorId}/{page}

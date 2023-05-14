@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "quotation.index.Quotation"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Quotation"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block title %}{{ ("quotation.index." ~ (app.request.get("family")|ucfirst))|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ ("quotation.index." ~ (app.request.get("family")|ucfirst))|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
@@ -30,7 +30,7 @@
 						target: ''
 					}
 				},
-				"sAjaxSource": "{{ path('Quotation_listQuotationDatatables') }}",
+				"sAjaxSource": "{{ path('Quotation_listQuotationDatatables', { family: app.request.get("family") }) }}",
 			});
 		});
 	</script>
@@ -39,24 +39,47 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/quotation.jpg') }}" alt="Angel sword" width="550" height="344" /></p>
+	<ul id="tab_resources" class="nav nav-pills nav-fill">
+		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Quotation_ListQuotation", { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}';" {{ app.request.get("family") == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Quotation"|trans([], "validators") }}</span></li>
+		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Quotation_ListQuotation", { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}';" {{ app.request.get("family") == constant('App\\Entity\\Quotation::PROVERB_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Proverb"|trans([], "validators") }}</span></li>
+	</ul>
+
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/' ~ app.request.get("family") ~ '.jpg') }}" alt="Angel sword" width="550" /></p>
 	<hr>
 	<table class="doc_datatables dt-responsive w-100">
-		<thead>
-			<tr>
-				<th class="label_form">{{ "quotation.list.Quotation"|trans([], "validators") }}</th>
-				<th class="label_form">{{ "quotation.list.Author"|trans([], "validators") }}</th>
-			</tr>
-		</thead>
-		<tbody>
+		{% if app.request.get("family") == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') %}
+			<thead>
+				<tr>
+					<th class="label_form">{{ "quotation.list.Quotation"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "quotation.list.Author"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
 
-		</tbody>
-		<tfoot>
-			<tr>
-				<th class="label_form">{{ "quotation.list.Quotation"|trans([], "validators") }}</th>
-				<th class="label_form">{{ "quotation.list.Author"|trans([], "validators") }}</th>
-			</tr>
-		</tfoot>
+			</tbody>
+			<tfoot>
+				<tr>
+					<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "quotation.list.Country"|trans([], "validators") }}</th>
+				</tr>
+			</tfoot>
+		{% elseif app.request.get("family") == constant('App\\Entity\\Quotation::PROVERB_FAMILY') %}
+			<thead>
+				<tr>
+					<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "quotation.list.Country"|trans([], "validators") }}</th>
+				</tr>
+			</thead>
+			<tbody>
+
+			</tbody>
+			<tfoot>
+				<tr>
+					<th class="label_form">{{ "quotation.list.Quotation"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "quotation.list.Author"|trans([], "validators") }}</th>
+				</tr>
+			</tfoot>
+		{% endif %}
 	</table>
 	<br>
 	<br>

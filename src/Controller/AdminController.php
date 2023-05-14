@@ -104,7 +104,7 @@ class AdminController extends AbstractController
 		$sections = $request->request->get("sections", []);
 
 		$source = ["author" => "", "title" => "", "url" => $request->request->get("url"), "type" => "url"];
-// dd($sections);
+
 		return new JsonResponse(["content" => $data->getContentBySections($sections), "source" => $source]);
 	}
 

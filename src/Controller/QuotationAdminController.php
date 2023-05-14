@@ -118,12 +118,18 @@ class QuotationAdminController extends AdminGenericController
 		{
 			$row = [];
 			$row[] = $entity->getId();
-			$row[] = $entity->getAuthorQuotation()->getTitle();
+			
+			if($entity->isQuotationFamily())
+				$row[] = $entity->getAuthorQuotation()->getTitle();
+			else
+				$row[] = $entity->getCountry()->getTitle();
+
 			$row[] = $entity->getTextQuotation();
+			$row[] = $translator->trans("quotation.admin.".ucfirst($entity->getFamily()), [], 'validators');
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('Quotation_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Quotation_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Quotation_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Quotation_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -151,10 +157,10 @@ class QuotationAdminController extends AdminGenericController
 
         $form = $this->createForm($formType, $entity, ["locale" => $entity->getLanguage()->getAbbreviation()]);
 
-        return $this->render('quotation/QuotationAdmin/new.html.twig', array(
+        return $this->render('quotation/QuotationAdmin/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
 	}
 	
 	public function generateImageAction(Request $request, PHPImage $image, $id)
@@ -192,113 +198,113 @@ class QuotationAdminController extends AdminGenericController
 			$gutter = 50;
 			$fontSizeAuthor = 20;
 			$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2 + $fontSizeAuthor, $rectangleColor, 0.5);
-			
-			$image->textBox("“".html_entity_decode($entity->getTextQuotation())."”", array(
+
+			$image->textBox("“".html_entity_decode($entity->getTextQuotation())."”", [
 				'width' => $image->getWidth() - $gutter * 2,
 				'height' => $image->getHeight() - $gutter * 2,
 				'fontSize' => $data["font_size"],
 				'x' => $gutter,
 				'y' => $gutter
-			));
+			]);
 
-			$image->textBox($entity->getAuthorQuotation()->getTitle(), array('width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2));
-			
+			$image->textBox($entity->getAuthorQuotation()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
+
 			$fileName = uniqid()."_".$data['image']->getClientOriginalName();
 
 			imagepng($image->getResource(), $entity->getAssetImagePath().$fileName);
 			imagedestroy($image->getResource());
-			
+
 			$qi = new QuotationImage();
 			$qi->setQuotation($entity);
 			$qi->setImage($fileName);
-			
+
 			$entity->addImage($qi);
-			
+
 			$em->persist($qi);
 			$em->persist($entity);
 			$em->flush();
-			
+
 			return $this->redirect($this->generateUrl("Quotation_Admin_Show", ["id" => $id]));
 		}
-		
+
 		$twig = 'quotation/QuotationAdmin/show.html.twig';
 		return $this->showGenericAction($id, $twig, ["imageGeneratorForm" => $imageGeneratorForm->createView()]);
 	}
-	
+
 	public function generateImageAjaxAction(Request $request, PHPImage $image, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
-		
+
 		$url = $request->request->get("url");
 		$size = $request->request->get("size");
-			
-			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'Edmundsbury_Serif.ttf';
 
-			$textColor = [0, 0, 0];
-			$strokeColor = [255, 255, 255];
-			$rectangleColor = [255, 255, 255];
-			
-			// if($data["invert_colors"]) {
-				$textColor = [255, 255, 255];
-				$strokeColor = [0, 0, 0];
-				$rectangleColor = [0, 0, 0];
-			// }
+		$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'Edmundsbury_Serif.ttf';
 
-			$bg = $url;
-			$image->setDimensionsFromImage($bg);
-			$image->draw($bg);
-			$image->setAlignHorizontal('center');
-			$image->setAlignVertical('center');
-			$image->setFont($font);
-			$image->setTextColor($textColor);
-			$image->setStrokeWidth(1);
-			$image->setStrokeColor($strokeColor);
-			$gutter = 50;
-			$fontSizeAuthor = 20;
-			$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2 + $fontSizeAuthor, $rectangleColor, 0.5);
-			
-			$image->textBox("“".html_entity_decode($entity->getTextQuotation())."”", array(
-				'width' => $image->getWidth() - $gutter * 2,
-				'height' => $image->getHeight() - $gutter * 2,
-				'fontSize' => $size,
-				'x' => $gutter,
-				'y' => $gutter
-			));
+		$textColor = [0, 0, 0];
+		$strokeColor = [255, 255, 255];
+		$rectangleColor = [255, 255, 255];
+		
+		// if($data["invert_colors"]) {
+			$textColor = [255, 255, 255];
+			$strokeColor = [0, 0, 0];
+			$rectangleColor = [0, 0, 0];
+		// }
 
-			$image->textBox($entity->getAuthorQuotation()->getTitle(), array('width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2));
-			
-			$fileName = uniqid()."_image.png";
+		$bg = $url;
+		$image->setDimensionsFromImage($bg);
+		$image->draw($bg);
+		$image->setAlignHorizontal('center');
+		$image->setAlignVertical('center');
+		$image->setFont($font);
+		$image->setTextColor($textColor);
+		$image->setStrokeWidth(1);
+		$image->setStrokeColor($strokeColor);
+		$gutter = 50;
+		$fontSizeAuthor = 20;
+		$image->rectangle($gutter, $gutter, $image->getWidth() - $gutter * 2, $image->getHeight() - $gutter * 2 + $fontSizeAuthor, $rectangleColor, 0.5);
 
-			ob_start (); 
+		$image->textBox("“".html_entity_decode($entity->getTextQuotation())."”", [
+			'width' => $image->getWidth() - $gutter * 2,
+			'height' => $image->getHeight() - $gutter * 2,
+			'fontSize' => $size,
+			'x' => $gutter,
+			'y' => $gutter
+		]);
 
-			  imagepng ($image->getResource());
-			  $image_data = ob_get_contents (); 
+		$image->textBox($entity->getAuthorQuotation()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
+		
+		$fileName = uniqid()."_image.png";
 
-			ob_end_clean (); 
+		ob_start (); 
 
-			$image_data_base64 = base64_encode ($image_data);
-			
-			return new JsonResponse(["content" => $image_data_base64]);
+		imagepng ($image->getResource());
+		$image_data = ob_get_contents (); 
+
+		ob_end_clean (); 
+
+		$image_data_base64 = base64_encode ($image_data);
+
+		return new JsonResponse(["content" => $image_data_base64]);
 	}
 
 	public function removeImageAction(Request $request, $id, $quotationImageId)
 	{
 		$entityManager = $this->getDoctrine()->getManager();
 		$entity = $entityManager->getRepository(Quotation::class)->find($id);
-		
+
 		$quotationImage = $entityManager->getRepository(QuotationImage::class)->find($quotationImageId);
-		
+
 		$fileName = $quotationImage->getImage();
-		
+
 		$entity->removeImage($quotationImage);
-		
+
 		$entityManager->persist($entity);
 		$entityManager->flush();
-		
+
 		$filesystem = new Filesystem();
 		$filesystem->remove($entity->getAssetImagePath().$fileName);
-		
+
 		$redirect = $this->generateUrl('Quotation_Admin_Show', array('id' => $entity->getId()));
 
 		return $this->redirect($redirect);

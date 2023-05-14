@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+use App\Entity\Quotation;
+
 /**
  * QuotationRepository
  *
@@ -26,14 +28,14 @@ class QuotationRepository extends EntityRepository
 	
 	public function listeCitation($lang)
 	{	
-		$queryBuilder = $this->createQueryBuilder('o');
+		$qb = $this->createQueryBuilder('o');
 
-		$queryBuilder->join('o.language', 'l')
-					->where('l.abbreviation = :lang')
-					->setParameter('lang', $lang)
-					->orderBy('o.textQuotation');
+		$qb->join('o.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $lang)
+			->orderBy('o.textQuotation');
 
-		return $queryBuilder->getQuery()->getResult();
+		return $qb->getQuery()->getResult();
 	}	
 	
 	public function randomQuote($lang)
@@ -59,24 +61,71 @@ class QuotationRepository extends EntityRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
-	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language, $count = false)
+	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $family, $language, $count = false)
 	{
-		$aColumns = array('c.textQuotation', 'a.title');
-
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
-		   ->join('c.authorQuotation', 'a')
 		   ->where('l.abbreviation = :language')
 		   ->setParameter('language', $language)
-		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		   ->andWhere("c.family = :family")
+		   ->setParameter("family", $family);
 
-		$query = array();
+		if($family == Quotation::QUOTATION_FAMILY) {
+			$aColumns = ['c.textQuotation', 'a.title'];
+			$qb->join('c.authorQuotation', 'a');
+		} elseif($family == Quotation::PROVERB_FAMILY) {
+			$aColumns = ['c.textQuotation', 'a.title'];
+			$qb->join('c.country', 'a');
+		}
+
+		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		$query = [];
 		   
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
 			$orWhere = [];
-			
+
+			foreach($aColumns as $column)
+				$orWhere[] = $column." LIKE :search";
+
+			$qb->andWhere(implode(" OR ", $orWhere))
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("count(c)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+
+	public function getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, $count = false)
+	{
+		$aColumns = ['c.textQuotation', null];
+		
+		$qb = $this->createQueryBuilder('c');
+		$qb->join('c.language', 'l')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("c.family = :family")
+		   ->setParameter("family", Quotation::PROVERB_FAMILY)
+		   ->andWhere("c.country = :countryId")
+		   ->setParameter("countryId", $countryId);
+
+		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		$query = [];
+		   
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$orWhere = [];
+
 			foreach($aColumns as $column)
 				$orWhere[] = $column." LIKE :search";
 
@@ -106,11 +155,12 @@ class QuotationRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'a.title', 'c.textQuotation', 'l.title', 'c.id');
+		$aColumns = ['c.id', "IF(co.title IS NOT NULL, co.title, a.title)", 'c.textQuotation', 'l.title', 'c.family', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
-		   ->join('c.authorQuotation', 'a')
+		   ->leftjoin('c.authorQuotation', 'a')
+		   ->leftjoin('c.country', 'co')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
@@ -124,6 +174,7 @@ class QuotationRepository extends EntityRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
+
 		if($count)
 		{
 			$qb->select("count(c)");
@@ -162,16 +213,16 @@ class QuotationRepository extends EntityRepository
 	
 	public function getQuotationsByAuthor($biography, $language)
 	{
-		$queryBuilder = $this->createQueryBuilder('o');
+		$qb = $this->createQueryBuilder('o');
 		
-		$queryBuilder->join('o.authorQuotation', 'b')
-					->join('o.language', 'l')
-					->where('l.abbreviation = :language')
-					->setParameter('language', $language)
-					->andWhere('b.id = :biography')
-					->setParameter('biography', $biography->getId())
-					->orderBy('o.id', 'DESC');
+		$qb->join('o.authorQuotation', 'b')
+			->join('o.language', 'l')
+			->where('l.abbreviation = :language')
+			->setParameter('language', $language)
+			->andWhere('b.id = :biography')
+			->setParameter('biography', $biography->getId())
+			->orderBy('o.id', 'DESC');
 
-		return $queryBuilder->getQuery();
+		return $qb->getQuery();
 	}
 }
