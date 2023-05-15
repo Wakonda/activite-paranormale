@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Quotation;
 use App\Entity\Biography;
@@ -77,7 +78,7 @@ class QuotationController extends AbstractController
 		return $this->render('quotation/Quotation/listProverbByCountry.html.twig', ["country" => $country]);
 	}
 
-	public function listProverbByCountryDatatablesAction(Request $request, $countryId) {
+	public function listProverbByCountryDatatablesAction(Request $request, TranslatorInterface $translator, $countryId) {
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
@@ -111,7 +112,7 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
-			$row[] = "<a href='".$this->generateUrl('Quotation_ReadQuotation', ['id' => $entity->getId()])."'>Read</a>";
+			$row[] = "<a href='".$this->generateUrl('Quotation_ReadQuotation', ['id' => $entity->getId()])."'>".$translator->trans("quotation.list.Read", [], 'validators')."</a>";
 
 			$output['aaData'][] = $row;
 		}

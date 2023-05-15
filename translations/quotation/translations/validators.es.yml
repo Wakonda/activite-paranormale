@@ -7,6 +7,7 @@ quotation:
         Quotation: "Cita"
         Country: "País"
         Proverb: "Proverbio"
+        Read: "Leer"
     read:
         Explanation: "Explicación"
     admin:
