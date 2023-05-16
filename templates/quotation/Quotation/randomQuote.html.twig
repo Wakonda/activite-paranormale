@@ -1,6 +1,13 @@
 {% if entity is not null %}
-	<p class="mt-2"><span class="font-italic">{{ entity.textQuotation }}</span>
-	<br>(<a class="font-weight-bold" href="{{ path('Biography_Show', {'id': entity.authorQuotation.id, 'title': entity.authorQuotation.title} ) }}" title="{{ entity.authorQuotation }}">{{entity.authorQuotation}}</a>)</p>
+	<div class="mt-2"><span class="font-italic">{{ entity.textQuotation }}</span>
+	<br>
+	
+	{% if entity.isQuotationFamily() %}
+		(<a class="font-weight-bold" href="{{ path('Biography_Show', {'id': entity.authorQuotation.id, 'title': entity.authorQuotation.title} ) }}" title="{{ entity.authorQuotation }}">{{entity.authorQuotation}}</a>)
+	{% else %}
+		(<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" /> <a href="{{ path('Proverb_Country_Show', { 'id' : entity.country.id, 'title': entity.country.title }) }}" alt="{{ entity.country.title }}" class="font-weight-bold">{{ entity.country.title }}</a>)
+	{% endif %}
+	</div>
 {% else %}
 	<p class="mt-2"><span class="font-italic">No quotation.</span></p>
 {% endif %}

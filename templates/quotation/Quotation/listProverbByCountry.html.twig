@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "quotation.index.Proverb"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset(country.getAssetImagePath()) }}{{ country.flag }}" alt="" width="20" height="13" /></span>{{ "quotation.index.Proverb"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block title %}{{ "quotation.index.Proverb"|trans([], "validators") }} - {{ country.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset(country.getAssetImagePath()) }}{{ country.flag }}" alt="" width="20" height="13" /></span>{{ "quotation.index.Proverb"|trans([], "validators") }} - {{ country.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>

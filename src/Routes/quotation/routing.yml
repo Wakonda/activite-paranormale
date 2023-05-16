@@ -1,16 +1,22 @@
-Quotation_ListQuotation:
-    path:  /quotation/{family}
-    controller: App\Controller\QuotationController::listQuotationAction
+Quotation_Index:
+    path:  /quotation/index/{family}
+    controller: App\Controller\QuotationController::indexAction
+    defaults:
+        family: null
 
 Quotation_listQuotationDatatables:
-    path:  /listquotationdatatables/{family}
+    path:  /listquotationdatatables
     controller: App\Controller\QuotationController::listQuotationDatatablesAction
 
-Quotation_ReadQuotation:
+Quotation_Read:
     path:  /quotation/read/{id}
     controller: App\Controller\QuotationController::readQuotationAction
     requirements:
         id: \d+
+
+Proverb_listQuotationDatatables:
+    path:  /listproverbdatatables
+    controller: App\Controller\QuotationController::listProverbDatatablesAction
 
 Proverb_Country_Show:
     path:  /quotation/proverb/{id}/{title}
@@ -23,6 +29,12 @@ Proverb_listProverbByCountryDatatables:
     controller: App\Controller\QuotationController::listProverbByCountryDatatablesAction
     requirements:
         countryId: \d+
+
+Proverb_Read:
+    path:  /proverb/read/{id}
+    controller: App\Controller\QuotationController::readProverbAction
+    requirements:
+        id: \d+
 
 Quotation_quotationsServerSide:
     path:  /quotation_server_side/{authorId}/{page}

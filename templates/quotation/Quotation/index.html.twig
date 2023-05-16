@@ -1,0 +1,21 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ ("quotation.index." ~ (family|ucfirst))|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ ("quotation.index." ~ (family|ucfirst))|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<ul id="tab_resources" class="nav nav-pills nav-fill">
+		<li class="nav-item mb-3"><span onclick="location.href = '{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }) }}';" {{ family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Quotation"|trans([], "validators") }}</span></li>
+		<li class="nav-item mb-3"><span onclick="location.href = '{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY') }) }}';" {{ family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Proverb"|trans([], "validators") }}</span></li>
+	</ul>
+	
+	{% if family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') %}
+		{{ render(controller('App\\Controller\\QuotationController::listQuotationAction')) }}
+	{% elseif family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') %}
+		{{ render(controller('App\\Controller\\QuotationController::listProverbAction')) }}
+	{% endif %}
+	<br>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

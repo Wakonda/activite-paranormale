@@ -14,12 +14,23 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuotationController extends AbstractController
 {
+    public function indexAction($family)
+    {
+		$family = empty($family) ? Quotation::QUOTATION_FAMILY : $family;
+        return $this->render('quotation/Quotation/index.html.twig', ["family" => $family]);
+    }
+
     public function listQuotationAction()
     {
-        return $this->render('quotation/Quotation/listQuotation.html.twig');
+        return $this->render('quotation/Quotation/listQuotation.html.twig', ["family" => Quotation::QUOTATION_FAMILY]);
+    }
+
+    public function listProverbAction()
+    {
+        return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY]);
     }
 	
-	public function listQuotationDatatablesAction(Request $request, $family)
+	public function listQuotationDatatablesAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -40,8 +51,8 @@ class QuotationController extends AbstractController
 			}
 		}
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $family, $language);
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $family, $language, true);
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, true);
 
 		$output = [
 			"sEcho" => $request->query->get('sEcho'),
@@ -54,13 +65,54 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
+			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
 
-			if($entity->isQuotationFamily())
-				$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
-			else {
-				$flag = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20px" height="13px">';
-				$row[] = "$flag <a href='".$this->generateUrl('Proverb_Country_Show', ['id' => $entity->getCountry()->getId(), 'title' => $entity->getCountry()->getTitle()])."'>".$entity->getCountry()."</a>";
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+    }
+	
+	public function listProverbDatatablesAction(Request $request)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$language = $request->getLocale();
+
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
+		}
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, true);
+
+		$output = [
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$row = [];
+			$row[] = "<i>".$entity->getTextQuotation()."</i>";
+			$flag = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20" height="13">';
+			$row[] = "$flag <a href='".$this->generateUrl('Proverb_Country_Show', ['id' => $entity->getCountry()->getId(), 'title' => $entity->getCountry()->getTitle()])."'>".$entity->getCountry()."</a>";
 
 			$output['aaData'][] = $row;
 		}
@@ -112,7 +164,7 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
-			$row[] = "<a href='".$this->generateUrl('Quotation_ReadQuotation', ['id' => $entity->getId()])."'>".$translator->trans("quotation.list.Read", [], 'validators')."</a>";
+			$row[] = "<a href='".$this->generateUrl('Proverb_Read', ['id' => $entity->getId()])."'>".$translator->trans("quotation.list.Read", [], 'validators')."</a>";
 
 			$output['aaData'][] = $row;
 		}
@@ -121,6 +173,14 @@ class QuotationController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 
 		return $response;
+	}
+
+	public function readProverbAction($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(Quotation::class)->find($id);
+		
+		return $this->render("quotation/Quotation/readProverb.html.twig", ['entity' => $entity]);
 	}
 
 	public function readQuotationAction($id)
