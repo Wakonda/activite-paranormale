@@ -28,6 +28,8 @@ quotation:
         Image: "Image"
         FontSize: "Taille de la police"
         InvertColors: "Inverser les couleurs"
+    random:
+        NoQuotation: "Aucune citation"
 biography:
     admin:
         Title: "Titre"
