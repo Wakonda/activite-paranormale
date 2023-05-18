@@ -15,14 +15,14 @@ class ContactAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('pseudoContact', TextType::class, array('required' => true))
-            ->add('emailContact', TextType::class, array('required' => true))
-            ->add('subjectContact', TextType::class, array('required' => true))
-            ->add('messageContact', TextareaType::class, array('required' => true))
-			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
+            ->add('pseudoContact', TextType::class, ['required' => true])
+            ->add('emailContact', TextType::class, ['required' => true])
+            ->add('subjectContact', TextType::class, ['required' => true])
+            ->add('messageContact', TextareaType::class, ['required' => true])
+			->add('state', EntityType::class, ['class'=>'App\Entity\State', 
 								'choice_label'=>'title', 
 								'required' => true,
-								'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}))
+								'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}])
         ;
     }
 
@@ -33,9 +33,9 @@ class ContactAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Contact',
 			'validation_groups' => 'contact_validation',
-		));
+		]);
 	}
 }

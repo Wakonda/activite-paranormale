@@ -1,14 +1,5 @@
 <?php
 
-/*
- * This file is part of the FOSUserBundle package.
- *
- * (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
- */
-
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -26,17 +17,16 @@ class ProfileFormType extends BaseType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, array('required' => true))
+            ->add('username', TextType::class, ['required' => true])
             ->add('email', EmailType::class)
 			->add('birthDate')
-			->add('civility', EntityType::class, array('class'=>'App\Entity\Civility', 'choice_label'=>'title', 'required' => true, 'expanded' => true, 'multiple' => false))	
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 'choice_label'=>'title', 'query_builder' => function(EntityRepository $er) 
+			->add('civility', EntityType::class, ['class'=>'App\Entity\Civility', 'choice_label'=>'title', 'required' => true, 'expanded' => true, 'multiple' => false])	
+			->add('country', EntityType::class, ['class'=>'App\Entity\Country', 'choice_label'=>'title', 'query_builder' => function(EntityRepository $er)
 				{
 					return $er->createQueryBuilder('u')
 							->orderBy('u.title', 'ASC');
 				},
-			))
-			
+			])
             ->add('avatar')
             ->add('city')
             ->add('siteWeb')
@@ -50,23 +40,17 @@ class ProfileFormType extends BaseType
         return 'ap_user_profile';
     }
 
-    /**
-     * Builds the embedded form representing the user.
-     *
-     * @param FormBuilder $builder
-     * @param array       $options
-     */
     protected function buildUserForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('username', TextType::class, array('required' => true))
+            ->add('username', TextType::class, ['required' => true])
         ;
     }
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\User'
-		));
+		]);
 	}
 }

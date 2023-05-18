@@ -13,7 +13,7 @@ class TagsAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('tags', TextType::class, array('mapped' => false, 'constraints' => array(new NotBlank())))
+            ->add('tags', TextType::class, ['mapped' => false, 'constraints' => [new NotBlank()]])
 		;
     }
 

@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -23,6 +22,8 @@ use App\Form\Field\SourceEditType;
 use App\Form\Type\FileSelectorType;
 use App\Form\EventListener\InternationalNameFieldListener;
 
+use App\Entity\Language;
+
 class WebDirectoryAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -30,50 +31,49 @@ class WebDirectoryAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('link', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('logo', FileType::class, array('data_class' => null, 'required' => true))
+            ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('link', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('logo', FileType::class, ['data_class' => null, 'required' => true])
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
-            ->add('language', EntityType::class, array(
-					'class'=>'App\Entity\Language', 
-					'choice_label' => function ($choice, $key, $value) {
-						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
-					},
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er) 
-						{
-							return $er->createQueryBuilder('u')
-									->orderBy('u.title', 'ASC');
-						},
-					))
-			->add('websiteLanguage', EntityType::class, array(
-					'class'=>'App\Entity\Language', 
-					'choice_label'=>'title', 
-					'required' => true,
-					'constraints' => array(new NotBlank()),
-					'query_builder' => function(EntityRepository $er) 
-						{
-							return $er->createQueryBuilder('u')
-									->orderBy('u.title', 'ASC');
-						},
-					))
-			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
-					'choice_label'=>'title', 
-					'required' => false,
-					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-			))
-			->add('socialNetwork', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
-			->add('text', TextareaType::class, array('required' => false))
+            ->add('language', EntityType::class, [
+				'class'=> Language::class,
+				'choice_label' => function ($choice, $key, $value) {
+					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
+				},
+				'required' => true,
+				'constraints' => [new NotBlank()],
+				'query_builder' => function(EntityRepository $er)
+				{
+					return $er->createQueryBuilder('u')
+							->orderBy('u.title', 'ASC');
+				},
+			])
+			->add('websiteLanguage', EntityType::class, [
+				'class'=> Language::class,
+				'choice_label'=>'title',
+				'required' => true,
+				'constraints' => [new NotBlank()],
+				'query_builder' => function(EntityRepository $er)
+				{
+					return $er->createQueryBuilder('u')
+							->orderBy('u.title', 'ASC');
+				},
+			])
+			->add('licence', EntityType::class, ['class'=>'App\Entity\Licence',
+				'choice_label'=>'title',
+				'required' => false,
+				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
+			])
+			->add('socialNetwork', HiddenType::class, ['label' => false, 'required' => false, 'attr' => ['class' => 'invisible']])
+			->add('text', TextareaType::class, ['required' => false])
 			->add('foundedYear', DatePartialType::class, ['required' => false])
 			->add('defunctYear', DatePartialType::class, ['required' => false])
 			->add('wikidata', TextType::class, ['required' => false])
-            ->add('source', SourceEditType::class, array('required' => false))
+            ->add('source', SourceEditType::class, ['required' => false])
 		;
 
 		$socialNetworkFacebookDefault = "";
 		$socialNetworkTwitterDefault = "";
-		$socialNetworkGooglePlusDefault = "";
 		$socialNetworkRSSDefault = "";
 		$socialNetworkYoutubeDefault = "";
 		$socialNetworkInstagramDefault = "";
@@ -89,7 +89,7 @@ class WebDirectoryAdminType extends AbstractType
 			if($builder->getData()->getSocialNetwork() != null)
 			{
 				$socialNetworkArray = json_decode($builder->getData()->getSocialNetwork());
-				
+
 				foreach($socialNetworkArray as $socialNetwork)
 				{
 					switch($socialNetwork->socialNetwork)
@@ -99,9 +99,6 @@ class WebDirectoryAdminType extends AbstractType
 							break;
 						case "Twitter":
 							$socialNetworkTwitterDefault = $socialNetwork->url;
-							break;
-						case "GooglePlus":
-							$socialNetworkGooglePlusDefault = $socialNetwork->url;
 							break;
 						case "RSS":
 							$socialNetworkRSSDefault = $socialNetwork->url;
@@ -136,46 +133,43 @@ class WebDirectoryAdminType extends AbstractType
 		}
 
 		$builder
-			->add('socialNetworkFacebook', TextType::class, array('label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Facebook', 'class' => 'social_network_select'), 'data' => $socialNetworkFacebookDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkTwitter', TextType::class, array('label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Twitter', 'class' => 'social_network_select'), 'data' => $socialNetworkTwitterDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkGooglePlus', TextType::class, array('label' => 'GooglePlus', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'GooglePlus', 'class' => 'social_network_select'), 'data' => $socialNetworkGooglePlusDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkRSS', TextType::class, array('label' => 'RSS', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'RSS', 'class' => 'social_network_select'), 'data' => $socialNetworkRSSDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkYoutube', TextType::class, array('label' => 'Youtube', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Youtube', 'class' => 'social_network_select'), 'data' => $socialNetworkYoutubeDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkInstagram', TextType::class, array('label' => 'Instagram', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Instagram', 'class' => 'social_network_select'), 'data' => $socialNetworkInstagramDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkPinterest', TextType::class, array('label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Pinterest', 'class' => 'social_network_select'), 'data' => $socialNetworkPinterestDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkDelicious', TextType::class, array('label' => 'Delicious', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Delicious', 'class' => 'social_network_select'), 'data' => $socialNetworkDeliciousDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkGithub', TextType::class, array('label' => 'Github', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Github', 'class' => 'social_network_select'), 'data' => $socialNetworkGithubDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkLinkedin', TextType::class, array('label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Linkedin', 'class' => 'social_network_select'), 'data' => $socialNetworkLinkedinDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkTumblr', TextType::class, array('label' => 'Tumblr', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Tumblr', 'class' => 'social_network_select'), 'data' => $socialNetworkTumblrDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkVimeo', TextType::class, array('label' => 'Vimeo', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Vimeo', 'class' => 'social_network_select'), 'data' => $socialNetworkVimeoDefault, 'constraints' => array(new Url())))
-		
-			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'))
+			->add('socialNetworkFacebook', TextType::class, ['label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Facebook', 'class' => 'social_network_select'], 'data' => $socialNetworkFacebookDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkTwitter', TextType::class, ['label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Twitter', 'class' => 'social_network_select'], 'data' => $socialNetworkTwitterDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkRSS', TextType::class, ['label' => 'RSS', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'RSS', 'class' => 'social_network_select'], 'data' => $socialNetworkRSSDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkYoutube', TextType::class, ['label' => 'Youtube', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Youtube', 'class' => 'social_network_select'], 'data' => $socialNetworkYoutubeDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkInstagram', TextType::class, ['label' => 'Instagram', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Instagram', 'class' => 'social_network_select'], 'data' => $socialNetworkInstagramDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkPinterest', TextType::class, ['label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Pinterest', 'class' => 'social_network_select'], 'data' => $socialNetworkPinterestDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkDelicious', TextType::class, ['label' => 'Delicious', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Delicious', 'class' => 'social_network_select'], 'data' => $socialNetworkDeliciousDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkGithub', TextType::class, ['label' => 'Github', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Github', 'class' => 'social_network_select'], 'data' => $socialNetworkGithubDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkLinkedin', TextType::class, ['label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Linkedin', 'class' => 'social_network_select'], 'data' => $socialNetworkLinkedinDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkTumblr', TextType::class, ['label' => 'Tumblr', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Tumblr', 'class' => 'social_network_select'], 'data' => $socialNetworkTumblrDefault, 'constraints' => [new Url()]])
+			->add('socialNetworkVimeo', TextType::class, ['label' => 'Vimeo', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Vimeo', 'class' => 'social_network_select'], 'data' => $socialNetworkVimeoDefault, 'constraints' => [new Url()]])
+			->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmitData'])
 		;
-		
+
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
-	
+
 	public function onPreSubmitData(FormEvent $event)
 	{
 		$data = $event->getData();
 
-		$socialNetworkJson = array(
-			array("socialNetwork" => "Facebook", "url" => $data['socialNetworkFacebook']),
-			array("socialNetwork" => "Twitter", "url" => $data['socialNetworkTwitter']),
-			array("socialNetwork" => "GooglePlus", "url" => $data['socialNetworkGooglePlus']),
-			array("socialNetwork" => "RSS", "url" => $data['socialNetworkRSS']),
-			array("socialNetwork" => "Youtube", "url" => $data['socialNetworkYoutube']),
-			array("socialNetwork" => "Instagram", "url" => $data['socialNetworkInstagram']),
-			array("socialNetwork" => "Pinterest", "url" => $data['socialNetworkPinterest']),
-			array("socialNetwork" => "Delicious", "url" => $data['socialNetworkDelicious']),
-			array("socialNetwork" => "Github", "url" => $data['socialNetworkGithub']),
-			array("socialNetwork" => "Linkedin", "url" => $data['socialNetworkLinkedin']),
-			array("socialNetwork" => "Tumblr", "url" => $data['socialNetworkTumblr']),
-			array("socialNetwork" => "Vimeo", "url" => $data['socialNetworkVimeo'])
-		);
-		
+		$socialNetworkJson = [
+			["socialNetwork" => "Facebook", "url" => $data['socialNetworkFacebook']],
+			["socialNetwork" => "Twitter", "url" => $data['socialNetworkTwitter']],
+			["socialNetwork" => "RSS", "url" => $data['socialNetworkRSS']],
+			["socialNetwork" => "Youtube", "url" => $data['socialNetworkYoutube']],
+			["socialNetwork" => "Instagram", "url" => $data['socialNetworkInstagram']],
+			["socialNetwork" => "Pinterest", "url" => $data['socialNetworkPinterest']],
+			["socialNetwork" => "Delicious", "url" => $data['socialNetworkDelicious']],
+			["socialNetwork" => "Github", "url" => $data['socialNetworkGithub']],
+			["socialNetwork" => "Linkedin", "url" => $data['socialNetworkLinkedin']],
+			["socialNetwork" => "Tumblr", "url" => $data['socialNetworkTumblr']],
+			["socialNetwork" => "Vimeo", "url" => $data['socialNetworkVimeo']]
+		];
+
 		$data["socialNetwork"] = json_encode($socialNetworkJson);
-		
+
 		$event->setData($data);
 	}
 
@@ -186,9 +180,9 @@ class WebDirectoryAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\WebDirectory',
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

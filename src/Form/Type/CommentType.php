@@ -20,13 +20,13 @@ class CommentType extends AbstractType
 		$userType = $options['userType'];
 		
 		$builder
-            ->add('messageComment', TextareaType::class, array('label' => null, 'constraints' => array(new NotBlank())))
+            ->add('messageComment', TextareaType::class, ['label' => null, 'constraints' => array(new NotBlank())])
 		;
 
 		if($userType)
 		{
-			$builder->add('anonymousAuthorComment', TextType::class, array('label' => null, 'constraints' => array(new NotBlank())))
-					->add('emailComment', EmailType::class, array('label' => null, 'required' => false, 'constraints' => array(new Email())))
+			$builder->add('anonymousAuthorComment', TextType::class, ['label' => null, 'constraints' => [new NotBlank()]])
+					->add('emailComment', EmailType::class, ['label' => null, 'required' => false, 'constraints' => [new Email()]])
 			;
 		}
     }
@@ -38,9 +38,9 @@ class CommentType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Comment',
 			'userType' => null
-		));
+		]);
 	}
 }
