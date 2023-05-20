@@ -5,12 +5,10 @@ namespace App\Form\Type;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
@@ -22,18 +20,18 @@ class IllustrationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('titleFile', FileType::class, array('data_class' => null, 'required' => true))
-            ->add('license', TextType::class, array('required' => true))
-            ->add('author', TextType::class, array('required' => true))
-            ->add('urlSource', TextType::class, array('required' => true))
-            ->add('caption', TextareaType::class, array('required' => true))
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => $options["base_path"]))
+            ->add('titleFile', FileType::class, ['data_class' => null, 'required' => true])
+            ->add('license', TextType::class, ['required' => true])
+            ->add('author', TextType::class, ['required' => true])
+            ->add('urlSource', TextType::class, ['required' => true])
+            ->add('caption', TextareaType::class, ['required' => true])
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => $options["base_path"]])
 		;
-		
+
         $builder
             ->setAttribute('base_path', $options['base_path'])
         ;
-		
+
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){
 			$data = $event->getData();
 			$form = $event->getForm();
@@ -47,10 +45,7 @@ class IllustrationType extends AbstractType
     {
         return 'illustration';
     }
-	
-    /**
-     * {@inheritDoc}
-     */
+
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['base_path'] = $options['base_path'];
@@ -58,10 +53,10 @@ class IllustrationType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\FileManagement',
 			'validation_groups' => 'new_validation',
 			'base_path' => null
-		));
+		]);
 	}
 }
