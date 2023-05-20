@@ -221,6 +221,11 @@ class AdminController extends AbstractController
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
 					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+					
+					if($entity->getType() == \App\Entity\EventMessage::EVENT_TYPE) {
+						$dateString = (new \App\Service\APDate())->doYearMonthDayDate($entity->getDayFrom(), $month = $entity->getMonthFrom(), $entity->getYearFrom(), $entity->getLanguage()->getAbbreviation());
+						$title = $dateString." - ".$title;
+					}
 					break;
 				case "Video":
 					$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
@@ -274,8 +279,7 @@ class AdminController extends AbstractController
 						$imgProperty = strtolower($entity->getCategory()).".jpg";
 						$img = $entity->getAssetImagePath()."category/".$imgProperty;
 					}
-					
-					// dd($imgProperty, $img);
+
 					$text = $entity->getText()."<br>";
 					$text .= $entity->getImageEmbeddedCode()."<br>";
 					break;
