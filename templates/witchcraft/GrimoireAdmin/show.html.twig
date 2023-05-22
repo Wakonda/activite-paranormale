@@ -50,7 +50,7 @@
 	{% if entity.state.isStateDisplayed() %}
 		{% if entity.archive == false %}
 			{% import "index/macro/macro_index.html.twig" as macro_index %}
-			
+{{ entity.surTheme.menuGrimoire.internationalName }}
 			{% if entity.surTheme is not empty %}
 				{{ macro_index.blogger_form(entity, entity.surTheme.menuGrimoire.internationalName) }}
 			{% endif %}

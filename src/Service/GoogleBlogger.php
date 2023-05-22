@@ -203,9 +203,11 @@
 					$res = "Amatukami";
 					break;
 				case "magic_fr":
+				case "phytotherapy_fr":
 					$res = "PrieresEtSortileges";
 					break;
 				case "magic_en":
+				case "phytotherapy_en":
 					$res = "BookOfLucifer";
 					break;
 				case "catholicism_fr":
@@ -215,6 +217,7 @@
 					$res = "TheTempleOfZebuleon";
 					break;
 				case "magic_es":
+				case "phytotherapy_es":
 					$res = "ElGrimorioDeAstaroth";
 					break;
 				case "test_en":
@@ -232,6 +235,6 @@
 			if($_ENV["APP_ENV"] == "dev")
 				return ["test_en", "test_fr", "test_es"];
 
-			return ["news_en", "news_es", "news_fr", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "test_en", "test_fr", "test_es"];
+			return ["news_en", "news_es", "news_fr", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "test_en", "test_fr", "test_es"];
 		}
 	}

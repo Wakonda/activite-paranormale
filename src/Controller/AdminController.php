@@ -308,7 +308,28 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getNumberPage()) ? "<b>".$translator->trans('bookEdition.admin.NumberPage', [], 'validators', $language)." : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getPublisher()->getTitle()) ? "<b>".$translator->trans('bookEdition.admin.Publisher', [], 'validators', $language)." : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getPublicationDate()) ? "<b>".$translator->trans('bookEdition.admin.PublicationDate', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."<br>" : "");
-					$text .= "<br>".$translator->trans('store.admin.MoreBooksOn', [], 'validators', $language)." <a href='https://templededelphes.netlify.app/'>Temple de Delphe</a>";
+					
+					$storeURL = null;
+					$storeTitle = null;
+					
+					switch($entity->getLanguage()->getAbbreviation()) {
+						case "fr":
+							$storeURL = 'https://templededelphes.netlify.app/';
+							$storeTitle = "Temple de Delphe";
+							break;
+						case "en":
+							$storeURL = 'https://paranormalbook.netlify.app/';
+							$storeTitle = "Paranormal Book";
+							break;
+						case "es":
+							$storeURL = 'https://libroparanormal.netlify.app/';
+							$storeTitle = "Libro Paranormal";
+							break;
+					}
+
+					if(!empty($storeURL))
+						$text .= "<br>".$translator->trans('store.admin.MoreBooksOn', [], 'validators', $language)." <a href='{$storeURL}'>{$storeTitle}</a>";
+
 					$text .= !empty($entity->getBook()->getBook()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getBook()->getBook()->getSource(), $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."</span>" : "";
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
 					break;

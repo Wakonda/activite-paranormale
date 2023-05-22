@@ -31,7 +31,7 @@ class MigrateProverbCommand extends Command
 
 		$conn = $this->em->getConnection();
 		
-		$conn->exec("UPDATE Quotation SET family = 'quotation' WHERE family IS NULL;");
+		$conn->exec("UPDATE quotation SET family = 'quotation' WHERE family IS NULL;");
 
         return 0;
     }
