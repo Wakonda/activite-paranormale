@@ -70,7 +70,7 @@
 	{% endif %}
 	<div class="row media-container m-0 mt-3">
 		<div class="col-sm-4 mt-7 mb-7">
-		{{ entity.photo|imgsizeMobile(entity.getAssetImagePath())|raw }}
+		{{ entity.photoIllustrationFilename|imgsizeMobile(entity.getAssetImagePath())|raw }}
 		</div>
 		<div class="col-sm-8 mt-7">
 			<h4 class="media-heading"><a href="{{ path('ap_witchcraftmobile_read', { 'id' : entity.id }) }}" alt="">{{ entity.title }}</a></h4>

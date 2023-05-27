@@ -101,7 +101,10 @@ class Quotation
 
 	public function getShowRoute()
 	{
-		return "Quotation_ReadQuotation";
+		if($this->isProverbFamily())
+			return "Proverb_Read";
+
+		return "Quotation_Read";
 	}
 
 	public function getEntityName()

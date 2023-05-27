@@ -9,7 +9,7 @@
 
 {% block body_content %}
 	<div class="read-content">
-		<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 		<br>
 		<div>{{ entity.text|raw }}</div>
 

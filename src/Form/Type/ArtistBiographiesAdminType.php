@@ -8,11 +8,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use App\Form\Field\DatePartialType;
 use App\Entity\Biography;
 
@@ -55,9 +53,9 @@ class ArtistBiographiesAdminType extends AbstractType
 				'label' => 'biographies.admin.Occupation', 'translation_domain' => 'validators', "attr" => ["class" => "form-control list-occupation"]
 			])
 			->add('wikidata', HiddenType::class, ["attr" => ["class" => "wikidata"], "mapped" => false])
-            ->add('role', TextType::class, array('label' => 'biographies.admin.StageName', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control role-biography"], "label_attr" => ["class" => "role-biography"]))
-            ->add('startYear', DatePartialType::class, array('label' => 'biographies.admin.StartYear', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control"]))
-            ->add('endYear', DatePartialType::class, array('label' => 'biographies.admin.EndYear', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control"]))
+            ->add('role', TextType::class, ['label' => 'biographies.admin.StageName', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control role-biography"], "label_attr" => ["class" => "role-biography"]])
+            ->add('startYear', DatePartialType::class, ['label' => 'biographies.admin.StartYear', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control"]])
+            ->add('endYear', DatePartialType::class, ['label' => 'biographies.admin.EndYear', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control"]])
 			->add('internationalName', HiddenType::class, ["attr" => ["class" => "international-name"], "mapped" => false])
         ;
     }
@@ -69,11 +67,11 @@ class ArtistBiographiesAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => null,
 			'language' => 'fr',
 			"req_params" => null,
 			"query_parameters" => []
-		));
+		]);
 	}
 }
