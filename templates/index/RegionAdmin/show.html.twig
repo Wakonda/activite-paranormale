@@ -18,7 +18,7 @@
 	<div class="form-table-cell"><img src="{{ asset(entity.getAssetImagePath()) }}{{ entity.flag }}" alt="" width="20" height="13" /></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "region.admin.Family"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.family }}</div>
+	<div class="form-table-cell">{{ ("region.form." ~ (entity.family|ucfirst))|trans([], "validators") }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "region.admin.InternationalName"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.internationalName }}</div>

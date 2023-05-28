@@ -139,6 +139,7 @@ class RegionAdminController extends AdminGenericController
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setLanguage($language);
 		$entity->setFlag($entityToCopy->getFlag());
+		$entity->setFamily($entityToCopy->getFamily());
 
 		$request->setLocale($language->getAbbreviation());
 

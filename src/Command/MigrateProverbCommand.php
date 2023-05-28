@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Biography;
 use App\Entity\Quotation;
+use App\Entity\Region;
 
 class MigrateProverbCommand extends Command
 {
@@ -30,21 +31,55 @@ class MigrateProverbCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-		$output->writeln("Start Book migration");
+		$output->writeln("Start Proverb migration");
 
 		$conn = $this->em->getConnection();
 		
+		$conn->exec("UPDATE region SET family = 'country' WHERE family IS NULL;");
+
 		$conn->exec("UPDATE quotation SET family = 'quotation' WHERE family IS NULL;");
 		
 		$biography = $this->em->getRepository(Biography::class)->find(193);
-		$country = $this->em->getRepository(Region::class)->findOneBy(193);
+		$country = $this->em->getRepository(Region::class)->findOneBy(["title" => "Monde Arabe"]);
 		$quotations = $this->em->getRepository(Quotation::class)->findBy(["authorQuotation" => $biography]);
 		
 		foreach($quotations as $quotation) {
 			$quotation->setFamily(Quotation::PROVERB_FAMILY);
 			$quotation->setAuthorQuotation(null);
 			$quotation->setCountry($country);
+
+			$this->em->persist($quotation);
 		}
+		
+		$this->em->flush();
+		
+		$biography = $this->em->getRepository(Biography::class)->find(273);
+		$country = $this->em->getRepository(Region::class)->findOneBy(["title" => "Chine"]);
+		$quotations = $this->em->getRepository(Quotation::class)->findBy(["authorQuotation" => $biography]);
+		
+		foreach($quotations as $quotation) {
+			$quotation->setFamily(Quotation::PROVERB_FAMILY);
+			$quotation->setAuthorQuotation(null);
+			$quotation->setCountry($country);
+
+			$this->em->persist($quotation);
+		}
+		
+		$this->em->flush();
+		
+		$biography = $this->em->getRepository(Biography::class)->find(64);
+		$country = $this->em->getRepository(Region::class)->findOneBy(["title" => "Orient"]);
+		$quotations = $this->em->getRepository(Quotation::class)->findBy(["authorQuotation" => $biography]);
+		
+		foreach($quotations as $quotation) {
+			$quotation->setFamily(Quotation::PROVERB_FAMILY);
+			$quotation->setAuthorQuotation(null);
+			$quotation->setCountry($country);
+
+			$this->em->persist($quotation);
+		}
+		
+		$this->em->flush();
 
         return 0;
     }
