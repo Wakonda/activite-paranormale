@@ -134,6 +134,10 @@ class Store
      */
     private $socialNetworkIdentifiers;
 	
+	public function getShowRoute(): string {
+		return "Store_Show";
+	}
+	
 	public function getLinkedEntityName() {
 		return null;
 	}
