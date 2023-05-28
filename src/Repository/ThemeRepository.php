@@ -55,7 +55,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$qb = $this->createQueryBuilder('c');
 		$qb ->join('c.language', 'l')
 			->where('l.abbreviation IN (:currentLanguages)')
-			->setParameter('currentLanguages', $this->currentLanguages)
+			->setParameter('currentLanguages', $this->currentLanguages())
 			->orderBy("c.title");
 
 		$res = [];
