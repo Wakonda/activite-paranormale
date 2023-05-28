@@ -59,10 +59,10 @@ class ArtistAdminType extends AbstractType
 									  ->setParameter("locale", $language);
 						},
 				))
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
 					'choice_label'=>'title', 
 					'required' => false,
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
             ->add('source', SourceEditType::class, array('required' => false))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('artistBiographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => ArtistBiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => ArtistBiography::class, "language" => $language, "req_params" => ["locale" => $this->getBlockPrefix()."[language]"]]))

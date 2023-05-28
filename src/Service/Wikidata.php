@@ -4,7 +4,7 @@
 	use Doctrine\ORM\EntityManagerInterface;
 	
 	use App\Entity\Biography;
-	use App\Entity\Country;
+	use App\Entity\Region;
 	use App\Entity\Language;
 	use App\Entity\Licence;
 	use App\Service\Identifier;
@@ -1024,7 +1024,7 @@
 		
 		private function countryToEntity(string $code, string $language) {
 			$language = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
-			return $this->em->getRepository(Country::class)->findOneBy(["internationalName" => strtolower($code), "language" => $language]);
+			return $this->em->getRepository(Region::class)->findOneBy(["internationalName" => strtolower($code), "language" => $language]);
 		}
 
 		private function getUrl(object $datas, string $code, string $languageWiki): ?string {

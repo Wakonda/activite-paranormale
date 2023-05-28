@@ -88,9 +88,9 @@ Banner_Admin:
     resource: "routing/banneradmin.yml"
     prefix:   /admin/banner
 
-Country_Admin:
-    resource: "routing/countryadmin.yml"
-    prefix:   /admin/country
+Region_Admin:
+    resource: "routing/regionadmin.yml"
+    prefix:   /admin/region
 
 Language_Admin:
     resource: "routing/languageadmin.yml"

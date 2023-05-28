@@ -69,11 +69,11 @@ class TelevisionSerieAdminType extends AbstractType
 					'choice_attr' => function($val, $key, $index) {
 						return ['data-intl' => $val->getInternationalName()];
 					}))
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
 					'choice_label'=>'title', 
 					'required' => true,
 					'constraints' => [new NotBlank()],
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Movie_Admin_ShowImageSelectorColorbox'))
 			->add('televisionSerieBiographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => BiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => TelevisionSerieBiography::class, "language" => $language, "req_params" => ["locale" => $this->getBlockPrefix()."[language]"]]))

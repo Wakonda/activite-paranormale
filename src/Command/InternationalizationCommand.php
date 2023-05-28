@@ -43,14 +43,14 @@ class InternationalizationCommand extends Command
 		$conn = $this->em->getConnection();
 		
 		$sql = "select b.id, b.language_id, 
-				(select c2.internationalName from biography b2 join country c2 on c2.id = b2.nationality_id where b2.internationalName = b.internationalName group by c2.internationalName) as nationality
+				(select c2.internationalName from biography b2 join region c2 on c2.id = b2.nationality_id where b2.internationalName = b.internationalName group by c2.internationalName) as nationality
 				from biography b
 				where nationality_id is null
 				AND b.internationalName in (select * from (select b1.internationalName from biography b1 where b1.nationality_id is not null) as t);";
 		$datas = $conn->fetchAll($sql);
 
 		foreach($datas as $data) {
-			$sqlCountry = "SELECT id AS id FROM country WHERE language_id = ".$data["language_id"]." AND internationalName = '".$data["nationality"]."'";
+			$sqlCountry = "SELECT id AS id FROM region WHERE language_id = ".$data["language_id"]." AND internationalName = '".$data["nationality"]."'";
 			$dataCountry = $conn->fetchAssoc($sqlCountry);
 
 			if($dataCountry)

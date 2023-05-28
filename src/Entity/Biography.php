@@ -63,7 +63,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     private $deathDate;
 
 	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
 	 * @Groups("api_read")
      */
     protected $nationality;
@@ -387,21 +387,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
         return $this->deathDate;
     }
 
-    /**
-     * Set nationality
-     *
-     * @param Country $nationality
-     */
     public function setNationality($nationality)
     {
         $this->nationality = $nationality;
     }
 
-    /**
-     * Get nationality
-     *
-     * @return Country
-     */
     public function getNationality()
     {
         return $this->nationality;

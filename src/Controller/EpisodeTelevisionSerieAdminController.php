@@ -15,7 +15,7 @@ use App\Entity\TelevisionSerieTags;
 use App\Entity\Biography;
 use App\Entity\Movies\TelevisionSerieBiography;
 use App\Entity\Movies\GenreAudiovisual;
-use App\Entity\Country;
+use App\Entity\Region;
 use App\Entity\Language;
 use App\Entity\Theme;
 use App\Form\Type\EpisodeTelevisionSerieAdminType;
@@ -210,12 +210,12 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		if(!empty($language))
 		{
 			$genres = $em->getRepository(GenreAudiovisual::class)->findByLanguage($language, array('title' => 'ASC'));
-			$countries = $em->getRepository(Country::class)->findByLanguage($language, array('title' => 'ASC'));
+			$countries = $em->getRepository(Region::class)->findByLanguage($language, array('title' => 'ASC'));
 		}
 		else
 		{
 			$genres = $em->getRepository(GenreAudiovisual::class)->findAll();
-			$countries = $em->getRepository(Country::class)->findAll();
+			$countries = $em->getRepository(Region::class)->findAll();
 		}
 
 		$genreArray = [];

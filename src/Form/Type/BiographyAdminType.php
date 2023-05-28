@@ -60,10 +60,10 @@ class BiographyAdminType extends AbstractType
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Biography_Admin_ShowImageSelectorColorbox'))
 			->add('birthDate', DatePartialType::class, ['required' => false])
 			->add('deathDate', DatePartialType::class, ['required' => false])
-			->add('nationality', EntityType::class, array('class'=>'App\Entity\Country',
+			->add('nationality', EntityType::class, array('class'=>'App\Entity\Region',
 					'choice_label'=>'title',
 					'required' => false,
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
 			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()])

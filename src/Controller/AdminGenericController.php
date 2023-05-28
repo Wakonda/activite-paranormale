@@ -491,10 +491,12 @@ abstract class AdminGenericController extends AbstractController
 						$b->setTitle($newBiography->getBiography()->getTitle());
 						$b->setBirthDate($newBiography->getBiography()->getBirthDate());
 						$b->setDeathDate($newBiography->getBiography()->getDeathDate());
-						$b->setLinks($newBiography->getBiography()->getLinks());		$country = null;
+						$b->setLinks($newBiography->getBiography()->getLinks());
+						
+						$country = null;
 
 						if(!empty($n = $newBiography->getBiography()->getNationality())) {
-							$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $n->getInternationalName(), "language" => $entityBindded->getLanguage()]);
+							$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $n->getInternationalName(), "language" => $entityBindded->getLanguage()]);
 							$b->setNationality($country);
 						}
 

@@ -7,7 +7,7 @@ use App\Entity\Movies\GenreAudiovisual;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use App\Entity\Country;
+use App\Entity\Region;
 
 /**
  * App\Entity\Movie
@@ -164,12 +164,12 @@ class EpisodeTelevisionSerie
         return $this->duration;
     }
 
-    public function getCountry(): ?Country
+    public function getCountry(): ?Region
     {
         return $this->country;
     }
 
-    public function setCountry(Country $country)
+    public function setCountry(Region $country)
     {
         $this->country = $country;
     }

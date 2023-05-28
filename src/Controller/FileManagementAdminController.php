@@ -110,8 +110,8 @@ class FileManagementAdminController extends AbstractController
 				break;
 				case "country":
 					$res = $conn->fetchAll("
-						SELECT n.id, n.title, \"Country_Admin_Show\" as route
-						FROM country n
+						SELECT n.id, n.title, \"Region_Admin_Show\" as route
+						FROM region n
 						WHERE n.flag = '".$file."';");
 				break;
 				case "document":

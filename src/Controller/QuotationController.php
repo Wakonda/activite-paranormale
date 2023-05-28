@@ -9,7 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Quotation;
 use App\Entity\Biography;
-use App\Entity\Country;
+use App\Entity\Region;
 use Knp\Component\Pager\PaginatorInterface;
 
 class QuotationController extends AbstractController
@@ -125,7 +125,7 @@ class QuotationController extends AbstractController
 
 	public function proverbCountryAction($id) {
 		$em = $this->getDoctrine()->getManager();
-		$country = $em->getRepository(Country::class)->find($id);
+		$country = $em->getRepository(Region::class)->find($id);
 
 		return $this->render('quotation/Quotation/listProverbByCountry.html.twig', ["country" => $country]);
 	}

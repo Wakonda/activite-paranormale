@@ -84,7 +84,7 @@ class Artist
     private $source;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
      */
     protected $country;
 

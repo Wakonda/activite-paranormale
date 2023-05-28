@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\Biography;
 use App\Entity\Language;
 use App\Entity\FileManagement;
-use App\Entity\Country;
+use App\Entity\Region;
 use App\Form\Type\BiographyAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -187,7 +187,7 @@ class BiographyAdminController extends AdminGenericController
 		}
 		
 		if(!empty($entityToCopy->getNationality()))
-			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
+			$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
 		
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setKind($entityToCopy->getKind());
@@ -330,12 +330,12 @@ class BiographyAdminController extends AdminGenericController
 		$countryArray = [];
 		
 		if(!empty($language))
-			$countries = $em->getRepository(Country::class)->findByLanguage($language, array('title' => 'ASC'));
+			$countries = $em->getRepository(Region::class)->findByLanguage($language, ['title' => 'ASC']);
 		else
-			$countries = $em->getRepository(Country::class)->findAll();
+			$countries = $em->getRepository(Region::class)->findAll();
 		
 		foreach($countries as $country)
-			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());
+			$countryArray[] = ["id" => $country->getId(), "title" => $country->getTitle()];
 
 		$translateArray['country'] = $countryArray;
 
@@ -390,7 +390,7 @@ class BiographyAdminController extends AdminGenericController
 				$country = null;
 			
 				if(!empty($entityToCopy->getNationality()))
-					$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
+					$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $entityToCopy->getNationality()->getInternationalName(), "language" => $language]);
 
 				$entity->setInternationalName($entityToCopy->getInternationalName());
 				$entity->setTitle($entityToCopy->getTitle());

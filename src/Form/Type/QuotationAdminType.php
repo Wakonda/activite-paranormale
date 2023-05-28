@@ -47,10 +47,10 @@ class QuotationAdminType extends AbstractType
 					],
 					'translation_domain' => 'validators'
 			])
-			->add('country', EntityType::class, ['class'=>'App\Entity\Country',
+			->add('country', EntityType::class, ['class'=>'App\Entity\Region',
 					'choice_label'=>'title', 
 					'required' => true,
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
 		    ->add('authorQuotation', Select2EntityType::class, [
 				'multiple' => false,
 				'remote_route' => 'Biography_Admin_Autocomplete',

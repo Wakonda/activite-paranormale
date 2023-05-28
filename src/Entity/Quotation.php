@@ -78,7 +78,7 @@ class Quotation
 	protected $family;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
      */
     protected $country;
 

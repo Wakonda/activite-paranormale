@@ -8,25 +8,25 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-use App\Entity\Country;
+use App\Entity\Region;
 use App\Entity\Language;
-use App\Form\Type\CountryAdminType;
+use App\Form\Type\RegionAdminType;
 use App\Service\ConstraintControllerValidator;
 
 /**
- * Country controller.
+ * Region controller.
  *
  */
-class CountryAdminController extends AdminGenericController
+class RegionAdminController extends AdminGenericController
 {
-	protected $entityName = 'Country';
-	protected $className = Country::class;
+	protected $entityName = 'Region';
+	protected $className = Region::class;
 	
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
 	
-	protected $indexRoute = "Country_Admin_Index"; 
-	protected $showRoute = "Country_Admin_Show";
+	protected $indexRoute = "Region_Admin_Index"; 
+	protected $showRoute = "Region_Admin_Show";
 	protected $illustrations = [["field" => "flag", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
@@ -46,47 +46,47 @@ class CountryAdminController extends AdminGenericController
 
     public function indexAction()
     {
-		$twig = 'index/CountryAdmin/index.html.twig';
+		$twig = 'index/RegionAdmin/index.html.twig';
 		return $this->indexGenericAction($twig);
     }
 	
     public function showAction($id)
     {
-		$twig = 'index/CountryAdmin/show.html.twig';
+		$twig = 'index/RegionAdmin/show.html.twig';
 		return $this->showGenericAction($id, $twig);
     }
 
     public function newAction(Request $request)
     {
-		$formType = CountryAdminType::class;
-		$entity = new Country();
+		$formType = RegionAdminType::class;
+		$entity = new Region();
 
-		$twig = 'index/CountryAdmin/new.html.twig';
+		$twig = 'index/RegionAdmin/new.html.twig';
 		return $this->newGenericAction($request, $twig, $entity, $formType);
     }
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
-		$formType = CountryAdminType::class;
-		$entity = new Country();
+		$formType = RegionAdminType::class;
+		$entity = new Region();
 
-		$twig = 'index/CountryAdmin/new.html.twig';
+		$twig = 'index/RegionAdmin/new.html.twig';
 		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
     }
 	
     public function editAction($id)
     {
-		$formType = CountryAdminType::class;
+		$formType = RegionAdminType::class;
 
-		$twig = 'index/CountryAdmin/edit.html.twig';
+		$twig = 'index/RegionAdmin/edit.html.twig';
 		return $this->editGenericAction($id, $twig, $formType);
     }
 	
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
-		$formType = CountryAdminType::class;
+		$formType = RegionAdminType::class;
 		
-		$twig = 'index/CountryAdmin/edit.html.twig';
+		$twig = 'index/RegionAdmin/edit.html.twig';
 		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
     }
 	
@@ -107,8 +107,8 @@ class CountryAdminController extends AdminGenericController
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getAssetImagePath().$entity->getFlag().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('Country_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Country_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Region_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Region_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -119,7 +119,7 @@ class CountryAdminController extends AdminGenericController
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('Country_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGenericAction('Region_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request)
@@ -129,11 +129,11 @@ class CountryAdminController extends AdminGenericController
 	
     public function internationalizationAction(Request $request, $id)
     {
-		$formType = CountryAdminType::class;
-		$entity = new Country();
+		$formType = RegionAdminType::class;
+		$entity = new Region();
 		
 		$em = $this->getDoctrine()->getManager();
-		$entityToCopy = $em->getRepository(Country::class)->find($id);
+		$entityToCopy = $em->getRepository(Region::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
@@ -142,7 +142,7 @@ class CountryAdminController extends AdminGenericController
 
 		$request->setLocale($language->getAbbreviation());
 
-		$twig = 'index/CountryAdmin/new.html.twig';
+		$twig = 'index/RegionAdmin/new.html.twig';
 		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit']);
     }
 }

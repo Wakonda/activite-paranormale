@@ -50,7 +50,7 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'fos_user.password.mismatch',
 				'constraints' => [new NotBlank()]
             ))
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
 					'choice_label' => 'title', 
 					'required' => true,
 					'placeholder' => "",

@@ -1,0 +1,49 @@
+Region_Admin_Index:
+    path:  /
+    controller: App\Controller\RegionAdminController::indexAction
+
+Region_Admin_Show:
+    path:  /{id}/show
+    controller: App\Controller\RegionAdminController::showAction
+
+Region_Admin_New:
+    path:  /new
+    controller: App\Controller\RegionAdminController::newAction
+
+Region_Admin_Create:
+    path:  /create
+    controller: App\Controller\RegionAdminController::createAction
+    requirements:
+        _method: post
+
+Region_Admin_Edit:
+    path:  /{id}/edit
+    controller: App\Controller\RegionAdminController::editAction
+
+Region_Admin_Update:
+    path:  /{id}/update
+    controller: App\Controller\RegionAdminController::updateAction
+    requirements:
+        _method: post
+
+Region_Admin_Delete:
+    path:  /{id}/delete
+    controller: App\Controller\RegionAdminController::deleteAction
+
+Region_Admin_IndexDatatables:
+    path:  /datatables
+    controller: App\Controller\RegionAdminController::indexDatatablesAction
+    requirements:
+        _method: get
+
+Region_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\RegionAdminController::showImageSelectorColorboxAction
+
+Region_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\RegionAdminController::loadImageSelectorColorboxAction
+
+Region_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\RegionAdminController::internationalizationAction

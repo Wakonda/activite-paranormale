@@ -1,0 +1,18 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "region.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.flag, "region.admin.Flag"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.flag) }}{{ form_widget(form.flag) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.family, "region.admin.Family"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.family) }}{{ form_widget(form.family, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.internationalName, "region.admin.InternationalName"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.internationalName) }}{{ form_widget(form.internationalName, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "region.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>

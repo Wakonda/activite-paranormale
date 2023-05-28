@@ -7,6 +7,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
+use App\Entity\Biography;
+use App\Entity\Quotation;
+
 class MigrateProverbCommand extends Command
 {
     private $em;
@@ -32,6 +35,16 @@ class MigrateProverbCommand extends Command
 		$conn = $this->em->getConnection();
 		
 		$conn->exec("UPDATE quotation SET family = 'quotation' WHERE family IS NULL;");
+		
+		$biography = $this->em->getRepository(Biography::class)->find(193);
+		$country = $this->em->getRepository(Region::class)->findOneBy(193);
+		$quotations = $this->em->getRepository(Quotation::class)->findBy(["authorQuotation" => $biography]);
+		
+		foreach($quotations as $quotation) {
+			$quotation->setFamily(Quotation::PROVERB_FAMILY);
+			$quotation->setAuthorQuotation(null);
+			$quotation->setCountry($country);
+		}
 
         return 0;
     }

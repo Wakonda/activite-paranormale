@@ -14,7 +14,7 @@ use App\Entity\ArtistBiography;
 use App\Entity\Biography;
 use App\Entity\FileManagement;
 use App\Entity\Language;
-use App\Entity\Country;
+use App\Entity\Region;
 use App\Entity\MusicGenre;
 use App\Form\Type\ArtistAdminType;
 use App\Service\ConstraintControllerValidator;
@@ -209,7 +209,7 @@ class ArtistAdminController extends AdminGenericController
 		$country = null;
 		
 		if(!empty($entityToCopy->getCountry()))
-			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
+			$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
 		
 		$entity->setCountry($country);
 		
@@ -277,9 +277,9 @@ class ArtistAdminController extends AdminGenericController
 		$translateArray = [];
 
 		if(!empty($language))
-			$countries = $em->getRepository(Country::class)->findByLanguage($language, ['title' => 'ASC']);
+			$countries = $em->getRepository(Region::class)->findByLanguage($language, ['title' => 'ASC']);
 		else
-			$countries = $em->getRepository(Country::class)->findAll();
+			$countries = $em->getRepository(Region::class)->findAll();
 
 		$countryArray = [];
 		

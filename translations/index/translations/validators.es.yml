@@ -110,13 +110,18 @@ civility:
         InternationalName: "Nombre internacional"
         Language: "Lengua"
         Icon: "Icono"
-country:
+region:
     admin:
-        Country: "País"
+        Region: "Región"
         Flag: "Bandera"
         Title: "Título"
         Language: "Lengua"
         InternationalName: "Nombre internacional"
+        Family: "Familia"
+    form:
+        Country: "País"
+        Area: "Área"
+        Subdivision: "Subdivisión"
 language:
     admin:
         Language: "Lengua"

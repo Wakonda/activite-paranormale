@@ -42,7 +42,7 @@ admin:
         DateDePublication: "Fecha de publicación"
         AdministrativeInfo: "Configuración"
         Civility: "Civilidad"
-        Country: "País"
+        Region: "Región"
         DocFamily: "Familia de documento"
         Language: "Lengua"
         Licence: "Licencia"

@@ -13,7 +13,7 @@ use App\Entity\MovieTags;
 use App\Entity\Biography;
 use App\Entity\Movies\MovieBiography;
 use App\Entity\Movies\GenreAudiovisual;
-use App\Entity\Country;
+use App\Entity\Region;
 use App\Entity\Language;
 use App\Entity\Theme;
 use App\Entity\FileManagement;
@@ -197,12 +197,12 @@ class MovieAdminController extends AdminGenericController
 		if(!empty($language))
 		{
 			$genres = $em->getRepository(GenreAudiovisual::class)->findByLanguage($language, array('title' => 'ASC'));
-			$countries = $em->getRepository(Country::class)->findByLanguage($language, array('title' => 'ASC'));
+			$countries = $em->getRepository(Region::class)->findByLanguage($language, array('title' => 'ASC'));
 		}
 		else
 		{
 			$genres = $em->getRepository(GenreAudiovisual::class)->findAll();
-			$countries = $em->getRepository(Country::class)->findAll();
+			$countries = $em->getRepository(Region::class)->findAll();
 		}
 
 		$genreArray = [];
@@ -261,7 +261,7 @@ class MovieAdminController extends AdminGenericController
 		$country = null;
 		
 		if(!empty($entityToCopy->getCountry()))
-			$country = $em->getRepository(Country::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
+			$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
 		
 		$entity->setCountry($country);
 		

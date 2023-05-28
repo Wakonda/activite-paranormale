@@ -26,10 +26,10 @@ class ArtistSearchType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' => false])
             ->add('country', EntityType::class, [
-					'class'=>'App\Entity\Country',
+					'class'=>'App\Entity\Region',
 					'choice_label'=>'title',
 					'required' => false,
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) {
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) {
 						return $repository->getCountryByLanguage($language);
 					}])
             ->add('genre', EntityType::class, array('class'=>'App\Entity\MusicGenre',

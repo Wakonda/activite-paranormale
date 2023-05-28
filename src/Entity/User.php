@@ -131,7 +131,7 @@ class User implements UserInterface, \Serializable
 	protected $presentation;
 	
 	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Country")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
      */
     protected $country;
 
@@ -580,7 +580,7 @@ class User implements UserInterface, \Serializable
         return $this->country;
     }
 
-    public function setCountry(Country $country)
+    public function setCountry(Region $country)
     {
         $this->country = $country;
     }	

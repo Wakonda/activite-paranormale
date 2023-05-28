@@ -67,14 +67,14 @@ class TestimonyAdminType extends AbstractType
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
 					'choice_label'=>'title', 
 					'required' => false,
 					'mapped' => false,
 					'choice_value' => function ($entity) {
 						return $entity ? $entity->getInternationalName() : '';
 					},
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false])

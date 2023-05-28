@@ -22,6 +22,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use App\Service\Currency;
 use App\Entity\User;
+use App\Entity\Region;
 
 class EditProfileType extends AbstractType
 {
@@ -36,12 +37,14 @@ class EditProfileType extends AbstractType
 				'user.register.Other' => 'other',
 				)
 			))
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 'required' => false, 'choice_label'=>'title', 'query_builder' => function(EntityRepository $er) use ($locale)
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 'required' => false, 'choice_label'=>'title', 'query_builder' => function(EntityRepository $er) use ($locale)
 				{
 					return $er->createQueryBuilder('u')
 					          ->join("u.language", "l")
 							  ->where("l.abbreviation = :abbreviation")
 							  ->setParameter("abbreviation", $locale)
+							  ->andWhere("u.family = :countryFamily")
+							  ->setParameter("countryFamily", Region::COUNTRY_FAMILY)
 							  ->orderBy('u.title', 'ASC');
 				},
 			))

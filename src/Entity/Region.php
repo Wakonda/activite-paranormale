@@ -6,14 +6,18 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * App\Entity\Country
+ * App\Entity\Region
  *
- * @ORM\Table(name="country")
+ * @ORM\Table(name="region")
  * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\CountryRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\RegionRepository")
  */
-class Country
+class Region
 {
+	const SUBDIVISION_FAMILY = "subdivision";
+	const COUNTRY_FAMILY = "country";
+	const AREA_FAMILY = "area";
+
     /**
      * @var integer $id
      *
@@ -49,6 +53,11 @@ class Country
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
      */
     private $language;
+
+	/**
+     * @ORM\Column(name="family", type="string", length=255)
+     */
+    private $family;
 	
 	public function __toString()
 	{
@@ -183,7 +192,6 @@ class Country
         return $this->internationalName;
     }
 
-
     public function getLanguage()
     {
         return $this->language;
@@ -192,5 +200,15 @@ class Country
     public function setLanguage(Language $language)
     {
         $this->language = $language;
+    }
+
+    public function getFamily()
+    {
+        return $this->family;
+    }
+
+    public function setFamily($family)
+    {
+        $this->family = $family;
     }
 }

@@ -21,7 +21,7 @@ class ProfileFormType extends BaseType
             ->add('email', EmailType::class)
 			->add('birthDate')
 			->add('civility', EntityType::class, ['class'=>'App\Entity\Civility', 'choice_label'=>'title', 'required' => true, 'expanded' => true, 'multiple' => false])	
-			->add('country', EntityType::class, ['class'=>'App\Entity\Country', 'choice_label'=>'title', 'query_builder' => function(EntityRepository $er)
+			->add('country', EntityType::class, ['class'=>'App\Entity\Region', 'choice_label'=>'title', 'query_builder' => function(EntityRepository $er)
 				{
 					return $er->createQueryBuilder('u')
 							->orderBy('u.title', 'ASC');

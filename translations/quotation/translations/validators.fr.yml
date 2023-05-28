@@ -5,7 +5,7 @@ quotation:
     list:
         Author: "Auteur"
         Quotation: "Citation"
-        Country: "Pays"
+        Region: "Zone géographique"
         Proverb: "Proverbe"
         Read: "Lire"
     read:
@@ -21,7 +21,7 @@ quotation:
         Images: "Images"
         Tags: "Tags"
         Family: "Famille"
-        Country: "Pays"
+        Region: "Zone géographique"
         Origin: "Origine"
     imageGenerator:
         Generate: "Générer une image"
@@ -105,7 +105,7 @@ biography:
         SearchSort: "Rechercher"
         Title: "Titre"
         Occupation: "Rôle"
-        Country: "Pays"
+        Region: "Zone géographique"
         Validate: "Valider"
         NumberOfBiographies: "Nombre de biographies : "
     link:

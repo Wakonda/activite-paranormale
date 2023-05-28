@@ -78,11 +78,11 @@ class MovieAdminType extends AbstractType
 					'choice_attr' => function($val, $key, $index) {
 						return ['data-intl' => $val->getInternationalName()];
 					}))
-			->add('country', EntityType::class, array('class'=>'App\Entity\Country', 
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
 					'choice_label'=>'title', 
 					'required' => true,
 					'constraints' => array(new NotBlank()),
-					'query_builder' => function(\App\Repository\CountryRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 		    ->add('previous', Select2EntityType::class, [
 				'multiple' => false,
 				'remote_route' => 'Movie_Admin_Autocomplete',
