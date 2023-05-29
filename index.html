@@ -510,12 +510,41 @@
 					</ul>
 				</fieldset>
 				<hr>
+				<div class="text-center" id="socialnetwork-fr" style="display: none">
+					<a href="https://www.facebook.com/Activit%C3%A9-Paranormale-2283443385078223/" title="Facebook"><i class="fab fa-facebook-square fa-2x" style="color: #3b5998"></i></a>
+					<a href="https://twitter.com/ActiviteP" title="Twitter"><i class="fab fa-twitter-square fa-2x ml-2" style="color: #1DA1F2"></i></a>
+					<a href="https://mastodon.social/web/@activiteparanormale" title="Mastodon"><i class="fab fa-mastodon fa-2x ml-2" style="color: #5843D7"></i></a>
+					<a href="https://www.youtube.com/channel/UCOl7jU5pvTha-3PYEJ0we9g" title="Youtube"><i class="fab fa-youtube fa-2x ml-2" style="color: #FF0000"></i></a>
+					<a href="https://iron-tv.tumblr.com/" title="Tumblr"><i class="fab fa-tumblr-square fa-2x ml-2" style="color: #35465C"></i></a>
+					<a href="https://diaspora-fr.org/people/2d914860b633013b61310025900e4586" title="Diaspora"><i class="fab fa-diaspora fa-2x ml-2" style="color: darkorange"></i></a>
+					<a href="https://www.instagram.com/activiteparanormale/" title="Instagram"><i class="fab fa-instagram-square fa-2x ml-2" style="color: #bc2a8d"></i></a>
+				</div>
+				<div class="text-center" id="socialnetwork-en" style="display: none">
+					<a href="https://www.facebook.com/Paranormal-Activity-1223137671144385" title="Facebook"><i class="fab fa-facebook-square fa-2x" style="color: #3b5998"></i></a>
+					<a href="https://twitter.com/paractivityAP" title="Twitter"><i class="fab fa-twitter-square fa-2x ml-2" style="color: #1DA1F2"></i></a>
+					<a href="https://masto.nu/web/@paranormalactivity" title="Mastodon"><i class="fab fa-mastodon fa-2x ml-2" style="color: #5843D7"></i></a>
+					<a href="https://www.youtube.com/channel/UCOl7jU5pvTha-3PYEJ0we9g" title="Youtube"><i class="fab fa-youtube fa-2x ml-2" style="color: #FF0000"></i></a>
+					<a href="https://iron-tv.tumblr.com/" title="Tumblr"><i class="fab fa-tumblr-square fa-2x ml-2" style="color: #35465C"></i></a>
+					<a href="https://societas.online/people/248903b0bda3013b9e0152549f1e3c03" title="Diaspora"><i class="fab fa-diaspora fa-2x ml-2" style="color: darkorange"></i></a>
+				</div>
+				<div class="text-center" id="socialnetwork-es" style="display: none">
+					<a href="https://www.facebook.com/Actividad-paranormal-2263453033942094" title="Facebook"><i class="fab fa-facebook-square fa-2x" style="color: #3b5998"></i></a>
+					<a href="https://twitter.com/ActividadAP" title="Twitter"><i class="fab fa-twitter-square fa-2x ml-2" style="color: #1DA1F2"></i></a>
+					<a href="https://masto.ai/web/@actividadparanormal" title="Mastodon"><i class="fab fa-mastodon fa-2x ml-2" style="color: #5843D7"></i></a>
+					<a href="https://www.youtube.com/channel/UCOl7jU5pvTha-3PYEJ0we9g" title="Youtube"><i class="fab fa-youtube fa-2x ml-2" style="color: #FF0000"></i></a>
+					<a href="https://iron-tv.tumblr.com/" title="Tumblr"><i class="fab fa-tumblr-square fa-2x ml-2" style="color: #35465C"></i></a>
+				</div>
+				<hr>
 				<p class="lead"><span id="main-text-third">Vous pouvez également visiter notre site officiel :</span> <a href="//wakonda.guru">Wakonda.GURU</a></p>
 			</div>
 		</main>
 
 		<script>
 		function translate(locale) {
+			document.getElementById("socialnetwork-fr").style.display = "none";
+			document.getElementById("socialnetwork-en").style.display = "none";
+			document.getElementById("socialnetwork-es").style.display = "none";
+		
 			var mainTitle = "";
 			var storeTitle = "";
 			var firstText = "";
@@ -533,6 +562,7 @@
 					firstText = "Notre site Internet est actuellement indisponible. Nous espérons le rétablir le plus rapidement possible. Ces opérations de maintenance permettent de corriger les anomalies repérées, d'apporter les évolutions nécessaires, ou encore de faire des mises à jour de sécurité.";
 					secondText = "En attendant que notre site soit de nouveau disponible, nous vous invitons à visiter nos autres services :";
 					thirdText = "Vous pouvez également visiter notre site officiel :";
+					document.getElementById("socialnetwork-fr").style.display = "block";
 					break;
 				case "en":
 					mainTitle = "Message - Maintenance";
@@ -543,6 +573,7 @@
 					firstText = "Our website is currently unavailable. We hope to restore it as soon as possible. These maintenance operations are used to correct anomalies, to make the necessary changes, or to make security updates.";
 					secondText = "While waiting for our site to be available again, we invite you to visit our other services:";
 					thirdText = "You can also visit our official website:";
+					document.getElementById("socialnetwork-en").style.display = "block";
 					break;
 				case "es":
 					mainTitle = "Mensaje - Mantenimiento";
@@ -553,6 +584,7 @@
 					firstText = "Nuestro sitio web no está disponible actualmente. Esperamos restaurarlo lo antes posible. Estas operaciones de mantenimiento se utilizan para corregir anomalías, realizar los cambios necesarios o realizar actualizaciones de seguridad.";
 					secondText = "Mientras espera que nuestro sitio vuelva a estar disponible, lo invitamos a visitar nuestros otros servicios:";
 					thirdText = "También puede visitar nuestro sitio web oficial:";
+					document.getElementById("socialnetwork-es").style.display = "block";
 					break;
 			}
 			
@@ -564,7 +596,8 @@
 			document.getElementById("gothic_cloth_stores").innerHTML = storeGothClothesTitle;
 			document.getElementById("book_stores").innerHTML = storeBookTitle;
 		}
+		
+		translate("fr");
 		</script>
 	</body>
 </html>
-
