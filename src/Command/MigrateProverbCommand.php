@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Biography;
 use App\Entity\Quotation;
 use App\Entity\Region;
+use App\Entity\EventMessage;
 
 class MigrateProverbCommand extends Command
 {
@@ -34,7 +35,20 @@ class MigrateProverbCommand extends Command
 		$output->writeln("Start Proverb migration");
 
 		$conn = $this->em->getConnection();
+
+		$wts = $this->em->getRepository(EventMessage::class)->findAll();
 		
+		foreach($wts as $wt) {
+			if(!empty($wt->getSlug()))
+				continue;
+			
+			$wt->setSlug();
+
+			$this->em->persist($wt);
+		}
+			$this->em->flush();
+die("kkk");
+
 		$conn->exec("UPDATE region SET family = 'country' WHERE family IS NULL;");
 
 		$conn->exec("UPDATE quotation SET family = 'quotation' WHERE family IS NULL;");

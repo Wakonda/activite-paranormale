@@ -207,7 +207,10 @@ class QuotationAdminController extends AdminGenericController
 				'y' => $gutter
 			]);
 
-			$image->textBox($entity->getAuthorQuotation()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
+			if($entity->isProverbFamily())
+				$image->textBox($entity->getCountry()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
+			else
+				$image->textBox($entity->getAuthorQuotation()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
 
 			$fileName = uniqid()."_".$data['image']->getClientOriginalName();
 
@@ -272,7 +275,10 @@ class QuotationAdminController extends AdminGenericController
 			'y' => $gutter
 		]);
 
-		$image->textBox($entity->getAuthorQuotation()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
+		if($entity->isProverbFamily())
+			$image->textBox($entity->getCountry()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
+		else
+			$image->textBox($entity->getAuthorQuotation()->getTitle(), ['width' => $image->getWidth() - $gutter * 2, 'fontSize' => $fontSizeAuthor, 'x' => $gutter, 'y' => ($image->getHeight() - $gutter * 2) + $fontSizeAuthor * 2]);
 		
 		$fileName = uniqid()."_image.png";
 

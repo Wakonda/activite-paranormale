@@ -869,38 +869,10 @@ class AdminController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 
 		$entity = $em->getRepository(urldecode($path))->find($id);
-
-		$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
-		
-		$sourceIdentifier = null;
-		
-		if(!empty($source)) {
-			if(isset($source["isbn13"]) and !empty($isbn13 = $source["isbn13"]))
-				$sourceIdentifier = $isbn13;
-			elseif(isset($source["isbn10"]) and !empty($isbn10 = $source["isbn10"]))
-				$sourceIdentifier = $isbn10;
-		}
-		
-		$biography = $entity->getAuthorQuotation();
-
-		$birthDate = explode("-", $biography->getBirthDate());
-		$deathDate = explode("-", $biography->getDeathDate());
-
-		$generator = new \Ausi\SlugGenerator\SlugGenerator;
-
-		$tagArray = !empty($entity->getTags()) ? array_map(function($e) use($generator, $entity) { return ["identifier" => $generator->generate($e->value)."-".$entity->getLanguage()->getAbbreviation(), "title" => $e->value, "slug" => $generator->generate($e->value), "internationalName" => $generator->generate($e->value)]; }, json_decode($entity->getTags())) : [];
-
-		$fileManagement = [];
-
-		if(!empty($biography->getImgBase64())) {
-			$fileManagement = [
-				"imgBase64" => $biography->getImgBase64(),
-				"photo" => !empty($f = $biography->getIllustration()) ? $f->getRealNameFile() : null,
-				"description" => !empty($f = $biography->getIllustration()) ? "<a href='".$f->getUrlSource()."'>Source</a>, ".$f->getLicense().", ".$f->getAuthor() : null
-			];
-		}
 		
 		$api = new \App\Service\Muse();
+		
+		$family = null;
 
 		if($request->request->has("image_generated") and !empty($img = $request->request->get("image_generated"))) {
 			$images[] = [
@@ -910,29 +882,74 @@ class AdminController extends AbstractController
 			];
 		}
 
-		$data = [
-			"text" => $entity->getTextQuotation(),
-			"identifier" => "",//!empty($idt = $entity->getIdentifier()) ? $idt : "",
-			"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
-			"biography" => [
-				"title" => $biography->getTitle(),
-				"text" => $biography->getText(),
-				"dayBirth" => (isset($birthDate[2]) and !empty($birthDate[2])) ? intval($birthDate[2]) : null,
-				"monthBirth" => (isset($birthDate[1]) and !empty($birthDate[1])) ? intval($birthDate[1]) : null,
-				"yearBirth" => (isset($birthDate[0]) and !empty($birthDate[0])) ? intval($birthDate[0]) : null,
-				"dayDeath" => (isset($deathDate[2]) and !empty($deathDate[2])) ? intval($deathDate[2]) : null,
-				"monthDeath" => (isset($deathDate[1]) and !empty($deathDate[1])) ? intval($deathDate[1]) : null,
-				"yearDeath" => (isset($deathDate[0]) and !empty($deathDate[0])) ? intval($deathDate[0]) : null,
-				"country" => ["internationalName" => !empty($n = $biography->getNationality()) ? $n->getInternationalName() : ""],
-				"language" => ["abbreviation" => $biography->getLanguage()->getAbbreviation()],
-				"wikidata" => $biography->getWikidata(),
-				"fileManagement" => $fileManagement
-			],
-			// "source" => ["identifier" => $sourceIdentifier],
-			"tags" => $tagArray,
-		];
+		$generator = new \Ausi\SlugGenerator\SlugGenerator;
+		$tagArray = !empty($entity->getTags()) ? array_map(function($e) use($generator, $entity) { return ["identifier" => $generator->generate($e->value)."-".$entity->getLanguage()->getAbbreviation(), "title" => $e->value, "slug" => $generator->generate($e->value), "internationalName" => $generator->generate($e->value)]; }, json_decode($entity->getTags())) : [];
+		
+		if($entity->isProverbFamily()) {
+			$family = "proverbs";
 
-		$result = $api->addPost($data, $api->getOauth2Token());
+			$data = [
+				"text" => $entity->getTextQuotation(),
+				"identifier" => !empty($idt = $entity->getIdentifier()) ? $idt : "",
+				"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
+				"country" => [
+					"internationalName" => $entity->getCountry()->getInternationalName()
+				],
+				"tags" => $tagArray,
+			];
+		} else {
+			$family = "quotes";
+
+			$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
+			
+			$sourceIdentifier = null;
+			
+			if(!empty($source)) {
+				if(isset($source["isbn13"]) and !empty($isbn13 = $source["isbn13"]))
+					$sourceIdentifier = $isbn13;
+				elseif(isset($source["isbn10"]) and !empty($isbn10 = $source["isbn10"]))
+					$sourceIdentifier = $isbn10;
+			}
+			
+			$biography = $entity->getAuthorQuotation();
+
+			$birthDate = explode("-", $biography->getBirthDate());
+			$deathDate = explode("-", $biography->getDeathDate());
+
+			$fileManagement = [];
+
+			if(!empty($biography->getImgBase64())) {
+				$fileManagement = [
+					"imgBase64" => $biography->getImgBase64(),
+					"photo" => !empty($f = $biography->getIllustration()) ? $f->getRealNameFile() : null,
+					"description" => !empty($f = $biography->getIllustration()) ? "<a href='".$f->getUrlSource()."'>Source</a>, ".$f->getLicense().", ".$f->getAuthor() : null
+				];
+			}
+
+			$data = [
+				"text" => $entity->getTextQuotation(),
+				"identifier" => !empty($idt = $entity->getIdentifier()) ? $idt : "",
+				"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
+				"biography" => [
+					"title" => $biography->getTitle(),
+					"text" => $biography->getText(),
+					"dayBirth" => (isset($birthDate[2]) and !empty($birthDate[2])) ? intval($birthDate[2]) : null,
+					"monthBirth" => (isset($birthDate[1]) and !empty($birthDate[1])) ? intval($birthDate[1]) : null,
+					"yearBirth" => (isset($birthDate[0]) and !empty($birthDate[0])) ? intval($birthDate[0]) : null,
+					"dayDeath" => (isset($deathDate[2]) and !empty($deathDate[2])) ? intval($deathDate[2]) : null,
+					"monthDeath" => (isset($deathDate[1]) and !empty($deathDate[1])) ? intval($deathDate[1]) : null,
+					"yearDeath" => (isset($deathDate[0]) and !empty($deathDate[0])) ? intval($deathDate[0]) : null,
+					"country" => ["internationalName" => !empty($n = $biography->getNationality()) ? $n->getInternationalName() : ""],
+					"language" => ["abbreviation" => $biography->getLanguage()->getAbbreviation()],
+					"wikidata" => $biography->getWikidata(),
+					"fileManagement" => $fileManagement
+				],
+				// "source" => ["identifier" => $sourceIdentifier],
+				"tags" => $tagArray,
+			];
+		}
+
+		$result = $api->addPost($data, $api->getOauth2Token(), $family);
 
 		if($result->{"@type"} == "hydra:Error")
 			$session->getFlashBag()->add('error', $result->{"hydra:title"});
@@ -942,7 +959,7 @@ class AdminController extends AbstractController
 			$em->flush();
 
 			if(!empty($images))
-				$result = $api->addImage($result->identifier, $images[0], $api->getOauth2Token());
+				$result = $api->addImage($result->identifier, $images[0], $api->getOauth2Token(), $family);
 
 			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}

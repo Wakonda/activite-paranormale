@@ -39,7 +39,7 @@ class WitchcraftToolCommand extends Command
 			$wt->setSlug();
 			
 			$this->em->persist($wt);
-		$this->em->flush();
+			$this->em->flush();
 		}
 		
 

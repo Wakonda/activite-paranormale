@@ -38,11 +38,11 @@
 			return json_decode($result)->token;
 		}
 		
-		public function addPost($data, $token)
+		public function addPost($data, $token, $family)
 		{
 			$ch = curl_init();
 			
-			$url = $this->url."api/quotes";
+			$url = $this->url."api/${family}";
 
 			if(isset($data["identifier"]) and !empty($idt = $data["identifier"])) {
 				$url .= "/".$idt;
@@ -59,14 +59,19 @@
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);
-
+// dd($json_response, $errors);
 			return json_decode($json_response);
 		}
 		
-		public function addImage($identifier, $image, $token)
+		public function addImage($identifier, $image, $token, $family)
 		{
+			$urlPart = "quote";
+			
+			if($family == "proverbs")
+				$urlPart = "proverb";
+
 			$data = [
-				"quote" => [
+				$urlPart => [
 					"identifier" => $identifier,
 				],
 				"image" => $image["image"],
@@ -76,7 +81,7 @@
 
 			$ch = curl_init();
 
-			$url = $this->url."api/quote_images";
+			$url = $this->url."api/${urlPart}_images";
 
 			if(empty($image["imgBase64"])) {
 				$url .= "/".$data["identifier"];
@@ -93,15 +98,15 @@
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);
-
+dd($json_response, $errors);
 			return json_decode($json_response);
 		}
 
-		public function getImages($identifier, $token) {
+		public function getImages($identifier, $token, $family) {
 			$ch = curl_init();
 			
 			
-			$url = $this->url."api/quotes/${identifier}/images";
+			$url = $this->url."api/${family}/${identifier}/images";
 
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
