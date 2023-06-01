@@ -88,14 +88,14 @@ class TestimonyAdminController extends AdminGenericController
     public function deleteAction($id)
     {
 		$em = $this->getDoctrine()->getManager();
-		$comments = $em->getRepository("\App\Entity\TestimonyComment")->findBy(["entity" => $id]);
+		/*$comments = $em->getRepository("\App\Entity\TestimonyComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\TestimonyVote")->findBy(["testimony" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\TestimonyTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
-		$fms = $em->getRepository("\App\Entity\TestimonyFileManagement")->findBy(["entity" => $id]);
-		foreach($fms as $entity) {$em->remove($entity); }
+		$fms = $em->getRepository("\App\Entity\TestimonyFileManagement")->findBy(["testimony" => $id]);
+		foreach($fms as $entity) {$em->remove($entity); }*/
 
 		return $this->deleteGenericAction($id);
     }
