@@ -140,8 +140,10 @@
 			}
 			else
 			{
+				$dt = new \DateTime("$year-$month-$day");
+
 				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-				$dateString = ((!empty($day)) ? $day."th " : "").$monthEnglish[$month-1]." ".$year;
+				$dateString = ((!empty($day)) ? $day.$dt->format("jS")." " : "").$monthEnglish[$month-1]." ".$year;
 			}
 			
 			return $dateString;
