@@ -14,7 +14,7 @@
             {{ encore_entry_link_tags('app_v2') }}
         {% endblock %}
 		
-		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print" />
+		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print" async />
 		
 		{{ encore_entry_script_tags('app_v2') }}
 		
@@ -255,7 +255,7 @@
 								{% if app.request.locale == 'fr' %}
 									<div style="width:200px;text-align:right;line-height:11px;">
 									<iframe class="horoscope_iframe" src="https://signes.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									 width="200" height="250" style="border:0; margin:0; padding:0;"></iframe>
+									 width="200" height="250" style="border:0; margin:0; padding:0;" title="Horoscope"></iframe>
 									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://signes.horoscope999.com/">Horoscope</a> &nbsp;</div>
 									</div>
 								{% elseif app.request.locale == 'en' %}
