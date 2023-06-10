@@ -5,10 +5,7 @@
 	
 	class APParseHTML
 	{
-		/**
-		 * @param string $string
-		 */
-		public function saveImageFromURL($string, $path, $urlPath)
+		public function saveImageFromURL($string, $path)
 		{
 			if(preg_replace("/(\r\n|\n|\r)/", "", $string) != "")
 			{

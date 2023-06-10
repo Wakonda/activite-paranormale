@@ -12,7 +12,7 @@ services:
 
     future_publication.listener:
         class: App\Listener\FuturePublicationListener
-        arguments: ["@service_container", "@doctrine.orm.entity_manager", "@router"]
+        arguments: ["@doctrine.orm.entity_manager", "@router"]
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
         public: true

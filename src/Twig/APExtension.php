@@ -5,7 +5,6 @@
 	use Twig\TwigFilter;
 	use Twig\TwigFunction;
 
-	use Symfony\Component\DependencyInjection\ContainerInterface;
 	use Symfony\Component\Finder\Finder;
 	use Doctrine\ORM\EntityManagerInterface;
 	use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -33,16 +32,14 @@
 
 	class APExtension extends AbstractExtension
 	{
-		private $container;
 		private $em;
 		private $router;
 		private $translator;
 		private $parameterBag;
 		private $session;
 		
-		public function __construct(ContainerInterface $container, EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator, ParameterBagInterface $parameterBag, SessionInterface $session)
+		public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator, ParameterBagInterface $parameterBag, SessionInterface $session)
 		{
-			$this->container = $container;
 			$this->em = $em;
 			$this->router = $router;
 			$this->translator = $translator;
@@ -154,14 +151,13 @@
 		{
 			return (new \App\Service\FunctionsLibrary())->cleanUrl($urlclean);
 		}
-		
+
 		public function imgsizeFilter($file, $width, $path, bool $useAssetPath = true, $options = null, $caption = [], bool $displayIfFileNotExist = true, $private = false)
 		{
-			$basePath = $this->container->get('request_stack')->getCurrentRequest()->getBasePath();
-			$realPath = ($useAssetPath) ? $basePath.DIRECTORY_SEPARATOR.$path : $path;
+			$realPath = $useAssetPath ? DIRECTORY_SEPARATOR.$path : $path;
 
 			if($private)
-				$p = realpath($this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".$realPath.$file);
+				$p = realpath($this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".$realPath.$file);
 			else
 				$p = $path.$file;
 
@@ -170,9 +166,9 @@
 				if(!$displayIfFileNotExist)
 					return null;
 				
-				$file = "file_no_exist_".$this->container->get('request_stack')->getCurrentRequest()->getLocale().".png";
+				$file = "file_no_exist_".$this->translator->getLocale().".png";
 				$p = "extended/photo/".$file;
-				$realPath = ($useAssetPath) ? $basePath."/extended/photo/" : "extended/photo/";
+				$realPath = ($useAssetPath) ? "/extended/photo/" : "extended/photo/";
 			}
 
 			$newLarg = 0.0;
@@ -281,7 +277,7 @@
 		
 		public function displayPrivatePDFFilter($filePath): ?String {
 			$privateDir = "private";
-			$file = realPath($this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$filePath);
+			$file = realPath($this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$filePath);
 
 			if(file_exists($file)) {
 				return '<iframe src="data:application/pdf;base64,'.base64_encode(file_get_contents($file)).'" width="100%" height="500" scrolling="no" marginheight="0" marginwidth="0" frameborder="0"></iframe>';
@@ -301,10 +297,10 @@
 
 			foreach ($dom->getElementsByTagName('img') as $item) {
 				if(!empty($item->getAttribute("src"))) {
-					$img = realPath($this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$item->getAttribute("src"));
+					$img = realPath($this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$item->getAttribute("src"));
 
 					if($img === false) {
-						$file = "file_no_exist_".$this->container->get('request_stack')->getCurrentRequest()->getLocale().".png";
+						$file = "file_no_exist_".$this->translator->getLocale().".png";
 						$img = "extended/photo/".$file;
 					}
 
@@ -469,7 +465,6 @@
 		public function formatTextForPDFVersionFilter($text, $entity)
 		{
 			// Set correct path for images
-			$text = str_replace($this->container->get('request_stack')->getCurrentRequest()->getBasePath()."/".$entity->getAssetImagePath(), $entity->getAssetImagePath(), $text);
 			$text = str_replace("/".$entity->getAssetImagePath(), $entity->getAssetImagePath(), $text);
 
 			// We remove all break line
@@ -491,12 +486,12 @@
 			// Remove style attributes
 			$text = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $text);
 
-			return (new APParseHTML($this->container))->eraseVideo($text);
+			return (new APParseHTML())->eraseVideo($text);
 		}
 
 		public function getRandomBannerForIndexFilter()
 		{
-			$abbreviation = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+			$abbreviation = $this->translator->getLocale();
 			$language = $this->em->getRepository(Language::class)->findOneBy(array("abbreviation" => $abbreviation));
 			
 			$entities = $this->em->getRepository(Banner::class)->findBy(array('language' => $language, 'display' => true));
@@ -510,7 +505,7 @@
 			if(!is_object($entity))
 				return null;
 
-			$webPath = $this->container->getParameter('kernel.project_dir').'/public/extended/photo/banner/';
+			$webPath = $this->parameterBag->get('kernel.project_dir').'/public/extended/photo/banner/';
 			
 			if(!$webPath."/".$entity->getImage())
 				return null;
@@ -536,7 +531,7 @@
 		
 		public function getAllStatesByLanguageFilter()
 		{
-			$abbreviation = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+			$abbreviation = $this->translator->getLocale();
 			
 			$language = $this->em->getRepository(Language::class)->findOneBy(array("abbreviation" => $abbreviation));
 			$states = $this->em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
@@ -625,7 +620,7 @@
 			$html = "";
 			
 			if($action)
-				$html = '<a href="'.$this->container->get('router')->generate("TagWord_Admin_Show", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="'.$this->container->get('router')->generate("TagWord_Admin_Edit", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> ';
+				$html = '<a href="'.$this->router->generate("TagWord_Admin_Show", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="'.$this->router->generate("TagWord_Admin_Edit", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> ';
 
 				$tagArray[] = !$clean ? $html.$tag->getTagWord()->getTitle() : $tag->getTagWord()->cleanTags();
 			}
@@ -658,7 +653,7 @@
 		
 		public function getBiographyInCorrectLanguage($entity)
 		{
-			$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+			$locale = $this->translator->getLocale();
 			$entity = $this->em->getRepository(Biography::class)->find($entity->getId());
 			
 			$correctBio = $this->em->getRepository(Biography::class)->getBiographyInCorrectLanguage($entity, $locale);
@@ -820,7 +815,7 @@
 			
 			if(empty($file) or !file_exists($pf))
 			{
-				$file = "file_no_exist_".$this->container->get('request_stack')->getCurrentRequest()->getLocale().".png";
+				$file = "file_no_exist_".$this->translator->getLocale().".png";
 				$pf = "extended/photo/".$file;
 			}
 			
@@ -941,7 +936,7 @@
 			if(!empty($locale))
 				$locale = $locale->getAbbreviation();
 			else
-				$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+				$locale = $this->translator->getLocale();
 			
 			return (new \App\Service\FunctionsLibrary($this->em))->sourceString($sourceJSON, $locale, $classes);
 		}

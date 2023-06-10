@@ -2,19 +2,19 @@
 	namespace App\Service;
 	
 	use App\Service\FunctionsLibrary;
-	use Symfony\Component\DependencyInjection\ContainerInterface;
+	use Symfony\Contracts\Translation\TranslatorInterface;
 	
 	class APImgSize
 	{
-		private $container;
+		private $translator;
 		private $locale;
 
-		public function __construct(ContainerInterface $container = null)
+		public function __construct(TranslatorInterface $translator = null)
 		{
-			$this->container = $container;
+			$this->translator = $translator;
 			
-			if(!empty($this->container))
-				$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+			if(!empty($this->translator))
+				$locale = $this->translator->getLocale();
 			else {
 				$attributeBag = new \Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag ();
 				$locale = $_SESSION[$attributeBag->getStorageKey()]["_locale"];
@@ -31,7 +31,7 @@
 
 
 			if(!is_file($file) or empty($file) or (!$fct->isUrl($file) and !file_exists($file))) {
-				$locale = $this->container->get('request_stack')->getCurrentRequest()->getLocale();
+				$locale = $this->translator->getLocale();
 				$file = "extended/photo/file_no_exist_".$locale.".png";
 			}
 

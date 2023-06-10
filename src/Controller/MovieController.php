@@ -9,12 +9,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Movies\Movie;
 use App\Entity\Movies\GenreAudiovisual;
-use App\Entity\Language;
 use App\Entity\Theme;
 use App\Form\Type\MovieSearchType;
 use Knp\Component\Pager\PaginatorInterface;
-use App\Service\APImgSize;
-use App\Service\APDate;
 
 class MovieController extends AbstractController
 {

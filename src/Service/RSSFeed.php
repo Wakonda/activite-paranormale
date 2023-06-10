@@ -1,20 +1,20 @@
 <?php
 	namespace App\Service;
-	
-	use Symfony\Component\DependencyInjection\ContainerInterface;
+
 	use Doctrine\ORM\EntityManagerInterface;
-	
+	use Symfony\Contracts\Translation\TranslatorInterface;
+
 	use App\Entity\Page;
-	
+
 	class RSSFeed
 	{
-		private $container;
 		private $em;
-		
-		public function __construct(ContainerInterface $container, EntityManagerInterface $em)
+		private $translator;
+
+		public function __construct(EntityManagerInterface $em, TranslatorInterface $translator)
 		{
-			$this->container = $container;
 			$this->em = $em;
+			$this->translator = $translator;
 		}
 
 		private function getResultsToSyndication($theme, $length, $language)
@@ -55,9 +55,8 @@
 			$query = $this->em->createQuery('SELECT u FROM '.$entityPath.' u INNER JOIN u.language l WHERE l.abbreviation IN ('.implode(',', $whereInLanguageArray).') ORDER BY u.publicationDate');
 
 			foreach($languageArray as $language)
-			{
 				$query->setParameter($language, $language);
-			}
+
 			$query->setMaxResults($length);
 
 			return $query->getResult();
@@ -65,7 +64,7 @@
 
 		private function initFeed()
 		{
-			return new \DOMDocument( "1.0", "ISO-8859-15" );
+			return new \DOMDocument("1.0", "ISO-8859-15");
 		}
 
 		private function headerFeed($xml)
@@ -86,7 +85,7 @@
 			
 			$description = $xml->createElement("description");
 			$channel->appendChild($description);
-			$descriptionContent = $xml->createTextNode(trim(strip_tags($this->em->getRepository(Page::class)->getPageByLanguageAndType($this->container->get('request_stack')->getCurrentRequest()->getLocale(), "descriptionMetaTag")->getText())));
+			$descriptionContent = $xml->createTextNode(trim(strip_tags($this->em->getRepository(Page::class)->getPageByLanguageAndType($this->translator->getLocale(), "descriptionMetaTag")->getText())));
 			$description->appendChild($descriptionContent);
 
 			$link = $xml->createElement("link");

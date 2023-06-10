@@ -4,27 +4,19 @@ namespace App\Service;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Knp\Bundle\PaginatorBundle\Pagination\SlidingPagination;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class PaginatorNativeSQL
 {
-    /**
-     *
-     * @var \Doctrine\DBAL\Connection
-     */
     private $connection = null;
-    /**
-     * 
-     * @var \Symfony\Component\HttpFoundation\RequestStack
-     */
     private $requestStack;
-    private $container;
+	private $parameterBag;
 
-    public function __construct(Connection $connection, RequestStack $requestStack, ContainerInterface $container)
+    public function __construct(Connection $connection, RequestStack $requestStack, ParameterBagInterface $parameterBag)
     {
         $this->connection = $connection;
         $this->requestStack = $requestStack;
-        $this->container = $container;
+        $this->parameterBag = $parameterBag;
     }
 
     function paginate($query, $page, $pagesize, $connection = null, $total = null)
@@ -57,7 +49,7 @@ class PaginatorNativeSQL
         ]);
 		
         $slidingPagination->setCustomParameters([]);
-        $slidingPagination->setTemplate($this->container->getParameter("knp_paginator.template.pagination"));
+        $slidingPagination->setTemplate($this->parameterBag->get("knp_paginator.template.pagination"));
 		
         return $slidingPagination;
     }

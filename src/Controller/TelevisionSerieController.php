@@ -10,11 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Movies\TelevisionSerie;
 use App\Entity\Movies\EpisodeTelevisionSerie;
 use App\Entity\Movies\GenreAudiovisual;
-use App\Entity\Language;
 use App\Entity\Theme;
 use App\Form\Type\TelevisionSerieSearchType;
 use Knp\Component\Pager\PaginatorInterface;
-use App\Service\APImgSize;
 
 class TelevisionSerieController extends AbstractController
 {

@@ -6,7 +6,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Service\SearchEngine;
 
@@ -16,14 +16,14 @@ class SearchEngineCommand extends Command
 {
     private $em;
 	private $searchEngine;
-	private $container;
+	private $parameterBag;
 
-    public function __construct(EntityManagerInterface $em, SearchEngine $searchEngine, ContainerInterface $container)
+    public function __construct(EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag)
     {
 		parent::__construct();
         $this->em = $em;
         $this->searchEngine = $searchEngine;
-		$this->container = $container;
+		$this->parameterBag = $parameterBag;
     }
 
     // the name of the command (the part after "bin/console")
@@ -40,7 +40,7 @@ class SearchEngineCommand extends Command
 		
 		$entities = array();
 		
-		$filename = $this->container->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR."ap.index";
+		$filename = $this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR."ap.index";
 
 		$this->searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $filename, null);
 

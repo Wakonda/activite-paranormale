@@ -5,7 +5,6 @@ namespace App\Listener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -13,13 +12,11 @@ use App\Service\TwitterAPI;
 
 class FuturePublicationListener
 {
-	private $container;
 	private $em;
 	private $router;
 
-	public function __construct(ContainerInterface $container, EntityManagerInterface $em, UrlGeneratorInterface $router)
+	public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router)
 	{
-		$this->container = $container;
 		$this->em = $em;
 		$this->router = $router;
 	}
