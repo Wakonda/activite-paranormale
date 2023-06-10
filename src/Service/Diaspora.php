@@ -246,11 +246,18 @@ class Diaspora {
 				$this->DIASPORA_CLIENT_NAME = $_ENV["DIASPORA_EN_CLIENT_NAME"];
 				$this->DIASPORA_SCOPE = $_ENV["DIASPORA_EN_SCOPE"];
 				break;
+			case "es":
+				$this->DIASPORA_URL = $_ENV["DIASPORA_ES_URL"];
+				$this->DIASPORA_CLIENT_ID = $_ENV["DIASPORA_ES_CLIENT_ID"];
+				$this->DIASPORA_CLIENT_SECRET = $_ENV["DIASPORA_ES_CLIENT_SECRET"];
+				$this->DIASPORA_CLIENT_NAME = $_ENV["DIASPORA_ES_CLIENT_NAME"];
+				$this->DIASPORA_SCOPE = $_ENV["DIASPORA_ES_SCOPE"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr", "en"];
+		return ["fr", "en", "es"];
 	}
 }
