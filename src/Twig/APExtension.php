@@ -10,6 +10,8 @@
 	use Doctrine\ORM\EntityManagerInterface;
 	use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 	use Symfony\Contracts\Translation\TranslatorInterface;
+	use Symfony\Component\HttpFoundation\Session\SessionInterface;
+	use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 	
 	use App\Entity\Language;
 	use App\Entity\Banner;
@@ -35,13 +37,17 @@
 		private $em;
 		private $router;
 		private $translator;
+		private $parameterBag;
+		private $session;
 		
-		public function __construct(ContainerInterface $container, EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator)
+		public function __construct(ContainerInterface $container, EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator, ParameterBagInterface $parameterBag, SessionInterface $session)
 		{
 			$this->container = $container;
 			$this->em = $em;
 			$this->router = $router;
 			$this->translator = $translator;
+			$this->parameterBag = $parameterBag;
+			$this->session = $session;
 		}
 		
 		public function getFilters()
@@ -136,7 +142,7 @@
 		
 		public function isImageFilter($extension)
 		{
-			return in_array(strtolower($extension), array("png", "gif", "jpg", "jpeg", "bmp"));
+			return in_array(strtolower($extension), ["png", "gif", "jpg", "jpeg", "bmp", "webp"]);
 		}
 
 		public function stripTagsFilter($text)
@@ -210,7 +216,7 @@
 			
 			if(!empty($options))
 			{
-				$optionArray = array();
+				$optionArray = [];
 				foreach($options as $key => $option)
 				{
 					$optionArray[] = $key.'="'.$option.'"';
@@ -373,7 +379,7 @@
 		public function advertisementFilter($pub)
 		{
 			$display = "<div class='hidden_for_print'>";
-			$display .= "<h3>".$this->translator->trans("generality.page.Advertisement", array(), "validators")."</h3>";
+			$display .= "<h3>".$this->translator->trans("generality.page.Advertisement", [], "validators")."</h3>";
 			
 			if($pub == "google")
 			{				
@@ -469,7 +475,7 @@
 			// We remove all break line
 			$text = str_replace(array("\r\n", "\r"), "\n", $text);
 			$lines = explode("\n", $text);
-			$new_lines = array();
+			$new_lines = [];
 
 			foreach ($lines as $i => $line) {
 				if(!empty($line))
@@ -510,7 +516,7 @@
 				return null;
 
 			$imageSize = getimagesize($webPath."/".$entity->getImage());
-			$subBannerArray = array();
+			$subBannerArray = [];
 			$subBannerArray['name'] = $entity->getImage();
 
 			$width = $imageSize[0];
@@ -546,7 +552,7 @@
 		public function stringDurationVideoFilter($duration)
 		{
 			$duration_array = array_reverse(explode(":", $duration));
-			$duration_string = array();
+			$duration_string = [];
 			
 			if(isset($duration_array[0]) and intval($duration_array[0]))
 				$duration_string[] = $this->translator->trans('video.admin.Seconds', array('%count%' => $duration_array[0]), 'validators');
@@ -612,7 +618,7 @@
 			$className = array_reverse(explode("\\", get_class($entity)));
 			$tags = $this->em->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));
 			
-			$tagArray = array();
+			$tagArray = [];
 
 			foreach($tags as $tag) {
 				
@@ -634,7 +640,7 @@
 
 			if(!empty($tags))
 			{
-				$tagsArray = array();
+				$tagsArray = [];
 				
 				foreach($tags as $tag)
 				{
@@ -692,7 +698,7 @@
 		
 		public function generateCaptcha()
 		{
-			$captcha = new Captcha($this->container);
+			$captcha = new Captcha($this->parameterBag, $this->session);
 
 			$wordOrNumberRand = rand(1, 2);
 			$length = rand(3, 7);
@@ -732,7 +738,7 @@
 				return [];
 			
 			$tagsObject = json_decode($matches[1]);
-			$tagsArray = array();
+			$tagsArray = [];
 			
 			if(!property_exists($tagsObject->feed, "category"))
 				return $tagsArray;
@@ -777,7 +783,7 @@
 			return $api->getTags($api->getOauth2Token());
 		}
 		
-		public function slugifyUrl($title, $replace = array(), $delimiter = '-')
+		public function slugifyUrl($title, $replace = [], $delimiter = '-')
 		{
 			setlocale(LC_ALL, 'en_US.UTF8');
 

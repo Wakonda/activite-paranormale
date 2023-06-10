@@ -91,7 +91,7 @@
 
 			$link = $xml->createElement("link");
 			$channel->appendChild($link);
-			$linkContent = $xml->createTextNode(utf8_encode("http://activite-paranormale.net"));
+			$linkContent = $xml->createTextNode(utf8_encode("https://activite-paranormale.net"));
 			$link->appendChild($linkContent);
 			
 			$ttl = $xml->createElement("ttl");

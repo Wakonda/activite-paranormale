@@ -47,11 +47,11 @@ class NewsController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
-		return $this->render('news/News/index.html.twig', array(
+		return $this->render('news/News/index.html.twig', [
 			'pagination' => $pagination,
 			'page' => $page,
 			'themes' => $themes
-		));
+		]);
     }
 	
 	public function readNewsAction(Request $request, $id, $title_slug)
@@ -67,10 +67,10 @@ class NewsController extends AbstractController
 
 		$previousAndNextEntities = $em->getRepository(News::class)->getPreviousAndNextEntities($entity, $request->getLocale());
 
-		return $this->render('news/News/readNews.html.twig', array(
+		return $this->render('news/News/readNews.html.twig', [
 			'entity' => $entity,
 			'previousAndNextEntities' => $previousAndNextEntities
-		));
+		]);
 	}
 
 	public function selectThemeForIndexNewAction(Request $request)
@@ -79,7 +79,7 @@ class NewsController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
-		return new Response($this->generateUrl('News_Index', array('page' => 1, 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('News_Index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
 	/* FONCTION DE COMPTAGE */
@@ -97,7 +97,7 @@ class NewsController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
-		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
+		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
 
@@ -111,12 +111,12 @@ class NewsController extends AbstractController
 		if(!empty($theme))
 			$title[] = $theme->getTitle();
 
-		return $this->render('news/News/world.html.twig', array(
+		return $this->render('news/News/world.html.twig', [
 			'flags' => $flags,
 			'themes' => $themes,
 			'title' => implode(" - ", $title),
 			'theme' => empty($theme) ? null : $theme
-		));	
+		]);
 	}
 	
 	public function selectThemeForIndexWorldAction(Request $request, $language)
@@ -126,7 +126,7 @@ class NewsController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
-		return new Response($this->generateUrl('News_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('News_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
 	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
@@ -139,7 +139,7 @@ class NewsController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
+
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
 			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
@@ -148,16 +148,16 @@ class NewsController extends AbstractController
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
 		}
-		
+
         $entities = $em->getRepository(News::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(News::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -165,7 +165,7 @@ class NewsController extends AbstractController
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
-			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
 			$output['aaData'][] = $row;
@@ -181,20 +181,20 @@ class NewsController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$sliderNews = $em->getRepository(News::class)->getSliderNew();
-		return $this->render("news/Widget/mainSlider.html.twig", array(
+		return $this->render("news/Widget/mainSlider.html.twig", [
 			"worldNews" => $sliderNews
-		));
-	}	
+		]);
+	}
 	
 	public function mainSliderAction($lang)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$sliderNew = $em->getRepository(News::class)->getMainSliderNew($lang);
-		return $this->render("news/Widget/jsSlider.html.twig", array(
+		return $this->render("news/Widget/jsSlider.html.twig", [
 			"sliderNews" => $sliderNew
-		));
+		]);
 	}
-	
+
 	// ENREGISTREMENT PDF
 	public function pdfVersionAction(APHtml2Pdf $html2pdf, $id)
 	{
@@ -207,9 +207,9 @@ class NewsController extends AbstractController
 		if($entity->getArchive())
 			throw new GoneHttpException('Archived');
 
-		$content = $this->render("news/News/pdfVersion.html.twig", array("entity" => $entity));
+		$content = $this->render("news/News/pdfVersion.html.twig", ["entity" => $entity]);
 
-		return $html2pdf->generatePdf($content->getContent(), array('title' => $entity->getTitle(), 'author' => $entity->getPseudoUsed()));
+		return $html2pdf->generatePdf($content->getContent(), ['title' => $entity->getTitle(), 'author' => $entity->getPseudoUsed()]);
 	}
 	
 	// USER PARTICIPATION
@@ -219,14 +219,14 @@ class NewsController extends AbstractController
         $entity = new News();
 
 		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
-		
+
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
 
-        return $this->render('news/News/new.html.twig', array(
+        return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 	
 	public function createAction(Request $request)
@@ -240,11 +240,11 @@ class NewsController extends AbstractController
 		
 		$entity = $em->getRepository(News::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
-			return $this->redirect($this->generateUrl('News_ReadNews_New', array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())));
+			return $this->redirect($this->generateUrl('News_ReadNews_New', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]));
 
-		return $this->render('news/News/waiting.html.twig', array(
+		return $this->render('news/News/waiting.html.twig', [
             'entity' => $entity,
-        ));
+        ]);
 	}
 
 	public function validateAction(Request $request, $id)
@@ -261,8 +261,8 @@ class NewsController extends AbstractController
 		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
-		$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 		
 		$entity->setState($state);
 		$em->persist($entity);
@@ -287,10 +287,10 @@ class NewsController extends AbstractController
 
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
 
-        return $this->render('news/News/new.html.twig', array(
+        return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
 	public function updateAction(Request $request, $id)
@@ -318,14 +318,14 @@ class NewsController extends AbstractController
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
         $form->handleRequest($request);
 		
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
 		if($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Draft', 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Draft', 'language' => $language]);
 		elseif($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Draft', 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Draft', 'language' => $language]);
 		else
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 		
 		$entity->setState($state);
 		$entity->setLanguage($language);
@@ -335,7 +335,7 @@ class NewsController extends AbstractController
 			if($entity->getIsAnonymous() == 1)
 			{
 				if($form->get('validate')->isClicked())
-					$user = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+					$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
 				
 				$entity->setAuthor($user);
 				$entity->setPseudoUsed("Anonymous");
@@ -348,7 +348,7 @@ class NewsController extends AbstractController
 		}
 		else
 		{
-			$user = $em->getRepository(User::class)->findOneBy(array('username' => 'Anonymous'));
+			$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
 			$entity->setAuthor($user);
 			$entity->setIsAnonymous(0);
 		}
@@ -373,20 +373,20 @@ class NewsController extends AbstractController
 			
 			if($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 			{
-				return $this->redirect($this->generateUrl('News_Waiting', array('id' => $entity->getId())));
+				return $this->redirect($this->generateUrl('News_Waiting', ['id' => $entity->getId()]));
 			}
 			elseif($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 			{
 				return $this->redirect($this->generateUrl('Profile_Show'));
 			}
 			
-			return $this->redirect($this->generateUrl('News_Validate', array('id' => $entity->getId())));
+			return $this->redirect($this->generateUrl('News_Validate', ['id' => $entity->getId()]));
         }
 
-        return $this->render('news/News/new.html.twig', array(
+        return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
 	}
 	
 	public function getSameTopicsAction($id)

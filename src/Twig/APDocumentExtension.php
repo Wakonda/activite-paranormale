@@ -5,51 +5,51 @@
 	use Twig\TwigFunction;
 	
 	use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+	use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 	use Doctrine\ORM\EntityManagerInterface;
-	use Symfony\Component\DependencyInjection\ContainerInterface;
-	
+
 	use App\Entity\Tags;
 
 	class APDocumentExtension extends AbstractExtension
 	{
-		private $container;
 		private $em;
 		private $router;
+		private $parameterBag;
 		
-		public function __construct(ContainerInterface $container, EntityManagerInterface $em, UrlGeneratorInterface $router)
+		public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router, ParameterBagInterface $parameterBag)
 		{
-			$this->container = $container;
 			$this->em = $em;
 			$this->router = $router;
+			$this->parameterBag = $parameterBag;
 		}
 		
 		public function getFilters()
 		{
-			return array();
+			return [];
 		}
 
 		public function getFunctions()
 		{
-			return array(
-				new TwigFunction('getTagsByEntityForDisplayDocument', array($this, 'getTagsByEntityForDisplayDocument'), array('is_safe' => array('html'))),
-				new TwigFunction('mime_content_type', array($this, 'getMimeContentType'), array('is_safe' => array('html'))),
-				new TwigFunction('filesize', array($this, 'getFileSize'), array('is_safe' => array('html')))
-			);
+			return [
+				new TwigFunction('getTagsByEntityForDisplayDocument', [$this, 'getTagsByEntityForDisplayDocument'], ['is_safe' => ['html']]),
+				new TwigFunction('mime_content_type', [$this, 'getMimeContentType'], ['is_safe' => ['html']]),
+				new TwigFunction('filesize', [$this, 'getFileSize'], ['is_safe' => ['html']])
+			];
 		}
 
 		public function getTagsByEntityForDisplayDocument($entity)
 		{
 			$className = array_reverse(explode("\\", get_class($entity)));
-			$tags = $this->em->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));
+			$tags = $this->em->getRepository(Tags::class)->findBy(['idClass' => $entity->getId(), 'nameClass' => $className]);
 
 			if(!empty($tags))
 			{
-				$tagsArray = array();
+				$tagsArray = [];
 				
 				foreach($tags as $tag)
 				{
 					if(!empty(trim($tag->getTagWord()->getTitle())))
-						$tagsArray[] = '<a class="btn btn-light btn-sm ml-2" href="'.$this->router->generate('ap_tags_search', array('id' => $tag->getTagWord()->getId(), 'title' => $tag->getTagWord()->getTitle())).'" class="tags_display">'.$tag->getTagWord()->getTitle().'</a>';
+						$tagsArray[] = '<a class="btn btn-light btn-sm ml-2" href="'.$this->router->generate('ap_tags_search', ['id' => $tag->getTagWord()->getId(), 'title' => $tag->getTagWord()->getTitle()]).'" class="tags_display">'.$tag->getTagWord()->getTitle().'</a>';
 				}
 				
 				if(empty($tagsArray))
@@ -62,7 +62,7 @@
 		
 		public function getMimeContentType($filename, $folder = "public")
 		{
-			$file = realpath($this->container->get('kernel')->getProjectDir()."/".$folder.$filename);
+			$file = realpath($this->parameterBag->get('kernel.project_dir')."/".$folder.$filename);
 			
 			if(!file_exists($file))
 				return null;
@@ -72,7 +72,7 @@
 		
 		public function getFileSize($filename, $decimals = 2, $folder = "public")
 		{
-			$bytes = filesize(realpath($this->container->get('kernel')->getProjectDir()."/".$folder.$filename));
+			$bytes = filesize(realpath($this->parameterBag->get('kernel.project_dir')."/".$folder.$filename));
 			
 			$factor = floor((strlen($bytes) - 1) / 3);
 			

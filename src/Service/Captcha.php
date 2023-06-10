@@ -1,15 +1,18 @@
 <?php
 namespace App\Service;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Captcha
 {
-	private $container;
+	private $parameterBag;
+	private $session;
 	
-	public function __construct(ContainerInterface $container)
+	public function __construct(ParameterBagInterface $parameterBag, SessionInterface $session)
 	{
-		$this->container = $container;
+		$this->parameterBag = $parameterBag;
+		$this->session = $session;
 	}
 	
 	public function wordRandom($n)
@@ -24,12 +27,10 @@ class Captcha
 
 	public function generate($word)
 	{
-		$request = $this->container->get('request_stack')->getCurrentRequest();
-		
 		$size = 80;
 		$margin = 60;
 
-		$font = str_replace("\\", "/", realpath($this->container->getParameter('kernel.project_dir'). '/public'))."/extended/font/Edmundsbury_Serif.ttf";
+		$font = str_replace("\\", "/", realpath($this->parameterBag->get('kernel.project_dir'). '/public'))."/extended/font/Edmundsbury_Serif.ttf";
 		$box = imagettfbbox($size, 0, $font, $word);
 
 		$matrix_blur = array(
@@ -74,9 +75,8 @@ class Captcha
 		ob_end_clean();
 
 		imagedestroy($img);
-		
-		$session = $request->getSession();
-		$session->set('captcha_word', $word);
+
+		$this->session->set('captcha_word', $word);
 
 		return base64_encode($contents);
 	}
