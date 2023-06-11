@@ -34,7 +34,8 @@
 				
 				document.querySelectorAll(".show_image_colorbox_item").forEach(e => {
 					e.addEventListener("click", (event) => {
-						window.parent.document.querySelector(".existing_photo_colorbox").value = event.target.getAttribute("title");
+						let id = window.parent.document.querySelector(".modal.show").dataset.fieldId;
+						window.parent.document.querySelector("#" + id + ".existing_photo_colorbox").value = event.target.getAttribute("title");
 						$('.selectFileModal').modal('hide');
 					});
 				});
