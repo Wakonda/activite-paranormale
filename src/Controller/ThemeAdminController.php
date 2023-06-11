@@ -69,6 +69,7 @@ class ThemeAdminController extends AdminGenericController
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
+		// dd($this->container);
 		$formType = ThemeAdminType::class;
 		$entity = new Theme();
 

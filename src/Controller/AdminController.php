@@ -725,7 +725,7 @@ class AdminController extends AbstractController
 	
 	// Twitter
 	public function twitterAction(Request $request, TwitterAPI $twitterAPI, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
-	{dd("ok");
+	{
 		$this->sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));

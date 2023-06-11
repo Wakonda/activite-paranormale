@@ -83,7 +83,7 @@
 		
 		{% if entity.archive == false %}
 			{{ macro_index.twitter_form(entity) }}
-			{{ macro_index.blogger_form(entity, "news") }}
+			{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
 			{{ macro_index.facebook_form(entity, (entity.abstractText|raw)|striptags) }}
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.shopify_form(entity, "news") }}

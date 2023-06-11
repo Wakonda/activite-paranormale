@@ -27,7 +27,7 @@ services:
 
     saving_common_data.listener:
         class: App\Listener\SavingCommonData
-        arguments: ["@service_container"]
+        arguments: ["@doctrine.orm.entity_manager", "@parameter_bag"]
         tags:
             - { name: doctrine.event_listener, event: preUpdate }
             - { name: doctrine.event_listener, event: prePersist }

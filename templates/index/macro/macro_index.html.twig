@@ -1,4 +1,4 @@
-{% macro blogger_form(entity, type) %}
+{% macro blogger_form(entity, type, defaultValue = null) %}
 	{% if get_env("APP_ENV") == "dev" %}
 		{% set type = "test" %}
 	{% endif %}
@@ -30,7 +30,7 @@
 							{% set tags = blogger_tags(type) %}
 							<select multiple name="blogger_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
-									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% endif %}>{{ tag }}</option>
+									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% elseif tag == defaultValue %}selected{% endif %}>{{ tag }}</option>
 								{% endfor %}
 							</select>
 							<br><br>
