@@ -205,7 +205,7 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro facebook_form(entity) %}
+{% macro facebook_form(entity, text = null) %}
 	{% if isFacebookAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentFacebook">
 		<div class="card sub_block">
@@ -230,7 +230,7 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
 						<br>
