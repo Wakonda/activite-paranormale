@@ -378,16 +378,10 @@ td
    padding: 5px;
 }
 
-/********************** Onglet horizontal **************************/
-.tabNavigation 
-{ 
-	list-style: none; 
-}
 /************************* HR **************************************/
 .hr2
 {
 	height: 0px;
-	border: 0px;
 	border: 1px #D7E13D dotted;
 }
 
@@ -422,12 +416,6 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 	background-color: #bdc62b;
 	font-family: "Times New Roman", Arial, "Arial Black", Times, serif;
 	font-size: 1.1em;
-}
-
-#comment_facebook {
-	background-color: white;
-    padding: 3px;
-    border-radius: 5px;
 }
 
 .text-right
@@ -587,8 +575,6 @@ div.dataTables_paginate.paging_full_numbers a.paginate_active {
 
 div.dataTables_paginate.paging_full_numbers a.paginate_button, div.dataTables_paginate.paging_full_numbers a.paginate_active {
     border: 1px solid #aaa;
-    -webkit-border-radius: 5px;
-    -moz-border-radius: 5px;
     border-radius: 5px;
     padding: 2px 5px;
     margin: 0 3px;
@@ -932,16 +918,6 @@ span#author_quotation a {
 	font-size: 20px;
 }
 
-/*** COOKIE CHOICE INFO ***/
-div#cookieChoiceInfo {
-	background-color: rgba(105, 105, 105, 0.901961) !important;
-}
-
-div#cookieChoiceInfo span {
-	color: #E4E4E4 !important;
-}
-
-
 /**** Center iframe ****/
 iframe {
 	display: block;
@@ -1107,6 +1083,19 @@ hr {
   height: 0;
   overflow: hidden;
   transition: height 0.35s ease;
+}
+
+h3.cursor-pointer[aria-expanded="false"]:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f138";
+    float: right;
+}
+h3.cursor-pointer[aria-expanded="true"]:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f13a";
+    float: right;
 }
 /****** IMAGE ******/
 .img-fluid {

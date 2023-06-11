@@ -524,6 +524,18 @@ pre {
   white-space: pre-line !important;
 }
 
+h3.cursor-pointer[aria-expanded="false"]:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f138";
+    float: right;
+}
+h3.cursor-pointer[aria-expanded="true"]:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f13a";
+    float: right;
+}
 /********** FORM ***********/
 @media all and (max-width: 500px) {
   .form-table-collapse {
