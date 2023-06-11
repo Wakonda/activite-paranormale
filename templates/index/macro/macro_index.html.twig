@@ -436,6 +436,7 @@
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 					</form>
 				</div>
 			</div>
@@ -469,6 +470,12 @@
 				$('#mastodon_area').val(output);
 				$("#mastodon_area").keyup();
 			});
+
+			document.getElementById("form_twitter").addEventListener("submit", (e) => {
+				e.preventDefault();
+				e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+				e.target.submit();
+			});
 		});
 	</script>
 {% endmacro %}
@@ -487,7 +494,7 @@
 			
 			<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" data-parent="#accordionParentTwitter">
 				<div class="card-body">
-					<form action="{{ path('Admin_Twitter', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+					<form id="form_twitter" action="{{ path('Admin_Twitter', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string" class="badge badge-danger">280</span></p>
 
 						{% if addPhoto == true %}
@@ -509,6 +516,7 @@
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 					</form>
 				</div>
 			</div>
@@ -539,9 +547,7 @@
 				$("#limit_string").html(limit - $(this).val().length);
 				
 				if(limit <= $(this).val().length)
-				{
 					$("input[type=submit]#tweet").attr("disabled", "disabled");
-				}
 				else
 					$("input[type=submit]#tweet").removeAttr("disabled");
 			});
@@ -556,6 +562,12 @@
 				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
 				$('#twitter_area').val(output);
 				$("#twitter_area").keyup();
+			});
+
+			document.getElementById("form_twitter").addEventListener("submit", (e) => {
+				e.preventDefault();
+				e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+				e.target.submit();
 			});
 		});
 	</script>

@@ -725,7 +725,13 @@ class AdminController extends AbstractController
 	
 	// Twitter
 	public function twitterAction(Request $request, TwitterAPI $twitterAPI, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
-	{
+	{dd("ok");
+		$this->sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator);
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
+	}
+	
+	private function sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator) {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
 		
@@ -750,8 +756,6 @@ class AdminController extends AbstractController
 		}
 		else
 			$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
-
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
 	// The Daily Truth
@@ -1103,6 +1107,19 @@ class AdminController extends AbstractController
 	// Mastodon
 	public function mastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
+		$this->sendMastodon($request, $path, $id, $mastodon, $translator, $session);
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+	}
+	
+	public function twitterMastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect) {
+		$this->sendTwitter($request, $id, $path, $router, $twitter, $session, $translator);
+		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator);
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+	}
+	
+	private function sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator) {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
 		
@@ -1119,8 +1136,6 @@ class AdminController extends AbstractController
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 		
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
-
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
 	public function wikidataGenericAction(Request $request, \App\Service\Wikidata $wikidata)

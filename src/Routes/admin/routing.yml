@@ -65,6 +65,10 @@ Admin_Twitter:
     path: /admin/twitter/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::twitterAction
 
+Admin_TwitterMastodon:
+    path: /admin/twittermastodon/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::twitterMastodonAction
+
 Admin_Pinterest:
     path: /admin/pinterest/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::pinterestAction
