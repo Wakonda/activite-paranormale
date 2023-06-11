@@ -160,6 +160,9 @@
 			foreach($xpath->query('//div[contains(attribute::class, "searchaux")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
+			foreach($xpath->query('//span[contains(attribute::class, "haudio")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
 
 			if(!$this->keepTitle) {
 				foreach($xpath->query('//h2') as $e ) {
