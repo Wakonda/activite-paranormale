@@ -208,19 +208,25 @@ class EventMessageAdminController extends AdminGenericController
 		$entity->setMonthTo($entityToCopy->getMonthTo());
 		$entity->setYearTo($entityToCopy->getYearTo());
 		
-		$licence = null;
+		$entity->setSource($entityToCopy->getSource());
+
+		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
 		
-		if(!empty($entityToCopy->getLicence()))
-			$licence = $em->getRepository(Licence::class)->findOneBy(["internationalName" => $entityToCopy->getLicence()->getInternationalName(), "language" => $language]);
-		
-		$entity->setLicence($licence);
-		
-		$state = null;
-		
-		if(!empty($entityToCopy->getState()))
-			$state = $em->getRepository(State::class)->findOneBy(["internationalName" => $entityToCopy->getState()->getInternationalName(), "language" => $language]);
-		
+		if(empty($state)) {
+			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
+		}
+
 		$entity->setState($state);
+
+		$licence = $em->getRepository(Licence::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getLicence()->getInternationalName()]);
+		
+		if(empty($licence)) {
+			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
+			$licence = $em->getRepository(Licence::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => $entityToCopy->getLicence()->getInternationalName()]);
+		}
+
+		$entity->setLicence($licence);
 
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
 			$wikidata = new \App\Service\Wikidata($em);

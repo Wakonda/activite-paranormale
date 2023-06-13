@@ -210,8 +210,7 @@ class PhotoAdminController extends AdminGenericController
 
 		if(!empty($theme))
 			$entity->setTheme($theme);
-		
-		
+
 		$entity->setLanguage($language);
 		
 		if(!empty($ci = $entityToCopy->getIllustration())) {
