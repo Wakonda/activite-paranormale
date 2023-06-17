@@ -527,48 +527,56 @@
 
 {% macro twitter_form_js() %}
 	<script>
-		$(function()
-		{
-			var datas = $("#twitter_area").text().split(" ");
-			$("div#tags_twitter a").each(function() {
-				
-				for(var i = 0; i < datas.length; i++)
-				{
-					if($(this).text().toLowerCase() == datas[i].toLowerCase())
-						datas[i] = "#" + datas[i];
-				}
-			});
-			
-			$("#twitter_area").val(datas.join(" "));
-		
-			$("#twitter_area").bind("keydown keyup", function()
-			{
-				var limit = 280;
-				$("#limit_string").html(limit - $(this).val().length);
-				
-				if(limit <= $(this).val().length)
-					$("input[type=submit]#tweet").attr("disabled", "disabled");
-				else
-					$("input[type=submit]#tweet").removeAttr("disabled");
-			});
-			$("#twitter_area").keyup();
-			
-			//Twitter Tags
-			$("div#tags_twitter a").click(function(event) {
-				event.preventDefault();
-				var textToInsert = "#" + $(this).data('tag');
-				var position = $('#twitter_area').prop("selectionStart");
-				var textareaContent = $('#twitter_area').val();
-				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-				$('#twitter_area').val(output);
-				$("#twitter_area").keyup();
-			});
+		var datas = document.getElementById("twitter_area").innerHTML.split(" ");
 
-			document.getElementById("form_twitter").addEventListener("submit", (e) => {
-				e.preventDefault();
-				e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
-				e.target.submit();
+		document.querySelectorAll("div#tags_twitter a").forEach((e) => {
+			for(var i = 0; i < datas.length; i++) {
+				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
+					datas[i] = "#" + datas[i];
+			}
+		});
+
+		document.getElementById("twitter_area").innerHTML = datas.join(" ");
+
+		var limit = 280;
+
+		var twitterAreaFunction = function(e) {
+			document.getElementById("limit_string").innerHTML = limit - this.value.length;
+
+			if(limit <= this.value.length) {
+				document.querySelector("input[type=submit]#tweet").setAttribute("disabled", "disabled");
+				document.querySelector("input[type=submit]#tweetMastodon").setAttribute("disabled", "disabled");
+			}
+			else {
+				document.querySelector("input[type=submit]#tweet").removeAttribute("disabled");
+				document.querySelector("input[type=submit]#tweetMastodon").removeAttribute("disabled");
+			}
+		};
+
+		document.getElementById("twitter_area").addEventListener("keydown", twitterAreaFunction);
+		document.getElementById("twitter_area").addEventListener("keyup", twitterAreaFunction);
+
+		document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
+
+		//Twitter Tags
+		document.querySelectorAll("div#tags_twitter a").forEach(e => {
+			e.addEventListener('click', (e2) => {
+				e2.preventDefault();
+			
+				let textToInsert = "#" + e2.srcElement.dataset.tag;
+				let position = document.getElementById("twitter_area").selectionStart;
+				let textareaContent = document.getElementById('twitter_area').value;
+				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+
+				document.getElementById('twitter_area').value = output;
+				document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
 			});
+		});
+
+		document.getElementById("form_twitter").addEventListener("submit", (e) => {
+			e.preventDefault();
+			e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+			e.target.submit();
 		});
 	</script>
 {% endmacro %}
