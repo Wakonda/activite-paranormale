@@ -92,6 +92,9 @@ admin:
         LiteraryGenre: "Género literario"
         KnowledgeBase: "Base de conocimiento"
         CreepyStory: "Historia espeluznante"
+        Maintenance: "Mantenimiento"
+        ActivateMaintenance: "Activar el modo de mantenimiento"
+        DesactivateMaintenance: "Desactivar el modo de mantenimiento"
     show:
         Internationalization: "Internacionalización"
         ReallyWantRemoveDatas: "¿Está seguro de que desea eliminar estos datos?"

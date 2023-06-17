@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+	use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Entity\Language;
 use App\Service\APImgSize;
@@ -68,6 +69,47 @@ class AdminController extends AbstractController
 			"showRoute" => $showRoute,
 			"editRoute" => $editRoute
 		]);
+	}
+
+	public function maintenanceAction(ParameterBagInterface $parameterBag, $mode)
+	{
+		$htaccessPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess";
+		$htaccessMaintenanceOnPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceon.htaccess";
+		$htaccessMaintenanceOffPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceoff.htaccess";
+		
+		if($mode == "MaintenanceOn") {
+			$content = file_get_contents($htaccessMaintenanceOnPath);
+			$content = str_replace("##IP_ADDRESS##", $this->get_ip(), $content);
+			file_put_contents($htaccessPath, $content);
+			
+		} elseif($mode == "MaintenanceOff") {
+			file_put_contents($htaccessPath, file_get_contents($htaccessMaintenanceOffPath));
+		}
+
+		$line = fgets(fopen($parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess", 'r'));
+		
+		$mode = ltrim(trim($line), "#");
+
+		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode]);
+	}
+
+	private function get_ip(): string {
+		$ip = '';
+		if (isset($_SERVER['HTTP_CLIENT_IP'])){
+			$ip = $_SERVER['HTTP_CLIENT_IP'];
+		}else if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
+		}else if(isset($_SERVER['HTTP_X_FORWARDED'])){
+			$ip = $_SERVER['HTTP_X_FORWARDED'];
+		}else if(isset($_SERVER['HTTP_FORWARDED_FOR'])){
+			$ip = $_SERVER['HTTP_FORWARDED_FOR'];
+		}else if(isset($_SERVER['HTTP_FORWARDED'])){
+			$ip = $_SERVER['HTTP_FORWARDED'];
+		}else if(isset($_SERVER['REMOTE_ADDR'])){
+			$ip = $_SERVER['REMOTE_ADDR'];
+		}
+
+		return $ip;
 	}
 	
 	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $data)

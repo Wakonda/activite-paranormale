@@ -1,0 +1,21 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Maintenance"|trans([], "validators") }}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Phpinfo') }}"><i class="fas fa-exclamation-circle"></i> PHP Info</a></li>
+	<li class="nav-item"><a class="nav-link" href="{{ path('api_entrypoint') }}"><i class="fas fa-plug"></i> A.P.I.</a></li>
+	<li class="nav-item"><a class="nav-link" href="https://bug.wakonda.guru/"><i class="fas fa-bug"></i> Bug Tracker</a></li>
+{% endblock %}
+
+{% block style_edit %}
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block body_main %}
+	{% if mode == "MaintenanceOff" %}
+		<a href="{{ path('Admin_Maintenance', {mode: 'MaintenanceOn'}) }}" class="btn btn-success">{{ "admin.index.ActivateMaintenance"|trans([], "validators") }}</a>
+	{% else %}
+		<a href="{{ path('Admin_Maintenance', {mode: 'MaintenanceOff'}) }}" class="btn btn-danger">{{ "admin.index.DesactivateMaintenance"|trans([], "validators") }}</a>
+	{% endif %}
+{% endblock %}
