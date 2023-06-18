@@ -103,6 +103,7 @@ class VoteController extends AbstractController
 	
 	public function editAction(Request $request, $className, $idClassName)
     {
+		// dd("ok");
 		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
 

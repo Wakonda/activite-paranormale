@@ -24,7 +24,7 @@
 					)
 					{% endapply %}
 				</span>
-				<a title="rating" id="rate" onclick="$('#{{ form.vars['id'] }}').submit();" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</a>
+				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</a>
 			</div>
 		</div>
 	{{ form_end(form) }}
@@ -42,26 +42,29 @@
 				val
 			}
 		});
-
-		$("#{{ form.vars.id }}").submit(function(e)
-		{
+		
+		document.getElementById("{{ form.vars.id }}").addEventListener("submit", (e) => {
 			e.preventDefault();
-
-			var DATA = $(this).serialize();
 			
-			$.ajax(
+			let form = document.querySelector('#{{ form.vars.id }}');
+			let formData = new FormData(form);
+			
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function()
 			{
-				type: "POST",
-				url: "{{ path('Vote_Edit', { 'idClassName' : idClassName, 'className': className }) }}",
-				data: DATA,
-				cache: false,
-				success: function(data)
+				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 				{
-					$('.averageVote').html(data.averageVote);
-					$('.countVoteByClassName').html(data.countVoteByClassName);
+					var data = JSON.parse(xmlHttp.responseText);
+					document.querySelector(".averageVote").innerHTML = data.averageVote;
+					document.querySelector('.countVoteByClassName').innerHTML = data.countVoteByClassName;
 					$("#{{ form.valueVote.vars.id }}").rating('update', data.averageVote);
 				}
-			});
+			}
+
+			xmlHttp.open("post", "{{ path('Vote_Edit', { 'idClassName' : idClassName, 'className': className }) }}"); 
+			xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+			xmlHttp.overrideMimeType("application/json");
+			xmlHttp.send(formData);
 		});
 	});
 </script>

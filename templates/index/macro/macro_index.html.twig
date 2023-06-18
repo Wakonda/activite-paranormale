@@ -245,28 +245,27 @@
 
 {% macro facebook_form_js() %}
 	<script>
-		$(function()
-		{
-			var datas = $("#facebook_area").text().split(" ");
-			$("div#tags_facebook a").each(function() {
-				
-				for(var i = 0; i < datas.length; i++)
-				{
-					if($(this).text().toLowerCase() == datas[i].toLowerCase())
-						datas[i] = "#" + datas[i];
-				}
-			});
-			
-			$("#facebook_area").val(datas.join(" "));
+		var datas = document.getElementById("facebook_area").innerHTML.split(" ");
 
-			$("div#tags_facebook a").click(function(event) {
-				event.preventDefault();
-				var textToInsert = "#" + $(this).data('tag');
-				var position = $('#facebook_area').prop("selectionStart");
-				var textareaContent = $('#facebook_area').val();
-				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-				$('#facebook_area').val(output);
-				$("#facebook_area").keyup();
+		document.querySelectorAll("div#tags_facebook a").forEach((e) => {
+			for(var i = 0; i < datas.length; i++) {
+				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
+					datas[i] = "#" + datas[i];
+			}
+		});
+
+		document.getElementById("facebook_area").innerHTML = datas.join(" ");
+
+		document.querySelectorAll("div#tags_facebook a").forEach(e => {
+			e.addEventListener('click', (e2) => {
+				e2.preventDefault();
+
+				let textToInsert = "#" + e2.srcElement.dataset.tag;
+				let position = document.getElementById("facebook_area").selectionStart;
+				let textareaContent = document.getElementById('facebook_area').value;
+				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+
+				document.getElementById('facebook_area').value = output;
 			});
 		});
 	</script>
