@@ -379,28 +379,27 @@
 
 {% macro instagram_form_js() %}
 	<script>
-		$(function()
-		{
-			var datas = $("#instagram_area").text().split(" ");
-			$("div#tags_instagram a").each(function() {
-				
-				for(var i = 0; i < datas.length; i++)
-				{
-					if($(this).text().toLowerCase() == datas[i].toLowerCase())
-						datas[i] = "#" + datas[i];
-				}
-			});
-			
-			$("#instagram_area").val(datas.join(" "));
+		var datas = document.getElementById("instagram_area").innerHTML.split(" ");
 
-			$("div#tags_instagram a").click(function(event) {
-				event.preventDefault();
-				var textToInsert = "#" + $(this).data('tag');
-				var position = $('#instagram_area').prop("selectionStart");
-				var textareaContent = $('#instagram_area').val();
-				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-				$('#instagram_area').val(output);
-				$("#instagram_area").keyup();
+		document.querySelectorAll("div#tags_instagram a").forEach((e) => {
+			for(var i = 0; i < datas.length; i++) {
+				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
+					datas[i] = "#" + datas[i];
+			}
+		});
+
+		document.getElementById("instagram_area").innerHTML = datas.join(" ");
+
+		document.querySelectorAll("div#tags_instagram a").forEach(e => {
+			e.addEventListener('click', (e2) => {
+				e2.preventDefault();
+
+				let textToInsert = "#" + e2.srcElement.dataset.tag;
+				let position = document.getElementById("instagram_area").selectionStart;
+				let textareaContent = document.getElementById('instagram_area').value;
+				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+
+				document.getElementById('instagram_area').value = output;
 			});
 		});
 	</script>
