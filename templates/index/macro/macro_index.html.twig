@@ -447,35 +447,34 @@
 
 {% macro mastodon_form_js() %}
 	<script>
-		$(function()
-		{
-			var datas = $("#mastodon_area").text().split(" ");
-			$("div#tags_mastodon a").each(function() {
-				
-				for(var i = 0; i < datas.length; i++)
-				{
-					if($(this).text().toLowerCase() == datas[i].toLowerCase())
-						datas[i] = "#" + datas[i];
-				}
-			});
-			
-			$("#mastodon_area").val(datas.join(" "));
+		var datas = document.getElementById("mastodon_area").innerHTML.split(" ");
 
-			$("div#tags_mastodon a").click(function(event) {
-				event.preventDefault();
-				var textToInsert = "#" + $(this).data('tag');
-				var position = $('#mastodon_area').prop("selectionStart");
-				var textareaContent = $('#mastodon_area').val();
-				var output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-				$('#mastodon_area').val(output);
-				$("#mastodon_area").keyup();
-			});
+		document.querySelectorAll("div#tags_mastodon a").forEach((e) => {
+			for(var i = 0; i < datas.length; i++) {
+				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
+					datas[i] = "#" + datas[i];
+			}
+		});
+		
+		document.getElementById("mastodon_area").innerHTML = datas.join(" ");
 
-			document.getElementById("form_twitter").addEventListener("submit", (e) => {
-				e.preventDefault();
-				e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
-				e.target.submit();
+		document.querySelectorAll("div#tags_mastodon a").forEach(e => {
+			e.addEventListener('click', (e2) => {
+				e2.preventDefault();
+
+				let textToInsert = "#" + e2.srcElement.dataset.tag;
+				let position = document.getElementById("mastodon_area").selectionStart;
+				let textareaContent = document.getElementById('mastodon_area').value;
+				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+
+				document.getElementById('mastodon_area').value = output;
 			});
+		});
+
+		document.getElementById("form_twitter").addEventListener("submit", (e) => {
+			e.preventDefault();
+			e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+			e.target.submit();
 		});
 	</script>
 {% endmacro %}
