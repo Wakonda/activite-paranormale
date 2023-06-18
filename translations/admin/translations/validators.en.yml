@@ -92,6 +92,7 @@ admin:
         LiteraryGenre: "Literary genre"
         KnowledgeBase: "Knowledge base"
         CreepyStory: "Creepy story"
+        ActivateDesactivateMaintenance: "Turn on / Turn off maintenance mode"
         Maintenance: "Maintenance"
         ActivateMaintenance: "Turn on maintenance mode"
         DesactivateMaintenance: "Turn off maintenance mode"

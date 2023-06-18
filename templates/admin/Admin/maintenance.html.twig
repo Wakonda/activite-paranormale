@@ -13,9 +13,18 @@
 {% endblock %}
 
 {% block body_main %}
+	<h3><i class="fa-solid fa-computer fa-sm mr-2"></i>{{ "admin.index.ActivateDesactivateMaintenance"|trans([], "validators") }}</h3>
 	{% if mode == "MaintenanceOff" %}
 		<a href="{{ path('Admin_Maintenance', {mode: 'MaintenanceOn'}) }}" class="btn btn-success">{{ "admin.index.ActivateMaintenance"|trans([], "validators") }}</a>
 	{% else %}
 		<a href="{{ path('Admin_Maintenance', {mode: 'MaintenanceOff'}) }}" class="btn btn-danger">{{ "admin.index.DesactivateMaintenance"|trans([], "validators") }}</a>
 	{% endif %}
+	
+	<hr>
+	
+	<h3 class="mt-2"><i class="fa-solid fa-robot fa-sm mr-2"></i>robots.txt</h3>
+	<form action="{{ path('Admin_Maintenance', {mode: 'robotstxt'}) }}">
+		<textarea name="robotstxt_content" class="form-control" rows="5">{{ robotstxt }}</textarea>
+		<button type="submit" class="btn btn-success mt-2">{{ "admin.general.Update"|trans([], "validators") }}</button>
+	</form>
 {% endblock %}

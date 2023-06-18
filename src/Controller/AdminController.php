@@ -71,8 +71,9 @@ class AdminController extends AbstractController
 		]);
 	}
 
-	public function maintenanceAction(ParameterBagInterface $parameterBag, $mode)
+	public function maintenanceAction(Request $request, ParameterBagInterface $parameterBag, $mode)
 	{
+		$robotstxt = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."robots.txt";
 		$htaccessPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess";
 		$htaccessMaintenanceOnPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceon.htaccess";
 		$htaccessMaintenanceOffPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceoff.htaccess";
@@ -84,13 +85,16 @@ class AdminController extends AbstractController
 			
 		} elseif($mode == "MaintenanceOff") {
 			file_put_contents($htaccessPath, file_get_contents($htaccessMaintenanceOffPath));
+		} elseif($mode == "robotstxt") {
+			file_put_contents($robotstxt, $request->query->get("robotstxt_content"));
 		}
 
 		$line = fgets(fopen($parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess", 'r'));
 		
 		$mode = ltrim(trim($line), "#");
 
-		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode]);
+
+		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode, "robotstxt" => file_get_contents($robotstxt)]);
 	}
 
 	private function get_ip(): string {

@@ -1,3 +1,43 @@
+##MaintenanceOn
 <IfModule mod_rewrite.c>
+	RewriteEngine On
 
+	RewriteBase /public/
+
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule ^extended(.*)$ extended/$1 [L]
+	RewriteRule ^build(.*)$ build/$1 [L]
+	RewriteRule ^bundles(.*)$ bundles/$1 [L]
+	RewriteRule ^ads.txt /public/ads.txt [L]
+	RewriteRule ^robots.txt robots.txt [L]
+	
+	RewriteCond %{SERVER_PORT} !=443
+	RewriteRule ^(.*)$ https://activite-paranormale.net/$1 [R=301,L]
+
+	RewriteCond %{REMOTE_ADDR} ^127.0.0.1 [OR]
+	RewriteCond %{REQUEST_URI} ^/api/(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/login(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/privacy-policy(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/profile(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/user_logout(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/showcolorboxbylicence(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/logout(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/admin/(.*)$ [OR]
+	RewriteCond %{REQUEST_URI} ^/mobile/(.*)$
+	RewriteRule ^(.*)$ index.php [QSA,L]
+	
+	RewriteCond %{REMOTE_ADDR} !^127.0.0.1
+	RewriteCond %{REQUEST_URI} !^/$
+	RewriteCond %{REQUEST_URI} !^/api/(.*)$
+	RewriteCond %{REQUEST_URI} !^/login(.*)$
+	RewriteCond %{REQUEST_URI} !^/profile(.*)$
+	RewriteCond %{REQUEST_URI} !^/user_logout(.*)$
+	RewriteCond %{REQUEST_URI} !^/showcolorboxbylicence(.*)$
+	RewriteCond %{REQUEST_URI} !^/logout(.*)$
+	RewriteCond %{REQUEST_URI} !^/admin/(.*)$
+	RewriteCond %{REQUEST_URI} !^/privacy-policy(.*)$
+	RewriteCond %{REQUEST_URI} !^/mobile/(.*)$
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteRule .* / [L,R=302]
 </IfModule>
