@@ -433,7 +433,7 @@
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
-						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'mastodon' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 					</form>
 				</div>
 			</div>
@@ -512,7 +512,7 @@
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
-						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 					</form>
 				</div>
 			</div>

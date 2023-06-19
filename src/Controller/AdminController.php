@@ -777,7 +777,7 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 	
-	private function sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator) {
+	private function sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator, $socialNetwork = "twitter") {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
 		
@@ -785,7 +785,7 @@ class AdminController extends AbstractController
 		
 		$entity = $em->getRepository($path)->find($id);
 		$image = false;
-		$url = $requestParams->get("twitter_url", null);
+		$url = $requestParams->get($socialNetwork."_url", null);
 
 		if($requestParams->get("add_image") == 'on')
 			$image = $this->getImageName($request, $entity, false);
@@ -794,7 +794,7 @@ class AdminController extends AbstractController
 
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
 		
-		$res = $twitterAPI->sendTweet($requestParams->get("twitter_area")." ".$currentURL, $entity->getLanguage()->getAbbreviation(), $image);
+		$res = $twitterAPI->sendTweet($requestParams->get($socialNetwork."_area")." ".$currentURL, $entity->getLanguage()->getAbbreviation(), $image);
 
 		if(property_exists($res, "errors")) {
 			$errorsArray = array_map(function($e) { return $e->code.": ".$e->message; }, $res->errors);
@@ -1153,19 +1153,19 @@ class AdminController extends AbstractController
 	// Mastodon
 	public function mastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
-		$this->sendMastodon($request, $path, $id, $mastodon, $translator, $session);
+		$this->sendMastodon($request, $path, $id, $mastodon, $translator, $session, "mastodon_url");
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
-	public function twitterMastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect) {
-		$this->sendTwitter($request, $id, $path, $router, $twitter, $session, $translator);
-		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator);
+	public function twitterMastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork) {
+		$this->sendTwitter($request, $id, $path, $router, $twitter, $session, $translator, $socialNetwork);
+		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 	
-	private function sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator) {
+	private function sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator, $fieldName = "mastodon") {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
 		
@@ -1173,11 +1173,11 @@ class AdminController extends AbstractController
 		
 		$entity = $em->getRepository($path)->find($id);
 		$image = false;
-		$url = $requestParams->get("mastodon_url", null);
+		$url = $requestParams->get($fieldName."_url", null);
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = $mastodon->postMessage($currentURL, $request->request->get("mastodon_area"), $entity->getLanguage()->getAbbreviation());
+		$res = $mastodon->postMessage($currentURL, $request->request->get($fieldName."_area"), $entity->getLanguage()->getAbbreviation());
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 		
