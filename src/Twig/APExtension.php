@@ -350,8 +350,8 @@
 				
 				if($time)
 					$dateString = $dateString.' - '.$date->format('H:i');
-				
-				return ($dateString);
+
+				return $dateString;
 			}
 			else
 				return '-';
