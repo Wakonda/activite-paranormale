@@ -417,7 +417,7 @@
 			
 			<div id="collapseMastodon" class="collapse" aria-labelledby="headingMastodon" data-parent="#accordionParentMastodon">
 				<div class="card-body">
-					<form action="{{ path('Admin_Mastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+					<form id="form_mastodon" action="{{ path('Admin_Mastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<div id="tags_mastodon">
 							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
 							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
@@ -468,9 +468,12 @@
 			});
 		});
 
-		document.getElementById("form_twitter").addEventListener("submit", (e) => {
+		document.getElementById("form_mastodon").addEventListener("submit", (e) => {
 			e.preventDefault();
-			e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+
+			if(e.submitter.id == "tweetMastodon")
+				e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+
 			e.target.submit();
 		});
 	</script>
@@ -571,7 +574,10 @@
 
 		document.getElementById("form_twitter").addEventListener("submit", (e) => {
 			e.preventDefault();
-			e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+
+			if(e.submitter.id == "tweetMastodon")
+				e.target.setAttribute("action", document.getElementById("tweetMastodon").dataset.url);
+
 			e.target.submit();
 		});
 	</script>

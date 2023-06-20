@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-	use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Entity\Language;
 use App\Service\APImgSize;
@@ -26,6 +26,7 @@ use App\Service\Facebook;
 use App\Service\Mastodon;
 use App\Service\Instagram;
 use App\Service\Diaspora;
+use App\Entity\Stores\Store;
 
 class AdminController extends AbstractController
 {
@@ -38,16 +39,16 @@ class AdminController extends AbstractController
     {
 		$request->setLocale($language);
 		$session->set('_locale', $language);
-		
+
 		return $this->redirect($this->generateUrl('Admin_Index'));
     }
-	
+
 	public function phpinfoAction()
 	{
 		phpinfo();
 		return new Response();
 	}
-	
+
 	public function internationalizationSelectGenericAction($entity, String $route, String $showRoute, String $editRoute)
 	{
 		$em = $this->getDoctrine()->getManager();
@@ -59,7 +60,7 @@ class AdminController extends AbstractController
 			foreach($entities as $e)
 				$locales[] = $e->getLanguage()->getAbbreviation();
 		}
-		
+
 		$form = $this->createForm(\App\Form\Type\InternationalizationAdminType::class, null, ["locales" => $locales]);
 
 		return $this->render("admin/Admin/internationalization.html.twig", [
@@ -77,12 +78,11 @@ class AdminController extends AbstractController
 		$htaccessPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess";
 		$htaccessMaintenanceOnPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceon.htaccess";
 		$htaccessMaintenanceOffPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceoff.htaccess";
-		
+
 		if($mode == "MaintenanceOn") {
 			$content = file_get_contents($htaccessMaintenanceOnPath);
 			$content = str_replace("##IP_ADDRESS##", $this->get_ip(), $content);
 			file_put_contents($htaccessPath, $content);
-			
 		} elseif($mode == "MaintenanceOff") {
 			file_put_contents($htaccessPath, file_get_contents($htaccessMaintenanceOffPath));
 		} elseif($mode == "robotstxt") {
@@ -90,46 +90,41 @@ class AdminController extends AbstractController
 		}
 
 		$line = fgets(fopen($parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess", 'r'));
-		
 		$mode = ltrim(trim($line), "#");
-
 
 		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode, "robotstxt" => file_get_contents($robotstxt)]);
 	}
 
 	private function get_ip(): string {
 		$ip = '';
-		if (isset($_SERVER['HTTP_CLIENT_IP'])){
+		if (isset($_SERVER['HTTP_CLIENT_IP']))
 			$ip = $_SERVER['HTTP_CLIENT_IP'];
-		}else if(isset($_SERVER['HTTP_X_FORWARDED_FOR'])){
+		elseif(isset($_SERVER['HTTP_X_FORWARDED_FOR']))
 			$ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
-		}else if(isset($_SERVER['HTTP_X_FORWARDED'])){
+		elseif(isset($_SERVER['HTTP_X_FORWARDED']))
 			$ip = $_SERVER['HTTP_X_FORWARDED'];
-		}else if(isset($_SERVER['HTTP_FORWARDED_FOR'])){
+		elseif(isset($_SERVER['HTTP_FORWARDED_FOR']))
 			$ip = $_SERVER['HTTP_FORWARDED_FOR'];
-		}else if(isset($_SERVER['HTTP_FORWARDED'])){
+		elseif(isset($_SERVER['HTTP_FORWARDED']))
 			$ip = $_SERVER['HTTP_FORWARDED'];
-		}else if(isset($_SERVER['REMOTE_ADDR'])){
+		elseif(isset($_SERVER['REMOTE_ADDR']))
 			$ip = $_SERVER['REMOTE_ADDR'];
-		}
 
 		return $ip;
 	}
-	
+
 	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $data)
 	{
 		$url = $request->query->get("url");
-		
+
 		$res = [];
-		
 		$res[] = ["id" => 0, "text" => $translator->trans('admin.wikipedia.Header', [], 'validators', $request->getLocale())];
-		
+
 		if(str_contains(parse_url($url, PHP_URL_HOST), "wikimonde")) {
 			$data = new \App\Service\Wikimonde();
 			$data->setUrl($url);
-		} else {
+		} else
 			$data->setUrl($url);
-		}
 
 		foreach($data->getSections() as $text => $id)
 			$res[] = ["id" => $id, "text" => $text];
@@ -144,11 +139,10 @@ class AdminController extends AbstractController
 		if(str_contains(parse_url($url, PHP_URL_HOST), "wikimonde")) {
 			$data = new \App\Service\Wikimonde();
 			$data->setUrl($url);
-		} else {
+		} else
 			$data->setUrl($url);
-		}
-		$sections = $request->request->get("sections", []);
 
+		$sections = $request->request->get("sections", []);
 		$source = ["author" => "", "title" => "", "url" => $request->request->get("url"), "type" => "url"];
 
 		return new JsonResponse(["content" => $data->getContentBySections($sections), "source" => $source]);
@@ -158,17 +152,13 @@ class AdminController extends AbstractController
 	public function bloggerTagsAction(Request $request, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
 	{
 		$twig = $this->get("twig");
-		
 		$type = $request->query->get("type");
-		
 		$tags = $twig->getExtensions()["App\Twig\APExtension"]->getBloggerTags($type);
-
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(urldecode($path))->find($id);
 		$blogId = $blogger->blogId_array[$blogger->getCorrectBlog($type)];
-		
+
 		$obj = null;
-		
 		$method = "POST";
 
 		if(method_exists($entity, "getSocialNetworkIdentifiers")) {
@@ -177,30 +167,29 @@ class AdminController extends AbstractController
 				$method = "PUT";
 			}
 		}
-		
+
 		$urlAddUpdate = $this->generateUrl('Admin_Blogger', ['id' => $entity->getId(), 'path' => urlencode($entity->getEntityName()), 'routeToRedirect' => $routeToRedirect, 'type' => $type, 'method' => $method]);
-		
+
 		$urlDelete = null;
-		
+
 		if(!empty($obj))
 			$urlDelete = $this->generateUrl('Admin_Blogger', ['id' => $entity->getId(), 'path' => urlencode($entity->getEntityName()), 'routeToRedirect' => $routeToRedirect, 'type' => $type, 'method' => "DELETE"]);
-		
+
 		return new JsonResponse(["obj" => $obj, "method" => $method, "tags" => $tags, "urlAddUpdate" => $urlAddUpdate, "urlDelete" => $urlDelete]);
 	}
-	
+
 	public function bloggerAction(Request $request, GoogleBlogger $blogger, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type, $method)
 	{
 		$session = $request->getSession();
 		$session->set("id_blogger", $id);
 		$session->set("method_blogger", $method);
-		
+
 		$path = urldecode($path);
 		$session->set("path_blogger", $path);
 		$session->set("routeToRedirect_blogger", $routeToRedirect);
-		
+
 		$tags = $request->request->get('blogger_tags');
 		$session->set("tags_blogger", json_encode((empty($tags)) ? [] : $tags));
-
 		$session->set("type_blogger", $type);
 
 		$em = $this->getDoctrine()->getManager();
@@ -218,7 +207,6 @@ class AdminController extends AbstractController
 	public function bloggerPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, GoogleBlogger $blogger, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$code = $request->query->get("code");
-		
 		$session = $request->getSession();
 
 		$id = $session->get("id_blogger");
@@ -226,7 +214,7 @@ class AdminController extends AbstractController
 		$tags = $session->get("tags_blogger");
 		$type = $session->get("type_blogger");
 		$method = $session->get("method_blogger");
-		
+
 		$routeToRedirect = $session->get("routeToRedirect_blogger");
 
 		$redirectURL = $router->generate("Admin_BloggerPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -236,7 +224,7 @@ class AdminController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($path)->find($id);
-		
+
 		$title = $entity->getTitle();
 
 		if(in_array($method, ["POST", "PUT"])) {
@@ -267,7 +255,7 @@ class AdminController extends AbstractController
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
 					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
-					
+
 					if($entity->getType() == \App\Entity\EventMessage::EVENT_TYPE) {
 						$dateString = (new \App\Service\APDate())->doYearMonthDayDate($entity->getDayFrom(), $month = $entity->getMonthFrom(), $entity->getYearFrom(), $entity->getLanguage()->getAbbreviation());
 						$title = $dateString." - ".$title;
@@ -277,7 +265,7 @@ class AdminController extends AbstractController
 					$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
 					if(!empty($entity->getMediaVideo()))
 						$video = $parser->getVideoResponsive('<video width="550" height="309" controls><source src="'.$request->getSchemeAndHttpHost().'/'.$entity->getAssetVideoPath().'/'.$entity->getMediaVideo().'" type="video/mp4"></video>');
-					
+
 					$imgProperty = $entity->getPhoto();
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$text = $entity->getText()."<br>".$video;
@@ -344,7 +332,7 @@ class AdminController extends AbstractController
 					$text = $entity->getText()."<br>";
 					$language = $entity->getBook()->getBook()->getLanguage()->getAbbreviation();
 					$title = $translator->trans('book.index.Book', [], 'validators', $language)." - ".$entity->getTitle();
-					
+
 					$text .= (!empty($d = $entity->getBook()->getBackCover()) ? "<b>".$translator->trans('bookEdition.admin.BackCover', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getBook()->getText()) ? "<b>".$translator->trans('book.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
@@ -354,10 +342,10 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getNumberPage()) ? "<b>".$translator->trans('bookEdition.admin.NumberPage', [], 'validators', $language)." : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getPublisher()->getTitle()) ? "<b>".$translator->trans('bookEdition.admin.Publisher', [], 'validators', $language)." : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getPublicationDate()) ? "<b>".$translator->trans('bookEdition.admin.PublicationDate', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."<br>" : "");
-					
+
 					$storeURL = null;
 					$storeTitle = null;
-					
+
 					switch($entity->getLanguage()->getAbbreviation()) {
 						case "fr":
 							$storeURL = 'https://templededelphes.netlify.app/';
@@ -416,16 +404,15 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getMovie()->getGenre()) ? "<b>".$translator->trans('movie.admin.Genre', [], 'validators', $language)." :</b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getMovie()->getReleaseYear()) ? "<b>".$translator->trans('movie.admin.ReleaseYear', [], 'validators', $language)." :</b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getMovie()->getLanguage()->getAbbreviation())."<br>" : "");
 					$text .= (!empty($d = $entity->getMovie()->getTrailer()) ? "<b>".$translator->trans('movie.admin.Trailer', [], 'validators', $language)."</b><br>".$d."<br>" : "");
-					
+
 					$actorArray = [];
-					
+
 					$biographyDatas = $twig->getExtensions()["App\Twig\APMovieExtension"]->getMovieBiographiesByOccupation($entity->getMovie());
-					
+
 					foreach($biographyDatas as $occupation => $biographies) {
 						if ($occupation == \App\Entity\Movies\MediaInterface::ACTOR_OCCUPATION) {
-							foreach($biographies as $biography) {
+							foreach($biographies as $biography)
 								$actorArray[] = $biography["title"].(!empty($r = $biography["role"]) ? " (".$r.")" : "");
-							}
 						}
 					}
 					$text .= (!empty($actorArray) ? "<b>".$translator->trans('biographies.admin.Actor', [], 'validators', $language)." : </b>".implode(", ", $actorArray)."<br>" : "");
@@ -440,7 +427,7 @@ class AdminController extends AbstractController
 						$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
 						$img = $imgProperty;
 					}
-					
+
 					$language = $entity->getTelevisionSerie()->getLanguage()->getAbbreviation();
 					$twig = $this->get("twig");
 					$text = $entity->getText()."<br>";
@@ -449,14 +436,13 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getTelevisionSerie()->getGenre()) ? "<b>".$translator->trans('televisionSerie.admin.Genre', [], 'validators', $language)." :</b>".$d."<br>" : "");
 
 					$actorArray = [];
-					
+
 					$biographyDatas = $twig->getExtensions()["App\Twig\APMovieExtension"]->getTelevisionSerieBiographiesByOccupation($entity->getTelevisionSerie());
-					
+
 					foreach($biographyDatas as $occupation => $biographies) {
 						if ($occupation == \App\Entity\Movies\MediaInterface::ACTOR_OCCUPATION) {
-							foreach($biographies as $biography) {
+							foreach($biographies as $biography)
 								$actorArray[] = $biography["title"].(!empty($r = $biography["role"]) ? " (".$r.")" : "");
-							}
 						}
 					}
 					$text .= (!empty($actorArray) ? "<b>".$translator->trans('biographies.admin.Actor', [], 'validators', $language)." : </b>".implode(", ", $actorArray)."<br>" : "");
@@ -480,21 +466,19 @@ class AdminController extends AbstractController
 					break;
 			}
 
-			if(in_array(\App\Entity\Stores\Store::class, [get_class($entity), get_parent_class($entity)])) {
+			if(in_array(Store::class, [get_class($entity), get_parent_class($entity)])) {
 				$language = $entity->getLanguage()->getAbbreviation();
 				$text .= "<hr>";
-				if(\App\Entity\Stores\Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
+				if(Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #E52F20; padding: 0.375rem 0.75rem;background-color: #E52F20;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
-				elseif(\App\Entity\Stores\Store::AMAZON_PLATFORM == $entity->getPlatform())
+				elseif(Store::AMAZON_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
-				elseif(\App\Entity\Stores\Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
+				elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
 			}
 
 			$img = $imgSize->adaptImageSize(550, $img);
-			
 			$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
-			
 			$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 		}
 
@@ -519,13 +503,12 @@ class AdminController extends AbstractController
 				$url = "<br><a href='".$obj->url."' target='_blank'>".$obj->url."</a>";
 				$session->getFlashBag()->add('success', $translator->trans('admin.blogger.Success', [], 'validators').$url);
 			}
-			
+
 			if(method_exists($entity, "setSocialNetworkIdentifiers")) {
 				switch($method) {
 					case "POST";
 					case "PUT";
 						$labels = property_exists($obj, "labels") ? $obj->labels : [];
-						
 						$sni = $entity->getSocialNetworkIdentifiers();
 						
 						if(!isset($sni["Blogger"][$blogId]))
@@ -535,23 +518,23 @@ class AdminController extends AbstractController
 						break;
 					case "DELETE";
 						$sni = $entity->getSocialNetworkIdentifiers();
-						
+
 						unset($sni["Blogger"][$blogId]);
-						
+
 						$entity->setSocialNetworkIdentifiers($sni);
 						break;
 				}
-		
+
 				$em->persist($entity);
 				$em->flush();
 			}
 		}
 		else
 			$session->getFlashBag()->add('error', $translator->trans('admin.blogger.Error', ["%code%" => $response["http_code"]], 'validators'));
-		
+
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
-	
+
 	// Diaspora
 	public function diasporaAction(Request $request, Diaspora $diaspora, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
@@ -637,7 +620,7 @@ class AdminController extends AbstractController
 	{
 		$session = $request->getSession();
 		$session->set("id_shopify", $id);
-		
+
 		$path = urldecode($path);
 		$session->set("path_shopify", $path);
 		$session->set("routeToRedirect_shopify", $routeToRedirect);
@@ -651,7 +634,7 @@ class AdminController extends AbstractController
 		$entity = $em->getRepository($path)->find($id);
 		$redirectURL = $router->generate("Admin_ShopifyPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$code = $shopify->getCode($redirectURL);
+		$shopify->getCode($redirectURL);
 
 		return new Response();
 	}
@@ -659,7 +642,7 @@ class AdminController extends AbstractController
 	public function shopifyPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, Shopify $shopify, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$code = $request->query->get("code");
-		
+
 		$session = $request->getSession();
 
 		$id = $session->get("id_shopify");
@@ -672,7 +655,7 @@ class AdminController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($path)->find($id);
-		
+
 		$text = "";
 		$imgProperty = "";
 
@@ -696,7 +679,7 @@ class AdminController extends AbstractController
 				$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
 				if(!empty($entity->getMediaVideo()))
 					$video = $parser->getVideoResponsive('<video width="550" height="309" controls><source src="'.$request->getSchemeAndHttpHost().'/'.$entity->getAssetVideoPath().'/'.$entity->getMediaVideo().'" type="video/mp4"></video>');
-				
+
 				$imgProperty = $entity->getPhoto();
 				$text = $entity->getText()."<br>".$video;
 				$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
@@ -714,7 +697,7 @@ class AdminController extends AbstractController
 				$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 				break;
 		}
-		
+
 		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
 		$img = null;
 
@@ -722,7 +705,7 @@ class AdminController extends AbstractController
 			$img = $request->getSchemeAndHttpHost().'/'.$entity->getAssetImagePath().$imgProperty;
 			$img = $baseurl."/".$entity->getAssetImagePath().$imgProperty;
 		}
-		
+
 		$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 
 		$response = $shopify->addPost($blogName, $request->query, $entity->getTitle(), $text, $img, $tags, new \DateTime(), $entity->authorToString());
@@ -731,7 +714,7 @@ class AdminController extends AbstractController
 			$urlStr = $shopify->getArticleUrl($blogName, $response["handle"]);
 			$url = "<br><a href='".$urlStr."' target='_blank'>".$urlStr."</a>";
 			$session->getFlashBag()->add('success', $translator->trans('admin.shopify.Success', [], 'validators').$url);
-			
+
 			switch($entity->getRealClass()) {
 				case "Grimoire":
 					$entity->setSource($urlStr);
@@ -742,10 +725,10 @@ class AdminController extends AbstractController
 		}
 		else
 			$session->getFlashBag()->add('error', $translator->trans('admin.shopify.Error', ["%code%" => $response["http_code"]], 'validators'));
-		
+
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
-	
+
 	// Pinterest
 	public function pinterestAction(Request $request, PinterestAPI $pinterest, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
@@ -753,14 +736,14 @@ class AdminController extends AbstractController
 		$requestParams = $request->request;
 
 		$entity = $em->getRepository(urldecode($path))->find($id);
-		
+
 		$currentURL = $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 		$image = $this->getImageName($request, $entity, false);
-		
+
 		$image = $request->getUriForPath($entity->getAssetImagePath().$image);
 
 		$res = $pinterest->send($entity, $image, $currentURL);
-		
+
 		if($res == "success")
 			$session->getFlashBag()->add('success', $translator->trans('admin.pinterest.Success', [], 'validators'));
 		else
@@ -768,7 +751,7 @@ class AdminController extends AbstractController
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	// Twitter
 	public function twitterAction(Request $request, TwitterAPI $twitterAPI, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
@@ -776,13 +759,13 @@ class AdminController extends AbstractController
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	private function sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator, $socialNetwork = "twitter") {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
-		
+
 		$path = urldecode($path);
-		
+
 		$entity = $em->getRepository($path)->find($id);
 		$image = false;
 		$url = $requestParams->get($socialNetwork."_url", null);
@@ -793,7 +776,6 @@ class AdminController extends AbstractController
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
-		
 		$res = $twitterAPI->sendTweet($requestParams->get($socialNetwork."_area")." ".$currentURL, $entity->getLanguage()->getAbbreviation(), $image);
 
 		if(property_exists($res, "errors")) {
@@ -803,12 +785,12 @@ class AdminController extends AbstractController
 		else
 			$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 	}
-	
+
 	// The Daily Truth
 	public function thedailytruthAction(Request $request, SessionInterface $session, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$entity = $em->getRepository(urldecode($path))->find($id);
 
 		$illustration = [];
@@ -833,10 +815,10 @@ class AdminController extends AbstractController
 			"tags" => json_encode($request->request->get("thedailytruth_tags")),
 			"media" => json_encode($illustration),
 		];
-		
+
 		$api = new TheDailyTruth();
 		$result = $api->addPost($data, $api->getOauth2Token());
-		
+
 		if(!empty($result) and property_exists($result, "identifier")) {
 			$entity->setIdentifier($result->identifier);
 			$em->persist($entity);
@@ -847,12 +829,12 @@ class AdminController extends AbstractController
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	// Wakonda.GURU
 	public function wakondaGuruAction(Request $request, SessionInterface $session, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$entity = $em->getRepository(urldecode($path))->find($id);
 
 		$illustration = null;
@@ -907,21 +889,21 @@ class AdminController extends AbstractController
 
 		$api = new \App\Service\WakondaGuru();
 		$api->addPost($data, $api->getOauth2Token());
-		
+
 		$session->getFlashBag()->add('success', $translator->trans('admin.wakondaguru.Success', [], 'validators'));
-		
+
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	// Muse
 	public function museAction(Request $request, TranslatorInterface $translator, SessionInterface $session, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 
 		$entity = $em->getRepository(urldecode($path))->find($id);
-		
+
 		$api = new \App\Service\Muse();
-		
+
 		$family = null;
 
 		if($request->request->has("image_generated") and !empty($img = $request->request->get("image_generated"))) {
@@ -934,7 +916,7 @@ class AdminController extends AbstractController
 
 		$generator = new \Ausi\SlugGenerator\SlugGenerator;
 		$tagArray = !empty($entity->getTags()) ? array_map(function($e) use($generator, $entity) { return ["identifier" => $generator->generate($e->value)."-".$entity->getLanguage()->getAbbreviation(), "title" => $e->value, "slug" => $generator->generate($e->value), "internationalName" => $generator->generate($e->value)]; }, json_decode($entity->getTags())) : [];
-		
+
 		if($entity->isProverbFamily()) {
 			$family = "proverbs";
 
@@ -951,16 +933,16 @@ class AdminController extends AbstractController
 			$family = "quotes";
 
 			$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
-			
+
 			$sourceIdentifier = null;
-			
+
 			if(!empty($source)) {
 				if(isset($source["isbn13"]) and !empty($isbn13 = $source["isbn13"]))
 					$sourceIdentifier = $isbn13;
 				elseif(isset($source["isbn10"]) and !empty($isbn10 = $source["isbn10"]))
 					$sourceIdentifier = $isbn10;
 			}
-			
+
 			$biography = $entity->getAuthorQuotation();
 
 			$birthDate = explode("-", $biography->getBirthDate());
@@ -1016,14 +998,14 @@ class AdminController extends AbstractController
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	// Tumblr
 	public function tumblrAction(Request $request, TumblrAPI $tumblr, SessionInterface $session, $id, $path, $routeToRedirect)
 	{
 		$session->set("id_tumblr", $id);
 		$session->set("path_tumblr", urldecode($path));
 		$session->set("routeToRedirect_tumblr", $routeToRedirect);
-		
+
 		$tags = $request->request->get('tumblr_tags');
 		$session->set("tumblr_tags", json_encode((empty($tags)) ? [] : $tags));
 
@@ -1031,7 +1013,7 @@ class AdminController extends AbstractController
 
 		exit();
 	}
-	
+
 	public function tumblrPostAction(Request $request, APImgSize $imgSize, APParseHTML $parser, TumblrAPI $tumblr, TranslatorInterface $translator)
 	{
 		$session = $request->getSession();
@@ -1042,21 +1024,21 @@ class AdminController extends AbstractController
 		$routeToRedirect = $session->get("routeToRedirect_tumblr");
 
 		$em = $this->getDoctrine()->getManager();
-		
+
 		$entity = $em->getRepository($path)->find($id);
-		
+
 		$img = null;
 
 		if(method_exists($entity, "getAssetImagePath")) {
 			$img = $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$imgCaption = null;
-			
+
 			if(method_exists($entity, "getPhotoIllustrationCaption"))
 				$imgCaption = "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators')."</b><br>".$imgCaption."</div>";
-			
+
 			$img = $imgSize->adaptImageSize(550, $img);
 		}
-		
+
 		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
 
 		$title = $entity->getTitle();
@@ -1093,25 +1075,25 @@ class AdminController extends AbstractController
 				$body = $parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
 				break;
 		}
-		
+
 		// Fix Tumblr bugs 
 		$body = str_replace(["\r\n", "\n", "\t", "\r"], ' ', $body);
-		
+
 		$tumblr->addPost($title, $body, $tags);
-		
+
 		$session->getFlashBag()->add('success', $translator->trans('admin.tumblr.Success', [], 'validators'));
-		
+
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
-	
+
 	// Facebook
 	public function facebookAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
-		
+
 		$path = urldecode($path);
-		
+
 		$entity = $em->getRepository($path)->find($id);
 		$image = false;
 		$url = $requestParams->get("facebook_url", null);
@@ -1121,56 +1103,56 @@ class AdminController extends AbstractController
 		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
-		
+
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
-	
+
 	// Instagram
 	public function instagramAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
-		
+
 		$path = urldecode($path);
-		
+
 		$entity = $em->getRepository($path)->find($id);
-		
+
 		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
-		
+
 		$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
 
 		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
-		
+
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
-	
+
 	// Mastodon
 	public function mastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
-		$this->sendMastodon($request, $path, $id, $mastodon, $translator, $session, "mastodon_url");
+		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator);
 
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	public function twitterMastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork) {
 		$this->sendTwitter($request, $id, $path, $router, $twitter, $session, $translator, $socialNetwork);
 		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator, $socialNetwork);
 
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
-	
+
 	private function sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator, $fieldName = "mastodon") {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
-		
+
 		$path = urldecode($path);
-		
+
 		$entity = $em->getRepository($path)->find($id);
 		$image = false;
 		$url = $requestParams->get($fieldName."_url", null);
@@ -1180,7 +1162,7 @@ class AdminController extends AbstractController
 		$res = $mastodon->postMessage($currentURL, $request->request->get($fieldName."_area"), $entity->getLanguage()->getAbbreviation());
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
-		
+
 		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
 	}
 	
@@ -1189,7 +1171,7 @@ class AdminController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
-		
+
 		$res = $wikidata->getGenericDatas($code, $language->getAbbreviation());
 
 		return new JsonResponse($res);
@@ -1199,15 +1181,14 @@ class AdminController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$url = $request->query->get("url");
-		
+
 		$urlHost = parse_url($url, PHP_URL_HOST);
-		
+
 		$res = [];
 		
 		if(str_contains($urlHost, "wikipedia") or str_contains($urlHost, "wikidata")) {
 			$urlArray = explode(":", $url);
 			$filename = $urlArray[count($urlArray) - 1];
-
 			$res = $wikidata->getImageInfos($filename);
 		} elseif(str_contains($urlHost, "pixabay")) {
 			$pixabay = new \App\Service\Pixabay();
@@ -1216,7 +1197,7 @@ class AdminController extends AbstractController
 
 		return new JsonResponse($res);
 	}
-	
+
 	private function getImageName(Request $request, $entity, $url = true)
 	{
 		$imageName = null;
@@ -1232,8 +1213,6 @@ class AdminController extends AbstractController
 			case "News":
 				$imageName = $entity->getPhotoIllustrationFilename();
 				break;
-			default:
-				$imageName = null;
 		}
 
 		if(!empty($imageName)) {
