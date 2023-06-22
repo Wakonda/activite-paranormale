@@ -13,6 +13,7 @@ use App\Entity\State;
 use App\Entity\Licence;
 use App\Entity\Language;
 use App\Entity\Theme;
+use App\Entity\FileManagement;
 use App\Form\Type\CartographyAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
@@ -120,8 +121,8 @@ class CartographyAdminController extends AdminGenericController
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('Cartography_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Cartography_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Cartography_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Cartography_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -143,10 +144,10 @@ class CartographyAdminController extends AdminGenericController
 			
 			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
-				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
+			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
 		}
 		else
 		{
@@ -166,13 +167,13 @@ class CartographyAdminController extends AdminGenericController
 
 		foreach($states as $state)
 		{
-			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
+			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName()];
 		}
 		$translateArray['state'] = $stateArray;
 
 		foreach($licences as $licence)
 		{
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
 		}
 		$translateArray['licence'] = $licenceArray;
 
@@ -197,7 +198,17 @@ class CartographyAdminController extends AdminGenericController
 
 		$entity->setState($state);
 
-		$entity->setPhoto($entityToCopy->getPhoto());
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
+		}
 		
 		if(!empty($theme))
 			$entity->setTheme($theme);

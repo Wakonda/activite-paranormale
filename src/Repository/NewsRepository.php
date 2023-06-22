@@ -276,10 +276,10 @@ class NewsRepository extends MappedSuperclassBaseRepository
 	{
 		$nameFilter = '%'.$query.'%';
 		$qb = $this->createQueryBuilder('n');
-				$qb
-				->select("count(n)")
-				->where('n.title LIKE :nameFilter')
-				->setParameter('nameFilter', $nameFilter);
+		$qb->select("count(n)")
+			->where('n.title LIKE :nameFilter')
+			->setParameter('nameFilter', $nameFilter);
+
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
@@ -327,7 +327,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatables($count, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn)
 	{
-		$aColumns = array( 'a.id', 'a.title', 'a.publicationDate', 'a.author', 'a.theme', 'a.archive', 'a.language', 'a.title');
+		$aColumns = ['a.id', 'a.title', 'a.publicationDate', 'a.author', 'a.theme', 'a.archive', 'a.language', 'a.title'];
 		$qb = $this->createQueryBuilder('a');
 			
 		if($count)
@@ -350,7 +350,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.title', 's.title', 'l.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.title', 's.title', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb
@@ -373,7 +373,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = array( 'c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id');
+			$aSearchColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id'];
 			for($i = 0; $i < count($aSearchColumns); $i++)
 			{
 				if(!empty($searchByColumns[$i]))
@@ -419,17 +419,17 @@ class NewsRepository extends MappedSuperclassBaseRepository
 			$qb->groupBy('il.realNameFile')->orderBy("c.id", "DESC")->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{
 			$photo = new \StdClass();
 			$photo->photo = $entity->getIllustration()->getTitleFile();
 			$photo->path = $entity->getAssetImagePath();
-			
+
 			$res[] = $photo;
 		}
-		
+
 		return $res;
 	}
 

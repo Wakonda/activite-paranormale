@@ -289,7 +289,7 @@ class AdminController extends AbstractController
 					$text = $entity->getText();
 					break;
 				case "Cartography":
-					$imgProperty = $entity->getPhoto();
+					$imgProperty = $entity->getPhotoIllustrationFilename();
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$text = $entity->getText();
 					$text .= "<b>".$translator->trans('cartography.admin.LinkGMaps', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span><a href='".$entity->getLinkGMaps()."'>".(new FunctionsLibrary())->cleanUrl($entity->getLinkGMaps())."</a></span>";
