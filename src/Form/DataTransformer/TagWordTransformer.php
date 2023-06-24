@@ -36,21 +36,21 @@ class TagWordTransformer implements DataTransformerInterface
 			return null;
 
 		$className = array_reverse(explode("\\", get_class($entity)));
-		$tags = $this->entityManager->getRepository(Tags::class)->findBy(array('idClass' => $entity->getId(), 'nameClass' => $className));
+		$tags = $this->entityManager->getRepository(Tags::class)->findBy(['idClass' => $entity->getId(), 'nameClass' => $className]);
 		
 		$tagArray = [];
 		
 		if($request->query->has("fromId")) {
 			$entityToCopy = $this->entityManager->getRepository(get_class($entity))->find($request->query->get("fromId"));
 			
-			$tags = $this->entityManager->getRepository(Tags::class)->findBy(array('idClass' => $entityToCopy->getId(), 'nameClass' => $className));
+			$tags = $this->entityManager->getRepository(Tags::class)->findBy(['idClass' => $entityToCopy->getId(), 'nameClass' => $className]);
 			$tw = [];
 
 			foreach($tags as $tag) {
 				if(empty($tag->getTagWord()->getInternationalName()))
 					continue;
 
-				$tagWord = $this->entityManager->getRepository(\App\Entity\TagWord::class)->findOneBy(array('internationalName' => $tag->getTagWord()->getInternationalName(), 'language' => $entity->getLanguage()));
+				$tagWord = $this->entityManager->getRepository(\App\Entity\TagWord::class)->findOneBy(['internationalName' => $tag->getTagWord()->getInternationalName(), 'language' => $entity->getLanguage()]);
 
 				if(empty($tagWord))
 					continue;

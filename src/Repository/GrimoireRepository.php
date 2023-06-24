@@ -35,7 +35,7 @@ class GrimoireRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder('o');
 
-		$aColumns = array('o.photo','o.title');
+		$aColumns = ['o.photo','o.title'];
 
 		$qb->join('o.language', 'l')
 			->join('o.surTheme', 'st')
@@ -89,7 +89,7 @@ class GrimoireRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'st.title', 's.title', 'l.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'st.title', 's.title', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -171,7 +171,7 @@ class GrimoireRepository extends EntityRepository
 
 		$nextEntity = $qb->getQuery()->getOneOrNullResult();
 
-		return array("previous" => $previousEntity, "next" => $nextEntity);
+		return ["previous" => $previousEntity, "next" => $nextEntity];
 	}
 
 	public function countForDoublons($entity)
@@ -288,7 +288,7 @@ class GrimoireRepository extends EntityRepository
 			$qb->groupBy('c.photo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{
@@ -298,7 +298,7 @@ class GrimoireRepository extends EntityRepository
 			
 			$res[] = $photo;
 		}
-		
+
 		return $res;
 	}
 	
@@ -340,7 +340,7 @@ class GrimoireRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder('o');
 
-		$aColumns = array('o.title', 'o.publicationDate');
+		$aColumns = ['o.title', 'o.publicationDate'];
 
 		$qb->join('o.language', 'l')
 			->join('o.state', 's')
@@ -385,7 +385,7 @@ class GrimoireRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate');
+		$aColumns = ['l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
 		   ->join("c.illustration", "il")
@@ -400,7 +400,7 @@ class GrimoireRepository extends EntityRepository
 		if($language == "all")
 		{
 			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
+			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{
 				$whereIn[] = ':'.$currentLanguages[$i];

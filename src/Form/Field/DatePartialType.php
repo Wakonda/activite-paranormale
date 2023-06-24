@@ -69,9 +69,9 @@ class DatePartialType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'error_bubbling' => false,
 			'allow_empty_year' => false
-		));
+		]);
 	}
 }

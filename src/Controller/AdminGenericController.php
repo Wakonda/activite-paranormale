@@ -337,7 +337,7 @@ abstract class AdminGenericController extends AbstractController
 				$existingFile = null;
 				if(isset($illustration['selectorFile']) and ($f = $form->get($fieldName)->get($illustration['selectorFile'])->getData()) != null)
 					$existingFile = $f;
-				
+
 				if(filter_var($existingFile, FILTER_VALIDATE_URL)) {
 					$html = $this->parser->getContentURL(urldecode($existingFile));
 					$pi = pathinfo($existingFile);

@@ -217,7 +217,7 @@ class CartographyAdminController extends AdminGenericController
 		$entity->setCoordYMap($entityToCopy->getCoordYMap());
 		$entity->setLinkGMaps($entityToCopy->getLinkGMaps());
 		$entity->setWikidata($entityToCopy->getWikidata());
-
+		$entity->setSource($entityToCopy->getSource());
 
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
 			$wikidata = new \App\Service\Wikidata($em);

@@ -42,7 +42,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'c.title', 'c.title');
+		$aColumns = ['c.title', 'c.title'];
 
 		$qb->join('c.language', 'l')
 		   ->where('l.abbreviation = :locale')
@@ -64,10 +64,10 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			   ->andWhere('co.internationalName = :abbreviation')
 			   ->setParameter('abbreviation', $country->getInternationalName());
 		}
-		
+
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
-		
+
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
@@ -96,7 +96,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $toComplete = null, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'l.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -106,14 +106,14 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		{
 			$search = "%".$sSearch."%";
 			$orWhere = [];
-			
+
 			foreach($aColumns as $column)
 				$orWhere[] = $column." LIKE :search";
 
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-		
+
 		if(!empty($toComplete)) {
 			switch($toComplete) {
 				case "textToComplete":
@@ -154,13 +154,13 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->innerjoin("b.language", "l")
 		   ->andWhere("l.abbreviation = :abbreviation")
 		   ->setParameter("abbreviation", $entity->getLanguage()->getAbbreviation());
-		   
+
 		if($entity->getId() != null)
 		{
 		   $qb->andWhere("b.id != :id")
 		      ->setParameter("id", $entity->getId());
 		}
-		
+
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
@@ -172,7 +172,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->setParameter("locale", $locale)
 		   ->andWhere("b.internationalName = :internationalName")
 		   ->setParameter("internationalName", $entity->getInternationalName());
-		   
+
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 	
@@ -180,7 +180,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 	{
 		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
-		
+
 		$qb = $this->createQueryBuilder('c');
 
 		$qb ->join('c.language', 'l')
@@ -203,7 +203,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 		$dayEnd = str_pad($endDate->format("d"), 2, "0", STR_PAD_LEFT);
 		$monthEnd = str_pad($endDate->format("m"), 2, "0", STR_PAD_LEFT);
-		
+
 		$qb = $this->createQueryBuilder('c');
 
 		$qb ->join('c.language', 'l')
@@ -219,7 +219,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getResult();
 	}
-	
+
 	public function getAllEventsByMonthOrYear($year, $month, $language)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -240,7 +240,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			   ->orderBy("IF(REGEXP(c.birthDate, :regexYearMonthDay) = true, EXTRACT(YEAR FROM c.birthDate), IF(REGEXP(c.birthDate, :regexYearMonth) = true, EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')), c.birthDate))", "DESC")
 			   ->addOrderBy("IF(REGEXP(c.deathDate, :regexYearMonthDay) = true, EXTRACT(YEAR FROM c.deathDate), IF(REGEXP(c.deathDate, :regexYearMonth) = true, EXTRACT(YEAR FROM CONCAT(c.deathDate, '-01')), c.deathDate))", "DESC");
 		}
-		
+
 		$qb->setParameter("regexYearMonth", '^[0-9]{4}-[0-9]{2}$')
 		   ->setParameter("regexYearMonthDay", '^[0-9]{4}-[0-9]{2}-[0-9]{2}$')
 		   ->setParameter("year", $year);
@@ -263,7 +263,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 	public function getBiographiesByLanguagesAndInternationalName($languages, $internationalName)
 	{
 		$qb = $this->createQueryBuilder('bi');
-		
+
 		$qb->select('l.abbreviation AS abbr, bi.title AS title, l.logo AS logo, bi.id AS id')
 		   ->leftjoin('bi.language', 'l')
 		   ->where('bi.internationalName = :internationalName')
@@ -295,7 +295,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			$qb->groupBy('il.realNameFile')->orderBy("c.id", "DESC")->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{
@@ -313,15 +313,15 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'il.titleFile', 'c.title');
-		
+		$aColumns = ['l.abbreviation', 'il.titleFile', 'c.title'];
+
 		$qb->join('c.language', 'l')
 		   ->leftjoin("c.illustration", "il");
 
 		if($language == "all")
 		{
 			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
+			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{
 				$whereIn[] = ':'.$currentLanguages[$i];
@@ -378,7 +378,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			   ->where('la.abbreviation = :locale')
 			   ->setParameter('locale', $locale);
 		}
-		   
+
 		if(!empty($query))
 		{
 			$query = is_array($query) ? "%".$query[0]."%" : "%".$query."%";
@@ -386,10 +386,10 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere("b.title LIKE :query")
 			   ->setParameter("query", $query);
 		}
-		
+
 		$qb->andWhere("b.kind = :person")
 		   ->setParameter("person", Biography::PERSON);
-		
+
 		$qb->orderBy("b.title", "ASC")
 		   ->setMaxResults(15);
 
@@ -402,7 +402,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			return [];
 
 		$qb = $this->createQueryBuilder("b");
-		
+
 		$qb->select("MAX(b.title) AS title")
 		   ->addSelect("MAX(b.birthDate) AS birthDate")
 		   ->addSelect("MAX(b.deathDate) AS deathDate")
@@ -416,11 +416,11 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->leftjoin("b.illustration", "i")
 		   ->leftjoin("b.nationality", "n")
 		   ->groupBy("b.internationalName");
-		   
+
 		if(!empty($title))
 			$qb->where("b.title = :title")
 		       ->setParameter("title", $title);
-		   
+
 		if(!empty($wikidata))
 			$qb->orWhere("b.wikidata = :wikidata")
 		       ->setParameter("wikidata", $wikidata)

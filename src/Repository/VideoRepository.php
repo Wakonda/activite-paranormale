@@ -58,8 +58,8 @@ class VideoRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('o');
 
-		$aColumns = array('o.photo','o.title', 'o.publicationDate');
-		
+		$aColumns = ['o.photo','o.title', 'o.publicationDate'];
+
 		$qb = $this->createQueryBuilder('o');
 		$qb->join('o.language', 'c')
 		   ->join('o.theme', 't')
@@ -136,7 +136,7 @@ class VideoRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.platform', 's.title', 'l.title', 't.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.platform', 's.title', 'l.title', 't.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -193,9 +193,9 @@ class VideoRepository extends MappedSuperclassBaseRepository
 
 		$nextEntity = $qb->getQuery()->getOneOrNullResult();
 
-		return array("previous" => $previousEntity, "next" => $nextEntity);
+		return ["previous" => $previousEntity, "next" => $nextEntity];
 	}
-	
+
 	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -217,17 +217,17 @@ class VideoRepository extends MappedSuperclassBaseRepository
 			$qb->groupBy('c.photo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
-		
+		$res = [];
+
 		foreach($entities as $entity)
 		{
 			$photo = new \StdClass();
 			$photo->photo = $entity->getPhoto();
 			$photo->path = $entity->getAssetImagePath();
-			
+
 			$res[] = $photo;
 		}
-		
+
 		return $res;
 	}
 
@@ -235,21 +235,21 @@ class VideoRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'c.photo', 'c.title', 'c.publicationDate');
+		$aColumns = ['l.abbreviation', 'c.photo', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
 		   ->leftjoin('c.state', 's')
 		   ->andWhere('s.displayState = 1')
 		   ->andWhere("c.archive = false");
-		   
+
 		if(!empty($theme))
 		    $qb->andWhere('c.theme = :themeId')
 		       ->setParameter("themeId", $theme);
-	
+
 		if($language == "all")
 		{
 			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
+			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{
 				$whereIn[] = ':'.$currentLanguages[$i];
@@ -263,7 +263,7 @@ class VideoRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere('l.abbreviation = :language');
 			$qb->setParameter('language', $language);
 		}
-		
+
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 		

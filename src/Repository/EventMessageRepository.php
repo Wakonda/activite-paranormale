@@ -125,7 +125,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'l.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -178,7 +178,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 	{	
 		$qb = $this->createQueryBuilder('o');
 
-		$aColumns = array('o.photo','o.title', 'o.publicationDate');
+		$aColumns = ['o.photo','o.title', 'o.publicationDate'];
 
 		$qb->join('o.language', 'c')
 		   ->join('o.theme', 't')
@@ -215,7 +215,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'c.photo', 'c.title', 'c.publicationDate');
+		$aColumns = ['l.abbreviation', 'c.photo', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
 		   ->leftjoin('c.state', 's')
@@ -229,7 +229,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 		if($language == "all")
 		{
 			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
+			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{
 				$whereIn[] = ':'.$currentLanguages[$i];

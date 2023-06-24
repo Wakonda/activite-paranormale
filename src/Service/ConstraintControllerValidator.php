@@ -49,7 +49,6 @@
 
 		public function fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $illustrations = [])
 		{
-			// 
 			if(!empty($illustrations))
 			{
 				foreach($illustrations as $illustration)

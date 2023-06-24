@@ -161,9 +161,9 @@ class NewsRepository extends MappedSuperclassBaseRepository
 
 		$nextEntity = $qb->getQuery()->getOneOrNullResult();
 
-		return array("previous" => $previousEntity, "next" => $nextEntity);
+		return ["previous" => $previousEntity, "next" => $nextEntity];
 	}
-	
+
 	public function findByDisplayState($id)
 	{
 		$qb = $this->createQueryBuilder("n");
@@ -171,7 +171,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		   ->where("s.displayState = 1")
 		   ->andWhere("n.id = :id")
 		   ->setParameter("id", $id);
-		
+
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
@@ -232,7 +232,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		   ->andWhere('s.displayState = 1');
 
 		$currentLanguages = $this->currentLanguages();
-		$whereIn = array();
+		$whereIn = [];
 		for($i = 0; $i < count($currentLanguages); $i++)
 		{
 			$whereIn[] = ':'.$currentLanguages[$i];
@@ -437,7 +437,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate');
+		$aColumns = ['l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
 		   ->join('c.illustration', 'il')
@@ -452,7 +452,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		if($language == "all")
 		{
 			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
+			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{
 				$whereIn[] = ':'.$currentLanguages[$i];

@@ -45,7 +45,7 @@ class DateTimePartialType extends AbstractType
 			$day = $form->get('day')->getData();
 			$hour = $form->get('hour')->getData();
 			$minute = $form->get('minute')->getData();
-// dd($hour);
+
 			if(empty($year) and (!empty($month) or !empty($day)) and !$options["allow_empty_year"]) {
 				$form->get('year')->addError(new FormError($notBlank->message));
 			}
@@ -76,9 +76,9 @@ class DateTimePartialType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'error_bubbling' => false,
 			'allow_empty_year' => false
-		));
+		]);
 	}
 }

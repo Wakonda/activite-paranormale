@@ -46,7 +46,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('o');
 
-		$aColumns = array('il.titleFile','o.title', 'o.publicationDate');
+		$aColumns = ['il.titleFile','o.title', 'o.publicationDate'];
 
 		$qb->join('o.language', 'c')
 		   ->join('o.theme', 't')
@@ -111,7 +111,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.publicationDate', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -120,7 +120,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 		{
 			$search = "%".$sSearch."%";
 			$orWhere = [];
-			
+
 			foreach($aColumns as $column)
 				$orWhere[] = $column." LIKE :search";
 
@@ -161,17 +161,17 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 			$qb->groupBy('il.realNameFile')->orderBy("c.id", "DESC")->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
-		
+		$res = [];
+
 		foreach($entities as $entity)
 		{
 			$photo = new \StdClass();
 			$photo->photo = $entity->getIllustration()->getTitleFile();
 			$photo->path = $entity->getAssetImagePath();
-			
+
 			$res[] = $photo;
 		}
-		
+
 		return $res;
 	}
 
@@ -202,7 +202,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 		$nextEntity = $qb->getQuery()->getOneOrNullResult();
 
-		return array("previous" => $previousEntity, "next" => $nextEntity);
+		return ["previous" => $previousEntity, "next" => $nextEntity];
 	}
 
 	// For mobile
@@ -253,14 +253,14 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate');
+		$aColumns = ['l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
 		   ->join("c.illustration", "il")
 		   ->leftjoin('c.state', 's')
 		   ->andWhere('s.displayState = 1')
 		   ->andWhere("c.archive = false");
-		   
+
 		if(!empty($theme))
 		    $qb->andWhere('c.theme = :themeId')
 		       ->setParameter("themeId", $theme);
@@ -268,7 +268,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 		if($language == "all")
 		{
 			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
+			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
 			{
 				$whereIn[] = ':'.$currentLanguages[$i];
@@ -282,10 +282,10 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere('l.abbreviation = :language');
 			$qb->setParameter('language', $language);
 		}
-		
+
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
-		
+
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";

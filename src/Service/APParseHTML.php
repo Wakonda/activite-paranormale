@@ -229,6 +229,10 @@
 	
 		public function getContentURL($url, $proxy = null)
 		{
+			$urlArray = explode("/", $url);
+			$urlArray[count($urlArray) - 1] = urlencode(end($urlArray));
+			$url = implode("/", $urlArray);
+			
 			$proxyArray = explode(":", $proxy);
 			$curl = curl_init();
 			$timeout = 30;
@@ -248,7 +252,7 @@
 
 			$str = curl_exec($curl);
 			curl_close($curl);
-			
+
 			return $str;
 		}
 	}

@@ -5,9 +5,6 @@ namespace App\Form\Field;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class StoreEditType extends AbstractType
@@ -25,9 +22,9 @@ class StoreEditType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'error_bubbling' => false,
 			"fields" => []
-		));
+		]);
 	}
 }

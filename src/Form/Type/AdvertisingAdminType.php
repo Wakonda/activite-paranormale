@@ -7,7 +7,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -23,15 +22,15 @@ class AdvertisingAdminType extends AbstractType
 		$locale = $options["locale"];
 
         $builder
-            ->add('title', TextType::class, array(
+            ->add('title', TextType::class, [
                 'constraints' => new NotBlank(), "label" => "admin.advertising.Title"
-            ))
-			->add('text', TextareaType::class, array(
-                'required' => false, "label" => "admin.advertising.Text", 'attr' => array('class' => 'redactor')
-            ))
-			->add('width', IntegerType::class, array("label" => "admin.advertising.Width", "required" => true, "constraints" => new NotBlank()))
-			->add('height', IntegerType::class, array("label" => "admin.advertising.Height", "required" => true, "constraints" => new NotBlank()))
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
+            ])
+			->add('text', TextareaType::class, [
+                'required' => false, "label" => "admin.advertising.Text", 'attr' => ['class' => 'redactor']
+            ])
+			->add('width', IntegerType::class, ["label" => "admin.advertising.Width", "required" => true, "constraints" => new NotBlank()])
+			->add('height', IntegerType::class, ["label" => "admin.advertising.Height", "required" => true, "constraints" => new NotBlank()])
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language', 
 					'choice_label' => function ($choice, $key, $value) {
 						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 					},
@@ -41,8 +40,8 @@ class AdvertisingAdminType extends AbstractType
 						return $er->createQueryBuilder('u')
 								  ->orderBy('u.title', 'ASC');
 					},
-					'constraints' => array(new NotBlank())
-			));
+					'constraints' => [new NotBlank()]
+			]);
     }
 
 	/**
@@ -50,10 +49,10 @@ class AdvertisingAdminType extends AbstractType
 	 */
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			"data_class" => Advertising::class,
 			"locale" => null
-		));
+		]);
 	}
 	
     public function getBlockPrefix()
