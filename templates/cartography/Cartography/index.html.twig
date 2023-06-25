@@ -23,7 +23,6 @@
 	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
-	
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
@@ -38,11 +37,6 @@
 			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 				attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 			}).addTo(map);
-
-			$(document).on("click", ".location_coordinates", function() {
-				map.setView(markersArray[$(this).attr("id")].getLatLng(), 15);
-				markersArray[$(this).attr("id")].openPopup();
-			});
 
 			map.addControl(new L.Control.Fullscreen());
 
@@ -66,26 +60,34 @@
 						d.form = $("#{{ form.vars.id }}").serialize()
 					}
 				},
-				"drawCallback": function( settings ) {
-					 map.eachLayer((layer) => {
-						 if(layer['_latlng']!=undefined)
-							 layer.remove();
-					 });
+				"drawCallback": function(settings) {
+					map.eachLayer((layer) => {
+						if(layer['_latlng'] != undefined)
+							layer.remove();
+					});
+
 					for(const data in settings.json.aaData) {
 						let item = settings.json.aaData[data];
 
 						markersArray[item.id] = L.marker([item.latitud, item.longitud]).addTo(map)
 						.bindPopup(item.infoWindow, { maxWidth: 500 });
 					}
+
+					document.getElementById("count_document").innerHTML = settings.json.iTotalRecords;
+
+					document.querySelectorAll(".location_coordinates").forEach(lc => {
+						lc.addEventListener('click', (e) => {
+							let id = e.target.getAttribute("id");
+							map.setView(markersArray[id].getLatLng(), 15);
+							markersArray[id].openPopup();
+						});
+					});
 				},
 				"preDrawCallback": function( settings ) {
 					document.getElementById("count_document").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
-				},
-				"drawCallback": function( settings ) {
-					document.getElementById("count_document").innerHTML = settings.json.iTotalRecords;
 				}
 			});
-		
+
 			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
 				e.preventDefault();
 				oTable.ajax.reload();
