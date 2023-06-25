@@ -106,6 +106,7 @@ biography:
         Title: "Titre"
         Occupation: "Rôle"
         Region: "Zone géographique"
+        Nationality: "Nationalité"
         Validate: "Valider"
         NumberOfBiographies: "Nombre de biographies : "
     link:

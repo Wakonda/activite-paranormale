@@ -767,7 +767,7 @@
 
 		var currentValue{{ form.vars.id }} = $("#{{ form.vars.id }}").val();
 
-		if(currentValue{{ form.vars.id }} !== "") {
+		if(currentValue{{ form.vars.id }} !== "" && currentValue{{ form.vars.id }} !== "undefined") {
 			valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
 
 			$("#{{ form.vars.id}}_values").html("");
@@ -787,7 +787,7 @@
 				var valuesToSave{{ form.vars.id }} = [];
 				var currentValue{{ form.vars.id }} = $("#{{ form.vars.id }}").val();
 
-				if(currentValue{{ form.vars.id }} !== "") {
+				if(currentValue{{ form.vars.id }} !== "" && currentValue{{ form.vars.id }} !== "undefined") {
 					valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
 				}
 

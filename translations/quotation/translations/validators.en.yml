@@ -106,6 +106,7 @@ biography:
         Title: "Title"
         Occupation: "Occupation"
         Region: "Region"
+        Nationality: "Nationality"
         Validate: "Validate"
         NumberOfBiographies: "Number of biographies: "
     link:
