@@ -580,7 +580,7 @@ class User implements UserInterface, \Serializable
         return $this->country;
     }
 
-    public function setCountry(Region $country)
+    public function setCountry(?Region $country)
     {
         $this->country = $country;
     }	
