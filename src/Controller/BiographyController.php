@@ -35,15 +35,15 @@ class BiographyController extends AbstractController
 		$documents = $em->getRepository(Document::class)->getDocumentsByBiographyInternationalName($entity->getInternationalName());
 		$books = $em->getRepository(Book::class)->getBooksByBiographyInternationalName($entity->getInternationalName());
 		$bookEditions = $em->getRepository(BookEditionBiography::class)->getBookEditionByBiography($entity);
-		$quotationsByAuthor = $em->getRepository(Quotation::class)->findBy(array('authorQuotation' => $entity));
+		$quotationsByAuthor = $em->getRepository(Quotation::class)->findBy(['authorQuotation' => $entity]);
 
-		return $this->render('quotation/Quotation/biography.html.twig', array(
+		return $this->render('quotation/Quotation/biography.html.twig', [
 			'entity' => $entity,
 			'quotationsByAuthor' => $quotationsByAuthor,
 			'documents' => $documents,
 			'books' => $books,
 			'bookEditions' => $bookEditions
-		));	
+		]);	
 	}
 
 	public function listDatatablesAction(Request $request, APImgSize $imgSize)
@@ -72,20 +72,20 @@ class BiographyController extends AbstractController
         $entities = $em->getRepository(Biography::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData());
 		$iTotal = $em->getRepository(Biography::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData(), true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
-		
+		];
+
 		foreach($entities as $entity)
 		{
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(250, $img);
 
 			$row = [];
-			$row[] = '<a href="'.$this->generateUrl("Biography_Show", array('id' => $entity->getId(), 'title' => $entity->getTitle())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'title' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';
 
 			$output['aaData'][] = $row;
@@ -101,7 +101,7 @@ class BiographyController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
-		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
+		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$title = [];
 
@@ -109,10 +109,10 @@ class BiographyController extends AbstractController
 			$title[] = $currentLanguage->getTitle();
 
 
-		return $this->render('quotation/Biography/world.html.twig', array(
+		return $this->render('quotation/Biography/world.html.twig', [
 			'flags' => $flags,
 			'title' => implode(" - ", $title)
-		));
+		]);
 	}
 
 	public function worldDatatablesAction(Request $request, APImgSize $imgSize, $language)
@@ -137,12 +137,12 @@ class BiographyController extends AbstractController
         $entities = $em->getRepository(Biography::class)->getDatatablesForWorldIndex($language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Biography::class)->getDatatablesForWorldIndex($language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 		
 		foreach($entities as $entity)
 		{
@@ -150,7 +150,7 @@ class BiographyController extends AbstractController
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';
-			$row[] = '<a href="'.$this->generateUrl("Biography_Show", array('id' => $entity->getId(), 'title' => $entity->getTitle())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'title' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
 
 			$output['aaData'][] = $row;
 		}
