@@ -1,10 +1,13 @@
 Activité-Paranormale
 ========================
-**Activité-Paranormale** is a website written in PHP 7+ (Symfony 5+). Currently, his goal is to build a complete library about all paranormal phenomena. We published everyday news, photos, videos, books, movies, ... .
+**Activité-Paranormale** is a website written in PHP 8+ (Symfony 5+). Currently, his goal is to build a complete library about all paranormal phenomena. We published everyday news, photos, videos, books, movies, ... .
 
 <p align="center">
   <img src="/public/extended/photo/document-abstract.jpg" alt="Logo">
 </p>
+
+[![Stand With Ukraine](https://raw.githubusercontent.com/vshymanskyy/StandWithUkraine/main/banner2-direct.svg)](https://stand-with-ukraine.pp.ua)
+
 
 1) Installing the Standard Edition
 ----------------------------------
