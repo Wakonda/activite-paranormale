@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/regular.min.css') }}" type="text/css" media="screen" />
 		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/solid.min.css') }}" type="text/css" media="screen" />
 		<script src="{{ asset('extended/js/jquery.js') }}"></script>
+		<script src="{{ asset('extended/css/bootstrap/bootstrap/js/bootstrap.min.js') }}"></script>
 	
 		{% if is_mobile() or is_tablet() %}
 			<script src="{{ asset('extended/js/pdf.js') }}"></script>
@@ -78,10 +79,10 @@
 			{% if is_mobile() or is_tablet() %}
 				function resizeIframe()
 				{
-					var heightBody = $("body").height();
-					var heightfooter = $("#footer").height();
-					var heightHeader = $("#header").height();
-					
+					var heightBody = document.querySelector("body").clientHeight;
+					var heightfooter = document.querySelector("#footer").clientHeight;
+					var heightHeader = document.querySelector("#header").clientHeight;
+
 					var heightContainer = 0;
 					{% if is_mobile() or is_tablet() %}
 						var heightContainer = $("#pdf-canvas-action").height();
@@ -109,8 +110,6 @@
 
 					function renderPage(pageNumber) {
 						pdf.getPage(pageNumber).then(function(page) {
-							console.log('Page loaded');
-
 							var viewport = page.getViewport({scale: pdfScale});
 
 							// Prepare canvas using PDF page dimensions
@@ -126,7 +125,6 @@
 							};
 							var renderTask = page.render(renderContext);
 							renderTask.promise.then(function () {
-							console.log('Page rendered');
 							resizeIframe();
 							totalPage = pdf._pdfInfo.numPages
 
@@ -136,7 +134,6 @@
 							pageRendering = false;
 	
 							if (pageNumPending !== null) {
-								// New page rendering is pending
 								renderPage(pageNumPending);
 								pageNumPending = null;
 							}
@@ -227,9 +224,9 @@
 				$(function() {
 					function resizeIframe()
 					{
-						var heightBody = $("body").height();
-						var heightfooter = $("#footer").height();
-						var heightHeader = $("#header").height();
+						var heightBody = document.querySelector("body").clientHeight;
+						var heightfooter = document.querySelector("#footer").clientHeight;
+						var heightHeader = document.querySelector("#header").clientHeight;
 						var paddingTopFooter = parseInt($("#footer").css("paddingTop")) + parseInt($("#footer").css("marginTop"));
 						var paddingTopHeader = parseInt($("#header").css("paddingBottom")) + parseInt($("#header").css("paddingTop"));
 
