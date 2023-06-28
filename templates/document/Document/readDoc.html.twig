@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ app.request.locale }}">
 	<head>
 		<title>{{ entity.title }}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
 		<link rel="stylesheet" href="{{ asset('extended/css/bootstrap/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="screen" />
 		<link rel="stylesheet" href="{{ asset('extended/css/style_display_pdf.css') }}" type="text/css" media="screen" />
@@ -74,7 +75,7 @@
 		</div>
 		
 		<script>
-			{% if is_mobile() or is_tablet() %}#}
+			{% if is_mobile() or is_tablet() %}
 				function resizeIframe()
 				{
 					var heightBody = $("body").height();
@@ -94,7 +95,7 @@
 				var url = '{{ asset(entity.getAssetImagePath()) }}{{ entity.pdfDoc }}';
 				var pdfjsLib = window['pdfjs-dist/build/pdf'];
 
-				pdfjsLib.GlobalWorkerOptions.workerSrc = '//mozilla.github.io/pdf.js/build/pdf.worker.js';
+				pdfjsLib.GlobalWorkerOptions.workerSrc = "{{ asset('extended/js/pdf.worker.min.js') }}";
 
 				var loadingTask = pdfjsLib.getDocument(url);
 				loadingTask.promise.then(function(pdf) {
