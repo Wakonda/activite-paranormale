@@ -11,8 +11,12 @@ class IndexController extends AbstractController
 {
     public function indexAction(Request $request, TranslatorInterface $translator, SessionInterface $session)
     {
-		if($request->query->has("v") and !empty($v = $request->query->get("v")))
-			$session->set('v', $v);
+		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
+			$session->set('v', "v3");
+		else {
+			if($request->query->has("v") and !empty($v = $request->query->get("v")))
+				$session->set('v', $v);
+		}
 
         return $this->render('index/Index/index.html.twig');
     }

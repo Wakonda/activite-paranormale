@@ -43,15 +43,17 @@
 {% block APBlog_body %}
 	{{ render(controller('App\\Controller\\NewsController::mainSliderAction', { 'lang' : app.request.locale})) }}
 	<br>
-	{% if is_mobile() == true and app.session.get('v') == 'v2' %}
-		<div class="text-center">
+	{% if is_mobile() == true %}
+		<div class="text-center mb-3">
 			<a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" alt=""><img src="{{ asset('extended/photo/mobile-version.png') }}" alt="Mobile version" width="30" class="align-middle"> {{ "index.main.GoWebsiteMobile"|trans([], "validators") }}</a>
 			<br>
 		</div>
 	{% endif %}
-	
-	{% include "index/Index/version.html.twig" %}
-	
+
+	{% if app.session.get("v") == "v2" or (app.session.get("v") == "v3" and is_mobile() == false and is_tablet() == false) %}
+		{% include "index/Index/version.html.twig" %}
+	{% endif %}
+
 	{% set bannerArray = ""|random_banner %}
 
 	{% if bannerArray is not null %}
