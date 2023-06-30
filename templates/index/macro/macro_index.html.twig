@@ -24,13 +24,14 @@
 					</a>
 					</span>
 				</div>
+
 				<div id="collapseBlogger" class="collapse" aria-labelledby="headingBlogger"  data-parent="#accordionParentBlogger">
 					<div class="card-body">
 						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
 							{% set tags = blogger_tags(type) %}
 							<select multiple name="blogger_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
-									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% elseif tag == defaultValue %}selected{% endif %}>{{ tag }}</option>
+									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% elseif slug(tag) == slug(defaultValue) %}selected{% endif %}>{{ tag }}</option>
 								{% endfor %}
 							</select>
 							<br><br>
