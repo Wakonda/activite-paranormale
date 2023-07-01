@@ -74,9 +74,9 @@
 					</td>
 				</tr>
 				{% else %}
-						{% for biography in biographies %}
-					{% set actors = actors|merge([biography]) %}
-						{% endfor %}
+					{% for biography in biographies %}
+						{% set actors = actors|merge([biography]) %}
+					{% endfor %}
 				{% endif %}
 			{% endfor %}
 		</tbody>
