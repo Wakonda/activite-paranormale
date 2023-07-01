@@ -12,6 +12,10 @@
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_admin_js(form.backCover.vars.id) }}
 	{{ macro_index.select2_autocomplete() }}
+	
+	<script>
+		$("#{{ form.publisher.vars.id }}").select2();
+	</script>
 {% endblock %}
 
 {% block tbody_admin_table %}
