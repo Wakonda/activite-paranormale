@@ -11,6 +11,7 @@
 	<h3>{{ "televisionSerie.read.Datasheet"|trans([], "validators") }}</h3>
 	
 	{% set biographyDatas = televisionserie_biographies_by_occupation(entity) %}
+	{% set actors = [] %}
 
 	<table class="table">
 		<tbody>
@@ -34,6 +35,10 @@
 						{{ (persons|join(", "))|raw }}
 					</td>
 				</tr>
+				{% else %}
+					{% for biography in biographies %}
+						{% set actors = actors|merge([biography]) %}
+					{% endfor %}
 				{% endif %}
 			{% endfor %}
 		</tbody>
@@ -47,7 +52,7 @@
 	<h3 class="mt-2">{{ "televisionSerie.read.Text"|trans([], "validators") }}</h3>
 	{{ entity.text|raw }}
 	
-	{% if biographyDatas|length > 0 %}
+	{% if actors|length > 0 %}
 	<h3>{{ "televisionSerie.read.Cast"|trans([], "validators") }}</h3>
 	<table class="table">
 		<thead>
@@ -57,7 +62,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			{% for occupation, biographies in biographyDatas %}
+			{% for biography in actors %}
 				{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
 					{% for biography in biographies %}
 						<tr>
