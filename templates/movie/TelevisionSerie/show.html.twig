@@ -63,14 +63,10 @@
 		</thead>
 		<tbody>
 			{% for biography in actors %}
-				{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
-					{% for biography in biographies %}
-						<tr>
-							<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
-							<td>{{ biography.role }}</td>
-						</tr>
-					{% endfor %}
-				{% endif %}
+					<tr>
+						<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+						<td>{{ biography.role }}</td>
+					</tr>
 			{% endfor %}
 		</tbody>
 	</table>
