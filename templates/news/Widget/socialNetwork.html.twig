@@ -1,41 +1,39 @@
-<table id="social_network">
-	<tr>
-		{% if entity.getPdfVersionRoute() is defined %}
-		<td class="reseauSociaux d-none d-sm-inline">
-			<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select" /></a>
-		</td>
-		{% endif %}
-		<td class="reseauSociaux d-none d-sm-inline">
-			<span id="print_page" class="social_network_to_select"><img src="{{ asset('extended/photo/print.svg') }}" width="40" alt="Print version" /></span>
-			<script>
-				document.getElementById("print_page").addEventListener("click", (e) => {
-					window.print();
-				});
-			</script>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share facebook share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Facebook"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share twitter share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Twitter"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share whatsapp share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="WhatsApp"><i class="fab fa-whatsapp fa-lg fa-fw"></i></a>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share linkedin share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="LinkedIn"><i class="fab fa-linkedin-in fa-lg fa-fw"></i></a>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share flipboard share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Flipboard"><i class="fab fa-flipboard fa-lg fa-fw"></i></a>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-toggle="modal" data-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
-		</td>
-		<td class="reseauSociaux">
-			<a href="#" class="btn social-share weibo share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Sina Weibo"><i class="fab fa-weibo fa-lg fa-fw"></i></a>
-		</td>
-	</tr>
-</table>
+<div id="social_network" class="d-flex justify-content-between justify-content-md-start flex-wrap">
+	{% if entity.getPdfVersionRoute() is defined %}
+	<div class="d-none d-sm-inline pr-1 pb-1">
+		<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select" /></a>
+	</div>
+	{% endif %}
+	<div class="d-none d-sm-inline pr-1 pb-1">
+		<span id="print_page" class="social_network_to_select"><img src="{{ asset('extended/photo/print.svg') }}" width="40" alt="Print version" /></span>
+		<script>
+			document.getElementById("print_page").addEventListener("click", (e) => {
+				window.print();
+			});
+		</script>
+	</div>
+	<div class="pr-1 pb-1">
+		<a href="#" class="btn social-share facebook share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Facebook"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
+	</div>
+	<div class="pr-1 pb-1">
+		<a href="#" class="btn social-share twitter share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Twitter"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
+	</div>
+	<div class="pr-1 pb-1">
+		<a href="#" class="btn social-share whatsapp share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="WhatsApp"><i class="fab fa-whatsapp fa-lg fa-fw"></i></a>
+	</div>
+	<div class="pr-1 pb-1">
+		<a href="#" class="btn social-share linkedin share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="LinkedIn"><i class="fab fa-linkedin-in fa-lg fa-fw"></i></a>
+	</div>
+	<div class="pr-1 pb-1">
+		<a href="#" class="btn social-share flipboard share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Flipboard"><i class="fab fa-flipboard fa-lg fa-fw"></i></a>
+	</div>
+	<div class="pr-1 pb-1">
+		<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-toggle="modal" data-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
+	</div>
+	<div class="pb-1">
+		<a href="#" class="btn social-share weibo share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Sina Weibo"><i class="fab fa-weibo fa-lg fa-fw"></i></a>
+	</div>
+</div>
 
 <div class="modal fade" id="mastodonModal" tabindex="-1" aria-labelledby="mastodonModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -118,12 +116,12 @@
 	document.querySelector(".share-mastodon").addEventListener("click", (e) => {
 		e.preventDefault();
 		e.stopPropagation();
-		
+
 		$("#mastodonModal").modal("hide");
-		
+
 		let url = document.getElementById("url-mastodon-value").value
 		url = url.replace(/^https?:\/\//, '').replace(/^\/+|\/+$/g, '');
-		
+
 		socialWindow("https://" + url + "/share?text=" + title + " " + pageUrl);
 	});
 </script>
