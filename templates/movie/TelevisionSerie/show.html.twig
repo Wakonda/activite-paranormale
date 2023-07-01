@@ -63,10 +63,10 @@
 		</thead>
 		<tbody>
 			{% for biography in actors %}
-					<tr>
-						<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
-						<td>{{ biography.role }}</td>
-					</tr>
+				<tr>
+					<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+					<td>{{ biography.role }}</td>
+				</tr>
 			{% endfor %}
 		</tbody>
 	</table>

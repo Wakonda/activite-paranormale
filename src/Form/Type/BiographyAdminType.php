@@ -65,7 +65,7 @@ class BiographyAdminType extends AbstractType
 					'required' => false,
 					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
-			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
+			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => ['class' => 'invisible']))
 			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()])
 		;
 
