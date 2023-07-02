@@ -45,7 +45,7 @@
 				<div id="templatemo_banner">
 					<div id="site_title">
 						{% if is_mobile() == false %}
-							{{ render(controller('App\\Controller\\LogoController::displayLogoAction')) }}
+							{{ render(controller('App\\Controller\\PageController::displayLogoAction')) }}
 						{% endif %}
 
 						<h1><a href="{{ path('Index_Index') }}" title="index">Activité-Paranormale</a></h1>

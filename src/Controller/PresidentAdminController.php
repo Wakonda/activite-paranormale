@@ -30,7 +30,7 @@ class PresidentAdminController extends AdminGenericController
 	protected $indexRoute = "President_Admin_Index"; 
 	protected $showRoute = "President_Admin_Show";
 	protected $formName = "ap_page_presidentadmintype";
-	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"], ["field" => "logo", "selectorFile" => "logo_selector"]];
 
 	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

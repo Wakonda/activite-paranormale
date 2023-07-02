@@ -302,10 +302,6 @@
 								<td><a href="{{ path('Banner_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
 							</tr>
 							<tr>
-								<td><a href="{{ path('Logo_Admin_Index') }}">{{ "admin.index.Logo"|trans([], "validators") }}</a></td>
-								<td><a href="{{ path('Logo_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
-							</tr>
-							<tr>
 								<td><a href="{{ path('Backup_Admin_Index') }}">{{ "admin.index.Backup"|trans([], "validators") }}</a></td>
 								<td><span class="badge badge-pill badge-info">{{ render(controller('App\\Controller\\BackupAdminController::countAction')) }}</span></td>
 							</tr>

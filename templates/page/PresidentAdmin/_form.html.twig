@@ -4,6 +4,13 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "president.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.logo, "president.admin.Logo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.logo) }}{{ form_widget(form.logo) }}
+	<br>
+	{{ form_widget(form.logo_selector) }}
+</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "president.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 

@@ -80,6 +80,17 @@ class PageController extends AbstractController
         return $this->render('page/Page/wordPresident.html.twig', ['entity' => $entity]);
     }
 
+	public function displayLogoAction(Request $request)
+	{
+		$em = $this->getDoctrine()->getManager();
+
+		$entity = $em->getRepository(President::class)->getPresidentIndex($request->getLocale());
+
+		return $this->render("page/Page/displayLogo.html.twig", [
+			"entity" => $entity
+		]);
+	}
+
 	public function wordPresidentArchiveAction(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();

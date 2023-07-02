@@ -100,6 +100,12 @@ class President
      */
     private $illustration;
 
+    /**
+	 * @Assert\File(maxSize="6000000")
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $logo;
+
 	/**
 	 * @ORM\Column(type="integer", length=100, options={"default" = 1})
 	 *
@@ -429,5 +435,64 @@ class President
     public function getHistory()
     {
         return $this->history;
+    }
+
+    /**
+     * Set logo
+     *
+     * @param string $logo
+     */
+    public function setLogo($logo)
+    {
+        $this->logo = $logo;
+    }
+
+    /**
+     * Get logo
+     *
+     * @return string 
+     */
+    public function getLogo()
+    {
+        return $this->logo;
+    }
+
+    /**
+     * @ORM\PrePersist()
+     * @ORM\PreUpdate()
+     */
+    public function uploadLogo() {
+        // the file property can be empty if the field is not required
+        if (null === $this->logo) {
+            return;
+        }
+
+		if(is_object($this->logo))
+		{
+			$NameFile = basename($this->logo->getClientOriginalName());
+			$reverseNF = strrev($NameFile);
+			$explodeNF = explode(".", $reverseNF, 2);
+			$NNFile = strrev($explodeNF[1]);
+			$ExtFile = strrev($explodeNF[0]);
+			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
+			if(!$this->id){
+				$this->logo->move($this->getTmpUploadRootDir().$this->folder.'/', $NewNameFile);
+			}else{
+				if (is_object($this->logo))
+					$this->logo->move($this->getUploadRootDir().$this->folder.'/', $NewNameFile);
+			}
+			if (is_object($this->logo))
+				$this->setImage($NewNameFile);
+		} elseif(filter_var($this->logo, FILTER_VALIDATE_URL)) {
+			$parser = new \App\Service\APParseHTML();
+			$html = $parser->getContentURL($this->logo);
+			$pi = pathinfo($this->logo);
+			$extension = $res = pathinfo(parse_url($this->logo, PHP_URL_PATH), PATHINFO_EXTENSION);
+			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
+			$filename = uniqid()."_".$filename;
+
+			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
+			$this->setLogo($filename);
+		}
     }
 }

@@ -23,14 +23,14 @@ class PresidentAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(EntityRepository $er) 
 					{
 						return $er->createQueryBuilder('u')
@@ -38,15 +38,15 @@ class PresidentAdminType extends AbstractType
 					},
 				))
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'President_Admin_ShowImageSelectorColorbox'))
-			// ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
-			// ->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'President_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
-			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
-			->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-			->add('numberOfDays', IntegerType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('logo', FileType::class, ["required" => true, 'data_class' => null])
+			->add('logo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getLogo()])
+			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => [new NotBlank()]))
+			->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+			->add('numberOfDays', IntegerType::class, array('required' => true, 'constraints' => [new NotBlank()]))
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
 				'choice_label'=>'title', 
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
 				))
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
@@ -55,7 +55,7 @@ class PresidentAdminType extends AbstractType
 					return ['data-intl' => $val->getInternationalName()];
 				},
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}))
         ;
     }

@@ -34,10 +34,6 @@ President_Archive_Read:
     path: /wordpresident/read/{id}
     controller: App\Controller\PageController::wordPresidentReadArchiveAction
 
-Logo_Read:
-    path: /logo/read/{id}
-    controller: App\Controller\LogoController::readLogoAction
-
 EventMessage_Read:
     path: /event/read/{id}/{title_slug}
     controller: App\Controller\EventMessageController::readAction
@@ -129,10 +125,6 @@ President_Admin:
 Page_Admin:
     resource: "routing/pageadmin.yml"
     prefix: /admin/page
-
-Logo_Admin:
-    resource: "routing/logoadmin.yml"
-    prefix: /admin/logo
 
 EventMessage_Admin:
     resource: "routing/eventmessageadmin.yml"

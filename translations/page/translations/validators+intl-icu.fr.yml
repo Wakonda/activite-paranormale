@@ -21,6 +21,7 @@ president:
         WritingDate: "Date de rédaction"
         PublicationDate: "Date de publication"
         NumberOfDays: "Nombre de jours"
+        Logo: "Logo"
     index:
         ArchivedMessages: "Messages archivés"
     tab:
@@ -108,16 +109,6 @@ eventMessage:
         Saint: "Saints"
         NoEventToday: "Aucun événement aujourd'hui"
         NoEvent: "Aucun événement"
-logo:
-    admin:
-        Title: "Titre"
-        Text: "Texte"
-        Alt: "Alt"
-        Language: "Langue"
-        PublishedAt: "Date de publication"
-        Image: "Image"
-        Folder: "Dossier"
-        IsActive: "Active"
 rssFeed:
     menu:
         RSSFeeds: "Flux RSS"
