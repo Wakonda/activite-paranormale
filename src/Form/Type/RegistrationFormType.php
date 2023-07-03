@@ -35,22 +35,22 @@ class RegistrationFormType extends AbstractType
 		$locale = $options["locale"];
 
         $builder
-            ->add('email', EmailType::class, array('label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'constraints' => [new NotBlank()]))
-            ->add('username', TextType::class, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle', 'constraints' => [new NotBlank()]))
-            ->add('password', RepeatedType::class, array(
+            ->add('email', EmailType::class, ['label' => 'form.email', 'translation_domain' => 'FOSUserBundle', 'constraints' => [new NotBlank()]])
+            ->add('username', TextType::class, ['label' => 'form.username', 'translation_domain' => 'FOSUserBundle', 'constraints' => [new NotBlank()]])
+            ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'options' => array(
+                'options' => [
                     'translation_domain' => 'FOSUserBundle',
-                    'attr' => array(
+                    'attr' => [
                         'autocomplete' => 'new-password',
-                    ),
-                ),
-                'first_options' => array('label' => 'form.password'),
-                'second_options' => array('label' => 'form.password_confirmation'),
+                    ],
+                ],
+                'first_options' => ['label' => 'form.password'],
+                'second_options' => ['label' => 'form.password_confirmation'],
                 'invalid_message' => 'fos_user.password.mismatch',
 				'constraints' => [new NotBlank()]
-            ))
-			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
+            ])
+			->add('country', EntityType::class, ['class'=>'App\Entity\Region', 
 					'choice_label' => 'title', 
 					'required' => true,
 					'placeholder' => "",
@@ -63,23 +63,22 @@ class RegistrationFormType extends AbstractType
 									  ->setParameter("abbreviation", $locale)
 									  ->orderBy('u.title', 'ASC');
 						},
-			))
+			])
 			->add('avatar', FileType::class)
-			->add('birthDate', DateType::class, array('required' => false, 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'years' => range(1902, date('Y'))))
-			->add('city', TextType::class, array('required' => false))
-			->add('blog', TextType::class, array('required' => false, 'constraints' => [new Url()]))
-			->add('siteWeb', TextType::class, array('required' => false, 'constraints' => [new Url()]))
-			->add('presentation', TextareaType::class, array('required' => false))
-			->add("civility", ChoiceType::class, array('placeholder' => null,'expanded' => true, 'multiple' => false, 'translation_domain' => 'validators', 'required' => false, 'choices' => array(
+			->add('birthDate', DateType::class, ['required' => false, 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'years' => range(1902, date('Y'))])
+			->add('city', TextType::class, ['required' => false])
+			->add('blog', TextType::class, ['required' => false, 'constraints' => [new Url()]])
+			->add('siteWeb', TextType::class, ['required' => false, 'constraints' => [new Url()]])
+			->add('presentation', TextareaType::class, ['required' => false])
+			->add("civility", ChoiceType::class, ['placeholder' => null,'expanded' => true, 'multiple' => false, 'translation_domain' => 'validators', 'required' => false, 'choices' => [
 				'user.register.Man' => 'man',
 				'user.register.Woman' => 'woman',
 				'user.register.Other' => 'other'
-				)
-			))
-		;
+				]
+			]);
 
 		$donationArray = [];
-		
+
 		if($builder->getData()->getId() != null)
 			if($builder->getData()->getDonation() != null)
 				$donationArray = json_decode($builder->getData()->getDonation(), true);
@@ -87,16 +86,16 @@ class RegistrationFormType extends AbstractType
 		foreach(array_merge(["Paypal"], Currency::getCryptoCurrencies()) as $donation) {
 			$key = array_search(ucfirst($donation), array_column($donationArray, "donation"));
 			$placeholder = 'user.donation.EmailAddress';
-			
-			if($donation == "paypal")
+
+			if(strtolower($donation) != "paypal")
 				$placeholder = 'user.donation.AddressOfYourWallet';
-		
-			$builder->add(strtolower($donation), TextType::class, array('label' => $donation, 'required' => false, 'translation_domain' => 'validators', 'attr' => ['placeholder' => $placeholder], 'mapped' => false, 'data' => ((isset($donationArray[$key]) and $key !== false) ? $donationArray[$key]["address"] : "")));
+
+			$builder->add(strtolower($donation), TextType::class, ['label' => $donation, 'required' => false, 'translation_domain' => 'validators', 'attr' => ['placeholder' => $placeholder], 'mapped' => false, 'data' => ((isset($donationArray[$key]) and $key !== false) ? $donationArray[$key]["address"] : "")]);
 		}
 
 		$builder
-			->add('donation', HiddenType::class, array('label' => false, 'required' => false, 'attr' => array('class' => 'invisible')))
-			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'));
+			->add('donation', HiddenType::class, ['label' => false, 'required' => false, 'attr' => ['class' => 'invisible']])
+			->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmitData']);
 
 		$avatar = $builder->getData()->getAvatar();
 
@@ -121,7 +120,7 @@ class RegistrationFormType extends AbstractType
 				$form->get('avatar')->addError(new FormError($notBlank->message));
 		});
     }
-	
+
 	public function onPreSubmitData(FormEvent $event)
 	{
 		$data = $event->getData();
@@ -130,7 +129,7 @@ class RegistrationFormType extends AbstractType
 		foreach(array_merge(["Paypal"], Currency::getCryptoCurrencies()) as $donation)
 			if(!empty($data[$donation]))
 				$json[] = ["donation" => ucfirst($donation), "address" => $data[$donation]];
-		
+
 		$data["donation"] = json_encode($json);
 
 		$event->setData($data);
@@ -143,8 +142,8 @@ class RegistrationFormType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'locale' => 'fr',
-		));
+		]);
 	}
 }

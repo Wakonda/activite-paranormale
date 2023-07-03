@@ -179,6 +179,8 @@ class PresidentAdminController extends AdminGenericController
 		$entity->setState($state);
 		
 		$entity->setLanguage($language);
+		
+		$entity->setLogo($entityToCopy->getLogo());
 
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();
