@@ -30,7 +30,7 @@
 	<div class="form-table-cell">{{ entity.city }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.WebSite"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.siteWeb }}</div>
+	<div class="form-table-cell">{% if entity.siteWeb is not empty %}<a href="{{ entity.siteWeb }}">{{ entity.siteWeb }}</a>{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Blog"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.blog }}</div>
@@ -39,7 +39,7 @@
 	<div class="form-table-cell">{{ entity.presentation }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Civility"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ ("user.admin." ~ (entity.civility|ucfirst))|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.civility is not empty %}{{ ("user.admin." ~ (entity.civility|ucfirst))|trans([], "validators") }}{% endif %}</div>
 	
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Country"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.country is not empty ? entity.country.title : "" }}</div>

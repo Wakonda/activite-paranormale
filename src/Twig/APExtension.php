@@ -945,7 +945,7 @@
 			return parse_url($url, $component);
 		}
 		
-		public function UcfirstFilter(String $string) {
+		public function UcfirstFilter(?String $string) {
 			return ucfirst($string);
 		}
 		
