@@ -75,9 +75,9 @@ class PageController extends AbstractController
 	public function wordPresidentAction(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
-		$entity = $em->getRepository(President::class)->getPresidentIndex($request->getLocale());
-
-        return $this->render('page/Page/wordPresident.html.twig', ['entity' => $entity]);
+		$entities = $em->getRepository(President::class)->getPresidentsIndex($request->getLocale());
+// dd($entities);
+        return $this->render('page/Page/wordPresident.html.twig', ['entities' => $entities]);
     }
 
 	public function displayLogoAction(Request $request)

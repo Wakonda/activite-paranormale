@@ -37,8 +37,8 @@ class PresidentAdminType extends AbstractType
 								  ->orderBy('u.title', 'ASC');
 					},
 				))
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'President_Admin_ShowImageSelectorColorbox'))
-            ->add('logo', FileType::class, ["required" => true, 'data_class' => null])
+			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'President_Admin_ShowImageSelectorColorbox'))
+            ->add('logo', FileType::class, ["required" => false, 'data_class' => null])
 			->add('logo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getLogo()])
 			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => [new NotBlank()]))
 			->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))

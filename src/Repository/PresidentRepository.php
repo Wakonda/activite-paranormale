@@ -21,15 +21,40 @@ class PresidentRepository extends EntityRepository
 
 	public function getPresidentIndex($language)
 	{
+		$qbCount = $this->createQueryBuilder('o');
+
+		$qbCount->select('COUNT(o)')
+		        ->join('o.language', 'l')
+			    ->where('l.abbreviation = :lang')
+			    ->setParameter('lang', $language)
+				->andWhere("o.logo IS NOT NULL");
+
+		$max = max($qbCount->getQuery()->getSingleScalarResult() - 1, 0);
+		$offset = rand(0, $max);
+
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
 		   ->where('l.abbreviation = :lang')
 		   ->setParameter('lang', $language)
 		   ->andWhere("CURRENT_DATE() BETWEEN c.publicationDate AND DATE_ADD(c.publicationDate, c.numberOfDays, 'day')")
 		   ->orderBy("c.publicationDate", "DESC")
+		   ->andWhere("c.logo IS NOT NULL")
+		   ->setFirstResult($offset)
 		   ->setMaxResults(1);
 
 		return $qb->getQuery()->getOneOrNullResult();
+	}
+
+	public function getPresidentsIndex($language)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->join('c.language', 'l')
+		   ->where('l.abbreviation = :lang')
+		   ->setParameter('lang', $language)
+		   ->andWhere("CURRENT_DATE() BETWEEN c.publicationDate AND DATE_ADD(c.publicationDate, c.numberOfDays, 'day')")
+		   ->orderBy("c.publicationDate", "DESC");
+
+		return $qb->getQuery()->getResult();
 	}
 	
 	public function getPresidentArchive($language)

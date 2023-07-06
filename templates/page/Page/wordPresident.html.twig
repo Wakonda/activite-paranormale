@@ -1,8 +1,47 @@
-{% if entity is not null %}
+{% if entities is not null %}
+
+
+	<script>
+		$(function() {
+			$('#carousel-president-index').carousel({
+				interval: false
+			}).on('slide.bs.carousel', function (e) {
+				var nextH = $(e.relatedTarget).height();
+				$(this).find('.active.carousel-item').parent().animate({
+					height: nextH
+				}, 500);
+			});
+		});
+	</script>
+
+	<div id="carousel-president-index" class="carousel-pagination carousel slide" data-interval="false">
+		<ol class="carousel-indicators carousel-indicators-numbers pagination">
+		{% set i = 0 %}
+		{% set j = 1 %}
+		{% for entity in entities %}
+			<li data-target="#carousel-president-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+			{% set i = i + 1 %}
+			{% set j = j + 1 %}
+		{% endfor %}
+		</ol>
+
+		<div class="carousel-inner" role="listbox">
+			{% set i = 0 %}
+			{% for entity in entities %}
+				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 	<h3>{{ entity.title }}</h3>
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 
 	{{ entity.text|raw }}
+				</div>
+				{% set i = i + 1 %}
+			{% endfor %}
+		</div>
+	</div>
+
+
+
+
 
 	<p class="text-center"><a href="{{ path('President_Archive_Index') }}"><img src="{{ asset('extended/photo/word-president-archive.png') }}" width="30" alt=">Message archive" class="align-middle"/> {{ "president.index.ArchivedMessages"|trans([], "validators") }}</a></p>
 {% endif %}
