@@ -233,7 +233,7 @@
 						{% set tags = get_tags(entity, false, true) %}
 						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
-						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 					</form>
@@ -299,7 +299,7 @@
 						{% set tags = get_tags(entity, false, true) %}
 						<textarea id="diaspora_area" name="diaspora_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
-						<input type="url" placeholder="https://example.com" name="diaspora_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<input type="url" placeholder="https://example.com" name="diaspora_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 					</form>
@@ -365,7 +365,7 @@
 						{% set tags = get_tags(entity, false, true) %}
 						<textarea id="instagram_area" name="instagram_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
-						<input type="url" placeholder="https://example.com" name="instagram_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<input type="url" placeholder="https://example.com" name="instagram_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 					</form>
@@ -431,7 +431,7 @@
 						{% set tags = get_tags(entity, false, true) %}
 						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
-						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'mastodon' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
@@ -513,7 +513,7 @@
 						{% set tags = get_tags(entity, false, true) %}
 						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
-						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.title}) }}" />
+						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 						<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
