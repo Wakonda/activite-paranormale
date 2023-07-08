@@ -10,13 +10,14 @@ class LocaleListener implements EventSubscriberInterface
 {
     private $defaultLocale;
 
-    public function __construct(String $defaultLocale = 'en')
+    public function __construct(String $defaultLocale = 'fr')
     {
         $this->defaultLocale = $defaultLocale;
     }
 
     public function onKernelRequest(RequestEvent $event)
     {
+		
         $request = $event->getRequest();
         if (!$request->hasPreviousSession()) {
             return;
@@ -35,7 +36,7 @@ class LocaleListener implements EventSubscriberInterface
     {
         return array(
             // must be registered after the default Locale listener
-            KernelEvents::REQUEST => array(array('onKernelRequest', 15)),
+            KernelEvents::REQUEST => array(array('onKernelRequest', 0)),
         );
     }
 }

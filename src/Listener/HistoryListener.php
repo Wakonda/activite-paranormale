@@ -66,7 +66,6 @@ class HistoryListener
 		
 		$differ = new Differ($builder);
 		$text = [];
-		
 
 		foreach($changeSetArray as $changeSet) {
 			if(isset($changeSet[0]) and isset($changeSet[1])) {
