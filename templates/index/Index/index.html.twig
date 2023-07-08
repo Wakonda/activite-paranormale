@@ -50,7 +50,7 @@
 		</div>
 	{% endif %}
 
-	{% if app.session.get("v") == "v2" or (app.session.get("v") == "v3" and is_mobile() == false and is_tablet() == false) %}
+	{% if (app.session.get("v") == "v2" or app.session.get("v") is null) or (app.session.get("v") == "v3" and is_mobile() == false and is_tablet() == false) %}
 		{% include "index/Index/version.html.twig" %}
 	{% endif %}
 
