@@ -36,6 +36,9 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Sources"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 {% endblock %}
 
 {% block data_bottom %}

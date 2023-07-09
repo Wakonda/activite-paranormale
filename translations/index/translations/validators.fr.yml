@@ -158,11 +158,6 @@ state:
         DisplayState: "Affichage"
         Language: "Langue"
         InternationalName: "Nom international"
-surtheme:
-    admin:
-        Title: "Titre"
-        Language: "Langue"
-        InternationalName: "Nom international"
 theme:
     admin:
         Theme: "Thème"
@@ -172,6 +167,7 @@ theme:
         Photo: "Photo"
         InternationalName: "Nom international"
         Text: "Texte"
+        Sources: "Sources"
     index:
         Theme: "Thème"
         Read: "Consulter"
