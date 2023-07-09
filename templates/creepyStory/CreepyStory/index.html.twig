@@ -13,7 +13,7 @@
 	
 	{% set i = 0 %}
 	<div id="accordion">
-		{% for ST in surTheme %}
+		{% for ST in parentTheme %}
 			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
 			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
 			<br>
@@ -24,7 +24,7 @@
 			</tr>
 
 			{% for T in theme %}
-				{% if T.surTheme == ST %}
+				{% if T.parentTheme == ST %}
 					{% for i in 0..nbrTheme1 %}
 						{% if T.title == tabThemeNbr[i][0] %}
 							<tr><td class="td_form_table"><a href="{{ path('CreepyStory_Tab', {'id' : T.id, 'theme' : T.title})}}" >{{ tabThemeNbr[i][0] }}</a></td>

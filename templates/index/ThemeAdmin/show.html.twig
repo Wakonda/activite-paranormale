@@ -15,7 +15,7 @@
 	<div class="form-table-cell">{{ entity.title }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Family"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.SurTheme.title }}</div>
+	<div class="form-table-cell">{% if entity.parentTheme is not empty %}{{ entity.parentTheme.title }}{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.InternationalName"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.internationalName }}</div>

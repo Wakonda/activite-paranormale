@@ -904,5 +904,17 @@
 		"filename": "creepy-story-index.jpg",
 		"author": "<a href='https://pixabay.com/users/jcoope12-17392968/'>jcoope12</a>",
 		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixabay.com/illustrations/ai-generated-woman-steampunk-tea-7831787/",
+		"filename": "creepy-story-tab.jpg",
+		"author": "<a href='https://pixabay.com/users/akadarcee-76024/'>akadarcee</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixai.art/",
+		"filename": "followus.webp",
+		"author": "pixai.art",
+		"license": "CC0"
 	}
 ]

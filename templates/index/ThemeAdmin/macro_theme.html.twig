@@ -7,15 +7,18 @@
 			data: { "id" : $(this).val() },
 			success: function(data)
 			{
-				var surTheme = data.surTheme;
-				$("#{{ form.surTheme.vars.id }} option").remove();
-				$.each(surTheme, function(index, element)
+				var parentTheme = data.parentTheme;
+				$("#{{ form.parentTheme.vars.id }} option").remove();
+				
+				$("#{{ form.parentTheme.vars.id }}").append('<option value=""></option>');
+				
+				$.each(parentTheme, function(index, element)
 				{
-					$("#{{ form.surTheme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+					$("#{{ form.parentTheme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 				});
 				
-				{% if form.vars.value.surTheme.id is defined %}
-					$("#{{ form.surTheme.vars.id }}").val("{{ form.vars.value.surTheme.id }}");
+				{% if form.vars.value.parentTheme.id is defined %}
+					$("#{{ form.parentTheme.vars.id }}").val("{{ form.vars.value.parentTheme.id }}");
 				{% endif %}
 			}
 		});

@@ -24,12 +24,16 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	<br>
-	<h3>{{ "theme.index.Sources"|trans([], "validators") }}</h3>
-	{{ source_document(entity.source, entity.language) }}
+	
+	{% if entity.source is not empty %}
+		<br>
+		<h3>{{ "theme.index.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source, entity.language) }}
+	{% endif %}
+	
 	<hr class="hr2"/>
 	<p>
-	{{ entity.surTheme.title }} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />
+	{{ entity.parentTheme.title }} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />
 	</p>
 	<br>
 	{{ "google"|advertisement|raw }}

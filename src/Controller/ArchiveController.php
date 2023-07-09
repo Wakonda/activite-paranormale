@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Theme;
-use App\Entity\SurTheme;
 use App\Entity\Language;
 use App\Service\APImgSize;
 use App\Service\APDate;
@@ -75,20 +74,20 @@ class ArchiveController extends AbstractController
 		
 		$locale = empty($language) ? $request->getLocale() : $language;
 
-		$surTheme = $em->getRepository(SurTheme::class)->getSurTheme($locale);
+		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
 		$countTheme = $em->getRepository($className)->countArchivedByTheme($locale);
 		$themes = $em->getRepository(Theme::class)->getTheme($locale);
 
 		foreach($themes as $theme)
 			if(array_search($theme->getTitle(), array_column($countTheme, 'title')) === false)
-				$countTheme[] = ["count" => 0, "title" => $theme->getTitle(), "surTheme" => $theme->getSurTheme()->getId(), "id" => $theme->getId()];
+				$countTheme[] = ["count" => 0, "title" => $theme->getTitle(), "parentTheme" => $theme->getParentTheme()->getId(), "id" => $theme->getId()];
 
 		usort($countTheme, function($a, $b) {
 			return $a['title'] <=> $b['title'];
 		});
 
 		return $this->render('index/Archive/archive_theme.html.twig', array (
-			'surTheme' => $surTheme,
+			'parentTheme' => $parentTheme,
 			'nbrArchive' => array_sum(array_column($countTheme, "count")),
 			'themes' => $countTheme,
 			'className' => base64_encode($className),

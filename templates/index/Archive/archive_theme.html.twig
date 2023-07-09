@@ -11,17 +11,17 @@
 	<hr>	
 	{% set i = 0 %}
 	<div id="accordion">
-		{% for ST in surTheme %}
+		{% for ST in parentTheme %}
 			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
 			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
-			<br />
+			<br>
 			<table class="table table-bordered">
 			<tr class="trGene">
 				<th class="label_form">{{ "index.archive.Theme"|trans([], "validators") }}</th>
 				<th class="label_form">{{ "index.archive.Number"|trans([], "validators") }}</th>
 			</tr>
 			{% for theme in themes %}
-				{% if theme.surTheme == ST.id %}
+				{% if theme.parentTheme == ST.id %}
 					<tr><td class="td_form_table"><a href="{{ path('Archive_Tab', {'id' : theme.id, 'theme' : theme.title, className: className })}}" >{{ theme.title }}</a></td>
 					<td class="tdGene"><span class="badge badge-info">{{ theme.count }}</span></td></tr>
 				{% endif %}

@@ -11,7 +11,6 @@ use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use App\Entity\Video;
 use App\Entity\Contact;
 use App\Entity\Theme;
-use App\Entity\SurTheme;
 use App\Entity\Language;
 use App\Service\APImgSize;
 use App\Service\APDate;
@@ -23,27 +22,26 @@ class VideoController extends AbstractController
     {
 		$em = $this->getDoctrine()->getManager();
 		
-		$lang = $request->getLocale();
+		$locale = $request->getLocale();
 		
-		$SurTheme = $em->getRepository(SurTheme::class)->getSurTheme($lang);
-		
-		$theme2 = $em->getRepository(Theme::class)->getTheme($lang);
+		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
+		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($lang);
-		$nbrVideo = $em->getRepository(Video::class)->nbrVideo($lang);
+		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
+		$nbrVideo = $em->getRepository(Video::class)->nbrVideo($locale);
 
 		for($i = 0; $i < $nbrTheme; $i++)
 		{
-			$nbrArchiveParTheme[$i] = $em->getRepository(Video::class)->nbrArchiveParTheme($lang, $theme2[$i]->gettitle());
-			$tabThemeNbr[$i][0] = $theme2[$i]->getTitle();
+			$nbrArchiveParTheme[$i] = $em->getRepository(Video::class)->nbrArchiveParTheme($locale, $theme[$i]->getTitle());
+			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
 			$tabThemeNbr[$i][1] = $nbrArchiveParTheme[$i];
 		}
 		return $this->render('video/Video/index.html.twig', array(
-			'surTheme' => $SurTheme,
+			'parentTheme' => $parentTheme,
 			'nbrVideo' => $nbrVideo,
 			'tabThemeNbr' => $tabThemeNbr,
 			'nbrTheme' => $nbrTheme,
-			'theme' => $theme2
+			'theme' => $theme
 		));
     }
 	

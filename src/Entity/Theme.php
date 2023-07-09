@@ -215,7 +215,7 @@ class Theme
         return $this->parentTheme;
     }
 
-    public function setParentTheme(SurTheme $parentTheme)
+    public function setParentTheme(Theme $parentTheme)
     {
         $this->parentTheme = $parentTheme;
     }

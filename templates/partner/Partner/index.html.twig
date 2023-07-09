@@ -7,6 +7,8 @@
 {% endblock h2_title %}
 
 {% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/followus.webp') }}" alt="Follow us" /></p>
+	<hr>
 	{% for partner in pagination.items %}
 		<h3>{{ partner.title }}</h3>
 		<p class="image">

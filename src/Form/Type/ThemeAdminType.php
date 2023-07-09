@@ -23,11 +23,11 @@ class ThemeAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('label'=>'Titre', 'required' =>true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, ['label'=>'Titre', 'required' =>true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => false])
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, ['required' => false])
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
@@ -37,17 +37,16 @@ class ThemeAdminType extends AbstractType
 					return $er->createQueryBuilder('u')
 							  ->orderBy('u.title', 'ASC');
 				},
-				'constraints' => array(new NotBlank())
-			))
-            ->add('pdfTheme', FileType::class, array('data_class' => null, 'required' => false))
-			->add('internationalName', TextType::class, array('label'=>'Nom international', 'required' =>true, 'constraints' => array(new NotBlank())))
-			->add('surTheme', EntityType::class, array('class'=>'App\Entity\SurTheme', 
+				'constraints' => [new NotBlank()],
+			])
+            ->add('pdfTheme', FileType::class, ['data_class' => null, 'required' => false])
+			->add('internationalName', TextType::class, ['label'=>'Nom international', 'required' =>true, 'constraints' => [new NotBlank()]])
+			->add('parentTheme', EntityType::class, ['class'=>'App\Entity\Theme', 
 				'choice_label'=>'title',
-				'required' => true,
-				'constraints' => array(new NotBlank()),
-				'query_builder' => function(\App\Repository\SurThemeRepository $repository) use($language) { return $repository->getSurThemeByLanguage($language);}
-			))
-			->add('photo', FileType::class, array('data_class' => null, 'required' => true))
+				'required' => false,
+				'query_builder' => function(\App\Repository\ThemeRepository $repository) use($language) { return $repository->getParentThemeByLanguage($language);}
+			])
+			->add('photo', FileType::class, ['data_class' => null, 'required' => true])
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'Theme_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()])
 			->add('pdf_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPdfTheme()])
         ;
@@ -60,9 +59,9 @@ class ThemeAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Theme',
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 
-use App\Entity\SurTheme;
 use App\Entity\Theme;
 use App\Entity\Photo;
 use App\Entity\Language;
@@ -21,28 +20,27 @@ class PhotoController extends AbstractController
     {
 		$em = $this->getDoctrine()->getManager();
 
-		$lang = $request->getLocale();
-		
-		$surTheme = $em->getRepository(SurTheme::class)->getSurTheme($lang);
+		$locale = $request->getLocale();
 
-		$theme2 = $em->getRepository(Theme::class)->getTheme($lang);
+		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
+		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($lang);
-		$nbrPicture = $em->getRepository(Photo::class)->nbrPicture($lang);
+		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
+		$nbrPicture = $em->getRepository(Photo::class)->nbrPicture($locale);
 
 		for($i = 0; $i < $nbrTheme; $i++)
 		{
-			$nbrPictureByTheme[$i] = $em->getRepository(Photo::class)->nbrPictureByTheme($lang, $theme2[$i]->gettitle());
-			$tabThemeNbr[$i][0] = $theme2[$i]->gettitle();
+			$nbrPictureByTheme[$i] = $em->getRepository(Photo::class)->nbrPictureByTheme($locale, $theme[$i]->getTitle());
+			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
 			$tabThemeNbr[$i][1] = $nbrPictureByTheme[$i];
 		}
 
 		return $this->render('photo/Photo/index.html.twig', array(
-			'surTheme' => $surTheme,
+			'parentTheme' => $parentTheme,
 			'nbrPicture' => $nbrPicture,
 			'tabThemeNbr' => $tabThemeNbr,
 			'nbrTheme' => $nbrTheme,
-			'theme' => $theme2
+			'theme' => $theme
 		));	
     }
 	

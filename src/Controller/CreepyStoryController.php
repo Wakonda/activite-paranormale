@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 
-use App\Entity\SurTheme;
 use App\Entity\Theme;
 use App\Entity\CreepyStory;
 use App\Entity\Language;
@@ -21,28 +20,27 @@ class CreepyStoryController extends AbstractController
     {
 		$em = $this->getDoctrine()->getManager();
 
-		$lang = $request->getLocale();
+		$locale = $request->getLocale();
 		
-		$surTheme = $em->getRepository(SurTheme::class)->getSurTheme($lang);
+		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
+		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
-		$theme2 = $em->getRepository(Theme::class)->getTheme($lang);
-
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($lang);
-		$nbr = $em->getRepository(CreepyStory::class)->countCreepyStory($lang);
+		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
+		$nbr = $em->getRepository(CreepyStory::class)->countCreepyStory($locale);
 
 		for($i = 0; $i < $nbrTheme; $i++)
 		{
-			$nbrPictureByTheme[$i] = $em->getRepository(CreepyStory::class)->nbrByTheme($lang, $theme2[$i]->gettitle());
-			$tabThemeNbr[$i][0] = $theme2[$i]->getTitle();
+			$nbrPictureByTheme[$i] = $em->getRepository(CreepyStory::class)->nbrByTheme($locale, $theme[$i]->getTitle());
+			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
 			$tabThemeNbr[$i][1] = $nbrPictureByTheme[$i];
 		}
 
 		return $this->render('creepyStory/CreepyStory/index.html.twig', [
-			'surTheme' => $surTheme,
+			'parentTheme' => $parentTheme,
 			'nbr' => $nbr,
 			'tabThemeNbr' => $tabThemeNbr,
 			'nbrTheme' => $nbrTheme,
-			'theme' => $theme2
+			'theme' => $theme
 		]);
     }
 	

@@ -18,7 +18,8 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$qb->select("count(c)")
 			->join('c.language', 'l')
 			->where('l.abbreviation = :lang')
-			->setParameter('lang', $lang);
+			->setParameter('lang', $lang)
+			->andWHere("c.parentTheme IS NOT NULL");
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
@@ -29,6 +30,19 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$qb->join('o.language', 'l')
 			->where('l.abbreviation = :lang')
 			->setParameter('lang', $lang)
+			->andWHere("o.parentTheme IS NOT NULL")
+			->orderBy('o.title');
+
+		return $qb->getQuery()->getResult();	
+	}
+
+	public function getThemeParent($lang)
+	{
+		$qb = $this->createQueryBuilder('o');
+		$qb->join('o.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $lang)
+			->andWHere("o.parentTheme IS NULL")
 			->orderBy('o.title');
 
 		return $qb->getQuery()->getResult();	
@@ -77,6 +91,19 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 	}
 
 	// FORM
+	public function getParentThemeByLanguage($language)
+	{
+		$qb = $this->createQueryBuilder('s');
+		$qb
+		   ->join('s.language', 'l')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("s.parentTheme IS NULL")
+		   ->orderBy('s.title');
+
+		return $qb;
+	}
+
 	public function getThemeByLanguage($language)
 	{
 		$qb = $this->createQueryBuilder('o');
@@ -99,11 +126,11 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 's.title', 'l.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 's.title', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
-		   ->join('c.surTheme', 's')
+		   ->leftjoin('c.parentTheme', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
@@ -168,7 +195,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 			$qb->groupBy('c.photo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{
@@ -204,6 +231,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$qb->addSelect("t.id")
 		   ->addSelect("t.internationalName")
 		   ->join("t.language", "lt")
+		   ->andWhere("t.parentTheme IS NOT NULL")
 		   ->orderBy("t.title", "ASC");
 		   
 		if(!empty($locale))
@@ -211,5 +239,36 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		      ->setParameter("locale", $locale);
 
 		return array_map(function($e) { return ["id" => $e["id"], "internationalName" => $e["internationalName"], "title" => $e["title"].((isset($e["localeTitle"]) and !empty($d = $e["localeTitle"]) and $e["localeTitle"] != $e["title"]) ? " [".$d."]" : "")]; }, $qb->getQuery()->getResult());
+	}
+
+	public function getParentThemeByLanguageForList($locale, $currentLocale)
+	{
+		$qb = $this->createQueryBuilder("t");
+		
+		$qbCurrentLocale = $this->createQueryBuilder("tcl");
+		
+		if($locale != $currentLocale)
+		{
+			$qbCurrentLocale->select("tcl.title")
+			  ->join("tcl.language", "lcl")
+			  ->where("lcl.abbreviation = :currentLocale")
+			  ->andWhere("tcl.internationalName = t.internationalName");
+			
+			$qb->select("t.title AS title")
+			   ->addSelect("(".$qbCurrentLocale->getDQL().") AS localeTitle")
+		       ->setParameter("currentLocale", $currentLocale);
+		} else
+			$qb->select("t.title AS title");
+
+		$qb->addSelect("t.id")
+		   ->join("t.language", "lt")
+		   ->andWhere("t.parentTheme IS NULL")
+		   ->orderBy("t.title", "ASC");
+		   
+		if(!empty($locale))
+		   $qb->andWhere("lt.abbreviation = :locale")
+		      ->setParameter("locale", $locale);
+		   
+		return array_map(function($e) { return ["id" => $e["id"], "title" => $e["title"].((isset($e["localeTitle"]) and !empty($d = $e["localeTitle"]) and $e["localeTitle"] != $e["title"]) ? " [".$d."]" : "")]; }, $qb->getQuery()->getResult());
 	}
 }

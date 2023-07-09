@@ -4,18 +4,18 @@
 {% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/mosu-burn-icon.png') }}" width="25" class="mt-1" alt="Angry lemon"/></span>{{ "theme.index.Theme"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/theme.jpg') }}" width="550" alt="Girl Zombie" /></p>
-	<hr />
-	{% for ST in surTheme %}
+	<hr>
+	{% for ST in parentTheme %}
 		<h3><a href="#">{{ ST.title }}</a></h3>
 		<div>
-			<br />
+			<br>
 			<table class="table table-bordered">
 			<tr class="trGene">
 				<th class="label_form">{{ "theme.index.Theme"|trans([], "validators") }}</th>
 				<th class="label_form">{{ "theme.index.Read"|trans([], "validators") }}</th>
 			</tr>
 			{% for T in theme %}
-				{% if T.SurTheme.title == ST.title %}
+				{% if T.parentTheme.title == ST.title %}
 					<tr>
 						<td class="td_form_table theme_title_td">{{ T.title }}</td>
 						<td class="tdGene theme_read_td"><a href="{{ path('Theme_Show', {'id' : T.id, 'theme' : T.title })}}" >{{ "theme.index.Read"|trans([], "validators") }}</a></td>
@@ -24,8 +24,8 @@
 			{% endfor %}
 			</table>
 		</div>
-		<br />
+		<br>
 	{% endfor %}
-	<br />
+	<br>
 	{{ "google"|advertisement|raw }}
 {% endblock %}

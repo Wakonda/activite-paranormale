@@ -12,7 +12,6 @@ use Symfony\Component\Security\Core\Security;
 
 use App\Entity\Testimony;
 use App\Entity\TestimonyTags;
-use App\Entity\SurTheme;
 use App\Entity\Theme;
 use App\Entity\Licence;
 use App\Entity\State;
@@ -33,17 +32,17 @@ class TestimonyController extends AbstractController
     {
 		$entity = new Testimony();
 		$em = $this->getDoctrine()->getManager();
-		$language = $request->getLocale();
+		$locale = $request->getLocale();
 		
-		$SurTheme = $em->getRepository(SurTheme::class)->getSurTheme($language);
-		$theme = $em->getRepository(Theme::class)->getTheme($language);
+		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
+		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
-		$entities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($language);
-		$countEntities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($language, true);
+		$entities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($locale);
+		$countEntities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($locale, true);
 
 		return $this->render('testimony/Testimony/index.html.twig', array(
 			'entity' => $entity,
-			'surTheme' => $SurTheme,
+			'parentTheme' => $parentTheme,
 			'countEntities' => $countEntities,
 			'theme' => $theme
 		));

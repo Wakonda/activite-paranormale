@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Theme;
-use App\Entity\SurTheme;
 use App\Entity\Language;
 use App\Form\Type\ThemeAdminType;
 use App\Service\ConstraintControllerValidator;
@@ -107,7 +106,7 @@ class ThemeAdminController extends AdminGenericController
 			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
-			$row[] = $entity->getSurTheme()->getTitle();
+			$row[] = !empty($data = $entity->getParentTheme()) ? $data->getTitle() : "-";
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
 			 <a href='".$this->generateUrl('Theme_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
@@ -128,16 +127,16 @@ class ThemeAdminController extends AdminGenericController
 		$translateArray = [];
 		
 		if(!empty($language))
-			$surThemes = $em->getRepository(SurTheme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
+			$parentThemes = $em->getRepository(Theme::class)->getParentThemeByLanguageForList($language->getAbbreviation(), $request->getLocale());
 		else
-			$surThemes = $em->getRepository(SurTheme::class)->getByLanguageForList(null, $request->getLocale());
+			$parentThemes = $em->getRepository(Theme::class)->getParentThemeByLanguageForList(null, $request->getLocale());
 
-		$surThemeArray = [];
+		$parentThemeArray = [];
 
-		foreach($surThemes as $surTheme)
-			$surThemeArray[] = ["id" => $surTheme["id"], "title" => $surTheme["title"]];
+		foreach($parentThemes as $parentTheme)
+			$parentThemeArray[] = ["id" => $parentTheme["id"], "title" => $parentTheme["title"]];
 
-		$translateArray['surTheme'] = $surThemeArray;
+		$translateArray['parentTheme'] = $parentThemeArray;
 
 		return new JsonResponse($translateArray);
 	}
@@ -167,12 +166,12 @@ class ThemeAdminController extends AdminGenericController
 		$em = $this->getDoctrine()->getManager();
 		$entityToCopy = $em->getRepository(Theme::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
-		$surTheme = $em->getRepository(SurTheme::class)->findOneBy(["internationalName" => $entityToCopy->getSurTheme()->getInternationalName(), "language" => $language]);
+		$parentTheme = $em->getRepository(Theme::class)->findOneBy(["internationalName" => $entityToCopy->getParentTheme()->getInternationalName(), "language" => $language]);
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		
-		if(!empty($surTheme))
-			$entity->setSurTheme($surTheme);
+		if(!empty($parentTheme))
+			$entity->setParentTheme($parentTheme);
 		
 		$entity->setLanguage($language);
 		$entity->setPhoto($entityToCopy->getPhoto());

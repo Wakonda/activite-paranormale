@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Form\Type\NewsType;
 use App\Entity\News;
 use App\Entity\Theme;
-use App\Entity\SurTheme;
 use App\Entity\Language;
 use App\Entity\State;
 use App\Entity\User;

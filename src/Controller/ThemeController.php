@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Theme;
-use App\Entity\SurTheme;
 use App\Entity\News;
 use App\Entity\Book;
 use App\Entity\Cartography;
@@ -32,15 +31,15 @@ class ThemeController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		
-		$language = $request->getLocale();
+		$locale = $request->getLocale();
 		
-		$surTheme = $em->getRepository(SurTheme::class)->getSurTheme($language);
-		$theme = $em->getRepository(Theme::class)->getTheme($language);
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($language);
+		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
+		$theme = $em->getRepository(Theme::class)->getTheme($locale);
+		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
 
 		return $this->render('index/Theme/index.html.twig', [
 			'nbrTheme' => $nbrTheme,
-			'surTheme' => $surTheme,
+			'parentTheme' => $parentTheme,
 			'theme' => $theme
 		]);
 	}	
