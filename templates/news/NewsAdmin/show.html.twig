@@ -80,18 +80,18 @@
 	
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
-		
+
 		{% if entity.archive == false %}
+			{% if entity.theme.internationalName == 'music' %}
+				{{ macro_index.blogger_music_form(entity, "irontv") }}
+			{% else %}
+				{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
+			{% endif %}
 			{{ macro_index.twitter_form(entity) }}
-			{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
 			{{ macro_index.facebook_form(entity, (entity.abstractText|raw)|striptags) }}
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.shopify_form(entity, "news") }}
 			{{ macro_index.diaspora_form(entity, (entity.abstractText|raw)|striptags) }}
-			
-			{% if entity.theme.internationalName == 'music' %}
-				{{ macro_index.tumblr_form(entity, "music") }}
-			{% endif %}
 		{% else %}
 			{{ macro_index.thedailytruth_form(entity) }}
 		{% endif %}

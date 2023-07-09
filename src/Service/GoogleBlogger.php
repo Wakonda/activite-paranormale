@@ -9,8 +9,8 @@
 		private $access_type = "offline"; //optional - allows for retrieval of refresh_token for offline access
 		private $scope = "https://www.googleapis.com/auth/blogger";
 		private $oauth2token_url = "https://accounts.google.com/o/oauth2/token";
-		
-		public $blogId_array = array(
+
+		public $blogId_array = [
 			"JakinEtBoaz" => "4192778394306065291",
 			"BookOfLucifer" => "8587307742034849671",
 			"PrieresEtSortileges" => "1611333979864196065",
@@ -19,8 +19,9 @@
 			"ActiviteParanormale" => "6843544030232757764",
 			"TheTempleOfZebuleon" => "3619394577589453859",
 			"ElGrimorioDeAstaroth" => "6143285371855196758",
+			"IronTV" => "4299576435212041218",
 			"Test" => "2865018866226462436"
-		);
+		];
 		
 		public function getBlogURLArray(string $blogName) {
 			$blogName = $_ENV["APP_ENV"] == "dev" ? "Test" : $blogName;
@@ -34,6 +35,7 @@
 				"ActiviteParanormale" => "https://activite-paranormale.blogspot.fr/",
 				"TheTempleOfZebuleon" => "https://thetempleofzebuleon.blogspot.fr",
 				"ElGrimorioDeAstaroth" => "https://elgrimoriodeastaroth.blogspot.fr",
+				"IronTV" => "https://iron-tv.blogspot.com/",
 				"Test" => "https://testap7.blogspot.fr"
 			][$blogName];
 		}
@@ -54,11 +56,11 @@
 		
 		public function getOauth2Token($grantCode, $grantType, $redirect_uri)
 		{
-			$clienttoken_post = array(
+			$clienttoken_post = [
 				"client_id" => $_ENV["BLOGGER_CLIENT_ID"],
 				"client_secret" => $_ENV["BLOGGER_CLIENT_SECRET"],
 				"scope" => ""
-			);
+			];
 		 
 			if ($grantType === "online"){
 				$clienttoken_post["code"] = $grantCode;
@@ -106,18 +108,18 @@
 			curl_setopt($curlObj, CURLOPT_RETURNTRANSFER, 1);
 			curl_setopt($curlObj, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($curlObj, CURLOPT_HEADER, 0);
-			curl_setopt($curlObj, CURLOPT_HTTPHEADER, array('Content-type:application/json'));
+			curl_setopt($curlObj, CURLOPT_HTTPHEADER, ['Content-type:application/json']);
 			 
 			$response = curl_exec($curlObj);
 			
 			return $response;
 		}
 		
-		public function addPost($blogTitle, $accessToken, $title, $content, $tags = array())
+		public function addPost($blogTitle, $accessToken, $title, $content, $tags = [])
 		{
 			$blogTitle = $_ENV["APP_ENV"] == "dev" ? "Test" : $blogTitle;
 			$blogId = $this->blogId_array[$blogTitle];
-			$data = array("kind" => "blogger#post", "blog" => array("id" => $blogId), "title" => $title, "content" => $content, "labels" => json_decode($tags));  
+			$data = ["kind" => "blogger#post", "blog" => ["id" => $blogId], "title" => $title, "content" => $content, "labels" => json_decode($tags)];
 			$data = json_encode($data);
 
 			$curlObj = curl_init();
@@ -127,7 +129,7 @@
 			curl_setopt($curlObj, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($curlObj, CURLOPT_POST, 1);
 			curl_setopt($curlObj, CURLOPT_HEADER, false);
-			curl_setopt($curlObj, CURLOPT_HTTPHEADER, array('Content-type:application/json', 'Authorization: OAuth '.$accessToken));
+			curl_setopt($curlObj, CURLOPT_HTTPHEADER, ['Content-type:application/json', 'Authorization: OAuth '.$accessToken]);
 			curl_setopt($curlObj, CURLOPT_POSTFIELDS, $data);
 
 			$response = curl_exec($curlObj);
@@ -136,14 +138,14 @@
 			
 			curl_close($curlObj);
 
-			return array("http_code" => $httpCode, "response" => $response);
+			return ["http_code" => $httpCode, "response" => $response];
 		}
 		
 		public function updatePost($idPostBlogger, $blogTitle, $accessToken, $title, $content, $tags = [])
 		{
 			$blogTitle = $_ENV["APP_ENV"] == "dev" ? "Test" : $blogTitle;
 			$blogId = $this->blogId_array[$blogTitle];
-			$data = array("kind" => "blogger#post", "id" => $idPostBlogger, "blog" => array("id" => $blogId), "title" => $title, "content" => $content, "labels" => json_decode($tags));
+			$data = ["kind" => "blogger#post", "id" => $idPostBlogger, "blog" => ["id" => $blogId], "title" => $title, "content" => $content, "labels" => json_decode($tags)];
 
 			$curlObj = curl_init();
 
@@ -153,7 +155,7 @@
 			curl_setopt($curlObj, CURLOPT_CUSTOMREQUEST, "PUT");
 			curl_setopt($curlObj, CURLOPT_POST, 1);
 			curl_setopt($curlObj, CURLOPT_HEADER, false);
-			curl_setopt($curlObj, CURLOPT_HTTPHEADER, array('Content-Type: application/json', 'Authorization: OAuth '.$accessToken));
+			curl_setopt($curlObj, CURLOPT_HTTPHEADER, ['Content-Type: application/json', 'Authorization: OAuth '.$accessToken]);
 			curl_setopt($curlObj, CURLOPT_POSTFIELDS, json_encode($data));
 
 			$response = curl_exec($curlObj);
@@ -162,7 +164,7 @@
 			
 			curl_close($curlObj);
 
-			return array("http_code" => $httpCode, "response" => $response);
+			return ["http_code" => $httpCode, "response" => $response];
 		}
 		
 		public function deletePost($idPostBlogger, $blogTitle, $accessToken) {
@@ -176,7 +178,7 @@
 			curl_setopt($curlObj, CURLOPT_SSL_VERIFYPEER, 0);
 			curl_setopt($curlObj, CURLOPT_CUSTOMREQUEST, "DELETE");
 			curl_setopt($curlObj, CURLOPT_HEADER, false);
-			curl_setopt($curlObj, CURLOPT_HTTPHEADER, array('Content-type:application/json', 'Authorization: OAuth '.$accessToken));
+			curl_setopt($curlObj, CURLOPT_HTTPHEADER, ['Content-type:application/json', 'Authorization: OAuth '.$accessToken]);
 
 			$response = curl_exec($curlObj);
 			
@@ -184,7 +186,7 @@
 			
 			curl_close($curlObj);
 
-			return array("http_code" => $httpCode, "response" => $response);
+			return ["http_code" => $httpCode, "response" => $response];
 		}
 		
 		public function getCorrectBlog($type)
@@ -220,10 +222,13 @@
 				case "phytotherapy_es":
 					$res = "ElGrimorioDeAstaroth";
 					break;
+				case "phytotherapy_es":
+					$res = "ElGrimorioDeAstaroth";
+					break;
 				case "test_en":
 				case "test_es":
-				case "test_fr":
-					$res = "Test";
+				case "irontv_fr":
+					$res = "IronTV";
 					break;
 			}
 			
@@ -235,6 +240,6 @@
 			if($_ENV["APP_ENV"] == "dev")
 				return ["test_en", "test_fr", "test_es"];
 
-			return ["news_en", "news_es", "news_fr", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "test_en", "test_fr", "test_es"];
+			return ["news_en", "news_es", "news_fr", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es"];
 		}
 	}

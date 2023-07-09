@@ -196,7 +196,7 @@ class AdminController extends AbstractController
 		$entity = $em->getRepository($path)->find($id);
 		$redirectURL = $router->generate("Admin_BloggerPost", [], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$blogName = $blogger->getCorrectBlog($type);
+		$blogName = $blogger->getCorrectBlog($type);//dd($blogName, $type);
 		$response = $blogger->getPostInfos($blogName);
 
 		$code = $blogger->getCode($redirectURL);
@@ -226,6 +226,7 @@ class AdminController extends AbstractController
 		$entity = $em->getRepository($path)->find($id);
 
 		$title = $entity->getTitle();
+		$img = null;
 
 		if(in_array($method, ["POST", "PUT"])) {
 			$text = "";
@@ -464,6 +465,11 @@ class AdminController extends AbstractController
 					$text .= !empty($entity->getWitchcraftTool()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $language)."</b><span>".(new FunctionsLibrary())->sourceString($entity->getWitchcraftTool()->getSource(), $entity->getWitchcraftTool()->getLanguage()->getAbbreviation())."</span>" : "";
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
 					break;
+				case "Music":
+					$text = $entity->getEmbeddedCode();
+					$text .= "<br>".$entity->getText();
+					$text .= "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation());
+					break;
 			}
 
 			if(in_array(Store::class, [get_class($entity), get_parent_class($entity)])) {
@@ -477,7 +483,7 @@ class AdminController extends AbstractController
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
 			}
 
-			$img = $imgSize->adaptImageSize(550, $img);
+			$img = !empty($img) ? $imgSize->adaptImageSize(550, $img) : null;
 			$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
 			$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 		}

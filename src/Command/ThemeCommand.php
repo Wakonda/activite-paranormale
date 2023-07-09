@@ -21,7 +21,6 @@ class ThemeCommand extends Command
         $this->em = $em;
     }
 
-    // the name of the command (the part after "bin/console")
     protected static $defaultName = 'app:migrate-theme';
 
     protected function configure()
@@ -47,7 +46,7 @@ class ThemeCommand extends Command
 			
 			$this->em->persist($st);
 		}
-// dd("lll");
+
 		$this->em->flush();
 		
 		$themes = $this->em->getRepository(Theme::class)->findAll();
@@ -57,7 +56,7 @@ class ThemeCommand extends Command
 				continue;
 
 			$st = $this->em->getRepository(Theme::class)->findOneBy(["internationalName" => $theme->getSurTheme()->getInternationalName(), "language" => $theme->getSurTheme()->getLanguage()]);
-	// dd($st);		
+
 			$theme->setParentTheme($st);
 			
 			$this->em->persist($st);
