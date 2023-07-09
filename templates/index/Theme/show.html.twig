@@ -13,18 +13,37 @@
 		</form>
 		<hr class="hr2">
 	{% endif %}
+
+	{% set countTheme = publications|length %}
+
+	{% set i = 0 %}
 	
-	<table class="table">
-		<tbody>
-			{% for key, publication in publications %}
-			<tr>
-				<td class="td_form_table">{{ key }}</td>
-				<td><a href="{{ publication["path"] }}">{{ publication["number"] }}</a></td>
-			</tr>
-			{% endfor %}
-		</tbody>
-	</table>
-	
+	{% if countTheme > 1 %}
+	<div id="accordion">
+	{% endif %}
+		{% for key, publication in publications %}
+			{% if countTheme > 1 %}
+			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_theme_{{ i }}" aria-expanded="false" aria-controls="collapse_theme_{{ i }}">{{ key }}</h3>
+			<div id="collapse_theme_{{ i }}" class="collapse" data-parent="#accordion">
+				<br>
+			{% endif %}
+				<table class="table table-bordered">
+					{% for title, datas in publication %}
+						<tr>
+							<td class="td_form_table">{{ title }}</td>
+							<td><a href="{{ datas.path }}">{{ datas.number }}</a></td>
+						</tr>
+					{% endfor %}
+				</table>
+			{% if countTheme > 1 %}
+			</div>
+			{% endif %}
+			{% set i = i + 1 %}
+		{% endfor %}
+	{% if countTheme > 1 %}
+	</div>
+	{% endif %}
+
 	{% if entity.source is not empty %}
 		<br>
 		<h3>{{ "theme.index.Sources"|trans([], "validators") }}</h3>
@@ -33,7 +52,7 @@
 	
 	<hr class="hr2"/>
 	<p>
-	{{ entity.parentTheme.title }} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />
+	{% if entity.parentTheme is not empty %}<a href="{{ path('Theme_Show', {theme: entity.parentTheme.title, id: entity.parentTheme.id}) }}">{{ entity.parentTheme.title }}</a> - {% endif %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />
 	</p>
 	<br>
 	{{ "google"|advertisement|raw }}

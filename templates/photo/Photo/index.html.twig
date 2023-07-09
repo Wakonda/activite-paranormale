@@ -10,30 +10,30 @@
 	<hr>
 
 	{% set nbrTheme1 = nbrTheme - 1 %}
-	
+
 	{% set i = 0 %}
 	<div id="accordion">
 		{% for ST in parentTheme %}
 			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
 			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
-			<br>
-			<table class="table table-bordered">
-			<tr class="trGene">
-				<th class="label_form">{{ "photo.index.Theme"|trans([], "validators") }}</th>
-				<th class="label_form">{{ "photo.index.Number"|trans([], "validators") }}</th>
-			</tr>
+				<br>
+				<table class="table table-bordered">
+				<tr class="trGene">
+					<th class="label_form">{{ "photo.index.Theme"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "photo.index.Number"|trans([], "validators") }}</th>
+				</tr>
 
-			{% for T in theme %}
-				{% if T.parentTheme == ST %}
-					{% for i in 0..nbrTheme1 %}
-						{% if T.title == tabThemeNbr[i][0] %}
-							<tr><td class="td_form_table"><a href="{{ path('Photo_TabPicture', {'id' : T.id, 'theme' : T.title})}}" >{{ tabThemeNbr[i][0] }}</a></td>
-							<td class="tdGene"><span class="badge badge-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
-						{% endif %}
-					{% endfor %}
-				{% endif %}
-			{% endfor %}
-			</table>
+				{% for T in theme %}
+					{% if T.parentTheme == ST %}
+						{% for i in 0..nbrTheme1 %}
+							{% if T.title == tabThemeNbr[i][0] %}
+								<tr><td class="td_form_table"><a href="{{ path('Photo_TabPicture', {'id' : T.id, 'theme' : T.title})}}" >{{ tabThemeNbr[i][0] }}</a></td>
+								<td class="tdGene"><span class="badge badge-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+				{% endfor %}
+				</table>
 			</div>
 		{% endfor %}
 	</div>
