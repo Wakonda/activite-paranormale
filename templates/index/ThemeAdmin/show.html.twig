@@ -28,6 +28,14 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Photo"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.photo|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">Wikidata</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "theme.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
 {% endblock %}
 
 {% block data_bottom %}

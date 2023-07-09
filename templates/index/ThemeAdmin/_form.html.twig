@@ -1,3 +1,5 @@
+{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "theme.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
@@ -9,6 +11,16 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.internationalName, "civility.admin.InternationalName"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.internationalName) }}{{ form_widget(form.internationalName, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "theme.admin.Text"|trans([], "validators")) }}</div>
+
+{{ macro_admin.wikidata_html_generic(form) }}
+{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id) }}
+
+<div class="form-table-cell">
+	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
+	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
+</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.pdfTheme, "theme.admin.File"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -23,3 +35,6 @@
 	<br>
 	{{ form_widget(form.photo_selector) }}
 </div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "theme.admin.Sources"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>

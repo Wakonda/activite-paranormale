@@ -8,6 +8,9 @@
 
 {% block js_specific %}
 	{% import "index/ThemeAdmin/macro_theme.html.twig" as macro_theme %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id, "") }}
 	
 	<script>
 		$(function()

@@ -22,11 +22,11 @@ class TagWordAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('text', TextareaType::class, array('required' => false))
-            ->add('source', SourceEditType::class, array('required' => false))
+            ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('text', TextareaType::class, ['required' => false])
+            ->add('source', SourceEditType::class, ['required' => false])
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
@@ -36,10 +36,10 @@ class TagWordAdminType extends AbstractType
 					return $er->createQueryBuilder('u')
 							->orderBy('u.title', 'ASC');
 				},
-				'constraints' => array(new NotBlank())
-			))
+				'constraints' => [new NotBlank()]
+			])
 			->add('wikidata', TextType::class, ['required' => false])
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'TagWord_Admin_ShowImageSelectorColorbox'));
+			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'TagWord_Admin_ShowImageSelectorColorbox']);
     }
 
     public function getBlockPrefix()
@@ -49,8 +49,8 @@ class TagWordAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\TagWord',
-		));
+		]);
 	}
 }

@@ -6,13 +6,11 @@
 {% block APBlog_body %}
 	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<hr>
+	{{ entity.text|raw }}
 	{% if entity.pdfTheme is not empty and file_exists(entity.getAssetImagePath() ~ entity.pdfTheme) %}
-		<form action="{{ path('Theme_Save', {'id' : entity.id, 'theme' : entity.title|replace({'/': '-'}) })}}" name="choixTheme">
+		<form action="{{ path('Theme_Save', {'id' : entity.id, 'theme' : entity.title|replace({'/': '-'}) })}}" name="themeChoice" class="text-center">
 			<input class="submitcomment btn" type="submit" name="Search" value="{{ "generality.pdf.SavePrint"|trans([], "validators") }}" title="Search" /> 
 		</form>
-		<br>
-		<iframe src="{{ asset(entity.getAssetImagePath()) }}{{ entity.pdfTheme }}" style="width: 100%; height: 800px;" ></iframe>
-		<br>
 		<hr class="hr2">
 	{% endif %}
 	
@@ -27,6 +25,8 @@
 		</tbody>
 	</table>
 	<br>
+	<h3>{{ "theme.index.Sources"|trans([], "validators") }}</h3>
+	{{ source_document(entity.source, entity.language) }}
 	<hr class="hr2"/>
 	<p>
 	{{ entity.surTheme.title }} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />

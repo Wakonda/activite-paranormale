@@ -171,9 +171,11 @@ theme:
         File: "Fichier"
         Photo: "Photo"
         InternationalName: "Nom international"
+        Text: "Texte"
     index:
         Theme: "Thème"
         Read: "Consulter"
+        Sources: "Sources"
     read:
         Theme: "Thème"
 generality:

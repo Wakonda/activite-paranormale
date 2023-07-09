@@ -38,6 +38,11 @@ class Theme
     private $surTheme;
 
     /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Theme")
+     */
+    private $parentTheme;
+
+    /**
 	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
@@ -60,6 +65,23 @@ class Theme
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $photo;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    protected $text;
+
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
+
+    /**
+     * @ORM\Column(name="source", type="text", nullable=true)
+     */
+    private $source;
 
 	public function getPropertyEntityForm()
 	{
@@ -188,6 +210,16 @@ class Theme
         $this->surTheme = $surTheme;
     }
 
+    public function getParentTheme()
+    {
+        return $this->parentTheme;
+    }
+
+    public function setParentTheme(SurTheme $parentTheme)
+    {
+        $this->parentTheme = $parentTheme;
+    }
+
     public function getLanguage()
     {
         return $this->language;
@@ -275,5 +307,35 @@ class Theme
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setPhoto($filename);
 		}
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    public function getWikidata()
+    {
+        return $this->wikidata;
+    }
+
+    public function setSource($source)
+    {
+        $this->source = $source;
+    }
+
+    public function getSource()
+    {
+        return $this->source;
     }
 }

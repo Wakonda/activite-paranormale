@@ -176,20 +176,13 @@ class EventMessageController extends AbstractController
 
 		foreach($entities as $entity)
 		{
-			$dateString = null;
-
-			if($entity->getDateTo() == $entity->getDateFrom())
-				$dateString = $date->doPartialDate($entity->getDateFromString(), $request->getLocale());
-			else
-				$dateString = $date->doPartialDate($entity->getDateFromString(), $request->getLocale())." - ".$date->doPartialDate($entity->getDateToString(), $request->getLocale());
-
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(150, $img);
 
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].'; height:'.$img[1].'">';			
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
-			$row[] =  $dateString;
+			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
 			$output['aaData'][] = $row;
 		}
