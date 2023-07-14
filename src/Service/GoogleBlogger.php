@@ -192,7 +192,7 @@
 		public function getCorrectBlog($type)
 		{
 			$res = null;
-			
+
 			switch($type)
 			{
 				case "news_fr":
@@ -225,10 +225,13 @@
 				case "phytotherapy_es":
 					$res = "ElGrimorioDeAstaroth";
 					break;
-				case "test_en":
-				case "test_es":
 				case "irontv_fr":
 					$res = "IronTV";
+					break;
+				case "test_en":
+				case "test_es":
+				case "test_fr":
+					$res = "Test";
 					break;
 			}
 			

@@ -466,8 +466,23 @@ class AdminController extends AbstractController
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
 					break;
 				case "Music":
+					$twig = $this->get("twig");
+					$twigExtension = $twig->getExtensions()["App\Twig\APExtension"];
+
+					$language = !empty($ar = $entity->getArtist()) ? $ar->getLanguage()->getAbbreviation() : $entity->getAlbum()->getLanguage()->getAbbreviation();
 					$text = $entity->getEmbeddedCode();
-					$text .= "<br>".$entity->getText();
+					$text .= "<br><b>".$translator->trans("music.admin.Morceau", [], "validators", $language)." :</b> ".$entity->getMusicPiece();
+					$text .= "<br><b>".$translator->trans("music.admin.Duration", [], "validators", $language)." :</b> ".$twigExtension->stringDurationVideoFilter($entity->getLength());
+					
+					if(!empty($a = $entity->getAlbum()))
+						$text .= "<br><b>".$translator->trans("music.admin.Album", [], "validators", $language)." :</b> ".$a->getTitle();
+					
+					$artist = !empty($ar = $entity->getArtist()) ? $ar : $entity->getAlbum()->getArtist();
+					
+					$text .= "<br><b>".$translator->trans("album.admin.Artist", [], "validators", $language)." :</b> ".$artist->getTitle();
+					
+					
+					$text .= "<hr>".$entity->getText();
 					$text .= "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation());
 					break;
 			}
