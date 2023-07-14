@@ -69,7 +69,7 @@ index:
         FollowUs: "Suivez-nous"
         About: "À propos"
         MobileView: "Version mobile"
-        Directory: "Annuaire"
+        Tag: "Tag"
         PrivacyPolicy: "Politique de confidentialité"
         Contact: "Contact"
     rightMenu:

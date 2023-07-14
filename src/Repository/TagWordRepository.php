@@ -24,6 +24,36 @@ class TagWordRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+	
+	public function getDatatablesForIndex($locale, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$aColumns = ['c.title', 'c.title'];
+
+		$qb->join('c.language', 'l')
+		   ->where('l.abbreviation = :locale')
+		   ->setParameter('locale', $locale);
+
+		if(!empty($sortDirColumn))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('c.title LIKE :search')
+			   ->setParameter('search', $search);
+		}
+		if($count)
+		{
+			$qb->select("count(c)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
 
 	// Administration
 	public function countAdmin()

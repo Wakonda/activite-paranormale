@@ -1,0 +1,69 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "tag.index.Tag"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bonejangles-icon.png') }}" width="25" class="mt-1" alt="Killer"/></span>{{ "tag.index.Tag"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script>
+		$(function ()
+		{
+			oTable = $('table.biography_datatables').DataTable( {
+				"oLanguage": {
+					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"bFilter": true,
+				"bInfo": true,
+				"bSort": true,
+				"bLengthChange": true,
+				"sPaginationType": "full_numbers",
+				"iDisplayLength": {{ total_line_display }},
+				"bProcessing": true,
+				"bServerSide": true,
+				"aaSorting": [[ 0, "asc" ]],
+				"ajax": {
+					"url": "{{ path('ap_tags_ListDatatables') }}",
+					"type": "GET"
+				},
+				"preDrawCallback": function( settings ) {
+					document.getElementById("count_tag").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+				},
+				"drawCallback": function( settings ) {
+				console.log(settings)
+					document.getElementById("count_tag").innerHTML = settings.json.iTotalRecords;
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/tag-index.png') }}" alt="Tag" width="550" /></p>
+	<hr>
+	<p>{{ "tag.index.Number"|trans([], "validators") }}<span class="badge badge-danger" id="count_tag"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
+	<hr>
+	<br>
+	<table class="biography_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "tag.index.Tag"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.index.Photo"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "tag.index.Tag"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "tag.index.Photo"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

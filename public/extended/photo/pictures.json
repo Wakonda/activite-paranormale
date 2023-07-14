@@ -318,12 +318,6 @@
 		"license": "<a href='https://creativecommons.org/publicdomain/zero/1.0/deed.en'>Creative Commons Zero - CC0</a>"
 	},
 	{
-		"url": "https://pixabay.com/fr/photos/horreur-de-clown-meurtrier-de-masse-1999685/",
-		"filename": "webdirectoryseo.jpg",
-		"author": "<a href='https://pixabay.com/fr/users/Alexas_Fotos-686414/'>Alexas_Fotos</a>",
-		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
-	},
-	{
 		"url": "https://pixabay.com/fr/photos/artistes-danseur-de-feu-le-feu-558252/",
 		"filename": "eventMessage-tab.jpg",
 		"author": "<a href='https://pixabay.com/fr/users/bculliton0-549582/'>bculliton0</a>",
@@ -914,6 +908,12 @@
 	{
 		"url": "https://pixai.art/",
 		"filename": "followus.webp",
+		"author": "pixai.art",
+		"license": "CC0"
+	},
+	{
+		"url": "https://pixai.art/",
+		"filename": "tag-index.png",
 		"author": "pixai.art",
 		"license": "CC0"
 	}

@@ -1,4 +1,8 @@
 tag:
+    index:
+        Tag: "Tag"
+        Photo: "Photo"
+        Number: "Nombre : "
     search:
         ArticleTagged: >-
             {number, plural,

@@ -1,3 +1,11 @@
+ap_tags_index:
+    path:  /tags/index
+    controller: App\Controller\TagsController::index
+
+ap_tags_ListDatatables:
+    path: /tags/listdatatables
+    controller: App\Controller\TagsController::listDatatables
+
 ap_tags_search:
     path:  /searchtags/{id}/{title}
     controller: App\Controller\TagsController::searchAction
