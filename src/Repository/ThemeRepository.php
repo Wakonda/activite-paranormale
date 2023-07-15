@@ -110,6 +110,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		$qb->join('o.language', 'l')
 			->where('l.abbreviation = :language')
 			->setParameter('language', $language)
+			->andWhere("o.parentTheme IS NOT NULL")
 			->orderBy('o.title');
 
 		return $qb;

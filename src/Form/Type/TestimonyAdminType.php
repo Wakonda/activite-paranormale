@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
@@ -25,26 +26,26 @@ class TestimonyAdminType extends AbstractType
     {
 		$language = $options["locale"];
         $builder
-            ->add('title', TextType::class, array('label' => 'Titre', 'required' => true))
-            ->add('text', TextareaType::class, array('label' => 'Témoignage', 'required' => true))
+            ->add('title', TextType::class, ['label' => 'Titre', 'required' => true])
+            ->add('text', TextareaType::class, ['label' => 'Témoignage', 'required' => true])
 			->add('pseudoUsed', TextType::class)
-			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text'))
+			->add('publicationDate', DateType::class, ['required' => true, 'widget' => 'single_text'])
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
 				'required' => true,
 				'query_builder' => function(\App\Repository\LanguageRepository $repository) { return $repository->getLangueOnForm();}
-			))
-			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
+			])
+			->add('state', EntityType::class, ['class'=>'App\Entity\State', 
 				'choice_label'=>'title', 
 				'required' => true,
 				'choice_attr' => function($val, $key, $index) {
 					return ['data-intl' => $val->getInternationalName()];
 				},
 				'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
-			))
+			])
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,
 				'allow_add' => [
@@ -67,14 +68,14 @@ class TestimonyAdminType extends AbstractType
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
-			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
+			->add('country', EntityType::class, ['class'=>'App\Entity\Region', 
 					'choice_label'=>'title', 
 					'required' => false,
 					'mapped' => false,
 					'choice_value' => function ($entity) {
 						return $entity ? $entity->getInternationalName() : '';
 					},
-					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
 			->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false])
@@ -88,10 +89,10 @@ class TestimonyAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Testimony',
-			'validation_groups' => array('testimony_validation', 'mappedsuperclass_validation'),
+			'validation_groups' => ['testimony_validation', 'mappedsuperclass_validation'],
 			'locale' => 'fr'
-		));
+		]);
 	}
 }
