@@ -5,11 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 class IndexController extends AbstractController
 {
-    public function indexAction(Request $request, TranslatorInterface $translator, SessionInterface $session)
+    public function indexAction(Request $request, SessionInterface $session)
     {
 		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
 			$session->set('v', "v3");
