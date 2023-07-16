@@ -45,7 +45,7 @@ class ThemeController extends AbstractController
 	}	
 	
 	public function showAction(TranslatorInterface $translator, Request $request, $theme, $id)
-	{dd($translator, $translator->trans('news.index.ChoisissezUnTheme', [], 'validators'), $request, $translator->trans('news.index.ChoisissezUnTheme', [], 'validators'));
+	{
 		$em = $this->getDoctrine()->getManager();
 		$theme = str_replace('-', '/', $theme);
 		$entity = $em->getRepository(Theme::class)->find($id);
@@ -58,7 +58,6 @@ class ThemeController extends AbstractController
 		foreach($childEntities as $childEntity) {
 			$id = $childEntity->getId();
 			$theme = str_replace('-', '/', $childEntity->getTitle());
-			// $request->setDefaultLocale("es");
 
 			$childArray = [
 				$translator->trans('news.index.Actualite', [], 'validators') => [

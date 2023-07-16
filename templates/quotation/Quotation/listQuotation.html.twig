@@ -24,7 +24,7 @@
 					target: ''
 				}
 			},
-			"sAjaxSource": "{{ path('Quotation_listQuotationDatatables') }}",
+			"sAjaxSource": "{{ path('Quotation_listDatatables') }}",
 		});
 	});
 </script>
@@ -45,8 +45,8 @@
 	</tbody>
 	<tfoot>
 		<tr>
-			<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
-			<th class="label_form">{{ "quotation.list.Country"|trans([], "validators") }}</th>
+			<th class="label_form">{{ "quotation.list.Quotation"|trans([], "validators") }}</th>
+			<th class="label_form">{{ "quotation.list.Author"|trans([], "validators") }}</th>
 		</tr>
 	</tfoot>
 </table>

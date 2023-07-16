@@ -29,6 +29,11 @@ class QuotationController extends AbstractController
     {
         return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY]);
     }
+
+    public function listPoem()
+    {
+        return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY]);
+    }
 	
 	public function listQuotationDatatablesAction(Request $request)
     {
@@ -122,6 +127,52 @@ class QuotationController extends AbstractController
 
 		return $response;
     }
+	
+	public function listPoemDatatables(Request $request)
+    {
+		$em = $this->getDoctrine()->getManager();
+		$language = $request->getLocale();
+
+		$iDisplayStart = $request->query->get('iDisplayStart');
+		$iDisplayLength = $request->query->get('iDisplayLength');
+		$sSearch = $request->query->get('sSearch');
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			{
+				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
+				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
+			}
+		}
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, true);
+
+		$output = [
+			"sEcho" => $request->query->get('sEcho'),
+			"iTotalRecords" => $iTotal,
+			"iTotalDisplayRecords" => $iTotal,
+			"aaData" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$row = [];
+			$row[] = "<a href='".$this->generateUrl("Poem_Read", ["id" => $entity->getId()])."'>".$entity->getTitle()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
+
+			$output['aaData'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+    }
 
 	public function proverbCountryAction($id) {
 		$em = $this->getDoctrine()->getManager();
@@ -187,8 +238,16 @@ class QuotationController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->find($id);
-		
+
 		return $this->render("quotation/Quotation/readQuotation.html.twig", ['entity' => $entity]);
+	}
+
+	public function readPoem($id)
+	{
+		$em = $this->getDoctrine()->getManager();
+		$entity = $em->getRepository(Quotation::class)->find($id);
+
+		return $this->render("quotation/Quotation/readPoem.html.twig", ['entity' => $entity]);
 	}
 	
 	public function quotationsServerSideAction(Request $request, PaginatorInterface $paginator, $authorId, $page)

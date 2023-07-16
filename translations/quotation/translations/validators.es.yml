@@ -2,11 +2,13 @@ quotation:
     index:
         Quotation: "Cita"
         Proverb: "Proverbio"
+        Poem: "Poesía"
     list:
         Author: "Autor"
         Quotation: "Cita"
         Region: "Región"
         Proverb: "Proverbio"
+        Poem: "Poesía"
         Read: "Leer"
     read:
         Explanation: "Explicación"
@@ -23,6 +25,9 @@ quotation:
         Family: "Familia"
         Region: "Región"
         Origin: "Origen"
+        Title: "Título"
+        Text: "Texto"
+        Country: "País"
     imageGenerator:
         Generate: "Generar una imagen"
         Image: "Image"

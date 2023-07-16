@@ -28,6 +28,7 @@ class QuotationAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
+            ->add('title', TextType::class, array('required' => true))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
@@ -43,7 +44,8 @@ class QuotationAdminType extends AbstractType
 			->add('family', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => true,
 					"choices" => [
 						"quotation.index.Quotation" => Quotation::QUOTATION_FAMILY,
-						"quotation.index.Proverb" => Quotation::PROVERB_FAMILY
+						"quotation.index.Proverb" => Quotation::PROVERB_FAMILY,
+						"quotation.index.Poem" => Quotation::POEM_FAMILY
 					],
 					'translation_domain' => 'validators'
 			])
@@ -77,8 +79,11 @@ class QuotationAdminType extends AbstractType
 			$form = $event->getForm();
 			$notBlank = new NotBlank();
 
-			if($data->isQuotationFamily() and empty($form->get("authorQuotation")->getData()))
+			if(($data->isQuotationFamily() or $data->isPoemFamily()) and empty($form->get("authorQuotation")->getData()))
 				$form->get('authorQuotation')->addError(new FormError($notBlank->message));
+
+			if($data->isPoemFamily() and empty($form->get("title")->getData()))
+				$form->get('title')->addError(new FormError($notBlank->message));
 
 			if($data->isProverbFamily() and empty($form->get("country")->getData()))
 				$form->get('country')->addError(new FormError($notBlank->message));

@@ -70,7 +70,7 @@ class QuotationRepository extends EntityRepository
 		   ->andWhere("c.family = :family")
 		   ->setParameter("family", $family);
 
-		if($family == Quotation::QUOTATION_FAMILY) {
+		if($family == Quotation::QUOTATION_FAMILY or $family == Quotation::POEM_FAMILY) {
 			$aColumns = ['c.textQuotation', 'a.title'];
 			$qb->join('c.authorQuotation', 'a');
 		} elseif($family == Quotation::PROVERB_FAMILY) {

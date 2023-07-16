@@ -4,7 +4,7 @@ Quotation_Index:
     defaults:
         family: null
 
-Quotation_listQuotationDatatables:
+Quotation_listDatatables:
     path:  /listquotationdatatables
     controller: App\Controller\QuotationController::listQuotationDatatablesAction
 
@@ -14,7 +14,7 @@ Quotation_Read:
     requirements:
         id: \d+
 
-Proverb_listQuotationDatatables:
+Proverb_listDatatables:
     path:  /listproverbdatatables
     controller: App\Controller\QuotationController::listProverbDatatablesAction
 
@@ -33,6 +33,16 @@ Proverb_listProverbByCountryDatatables:
 Proverb_Read:
     path:  /proverb/read/{id}
     controller: App\Controller\QuotationController::readProverbAction
+    requirements:
+        id: \d+
+
+Poem_listDatatables:
+    path:  /listpoemdatatables
+    controller: App\Controller\QuotationController::listPoemDatatables
+
+Poem_Read:
+    path:  /poem/read/{id}
+    controller: App\Controller\QuotationController::readPoem
     requirements:
         id: \d+
 

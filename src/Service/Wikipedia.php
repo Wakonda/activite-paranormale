@@ -163,6 +163,24 @@
 			foreach($xpath->query('//span[contains(attribute::class, "haudio")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
+			foreach($xpath->query('//div[contains(attribute::class, "dablink")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//table[contains(attribute::class, "navbox")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//table[contains(attribute::class, "vertical-navbox")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//div[contains(attribute::class, "hanvisning_bas")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//table[contains(attribute::class, "vcard")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
+			foreach($xpath->query('//figure') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
 
 			if(!$this->keepTitle) {
 				foreach($xpath->query('//h2') as $e ) {

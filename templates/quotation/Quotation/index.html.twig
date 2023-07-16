@@ -7,12 +7,15 @@
 	<ul id="tab_resources" class="nav nav-pills nav-fill">
 		<li class="nav-item mb-3"><span onclick="location.href = '{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }) }}';" {{ family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Quotation"|trans([], "validators") }}</span></li>
 		<li class="nav-item mb-3"><span onclick="location.href = '{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY') }) }}';" {{ family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Proverb"|trans([], "validators") }}</span></li>
+		<li class="nav-item mb-3"><span onclick="location.href = '{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY') }) }}';" {{ family == constant('App\\Entity\\Quotation::POEM_FAMILY') ? 'class="active"' : "" }}>{{ "quotation.index.Poem"|trans([], "validators") }}</span></li>
 	</ul>
 	
 	{% if family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') %}
 		{{ render(controller('App\\Controller\\QuotationController::listQuotationAction')) }}
 	{% elseif family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') %}
 		{{ render(controller('App\\Controller\\QuotationController::listProverbAction')) }}
+	{% elseif family == constant('App\\Entity\\Quotation::POEM_FAMILY') %}
+		{{ render(controller('App\\Controller\\QuotationController::listPoem')) }}
 	{% endif %}
 	<br>
 	<br>

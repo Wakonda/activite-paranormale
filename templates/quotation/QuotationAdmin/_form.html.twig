@@ -4,15 +4,18 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.family, "quotation.admin.Family"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.family) }}{{ form_widget(form.family, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head titleContainer">{{ form_label(form.title, "quotation.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell titleContainer">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head authorContainer">{{ form_label(form.authorQuotation, "quotation.admin.Author"|trans([], "validators")) }}</div>
 <div class="form-table-cell authorContainer">{{ form_errors(form.authorQuotation) }}{{ form_widget(form.authorQuotation, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head countryContainer">{{ form_label(form.country, "quotation.admin.Country"|trans([], "validators")) }}</div>
 <div class="form-table-cell countryContainer">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.textQuotation, "quotation.admin.Quotation"|trans([], "validators")) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.textQuotation, "quotation.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
-	{{ form_errors(form.textQuotation) }}{{ form_widget(form.textQuotation, { 'attr': {'class': 'form-control'} }) }}
+	{{ form_errors(form.textQuotation) }}{{ form_widget(form.textQuotation, { 'attr': {'class': 'form-control', 'rows': 10} }) }}
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.explanation, "quotation.admin.Explanation"|trans([], "validators")) }}</div>
@@ -38,9 +41,15 @@
 			element.style.display="none";
 		for (let element of document.getElementsByClassName("countryContainer"))
 			element.style.display="none";
+		for (let element of document.getElementsByClassName("titleContainer"))
+			element.style.display="none";
 			
-		if(value == "{{ constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }}")
+		if(value == "{{ constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}")
 			for (let element of document.getElementsByClassName("authorContainer"))
+				element.style.display="block";
+			
+		if(value == "{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}")
+			for (let element of document.getElementsByClassName("titleContainer"))
 				element.style.display="block";
 			
 		if(value == "{{ constant('App\\Entity\\Quotation::PROVERB_FAMILY') }}")

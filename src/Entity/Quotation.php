@@ -16,6 +16,7 @@ class Quotation
 {
 	const QUOTATION_FAMILY = "quotation";
 	const PROVERB_FAMILY = "proverb";
+	const POEM_FAMILY = "poem";
 
     /**
      * @var integer $id
@@ -30,6 +31,13 @@ class Quotation
      * @ORM\ManyToOne(targetEntity="App\Entity\Biography")
      */
     private $authorQuotation;
+
+    /**
+     * @var text $title
+     *
+     * @ORM\Column(name="title", type="string")
+     */
+    private $title;
 
     /**
      * @var text $textQuotation
@@ -94,15 +102,29 @@ class Quotation
 	public function isProverbFamily(): bool {
 		return $this->family == self::PROVERB_FAMILY;
 	}
+	
+	public function isPoemFamily(): bool {
+		return $this->family == self::POEM_FAMILY;
+	}
 
 	public function getTitle() {
+		if($this->isPoemFamily())
+			return $this->title;
+
 		return $this->textQuotation;
+	}
+	
+	public function getUrlSlug() {
+		return $this->getTitle();
 	}
 
 	public function getShowRoute()
 	{
 		if($this->isProverbFamily())
 			return "Proverb_Read";
+
+		if($this->isPoemFamily())
+			return "Poem_Read";
 
 		return "Quotation_Read";
 	}
@@ -242,5 +264,10 @@ class Quotation
 	public function setCountry($country)
 	{
 		$this->country = $country;
+	}
+
+	public function setTitle($title)
+	{
+		$this->title = $title;
 	}
 }
