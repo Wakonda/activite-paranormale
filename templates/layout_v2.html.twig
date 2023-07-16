@@ -161,7 +161,7 @@
 										<div class="input-group mb-3">
 											<input type="text" name="ap_search_searchenginetype[query]" value="" placeholder="{{ 'index.leftMenu.Search'|trans([], 'validators') }}" />
 											<div class="input-group-append">
-												<button type="submit" name="Search" title="Search" class="submitcomment bouton border-0"><i class="fas fa-search"></i></button>
+												<button type="submit" name="Search" title="Search" class="submitcomment bouton border-0" aria-label="Search"><i class="fas fa-search"></i></button>
 											</div>
 										</div>
 									</form>
@@ -214,7 +214,7 @@
 								{% endif %}
 								<div id="quotation_right_menu" class="news_section">
 									<h3>{{ "index.leftMenu.Quotations"|trans([], "validators") }}</h3>
-									<img class="image_wrapper" src="{{ asset('extended/photo/quotation-random.jpg') }}" alt="Random quotation" width="200" />
+									<img class="image_wrapper" src="{{ asset('extended/photo/quotation-random.webp') }}" alt="Random quotation" width="200" />
 									{{ render(controller('App\\Controller\\QuotationController::randomQuote')) }}
 								</div>
 								<div id="feedrss_right_menu" class="news_section">
@@ -262,12 +262,12 @@
 								{% elseif app.request.locale == 'en' %}
 									<div style="width:200px;text-align:right;line-height:11px;">
 									<iframe class="horoscope_iframe" src="https://horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									width="200" height="250" style="border:0;margin:0;padding:0;"></iframe>
+									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horoscope"></iframe>
 									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscope999.com/">Horoscopes</a> &nbsp;</div></div>
 								{% else %}
 									<div style="width:200px;text-align:right;line-height:11px;">
 									<iframe class="horoscope_iframe" src="https://horoscopo.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									width="200" height="250" style="border:0;margin:0;padding:0;"></iframe>
+									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horóscopo"></iframe>
 									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscopo.horoscope999.com/">Horoscopo</a> &nbsp;</div></div>
 								{% endif %}
 							</div>
