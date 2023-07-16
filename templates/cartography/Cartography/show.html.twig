@@ -56,8 +56,10 @@
 		</li>
 	</ul>
 
-	<h3>{{ "cartography.show.Source"|trans([], "validators") }}</h3>
-	{{ source_document(entity.source, entity.language) }}
+	{% if entity.source is not empty %}
+		<h3>{{ "cartography.show.Source"|trans([], "validators") }}</h3>
+		{{ source_document(entity.source, entity.language) }}
+	{% endif %}
 
 	<hr class="hr2">
 	<p>
