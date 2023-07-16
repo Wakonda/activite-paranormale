@@ -14,18 +14,18 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuotationController extends AbstractController
 {
-    public function indexAction($family)
+    public function index($family)
     {
 		$family = empty($family) ? Quotation::QUOTATION_FAMILY : $family;
         return $this->render('quotation/Quotation/index.html.twig', ["family" => $family]);
     }
 
-    public function listQuotationAction()
+    public function listQuotation()
     {
         return $this->render('quotation/Quotation/listQuotation.html.twig', ["family" => Quotation::QUOTATION_FAMILY]);
     }
 
-    public function listProverbAction()
+    public function listProverb()
     {
         return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY]);
     }
@@ -35,7 +35,7 @@ class QuotationController extends AbstractController
         return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY]);
     }
 	
-	public function listQuotationDatatablesAction(Request $request)
+	public function listQuotationDatatables(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -81,7 +81,7 @@ class QuotationController extends AbstractController
 		return $response;
     }
 	
-	public function listProverbDatatablesAction(Request $request)
+	public function listProverbDatatables(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -174,14 +174,14 @@ class QuotationController extends AbstractController
 		return $response;
     }
 
-	public function proverbCountryAction($id) {
+	public function proverbCountry($id) {
 		$em = $this->getDoctrine()->getManager();
 		$country = $em->getRepository(Region::class)->find($id);
 
 		return $this->render('quotation/Quotation/listProverbByCountry.html.twig', ["country" => $country]);
 	}
 
-	public function listProverbByCountryDatatablesAction(Request $request, TranslatorInterface $translator, $countryId) {
+	public function listProverbByCountryDatatables(Request $request, TranslatorInterface $translator, $countryId) {
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
@@ -226,7 +226,7 @@ class QuotationController extends AbstractController
 		return $response;
 	}
 
-	public function readProverbAction($id)
+	public function readProverb($id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->find($id);
@@ -234,7 +234,7 @@ class QuotationController extends AbstractController
 		return $this->render("quotation/Quotation/readProverb.html.twig", ['entity' => $entity]);
 	}
 
-	public function readQuotationAction($id)
+	public function readQuotation($id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->find($id);
@@ -250,7 +250,7 @@ class QuotationController extends AbstractController
 		return $this->render("quotation/Quotation/readPoem.html.twig", ['entity' => $entity]);
 	}
 	
-	public function quotationsServerSideAction(Request $request, PaginatorInterface $paginator, $authorId, $page)
+	public function quotationsServerSide(Request $request, PaginatorInterface $paginator, $authorId, $page)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -271,7 +271,7 @@ class QuotationController extends AbstractController
 		]);
 	}
 
-    public function randomQuoteAction(Request $request)
+    public function randomQuote(Request $request)
     {
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->randomQuote($request->getLocale());
@@ -282,7 +282,7 @@ class QuotationController extends AbstractController
     }
 	
 	/* FONCTION DE COMPTAGE */
-	public function countQuotationAction(Request $request)
+	public function countQuotation(Request $request)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$nbrTotalQuotation = $em->getRepository(Quotation::class)->countCitation($request->getLocale());

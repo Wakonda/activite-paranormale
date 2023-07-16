@@ -8,19 +8,19 @@
 		<meta name="description" content="{% block meta_description %}{{ render(controller('App\\Controller\\PageController:descriptionMetaTagAction')) }}{% endblock %}">
 		<meta name="msvalidate.01" content="FB19BE8A55C1B235B4389DE2169412FA" />
 		{% block meta_plus %}{% endblock %}
-		
+
 		<title>{% block title %}Activité-Paranormale{% endblock %}</title>
 		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print" async />
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app_v3') }}
         {% endblock %}
-		
+
 		{{ encore_entry_script_tags('app_v3') }}
-		
+
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.tarteaucitron_js() }}
-		
+
         <script type="text/javascript">
 			tarteaucitron.user.analyticsUa = 'UA-12307735-3';
 			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
@@ -137,7 +137,7 @@
 									<li class="menuRightLI"><a href="{{ path('News_World') }}">{{ "index.leftMenu.World"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\NewsController::countWorldNewsAction')) }}</span></li>
 									<li class="menuRightLI"><a href="{{ path('Biography_Index') }}">{{ "index.leftMenu.Biography"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\BiographyController::countAction')) }}</span></li>
 									<li class="menuRightLI"><a href="{{ path('Cartography_Index') }}">{{ "index.leftMenu.Cartography"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\CartographyController::nbrGMapByLangAction', { 'lang' : app.request.locale })) }}</span></li>
-									<li class="menuRightLI"><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}" title="All quotations">{{ "index.leftMenu.Quotation"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\QuotationController::countQuotationAction')) }}</span></li>
+									<li class="menuRightLI"><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}" title="All quotations">{{ "index.leftMenu.Quotation"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\QuotationController::countQuotation')) }}</span></li>
 									<li class="menuRightLI"><a href="{{ path('Document_Index') }}">{{ "index.leftMenu.Document"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\DocumentController::countDocumentAction')) }}</span></li>
 									<li class="menuRightLI"><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\MovieController::countAction', {'language' : app.request.locale })) }}</span></li>
 									<li class="menuRightLI"><a href="{{ path('CreepyStory_Index') }}">{{ "index.leftMenu.CreepyStory"|trans([], "validators") }}</a> <span class="badge badge-secondary">{{ render(controller('App\\Controller\\CreepyStoryController::countAction', {'language' : app.request.locale })) }}</span></li>
@@ -241,7 +241,7 @@
 							<div id="quotation_right_menu" class="news_section mt-3">
 								<h3>{{ "index.leftMenu.Quotations"|trans([], "validators") }}</h3>
 								<img class="image_wrapper img-fluid mx-auto d-block" src="{{ asset('extended/photo/quotation-random.jpg') }}" alt="Random quotation" width="200" />
-								{{ render(controller('App\\Controller\\QuotationController::randomQuoteAction')) }}
+								{{ render(controller('App\\Controller\\QuotationController::randomQuote')) }}
 							</div>
 							<div id="feedrss_right_menu" class="news_section mt-3">
 								<h3>{{ "rssFeed.menu.RSSFeeds"|trans([], "validators") }}</h3>
