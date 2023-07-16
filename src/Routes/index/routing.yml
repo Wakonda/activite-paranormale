@@ -107,7 +107,3 @@ Theme_Admin:
 State_Admin:
     resource: "routing/stateadmin.yml"
     prefix:   /admin/state
-
-SurTheme_Admin:
-    resource: "routing/surthemeadmin.yml"
-    prefix:   /admin/surtheme

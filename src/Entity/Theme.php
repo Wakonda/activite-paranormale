@@ -33,11 +33,6 @@ class Theme
     private $title;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SurTheme")
-     */
-    private $surTheme;
-
-    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Theme")
      */
     private $parentTheme;
@@ -198,16 +193,6 @@ class Theme
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setPdfTheme($filename);
 		}
-    }
-
-    public function getSurTheme()
-    {
-        return $this->surTheme;
-    }
-
-    public function setSurTheme(SurTheme $surTheme)
-    {
-        $this->surTheme = $surTheme;
     }
 
     public function getParentTheme()

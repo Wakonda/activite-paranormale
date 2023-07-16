@@ -27,19 +27,15 @@
 			{% set i = 0 %}
 			{% for entity in entities %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-	<h3>{{ entity.title }}</h3>
-	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
+					<h3>{{ entity.title }}</h3>
+					<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid", "loading": "lazy" }, entity.photoIllustrationCaption)|raw }}</p>
 
-	{{ entity.text|raw }}
+					{{ entity.text|raw }}
 				</div>
 				{% set i = i + 1 %}
 			{% endfor %}
 		</div>
 	</div>
-
-
-
-
 
 	<p class="text-center"><a href="{{ path('President_Archive_Index') }}"><img src="{{ asset('extended/photo/word-president-archive.png') }}" width="30" alt=">Message archive" class="align-middle"/> {{ "president.index.ArchivedMessages"|trans([], "validators") }}</a></p>
 {% endif %}
