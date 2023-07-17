@@ -32,11 +32,11 @@
 {% endblock %}
 
 {% block js_edit %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
-	<script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}" defer></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}" defer></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}" defer></script>
+	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}" defer></script>
+	<script defer>
 		$(function ()
 		{
 			oTable = $('table.index_admin').dataTable( {

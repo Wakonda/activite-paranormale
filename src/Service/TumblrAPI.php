@@ -20,7 +20,7 @@
 				$data = array();
 				parse_str($out, $data);
 
-				echo "<script type='text/javascript'>  window.location='". 'https://www.tumblr.com/oauth/authorize?oauth_token=' . $data['oauth_token']."'; </script>";
+				echo "<script>  window.location='". 'https://www.tumblr.com/oauth/authorize?oauth_token=' . $data['oauth_token']."'; </script>";
 				
 				$_SESSION['t']=$data['oauth_token'];
 				$_SESSION['s']=$data['oauth_token_secret'];

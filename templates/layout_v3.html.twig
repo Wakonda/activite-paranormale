@@ -10,7 +10,7 @@
 		{% block meta_plus %}{% endblock %}
 
 		<title>{% block title %}Activité-Paranormale{% endblock %}</title>
-		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print" async />
+		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print" />
 
         {% block stylesheets %}
             {{ encore_entry_link_tags('app_v3') }}
@@ -21,7 +21,7 @@
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.tarteaucitron_js() }}
 
-        <script type="text/javascript">
+        <script>
 			tarteaucitron.user.analyticsUa = 'UA-12307735-3';
 			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
 			tarteaucitron.user.analyticsUaCreate = { /* optionnal create configuration */ };
@@ -157,12 +157,12 @@
 									<li class="menuRightLI"><a href="{{ path('Witchcraft_New') }}" title="Testimony">{{ "index.leftMenu.AddRitual"|trans([], "validators") }}</a></li>
 									<li class="menuRightLI"><a href="{{ path('Testimony_New') }}" title="Testimony">{{ "index.leftMenu.Testify"|trans([], "validators") }}</a></li>
 									{#<li class="menuRightLI"><a href="{{ path('Contact_OfferLink') }}" title="Offer link">{{ "index.leftMenu.OfferLink"|trans([], "validators") }}</a></li>#}
-								</ul>								
+								</ul>
 							</div>
 							<div id="publicity_right_menu" class="news_section">
 								<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
 								<ins class="adsbygoogle" style="display:inline-block;width:200;height:200" data-ad-client="ca-pub-1951906303386196" data-ad-slot="0150773125"></ins>
-								<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>
+								<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
 								{% set ads = advertising(300, 250) %}
 								{% if ads is not empty %}
@@ -220,7 +220,7 @@
 									</form>
 								{% endif %}
 								</div>
-								
+
 								<div class="text-center">
 									{% include 'index/Index/_donate.html.twig' %}
 								</div>
@@ -301,7 +301,7 @@
 							</div>
 						</div>
 					</div>
-					
+
 					<div class="card mt-2">
 						<div class="card-header"><span class="float-left"><img src="{{ asset('extended/photo/twitter_bird.png') }}" width="25" class="mt-1 float-left" alt="Blue bird - Twitter"></span>
 							{{ "index.leftMenu.FollowUsOn"|trans([], "validators") }}
@@ -371,8 +371,8 @@
 		<div class="footer container footer-copyright text-center py-2">
 			<span class="font-weight-bold">Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }}</span> <a class="font-weight-bold" href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a>
 		</div>
-		
-		<script type="text/javascript">
+
+		<script>
 			async function detectAdBlock() {
 			  let adBlockEnabled = false
 			  const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
@@ -394,7 +394,7 @@
 				}
 			  }
 			}
-			
+
 			detectAdBlock();
 		</script>
 	</body>

@@ -122,7 +122,7 @@ class FileManagementController extends AbstractController
 			$errorMsg = "OK";
 		}
 		return new Response("
-		<script type='text/javascript'>window.top.window.uploadEnd('".$errorMsg."', '".$newNameFile."');</script>");
+		<script>window.top.window.uploadEnd('".$errorMsg."', '".$newNameFile."');</script>");
     }
 
     public function showImageAction($idClassName, $className)

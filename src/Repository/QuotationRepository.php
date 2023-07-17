@@ -45,7 +45,9 @@ class QuotationRepository extends EntityRepository
 		$qbCount->select('COUNT(o)')
 		        ->join('o.language', 'l')
 			    ->where('l.abbreviation = :lang')
-			    ->setParameter('lang', $lang);
+			    ->setParameter('lang', $lang)
+				->andWhere("o.family != :poemFamily")
+				->setParameter("poemFamily", Quotation::POEM_FAMILY);
 
 		$max = max($qbCount->getQuery()->getSingleScalarResult() - 1, 0);
 		$offset = rand(0, $max);
@@ -55,6 +57,8 @@ class QuotationRepository extends EntityRepository
 		$qb ->join('o.language', 'l')
 			->where('l.abbreviation = :lang')
 			->setParameter('lang', $lang)
+			->andWhere("o.family != :poemFamily")
+			->setParameter("poemFamily", Quotation::POEM_FAMILY)
 			->setFirstResult($offset)
 			->setMaxResults(1);
 		
@@ -221,6 +225,8 @@ class QuotationRepository extends EntityRepository
 			->setParameter('language', $language)
 			->andWhere('b.id = :biography')
 			->setParameter('biography', $biography->getId())
+			->andWhere("o.family != :poemFamily")
+			->setParameter("poemFamily", Quotation::POEM_FAMILY)
 			->orderBy('o.id', 'DESC');
 
 		return $qb->getQuery();

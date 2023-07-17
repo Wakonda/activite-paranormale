@@ -9,8 +9,7 @@
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', () => {
 			oTable = $('table.biography_datatables').DataTable( {
 				"oLanguage": {
 					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"

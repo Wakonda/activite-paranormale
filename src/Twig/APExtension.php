@@ -381,7 +381,7 @@
 			{				
 				$display .= '
 				<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="6790583340" data-ad-format="auto" data-full-width-responsive="true"></ins>
-				<script type="text/javascript">(adsbygoogle = window.adsbygoogle || []).push({});</script>';
+				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>';
 
 				$ads = $this->advertising(728, 90);
 				
@@ -392,7 +392,7 @@
 			elseif($pub == "amazon")
 			{
 				$display .= '
-				<script type="text/javascript"><!--
+				<script><!--
 				amazon_ad_tag="activiparano-21"; 
 				amazon_ad_width="468"; 
 				amazon_ad_height="60"; 
@@ -402,7 +402,7 @@
 				amazon_color_link="A43907"; 
 				amazon_ad_logo="hide"; 
 				amazon_ad_title="Activité-Paranormale"; //--></script>
-				<script type="text/javascript" src="http://www.assoc-amazon.fr/s/asw.js"></script>';		
+				<script src="http://www.assoc-amazon.fr/s/asw.js"></script>';		
 			}
 			
 			$display .= "</div>";
