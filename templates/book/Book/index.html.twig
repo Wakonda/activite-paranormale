@@ -14,14 +14,14 @@
 
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
-		{% endif %}		
+		{% endif %}
 	</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ "store-girl-angel-wallpaper.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
 	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', {'internationalName' : 'book'})) }}
-	
+
 	<h3>{{ "book.search.SearchSort"|trans([], "validators") }}</h3>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'action': path('Book_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
@@ -32,7 +32,7 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "book.search.Theme"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
 
-			<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "book.search.LiteraryGenre"|trans([], "validators")) }}</div>
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "book.search.Genre"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, {'attr':{'class' : 'form-control'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "book.search.Sort"|trans([], "validators")) }}</div>
@@ -88,7 +88,7 @@
 		<div class="alert alert-danger font-italic text-center">{{ "book.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
-	
+
 	<div class="mt-3 justify-content-center">
 		{{ knp_pagination_render(pagination) }}
 	</div>
