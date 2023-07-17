@@ -109,7 +109,7 @@ class ThemeController extends AbstractController
 			uksort($childArray, function($a, $b) { $generator = new SlugGenerator; return $generator->generate($a) <=> $generator->generate($b); });
 			$publications[$childEntity->getTitle()] = $childArray;
 		}
-dd($publications);
+
 		uksort($publications, function($a, $b) { $generator = new SlugGenerator; return $generator->generate($a) <=> $generator->generate($b); });
 
 		return $this->render('index/Theme/show.html.twig', [
