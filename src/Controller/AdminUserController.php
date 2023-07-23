@@ -160,7 +160,7 @@ class AdminUserController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function contributionUserCommentsAction($id)
+	public function contributionUserCommentsAction(TranslatorInterface $translator, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
@@ -173,9 +173,11 @@ class AdminUserController extends AdminGenericController
 		foreach($entities as $entity) {
 			if(is_subclass_of($entity, \App\Entity\Comment::class)) {
 				$cn = (new $entity())->getMainEntityClassName();
-				$classArray[$entity] = (new \ReflectionClass($cn))->getShortName();
+				$classArray[$entity] = $translator->trans(("index.className.".((new \ReflectionClass($cn))->getShortName())), [], 'validators');
 			}
 		}
+
+		asort($classArray);
 
 		return $this->render('user/AdminUser/contribution_user_comments.html.twig', array('id' => $id, 'user' => $user, 'classArray' => $classArray));
 	}

@@ -52,7 +52,7 @@
 	<hr>
 	<select id="comments_entity" name="comments_entity" class="form-control">
 		{% for key, value in classArray %}
-			<option value="{{ key }}">{{ ("index.className." ~ value)|trans([], "validators") }}</option>
+			<option value="{{ key }}">{{ value }}</option>
 		{% endfor %}
 	</select>
 	
