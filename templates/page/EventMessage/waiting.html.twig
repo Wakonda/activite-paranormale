@@ -38,7 +38,7 @@
 	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<p id="media_duration">
 		<a href="{{ path('EventMessage_Calendar') }}" alt="">
-		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" /> 
+		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" class="align-middle" /> 
 		{% if entity.dateTo == entity.dateFrom %}
 			{{ entity.dateFrom|dodate(false, app.request.locale) }}
 		{% else %}

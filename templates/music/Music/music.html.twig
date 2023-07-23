@@ -26,7 +26,7 @@
 		{% endif %}
 	{% endif %}
 	
-	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" /> {{ (entity.length|string_duration)|default('-') }}</p>
+	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.length|string_duration)|default('-') }}</p>
 	<hr>
 	<ul class="fa-ul">
 		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="font-weight-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.title}) }}">{{ artist.title }}</a></li>

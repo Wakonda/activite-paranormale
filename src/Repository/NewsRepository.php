@@ -517,7 +517,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		   ->setParameter('themeId', $entity->getTheme()->getId())
 		   ->andWhere('c.archive = :archive')
 		   ->setParameter('archive', $entity->getArchive())
-		   ->orderBy('c.publicationDate', 'desc')
+		   ->orderBy('c.id', 'desc')
 		   ->setMaxResults(3);
 
 		return $qb->getQuery()->getResult();

@@ -35,7 +35,7 @@
 		<p class="image">{{ img|raw }}</p>
 	{% endif %}
 
-	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" /> {{ (entities|duration_entities)|default('-') }}</p>
+	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entities|duration_entities)|default('-') }}</p>
 	<hr>
 	<ul class="fa-ul">
 		<li><span class="fa-li"><i class="fas fa-music"></i></span> <span class="font-weight-bold">{{ "music.listen.NbrTitle"|trans([], "validators") }}</span> {{ entities|length }}</li>

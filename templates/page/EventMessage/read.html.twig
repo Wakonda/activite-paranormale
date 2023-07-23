@@ -64,7 +64,7 @@
 			{% set urlTo = path('EventMessage_SelectYear', {year: entity.yearTo}) %}
 		{% endif %}
 
-		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" /> 
+		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" class="align-middle" /> 
 		{% if entity.dateToString == entity.dateFromString %}
 			<a href="{{ urlFrom }}" alt="">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
 		{% else %}

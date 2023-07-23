@@ -47,7 +47,7 @@ user:
         Password: "Contraseña"
         VerifMotDePasse: "Verificación"
         Civility: "Civilidad"
-        Pays: "País"
+        Country: "País"
         BirthDate: "Fecha de nacimiento"
         Avatar: "Avatar"
         City: "Ciudad"

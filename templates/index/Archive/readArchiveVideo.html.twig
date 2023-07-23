@@ -33,7 +33,7 @@
 	<div class="alert alert-danger text-center"><i class="fas fa-video-slash"></i> {{ "video.read.VideoNotLongerAvailable"|trans([], "validators") }}</div>
 {% endif %}
 <div>
-<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" /> {{ (entity.duration|string_duration)|default('-') }}</p>
+<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.duration|string_duration)|default('-') }}</p>
 <hr>
 <p>{{ entity.text|raw }}</p>
 <br>

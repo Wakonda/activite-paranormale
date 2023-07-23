@@ -53,8 +53,6 @@ h1, h2, h3, h4, h5, h6 {
 
 .bg-light { background-color: #f8f9fa !important; }
 
-.m_right { margin-right: 30px; }
-
 .button_01 a {
 	display: block;
 	width: 90px;
@@ -113,11 +111,6 @@ h4 {
 
 #image_wrapper {
 	text-align: center;
-}
-
-.fr_image {
-	float: right;
-	margin-left: 15px 
 }
 
 #templatemo_container_wrapper {
@@ -487,7 +480,7 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 /************* Design Visionneuse News ***************/
 .infoDefile
 {
-	display : inline;
+	display: inline;
 	color: white;
 }
 
@@ -719,11 +712,6 @@ span.previous_next_disable_left, span.previous_next_disable_right {
 	color: grey;
 }
 
-/********** IMAGE + TEXT ****************/
-img.middle {
-	vertical-align: middle;
-}
-
 /************* WPAINT ******************/
 .wPaint-menu {
 	left: -1px  !important;
@@ -801,10 +789,6 @@ p.colored_delete_video {
 p#media_duration {
 	font-size: 20px;
 	text-align: center;
-}
-
-p#media_duration img {
-	vertical-align: middle;
 }
 
 /********** MUSIC *********/
