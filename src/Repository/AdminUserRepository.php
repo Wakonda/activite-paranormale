@@ -25,16 +25,16 @@ class AdminUserRepository extends EntityRepository
 
 	public function getMembersUser()
 	{
-		$queryBuilder = $this->createQueryBuilder('o');
-		$queryBuilder->where("o.enabled = true")
-		             ->orderBy('o.id', 'DESC');
+		$qb = $this->createQueryBuilder('o');
+		$qb->where("o.enabled = true")
+		   ->orderBy('o.id', 'DESC');
 
-		return $queryBuilder->getQuery()->getResult();
+		return $qb->getQuery()->getResult();
 	}
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'u.id', 'u.username', 'u.email', 'u.id', 'u.enabled', 'u.id');
+		$aColumns = ['u.id', 'u.username', 'u.email', 'u.id', 'u.enabled', 'u.id'];
 
 		$qb = $this->createQueryBuilder('u');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -53,7 +53,7 @@ class AdminUserRepository extends EntityRepository
 		
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = array( 'u.id', 'u.username', 'u.email', 'u.id', 'u.id');
+			$aSearchColumns = ['u.id', 'u.username', 'u.email', 'u.id', 'u.id'];
 			for($i = 0; $i < count($aSearchColumns); $i++)
 			{
 				if(!empty($searchByColumns[$i]))
@@ -78,7 +78,7 @@ class AdminUserRepository extends EntityRepository
 	
 	public function getUsersContribution($user, $bundleClassName, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count, $displayState = 1)
 	{
-		$aColumns = array('m.title', 's.internationalName', 'l.abbreviation', 'm.writingDate');
+		$aColumns = ['m.title', 's.internationalName', 'l.abbreviation', 'm.writingDate'];
 
 		$qb = $this->_em->createQueryBuilder();
 		$qb	->from($bundleClassName, 'm')
@@ -126,7 +126,7 @@ class AdminUserRepository extends EntityRepository
 	
 	public function getUsersCommentContribution($user, $className, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
-		$aColumns = array('c.messageComment', 'c.dateComment', 'c.id');
+		$aColumns = ['c.messageComment', 'c.dateComment', 'c.id'];
 
 		$qb = $this->_em->createQueryBuilder();
 		
@@ -136,7 +136,9 @@ class AdminUserRepository extends EntityRepository
 			->where('c.authorComment = :author')
 			->setParameter('author', $user);
 			
-		if(!empty($className))
+		$mainEntity = (new $classNameQuery())->getMainEntityClassName();
+
+		if(!empty($className) and method_exists($mainEntity, "getArchive"))
 			$qb->join("c.entity", "e")
 		       ->andWhere("e.archive = false");
 

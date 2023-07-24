@@ -179,7 +179,7 @@ class AdminUserController extends AdminGenericController
 
 		asort($classArray);
 
-		return $this->render('user/AdminUser/contribution_user_comments.html.twig', array('id' => $id, 'user' => $user, 'classArray' => $classArray));
+		return $this->render('user/AdminUser/contribution_user_comments.html.twig', ['id' => $id, 'user' => $user, 'classArray' => $classArray]);
 	}
 	
 	public function contributionUserCommentsDatatablesAction(Request $request, APDate $date, TranslatorInterface $translator, $id)
@@ -209,19 +209,19 @@ class AdminUserController extends AdminGenericController
         $entities = $em->getRepository(User::class)->getUsersCommentContribution($user, $className, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(User::class)->getUsersCommentContribution($user, $className, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
 			$row = [];
 			$row[] = $entity->getMessageComment();
 			$row[] = $date->doDateTime($language, $entity->getDateComment());
-			$row[] = '<a href="'.$this->generateUrl($entity->getEntityLinked()->getShowRoute(), array("title" => $entity->getEntityLinked()->getTitle(), "id" => $entity->getEntityLinked()->getId())).'">'.$translator->trans('user.contributionUserComments.Link', [], 'validators').'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getEntityLinked()->getShowRoute(), ["title" => $entity->getEntityLinked()->getTitle(), "id" => $entity->getEntityLinked()->getId()]).'">'.$translator->trans('user.contributionUserComments.Link', [], 'validators').'</a>';
 			$output['aaData'][] = $row;
 		}
 
@@ -243,6 +243,6 @@ class AdminUserController extends AdminGenericController
 		$em->persist($user);
 		$em->flush();
 
-		return $this->redirect($this->generateUrl("apadminuser_show", array('id' => $user->getId())));
+		return $this->redirect($this->generateUrl("apadminuser_show", ['id' => $user->getId()]));
 	}
 }
