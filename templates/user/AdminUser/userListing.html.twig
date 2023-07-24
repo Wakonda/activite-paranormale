@@ -10,8 +10,7 @@
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', () => {
 			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
 		});
 	</script>
@@ -20,7 +19,7 @@
 
 {% block APBlog_body %}
 	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/list-members.jpg') }}" alt="List members" width="500" /></p>
-	<hr />
+	<hr>
 	<table class="doc_datatables dt-responsive w-100">
 		<thead>
 			<tr>
@@ -53,6 +52,6 @@
 		</tfoot>
 	</table>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
