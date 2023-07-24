@@ -5,8 +5,7 @@
 
 {% block header_plus %}
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', () => {
 			document.getElementById('help_licence_link').addEventListener("click", (e) => {
 				$('#showColorboxByLicenceModal').modal('show');
 				e.preventDefault();

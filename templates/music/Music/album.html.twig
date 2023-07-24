@@ -10,8 +10,7 @@
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', () => {
 			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
 		});
 	</script>

@@ -11,15 +11,13 @@
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', () => {
 			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
 		});
 	</script>
 {% endblock %}
 
 {% block APBlog_body %}
-
 	{% set img = musicGenre.photoIllustrationFilename|imgsize(550, musicGenre.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, musicGenre.photoIllustrationCaption, false) %}
 	
 	{% if img is not null %}
