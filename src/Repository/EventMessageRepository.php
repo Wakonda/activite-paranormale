@@ -40,7 +40,21 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 		$monthEnd = str_pad($endDate->format("m"), 2, "0", STR_PAD_LEFT);
 		
 		$qb = $this->createQueryBuilder('c');
-// dd($language, $startDate, $endDate);
+		
+		$dateFromOr = null;
+		$dateToOr = null;
+
+		if($startDate->format("m") > $endDate->format("m")) {
+			$dateFromOr = " OR CONCAT('0001-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN :monthDayStartYear AND '0001-12-31' OR
+			CONCAT('0002-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN '0002-01-01' AND :monthDayEndYear";
+			/*$dateToOr = " OR CONCAT('0001-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN :monthDayStartYear AND '0001-12-31' OR
+			CONCAT('0002-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN '0002-01-01' AND :monthDayEndYear";*/
+
+			$qb
+			->setParameter('monthDayStartYear', '0001-'.$monthStart."-".$dayStart)
+			->setParameter('monthDayEndYear', '0002-'.$monthEnd."-".$dayEnd);
+		}
+
 		$qb 
 		->join('c.language', 'l')
 		    ->join('c.state', 's')
@@ -48,14 +62,14 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
 			->andWhere("c.yearFrom IS NOT NULL AND c.monthFrom IS NOT NULL AND c.dayFrom IS NOT NULL")
-			->andWhere("c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL")
-			->andWhere("CONCAT(LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd
-			            OR CONCAT(LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd")
+			->andWhere("(c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL) OR (c.yearTo IS NULL AND c.monthTo IS NULL AND c.dayTo IS NULL)")
+			->andWhere("CONCAT(LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd $dateFromOr
+			            OR CONCAT(LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd $dateToOr")
 			->setParameter('monthDayStart', $monthStart."-".$dayStart)
 			->setParameter('monthDayEnd', $monthEnd."-".$dayEnd)
 		    ->andWhere("c.archive = false")
 			;
-
+// dd($qb->getQuery()->getParameters());
 		return $qb->getQuery()->getResult();
 	}
 	

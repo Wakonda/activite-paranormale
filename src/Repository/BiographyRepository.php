@@ -204,13 +204,27 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		$dayEnd = str_pad($endDate->format("d"), 2, "0", STR_PAD_LEFT);
 		$monthEnd = str_pad($endDate->format("m"), 2, "0", STR_PAD_LEFT);
 
+		$birthDateOr = "";
+		$deathDateOr = "";
+
 		$qb = $this->createQueryBuilder('c');
+
+		if($startDate->format("m") > $endDate->format("m")) {
+			$birthDateOr = " OR CONCAT('0001-', LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) BETWEEN :monthDayStartYear AND '0001-12-31' OR
+			CONCAT('0002-', LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) BETWEEN '0002-01-01' AND :monthDayEndYear";
+			$deathDateOr = " OR CONCAT('0001-', LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) BETWEEN :monthDayStartYear AND '0001-12-31' OR
+			CONCAT('0002-', LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) BETWEEN '0002-01-01' AND :monthDayEndYear";
+
+			$qb
+			->setParameter('monthDayStartYear', '0001-'.$monthStart."-".$dayStart)
+			->setParameter('monthDayEndYear', '0002-'.$monthEnd."-".$dayEnd);
+		}
 
 		$qb ->join('c.language', 'l')
 			->where('l.abbreviation = :lang')
 			->setParameter('lang', $language)
-			->andWhere("(REGEXP(c.birthDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd
-			            OR REGEXP(c.deathDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd)")
+			->andWhere("(REGEXP(c.birthDate, :regexp) = true AND (CONCAT(LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd $birthDateOr)
+			            OR REGEXP(c.deathDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) BETWEEN :monthDayStart AND :monthDayEnd $deathDateOr)")
 			->setParameter("regexp", "^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
 			->setParameter('monthDayStart', $monthStart."-".$dayStart)
 			->setParameter('monthDayEnd', $monthEnd."-".$dayEnd)
@@ -247,7 +261,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getResult();
 	}
-	
+
 	// FORM
 	public function getBiographyByLanguage($language)
 	{
@@ -296,7 +310,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 		$entities = $qb->getQuery()->getResult();
 		$res = [];
-		
+
 		foreach($entities as $entity)
 		{
 			$photo = new \StdClass();
@@ -305,7 +319,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			
 			$res[] = $photo;
 		}
-		
+
 		return $res;
 	}
 
@@ -335,10 +349,10 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere('l.abbreviation = :language');
 			$qb->setParameter('language', $language);
 		}
-		
+
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
-		
+
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";

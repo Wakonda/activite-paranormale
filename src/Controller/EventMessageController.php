@@ -40,46 +40,43 @@ class EventMessageController extends AbstractController
         return $this->render('page/EventMessage/read.html.twig', ['entity' => $entity]);
     }
 	
+	private function checkDateBetween($checkDate, $lowerBound, $upperBound) {
+		$checkDate = date_create(date("Y")."-".$checkDate->format("m-d"));
+		$lowerBound = date_create(date("Y")."-".$lowerBound->format("m-d"));
+		$upperBound = date_create(date("Y")."-".$upperBound->format("m-d"));
+
+		$between = false;
+
+		if ($lowerBound < $upperBound) {
+			$between = $lowerBound <= $checkDate && $checkDate <= $upperBound;
+		} else {
+			$between = $checkDate <= $upperBound || $checkDate >= $lowerBound;
+		}
+
+		return $between;
+	}
+
 	public function calendarAction()
 	{
 		return $this->render('page/EventMessage/calendar.html.twig');
 	}
-	
+
 	public function calendarLoadEventsAction(Request $request)
 	{
 		$startDate = new \DateTime($request->query->get("start"));
 		$endDate = new \DateTime($request->query->get("end"));
 
 		$em = $this->getDoctrine()->getManager();
-		$entities = $em->getRepository(EventMessage::class)->getAllEventsBetweenTwoDates($request->getLocale(), $startDate, $endDate);
-		
-		$eventDates = [];
-		$eventNumber = [];
-
-		foreach($entities as $entity)
-		{
-			$interval = \DateInterval::createFromDateString("1 day");
-			$period = new \DatePeriod(new \DateTime($entity->getDateFromString()), $interval, (new \DateTime($entity->getDateToString()))->modify("+1 day"));
-			
-			foreach($period as $dt) {
-				if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
-					$eventDates[$dt->format("Y")][] = $dt->format("m-d");
-			
-					if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
-						$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
-					$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
-				}
-			}
-		}
-
 		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonthBetween($startDate, $endDate, $request->getLocale());
 
+		$eventDates = [];
+		$eventNumber = [];
 		foreach($entities as $entity) {
 			if(!empty($dt = $entity->getBirthDate())) {
 				if(preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $dt)) {
 					$dt = new \DateTime($dt);
 					
-					if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
+					if($this->checkDateBetween($dt, $startDate, $endDate)) {
 						$eventDates[$dt->format("Y")][] = $dt->format("m-d");
 						
 						if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
@@ -92,13 +89,43 @@ class EventMessageController extends AbstractController
 			if(!empty($dt = $entity->getDeathDate())) {
 				if(preg_match("/^[0-9]{4}-[0-9]{2}-[0-9]{2}$/", $dt)) {
 					$dt = new \DateTime($dt);
-					
-					if($dt->format("m-d") <= $endDate->format("m-d") && $dt->format("m-d") >= $startDate->format("m-d")) {
+
+					if($this->checkDateBetween($dt, $startDate, $endDate)) {
 						$eventDates[$dt->format("Y")][] = $dt->format("m-d");
 						
 						if(!isset($eventNumber[$dt->format("Y")][$dt->format("Y-m-d")]))
 							$eventNumber[$dt->format("Y")][$dt->format("m-d")] = 0;
 						$eventNumber[$dt->format("Y")][$dt->format("m-d")]++;
+					}
+				}
+			}
+		}
+
+		$entities = $em->getRepository(EventMessage::class)->getAllEventsBetweenTwoDates($request->getLocale(), $startDate, $endDate);
+
+		foreach($entities as $entity)
+		{
+			if(empty($entity->getDateToString())) {
+				$dt = new \DateTime($entity->getDateFromString());
+				if($this->checkDateBetween($dt, $startDate, $endDate)) {
+					$eventDates[$entity->getYearFrom()][] = $dt->format("m-d");
+
+					if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
+						$eventNumber[$entity->getYearFrom()][$dt->format("m-d")] = 0;
+					$eventNumber[$entity->getYearFrom()][$dt->format("m-d")]++;
+				}
+			}
+			else {
+				$interval = \DateInterval::createFromDateString("1 day");
+				$period = new \DatePeriod(new \DateTime($entity->getDateFromString()), $interval, (new \DateTime($entity->getDateToString()))->modify("+1 day"));
+
+				foreach($period as $dt) {
+					if($this->checkDateBetween($dt, $startDate, $endDate)) {
+						$eventDates[$entity->getYearFrom()][] = $dt->format("m-d");
+
+						if(!isset($eventNumber[$dt->format("Y")][$dt->format("m-d")]))
+							$eventNumber[$entity->getYearFrom()][$dt->format("m-d")] = 0;
+						$eventNumber[$entity->getYearFrom()][$dt->format("m-d")]++;
 					}
 				}
 			}
@@ -112,7 +139,7 @@ class EventMessageController extends AbstractController
 		foreach($period as $dt) {
 			$numberCurrent = 0;
 			$number = 0;
-			
+
 			if(isset($eventNumber[$dt->format("Y")][$dt->format("m-d")])) {
 				$numberCurrent = $eventNumber[$dt->format("Y")][$dt->format("m-d")];
 				unset($eventNumber[$dt->format("Y")][$dt->format("m-d")]);
@@ -134,7 +161,7 @@ class EventMessageController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
+
 	public function tabAction(Request $request, $id, $theme)
 	{
 		return $this->render('page/EventMessage/tab.html.twig', [
@@ -157,8 +184,7 @@ class EventMessageController extends AbstractController
 
 		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" ) {
 				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
@@ -174,8 +200,7 @@ class EventMessageController extends AbstractController
 			"aaData" => []
 		];
 
-		foreach($entities as $entity)
-		{
+		foreach($entities as $entity) {
 			$img = empty($entity->getPhotoIllustrationFilename()) ? null : $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename();
 			$img = $imgSize->adaptImageSize(150, $img);
 
@@ -191,7 +216,7 @@ class EventMessageController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
+
 	// USER PARTICIPATION
     public function newAction(Request $request)
     {
@@ -203,7 +228,7 @@ class EventMessageController extends AbstractController
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 	
@@ -231,10 +256,10 @@ class EventMessageController extends AbstractController
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 		$em = $this->getDoctrine()->getManager();
 
+        $entity = $em->getRepository(EventMessage::class)->find($id);
+
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
-
-        $entity = $em->getRepository(EventMessage::class)->find($id);
 
 		if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 			throw new \Exception("You are not authorized to edit this document.");
@@ -243,7 +268,7 @@ class EventMessageController extends AbstractController
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -256,7 +281,7 @@ class EventMessageController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(EventMessage::class)->find($id);
-		
+
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
@@ -278,24 +303,24 @@ class EventMessageController extends AbstractController
 
 	private function genericCreateUpdate(Request $request, $id = 0)
 	{
+		$locale = $request->getLocale();
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 		$securityUser = $this->container->get('security.authorization_checker');
 		$em = $this->getDoctrine()->getManager();
-		
+
 		if(empty($id))
 			$entity = new EventMessage();
-		else
-		{
+		else {
 			$entity = $em->getRepository(EventMessage::class)->find($id);
-			
+
 			if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 				throw new \Exception("You are not authorized to edit this document.");
 		}
 
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $locale, "user" => $user, "securityUser" => $securityUser]);
         $form->handleRequest($request);
 
-		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $locale]);
 		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 
 		$entity->setState($state);
@@ -303,36 +328,30 @@ class EventMessageController extends AbstractController
 
 		$entity->setType(EventMessage::EVENT_TYPE);
 
-		if(is_object($user))
-		{
-			if($entity->getIsAnonymous() == 1)
-			{
+		if(is_object($user)) {
+			if($entity->getIsAnonymous() == 1) {
 				if($form->get('validate')->isClicked())
 					$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
-				
+
 				$entity->setAuthor($user);
 				$entity->setPseudoUsed("Anonymous");
 			}
-			else
-			{
+			else {
 				$entity->setAuthor($user);
 				$entity->setPseudoUsed($user->getUsername());
 			}
 		}
-		else
-		{
+		else {
 			$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
 			$entity->setAuthor($user);
 			$entity->setIsAnonymous(0);
 		}
 
-        if ($form->isValid())
-		{
+        if ($form->isValid()) {
 			$generator = new \Ausi\SlugGenerator\SlugGenerator;
 			$entity->setInternationalName($generator->generate($entity->getTitle()).uniqid());
-			
-			if(is_object($ci = $entity->getIllustration()))
-			{
+
+			if(is_object($ci = $entity->getIllustration())) {
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();
 				$illustration = new FileManagement();
 				$illustration->setTitleFile($titleFile);
@@ -352,7 +371,7 @@ class EventMessageController extends AbstractController
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
-            'form'   => $form->createView()
+            'form' => $form->createView()
         ]);
 	}
 
@@ -403,10 +422,8 @@ class EventMessageController extends AbstractController
 		$sortByColumn = [];
 		$sortDirColumn = [];
 
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
-		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
+		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++) {
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true") {
 				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
@@ -422,8 +439,7 @@ class EventMessageController extends AbstractController
 			"aaData" => []
 		];
 
-		foreach($entities as $entity)
-		{
+		foreach($entities as $entity) {
 			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
@@ -459,7 +475,7 @@ class EventMessageController extends AbstractController
 			$yearEvent = $entity->getYearFrom();
 			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
 			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
-			
+
 			if($yearEvent != $year) {
 				$res[$entity->getType()][empty($yearEvent) ? "noYear" : $centuryText][$entity->getYearFrom()][] = [
 					"title" => $entity->getTitle(),
@@ -595,7 +611,7 @@ class EventMessageController extends AbstractController
 			$res[$entity->getType()][] = [
 				"title" => $entity->getTitle(),
 				"theme" => $entity->getTheme()->getTitle(),
-				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
+				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()]),
 				"startDate" => ["year" => $entity->getYearFrom(), "month" => $entity->getMonthFrom(), "day" => $entity->getDayFrom()],
 				"endDate" => ($entity->getDayFrom() == $entity->getDayTo()) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 			];
@@ -637,7 +653,7 @@ class EventMessageController extends AbstractController
 
 			$res[$type][] = [
 				"title" => $entity->getTitle(),
-				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ]),
+				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle()]),
 				"startDate" => (empty($startArray["year"]) and empty($startArray["month"]) and empty($startArray["day"])) ? null : $startArray,
 				"endDate" => (empty($endArray["year"]) and empty($endArray["month"]) and empty($endArray["day"])) ? null : $endArray
 			];
@@ -671,10 +687,10 @@ class EventMessageController extends AbstractController
 		foreach ($roman_numerals as $roman => $number) {
 			$matches = intval($n / $number);
 			$res .= str_repeat($roman, $matches);
-			$n = $n % $number; 
+			$n = $n % $number;
 		}
 
-		return $res; 
+		return $res;
 	}
 
 	function getCentury($year) 
