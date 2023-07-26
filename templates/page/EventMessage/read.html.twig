@@ -22,7 +22,7 @@
 			}).addTo(map);
 
 			map.addControl(new L.Control.Fullscreen());
-			
+
 			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
 				$('#showColorboxByLicenceModal').modal('show');
 				e.preventDefault();
@@ -37,7 +37,7 @@
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 	<p id="media_duration">
 		{% set urlFrom = null %}
-		
+
 		{% if entity.dayFrom is not empty and entity.monthFrom is not empty %}
 			{% set yearFrom = entity.yearFrom %}
 			{% if yearFrom is empty %}
@@ -74,7 +74,7 @@
 			<a href="{{ urlTo }}" alt="">{{ entity.dayTo|doYearMonthDayDate(entity.monthTo, entity.yearTo, app.request.locale) }}</a>
 			{% endif %}
 		{% endif %}
-		
+
 	</p>
 	<hr>
 	<br>
@@ -89,7 +89,7 @@
 	<h3>{{ "eventMessage.index.Sources"|trans([], "validators") }}</h3>
 	{{ source_document(entity.source, entity.language) }}
 	
-	<hr class="hr2"/>
+	<hr class="hr2">
 	<p>
 		{% if entity.theme is not null %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}{% if entity.licence is not null %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
 		{% if is_current_languages(entity.language.abbreviation) == false %}
@@ -104,7 +104,7 @@
 	
 	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'EventMessage' })) }}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
 
