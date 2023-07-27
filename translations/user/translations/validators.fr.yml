@@ -157,6 +157,10 @@ user:
         ErrorCreateAccount: "Erreur lors de la création de votre compte"
         ErrorPasswordEmpty: "Vous devez saisir un mot de passe"
         Success: "Succès"
+    changePassword:
+        CurrentPassword: "Mot de passe actuel"
+        Password: "Nouveau mot de passe"
+        RepeatPassword: "Répéter le mot de passe"
 role:
     admin:
         Title: "Titre"
