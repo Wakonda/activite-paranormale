@@ -12,16 +12,16 @@
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 
 	<script>
-		$(function() {
+		document.addEventListener('DOMContentLoaded', function () {
 			var table = toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
 			table.order( [ 0, 'desc' ] ).draw();
-			$('.show_history_link').click(function(e)
-			{
-				$('#displayHistory').modal('show');
-				$('#displayHistory .modal-body .history-details').html($(this).data("diff"));
-				e.preventDefault();
-			});
 		});
+
+		function showHistoryModal(e) {
+			$('#displayHistory').modal('show');
+			document.querySelector('#displayHistory .modal-body .history-details').textContent = e.currentTarget.dataset.diff;
+			e.preventDefault();
+		}
 	</script>
 	
 	<style>
@@ -79,8 +79,8 @@
 			{% for entity in entities %}
 				<tr class="trGene">
 					<td class="tdGene">{{ entity.modificationDateTime|dodate(true, app.request.locale) }}</td>
-					<td class="tdGene"><b>{{ entity.user }}</b><br>(<i>{{ entity.ipAddress }}</i>)</td>
-					<td class="tdGene">{% if entity.diffText is not empty %}<button class="btn submitcomment show_history_link text-left text-dark font-weight-bold" data-diff="{{ format_history(entity.diffText|join('<hr>')) }}"><i class="fas fa-history"></i></button>{% endif %}</td>
+					<td class="tdGene"><b>{{ entity.user }}</b><br>(<i style="word-break: break-all;">{{ entity.ipAddress }}</i>)</td>
+					<td class="tdGene">{% if entity.diffText is not empty %}<button onclick="showHistoryModal(event);" class="btn submitcomment show_history_link text-left text-dark font-weight-bold" data-diff="{{ format_history(entity.diffText|join('<hr>')) }}"><i class="fas fa-history"></i></button>{% endif %}</td>
 				</tr>
 			{% endfor %}
 		</tbody>
