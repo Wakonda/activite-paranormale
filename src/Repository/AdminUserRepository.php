@@ -135,8 +135,9 @@ class AdminUserRepository extends EntityRepository
 		$qb	->from($classNameQuery, 'c')
 			->where('c.authorComment = :author')
 			->setParameter('author', $user);
-			
-		$mainEntity = (new $classNameQuery())->getMainEntityClassName();
+		
+		$classNameObject = new $classNameQuery();
+		$mainEntity = (method_exists($classNameObject, "getMainEntityClassName")) ?? $classNameObject->getMainEntityClassName();
 
 		if(!empty($className) and method_exists($mainEntity, "getArchive"))
 			$qb->join("c.entity", "e")

@@ -17,7 +17,7 @@ use App\Service\Canonicalizer;
  * @UniqueEntity(fields="username")
  */
  
-class User implements UserInterface, \Serializable
+class User implements UserInterface
 {
 	/**
 	 * @ORM\Id
@@ -177,9 +177,9 @@ class User implements UserInterface, \Serializable
     /**
      * {@inheritdoc}
      */
-    public function serialize()
+    public function __serialize()
     {
-        return serialize(array(
+        return [
             $this->password,
             $this->salt,
             $this->usernameCanonical,
@@ -188,16 +188,14 @@ class User implements UserInterface, \Serializable
             $this->id,
             $this->email,
             $this->emailCanonical,
-        ));
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function __unserialize($data)
     {
-        $data = unserialize($serialized);
-
         if (13 === count($data)) {
             // Unserializing a User object from 1.3.x
             unset($data[4], $data[5], $data[6], $data[9], $data[10]);
@@ -722,7 +720,7 @@ class User implements UserInterface, \Serializable
      */
     public function setRoles(array $roles)
     {
-        $this->roles = array();
+        $this->roles = [];
 
         foreach ($roles as $role) {
             $this->addRole($role);
