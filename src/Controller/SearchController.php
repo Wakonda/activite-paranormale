@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Form\Type\SearchEngineType;
 use App\Service\SearchEngine;
@@ -13,7 +14,7 @@ use App\Service\PaginatorNativeSQL;
 
 class SearchController extends AbstractController
 {
-	public function searchAction(Request $request, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
+	public function searchAction(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
 	{
         $form = $this->createForm(SearchEngineType::class);
 		$form->handleRequest($request);
@@ -34,8 +35,7 @@ class SearchController extends AbstractController
 		$connectionParams = [
 			'url' => 'sqlite://'.$path
 		];
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
 
 		// Web

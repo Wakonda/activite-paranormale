@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Stores\Store;
 use App\Form\Type\StoreSearchType;
@@ -12,10 +13,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class StoreController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
-		$em = $this->getDoctrine()->getManager();
-
 		$nbMessageByPage = 12;
 
 		$form = $this->createForm(StoreSearchType::class);
@@ -41,26 +40,24 @@ class StoreController extends AbstractController
 		return $this->render('store/Store/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 
-	public function showAction($id, $title)
+	public function showAction(EntityManagerInterface $em, $id, $title)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Store::class)->find($id);
 
 		return $this->render('store/Store/show.html.twig', ['entity' => $entity]);
 	}
 	
-	public function sliderAction(Request $request)
+	public function sliderAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(Store::class)->getSlider($request->getLocale());
+
 		return $this->render("store/Widget/slider.html.twig", array(
 			"entities" => $entities
 		));
 	}
 
-    public function randomAction(Request $request)
+    public function randomAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Store::class)->getRandom($request->getLocale(), [Store::BOOK_CATEGORY]);
 		
         return new Response($entity->getimageEmbeddedCode());

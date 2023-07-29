@@ -22,6 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Service\APUser;
 use App\Service\Currency;
@@ -44,14 +45,11 @@ class UserController extends AbstractController
         $this->tokenStorage = $tokenStorage;
 	}
 
-    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils)
+    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
     {
-        // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        $em = $this->getDoctrine()->getManager();
 		$lastUser = $em->getRepository(User::class)->findUserByUsernameOrEmail($lastUsername);
 
 		return $this->render('user/Security/login.html.twig', [
@@ -141,10 +139,9 @@ class UserController extends AbstractController
         return null;
     }
 	
-    public function editAction(Request $request)
+    public function editAction(Request $request, EntityManagerInterface $em)
     {
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-        $em = $this->getDoctrine()->getManager();
 
         if (!$user) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -158,7 +155,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function updateAction(Request $request)
+    public function updateAction(Request $request, EntityManagerInterface $em)
     {
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 
@@ -179,7 +176,6 @@ class UserController extends AbstractController
 			$photo = $photoForm;
 
         if ($editForm->isValid()) {
-			$em = $this->getDoctrine()->getManager();
 			$user->setAvatar($photo);
             $em->persist($user);
             $em->flush();
@@ -188,27 +184,18 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/EditProfile/edit.html.twig', [
-            'user'      => $user,
-            'form'   => $editForm->createView(),
+            'user' => $user,
+            'form' => $editForm->createView(),
         ]);
     }
 
-    /**
-     * Request reset user password: submit form and send email.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function sendEmailAction(Request $request, TranslatorInterface $translator, MailerInterface $mailer)
+    public function sendEmailAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
         $username = $request->request->get('username');
 
-		$em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findUserByUsernameOrEmail($username);
 
         if (null !== $user && !$user->isPasswordRequestNonExpired($this->retryTtl)) {
-
             if (null === $user->getConfirmationToken()) {
                 $user->setConfirmationToken($this->generateToken());
             }
@@ -232,13 +219,6 @@ class UserController extends AbstractController
         return $this->redirect($this->generateUrl('Resetting_Check_Email', ['username' => $username]));
     }
 
-    /**
-     * Tell the user to check his email provider.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
     public function checkEmailResettingAction(Request $request)
     {
         $username = $request->query->get('username');
@@ -253,17 +233,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * Reset user password.
-     *
-     * @param Request $request
-     * @param string  $token
-     *
-     * @return Response
-     */
-    public function resetAction(Request $request, $token)
+    public function resetAction(Request $request, EntityManagerInterface $em, $token)
     {
-        $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findUserByConfirmationToken($token);
 
         if (null === $user) {
@@ -275,7 +246,6 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-			$em = $this->getDoctrine()->getManager();
 			$salt = base64_encode(random_bytes(32));
 			$user->setSalt($salt);
 			$user->setPassword($this->encoderFactory->encodePassword($user, $form->get("password")->getData(), $salt));
@@ -291,10 +261,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function registerAction(Request $request, TranslatorInterface $translator, MailerInterface $mailer)
+    public function registerAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
 		$session = $request->getSession();
-		$em = $this->getDoctrine()->getManager();
 		$user = new User();
         $user->setEnabled(false);
 
@@ -335,11 +304,10 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-	
-	public function resendEmailConfirmationAction(TranslatorInterface $translator, MailerInterface $mailer, $id)
+
+	public function resendEmailConfirmationAction(TranslatorInterface $translator, EntityManagerInterface $em, MailerInterface $mailer, $id)
 	{
 		$session = $request->getSession();
-        $em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
 
 		$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
@@ -360,7 +328,7 @@ class UserController extends AbstractController
     /**
      * Tell the user to check their email provider.
      */
-    public function checkEmailAction(Request $request, UrlGeneratorInterface $router)
+    public function checkEmailAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router)
     {
 		$session = $request->getSession();
         $email = $session->get('fos_user_send_confirmation_email/email');
@@ -370,7 +338,6 @@ class UserController extends AbstractController
         }
 
         $session->remove('fos_user_send_confirmation_email/email');
-		$em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findUserByEmail($email);
 
         if (null === $user) {
@@ -382,17 +349,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * Receive the confirmation token from user email provider, login the user.
-     *
-     * @param Request $request
-     * @param string  $token
-     *
-     * @return Response
-     */
-    public function confirmAction(Request $request, $token)
+    public function confirmAction(Request $request, EntityManagerInterface $em, $token)
     {
-        $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->findUserByConfirmationToken($token);
 
         if (null === $user) {
@@ -411,14 +369,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    /**
-     * Change user password.
-     *
-     * @param Request $request
-     *
-     * @return Response
-     */
-    public function changePasswordAction(Request $request)
+    public function changePasswordAction(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
         if (!is_object($user)) {
@@ -430,14 +381,13 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-			$em = $this->getDoctrine()->getManager();
 			$salt = base64_encode(random_bytes(32));
 			$user->setSalt($salt);
 			$user->setPassword($this->encoderFactory->encodePassword($user, $form->get("password")->getData(), $salt));
 
             $em->persist($user);
             $em->flush();
-			
+
             return $this->redirect($this->generateUrl("Profile_Show"));
         }
 
@@ -446,9 +396,8 @@ class UserController extends AbstractController
         ]);
     }
 
-	public function countUserAction()
+	public function countUserAction(EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countUser = $em->getRepository(User::class)->countAdmin();
 		return new Response($countUser);
 	}
@@ -462,13 +411,12 @@ class UserController extends AbstractController
 		return [$contributionsArray, $contributionsInProgressArray, $contributionsUnpublishedArray];
 	}
 
-    public function viewContributionsAction(APUser $apuser, $id)
+    public function viewContributionsAction(EntityManagerInterface $em, APUser $apuser, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
 
 		list($contributionsArray, $contributionsInProgressArray, $contributionsUnpublishedArray) = $this->getUserContributions($apuser, $user);
-		
+
 		return $this->render('user/AdminUser/contribution.html.twig', [
 			'user' => $user,
 			'contributionsArray' => $contributionsArray,
@@ -477,13 +425,12 @@ class UserController extends AbstractController
 		]);
     }
 
-	public function viewProfileAction(APUser $apuser, $id)
+	public function viewProfileAction(EntityManagerInterface $em, APUser $apuser, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
-		
+
 		list($contributionsArray, $contributionsInProgressArray, $contributionsUnpublishedArray) = $this->getUserContributions($apuser, $user);
-		
+
 		return $this->render('user/AdminUser/other_profile.html.twig', [
 			'user' => $user,
 			'contributionsArray' => $contributionsArray,
@@ -502,7 +449,7 @@ class UserController extends AbstractController
 					$res[] = ["title" => $donation["donation"], "address" => $donation["address"], "qrcode" => null];
 				else {
 					$qrCode = \QRCode::getMinimumQRCode($donation["address"], \QR_ERROR_CORRECT_LEVEL_L);
-					
+
 					ob_start();
 					imagegif($qrCode->createImage(6, 4));
 					$contents = ob_get_contents();
@@ -515,7 +462,7 @@ class UserController extends AbstractController
 		
 		return $this->render("user/Profile/donation.html.twig", ["donations" => $res, "currencies" => Currency::getCurrencies(), "languageCountry" => Currency::getlanguageCountry($request->getLocale())]);
 	}
-	
+
     private function generateToken()
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');

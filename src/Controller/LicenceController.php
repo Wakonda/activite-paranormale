@@ -3,17 +3,16 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Licence;
 use App\Entity\Language;
 
 class LicenceController extends AbstractController
 {
-    public function showColorboxAction(Request $request)
+    public function showColorboxAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
 		$entities = $em->getRepository(Licence::class)->findBy(['language' => $language]);
@@ -21,9 +20,8 @@ class LicenceController extends AbstractController
         return $this->render('index/Licence/showColorbox.html.twig', ['entities' => $entities]);
     }
 
-    public function showColorboxByLicenceAction($id)
+    public function showColorboxByLicenceAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Licence::class)->find($id);
 
         return $this->render('index/Licence/showColorboxByLicence.html.twig', ['entity' => $entity]);

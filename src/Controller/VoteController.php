@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Vote;
 use App\Entity\NewsVote;
@@ -79,9 +80,8 @@ class VoteController extends AbstractController
 		return [$entity, $className];
 	}
 
-    public function indexAction(Request $request, $className, $idClassName)
+    public function indexAction(Request $request, EntityManagerInterface $em, $className, $idClassName)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
 
 		$averageVote = $em->getRepository($classNameVote)->averageVote($className, $idClassName);
@@ -101,10 +101,8 @@ class VoteController extends AbstractController
 		]);
     }
 	
-	public function editAction(Request $request, $className, $idClassName)
+	public function editAction(Request $request, EntityManagerInterface $em, $className, $idClassName)
     {
-		// dd("ok");
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
 
 		if(!$request->isXmlHttpRequest())

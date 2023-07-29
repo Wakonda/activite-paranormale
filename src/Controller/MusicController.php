@@ -5,6 +5,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Artist;
 use App\Entity\Album;
@@ -23,10 +24,8 @@ class MusicController extends AbstractController
 		]);
     }
 
-	public function listDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function listDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
@@ -71,55 +70,48 @@ class MusicController extends AbstractController
 		return $response;
 	}
 
-	public function albumAction($id, $title_slug)
+	public function albumAction(EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$entities = $em->getRepository(Album::class)->getMusicsByAlbum($id);
 		$musicByArtists = $em->getRepository(Music::class)->getMusicsByArtist($id);
 
 		$artist = $em->getRepository(Artist::class)->find($id);
 		
-		return $this->render('music/Music/album.html.twig', array(
+		return $this->render('music/Music/album.html.twig', [
 			"artist" => $artist,
 			'entities' => $entities,
 			'musicByArtists' => $musicByArtists
-		));	
+		]);
 	}
 
-	public function listenAction($id, $artist, $artistId, $album)
+	public function listenAction(EntityManagerInterface $em, $id, $artist, $artistId, $album)
 	{
-		$em = $this->getDoctrine()->getManager();
-
-		$entities = $em->getRepository(Music::class)->findBy(array("album" => $id));
+		$entities = $em->getRepository(Music::class)->findBy(["album" => $id]);
 		$artist = $em->getRepository(Artist::class)->find($artistId);
 		$album = $em->getRepository(Album::class)->find($id);
 		
-		return $this->render('music/Music/listen.html.twig', array(
+		return $this->render('music/Music/listen.html.twig', [
 			"artist" => $artist,
 			"album" => $album,
 			'entities' => $entities
-		));	
+		]);
 	}
 	
-	public function musicAction($id, $music)
+	public function musicAction(EntityManagerInterface $em, $id, $music)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$entity = $em->getRepository(Music::class)->find($id);
 		$album = $entity->getAlbum();
 		$artist = !empty($album) ? $album->getArtist() : $entity->getArtist();
 		
-		return $this->render('music/Music/music.html.twig', array(
+		return $this->render('music/Music/music.html.twig', [
 			"album" => $album,
 			'entity' => $entity,
 			'artist' => $artist
-		));
+		]);
 	}
 
-	public function downloadAction($id)
+	public function downloadAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Music::class)->find($id);
 
 		$response = new Response();
@@ -129,22 +121,20 @@ class MusicController extends AbstractController
 		return $response;
 	}
 
-	public function countMusiqueAction(Request $request)
+	public function countMusiqueAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countMusic = $em->getRepository(Music::class)->countMusic($request->getLocale());
 		return new Response($countMusic);
 	}
 	
-	public function musicGenreAction(Request $request, Int $genreId, String $genreTitle)
+	public function musicGenreAction(Request $request, EntityManagerInterface $em, Int $genreId, String $genreTitle)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$musicGenre = $em->getRepository(MusicGenre::class)->find($genreId);
 		$entities = $em->getRepository(Artist::class)->findBy(["genre" => $musicGenre]);
 		
-		return $this->render('music/Music/genre.html.twig', array(
+		return $this->render('music/Music/genre.html.twig', [
 			"musicGenre" => $musicGenre,
 			'entities' => $entities
-		));
+		]);
 	}
 }

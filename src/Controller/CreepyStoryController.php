@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Theme;
 use App\Entity\CreepyStory;
@@ -16,10 +17,8 @@ use App\Service\APHtml2Pdf;
 
 class CreepyStoryController extends AbstractController
 {
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
-
 		$locale = $request->getLocale();
 		
 		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
@@ -52,10 +51,8 @@ class CreepyStoryController extends AbstractController
 		]);
 	}
 
-	public function tabDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $themeId)
+	public function tabDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
@@ -100,10 +97,8 @@ class CreepyStoryController extends AbstractController
 		return $response;
 	}
 	
-	public function readAction(Request $request, $id, $title_slug)
+	public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 
 		$previousAndNextEntities = $em->getRepository(CreepyStory::class)->getPreviousAndNextEntities($entity, $request->getLocale());
@@ -114,17 +109,15 @@ class CreepyStoryController extends AbstractController
 		]);
 	}
 
-	public function countAction($language)
+	public function countAction(EntityManagerInterface $em, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbr = $em->getRepository(CreepyStory::class)->countCreepyStory($language);
 		return new Response($nbr);
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(APHtml2Pdf $html2pdf, $id)
+	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 		
 		if(empty($entity))
@@ -135,19 +128,17 @@ class CreepyStoryController extends AbstractController
 		return $html2pdf->generatePdf($content->getContent());
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, $language)
+	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
 
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 		return new Response($this->generateUrl('Photo_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function getSameTopicsAction($id)
+	public function getSameTopicsAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 		$sameTopics = $em->getRepository(CreepyStory::class)->getSameTopics($entity);
 		

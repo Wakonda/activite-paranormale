@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
-
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 use App\Entity\Page;
@@ -15,10 +15,8 @@ use App\Entity\Language;
 
 class UsefulLinkController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		$entity = $em->getRepository(Page::class)->findOneBy(["language" => $language, "internationalName" => UsefulLink::DEVELOPMENT_FAMILY]);
 

@@ -9,6 +9,7 @@ use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Video;
 use App\Entity\Contact;
@@ -20,10 +21,8 @@ use App\Service\APHtml2Pdf;
 
 class VideoController extends AbstractController
 {
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
-		
 		$locale = $request->getLocale();
 		
 		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
@@ -47,7 +46,7 @@ class VideoController extends AbstractController
 		]);
     }
 	
-	public function tabVideoAction(Request $request, $id, $theme)
+	public function tabVideoAction($id, $theme)
 	{
 		return $this->render('video/Video/tabVideo.html.twig', [
 			'themeDisplay' => $theme,
@@ -55,10 +54,8 @@ class VideoController extends AbstractController
 		]);	
 	}
 
-	public function tabVideoDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $themeId)
+	public function tabVideoDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
@@ -102,9 +99,8 @@ class VideoController extends AbstractController
 		return $response;
 	}
 	
-	public function readAction(Request $request, $id, $title_slug)
+	public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->find($id);
 
 		if($entity->getArchive())
@@ -129,9 +125,8 @@ class VideoController extends AbstractController
 		]);
 	}
 	
-	public function notifyDeletedVideoAction(Request $request, TranslatorInterface $translator, MailerInterface $mailer, $id)
+	public function notifyDeletedVideoAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$video = $em->getRepository(Video::class)->find($id);
 	
 		$entity  = new Contact();
@@ -162,17 +157,15 @@ class VideoController extends AbstractController
 		return $this->redirect($this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()]));
 	}
 	
-	public function countVideoAction($lang)
+	public function countVideoAction(EntityManagerInterface $em, $lang)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbrTabVideo = $em->getRepository(Video::class)->nbrVideo($lang);
 		return new Response($nbrTabVideo);
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(APHtml2Pdf $html2pdf, $id)
+	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->find($id);
 		
 		if(empty($entity))
@@ -186,9 +179,8 @@ class VideoController extends AbstractController
 		return $html2pdf->generatePdf($content->getContent());
 	}
 	
-	public function embeddedAction($id)
+	public function embeddedAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->find($id);
 		
         return $this->render('video/Video/embedded.html.twig', [
@@ -197,10 +189,10 @@ class VideoController extends AbstractController
 	}
 
 	// INDEX
-	public function sliderAction(Request $request)
+	public function sliderAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->getSliderNew($request->getLocale());
+
 		return $this->render("video/Video/slider.html.twig", [
 			"entity" => $entity
 		]);
@@ -232,7 +224,7 @@ class VideoController extends AbstractController
 			if(strstr($headers[0], "200"))
 				return true;
 		}
-		
+
 		return false;
 	}
 	
@@ -253,9 +245,8 @@ class VideoController extends AbstractController
 	}
 
 	// Video of the world
-	public function worldAction($language, $themeId, $theme)
+	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
@@ -279,19 +270,17 @@ class VideoController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, $language)
+	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
-
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
+
 		return new Response($this->generateUrl('Video_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
+	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -336,9 +325,8 @@ class VideoController extends AbstractController
 		return $response;
 	}
 	
-	public function getSameTopicsAction($id)
+	public function getSameTopicsAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->find($id);
 		$sameTopics = $em->getRepository(Video::class)->getSameTopics($entity);
 		

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -30,9 +31,8 @@ require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mob
 
 class NewsMobileController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
     {
-		$em = $this->getDoctrine()->getManager();
 		$locale = $request->getLocale();
 
 		$themes = $em->getRepository(Theme::class)->getTheme($locale);
@@ -45,7 +45,7 @@ class NewsMobileController extends AbstractController
 		);
 
 		$mobileDetector = new \Mobile_Detect;
-		
+
 		if($mobileDetector->isMobile())
 			$pagination->setPageRange(1);
 
@@ -58,30 +58,27 @@ class NewsMobileController extends AbstractController
 		]);
     }
 	
-	public function selectThemeForIndexNewAction(Request $request)
+	public function selectThemeForIndexNewAction(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
-
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
 		return new Response($this->generateUrl('ap_newsmobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
-	public function readAction($id)
+	public function readAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(News::class)->find($id);
-		
+
 		if($entity->getArchive())
 			throw new GoneHttpException("Archived");
-		
+
 		return $this->render('mobile/News/read.html.twig', [
 			'entity' => $entity
 		]);
 	}
 	
-	public function searchAction(Request $request, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
+	public function searchAction(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
 	{
         $form = $this->createForm(SearchEngineType::class);
 		$form->handleRequest($request);
@@ -102,8 +99,7 @@ class NewsMobileController extends AbstractController
 		$connectionParams = [
 			'url' => 'sqlite://'.$path
 		];
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
 
 		// Web
@@ -114,14 +110,14 @@ class NewsMobileController extends AbstractController
 			$num_results_on_page,
 			$conn
 		);
-		
+
 		$pagination->setCustomParameters(['align' => 'center']);
 		$pagination->setParam('type', 'text');
 		$pagination->setParam('keyword', $keyword);
-		
+
 		$total = $pagination->getTotalItemCount();
 		$total_pages = ceil($total / $num_results_on_page);
-		
+
 		$datas = $this->getDataSearch($em, $pagination);
 
 		$stopTimer = microtime(true);
@@ -138,14 +134,14 @@ class NewsMobileController extends AbstractController
 			$conn,
 			$searchEngine->countDatas($keyword, $request->getLocale())
 		);
-		
+
 		$paginationImage->setCustomParameters(['align' => 'center']);
 		$pagination->setParam('type', 'image');
 		$pagination->setParam('keyword', $keyword);
-		
+
 		$totalImage = $paginationImage->getTotalItemCount();
 		$total_pages_image = ceil($totalImage / $num_results_on_page);
-		
+
 		$dataImages = $this->getDataSearch($em, $paginationImage);
 
 		$stopTimer = microtime(true);
@@ -167,7 +163,7 @@ class NewsMobileController extends AbstractController
 			'execution_time_image' => $execution_time_image
 		]);
 	}
-	
+
 	private function getDataSearch($em, $pagination): Array
 	{
 		$datas = [];
@@ -221,19 +217,18 @@ class NewsMobileController extends AbstractController
 		return $this->redirect($this->generateUrl('ap_newsmobile_index', ["page" => 1]));
     }
 
-	public function pageAction(Request $request, String $page)
+	public function pageAction(Request $request, EntityManagerInterface $em, String $page)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $page);
 
         return $this->render('mobile/Page/page.html.twig', ['entity' => $entity]);
     }
 
-	public function newAction(Request $request, Security $security)
+	public function newAction(Request $request, EntityManagerInterface $em, Security $security)
 	{
         $entity = new News();
 
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
+		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $security->getUser()]);
 
@@ -243,10 +238,8 @@ class NewsMobileController extends AbstractController
         ]);
 	}
 
-	public function createAction(Request $request, TranslatorInterface $translator, Security $security)
+	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Security $security)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$entity = new News();
 
 		$user = $security->getUser();

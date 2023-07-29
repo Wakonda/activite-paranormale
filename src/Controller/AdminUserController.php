@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\User;
 use App\Entity\Language;
@@ -38,9 +39,8 @@ class AdminUserController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$informationArray = $this->indexDatatablesGenericAction($request);
 		$output = $informationArray['output'];
 
@@ -70,9 +70,8 @@ class AdminUserController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showAction($id)
+	public function showAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(User::class)->find($id);
 		
         return $this->render('user/AdminUser/show.html.twig', array(
@@ -80,10 +79,8 @@ class AdminUserController extends AdminGenericController
 		));
     }
 	
-	public function userListingAction()
+	public function userListingAction(EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$users = $em->getRepository(User::class)->getMembersUser();
 		
 		return $this->render('user/AdminUser/userListing.html.twig', array(
@@ -91,17 +88,15 @@ class AdminUserController extends AdminGenericController
 		));	
 	}
 
-	public function contributionUserAction($id, $bundleClassName, $displayState, $title, $entityName)
+	public function contributionUserAction(EntityManagerInterface $em, $id, $bundleClassName, $displayState, $title, $entityName)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
 
 		return $this->render('user/AdminUser/contribution_user.html.twig', array('id' => $id, 'bundleClassName' => $bundleClassName, 'user' => $user, 'displayState' => $displayState, "title" => $title, "entityName" => $entityName));
 	}
 	
-	public function contributionUserDatatablesAction(Request $request, APDate $date, $id, $bundleClassName, $displayState)
+	public function contributionUserDatatablesAction(Request $request, EntityManagerInterface $em, APDate $date, $id, $bundleClassName, $displayState)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
@@ -160,12 +155,10 @@ class AdminUserController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function contributionUserCommentsAction(TranslatorInterface $translator, $id)
+	public function contributionUserCommentsAction(TranslatorInterface $translator, EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
-		
-		
+
 		$entities = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 		
 		$classArray = [];
@@ -182,9 +175,8 @@ class AdminUserController extends AdminGenericController
 		return $this->render('user/AdminUser/contribution_user_comments.html.twig', ['id' => $id, 'user' => $user, 'classArray' => $classArray]);
 	}
 	
-	public function contributionUserCommentsDatatablesAction(Request $request, APDate $date, TranslatorInterface $translator, $id)
+	public function contributionUserCommentsDatatablesAction(Request $request, EntityManagerInterface $em, APDate $date, TranslatorInterface $translator, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$className = $request->query->get("className");
@@ -233,9 +225,8 @@ class AdminUserController extends AdminGenericController
 		return $this->render('user/Security/logout.html.twig');		
 	}
 	
-	public function activateAction($id, $state)
+	public function activateAction(EntityManagerInterface $em, $id, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
 		
 		$user->setEnabled($state);

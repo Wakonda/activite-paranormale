@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Page;
 use App\Entity\President;
@@ -12,17 +13,15 @@ use App\Service\RSSFeed;
 
 class PageController extends AbstractController
 {
-    public function aboutAction(Request $request)
+    public function aboutAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "about");
 
         return $this->render('page/Page/about.html.twig', ['entity' => $entity]);
     }
 
-	public function copyrightAction(Request $request)
+	public function copyrightAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "copyright");
 		
 		$images = json_decode(file_get_contents($this->getParameter('kernel.project_dir') . '/public/extended/photo/pictures.json'), true);
@@ -30,60 +29,52 @@ class PageController extends AbstractController
         return $this->render('page/Page/copyright.html.twig', ['entity' => $entity, "images" => $images]);
     }
 
-	public function cookieAction(Request $request)
+	public function cookieAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "cookie");
 
         return $this->render('page/Page/cookie.html.twig', ['entity' => $entity]);
     }
 
-	public function faqAction(Request $request)
+	public function faqAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "faq");
 
         return $this->render('page/Page/faq.html.twig', ['entity' => $entity]);
     }
 
-	public function privacyPolicyAction(Request $request)
+	public function privacyPolicyAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "privacyPolicy");
 
         return $this->render('page/Page/privacyPolicy.html.twig', ['entity' => $entity]);
     }
 
-	public function descriptionMetaTagAction(Request $request)
+	public function descriptionMetaTagAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "descriptionMetaTag");
 
 		$textPage = ($entity == null) ? "" : trim(strip_tags($entity->getText()));
         return new Response($textPage);
     }
 
-	public function keywordsMetaTagAction(Request $request)
+	public function keywordsMetaTagAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), "keywordsMetaTag");
 
 		$textPage = ($entity == null) ? "" : trim(strip_tags($entity->getText()));
         return new Response($textPage);
     }
 	
-	public function wordPresidentAction(Request $request)
+	public function wordPresidentAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(President::class)->getPresidentsIndex($request->getLocale());
-// dd($entities);
+
         return $this->render('page/Page/wordPresident.html.twig', ['entities' => $entities]);
     }
 
-	public function displayLogoAction(Request $request)
+	public function displayLogoAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$entity = $em->getRepository(President::class)->getPresidentIndex($request->getLocale());
 
 		return $this->render("page/Page/displayLogo.html.twig", [
@@ -91,26 +82,23 @@ class PageController extends AbstractController
 		]);
 	}
 
-	public function wordPresidentArchiveAction(Request $request)
+	public function wordPresidentArchiveAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(President::class)->getPresidentArchive($request->getLocale());
 
 		return $this->render('page/Page/wordPresidentArchive.html.twig', ['entities' => $entities]);
 	}
 	
-	public function wordPresidentReadArchiveAction($id)
+	public function wordPresidentReadArchiveAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(President::class)->find($id);
 
 		return $this->render('page/Page/wordPresidentReadArchive.html.twig', ['entity' => $entity]);
 	}
 	
 	// GENERIC
-	public function getPageByInternationalNameAction(Request $request, $internationalName, $isTitle = false)
+	public function getPageByInternationalNameAction(Request $request, EntityManagerInterface $em, $internationalName, $isTitle = false)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $internationalName);
 
         return $this->render('page/Page/generic.html.twig', ['entity' => $entity, "isTitle" => $isTitle]);

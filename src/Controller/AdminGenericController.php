@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Language;
 use App\Entity\State;
@@ -32,18 +33,17 @@ abstract class AdminGenericController extends AbstractController
 	
 	private $parser;
 
-	abstract public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal);
+	abstract public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal);
 	abstract public function postValidationAction($form, $entityBindded);
 
 	public function __construct(APParseHTML $parser) {
 		$this->parser = $parser;
 	}
 
-	protected function defaultValueForMappedSuperclassBase(Request $request, $entity)
+	protected function defaultValueForMappedSuperclassBase(Request $request, EntityManagerInterface $em, $entity)
 	{
 		if((is_subclass_of($entity, "App\Entity\MappedSuperclassBase") || method_exists($entity, "setLanguage")) and empty($entity->getLanguage()))
 		{
-			$em = $this->getDoctrine()->getManager();
 			$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 			$entity->setLanguage($language);
 		}
@@ -85,10 +85,8 @@ abstract class AdminGenericController extends AbstractController
 		return [$iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns];
 	}
 	
-	public function indexDatatablesGenericAction($request)
+	public function indexDatatablesGenericAction($request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns);
@@ -113,10 +111,8 @@ abstract class AdminGenericController extends AbstractController
      * Finds and displays a entity.
      *
      */
-    public function showGenericAction($id, $twig, $optionsRender = [])
+    public function showGenericAction(EntityManagerInterface $em, $id, $twig, $optionsRender = [])
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 
         if (!$entity) {
@@ -150,17 +146,15 @@ abstract class AdminGenericController extends AbstractController
      * Creates a new entity.
      *
      */
-    public function createGenericAction(Request $request, ConstraintControllerValidator $ccv, $translator, $twig, $entity, $formType, $options = [])
+    public function createGenericAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, $translator, $twig, $entity, $formType, $options = [])
     {
         $form = $this->createForm($formType, $entity, $options);
 
         $form->handleRequest($request);
 
-		$this->validationForm($request, $ccv, $translator, $form, $entity, $entity);
+		$this->validationForm($request, $em, $ccv, $translator, $form, $entity, $entity);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
 			$this->uploadFile($entity, $form);
 
             $em->persist($entity);
@@ -181,10 +175,8 @@ abstract class AdminGenericController extends AbstractController
      * Displays a form to edit an existing entity.
      *
      */
-    public function editGenericAction($id, $twig, $formType, $options = [])
+    public function editGenericAction(EntityManagerInterface $em, $id, $twig, $formType, $options = [])
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 
         if (!$entity) {
@@ -205,10 +197,8 @@ abstract class AdminGenericController extends AbstractController
      * Edits an existing entity.
      *
      */
-    public function updateGenericAction($request, ConstraintControllerValidator $ccv, $translator, $id, $twig, $formType, $options = [])
+    public function updateGenericAction($request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, $translator, $id, $twig, $formType, $options = [])
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 		$entityOriginal = clone $entity;
 
@@ -220,7 +210,7 @@ abstract class AdminGenericController extends AbstractController
         $deleteForm = $this->createDeleteForm($id);
 
 		$editForm->handleRequest($request);
-		$this->validationForm($request, $ccv, $translator, $editForm, $entity, $entityOriginal);
+		$this->validationForm($request, $em, $ccv, $translator, $editForm, $entity, $entityOriginal);
 
         if ($editForm->isValid()) {
 			$this->uploadFile($entity, $editForm, $entityOriginal);
@@ -243,9 +233,8 @@ abstract class AdminGenericController extends AbstractController
      * Deletes a entity.
      *
      */
-    public function deleteGenericAction($id)
+    public function deleteGenericAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository($this->className)->find($id);
 
 		$em->remove($entity);
@@ -287,9 +276,8 @@ abstract class AdminGenericController extends AbstractController
 		return $this->render('index/Form/showImageSelectorColorbox.html.twig', ['url_ajax' => $urlAjax]);
     }
 
-    public function loadImageSelectorColorboxGenericAction(Request $request)
+    public function loadImageSelectorColorboxGenericAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$current_page = $request->request->get('page');
 		$search = $request->request->get('search');
 		
@@ -385,18 +373,16 @@ abstract class AdminGenericController extends AbstractController
 		}
 	}
 	
-	public function archiveGenericArchive($id, $additionalFiles = [])
+	public function archiveGenericArchive(EntityManagerInterface $em, $id, $additionalFiles = [])
 	{
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 		$entity->setArchive(!$entity->getArchive());
 		
-		if($entity->getArchive()) {
+		if($entity->getArchive())
 			$this->moveFiles("public", "private", $entity, $additionalFiles);
-		} else {
+		else
 			$this->moveFiles("private", "public", $entity, $additionalFiles);
-		}
+
 		$em->persist($entity);
 		$em->flush();
 
@@ -448,10 +434,8 @@ abstract class AdminGenericController extends AbstractController
 		}
 	}
 	
-	protected function saveNewBiographies(&$entityBindded, $form, string $field, bool $isFormChild = true)
+	protected function saveNewBiographies(EntityManagerInterface $em, &$entityBindded, $form, string $field, bool $isFormChild = true)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		if(!$isFormChild) {
 			foreach ($form->getData()->getAuthors() as $newBiography)
 			{

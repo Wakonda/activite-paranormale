@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Comment;
 use App\Entity\NewsComment;
@@ -106,9 +107,8 @@ class CommentController extends AbstractController
 		return [$entity, $path, $className];
 	}
 
-    public function indexAction(Request $request, $idClassName, $className)
+    public function indexAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
@@ -141,9 +141,8 @@ class CommentController extends AbstractController
 		));
     }
 	
-    public function createAction(Request $request, $idClassName, $className)
+    public function createAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
@@ -202,8 +201,7 @@ class CommentController extends AbstractController
 		));
     }
 	
-	public function paginationAction(Request $request, $idClassName, $className) {
-		$em = $this->getDoctrine()->getManager();
+	public function paginationAction(Request $request, EntityManagerInterface $em, $idClassName, $className) {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 		$countComment = $em->getRepository($classNameComment)->countComment($idClassName);
 		$nbrOfPages = ceil($countComment/self::$nbrMessageByPage);

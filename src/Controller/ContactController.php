@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Contact;
 use App\Form\Type\ContactType;
@@ -25,7 +26,7 @@ class ContactController extends AbstractController
         ));
     }
 
-    public function sendAction(Request $request, TranslatorInterface $translator, MailerInterface $mailer)
+    public function sendAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
         $entity  = new Contact();
         $form = $this->createForm(ContactType::class, $entity);
@@ -48,7 +49,6 @@ class ContactController extends AbstractController
 
 			$mailer->send($email);
 
-            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 

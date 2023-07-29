@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Book;
 use App\Entity\BookEdition;
@@ -24,10 +25,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class BookController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $idTheme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
     {
-		$em = $this->getDoctrine()->getManager();
-
 		$datas = [];
 
 		if(!empty($idTheme))
@@ -52,9 +51,8 @@ class BookController extends AbstractController
 		return $this->render('book/Book/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 	
-	public function showAction($id, $title_slug)
+	public function showAction(EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Book::class)->find($id);
 
 		if($entity->getArchive())
@@ -63,9 +61,8 @@ class BookController extends AbstractController
 		return $this->render('book/Book/show.html.twig', ['entity' => $entity]);
 	}
 
-	public function byPublisherAction(Request $request, PaginatorInterface $paginator, $idPublisher, $titlePublisher, $page)
+	public function byPublisherAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idPublisher, $titlePublisher, $page)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbMessageByPage = 12;
 		$publisher = $em->getRepository(Publisher::class)->find($idPublisher);
 		$query = $em->getRepository(BookEdition::class)->getBooksByPublisher($idPublisher, $nbMessageByPage, $page);
@@ -81,9 +78,8 @@ class BookController extends AbstractController
 		return $this->render("book/Book/byPublisher.html.twig", ['pagination' => $pagination, "publisher" => $publisher]);
 	}
 
-	public function byGenreAction(Request $request, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
+	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbMessageByPage = 12;
 
 		$genre = $em->getRepository(LiteraryGenre::class)->find($idGenre);
@@ -101,9 +97,8 @@ class BookController extends AbstractController
 	}
 
 	// Book of the world
-	public function worldAction($language, $themeId, $theme)
+	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
 
@@ -127,19 +122,17 @@ class BookController extends AbstractController
 		));
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, $language)
+	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
 
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 		return new Response($this->generateUrl('Book_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
 	}
 
-	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
+	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -184,20 +177,17 @@ class BookController extends AbstractController
 		return $response;
 	}
 	
-	public function saveAction(int $id, string $title_slug)
+	public function saveAction(EntityManagerInterface $em, int $id, string $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$entity = $em->getRepository(BookEdition::class)->find($id);
 		
-		return $this->render('book/Book/save.html.twig', array(
+		return $this->render('book/Book/save.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 
-	public function downloadAction($id)
+	public function downloadAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(BookEdition::class)->find($id);
 
 		$response = new Response();
@@ -211,10 +201,8 @@ class BookController extends AbstractController
 	}
 
 	/* FONCTION DE COMPTAGE */
-	public function countAction($language)
+	public function countAction(EntityManagerInterface $em, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		return new Response($em->getRepository(Book::class)->countByLanguage($language));
 	}
 }

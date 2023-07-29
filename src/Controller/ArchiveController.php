@@ -10,6 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Theme;
 use App\Entity\Language;
@@ -30,9 +31,8 @@ class ArchiveController extends AbstractController
 		return "";
 	}
 	
-	public function archiveAction(Request $request, TranslatorInterface $translator, $language)
+	public function archiveAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$languages = $em->getRepository(Language::class)->findAll();
 		
 		$res = [];
@@ -62,13 +62,11 @@ class ArchiveController extends AbstractController
 		));
 	}
 	
-	public function archiveThemesAction(Request $request, TranslatorInterface $translator, $className, $language)
+	public function archiveThemesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $className, $language)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
 			return $this->redirect($this->generateUrl("Archive_Index"));
 
-		$em = $this->getDoctrine()->getManager();
-		
 		$className = base64_decode($className);
 		
 		$locale = empty($language) ? $request->getLocale() : $language;
@@ -94,13 +92,11 @@ class ArchiveController extends AbstractController
 		));
 	}
 	
-	public function archiveWitchcraftsAction(Request $request, TranslatorInterface $translator, $className, $language)
+	public function archiveWitchcraftsAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $className, $language)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
 			return $this->redirect($this->generateUrl("Archive_Index"));
 
-		$em = $this->getDoctrine()->getManager();
-		
 		$className = base64_decode($className);
 		
 		$locale = empty($language) ? $request->getLocale() : $language;
@@ -138,12 +134,10 @@ class ArchiveController extends AbstractController
 		));		
 	}
 	
-	public function tabarchiveDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $themeId, $className)
+	public function tabarchiveDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
 			return $this->redirect($this->generateUrl("Archive_Index"));
-
-		$em = $this->getDoctrine()->getManager();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -185,13 +179,11 @@ class ArchiveController extends AbstractController
 		return new JsonResponse($output);
 	}
 	
-	public function readAction($id, $className)
+	public function readAction(EntityManagerInterface $em, $id, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
 			return $this->redirect($this->generateUrl("Archive_Index"));
-		
-		$em = $this->getDoctrine()->getManager();
-		
+
 		$className = base64_decode($className);
 
 		$entity = $em->getRepository($className)->find($id);
@@ -202,10 +194,8 @@ class ArchiveController extends AbstractController
 		]);
 	}
 	
-	public function nbrArchiveAction(Request $request)
+	public function nbrArchiveAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$res = [];
 
 		$entities = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();

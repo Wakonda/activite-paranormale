@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Security\Core\Security;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Form\Type\TestimonyType;
 use App\Entity\Testimony;
@@ -22,9 +23,8 @@ require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mob
 
 class TestimonyMobileController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
     {
-		$em = $this->getDoctrine()->getManager();
 		$locale = $request->getLocale();
 
 		$query = $em->getRepository(Testimony::class)->getEntitiesPagination($page, $theme, $locale);
@@ -43,47 +43,44 @@ class TestimonyMobileController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
-		return $this->render('mobile/Testimony/index.html.twig', array(
+		return $this->render('mobile/Testimony/index.html.twig', [
 			'pagination' => $pagination,
 			'currentPage' => $page,
 			'themes' => $themes
-		));
+		]);
     }
 
-	public function selectThemeForIndexTestimonyAction(Request $request)
+	public function selectThemeForIndexTestimonyAction(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
-
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
-		return new Response($this->generateUrl('ap_testimonymobile_index', array('page' => 1, 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('ap_testimonymobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
-	public function readAction($id)
+	public function readAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		$files = $em->getRepository(TestimonyFileManagement::class)->getAllFilesForTestimonyByIdClassName($entity->getId());
 		
-		return $this->render('mobile/Testimony/read.html.twig', array(
+		return $this->render('mobile/Testimony/read.html.twig', [
 			'entity' => $entity,
 			'files' => $files
-		));
+		]);
 	}
 
-	public function newAction(Request $request, Security $security)
+	public function newAction(Request $request, EntityManagerInterface $em, Security $security)
 	{
 		$entity = new Testimony();
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
+		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
 		$user = $security->getUser();
 		$form = $this->createForm(TestimonyType::class, $entity, ['locale' => $request->getLocale(), "user" => $user]);
 		
-		return $this->render('mobile/Testimony/new.html.twig', array('form' => $form->createView()));
+		return $this->render('mobile/Testimony/new.html.twig', ['form' => $form->createView()]);
 	}
 
-	public function createAction(Request $request, TranslatorInterface $translator, Security $security)
+	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Security $security)
 	{
 		$entity  = new Testimony();
 		$user = $security->getUser();
@@ -93,7 +90,6 @@ class TestimonyMobileController extends AbstractController
 	
 		if ($form->isSubmitted() && $form->isValid())
 		{
-			$em = $this->getDoctrine()->getManager();
 			$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
 			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Waiting', 'language' => $language));
 
@@ -123,9 +119,8 @@ class TestimonyMobileController extends AbstractController
 		return $this->render('mobile/Testimony/new.html.twig', array('form' => $form->createView()));
 	}
 
-	public function addFileAction($id)
+	public function addFileAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		return $this->render('mobile/Testimony/addFile.html.twig', array('entity' => $entity));
 	}

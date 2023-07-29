@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Video;
 use App\Entity\Theme;
@@ -15,9 +16,8 @@ require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mob
 
 class VideoMobileController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
     {
-		$em = $this->getDoctrine()->getManager();
 		$locale = $request->getLocale();
 
 		$themes = $em->getRepository(Theme::class)->getTheme($locale);
@@ -36,33 +36,30 @@ class VideoMobileController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 		
-		return $this->render('mobile/Video/index.html.twig', array(
+		return $this->render('mobile/Video/index.html.twig', [
 			'themes' => $themes,
 			'currentPage' => $page,
 			'pagination' => $pagination
-		));
+		]);
     }
 	
-	public function selectThemeForIndexNewAction(Request $request)
+	public function selectThemeForIndexNewAction(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
-		
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
-		return new Response($this->generateUrl('ap_videomobile_index', array('page' => 1, 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('ap_videomobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
-	public function readAction($id)
+	public function readAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->find($id);
 		
 		if($entity->getArchive())
 			throw new GoneHttpException();
 		
-		return $this->render('mobile/Video/read.html.twig', array(
+		return $this->render('mobile/Video/read.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 }

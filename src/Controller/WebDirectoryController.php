@@ -6,35 +6,33 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\WebDirectory;
 use App\Service\APImgSize;
 
 class WebDirectoryController extends AbstractController
 {
-    public function indexAction()
+    public function indexAction(EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(WebDirectory::class)->findAll();
-		
-        return $this->render('webdirectory/WebDirectory/index.html.twig', array(
+
+        return $this->render('webdirectory/WebDirectory/index.html.twig', [
 			'entities' => $entities
-		));
+		]);
     }
 	
-	public function readAction($id, $title)
+	public function readAction(EntityManagerInterface $em, $id, $title)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(WebDirectory::class)->find($id);
 		
-		return $this->render('webdirectory/WebDirectory/read.html.twig', array(
+		return $this->render('webdirectory/WebDirectory/read.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 
-	public function searchDatatablesAction(Request $request, TranslatorInterface $translator, APImgSize $imgSize)
+	public function searchDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APImgSize $imgSize)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
@@ -52,16 +50,16 @@ class WebDirectoryController extends AbstractController
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
 			}
 		}
-		
+
         $entities = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language);
 		$iTotal = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{

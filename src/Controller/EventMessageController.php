@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\EventMessage;
 use App\Entity\Biography;
@@ -21,17 +22,15 @@ use App\Service\APDate;
 
 class EventMessageController extends AbstractController
 {
-    public function sliderAction(Request $request)
+    public function sliderAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(EventMessage::class)->getLastEventsToDisplayIndex($request->getLocale());
 
         return $this->render('page/EventMessage/slider.html.twig', ['entities' => $entities]);
     }
 
-    public function readAction(Request $request, $id, $title_slug)
+    public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(EventMessage::class)->find($id);
 
 		if($entity->getArchive())
@@ -61,12 +60,11 @@ class EventMessageController extends AbstractController
 		return $this->render('page/EventMessage/calendar.html.twig');
 	}
 
-	public function calendarLoadEventsAction(Request $request)
+	public function calendarLoadEventsAction(Request $request, EntityManagerInterface $em)
 	{
 		$startDate = new \DateTime($request->query->get("start"));
 		$endDate = new \DateTime($request->query->get("end"));
 
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonthBetween($startDate, $endDate, $request->getLocale());
 
 		$eventDates = [];
@@ -170,10 +168,8 @@ class EventMessageController extends AbstractController
 		]);	
 	}
 
-	public function tabDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $themeId)
+	public function tabDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
@@ -232,15 +228,13 @@ class EventMessageController extends AbstractController
         ]);
     }
 	
-	public function createAction(Request $request)
+	public function createAction(Request $request, EntityManagerInterface $em)
     {
-		return $this->genericCreateUpdate($request);
+		return $this->genericCreateUpdate($request, $em);
     }
 
-	public function waitingAction($id)
+	public function waitingAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$entity = $em->getRepository(EventMessage::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
 			return $this->redirect($this->generateUrl('EventMessage_Read', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]));
@@ -250,11 +244,10 @@ class EventMessageController extends AbstractController
         ]);
 	}
 
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$securityUser = $this->container->get('security.authorization_checker');
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository(EventMessage::class)->find($id);
 
@@ -272,14 +265,13 @@ class EventMessageController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, $id)
     {
-		return $this->genericCreateUpdate($request, $id);
+		return $this->genericCreateUpdate($request, $em, $id);
     }
 
-	public function validateAction(Request $request, $id)
+	public function validateAction(Request $request, EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(EventMessage::class)->find($id);
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
@@ -301,12 +293,11 @@ class EventMessageController extends AbstractController
 		return $this->render('page/EventMessage/validate_externaluser_text.html.twig');
 	}
 
-	private function genericCreateUpdate(Request $request, $id = 0)
+	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, $id = 0)
 	{
 		$locale = $request->getLocale();
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 		$securityUser = $this->container->get('security.authorization_checker');
-		$em = $this->getDoctrine()->getManager();
 
 		if(empty($id))
 			$entity = new EventMessage();
@@ -376,9 +367,8 @@ class EventMessageController extends AbstractController
 	}
 
 	// Event of the world
-	public function worldAction($language, $themeId, $theme)
+	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
@@ -401,19 +391,17 @@ class EventMessageController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, $language)
+	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
 
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 		return new Response($this->generateUrl('EventMessage_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
+	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -455,10 +443,8 @@ class EventMessageController extends AbstractController
 		return $response;
 	}
 
-	public function getAllEventsByDayAndMonthAction(Request $request, TranslatorInterface $translator, $year, $month, $day)
+	public function getAllEventsByDayAndMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year, $month, $day)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
 
@@ -525,10 +511,8 @@ class EventMessageController extends AbstractController
 		]);
 	}
 
-	public function getAllEventsByYearOrMonthAction(Request $request, TranslatorInterface $translator, $year, $month)
+	public function getAllEventsByYearOrMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year, $month)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$month = !empty($month) ? str_pad($month, 2, "0", STR_PAD_LEFT) : "01";
 
 		$currentDate = new \DateTime($year."-".$month."-01");
@@ -596,10 +580,8 @@ class EventMessageController extends AbstractController
 		]);
 	}
 	
-	public function getAllEventsByYearAction(Request $request, TranslatorInterface $translator, $year)
+	public function getAllEventsByYearAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$currentDate = new \DateTime($year."-01-01");
 
 		$res = [];

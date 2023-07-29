@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Quotation;
 use App\Entity\Biography;
@@ -35,9 +36,8 @@ class QuotationController extends AbstractController
         return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY]);
     }
 	
-	public function listQuotationDatatables(Request $request)
+	public function listQuotationDatatables(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
@@ -49,7 +49,7 @@ class QuotationController extends AbstractController
 
 		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
+			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true")
 			{
 				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
 				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
@@ -81,9 +81,8 @@ class QuotationController extends AbstractController
 		return $response;
     }
 	
-	public function listProverbDatatables(Request $request)
+	public function listProverbDatatables(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
@@ -128,9 +127,8 @@ class QuotationController extends AbstractController
 		return $response;
     }
 	
-	public function listPoemDatatables(Request $request)
+	public function listPoemDatatables(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
@@ -174,15 +172,13 @@ class QuotationController extends AbstractController
 		return $response;
     }
 
-	public function proverbCountry($id) {
-		$em = $this->getDoctrine()->getManager();
+	public function proverbCountry(EntityManagerInterface $em, $id) {
 		$country = $em->getRepository(Region::class)->find($id);
 
 		return $this->render('quotation/Quotation/listProverbByCountry.html.twig', ["country" => $country]);
 	}
 
-	public function listProverbByCountryDatatables(Request $request, TranslatorInterface $translator, $countryId) {
-		$em = $this->getDoctrine()->getManager();
+	public function listProverbByCountryDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $countryId) {
 		$language = $request->getLocale();
 
 		$iDisplayStart = $request->query->get('iDisplayStart');
@@ -226,33 +222,29 @@ class QuotationController extends AbstractController
 		return $response;
 	}
 
-	public function readProverb($id)
+	public function readProverb(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->find($id);
-		
+
 		return $this->render("quotation/Quotation/readProverb.html.twig", ['entity' => $entity]);
 	}
 
-	public function readQuotation($id)
+	public function readQuotation(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->find($id);
 
 		return $this->render("quotation/Quotation/readQuotation.html.twig", ['entity' => $entity]);
 	}
 
-	public function readPoem($id)
+	public function readPoem(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->find($id);
 
 		return $this->render("quotation/Quotation/readPoem.html.twig", ['entity' => $entity]);
 	}
 	
-	public function quotationsServerSide(Request $request, PaginatorInterface $paginator, $authorId, $page)
+	public function quotationsServerSide(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $authorId, $page)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 		$biography = $em->getRepository(Biography::class)->find($authorId);
 		
@@ -265,26 +257,24 @@ class QuotationController extends AbstractController
 		);
 
 		$pagination->setCustomParameters(['align' => 'center']);
-		
+
         return $this->render('quotation/Quotation/quotationsByAuthor.html.twig', [
 			'pagination' => $pagination
 		]);
 	}
 
-    public function randomQuote(Request $request)
+    public function randomQuote(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Quotation::class)->randomQuote($request->getLocale());
-		
+
         return $this->render('quotation/Quotation/randomQuote.html.twig', [
 			"entity" => $entity,
 		]);
     }
 	
 	/* FONCTION DE COMPTAGE */
-	public function countQuotation(Request $request)
+	public function countQuotation(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbrTotalQuotation = $em->getRepository(Quotation::class)->countCitation($request->getLocale());
 		return new Response($nbrTotalQuotation);
 	}

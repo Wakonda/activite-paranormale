@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\TagWord;
 use App\Entity\Tags;
@@ -19,10 +20,8 @@ class TagsController extends AbstractController
 		return $this->render("tags/Tags/index.html.twig");
 	}
 
-	public function listDatatables(Request $request, APImgSize $imgSize)
+	public function listDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
@@ -61,24 +60,20 @@ class TagsController extends AbstractController
 		return new JsonResponse($output);
 	}
 
-    public function searchAction(Request $request, $id, $title)
+    public function searchAction(Request $request, EntityManagerInterface $em, $id, $title)
     {
-		$em = $this->getDoctrine()->getManager();
-		
 		$tagWord = $em->getRepository(TagWord::class)->find($id);
 		$countEntities = $em->getRepository(Tags::class)->getEntitiesByTags($id, $request->getLocale(), true);
 
         return $this->render('tags/Tags/search.html.twig', ['tagWord' => $tagWord, 'countEntities' => $countEntities]);
     }
 
-	public function searchDatatablesAction(Request $request, TranslatorInterface $translator, APDate $date, $id, $title)
+	public function searchDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date, $id, $title)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
-		
+
 		$locale = $request->getLocale();
 
 		$tagWord = $em->getRepository(TagWord::class)->find($id);
@@ -106,9 +101,8 @@ class TagsController extends AbstractController
 		return new JsonResponse($output);
 	}
 	
-	public function TagsAvailableEditAction(Request $request)
+	public function TagsAvailableEditAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = null;
 		if($request->query->has('locale') and !empty($locale = $request->query->get('locale')))
 			$language = $em->getRepository(Language::class)->find($locale);

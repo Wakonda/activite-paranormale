@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Doctrine\ORM\Query\ResultSetMapping;
 
@@ -69,9 +70,9 @@ class AdvertisingAdminController extends AdminGenericController
 		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Advertising::class)->find($id);
+		$entity = $em->getRepository(Advertising::class)->find($id);
 		$formType = AdvertisingAdminType::class;
 
 		$twig = 'advertising/AdvertisingAdmin/edit.html.twig';

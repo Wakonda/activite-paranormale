@@ -10,6 +10,7 @@ use App\Form\Type\FileManagementType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class FileManagementController extends AbstractController
 {
@@ -26,9 +27,8 @@ class FileManagementController extends AbstractController
 		return [$entity, $className];
 	}
 
-    public function indexAction($idClassName, $className)
+    public function indexAction(EntityManagerInterface $em, $idClassName, $className)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, "file");
@@ -44,9 +44,8 @@ class FileManagementController extends AbstractController
         ));
     }
 	
-	public function createAction(Request $request, $idClassName, $className)
+	public function createAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
 	{
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		
 		$form = $this->createForm(FileManagementType::class, $entity);
@@ -70,22 +69,21 @@ class FileManagementController extends AbstractController
 		
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, $kind);
 
-		return $this->render('filemanagement/FileManagement/index.html.twig', array(
+		return $this->render('filemanagement/FileManagement/index.html.twig', [
 			'entity' => $entity,
 			'form' => $form->createView(),
 			'entities' =>$entities,
 			'idClassName' =>$idClassName,
 			'className' =>$className
-		));
+		]);
 	}
 	
-    public function deleteAction(Request $request)
+    public function deleteAction(Request $request, EntityManagerInterface $em)
     {
 		$id = $request->get('selectedId');
 
 		if($request->isXmlHttpRequest() )
 	    {
-            $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(FileManagement::class)->find($id);
 
             if (!$entity) {
@@ -99,7 +97,7 @@ class FileManagementController extends AbstractController
         return new Response();
     }
 	
-    public function uploadFileAction(Request $request, TranslatorInterface $translator, $idClassName, $className)
+    public function uploadFileAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $idClassName, $className)
     {
 		$newNameFile = "";
 		$file = $request->files->all();
@@ -113,7 +111,6 @@ class FileManagementController extends AbstractController
 			$errorMsg = $translator->trans('file.uploadFile.UnauthorizedExtension', [], 'validators');
 		else
 		{
-			$em = $this->getDoctrine()->getManager();
 			list($entity,) = $this->getNewEntity($em, $className, $idClassName);
 			
 			$newNameFile = uniqid().'_'.$file['uploadFile']->getClientOriginalName();
@@ -125,27 +122,25 @@ class FileManagementController extends AbstractController
 		<script>window.top.window.uploadEnd('".$errorMsg."', '".$newNameFile."');</script>");
     }
 
-    public function showImageAction($idClassName, $className)
+    public function showImageAction(EntityManagerInterface $em, $idClassName, $className)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName);
 
-        return $this->render('filemanagement/FileManagement/showImage.html.twig', array(
+        return $this->render('filemanagement/FileManagement/showImage.html.twig', [
 			'entities' => $entities,
 			'idClassName' => $idClassName,
 			'className' => $className,
 			'mainEntity' => $em->getRepository($entity->getMainEntityClassName())->find($idClassName)
-        ));
+        ]);
     }
 	
-    public function uploadFileDropzoneAction(Request $request, $idClassName, $className)
+    public function uploadFileDropzoneAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
 		$newNameFile = "";
 		$file = $request->files->all();
 		$title = $request->request->all()["title"];
 
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $className) = $this->getNewEntity($em, $className, $idClassName);
 
 		$newNameFile = uniqid().'_'.$file['file']->getClientOriginalName();
@@ -162,22 +157,20 @@ class FileManagementController extends AbstractController
 		return new Response();
     }
 
-    public function drawingPaintAction($idClassName, $className)
+    public function drawingPaintAction(EntityManagerInterface $em, $idClassName, $className)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, "drawing");
 
-        return $this->render('filemanagement/FileManagement/drawingPaint.html.twig', array(
+        return $this->render('filemanagement/FileManagement/drawingPaint.html.twig', [
 			'entities' =>$entities,
 			'idClassName' =>$idClassName,
 			'className' =>$className
-        ));
+        ]);
     }
 	
-    public function downloadAction($id, $path, $folder)
+    public function downloadAction(EntityManagerInterface $em, $id, $path, $folder)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(FileManagement::class)->find($id);
 
 		$pathFile = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."$folder/".urldecode($path).$entity->getRealNameFile());
@@ -186,9 +179,8 @@ class FileManagementController extends AbstractController
     }
 
 	// WPAINT
-	public function saveImagePaintAction(Request $request, $idClassName, $className)
+	public function saveImagePaintAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$testimony = $em->getRepository(Testimony::class)->find($idClassName);
 
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);

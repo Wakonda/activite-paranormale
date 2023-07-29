@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Biography;
 use App\Entity\Quotation;
@@ -17,19 +18,16 @@ use App\Form\Type\BiographySearchType;
 
 class BiographyController extends AbstractController
 {
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, EntityManagerInterface $em)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(Biography::class)->getBiographies($request->getLocale());
 		$form = $this->createForm(BiographySearchType::class, null, ["locale" => $request->getLocale()]);
 		
         return $this->render('quotation/Biography/index.html.twig', ["entities" => $entities, "form" => $form->createView()]);
     }
 
-	public function readAction($id)
+	public function readAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$entity = $em->getRepository(Biography::class)->find($id);
 		
 		$documents = $em->getRepository(Document::class)->getDocumentsByBiographyInternationalName($entity->getInternationalName());
@@ -46,10 +44,8 @@ class BiographyController extends AbstractController
 		]);	
 	}
 
-	public function listDatatablesAction(Request $request, APImgSize $imgSize)
+	public function listDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
@@ -97,9 +93,8 @@ class BiographyController extends AbstractController
 	}
 
 	// Biography of the world
-	public function worldAction($language)
+	public function worldAction(EntityManagerInterface $em, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
@@ -115,9 +110,8 @@ class BiographyController extends AbstractController
 		]);
 	}
 
-	public function worldDatatablesAction(Request $request, APImgSize $imgSize, $language)
+	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
@@ -161,9 +155,8 @@ class BiographyController extends AbstractController
 	}
 	
 	/* FONCTION DE COMPTAGE */
-	public function countAction(Request $request)
+	public function countAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$total = $em->getRepository(Biography::class)->countBiography($request->getLocale());
 		return new Response($total);
 	}

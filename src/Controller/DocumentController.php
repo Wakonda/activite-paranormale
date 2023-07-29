@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Biography;
 use App\Entity\Document;
@@ -16,9 +17,8 @@ use App\Service\APDate;
 
 class DocumentController extends AbstractController
 {
-    public function indexAction(Request $request, $themeId, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, $themeId, $theme)
     {
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 		$obj = new \stdclass();
 		$obj->title = null;
@@ -31,9 +31,8 @@ class DocumentController extends AbstractController
 		]);
     }
 
-	public function listDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function listDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];
@@ -90,32 +89,29 @@ class DocumentController extends AbstractController
 		return $response;
 	}
 
-	public function selectThemeForIndexAction(Request $request)
+	public function selectThemeForIndexAction(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_id');
 
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
-		return new Response($this->generateUrl('Document_Index', array('themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('Document_Index', ['themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 	
-	public function abstractDocumentAction($id, $title_slug)
+	public function abstractDocumentAction(EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Document::class)->find($id);
 		
 		if($entity->getArchive())
 			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $entity->getId(), "className" => base64_encode(get_class($entity))]));
 		
-		return $this->render('document/Document/abstractDocument.html.twig', array(
+		return $this->render('document/Document/abstractDocument.html.twig', [
 			"entity" => $entity
-		));
+		]);
 	}
 	
-	public function downloadDocumentAction($id)
+	public function downloadDocumentAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Document::class)->find($id);
 		
 		if($entity->getArchive())
@@ -131,22 +127,20 @@ class DocumentController extends AbstractController
 		return $response;
 	}
 	
-	public function readDocumentAction($id, $title_slug)
+	public function readDocumentAction(EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Document::class)->find($id);
 		
 		if($entity->getArchive())
 			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $entity->getId(), "className" => base64_encode(get_class($entity))]));
 		
-		return $this->render('document/Document/readDoc.html.twig', array(
+		return $this->render('document/Document/readDoc.html.twig', [
 			'entity' => $entity
-		));
+		]);
 	}
 
-	public function countDocumentAction()
+	public function countDocumentAction(EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countDocument = $em->getRepository(Document::class)->countDocument();
 		return new Response($countDocument);
 	}

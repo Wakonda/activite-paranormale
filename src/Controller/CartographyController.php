@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Form\Type\CartographyType;
 use App\Entity\Cartography;
@@ -16,10 +17,8 @@ use App\Form\Type\CartographySearchType;
 
 class CartographyController extends AbstractController
 {
-    public function indexAction(Request $request, $idTheme)
+    public function indexAction(Request $request, EntityManagerInterface $em, $idTheme)
     {
-		$em = $this->getDoctrine()->getManager();
-		
 		$theme = null;
 		
 		if(!empty($idTheme))
@@ -35,9 +34,8 @@ class CartographyController extends AbstractController
 		]);
     }
 
-	public function showAction($id)
+	public function showAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Cartography::class)->find($id);
 		
 		if($entity->getArchive())
@@ -48,17 +46,15 @@ class CartographyController extends AbstractController
 		]);
     }
 	
-	public function nbrGMapByLangAction($lang)
+	public function nbrGMapByLangAction(EntityManagerInterface $em, $lang)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbrGMapByLang = $em->getRepository(Cartography::class)->nbrGMapByLang($lang);
 		return new Response($nbrGMapByLang);
 	}
 
 	// Cartography of the world
-	public function worldAction($language, $themeId, $theme)
+	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
@@ -81,19 +77,17 @@ class CartographyController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, $language)
+	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
 
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 		return new Response($this->generateUrl('Cartography_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
+	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -138,10 +132,8 @@ class CartographyController extends AbstractController
 		return $response;
 	}
 
-	public function listDatatablesAction(Request $request, APImgSize $imgSize)
+	public function listDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->get('search')["value"];

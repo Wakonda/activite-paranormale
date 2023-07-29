@@ -1,5 +1,5 @@
 security:
-    encoders:
+    password_hashers:
         App\Entity\User:
             algorithm: sha512
             iterations: 5000
@@ -25,12 +25,12 @@ security:
         main:
             pattern:    ^/
             http_basic: ~
+            entry_point: form_login
             provider: our_db_provider
-            anonymous: ~
             form_login:
                 always_use_default_target_path: true
                 default_target_path : /profile/
-                csrf_token_generator: security.csrf.token_manager
+                enable_csrf: true
                 remember_me: true
                 login_path: Security_Login
                 check_path: Security_Login
@@ -41,8 +41,6 @@ security:
                 secret: "%kernel.secret%"
                 lifetime: 604800
                 path: /
-
-            anonymous: true
 
     access_control:
         - { path: /admin.*, roles: ROLE_ADMIN }

@@ -18,15 +18,15 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use App\Form\Type\NewsUserParticipationType;
 use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
 
 class NewsController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
     {
-		$em = $this->getDoctrine()->getManager();
 		$lang = $request->getLocale();
 
 		$themes = $em->getRepository(Theme::class)->getTheme($lang);
@@ -53,9 +53,8 @@ class NewsController extends AbstractController
 		]);
     }
 	
-	public function readNewsAction(Request $request, $id, $title_slug)
+	public function readNewsAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(News::class)->findByDisplayState($id);
 
 		if(empty($entity))
@@ -72,19 +71,17 @@ class NewsController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexNewAction(Request $request)
+	public function selectThemeForIndexNewAction(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
-
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
+
 		return new Response($this->generateUrl('News_Index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
 	/* FONCTION DE COMPTAGE */
-	public function countWorldNewsAction()
+	public function countWorldNewsAction(EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countWorldNews = $em->getRepository(News::class)->countWorldNews();
 
 		return new Response($countWorldNews);
@@ -92,14 +89,12 @@ class NewsController extends AbstractController
 	/* FIN FONCTION DE COMPTAGE */
 	
 	// News of the world
-	public function worldAction($language, $themeId, $theme)
+	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
-
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
 		$title = [];
@@ -118,19 +113,17 @@ class NewsController extends AbstractController
 		]);
 	}
 	
-	public function selectThemeForIndexWorldAction(Request $request, $language)
+	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
-
-		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
+
 		return new Response($this->generateUrl('News_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
+	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
@@ -176,28 +169,27 @@ class NewsController extends AbstractController
 	}
 	
 	// INDEX
-	public function sliderAction()
+	public function sliderAction(EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$sliderNews = $em->getRepository(News::class)->getSliderNew();
+
 		return $this->render("news/Widget/mainSlider.html.twig", [
 			"worldNews" => $sliderNews
 		]);
 	}
 	
-	public function mainSliderAction($lang)
+	public function mainSliderAction(EntityManagerInterface $em, $lang)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$sliderNew = $em->getRepository(News::class)->getMainSliderNew($lang);
+
 		return $this->render("news/Widget/jsSlider.html.twig", [
 			"sliderNews" => $sliderNew
 		]);
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(APHtml2Pdf $html2pdf, $id)
+	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(News::class)->find($id);
 		
 		if(empty($entity))
@@ -212,12 +204,12 @@ class NewsController extends AbstractController
 	}
 	
 	// USER PARTICIPATION
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$securityUser = $this->container->get('security.authorization_checker');
         $entity = new News();
 
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
+		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
@@ -228,15 +220,13 @@ class NewsController extends AbstractController
         ]);
     }
 	
-	public function createAction(Request $request)
+	public function createAction(Request $request, EntityManagerInterface $em)
     {
-		return $this->genericCreateUpdate($request);
+		return $this->genericCreateUpdate($request, $em);
     }
 	
-	public function waitingAction($id)
+	public function waitingAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$entity = $em->getRepository(News::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
 			return $this->redirect($this->generateUrl('News_ReadNews_New', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]));
@@ -246,9 +236,8 @@ class NewsController extends AbstractController
         ]);
 	}
 
-	public function validateAction(Request $request, $id)
+	public function validateAction(Request $request, EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(News::class)->find($id);
 		
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
@@ -270,12 +259,11 @@ class NewsController extends AbstractController
 		return $this->render('news/News/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$securityUser = $this->container->get('security.authorization_checker');
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$em = $this->getDoctrine()->getManager();
-		
+
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
@@ -292,17 +280,16 @@ class NewsController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, $id)
     {
-		return $this->genericCreateUpdate($request, $id);
+		return $this->genericCreateUpdate($request, $em, $id);
     }
 	
-	private function genericCreateUpdate(Request $request, $id = 0)
+	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, $id = 0)
 	{
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 		$securityUser = $this->container->get('security.authorization_checker');
-		$em = $this->getDoctrine()->getManager();
-		
+
 		if(empty($id))
 			$entity = new News();
 		else
@@ -311,7 +298,6 @@ class NewsController extends AbstractController
 			
 			if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 				throw new \Exception("You are not authorized to edit this document.");
-
 		}
 
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
@@ -388,9 +374,8 @@ class NewsController extends AbstractController
         ]);
 	}
 	
-	public function getSameTopicsAction($id)
+	public function getSameTopicsAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(News::class)->find($id);
 		$sameTopics = $em->getRepository(News::class)->getSameTopics($entity);
 		

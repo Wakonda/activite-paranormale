@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Testimony;
 use App\Entity\TestimonyTags;
@@ -22,15 +23,14 @@ use App\Service\TagsManagingGeneric;
 
 class TestimonyController extends AbstractController
 {
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction(EntityManagerInterface $em, $form, $entityBindded)
 	{
-		(new TagsManagingGeneric($this->getDoctrine()->getManager()))->saveTags($form, Testimony::class, 'Testimony', new TestimonyTags(), $entityBindded);
+		(new TagsManagingGeneric($em))->saveTags($form, Testimony::class, 'Testimony', new TestimonyTags(), $entityBindded);
 	}
 
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, EntityManagerInterface $em)
     {
 		$entity = new Testimony();
-		$em = $this->getDoctrine()->getManager();
 		$locale = $request->getLocale();
 		
 		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
@@ -39,39 +39,38 @@ class TestimonyController extends AbstractController
 		$entities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($locale);
 		$countEntities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($locale, true);
 
-		return $this->render('testimony/Testimony/index.html.twig', array(
+		return $this->render('testimony/Testimony/index.html.twig', [
 			'entity' => $entity,
 			'parentTheme' => $parentTheme,
 			'countEntities' => $countEntities,
 			'theme' => $theme
-		));
+		]);
     }
 	
 	// USER PARTICIPATION
-    public function newAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+    public function newAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new Testimony();
 		
-		$entity->setLicence($this->getDoctrine()->getManager()->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
+		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 		
 		$user = $security->getUser();
         $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
 
-        return $this->render('testimony/Testimony/new.html.twig', array(
+        return $this->render('testimony/Testimony/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
-    public function createAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+    public function createAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
-		return $this->generateCreateUpdate($request, $security, $authorizationChecker);
+		return $this->generateCreateUpdate($request, $em, $security, $authorizationChecker);
     }
 
-	public function addFileAction($id, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+	public function addFileAction(EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		
 		$user = $security->getUser();
@@ -87,10 +86,8 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-    public function showAction(Request $request, $id, $title_slug)
+    public function showAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository(Testimony::class)->find($id);
 
         if (!$entity)
@@ -101,23 +98,22 @@ class TestimonyController extends AbstractController
 
 		$previousAndNextEntities = $em->getRepository(Testimony::class)->getPreviousAndNextEntities($entity, $request->getLocale());
 
-        return $this->render('testimony/Testimony/show.html.twig', array(
+        return $this->render('testimony/Testimony/show.html.twig', [
 			'previousAndNextEntities' => $previousAndNextEntities,
             'entity'      => $entity
-        ));
+        ]);
     }
 
-	public function generateCreateUpdate(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
+	public function generateCreateUpdate(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
 	{
 		$session = $request->getSession();
-		$em = $this->getDoctrine()->getManager();
 		$user = $security->getUser();
-		
+
 		if(empty($id))
 			$entity  = new Testimony();
 		else {
 			$entity = $em->getRepository(Testimony::class)->find($id);
-			
+
 			if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 				throw new \Exception("You are not authorized to edit this document.");
 		}
@@ -126,7 +122,7 @@ class TestimonyController extends AbstractController
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
-		
+
 		if($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => 'Draft', 'language' => $language));
 		elseif($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
@@ -150,16 +146,16 @@ class TestimonyController extends AbstractController
 		{	
 			$em->persist($entity);
 			$em->flush();
-			
+
 			$this->postValidationAction($form, $entity);
-			
+
 			if($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 				return $this->redirect($this->generateUrl('Testimony_Waiting', array('id' => $entity->getId())));
 			elseif($form->get('save')->isClicked())
 				return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 			elseif($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 				return $this->redirect($this->generateUrl('Profile_Show'));
-			
+
 			$session->set('testimony', $entity->getId());
 			
 			return $this->redirect($this->generateUrl('Testimony_AddFile', array('id' => $entity->getId())));
@@ -171,10 +167,8 @@ class TestimonyController extends AbstractController
         ));
 	}
 	
-	public function waitingAction($id)
+	public function waitingAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
 			return $this->redirect($this->generateUrl('Testimony_Show', array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())));
@@ -184,10 +178,9 @@ class TestimonyController extends AbstractController
         ));
 	}
 	
-	public function validateAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+	public function validateAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
-		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(Testimony::class)->find($id);
 		
 		$user = $security->getUser();
@@ -208,11 +201,9 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
 		$user = $security->getUser();
-		$em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository(Testimony::class)->find($id);
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
@@ -223,10 +214,10 @@ class TestimonyController extends AbstractController
 
         $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
 
-        return $this->render('testimony/Testimony/new.html.twig', array(
+        return $this->render('testimony/Testimony/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
 	public function updateAction($id)
@@ -234,39 +225,35 @@ class TestimonyController extends AbstractController
 		return $this->genericCreateUpdate($id);
     }
 	
-	public function tabAction(Request $request, $id, $theme)
+	public function tabAction(Request $request, EntityManagerInterface $em, $id, $theme)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(Testimony::class)->getTabTestimony($request->getLocale(), $theme);
 		
-		return $this->render('testimony/Testimony/tab.html.twig', array(
+		return $this->render('testimony/Testimony/tab.html.twig', [
 			'themeDisplay' => $theme,
 			'id' => $id,
 			'entities' => $entities
-		));	
+		]);
 	}
 	
 	/* FONCTION DE COMPTAGE */
-	public function countThemeLangTestimonyAction($theme, $lang)
+	public function countThemeLangTestimonyAction(EntityManagerInterface $em, $theme, $lang)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbrTestimonyByTheme = $em->getRepository(Testimony::class)->nbrTestimonyByTheme($lang, $theme);
 		return new Response($nbrTestimonyByTheme);
 	}
 	
-	public function countAllTestimoniesAction(Request $request)
+	public function countAllTestimoniesAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbrOfAllTestimonies = $em->getRepository(Testimony::class)->countAllTestimoniesForLeftMenu($request->getLocale());
 		return new Response($nbrOfAllTestimonies);
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(APHtml2Pdf $html2pdf, $id)
+	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
-		
+
 		if(empty($entity))
 			throw $this->createNotFoundException("The testimony does not exist");
 		

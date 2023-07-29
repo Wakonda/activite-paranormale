@@ -6,13 +6,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Entity\Partner;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PartnerController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
 		$language = $request->getLocale();
-		$em = $this->getDoctrine()->getManager();
 
 		$query = $em->getRepository(Partner::class)->getPartners($language);
 

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Movies\Movie;
 use App\Entity\Movies\GenreAudiovisual;
@@ -15,10 +16,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class MovieController extends AbstractController
 {
-    public function indexAction(Request $request, PaginatorInterface $paginator, $page, $idTheme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
     {
-		$em = $this->getDoctrine()->getManager();
-
 		$datas = [];
 
 		if(!empty($idTheme))
@@ -43,9 +42,8 @@ class MovieController extends AbstractController
 		return $this->render('movie/Movie/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 	
-	public function showAction($id, $title_slug)
+	public function showAction(EntityManagerInterface $em, $id, $title_slug)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Movie::class)->find($id);
 		
 		if($entity->getArchive())
@@ -54,9 +52,8 @@ class MovieController extends AbstractController
 		return $this->render('movie/Movie/show.html.twig', ['entity' => $entity]);
 	}
 
-	public function byGenreAction(Request $request, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
+	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbMessageByPage = 12;
 
 		$genre = $em->getRepository(GenreAudiovisual::class)->find($idGenre);
@@ -74,10 +71,8 @@ class MovieController extends AbstractController
 	}
 
 	/* FONCTION DE COMPTAGE */
-	public function countAction($language)
+	public function countAction(EntityManagerInterface $em, $language)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		return new Response($em->getRepository(Movie::class)->countMovieByLanguage($language));
 	}
 }

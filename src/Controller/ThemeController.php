@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Theme;
 use App\Entity\News;
@@ -27,12 +28,10 @@ use Ausi\SlugGenerator\SlugGenerator;
  */
 class ThemeController extends AbstractController
 {
-	public function indexAction(Request $request)
+	public function indexAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$locale = $request->getLocale();
-		
+
 		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
 		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
@@ -44,9 +43,8 @@ class ThemeController extends AbstractController
 		]);
 	}	
 	
-	public function showAction(TranslatorInterface $translator, Request $request, $theme, $id)
+	public function showAction(TranslatorInterface $translator, EntityManagerInterface $em, Request $request, $theme, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$theme = str_replace('-', '/', $theme);
 		$entity = $em->getRepository(Theme::class)->find($id);
 		$childEntities = $em->getRepository(Theme::class)->findBy(["parentTheme" => $entity]);
@@ -118,9 +116,8 @@ class ThemeController extends AbstractController
 		]);
 	}	
 
-	public function saveAction($theme, $id)
+	public function saveAction(EntityManagerInterface $em, $theme, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$theme = str_replace('-', '/', $theme);
 		
 		$entity = $em->getRepository(Theme::class)->find($id);
@@ -130,9 +127,8 @@ class ThemeController extends AbstractController
 		]);
 	}
 
-	public function downloadAction($id)
+	public function downloadAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Theme::class)->find($id);
 
 		$response = new Response();
@@ -146,9 +142,8 @@ class ThemeController extends AbstractController
 	}
 
 	/* FONCTION DE COMPTAGE */
-	public function countThemeByLangAction($lang)
+	public function countThemeByLangAction(EntityManagerInterface $em, $lang)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$nbrThemeByLang = $em->getRepository(Theme::class)->nbrTheme($lang);
 		return new Response($nbrThemeByLang);
 	}
