@@ -9,7 +9,7 @@
 	use Doctrine\ORM\EntityManagerInterface;
 	use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 	use Symfony\Contracts\Translation\TranslatorInterface;
-	use Symfony\Component\HttpFoundation\Session\SessionInterface;
+	use Symfony\Component\HttpFoundation\RequestStack;
 	use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 	
 	use App\Entity\Language;
@@ -36,15 +36,15 @@
 		private $router;
 		private $translator;
 		private $parameterBag;
-		private $session;
+		private $requestStack;
 		
-		public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator, ParameterBagInterface $parameterBag, SessionInterface $session)
+		public function __construct(EntityManagerInterface $em, UrlGeneratorInterface $router, TranslatorInterface $translator, ParameterBagInterface $parameterBag, RequestStack $requestStack)
 		{
 			$this->em = $em;
 			$this->router = $router;
 			$this->translator = $translator;
 			$this->parameterBag = $parameterBag;
-			$this->session = $session;
+			$this->requestStack = $requestStack;
 		}
 		
 		public function getFilters()
@@ -693,7 +693,7 @@
 		
 		public function generateCaptcha()
 		{
-			$captcha = new Captcha($this->parameterBag, $this->session);
+			$captcha = new Captcha($this->parameterBag, $this->requestStack);
 
 			$wordOrNumberRand = rand(1, 2);
 			$length = rand(3, 7);

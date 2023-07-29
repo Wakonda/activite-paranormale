@@ -5,7 +5,6 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
@@ -64,13 +63,14 @@ class TestimonyController extends AbstractController
         ));
     }
 
-    public function createAction(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+    public function createAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
-		return $this->generateCreateUpdate($request, $session, $security, $authorizationChecker);
+		return $this->generateCreateUpdate($request, $security, $authorizationChecker);
     }
 
-	public function addFileAction($id, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+	public function addFileAction($id, Security $security, AuthorizationCheckerInterface $authorizationChecker)
 	{
+		$session = $request->getSession();
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		
@@ -107,8 +107,9 @@ class TestimonyController extends AbstractController
         ));
     }
 
-	public function generateCreateUpdate(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
+	public function generateCreateUpdate(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
 	{
+		$session = $request->getSession();
 		$em = $this->getDoctrine()->getManager();
 		$user = $security->getUser();
 		
@@ -183,8 +184,9 @@ class TestimonyController extends AbstractController
         ));
 	}
 	
-	public function validateAction(Request $request, SessionInterface $session, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+	public function validateAction(Request $request, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
+		$session = $request->getSession();
 		$em = $this->getDoctrine()->getManager();
         $entity = $em->getRepository(Testimony::class)->find($id);
 		

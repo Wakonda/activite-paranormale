@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Entity\News;
 use App\Entity\NewsTags;
@@ -234,7 +233,7 @@ class NewsAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request);
 	}
 
-	public function changeStateAction(Request $request, TranslatorInterface $translator, SessionInterface $session, $id, $state)
+	public function changeStateAction(Request $request, TranslatorInterface $translator, $id, $state)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -254,9 +253,9 @@ class NewsAdminController extends AdminGenericController
 		$em->flush();
 
 		if($state->getInternationalName() == "Validate")
-			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsPublished', [], 'validators'));
+			$this->addFlash('success', $translator->trans('news.admin.NewsPublished', [], 'validators'));
 		else
-			$session->getFlashBag()->add('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
+			$this->addFlash('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
 		
 		return $this->redirect($this->generateUrl('News_Admin_Show', ['id' => $id]));
 	}

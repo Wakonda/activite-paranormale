@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Entity\Language;
@@ -30,13 +29,14 @@ use App\Entity\Stores\Store;
 
 class AdminController extends AbstractController
 {
-    public function indexAction(\Swift_Mailer $mailer)
+    public function indexAction()
     {
         return $this->render('admin/Admin/index.html.twig');
     }
 
-	public function selectLanguageAction(Request $request, SessionInterface $session, $language)
+	public function selectLanguageAction(Request $request, $language)
     {
+		$session = $request->getSession();
 		$request->setLocale($language);
 		$session->set('_locale', $language);
 
@@ -751,7 +751,7 @@ class AdminController extends AbstractController
 	}
 
 	// Pinterest
-	public function pinterestAction(Request $request, PinterestAPI $pinterest, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	public function pinterestAction(Request $request, PinterestAPI $pinterest, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
@@ -766,22 +766,22 @@ class AdminController extends AbstractController
 		$res = $pinterest->send($entity, $image, $currentURL);
 
 		if($res == "success")
-			$session->getFlashBag()->add('success', $translator->trans('admin.pinterest.Success', [], 'validators'));
+			$this->addFlash('success', $translator->trans('admin.pinterest.Success', [], 'validators'));
 		else
-			$session->getFlashBag()->add('error', $res);
+			$this->addFlash('error', $res);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
 	// Twitter
-	public function twitterAction(Request $request, TwitterAPI $twitterAPI, TranslatorInterface $translator, SessionInterface $session, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	public function twitterAction(Request $request, TwitterAPI $twitterAPI, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
-		$this->sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator);
+		$this->sendTwitter($request, $id, $path, $router, $twitterAPI, $translator);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
-	private function sendTwitter($request, $id, $path, $router, $twitterAPI, $session, $translator, $socialNetwork = "twitter") {
+	private function sendTwitter($request, $id, $path, $router, $twitterAPI, $translator, $socialNetwork = "twitter") {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
 
@@ -801,14 +801,14 @@ class AdminController extends AbstractController
 
 		if(property_exists($res, "errors")) {
 			$errorsArray = array_map(function($e) { return $e->code.": ".$e->message; }, $res->errors);
-			$session->getFlashBag()->add('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".implode(", ", $errorsArray).")");
+			$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".implode(", ", $errorsArray).")");
 		}
 		else
-			$session->getFlashBag()->add('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+			$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 	}
 
 	// The Daily Truth
-	public function thedailytruthAction(Request $request, SessionInterface $session, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
+	public function thedailytruthAction(Request $request, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 
@@ -844,15 +844,15 @@ class AdminController extends AbstractController
 			$entity->setIdentifier($result->identifier);
 			$em->persist($entity);
 			$em->flush();
-			$session->getFlashBag()->add('success', $translator->trans('admin.thedailytruth.Success', [], 'validators'));
+			$this->addFlash('success', $translator->trans('admin.thedailytruth.Success', [], 'validators'));
 		} else
-			$session->getFlashBag()->add('error', $translator->trans('admin.thedailytruth.Failed', [], 'validators')." ".$result);
+			$this->addFlash('error', $translator->trans('admin.thedailytruth.Failed', [], 'validators')." ".$result);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
 	// Wakonda.GURU
-	public function wakondaGuruAction(Request $request, SessionInterface $session, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
+	public function wakondaGuruAction(Request $request, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 
@@ -911,13 +911,13 @@ class AdminController extends AbstractController
 		$api = new \App\Service\WakondaGuru();
 		$api->addPost($data, $api->getOauth2Token());
 
-		$session->getFlashBag()->add('success', $translator->trans('admin.wakondaguru.Success', [], 'validators'));
+		$this->addFlash('success', $translator->trans('admin.wakondaguru.Success', [], 'validators'));
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
 	// Muse
-	public function museAction(Request $request, TranslatorInterface $translator, SessionInterface $session, int $id, string $path, string $routeToRedirect)
+	public function museAction(Request $request, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 
@@ -1005,7 +1005,7 @@ class AdminController extends AbstractController
 		$result = $api->addPost($data, $api->getOauth2Token(), $family);
 
 		if($result->{"@type"} == "hydra:Error")
-			$session->getFlashBag()->add('error', $result->{"hydra:title"});
+			$this->addFlash('error', $result->{"hydra:title"});
 		else {
 			$entity->setIdentifier($result->identifier);
 			$em->persist($entity);
@@ -1014,15 +1014,16 @@ class AdminController extends AbstractController
 			if(!empty($images))
 				$result = $api->addImage($result->identifier, $images[0], $api->getOauth2Token(), $family);
 
-			$session->getFlashBag()->add('success', $translator->trans('admin.muse.Success', [], 'validators'));
+			$this->addFlash('success', $translator->trans('admin.muse.Success', [], 'validators'));
 		}
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
 	// Tumblr
-	public function tumblrAction(Request $request, TumblrAPI $tumblr, SessionInterface $session, $id, $path, $routeToRedirect)
+	public function tumblrAction(Request $request, TumblrAPI $tumblr, $id, $path, $routeToRedirect)
 	{
+		$session = $request->getSession();
 		$session->set("id_tumblr", $id);
 		$session->set("path_tumblr", urldecode($path));
 		$session->set("routeToRedirect_tumblr", $routeToRedirect);
@@ -1108,7 +1109,7 @@ class AdminController extends AbstractController
 	}
 
 	// Facebook
-	public function facebookAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	public function facebookAction(Request $request, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
@@ -1125,13 +1126,13 @@ class AdminController extends AbstractController
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
 
-		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 
 	// Instagram
-	public function instagramAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	public function instagramAction(Request $request, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
@@ -1148,27 +1149,27 @@ class AdminController extends AbstractController
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
 
-		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 
 	// Mastodon
-	public function mastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	public function mastodonAction(Request $request, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
-		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator);
+		$this->sendMastodon($request, $id, $path, $router, $mastodon, $translator);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
-	public function twitterMastodonAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork) {
-		$this->sendTwitter($request, $id, $path, $router, $twitter, $session, $translator, $socialNetwork);
-		$this->sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator, $socialNetwork);
+	public function twitterMastodonAction(Request $request, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork) {
+		$this->sendTwitter($request, $id, $path, $router, $twitter, $translator, $socialNetwork);
+		$this->sendMastodon($request, $id, $path, $router, $mastodon, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
-	private function sendMastodon($request, $id, $path, $router, $mastodon, $session, $translator, $fieldName = "mastodon") {
+	private function sendMastodon($request, $id, $path, $router, $mastodon, $translator, $fieldName = "mastodon") {
 		$em = $this->getDoctrine()->getManager();
 		$requestParams = $request->request;
 
@@ -1184,7 +1185,7 @@ class AdminController extends AbstractController
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 
-		$session->getFlashBag()->add($message["state"], $message["message"], [], 'validators');
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
 	}
 	
 	public function wikidataGenericAction(Request $request, \App\Service\Wikidata $wikidata)

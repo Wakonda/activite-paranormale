@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Entity\Testimony;
 use App\Entity\State;
@@ -21,10 +20,10 @@ class TestimonyAdminController extends AdminGenericController
 {
 	protected $entityName = 'Testimony';
 	protected $className = Testimony::class;
-	
+
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
-	
+
 	protected $indexRoute = "Testimony_Admin_Index";
 	protected $showRoute = "Testimony_Admin_Show";
 	protected $formName = 'ap_testimony_testimonyadmintype';
@@ -67,7 +66,7 @@ class TestimonyAdminController extends AdminGenericController
 		$twig = 'testimony/TestimonyAdmin/new.html.twig';
 		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
-	
+
     public function editAction(Request $request, $id)
     {
 		$formType = TestimonyAdminType::class;
@@ -76,7 +75,7 @@ class TestimonyAdminController extends AdminGenericController
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
 		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
+
 	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = TestimonyAdminType::class;
@@ -140,8 +139,8 @@ class TestimonyAdminController extends AdminGenericController
 			$row[] = $entity->getState()->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getWritingDate());
 			$row[] = "
-			 <a href='".$this->generateUrl('Testimony_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
-			 <a href='".$this->generateUrl('Testimony_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('Testimony_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('Testimony_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
 			";
 
 			$output['aaData'][] = $row;
@@ -153,7 +152,7 @@ class TestimonyAdminController extends AdminGenericController
 		return $response;
 	}
 	
-	public function changeStateAction(Request $request, TranslatorInterface $translator, SessionInterface $session, $id, $state)
+	public function changeStateAction(Request $request, TranslatorInterface $translator, $id, $state)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -166,17 +165,17 @@ class TestimonyAdminController extends AdminGenericController
 		
 		if($state->getInternationalName() == "Validate") {
 			if(empty($entity->getTitle()) or empty($entity->getTheme()))
-				return $this->redirect($this->generateUrl('Testimony_Admin_Edit', array('id' => $id)));
+				return $this->redirect($this->generateUrl('Testimony_Admin_Edit', ['id' => $id]));
 		}
 		
 		$em->persist($entity);
 		$em->flush();
 		
 		if($state->getInternationalName() == "Validate")
-			$session->getFlashBag()->add('success', $translator->trans('testimony.admin.TestimonyPublished', [], 'validators'));
+			$this->addFlash('success', $translator->trans('testimony.admin.TestimonyPublished', [], 'validators'));
 		else
-			$session->getFlashBag()->add('success', $translator->trans('testimony.admin.TestimonyRefused', [], 'validators'));
+			$this->addFlash('success', $translator->trans('testimony.admin.TestimonyRefused', [], 'validators'));
 		
-		return $this->redirect($this->generateUrl('Testimony_Admin_Show', array('id' => $id)));
+		return $this->redirect($this->generateUrl('Testimony_Admin_Show', ['id' => $id]));
 	}
 }

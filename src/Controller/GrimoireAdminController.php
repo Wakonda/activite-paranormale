@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use App\Entity\Grimoire;
 use App\Entity\SurThemeGrimoire;
@@ -164,7 +163,7 @@ class GrimoireAdminController extends AdminGenericController
         ]);
     }
 
-	public function changeStateAction(Request $request, TranslatorInterface $translator, SessionInterface $session, $id, $state)
+	public function changeStateAction(Request $request, TranslatorInterface $translator, $id, $state)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
@@ -184,9 +183,9 @@ class GrimoireAdminController extends AdminGenericController
 		$em->flush();
 
 		if($state->getInternationalName() == "Validate")
-			$session->getFlashBag()->add('success', $translator->trans('grimoire.admin.RitualPublished', [], 'validators'));
+			$this->addFlash('success', $translator->trans('grimoire.admin.RitualPublished', [], 'validators'));
 		else
-			$session->getFlashBag()->add('success', $translator->trans('grimoire.admin.RitualRefused', [], 'validators'));
+			$this->addFlash('success', $translator->trans('grimoire.admin.RitualRefused', [], 'validators'));
 		
 		return $this->redirect($this->generateUrl('Grimoire_Admin_Show', ['id' => $id]));
 	}

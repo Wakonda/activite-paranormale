@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 use Ifsnop\Mysqldump as IMysqldump;
 
@@ -40,16 +39,16 @@ class BackupAdminController extends AbstractController
 		return $response;
 	}
 	
-	public function deleteAction(TranslatorInterface $translator, SessionInterface $session, $filename)
+	public function deleteAction(TranslatorInterface $translator, $filename)
 	{
 		unlink($this->getPath().DIRECTORY_SEPARATOR.$filename);
 
-		$session->getFlashBag()->add('success', $translator->trans('backup.index.FileDeleted', [], 'validators'), [], 'validators');
+		$this->addFlash('success', $translator->trans('backup.index.FileDeleted', [], 'validators'), [], 'validators');
 		
 		return $this->redirect($this->generateUrl("Backup_Admin_Index"));
 	}
 	
-	public function generateAction(TranslatorInterface $translator, SessionInterface $session)
+	public function generateAction(TranslatorInterface $translator)
 	{
 		try {
 			$dsn = "mysql:host=".$_ENV['DB_HOST'].";dbname=".$_ENV['DB_NAME'];
@@ -63,9 +62,9 @@ class BackupAdminController extends AbstractController
 			$dump = new IMysqldump\Mysqldump($dsn, $_ENV['DB_USER'], $_ENV['DB_PASSWORD']);
 			$dump->start($this->getPath().DIRECTORY_SEPARATOR.$filename);
 			
-			$session->getFlashBag()->add('success', $translator->trans('backup.index.FileGenerated', [], 'validators'), [], 'validators');
+			$this->addFlash('success', $translator->trans('backup.index.FileGenerated', [], 'validators'), [], 'validators');
 		} catch (\Exception $e) {
-			$session->getFlashBag()->add('success', 'mysqldump-php error: ' . $e->getMessage(), [], 'validators');
+			$this->addFlash('success', 'mysqldump-php error: ' . $e->getMessage(), [], 'validators');
 		}
 
 		return $this->redirect($this->generateUrl("Backup_Admin_Index"));

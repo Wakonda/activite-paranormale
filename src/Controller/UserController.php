@@ -13,12 +13,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -38,7 +37,7 @@ class UserController extends AbstractController
 	private $tokenTtl = 86400;
     private $tokenStorage;
 
-	public function __construct(UserPasswordEncoderInterface $encoderFactory, TokenStorageInterface $tokenStorage) {
+	public function __construct(UserPasswordHasherInterface $encoderFactory, TokenStorageInterface $tokenStorage) {
 		$this->encoderFactory = $encoderFactory;
         $this->tokenStorage = $tokenStorage;
 	}
@@ -73,7 +72,7 @@ class UserController extends AbstractController
         ]);
     }
 	
-	public function phpbbAction(Request $request, SessionInterface $session, TranslatorInterface $translator, \App\Service\PHPBB $phpbb) {
+	public function phpbbAction(Request $request, TranslatorInterface $translator, \App\Service\PHPBB $phpbb) {
 		$user = $this->container->get('security.token_storage')->getToken()->getUser();
 
         if (!is_object($user)) {
@@ -94,16 +93,16 @@ class UserController extends AbstractController
 			$password = $form->get("password".$language)->getData();
 
 			if(empty($password))
-				$session->getFlashBag()->add("error", $translator->trans("user.phpbb.ErrorPasswordEmpty", [], "validators"));
+				$this->addFlash("error", $translator->trans("user.phpbb.ErrorPasswordEmpty", [], "validators"));
 			else {
 				$token = $phpbb->getJWT($language);
 				$user = $this->get('security.token_storage')->getToken()->getUser();
 				$res = $phpbb->saveUser($token, $user->getUsername(), $password, $user->getEmail());
 
 				if(isset($res["error"]))
-					$session->getFlashBag()->add("error", $translator->trans("user.phpbb.ErrorCreateAccount", [], "validators")." [".$res["error"]."]");
+					$this->addFlash("error", $translator->trans("user.phpbb.ErrorCreateAccount", [], "validators")." [".$res["error"]."]");
 				else
-					$session->getFlashBag()->add("success", $translator->trans("user.phpbb.Success", [], "validators")." [".$res["success"]."]");
+					$this->addFlash("success", $translator->trans("user.phpbb.Success", [], "validators")." [".$res["success"]."]");
 			}
 			
 			return $this->redirect($this->generateUrl("Profile_Show"));
@@ -126,16 +125,16 @@ class UserController extends AbstractController
     /**
      * @return string|null
      */
-    private function getTargetUrlFromSession(SessionInterface $session)
+    private function getTargetUrlFromSession()
     {
 		if(!method_exists($this->tokenStorage->getToken(), "getProviderKey"))
 			return null;
 
         $key = sprintf('_security.%s.target_path', $this->tokenStorage->getToken()->getProviderKey());
+		$session = $request->getSession();
 
-        if ($session->has($key)) {
+        if ($session->has($key))
             return $session->get($key);
-        }
 
         return null;
     }
@@ -290,8 +289,9 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function registerAction(Request $request, TranslatorInterface $translator, SessionInterface $session, \Swift_Mailer $mailer)
+    public function registerAction(Request $request, TranslatorInterface $translator, \Swift_Mailer $mailer)
     {
+		$session = $request->getSession();
 		$em = $this->getDoctrine()->getManager();
 		$user = new User();
         $user->setEnabled(false);
@@ -333,8 +333,9 @@ class UserController extends AbstractController
         ]);
     }
 	
-	public function resendEmailConfirmationAction(TranslatorInterface $translator, SessionInterface $session, \Swift_Mailer $mailer, $id)
+	public function resendEmailConfirmationAction(TranslatorInterface $translator, \Swift_Mailer $mailer, $id)
 	{
+		$session = $request->getSession();
         $em = $this->getDoctrine()->getManager();
 		$user = $em->getRepository(User::class)->find($id);
 
@@ -355,8 +356,9 @@ class UserController extends AbstractController
     /**
      * Tell the user to check their email provider.
      */
-    public function checkEmailAction(Request $request, SessionInterface $session, UrlGeneratorInterface $router)
+    public function checkEmailAction(Request $request, UrlGeneratorInterface $router)
     {
+		$session = $request->getSession();
         $email = $session->get('fos_user_send_confirmation_email/email');
 
         if (empty($email)) {

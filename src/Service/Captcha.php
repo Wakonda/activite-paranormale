@@ -1,18 +1,18 @@
 <?php
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 class Captcha
 {
 	private $parameterBag;
-	private $session;
+	private $requestStack;
 	
-	public function __construct(ParameterBagInterface $parameterBag, SessionInterface $session)
+	public function __construct(ParameterBagInterface $parameterBag, RequestStack $requestStack)
 	{
 		$this->parameterBag = $parameterBag;
-		$this->session = $session;
+		$this->requestStack = $requestStack;
 	}
 	
 	public function wordRandom($n)
@@ -76,7 +76,7 @@ class Captcha
 
 		imagedestroy($img);
 
-		$this->session->set('captcha_word', $word);
+		$this->requestStack->getSession()->set('captcha_word', $word);
 
 		return base64_encode($contents);
 	}

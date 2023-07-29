@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 use App\Service\Canonicalizer;
 
@@ -17,7 +18,7 @@ use App\Service\Canonicalizer;
  * @UniqueEntity(fields="username")
  */
  
-class User implements UserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	/**
 	 * @ORM\Id
@@ -157,6 +158,11 @@ class User implements UserInterface
         return (string) $this->getUsername();
     }
 
+	public function getUserIdentifier(): string
+	{
+		return $this->username;
+	}
+
     /**
      * {@inheritdoc}
      */
@@ -228,7 +234,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getRoles()
+    public function getRoles(): array
     {
         return array_unique($this->roles);
     }
@@ -304,7 +310,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getUsername()
+    public function getUsername(): string
     {
         return $this->username;
     }
@@ -330,7 +336,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
         return $this->salt;
     }
@@ -354,7 +360,7 @@ class User implements UserInterface
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }

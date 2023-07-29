@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
@@ -195,10 +194,10 @@ class NewsMobileController extends AbstractController
 					$route = "ap_witchcraftmobile_read";
 					break;
 			}
-			
+
 			$datas[$result["id"]."_".$result["classname"]]["showRoute"] = $route;
 		}
-		
+
 		return $datas;
 	}
 
@@ -214,8 +213,9 @@ class NewsMobileController extends AbstractController
 		return null;
 	}
 
-	public function selectLanguageAction(Request $request, SessionInterface $session, $language)
+	public function selectLanguageAction(Request $request, $language)
     {
+		$session = $request->getSession();
 		$request->setLocale($language);
 		$session->set('_locale', $language);
 		return $this->redirect($this->generateUrl('ap_newsmobile_index', ["page" => 1]));

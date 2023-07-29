@@ -5,7 +5,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 
 use App\Entity\Video;
@@ -121,13 +120,13 @@ class VideoController extends AbstractController
 			$em->flush();
 		}
 		
-		return $this->render('video/Video/readVideo.html.twig', array(
+		return $this->render('video/Video/readVideo.html.twig', [
 			'previousAndNextEntities' => $previousAndNextEntities,
 			'video' => $entity
-		));
+		]);
 	}
 	
-	public function notifyDeletedVideoAction(Request $request, SessionInterface $session, \Swift_Mailer $mailer, $id)
+	public function notifyDeletedVideoAction(Request $request, \Swift_Mailer $mailer, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$video = $em->getRepository(Video::class)->find($id);
@@ -137,26 +136,26 @@ class VideoController extends AbstractController
 		$entity->setStateContact(0);
 
 		$entity->setPseudoContact($this->getClientIp($request));
-		$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', array("id" => $video->getId(), "title_slug" => $video->getUrlSlug()), UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
+		$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
 		$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
 		$entity->setSubjectContact("Suppression d'une vidéo");
 		
 		$message = (new \Swift_Message("Suppression d'une vidéo"))
 			->setTo($_ENV["MAILER_CONTACT"])
 			->setFrom([$_ENV["MAILER_CONTACT"]])
-			->setBody($this->renderView('contact/Contact/mail.html.twig', array('entity' => $entity)), 'text/html')
+			->setBody($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]), 'text/html')
 		;
 		$mailer->send($message);
 		
 		$em->persist($entity);
 		$em->flush();
 		
-        $session->getFlashBag()->add(
+        $this->addFlash(
             'notice',
             'Votre requête a bien été envoyée !'
         );
 		
-		return $this->redirect($this->generateUrl('Video_Read', array("id" => $video->getId(), "title_slug" => $video->getUrlSlug())));
+		return $this->redirect($this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()]));
 	}
 	
 	public function countVideoAction($lang)

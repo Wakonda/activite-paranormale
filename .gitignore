@@ -66,3 +66,7 @@ yarn-error.log
 /public/extended/witchcraft/menugrimoire/*
 /public/extended/witchcraft/surTheme/*
 /private/*
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
