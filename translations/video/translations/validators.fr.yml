@@ -52,3 +52,4 @@ video:
         VideoSize: "Taille de la vidéo"
         CopyToClipboard: "Copier"
         CodeCopiedWithSuccess: "Le code a été copié avec succès"
+        RequestSent: "Votre requête a bien été envoyée !"
