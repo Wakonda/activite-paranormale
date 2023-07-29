@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Video;
 use App\Entity\Contact;
@@ -128,7 +129,7 @@ class VideoController extends AbstractController
 		]);
 	}
 	
-	public function notifyDeletedVideoAction(Request $request, MailerInterface $mailer, $id)
+	public function notifyDeletedVideoAction(Request $request, TranslatorInterface $translator, MailerInterface $mailer, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$video = $em->getRepository(Video::class)->find($id);
@@ -155,7 +156,7 @@ class VideoController extends AbstractController
 		
         $this->addFlash(
             'notice',
-            'Votre requête a bien été envoyée !'
+			$translator->trans('video.read.RequestSent', [], 'validators', $request->getLocale())
         );
 		
 		return $this->redirect($this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()]));
