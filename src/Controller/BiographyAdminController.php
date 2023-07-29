@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -32,7 +33,7 @@ class BiographyAdminController extends AdminGenericController
 
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
@@ -44,7 +45,7 @@ class BiographyAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$biographies = $this->getDoctrine()->getManager()->getRepository($this->className)->findBy(["internationalName" => $entityBindded->getInternationalName()]);
 
@@ -140,27 +141,26 @@ class BiographyAdminController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 	
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'quotation/BiographyAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
     }
 	
-    public function internationalizationAction(Request $request, $id)
+    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(Biography::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		
@@ -212,38 +212,38 @@ class BiographyAdminController extends AdminGenericController
 		}
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function editAction($id)
+    public function editAction(EntityManagerInterface $em, $id)
     {
 		$entity = $this->getDoctrine()->getManager()->getRepository(Biography::class)->find($id);
 		$formType = BiographyAdminType::class;
 
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType, ['action' => 'edit', 'locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BiographyAdminType::class;
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
 	public function showImageSelectorColorboxAction()
@@ -251,12 +251,12 @@ class BiographyAdminController extends AdminGenericController
 		return $this->showImageSelectorColorboxGenericAction('Biography_Admin_LoadImageSelectorColorbox');
 	}
 	
-	public function loadImageSelectorColorboxAction(Request $request)
+	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request);
+		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$em = $this->getDoctrine()->getManager();
 

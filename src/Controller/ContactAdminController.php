@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,11 +27,11 @@ class ContactAdminController extends AdminGenericController
 	protected $indexRoute = "Contact_Admin_Index"; 
 	protected $showRoute = "Contact_Admin_Show";
 
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
@@ -49,7 +49,7 @@ class ContactAdminController extends AdminGenericController
      * Finds and displays a Contact entity.
      *
      */
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -85,7 +85,7 @@ class ContactAdminController extends AdminGenericController
      * Displays a form to create a new Contact entity.
      *
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
         $entity = new Contact();
         $form = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
@@ -124,7 +124,7 @@ class ContactAdminController extends AdminGenericController
      * Displays a form to edit an existing Contact entity.
      *
      */
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -201,9 +201,9 @@ class ContactAdminController extends AdminGenericController
         ;
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, APDate $date)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)

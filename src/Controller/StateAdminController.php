@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,7 +30,7 @@ class StateAdminController extends AdminGenericController
 	protected $showRoute = "State_Admin_Show";
 	protected $illustrations = [["field" => "logo"]];
 
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
@@ -40,7 +41,7 @@ class StateAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
@@ -50,54 +51,54 @@ class StateAdminController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 	
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'index/StateAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = StateAdminType::class;
 		$entity = new State();
 
 		$twig = 'index/StateAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = StateAdminType::class;
 		$entity = new State();
 
 		$twig = 'index/StateAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
 	
-    public function editAction($id)
+    public function editAction(EntityManagerInterface $em, $id)
     {
 		$formType = StateAdminType::class;
 
 		$twig = 'index/StateAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($em, $id, $twig, $formType);
     }
 	
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = StateAdminType::class;
 		$twig = 'index/StateAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -116,12 +117,11 @@ class StateAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-    public function internationalizationAction(Request $request, $id)
+    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = StateAdminType::class;
 		$entity = new State();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(State::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
@@ -132,6 +132,6 @@ class StateAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'index/StateAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit']);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
     }
 }

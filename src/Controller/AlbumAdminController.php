@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +32,7 @@ class AlbumAdminController extends AdminGenericController
 	
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -41,7 +42,7 @@ class AlbumAdminController extends AdminGenericController
 
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		if($form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
@@ -89,13 +90,13 @@ class AlbumAdminController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'music/AlbumAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = AlbumAdminType::class;
 		$entity = new Album();
@@ -110,42 +111,42 @@ class AlbumAdminController extends AdminGenericController
 		}
 
 		$twig = 'music/AlbumAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $locale]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $locale]);
     }
 
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = AlbumAdminType::class;
 		$entity = new Album();
 
 		$twig = 'music/AlbumAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = AlbumAdminType::class;
 
 		$twig = 'music/AlbumAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType, ['locale' => $request->getLocale()]);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $request->getLocale()]);
     }
 
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = AlbumAdminType::class;
 		$twig = 'music/AlbumAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $request->getLocale()]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $request->getLocale()]);
     }
 
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -197,9 +198,9 @@ class AlbumAdminController extends AdminGenericController
 		return $this->showImageSelectorColorboxGenericAction('Album_Admin_LoadImageSelectorColorbox');
 	}
 	
-	public function loadImageSelectorColorboxAction(Request $request)
+	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request);
+		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 	
 	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)

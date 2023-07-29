@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -28,13 +29,13 @@ class TestimonyAdminController extends AdminGenericController
 	protected $showRoute = "Testimony_Admin_Show";
 	protected $formName = 'ap_testimony_testimonyadmintype';
 
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		(new TagsManagingGeneric($this->getDoctrine()->getManager()))->saveTags($form, $this->className, $this->entityName, new TestimonyTags(), $entityBindded);
+		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new TestimonyTags(), $entityBindded);
 	}
 
     public function indexAction()
@@ -43,48 +44,48 @@ class TestimonyAdminController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 	
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'testimony/TestimonyAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = TestimonyAdminType::class;
 		$entity = new Testimony();
 
 		$twig = 'testimony/TestimonyAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = TestimonyAdminType::class;
 		$entity = new Testimony();
 
 		$twig = 'testimony/TestimonyAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = TestimonyAdminType::class;
 		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
 
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = TestimonyAdminType::class;
 
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$em = $this->getDoctrine()->getManager();
 		/*$comments = $em->getRepository("\App\Entity\TestimonyComment")->findBy(["entity" => $id]);
@@ -96,10 +97,10 @@ class TestimonyAdminController extends AdminGenericController
 		$fms = $em->getRepository("\App\Entity\TestimonyFileManagement")->findBy(["testimony" => $id]);
 		foreach($fms as $entity) {$em->remove($entity); }*/
 
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 	
-	public function archiveAction($id)
+	public function archiveAction(EntityManagerInterface $em, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(TestimonyFileManagement::class)->getAllFilesForTestimonyByIdClassName($id);
@@ -110,7 +111,7 @@ class TestimonyAdminController extends AdminGenericController
 			$additionalFiles[] = $entity->getRealNameFile();
 		}
 
-		return $this->archiveGenericArchive($id, $additionalFiles);
+		return $this->archiveGenericArchive($em, $id, $additionalFiles);
 	}
 	
 	public function countTestimonyAction($state)
@@ -121,9 +122,9 @@ class TestimonyAdminController extends AdminGenericController
 		return new Response($countTestimony);
 	}
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, APDate $date)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)

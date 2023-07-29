@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,7 +28,7 @@ class WebDirectorySEOAdminController extends AdminGenericController
 	protected $indexRoute = "WebDirectorySEO_Admin_Index"; 
 	protected $showRoute = "WebDirectorySEO_Admin_Show";
 
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -36,7 +37,7 @@ class WebDirectorySEOAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
@@ -46,54 +47,54 @@ class WebDirectorySEOAdminController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'webdirectoryseo/WebDirectorySEOAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = WebDirectorySEOAdminType::class;
 		$entity = new WebDirectorySEO();
 
 		$twig = 'webdirectoryseo/WebDirectorySEOAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType);
     }
 
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = WebDirectorySEOAdminType::class;
 		$entity = new WebDirectorySEO();
 
 		$twig = 'webdirectoryseo/WebDirectorySEOAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
 
-    public function editAction($id)
+    public function editAction(EntityManagerInterface $em, $id)
     {
 		$formType = WebDirectorySEOAdminType::class;
 
 		$twig = 'webdirectoryseo/WebDirectorySEOAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($em, $id, $twig, $formType);
     }
 
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = WebDirectorySEOAdminType::class;
 		$twig = 'webdirectoryseo/WebDirectorySEOAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
 
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)

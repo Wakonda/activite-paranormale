@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,7 +40,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 	protected $showRoute = "EpisodeTelevisionSerie_Admin_Show";
 	protected $formName = 'ap_movie_televisionserieadmintype';
 
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		// Check for Doublons
 		$em = $this->getDoctrine()->getManager();
@@ -56,7 +57,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 			$this->saveNewBiographies($entityBindded, $form, "episodeTelevisionSerieBiographies");
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$originalTelevisionSerieBiographies = new ArrayCollection($em->getRepository(TelevisionSerieBiography::class)->findBy(["televisionSerie" => $entityBindded->getTelevisionSerie()->getId(), "episodeTelevisionSerie" => $entityBindded->getId()]));
@@ -79,7 +80,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 
 		$em->flush();
 		
-		(new TagsManagingGeneric($this->getDoctrine()->getManager()))->saveTags($form, $this->className, $this->entityName, new EpisodeTelevisionSerieTags(), $entityBindded);
+		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new EpisodeTelevisionSerieTags(), $entityBindded);
 	}
 
     public function indexAction(Int $televisionSerieId)
@@ -88,10 +89,10 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		return $this->render($twig, ["televisionSerieId" => $televisionSerieId]);
     }
 	
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'movie/EpisodeTelevisionSerieAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
     public function newAction(Request $request, Int $televisionSerieId)
@@ -103,48 +104,47 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		$entity->setTelevisionSerie($em->getRepository(TelevisionSerie::class)->find($televisionSerieId));
 
 		$twig = 'movie/EpisodeTelevisionSerieAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $televisionSerieId)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $televisionSerieId)
     {
 		$formType = EpisodeTelevisionSerieAdminType::class;
 		$entity = new EpisodeTelevisionSerie();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entity->setTelevisionSerie($em->getRepository(TelevisionSerie::class)->find($televisionSerieId));
 
 		$twig = 'movie/EpisodeTelevisionSerieAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
 	
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $this->getDoctrine()->getManager()->getRepository(EpisodeTelevisionSerie::class)->find($id);
 		$formType = EpisodeTelevisionSerieAdminType::class;
 
 		$twig = 'movie/EpisodeTelevisionSerieAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($em, $id, $twig, $formType);
     }
 	
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = EpisodeTelevisionSerieAdminType::class;
 		$twig = 'movie/EpisodeTelevisionSerieAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$em = $this->getDoctrine()->getManager();
 		$tags = $em->getRepository("\App\Entity\EpisodeTelevisionSerieTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
 
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, Int $televisionSerieId)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $televisionSerieId)
 	{
 		$em = $this->getDoctrine()->getManager();
 

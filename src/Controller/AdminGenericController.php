@@ -34,7 +34,7 @@ abstract class AdminGenericController extends AbstractController
 	private $parser;
 
 	abstract public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal);
-	abstract public function postValidationAction($form, $entityBindded);
+	abstract public function postValidationAction($form, EntityManagerInterface $em, $entityBindded);
 
 	public function __construct(APParseHTML $parser) {
 		$this->parser = $parser;
@@ -131,9 +131,9 @@ abstract class AdminGenericController extends AbstractController
      * Displays a form to create a new entity.
      *
      */
-    public function newGenericAction(Request $request, $twig, $entity, $formType, $options = [])
+    public function newGenericAction(Request $request, $em, $twig, $entity, $formType, $options = [])
     {
-		$this->defaultValueForMappedSuperclassBase($request, $entity);
+		$this->defaultValueForMappedSuperclassBase($request, $em, $entity);
         $form = $this->createForm($formType, $entity, $options);
 
         return $this->render($twig, [

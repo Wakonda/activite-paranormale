@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,7 +36,7 @@ class BookEditionAdminController extends AdminGenericController
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	protected $illustrationWholeBooks = [["field" => "wholeBook", "selectorFile" => "file_selector"]];
 	
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrationWholeBooks);
@@ -56,7 +56,7 @@ class BookEditionAdminController extends AdminGenericController
 			$this->saveNewBiographies($entityBindded, $form, "biographies");
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$originalBiographies = new ArrayCollection($em->getRepository(BookEditionBiography::class)->findBy(["bookEdition" => $entityBindded->getId()]));
@@ -89,10 +89,10 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->render($twig, ["bookId" => $bookId]);
     }
 	
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'book/BookEditionAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
     public function newAction(Request $request, Int $bookId)
@@ -104,44 +104,43 @@ class BookEditionAdminController extends AdminGenericController
 		$entity->setBook($em->getRepository(Book::class)->find($bookId));
 
 		$twig = 'book/BookEditionAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $bookId)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $bookId)
     {
 		$formType = BookEditionAdminType::class;
 		$entity = new BookEdition();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entity->setBook($em->getRepository(Book::class)->find($bookId));
 
 		$twig = 'book/BookEditionAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
 	
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $this->getDoctrine()->getManager()->getRepository(BookEdition::class)->find($id);
 		$formType = BookEditionAdminType::class;
 
 		$twig = 'book/BookEditionAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType);
+		return $this->editGenericAction($em, $id, $twig, $formType);
     }
 	
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BookEditionAdminType::class;
 		$twig = 'book/BookEditionAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, Int $bookId)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $bookId)
 	{
 		$em = $this->getDoctrine()->getManager();
 		
@@ -179,9 +178,9 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->showImageSelectorColorboxGenericAction('BookEdition_Admin_LoadImageSelectorColorbox');
 	}
 	
-	public function loadImageSelectorColorboxAction(Request $request)
+	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request);
+		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
 	public function reloadThemeByLanguageAction(Request $request)
@@ -245,12 +244,11 @@ class BookEditionAdminController extends AdminGenericController
         return new JsonResponse(["results" => $results]);
 	}
 	
-    public function internationalizationAction(Request $request, $id)
+    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = BookEditionAdminType::class;
 		$entity = new BookEdition();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(BookEdition::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
@@ -296,7 +294,7 @@ class BookEditionAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'movie/TelevisionSerieAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 	
 	public function googleBookAction(Request $request, \App\Service\GoogleBook $googleBook)

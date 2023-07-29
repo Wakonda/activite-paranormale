@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -27,11 +27,11 @@ class CommentAdminController extends AdminGenericController
 	protected $indexRoute = "Comment_Admin_Index"; 
 	protected $showRoute = "Comment_Admin_Show";
 	
-	public function validationForm(Request $request, ConstraintControllerValidator $cvv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $cvv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 	
@@ -54,7 +54,7 @@ class CommentAdminController extends AdminGenericController
      * Finds and displays a Commentaire entity.
      *
      */
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
         $em = $this->getDoctrine()->getManager();
 
@@ -72,10 +72,10 @@ class CommentAdminController extends AdminGenericController
         ));
     }
 	
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, APDate $date)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$em = $this->getDoctrine()->getManager();
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));

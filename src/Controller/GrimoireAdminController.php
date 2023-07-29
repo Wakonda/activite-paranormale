@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,18 +34,16 @@ class GrimoireAdminController extends AdminGenericController
 	protected $formName = "ap_witchcraft_grimoireadmintype";
 	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 
-	public function validationForm(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
+	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
-		$em = $this->getDoctrine()->getManager();
 		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Validate', 'language' => $entityBindded->getLanguage()]);
 		
 		if(empty($state)) {
@@ -56,7 +54,7 @@ class GrimoireAdminController extends AdminGenericController
 		$entityBindded->setState($state);
 	}
 
-	public function postValidationAction($form, $entityBindded)
+	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
@@ -66,63 +64,60 @@ class GrimoireAdminController extends AdminGenericController
 		return $this->indexGenericAction($twig);
     }
 	
-    public function showAction($id)
+    public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'witchcraft/GrimoireAdmin/show.html.twig';
-		return $this->showGenericAction($id, $twig);
+		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request)
+    public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = GrimoireAdminType::class;
 		$entity = new Grimoire();
 
 		$twig = 'witchcraft/GrimoireAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = GrimoireAdminType::class;
 		$entity = new Grimoire();
 
 		$twig = 'witchcraft/GrimoireAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function editAction($id)
+    public function editAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = GrimoireAdminType::class;
 
 		$twig = 'witchcraft/GrimoireAdmin/edit.html.twig';
-		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = GrimoireAdminType::class;
 		$twig = 'witchcraft/GrimoireAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\GrimoireComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\GrimoireVote")->findBy(["grimoire" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$em = $this->getDoctrine()->getManager();
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
@@ -150,10 +145,8 @@ class GrimoireAdminController extends AdminGenericController
 		return $response;
 	}
 
-    public function indexStateAction(Request $request, $state)
+    public function indexStateAction(Request $request, EntityManagerInterface $em, $state)
     {
-        $em = $this->getDoctrine()->getManager();
-		
         $entities = $em->getRepository($this->className)->getByStateAdmin($state);
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
 		
@@ -163,9 +156,8 @@ class GrimoireAdminController extends AdminGenericController
         ]);
     }
 
-	public function changeStateAction(Request $request, TranslatorInterface $translator, $id, $state)
+	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 		
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
@@ -190,17 +182,14 @@ class GrimoireAdminController extends AdminGenericController
 		return $this->redirect($this->generateUrl('Grimoire_Admin_Show', ['id' => $id]));
 	}
 
-	public function countByStateAction($state)
+	public function countByStateAction(EntityManagerInterface $em, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
 	}
 
-	public function reloadListsByLanguageAction(Request $request)
+	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -223,16 +212,15 @@ class GrimoireAdminController extends AdminGenericController
 		return $response;
 	}
 
-	protected function defaultValueForMappedSuperclassBase(Request $request, $entity)
+	protected function defaultValueForMappedSuperclassBase(Request $request, EntityManagerInterface $em, $entity)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		$entity->setLanguage($language);
 	}
 	
-	public function archiveAction($id)
+	public function archiveAction(EntityManagerInterface $em, $id)
 	{
-		return $this->archiveGenericArchive($id);
+		return $this->archiveGenericArchive($em, $id);
 	}
 
     public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
@@ -245,17 +233,16 @@ class GrimoireAdminController extends AdminGenericController
 		return $this->showImageSelectorColorboxGenericAction('Grimoire_Admin_LoadImageSelectorColorbox');
 	}
 	
-	public function loadImageSelectorColorboxAction(Request $request)
+	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request);
+		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 	
-	public function internationalizationAction(Request $request, $id)
+	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = GrimoireAdminType::class;
 		$entity = new Grimoire();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(Grimoire::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		
@@ -289,6 +276,6 @@ class GrimoireAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'witchcraft/GrimoireAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 }
