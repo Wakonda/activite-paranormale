@@ -6,6 +6,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 use App\Entity\Video;
 use App\Entity\Contact;
@@ -35,21 +37,21 @@ class VideoController extends AbstractController
 			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
 			$tabThemeNbr[$i][1] = $nbrArchiveParTheme[$i];
 		}
-		return $this->render('video/Video/index.html.twig', array(
+		return $this->render('video/Video/index.html.twig', [
 			'parentTheme' => $parentTheme,
 			'nbrVideo' => $nbrVideo,
 			'tabThemeNbr' => $tabThemeNbr,
 			'nbrTheme' => $nbrTheme,
 			'theme' => $theme
-		));
+		]);
     }
 	
 	public function tabVideoAction(Request $request, $id, $theme)
 	{
-		return $this->render('video/Video/tabVideo.html.twig', array(
+		return $this->render('video/Video/tabVideo.html.twig', [
 			'themeDisplay' => $theme,
 			'themeId' => $id
-		));	
+		]);	
 	}
 
 	public function tabVideoDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $themeId)
@@ -76,19 +78,19 @@ class VideoController extends AbstractController
         $entities = $em->getRepository(Video::class)->getTabVideo($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Video::class)->getTabVideo($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
 			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
-			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
 			$output['aaData'][] = $row;
@@ -126,7 +128,7 @@ class VideoController extends AbstractController
 		]);
 	}
 	
-	public function notifyDeletedVideoAction(Request $request, \Swift_Mailer $mailer, $id)
+	public function notifyDeletedVideoAction(Request $request, MailerInterface $mailer, $id)
 	{
 		$em = $this->getDoctrine()->getManager();
 		$video = $em->getRepository(Video::class)->find($id);
@@ -139,14 +141,15 @@ class VideoController extends AbstractController
 		$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
 		$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
 		$entity->setSubjectContact("Suppression d'une vidéo");
-		
-		$message = (new \Swift_Message("Suppression d'une vidéo"))
-			->setTo($_ENV["MAILER_CONTACT"])
-			->setFrom([$_ENV["MAILER_CONTACT"]])
-			->setBody($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]), 'text/html')
-		;
-		$mailer->send($message);
-		
+
+		$email = (new Email())
+			->from($_ENV["MAILER_CONTACT"])
+			->to($_ENV["MAILER_CONTACT"])
+			->subject("Suppression d'une vidéo")
+			->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+
+		$mailer->send($email);
+
 		$em->persist($entity);
 		$em->flush();
 		
@@ -177,7 +180,7 @@ class VideoController extends AbstractController
 		if($entity->getArchive())
 			throw new GoneHttpException('Archived');
 
-		$content = $this->render("video/Video/pdfVersion.html.twig", array("entity" => $entity));
+		$content = $this->render("video/Video/pdfVersion.html.twig", ["entity" => $entity]);
 
 		return $html2pdf->generatePdf($content->getContent());
 	}
@@ -187,9 +190,9 @@ class VideoController extends AbstractController
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->find($id);
 		
-        return $this->render('video/Video/embedded.html.twig', array(
+        return $this->render('video/Video/embedded.html.twig', [
             'entity' => $entity
-        ));
+        ]);
 	}
 
 	// INDEX
@@ -197,9 +200,9 @@ class VideoController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository(Video::class)->getSliderNew($request->getLocale());
-		return $this->render("video/Video/slider.html.twig", array(
+		return $this->render("video/Video/slider.html.twig", [
 			"entity" => $entity
-		));
+		]);
 	}
 
 	// Check if video exists
@@ -253,7 +256,7 @@ class VideoController extends AbstractController
 	{
 		$em = $this->getDoctrine()->getManager();
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
-		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
+		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
 		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
 
@@ -267,12 +270,12 @@ class VideoController extends AbstractController
 		if(!empty($theme))
 			$title[] = $theme->getTitle();
 
-		return $this->render('video/Video/world.html.twig', array(
+		return $this->render('video/Video/world.html.twig', [
 			'flags' => $flags,
 			'themes' => $themes,
 			'title' => implode(" - ", $title),
 			'theme' => empty($theme) ? null : $theme
-		));	
+		]);
 	}
 
 	public function selectThemeForIndexWorldAction(Request $request, $language)
@@ -282,7 +285,7 @@ class VideoController extends AbstractController
 
 		$em = $this->getDoctrine()->getManager();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
-		return new Response($this->generateUrl('Video_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
+		return new Response($this->generateUrl('Video_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
 	public function worldDatatablesAction(Request $request, APImgSize $imgSize, APDate $date, $language)
@@ -308,12 +311,12 @@ class VideoController extends AbstractController
         $entities = $em->getRepository(Video::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Video::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -321,7 +324,7 @@ class VideoController extends AbstractController
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].';">';			
-			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug())).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
 			$output['aaData'][] = $row;
