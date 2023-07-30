@@ -111,7 +111,7 @@ class CommentController extends AbstractController
     {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
 		$countComment = $em->getRepository($classNameComment)->countComment($idClassName);
 		$nbrOfPages = ceil($countComment/self::$nbrMessageByPage);
@@ -145,7 +145,7 @@ class CommentController extends AbstractController
     {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
         
 		if(!is_object($user))
 		{

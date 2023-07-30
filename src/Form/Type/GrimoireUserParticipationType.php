@@ -22,7 +22,6 @@ class GrimoireUserParticipationType extends AbstractType
     {
 		$language = $options["language"];
 		$user = $options["user"];
-		$securityUser = $options["securityUser"];
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
@@ -75,8 +74,7 @@ class GrimoireUserParticipationType extends AbstractType
 			'data_class' => 'App\Entity\Grimoire',
 			'translation_domain' => 'validators',
 			'language' => 'fr',
-			'user' => null,
-			'securityUser' => null
+			'user' => null
 		));
 	}
 }

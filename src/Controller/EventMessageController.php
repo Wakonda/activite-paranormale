@@ -216,11 +216,9 @@ class EventMessageController extends AbstractController
 	// USER PARTICIPATION
     public function newAction(Request $request)
     {
-		$securityUser = $this->container->get('security.authorization_checker');
         $entity = new EventMessage();
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $this->getUser()]);
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
@@ -246,8 +244,7 @@ class EventMessageController extends AbstractController
 
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$securityUser = $this->container->get('security.authorization_checker');
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
         $entity = $em->getRepository(EventMessage::class)->find($id);
 
@@ -257,7 +254,7 @@ class EventMessageController extends AbstractController
 		if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 			throw new \Exception("You are not authorized to edit this document.");
 
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
@@ -277,10 +274,9 @@ class EventMessageController extends AbstractController
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $this->getUser();
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
@@ -296,8 +292,7 @@ class EventMessageController extends AbstractController
 	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, $id = 0)
 	{
 		$locale = $request->getLocale();
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $this->getUser();
 
 		if(empty($id))
 			$entity = new EventMessage();
@@ -308,7 +303,7 @@ class EventMessageController extends AbstractController
 				throw new \Exception("You are not authorized to edit this document.");
 		}
 
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $locale, "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $locale, "user" => $user]);
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $locale]);

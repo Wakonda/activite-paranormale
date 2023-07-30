@@ -165,11 +165,10 @@ class WitchcraftController extends AbstractController
 	// USER PARTICIPATION
     public function newAction(Request $request)
     {
-		$securityUser = $this->container->get('security.authorization_checker');
         $entity = new Grimoire();
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+		$user = $this->getUser();
+        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
 
         return $this->render('witchcraft/Witchcraft/new.html.twig', [
             'entity' => $entity,
@@ -179,12 +178,11 @@ class WitchcraftController extends AbstractController
 
 	public function createAction(Request $request, EntityManagerInterface $em)
     {
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $this->getUser();
 
 		$entity = new Grimoire();
 
-        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
@@ -248,10 +246,9 @@ class WitchcraftController extends AbstractController
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $this->getUser();
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 		
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);

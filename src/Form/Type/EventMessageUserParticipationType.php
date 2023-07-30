@@ -30,7 +30,6 @@ class EventMessageUserParticipationType extends AbstractType
     {
 		$language = $options["language"];
 		$user = $options["user"];
-		$securityUser = $options["securityUser"];
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
@@ -110,8 +109,7 @@ class EventMessageUserParticipationType extends AbstractType
 			'data_class' => 'App\Entity\EventMessage',
 			'translation_domain' => 'validators',
 			'language' => 'fr',
-			'user' => null,
-			'securityUser' => null
+			'user' => null
 		));
 	}
 }

@@ -61,7 +61,7 @@ class UserController extends AbstractController
 
     public function showAction()
     {
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
         if (!is_object($user)) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -73,7 +73,7 @@ class UserController extends AbstractController
     }
 	
 	public function phpbbAction(Request $request, TranslatorInterface $translator, \App\Service\PHPBB $phpbb) {
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
         if (!is_object($user)) {
             throw new AccessDeniedException('This user does not have access to this section.');
@@ -96,7 +96,7 @@ class UserController extends AbstractController
 				$this->addFlash("error", $translator->trans("user.phpbb.ErrorPasswordEmpty", [], "validators"));
 			else {
 				$token = $phpbb->getJWT($language);
-				$user = $this->get('security.token_storage')->getToken()->getUser();
+				$user = $this->getUser();
 				$res = $phpbb->saveUser($token, $user->getUsername(), $password, $user->getEmail());
 
 				if(isset($res["error"]))
@@ -141,7 +141,7 @@ class UserController extends AbstractController
 	
     public function editAction(Request $request, EntityManagerInterface $em)
     {
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
         if (!$user) {
             throw $this->createNotFoundException('Unable to find User entity.');
@@ -157,7 +157,7 @@ class UserController extends AbstractController
 
     public function updateAction(Request $request, EntityManagerInterface $em)
     {
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
 		$photoBDD = $user->getAvatar();
 

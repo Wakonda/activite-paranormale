@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use App\Form\Type\NewsType;
 use App\Entity\News;
@@ -204,15 +205,14 @@ class NewsController extends AbstractController
 	}
 	
 	// USER PARTICIPATION
-    public function newAction(Request $request, EntityManagerInterface $em)
+    public function newAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
-		$securityUser = $this->container->get('security.authorization_checker');
         $entity = new News();
 
 		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+		$user = $this->getUser();
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $authorizationChecker]);
 
         return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
@@ -220,9 +220,9 @@ class NewsController extends AbstractController
         ]);
     }
 	
-	public function createAction(Request $request, EntityManagerInterface $em)
+	public function createAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
-		return $this->genericCreateUpdate($request, $em);
+		return $this->genericCreateUpdate($request, $em, $authorizationChecker);
     }
 	
 	public function waitingAction(EntityManagerInterface $em, $id)
@@ -243,10 +243,9 @@ class NewsController extends AbstractController
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
 
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $this->getUser();
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$securityUser->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
@@ -259,10 +258,9 @@ class NewsController extends AbstractController
 		return $this->render('news/News/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
-		$securityUser = $this->container->get('security.authorization_checker');
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
+		$user = $this->getUser();
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
@@ -272,7 +270,7 @@ class NewsController extends AbstractController
 		if($entity->getState()->getDisplayState() or $user->getId() != $entity->getAuthor()->getId())
 			throw new \Exception("You are not authorized to edit this article.");
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $authorizationChecker]);
 
         return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
@@ -280,15 +278,14 @@ class NewsController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
-		return $this->genericCreateUpdate($request, $em, $id);
+		return $this->genericCreateUpdate($request, $em, $authorizationChecker, $id);
     }
 	
-	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, $id = 0)
+	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
 	{
-		$user = $this->container->get('security.token_storage')->getToken()->getUser();
-		$securityUser = $this->container->get('security.authorization_checker');
+		$user = $this->getUser();
 
 		if(empty($id))
 			$entity = new News();
@@ -300,14 +297,14 @@ class NewsController extends AbstractController
 				throw new \Exception("You are not authorized to edit this document.");
 		}
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $securityUser]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $authorizationChecker]);
         $form->handleRequest($request);
 		
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
-		if($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
+		if($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Draft', 'language' => $language]);
-		elseif($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
+		elseif($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Draft', 'language' => $language]);
 		else
 			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
@@ -356,11 +353,11 @@ class NewsController extends AbstractController
 			$em->persist($entity);
 			$em->flush();
 			
-			if($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
+			if($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 			{
 				return $this->redirect($this->generateUrl('News_Waiting', ['id' => $entity->getId()]));
 			}
-			elseif($securityUser->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
+			elseif($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
 			{
 				return $this->redirect($this->generateUrl('Profile_Show'));
 			}
