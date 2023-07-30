@@ -187,7 +187,7 @@ class AdminController extends AbstractController
 		$session->set("path_blogger", $path);
 		$session->set("routeToRedirect_blogger", $routeToRedirect);
 
-		$tags = $request->request->get('blogger_tags');
+		$tags = $request->request->all('blogger_tags');
 		$session->set("tags_blogger", json_encode((empty($tags)) ? [] : $tags));
 		$session->set("type_blogger", $type);
 

@@ -132,7 +132,7 @@ class StoreAdminController extends AdminGenericController
 		}
 
 		$twig = 'store/StoreAdmin/new.html.twig';
-		return $this->newGenericAction($request, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
     }
 	
     public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
