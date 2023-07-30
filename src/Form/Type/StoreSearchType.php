@@ -9,25 +9,38 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 use App\Entity\Stores\Store;
 
 class StoreSearchType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$builder->setMethod('GET');
+
+		$categories = [
+				$this->translator->trans("store.index.".ucfirst(Store::BOOK_CATEGORY), [], 'validators') => Store::BOOK_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::CLOTH_CATEGORY), [], 'validators') => Store::CLOTH_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::ALBUM_CATEGORY), [], 'validators') => Store::ALBUM_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::MOVIE_CATEGORY), [], 'validators') => Store::MOVIE_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::TELEVISION_SERIE_CATEGORY), [], 'validators') => Store::TELEVISION_SERIE_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::WITCHCRAFT_TOOL_CATEGORY), [], 'validators') => Store::WITCHCRAFT_TOOL_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::FUNNY_CATEGORY), [], 'validators') => Store::FUNNY_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY), [], 'validators') => Store::GOTHIC_CLOTH_CATEGORY
+			];
+		
+		ksort($categories);
+		
         $builder
 			->add('category', ChoiceType::class, [
-			'choices' => [
-				"store.index.".ucfirst(Store::BOOK_CATEGORY) => Store::BOOK_CATEGORY,
-				"store.index.".ucfirst(Store::CLOTH_CATEGORY) => Store::CLOTH_CATEGORY,
-				"store.index.".ucfirst(Store::ALBUM_CATEGORY) => Store::ALBUM_CATEGORY,
-				"store.index.".ucfirst(Store::MOVIE_CATEGORY) => Store::MOVIE_CATEGORY,
-				"store.index.".ucfirst(Store::TELEVISION_SERIE_CATEGORY) => Store::TELEVISION_SERIE_CATEGORY,
-				"store.index.".ucfirst(Store::WITCHCRAFT_TOOL_CATEGORY) => Store::WITCHCRAFT_TOOL_CATEGORY,
-				"store.index.".ucfirst(Store::FUNNY_CATEGORY) => Store::FUNNY_CATEGORY,
-				"store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY) => Store::GOTHIC_CLOTH_CATEGORY
-			], 'expanded' => false, 'multiple' => false, "required" => false, 'translation_domain' => 'validators'])
+			'choices' => $categories, 'expanded' => false, 'multiple' => false, "required" => false])
 			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
 		;
     }
@@ -39,9 +52,9 @@ class StoreSearchType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'locale' => 'fr',
 			'validation_groups' => ['form_validation_only']
-		));
+		]);
 	}
 }
