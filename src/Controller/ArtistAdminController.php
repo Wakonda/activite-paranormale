@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
@@ -43,7 +42,6 @@ class ArtistAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository(Artist::class)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -58,7 +56,6 @@ class ArtistAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$originalBiographies = new ArrayCollection($em->getRepository(ArtistBiography::class)->findBy(["artist" => $entityBindded->getId()]));
 		
 		foreach($originalBiographies as $originalBiography)
@@ -107,12 +104,12 @@ class ArtistAdminController extends AdminGenericController
 		$entity = new Artist();
 
 		$twig = 'music/ArtistAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Artist::class)->find($id);
+		$entity = $em->getRepository(Artist::class)->find($id);
 		$formType = ArtistAdminType::class;
 
 		$twig = 'music/ArtistAdmin/edit.html.twig';
@@ -124,7 +121,7 @@ class ArtistAdminController extends AdminGenericController
 		$formType = ArtistAdminType::class;
 		$twig = 'music/ArtistAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -156,26 +153,26 @@ class ArtistAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
 		
 		if(is_numeric($locale)) {
-			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
+			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
 		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(Artist::class)->getAutocomplete($locale, $query);
-		
+		$datas =  $em->getRepository(Artist::class)->getAutocomplete($locale, $query);
+
 		$results = [];
-		
+
 		foreach($datas as $data)
 		{
 			$obj = new \stdClass();
 			$obj->id = $data->getId();
 			$obj->text = $data->getTitle();
-			
+
 			$results[] = $obj;
 		}
 
@@ -269,10 +266,8 @@ class ArtistAdminController extends AdminGenericController
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
-	public function reloadByLanguageAction(Request $request)
+	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 
@@ -303,9 +298,8 @@ class ArtistAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 

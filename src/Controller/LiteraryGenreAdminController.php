@@ -37,7 +37,6 @@ class LiteraryGenreAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -134,8 +133,7 @@ class LiteraryGenreAdminController extends AdminGenericController
     {
 		$formType = LiteraryGenreAdminType::class;
 		$entity = new LiteraryGenre();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(LiteraryGenre::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 

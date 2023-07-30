@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
@@ -42,7 +41,6 @@ class DocumentAdminController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 		
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -80,12 +78,12 @@ class DocumentAdminController extends AdminGenericController
 		$entity = new Document();
 
 		$twig = 'document/DocumentAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = DocumentAdminType::class;
 
 		$twig = 'document/DocumentAdmin/edit.html.twig';
@@ -97,12 +95,11 @@ class DocumentAdminController extends AdminGenericController
 		$formType = DocumentAdminType::class;
 		
 		$twig = 'document/DocumentAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\DocumentComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\DocumentTags")->findBy(["entity" => $id]);
@@ -151,10 +148,8 @@ class DocumentAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadDocumentFamilyByLanguageAction(Request $request)
+	public function reloadDocumentFamilyByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		

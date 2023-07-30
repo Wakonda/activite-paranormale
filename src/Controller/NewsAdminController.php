@@ -79,29 +79,28 @@ class NewsAdminController extends AdminGenericController
 
 		$twig = 'news/NewsAdmin/new.html.twig';
 
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = NewsAdminType::class;
 
 		$twig = 'news/NewsAdmin/edit.html.twig';
 		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
+
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = NewsAdminType::class;
 
 		$twig = 'news/NewsAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\NewsComment")->findBy(["news" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\NewsVote")->findBy(["news" => $id]);
@@ -113,16 +112,14 @@ class NewsAdminController extends AdminGenericController
     }
 
 	/* FONCTION DE COMPTAGE */
-	public function countNewsByStateAction($state)
+	public function countNewsByStateAction(EntityManagerInterface $em, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countNewsByStateAdmin = $em->getRepository($this->className)->countNewsByStateAdmin($state);
 		return new Response($countNewsByStateAdmin);
 	}
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
@@ -156,10 +153,8 @@ class NewsAdminController extends AdminGenericController
 		return $response;
 	}
 
-    public function indexStateAction(Request $request, $state)
+    public function indexStateAction(Request $request, EntityManagerInterface $em, $state)
     {
-        $em = $this->getDoctrine()->getManager();
-		
         $entities = $em->getRepository($this->className)->getNewsByStateAdmin($state);
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
 		
@@ -174,10 +169,8 @@ class NewsAdminController extends AdminGenericController
 		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new News());
     }
 
-	public function reloadThemeByLanguageAction(Request $request)
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -234,9 +227,8 @@ class NewsAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
-	public function changeStateAction(Request $request, TranslatorInterface $translator, $id, $state)
+	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 		
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);

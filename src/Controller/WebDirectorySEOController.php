@@ -3,15 +3,14 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\WebDirectorySEO;
 
 class WebDirectorySEOController extends AbstractController
 {   
-    public function indexAction($page)
+    public function indexAction(EntityManagerInterface $em, $page)
     {
-		$em = $this->getDoctrine()->getManager();
-
 		$entities = $em->getRepository(WebDirectorySEO::class)->findAll();
 		
         return $this->render('webdirectoryseo/WebDirectorySEO/index.html.twig', [

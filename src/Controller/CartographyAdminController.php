@@ -74,12 +74,12 @@ class CartographyAdminController extends AdminGenericController
 
 		$twig = 'cartography/CartographyAdmin/new.html.twig';
 
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Cartography::class)->find($id);
+		$entity = $em->getRepository(Cartography::class)->find($id);
 		$formType = CartographyAdminType::class;
 
 		$twig = 'cartography/CartographyAdmin/edit.html.twig';
@@ -91,12 +91,11 @@ class CartographyAdminController extends AdminGenericController
 		$formType = CartographyAdminType::class;
 		
 		$twig = 'cartography/CartographyAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\CartographyComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\CartographyTags")->findBy(["entity" => $id]);
@@ -133,8 +132,6 @@ class CartographyAdminController extends AdminGenericController
 
 	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		

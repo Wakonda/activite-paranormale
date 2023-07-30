@@ -39,7 +39,6 @@ class MusicGenreAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository(MusicGenre::class)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -76,12 +75,12 @@ class MusicGenreAdminController extends AdminGenericController
 		$entity = new MusicGenre();
 
 		$twig = 'music/MusicGenreAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(MusicGenre::class)->find($id);
+		$entity = $em->getRepository(MusicGenre::class)->find($id);
 		$formType = MusicGenreAdminType::class;
 
 		$twig = 'music/MusicGenreAdmin/edit.html.twig';
@@ -93,7 +92,7 @@ class MusicGenreAdminController extends AdminGenericController
 		$formType = MusicGenreAdminType::class;
 		$twig = 'music/MusicGenreAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function deleteAction(EntityManagerInterface $em, $id)

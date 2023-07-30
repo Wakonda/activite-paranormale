@@ -37,7 +37,6 @@ class TagWordAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 		
     	// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -129,21 +128,21 @@ class TagWordAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
-		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(TagWord::class)->getAutocomplete($locale, $query);
-		
+
+		$datas =  $em->getRepository(TagWord::class)->getAutocomplete($locale, $query);
+
 		$results = [];
-		
+
 		foreach($datas as $data)
 		{
 			$obj = new \stdClass();
 			$obj->id = $data->getId();
 			$obj->text = $data->getTitle();
-			
+
 			$results[] = $obj;
 		}
 

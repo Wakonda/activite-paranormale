@@ -85,9 +85,9 @@ class GrimoireAdminController extends AdminGenericController
 		$entity = new Grimoire();
 
 		$twig = 'witchcraft/GrimoireAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
     public function editAction(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
@@ -96,13 +96,13 @@ class GrimoireAdminController extends AdminGenericController
 		$twig = 'witchcraft/GrimoireAdmin/edit.html.twig';
 		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
+
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = GrimoireAdminType::class;
 		$twig = 'witchcraft/GrimoireAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)

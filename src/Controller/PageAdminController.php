@@ -67,12 +67,12 @@ class PageAdminController extends AdminGenericController
 		$entity = new Page();
 
 		$twig = 'page/PageAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Page::class)->find($id);
+		$entity = $em->getRepository(Page::class)->find($id);
 		$formType = PageAdminType::class;
 
 		$twig = 'page/PageAdmin/edit.html.twig';
@@ -84,7 +84,7 @@ class PageAdminController extends AdminGenericController
 		$formType = PageAdminType::class;
 		
 		$twig = 'page/PageAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -124,8 +124,7 @@ class PageAdminController extends AdminGenericController
     {
 		$formType = PageAdminType::class;
 		$entity = new Page();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(Page::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 

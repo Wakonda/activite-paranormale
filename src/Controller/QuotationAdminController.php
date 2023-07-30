@@ -40,7 +40,6 @@ class QuotationAdminController extends AdminGenericController
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('authorQuotation')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -84,12 +83,12 @@ class QuotationAdminController extends AdminGenericController
 		$entity = new Quotation();
 
 		$twig = 'quotation/QuotationAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = QuotationAdminType::class;
 
 		$twig = 'quotation/QuotationAdmin/edit.html.twig';
@@ -101,7 +100,7 @@ class QuotationAdminController extends AdminGenericController
 		$formType = QuotationAdminType::class;
 		
 		$twig = 'quotation/QuotationAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -143,12 +142,10 @@ class QuotationAdminController extends AdminGenericController
 		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new Quotation());
     }
 
-	public function createSameAuthorAction(Request $request, $biographyId)
+	public function createSameAuthorAction(Request $request, EntityManagerInterface $em, $biographyId)
 	{
 		$formType = QuotationAdminType::class;
 		$entity = new Quotation();
-		
-		$em = $this->getDoctrine()->getManager();
 
 		$biography = $em->getRepository(Biography::class)->find($biographyId);
 
@@ -163,9 +160,8 @@ class QuotationAdminController extends AdminGenericController
         ]);
 	}
 	
-	public function generateImageAction(Request $request, PHPImage $image, $id)
+	public function generateImageAction(Request $request, EntityManagerInterface $em, PHPImage $image, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 
         $imageGeneratorForm = $this->createForm(QuotationImageGeneratorType::class);
@@ -234,9 +230,8 @@ class QuotationAdminController extends AdminGenericController
 		return $this->showGenericAction($em, $id, $twig, ["imageGeneratorForm" => $imageGeneratorForm->createView()]);
 	}
 
-	public function generateImageAjaxAction(Request $request, PHPImage $image, $id)
+	public function generateImageAjaxAction(Request $request, EntityManagerInterface $em, PHPImage $image, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 
 		$url = $request->request->get("url");
@@ -247,7 +242,7 @@ class QuotationAdminController extends AdminGenericController
 		$textColor = [0, 0, 0];
 		$strokeColor = [255, 255, 255];
 		$rectangleColor = [255, 255, 255];
-		
+
 		// if($data["invert_colors"]) {
 			$textColor = [255, 255, 255];
 			$strokeColor = [0, 0, 0];
@@ -294,19 +289,18 @@ class QuotationAdminController extends AdminGenericController
 		return new JsonResponse(["content" => $image_data_base64]);
 	}
 
-	public function removeImageAction(Request $request, $id, $quotationImageId)
+	public function removeImageAction(Request $request, EntityManagerInterface $em, $id, $quotationImageId)
 	{
-		$entityManager = $this->getDoctrine()->getManager();
-		$entity = $entityManager->getRepository(Quotation::class)->find($id);
+		$entity = $em->getRepository(Quotation::class)->find($id);
 
-		$quotationImage = $entityManager->getRepository(QuotationImage::class)->find($quotationImageId);
+		$quotationImage = $em->getRepository(QuotationImage::class)->find($quotationImageId);
 
 		$fileName = $quotationImage->getImage();
 
 		$entity->removeImage($quotationImage);
 
-		$entityManager->persist($entity);
-		$entityManager->flush();
+		$em->persist($entity);
+		$em->flush();
 
 		$filesystem = new Filesystem();
 		$filesystem->remove($entity->getAssetImagePath().$fileName);

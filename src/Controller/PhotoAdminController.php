@@ -75,12 +75,12 @@ class PhotoAdminController extends AdminGenericController
 		$entity = new Photo();
 
 		$twig = 'photo/PhotoAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = PhotoAdminType::class;
 
 		$twig = 'photo/PhotoAdmin/edit.html.twig';
@@ -92,12 +92,11 @@ class PhotoAdminController extends AdminGenericController
 		$formType = PhotoAdminType::class;
 		$twig = 'photo/PhotoAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\PhotoComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\PhotoVote")->findBy(["photo" => $id]);
@@ -121,10 +120,10 @@ class PhotoAdminController extends AdminGenericController
 		foreach($informationArray['entities'] as $entity)
 		{
 			$row = [];
-			
+
 			if($entity->getArchive())
 				$row["DT_RowClass"] = "deleted";
-			
+
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getPublicationDate());
@@ -141,8 +140,6 @@ class PhotoAdminController extends AdminGenericController
 
 	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -196,7 +193,6 @@ class PhotoAdminController extends AdminGenericController
 		$formType = PhotoAdminType::class;
 		$entity = new Photo();
 
-		$em = $this->getDoctrine()->getManager();
 		$entityToCopy = $em->getRepository(Photo::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getTheme()->getInternationalName()]);

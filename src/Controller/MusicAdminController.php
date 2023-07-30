@@ -42,8 +42,6 @@ class MusicAdminController extends AdminGenericController
 			$entityBindded->setMusicPieceFile($data['music_selector']->getNormData());
 	
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
-		
 		if(!empty($entityBindded->getAlbum())) {
 			$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
@@ -64,7 +62,6 @@ class MusicAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$originalMusics = new ArrayCollection($em->getRepository(MusicBiography::class)->findBy(["music" => $entityBindded->getId()]));
 		
 		foreach($originalMusics as $originalMusic)
@@ -104,10 +101,10 @@ class MusicAdminController extends AdminGenericController
 		$entity = new Music();
 		
 		if ($request->query->has("albumId")) {
-			$entity->setAlbum($this->getDoctrine()->getManager()->getRepository(Album::class)->find($request->query->get("albumId")));
+			$entity->setAlbum($em->getRepository(Album::class)->find($request->query->get("albumId")));
 		}
 		
-		$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->findOneBy(array("abbreviation" => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $request->getLocale()));
 
 		$twig = 'music/MusicAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["language" => $language]);
@@ -189,10 +186,8 @@ class MusicAdminController extends AdminGenericController
 		return $this->render($twig, ["albumId" => $albumId]);
     }
 
-	public function indexByAlbumDatatablesAction(Request $request, TranslatorInterface $translator, Int $albumId)
+	public function indexByAlbumDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $albumId)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexByAlbumAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $albumId);
@@ -220,9 +215,8 @@ class MusicAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 		

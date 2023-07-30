@@ -160,7 +160,7 @@ abstract class AdminGenericController extends AbstractController
             $em->persist($entity);
             $em->flush();
 
-			$this->postValidationAction($form, $entity);
+			$this->postValidationAction($form, $em, $entity);
 
             return $this->redirect($this->generateUrl($this->showRoute, ['id' => $entity->getId()]));
         }
@@ -217,7 +217,7 @@ abstract class AdminGenericController extends AbstractController
             $em->persist($entity);
             $em->flush();
 			
-			$this->postValidationAction($editForm, $entity);
+			$this->postValidationAction($editForm, $em, $entity);
 
             return $this->redirect($this->generateUrl($this->showRoute, ['id' => $id]));
         }
@@ -291,10 +291,10 @@ abstract class AdminGenericController extends AbstractController
 		return $this->render('index/Form/showImageSelectorColorboxResult.html.twig', ['entities' => $entities, 'last_page' => $number_pages, 'current_page' => $current_page]);
     }
 
-	protected function getLanguageByDefault($request, $formName)
+	protected function getLanguageByDefault(Request $request, EntityManagerInterface $em, $formName)
 	{
-		$valueForm = $request->request->get($formName);
-		$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($valueForm['language']);
+		$valueForm = $request->request->all($formName);
+		$language = $em->getRepository(Language::class)->find($valueForm['language']);
 
 		if(empty($language))
 			$abbreviation = $request->getLocale();

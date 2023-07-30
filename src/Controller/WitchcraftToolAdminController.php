@@ -40,7 +40,6 @@ class WitchcraftToolAdminController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -86,12 +85,12 @@ class WitchcraftToolAdminController extends AdminGenericController
 		$entity = new WitchcraftTool();
 
 		$twig = 'witchcraft/WitchcraftToolAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = WitchcraftToolAdminType::class;
 
 		$twig = 'witchcraft/WitchcraftToolAdmin/edit.html.twig';
@@ -103,7 +102,7 @@ class WitchcraftToolAdminController extends AdminGenericController
 		$formType = WitchcraftToolAdminType::class;
 		$twig = 'witchcraft/WitchcraftToolAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -135,8 +134,6 @@ class WitchcraftToolAdminController extends AdminGenericController
 
 	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		

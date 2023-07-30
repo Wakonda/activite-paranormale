@@ -83,12 +83,12 @@ class VideoAdminController extends AdminGenericController
 		$entity = new Video();
 
 		$twig = 'video/VideoAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ["locale" => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ["locale" => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = VideoAdminType::class;
 
 		$twig = 'video/VideoAdmin/edit.html.twig';
@@ -100,12 +100,11 @@ class VideoAdminController extends AdminGenericController
 		$formType = VideoAdminType::class;
 		$twig = 'video/VideoAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ["locale" => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ["locale" => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\VideoComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\VideoVote")->findBy(["video" => $id]);
@@ -156,8 +155,6 @@ class VideoAdminController extends AdminGenericController
 
 	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 

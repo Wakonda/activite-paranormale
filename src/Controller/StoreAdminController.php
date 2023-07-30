@@ -55,10 +55,8 @@ class StoreAdminController extends AdminGenericController
 		}
 	}
 
-	private function setEntity($entity, String $category, Int $id)
+	private function setEntity($em, $entity, String $category, Int $id)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$mainEntity = null;
 		$language = null;
 		
@@ -119,7 +117,7 @@ class StoreAdminController extends AdminGenericController
 		return $this->showGenericAction($id, $twig);
     }
 
-    public function newAction(Request $request, String $category)
+    public function newAction(Request $request, EntityManagerInterface $em, String $category)
     {
 		$class = $this->getDataClass($category);
 		$formType = StoreAdminType::class;
@@ -129,7 +127,7 @@ class StoreAdminController extends AdminGenericController
 		$language = null;
 		
 		if ($request->query->has("id")) {
-			list($mainEntity, $language) = $this->setEntity($entity, $category, $request->query->get("id"));
+			list($mainEntity, $language) = $this->setEntity($em, $entity, $category, $request->query->get("id"));
 			$entity->setLanguage(!empty($language) ? $language: null);
 		}
 
@@ -145,12 +143,12 @@ class StoreAdminController extends AdminGenericController
 		$entity->setCategory($category);
 
 		$twig = 'store/StoreAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName), "data_class" => $class]);
+		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
 	
-    public function editAction(Request $request, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Store::class)->find($id);
+		$entity = $em->getRepository(Store::class)->find($id);
 		$class = $this->getDataClass($entity->getCategory());
 		$formType = StoreAdminType::class;
 
@@ -158,14 +156,14 @@ class StoreAdminController extends AdminGenericController
 		return $this->editGenericAction($id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation(), "data_class" => $class]);
     }
 	
-	public function updateAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Store::class)->find($id);
+		$entity = $em->getRepository(Store::class)->find($id);
 		$class = $this->getDataClass($entity->getCategory());
 		$formType = StoreAdminType::class;
 		
 		$twig = 'store/StoreAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName), "data_class" => $class]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
 	
     public function deleteAction($id)
@@ -173,10 +171,8 @@ class StoreAdminController extends AdminGenericController
 		return $this->deleteGenericAction($id);
     }
 	
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, String $type)
+	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, String $type)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
@@ -230,7 +226,7 @@ class StoreAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
@@ -239,19 +235,19 @@ class StoreAdminController extends AdminGenericController
 		switch($fieldName)
 		{
 			case "book":
-				$datas =  $this->getDoctrine()->getManager()->getRepository(Store::class)->getAutocompleteBook($locale, $query);
+				$datas =  $em->getRepository(Store::class)->getAutocompleteBook($locale, $query);
 				break;
 			case "album":
-				$datas =  $this->getDoctrine()->getManager()->getRepository(Store::class)->getAutocompleteAlbum($locale, $query);
+				$datas =  $em->getRepository(Store::class)->getAutocompleteAlbum($locale, $query);
 				break;
 			case "movie":
-				$datas =  $this->getDoctrine()->getManager()->getRepository(Store::class)->getAutocompleteMovie($locale, $query);
+				$datas =  $em->getRepository(Store::class)->getAutocompleteMovie($locale, $query);
 				break;
 			case"televisionSerie":
-				$datas =  $this->getDoctrine()->getManager()->getRepository(Store::class)->getAutocompleteTelevisionSerie($locale, $query);
+				$datas =  $em->getRepository(Store::class)->getAutocompleteTelevisionSerie($locale, $query);
 				break;
 			case "witchcraftTool":
-				$datas =  $this->getDoctrine()->getManager()->getRepository(Store::class)->getAutocompleteWitchcraftToolStore($locale, $query);
+				$datas =  $em->getRepository(Store::class)->getAutocompleteWitchcraftToolStore($locale, $query);
 				break;
 		}
 		
@@ -275,8 +271,8 @@ class StoreAdminController extends AdminGenericController
 		return $this->showImageSelectorColorboxGenericAction('Store_Admin_LoadImageSelectorColorbox');
 	}
 	
-	public function loadImageSelectorColorboxAction(Request $request)
+	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request);
+		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 }

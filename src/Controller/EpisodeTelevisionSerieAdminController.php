@@ -43,7 +43,6 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -59,7 +58,6 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$originalTelevisionSerieBiographies = new ArrayCollection($em->getRepository(TelevisionSerieBiography::class)->findBy(["televisionSerie" => $entityBindded->getTelevisionSerie()->getId(), "episodeTelevisionSerie" => $entityBindded->getId()]));
 		
 		foreach($originalTelevisionSerieBiographies as $originalTelevisionSerieBiography)
@@ -95,9 +93,8 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request, Int $televisionSerieId)
+    public function newAction(Request $request, EntityManagerInterface $em, Int $televisionSerieId)
     {
-		$em = $this->getDoctrine()->getManager();
 		$formType = EpisodeTelevisionSerieAdminType::class;
 		$entity = new EpisodeTelevisionSerie();
 		
@@ -120,7 +117,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(EpisodeTelevisionSerie::class)->find($id);
+		$entity = $em->getRepository(EpisodeTelevisionSerie::class)->find($id);
 		$formType = EpisodeTelevisionSerieAdminType::class;
 
 		$twig = 'movie/EpisodeTelevisionSerieAdmin/edit.html.twig';
@@ -137,7 +134,6 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$tags = $em->getRepository("\App\Entity\EpisodeTelevisionSerieTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
 
@@ -146,8 +142,6 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $televisionSerieId)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$iDisplayStart = $request->query->get('iDisplayStart');
 		$iDisplayLength = $request->query->get('iDisplayLength');
 		$sSearch = $request->query->get('sSearch');
@@ -200,10 +194,8 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request)
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -235,9 +227,8 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 	
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 		

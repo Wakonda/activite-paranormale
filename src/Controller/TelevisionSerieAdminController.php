@@ -47,7 +47,6 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -63,7 +62,6 @@ class TelevisionSerieAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$originalTelevisionSerieBiographies = new ArrayCollection($em->getRepository(TelevisionSerieBiography::class)->findBy(["televisionSerie" => $entityBindded->getId(), "episodeTelevisionSerie" => null]));
 
 		foreach($originalTelevisionSerieBiographies as $originalTelevisionSerieBiography)
@@ -85,7 +83,6 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$em->flush();
 
 		if($form->isValid()) {
-			$em = $this->getDoctrine()->getManager();
 			$datas = !empty($d = json_decode($form->get("episode")->getData(), true)) ? $d : [];
 
 			foreach($datas as $season => $values) {
@@ -151,12 +148,12 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$entity = new TelevisionSerie();
 
 		$twig = 'movie/TelevisionSerieAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(TelevisionSerie::class)->find($id);
+		$entity = $em->getRepository(TelevisionSerie::class)->find($id);
 		$formType = TelevisionSerieAdminType::class;
 
 		$twig = 'movie/TelevisionSerieAdmin/edit.html.twig';
@@ -168,12 +165,11 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$formType = TelevisionSerieAdminType::class;
 		$twig = 'movie/TelevisionSerieAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\TelevisionSerieComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\TelevisionSerieVote")->findBy(["entity" => $id]);
@@ -215,16 +211,14 @@ class TelevisionSerieAdminController extends AdminGenericController
 	{
 		return $this->showImageSelectorColorboxGenericAction('TelevisionSerie_Admin_LoadImageSelectorColorbox');
 	}
-	
+
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request)
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -256,17 +250,17 @@ class TelevisionSerieAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
 		
 		if(is_numeric($locale)) {
-			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
+			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
 		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(TelevisionSerie::class)->getAutocomplete($locale, $query);
+		$datas =  $em->getRepository(TelevisionSerie::class)->getAutocomplete($locale, $query);
 		
 		$results = [];
 		
@@ -286,8 +280,7 @@ class TelevisionSerieAdminController extends AdminGenericController
     {
 		$formType = TelevisionSerieAdminType::class;
 		$entity = new TelevisionSerie();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(TelevisionSerie::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
@@ -374,9 +367,8 @@ class TelevisionSerieAdminController extends AdminGenericController
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 	
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 		

@@ -11,7 +11,7 @@ use App\Form\Type\FileManagementEditType;
 
 class FileManagementAdminController extends AbstractController
 {
-	public function listFilesAction(Request $request)
+	public function listFilesAction(Request $request, EntityManagerInterface $em)
 	{
 		$limit = 9;
 		
@@ -40,7 +40,7 @@ class FileManagementAdminController extends AbstractController
 		$datas = [];
 		
 		$totalPages = ceil(count($filelist) / $limit);
-		$conn = $this->getDoctrine()->getManager()->getConnection();
+		$conn = $em->getConnection();
 		
 		foreach($selectedFiles as $pathFile) {
 			$file = pathinfo($pathFile, PATHINFO_BASENAME);
@@ -286,18 +286,17 @@ class FileManagementAdminController extends AbstractController
 		return $this->redirect($this->generateUrl("FileManagement_Admin_ListFiles", ["page" => $request->query->get("page"), "folder" => $request->query->get("folder")]));
 	}
 
-    public function showImageAction($idClassName, $className)
+    public function showImageAction(EntityManagerInterface $em, $idClassName, $className)
     {
-		$em = $this->getDoctrine()->getManager();
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName);
 
-        return $this->render('filemanagement/FileManagementAdmin/showImage.html.twig', array(
+        return $this->render('filemanagement/FileManagementAdmin/showImage.html.twig', [
 			'entities' => $entities,
 			'idClassName' => $idClassName,
 			'className' => $className,
 			'mainEntity' => $em->getRepository($entity->getMainEntityClassName())->find($idClassName)
-        ));
+        ]);
     }
 
     private function getNewEntity($em, $className, $idClassName)

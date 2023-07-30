@@ -51,8 +51,6 @@ class ContactAdminController extends AdminGenericController
      */
     public function showAction(EntityManagerInterface $em, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 
         if (!$entity)
@@ -70,21 +68,12 @@ class ContactAdminController extends AdminGenericController
         ]);
     }
 
-	/**
-	 * Count non read message contact
-	 *
-	 */
-	 public function countNonReadAction()
+	 public function countNonReadAction(EntityManagerInterface $em)
 	 {
-		$em = $this->getDoctrine()->getManager();
 		$countNonRead = $em->getRepository($this->className)->count(['stateContact' => '0']);
 		return new Response($countNonRead);
 	 }
-	
-    /**
-     * Displays a form to create a new Contact entity.
-     *
-     */
+
     public function newAction(Request $request, EntityManagerInterface $em)
     {
         $entity = new Contact();
@@ -100,14 +89,13 @@ class ContactAdminController extends AdminGenericController
      * Creates a new Contact entity.
      *
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, EntityManagerInterface $em)
     {
         $entity = new Contact();
         $form = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
@@ -126,8 +114,6 @@ class ContactAdminController extends AdminGenericController
      */
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 
         if (!$entity)
@@ -147,10 +133,8 @@ class ContactAdminController extends AdminGenericController
      * Edits an existing Contact entity.
      *
      */
-    public function updateAction(Request $request, $id)
+    public function updateAction(Request $request, EntityManagerInterface $em, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository($this->className)->find($id);
 
         if (!$entity)
@@ -179,9 +163,8 @@ class ContactAdminController extends AdminGenericController
      * Deletes a Contact entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 
 		if (!$entity)

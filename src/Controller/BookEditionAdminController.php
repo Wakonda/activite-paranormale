@@ -42,7 +42,6 @@ class BookEditionAdminController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrationWholeBooks);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -58,7 +57,6 @@ class BookEditionAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$originalBiographies = new ArrayCollection($em->getRepository(BookEditionBiography::class)->findBy(["bookEdition" => $entityBindded->getId()]));
 		
 		foreach($originalBiographies as $originalBiography)
@@ -95,9 +93,8 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->showGenericAction($em, $id, $twig);
     }
 
-    public function newAction(Request $request, Int $bookId)
+    public function newAction(Request $request, EntityManagerInterface $em, Int $bookId)
     {
-		$em = $this->getDoctrine()->getManager();
 		$formType = BookEditionAdminType::class;
 		$entity = new BookEdition();
 		
@@ -120,7 +117,7 @@ class BookEditionAdminController extends AdminGenericController
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(BookEdition::class)->find($id);
+		$entity = $em->getRepository(BookEdition::class)->find($id);
 		$formType = BookEditionAdminType::class;
 
 		$twig = 'book/BookEditionAdmin/edit.html.twig';
@@ -142,8 +139,6 @@ class BookEditionAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $bookId)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $bookId);
@@ -183,10 +178,8 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request)
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -218,26 +211,26 @@ class BookEditionAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
 		
 		if(is_numeric($locale)) {
-			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
+			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
-		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(BookEdition::class)->getAutocomplete($locale, $query);
-		
+
+		$datas =  $em->getRepository(BookEdition::class)->getAutocomplete($locale, $query);
+
 		$results = [];
-		
+
 		foreach($datas as $data)
 		{
 			$obj = new \stdClass();
 			$obj->id = $data->getId();
 			$obj->text = $data->getTitle();
-			
+
 			$results[] = $obj;
 		}
 
@@ -297,13 +290,12 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 	
-	public function googleBookAction(Request $request, \App\Service\GoogleBook $googleBook)
+	public function googleBookAction(Request $request, EntityManagerInterface $em, \App\Service\GoogleBook $googleBook)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$isbn = $request->query->get("isbn");
 		
 		$res = $googleBook->getBookInfoByISBN(strval($isbn));
-// dd($res);
+
 		return new JsonResponse($res);
 	}
 }

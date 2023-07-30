@@ -35,7 +35,6 @@ class AlbumAdminController extends AdminGenericController
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -45,8 +44,6 @@ class AlbumAdminController extends AdminGenericController
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		if($form->isValid()) {
-			$em = $this->getDoctrine()->getManager();
-			
 			if(!empty($form->get("tracklist")->getData())) {
 				foreach(json_decode($form->get("tracklist")->getData(), true) as $code => $data) {
 					$music = new Music();
@@ -104,7 +101,7 @@ class AlbumAdminController extends AdminGenericController
 		$locale = $request->getLocale();
 
 		if ($request->query->has("artistId")) {
-			$artist = $this->getDoctrine()->getManager()->getRepository(Artist::class)->find($request->query->get("artistId"));
+			$artist = $em->getRepository(Artist::class)->find($request->query->get("artistId"));
 			$entity->setArtist($artist);
 			$locale = $artist->getLanguage()->getAbbreviation();
 			$entity->setLanguage($artist->getLanguage());
@@ -167,17 +164,17 @@ class AlbumAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
 		
 		if(is_numeric($locale)) {
-			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
+			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
 		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(Album::class)->getAutocomplete($locale, $query);
+		$datas =  $em->getRepository(Album::class)->getAutocomplete($locale, $query);
 		
 		$results = [];
 		
@@ -203,9 +200,8 @@ class AlbumAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 	
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 		
@@ -220,10 +216,8 @@ class AlbumAdminController extends AdminGenericController
 		return $this->render($twig, ["artistId" => $artistId]);
     }
 
-	public function indexByArtistDatatablesAction(Request $request, TranslatorInterface $translator, Int $artistId)
+	public function indexByArtistDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $artistId)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexByArtistAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $artistId);

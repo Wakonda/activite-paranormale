@@ -65,13 +65,13 @@ class TestimonyAdminController extends AdminGenericController
 		$entity = new Testimony();
 
 		$twig = 'testimony/TestimonyAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = TestimonyAdminType::class;
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
 		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
@@ -82,27 +82,25 @@ class TestimonyAdminController extends AdminGenericController
 		$formType = TestimonyAdminType::class;
 
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
-		/*$comments = $em->getRepository("\App\Entity\TestimonyComment")->findBy(["entity" => $id]);
+		$comments = $em->getRepository("\App\Entity\TestimonyComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\TestimonyVote")->findBy(["testimony" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\TestimonyTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
 		$fms = $em->getRepository("\App\Entity\TestimonyFileManagement")->findBy(["testimony" => $id]);
-		foreach($fms as $entity) {$em->remove($entity); }*/
+		foreach($fms as $entity) {$em->remove($entity); }
 
 		return $this->deleteGenericAction($em, $id);
     }
 	
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$entities = $em->getRepository(TestimonyFileManagement::class)->getAllFilesForTestimonyByIdClassName($id);
 
 		$additionalFiles = [];
@@ -114,9 +112,8 @@ class TestimonyAdminController extends AdminGenericController
 		return $this->archiveGenericArchive($em, $id, $additionalFiles);
 	}
 	
-	public function countTestimonyAction($state)
+	public function countTestimonyAction(EntityManagerInterface $em, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countTestimony = $em->getRepository(Testimony::class)->countTestimony($state);
 		
 		return new Response($countTestimony);
@@ -153,13 +150,11 @@ class TestimonyAdminController extends AdminGenericController
 		return $response;
 	}
 	
-	public function changeStateAction(Request $request, TranslatorInterface $translator, $id, $state)
+	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
-
 		$entity = $em->getRepository(Testimony::class)->find($id);
 
 		$entity->setState($state);

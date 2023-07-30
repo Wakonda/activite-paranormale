@@ -34,7 +34,6 @@ class BannerAdminController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository(Banner::class)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
@@ -106,7 +105,7 @@ class BannerAdminController extends AdminGenericController
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getAssetImagePath().$entity->getImage().'" alt="" width="100px">';
-			
+
 			if($entity->getDisplay())
 				$state = '<span class="center text-success"><i class="fas fa-check" aria-hidden="true"></i></span>';
 			else

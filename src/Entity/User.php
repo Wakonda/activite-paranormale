@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 
 use App\Service\Canonicalizer;
 
@@ -18,7 +18,7 @@ use App\Service\Canonicalizer;
  * @UniqueEntity(fields="username")
  */
  
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 {
 	/**
 	 * @ORM\Id
@@ -211,7 +211,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             unset($data[4], $data[7], $data[8]);
             $data = array_values($data);
         }
-
+// dd($data);
         list(
             $this->password,
             $this->salt,

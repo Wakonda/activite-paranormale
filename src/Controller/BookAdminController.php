@@ -42,7 +42,6 @@ class BookAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -94,29 +93,28 @@ class BookAdminController extends AdminGenericController
 		$entity = new Book();
 
 		$twig = 'book/BookAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Book::class)->find($id);
+		$entity = $em->getRepository(Book::class)->find($id);
 		$formType = BookAdminType::class;
 
 		$twig = 'book/BookAdmin/edit.html.twig';
 		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
+
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BookAdminType::class;
 		$twig = 'book/BookAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$votes = $em->getRepository("\App\Entity\BookVote")->findBy(["book" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\BookTags")->findBy(["entity" => $id]);
@@ -129,12 +127,10 @@ class BookAdminController extends AdminGenericController
 	{
 		$additionalFiles = [];
 
-		$em = $this->getDoctrine()->getManager();
 		$entity = $em->getRepository($this->className)->find($id);
 		
-		foreach($entity->getBookEditions() as $fm) {
+		foreach($entity->getBookEditions() as $fm)
 			$additionalFiles[] = $fm->getIllustration()->getRealNameFile();
-		}
 
 		return $this->archiveGenericArchive($em, $id, $additionalFiles);
 	}
@@ -171,10 +167,8 @@ class BookAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadByLanguageAction(Request $request)
+	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 

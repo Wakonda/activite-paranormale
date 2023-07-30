@@ -69,12 +69,12 @@ class PresidentAdminController extends AdminGenericController
 		$entity = new President();
 
 		$twig = 'page/PresidentAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = PresidentAdminType::class;
 
 		$twig = 'page/PresidentAdmin/edit.html.twig';
@@ -86,7 +86,7 @@ class PresidentAdminController extends AdminGenericController
 		$formType = PresidentAdminType::class;
 		
 		$twig = 'page/PresidentAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -128,8 +128,6 @@ class PresidentAdminController extends AdminGenericController
 
 	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
@@ -166,8 +164,7 @@ class PresidentAdminController extends AdminGenericController
 	{
 		$formType = PresidentAdminType::class;
 		$entity = new President();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(President::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);

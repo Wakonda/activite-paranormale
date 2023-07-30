@@ -45,7 +45,6 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$html = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $dom->saveHTML());
 
 		$entityBindded->setText($html);
-        $em = $this->getDoctrine()->getManager();
 		$em->persist($entityBindded);
 		$em->flush();
 	}
@@ -77,12 +76,12 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = KnowledgeBaseAdminType::class;
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/edit.html.twig';
@@ -94,7 +93,7 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$formType = KnowledgeBaseAdminType::class;
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -104,19 +103,17 @@ class KnowledgeBaseAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, ["category_filter" => UsefulLink::RESOURCE_FAMILY]);
 		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, ["category_filter" => UsefulLink::RESOURCE_FAMILY], true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -140,6 +137,6 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$form = $this->createForm(\App\Form\Type\GenerateLinkStoreAdminType::class);
 		$partnerId = \App\Entity\Stores\Store::partnerId;
 		
-		return $this->render('usefullink/KnowledgeBaseAdmin/generateLinkStore.html.twig', array('form' => $form->createView(), "partnerId" => $partnerId));
+		return $this->render('usefullink/KnowledgeBaseAdmin/generateLinkStore.html.twig', ['form' => $form->createView(), "partnerId" => $partnerId]);
 	}
 }

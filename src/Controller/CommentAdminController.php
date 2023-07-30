@@ -39,15 +39,13 @@ class CommentAdminController extends AdminGenericController
      * Lists all Commentaire entities.
      *
      */
-    public function indexAction()
+    public function indexAction(EntityManagerInterface $em)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entities = $em->getRepository(Comment::class)->findAll();
 
-        return $this->render('comment/CommentAdmin/index.html.twig', array(
+        return $this->render('comment/CommentAdmin/index.html.twig', [
             'entities' => $entities
-        ));
+        ]);
     }
 
     /**
@@ -56,8 +54,6 @@ class CommentAdminController extends AdminGenericController
      */
     public function showAction(EntityManagerInterface $em, $id)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $entity = $em->getRepository(Comment::class)->find($id);
 
         if (!$entity) {
@@ -66,19 +62,18 @@ class CommentAdminController extends AdminGenericController
 
         $deleteForm = $this->createDeleteForm($id);
 
-        return $this->render('comment/CommentAdmin/show.html.twig', array(
+        return $this->render('comment/CommentAdmin/show.html.twig', [
             'entity'      => $entity,
             'delete_form' => $deleteForm->createView(),
-        ));
+        ]);
     }
 	
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
 		foreach($informationArray['entities'] as $entity)
 		{
@@ -111,14 +106,13 @@ class CommentAdminController extends AdminGenericController
      * Deletes a Commentaire entity.
      *
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction(Request $request, EntityManagerInterface $em, $id)
     {
         $form = $this->createDeleteForm($id);
 
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
             $entity = $em->getRepository(Comment::class)->find($id);
 
             if (!$entity) {
@@ -132,18 +126,15 @@ class CommentAdminController extends AdminGenericController
         return $this->redirect($this->generateUrl('commentaire'));
     }
 	
-	public function countToModerateCommentsAction()
+	public function countToModerateCommentsAction(EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$total = $em->getRepository(Comment::class)->countAllCommentsByState(Comment::$notChecked);
 
 		return new Response($total);
 	}
 	
-	public function changeStateAction($id, $state)
+	public function changeStateAction(EntityManagerInterface $em, $id, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$entity = $em->getRepository(Comment::class)->find($id);
 		
 		$entity->setState($state);

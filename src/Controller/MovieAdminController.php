@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
@@ -46,7 +45,6 @@ class MovieAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		foreach ($form->get('movieBiographies') as $formChild)
@@ -67,7 +65,6 @@ class MovieAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$originalMovieBiographies = new ArrayCollection($em->getRepository(MovieBiography::class)->findBy(["movie" => $entityBindded->getId()]));
 
 		foreach($originalMovieBiographies as $originalMovieBiography)
@@ -87,7 +84,7 @@ class MovieAdminController extends AdminGenericController
 		}
 
 		$em->flush();
-		
+
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new MovieTags(), $entityBindded);
 	}
 
@@ -96,7 +93,7 @@ class MovieAdminController extends AdminGenericController
 		$twig = 'movie/MovieAdmin/index.html.twig';
 		return $this->indexGenericAction($twig);
     }
-	
+
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'movie/MovieAdmin/show.html.twig';
@@ -111,36 +108,35 @@ class MovieAdminController extends AdminGenericController
 		$twig = 'movie/MovieAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
+
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = MovieAdminType::class;
 		$entity = new Movie();
 
 		$twig = 'movie/MovieAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Movie::class)->find($id);
+		$entity = $em->getRepository(Movie::class)->find($id);
 		$formType = MovieAdminType::class;
 
 		$twig = 'movie/MovieAdmin/edit.html.twig';
 		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
+
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = MovieAdminType::class;
 		$twig = 'movie/MovieAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\MovieComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\MovieVote")->findBy(["entity" => $id]);
@@ -150,7 +146,7 @@ class MovieAdminController extends AdminGenericController
 
 		return $this->deleteGenericAction($em, $id);
     }
-	
+
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
@@ -168,8 +164,8 @@ class MovieAdminController extends AdminGenericController
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('Movie_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('Movie_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Movie_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('Movie_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['aaData'][] = $row;
@@ -188,17 +184,15 @@ class MovieAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request)
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
-		
+
 		if(!empty($language))
 		{
-			$genres = $em->getRepository(GenreAudiovisual::class)->findByLanguage($language, array('title' => 'ASC'));
-			$countries = $em->getRepository(Region::class)->findByLanguage($language, array('title' => 'ASC'));
+			$genres = $em->getRepository(GenreAudiovisual::class)->findByLanguage($language, ['title' => 'ASC']);
+			$countries = $em->getRepository(Region::class)->findByLanguage($language, ['title' => 'ASC']);
 		}
 		else
 		{
@@ -207,43 +201,43 @@ class MovieAdminController extends AdminGenericController
 		}
 
 		$genreArray = [];
-		
+
 		foreach($genres as $genre)
-			$genreArray[] = array("id" => $genre->getId(), "title" => $genre->getTitle());
+			$genreArray[] = ["id" => $genre->getId(), "title" => $genre->getTitle()];
 
 		$translateArray['genre'] = $genreArray;
 
 		$countryArray = [];
-		
+
 		foreach($countries as $country)
-			$countryArray[] = array("id" => $country->getId(), "title" => $country->getTitle());
+			$countryArray[] = ["id" => $country->getId(), "title" => $country->getTitle()];
 
 		$translateArray['country'] = $countryArray;
 
 		return new JsonResponse($translateArray);
 	}
-	
-	public function autocompleteAction(Request $request)
+
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
 		$id = $request->query->get("id", null);
 
 		if(is_numeric($locale)) {
-			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
+			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
-		
-		$datas =  $this->getDoctrine()->getManager()->getRepository(Movie::class)->getAutocomplete($locale, $query, $id);
-		
+
+		$datas =  $em->getRepository(Movie::class)->getAutocomplete($locale, $query, $id);
+
 		$results = [];
-		
+
 		foreach($datas as $data)
 		{
 			$obj = new \stdClass();
 			$obj->id = $data->getId();
 			$obj->text = $data->getTitle();
-			
+
 			$results[] = $obj;
 		}
 
@@ -255,17 +249,16 @@ class MovieAdminController extends AdminGenericController
 		$formType = MovieAdminType::class;
 		$entity = new Movie();
 
-		$em = $this->getDoctrine()->getManager();
 		$entityToCopy = $em->getRepository(Movie::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
 		$country = null;
-		
+
 		if(!empty($entityToCopy->getCountry()))
 			$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
-		
+
 		$entity->setCountry($country);
-		
+
 		$previous = null;
 
 		if(!empty($entityToCopy->getPrevious()))
@@ -282,7 +275,7 @@ class MovieAdminController extends AdminGenericController
 
 		if(!empty($entityToCopy->getGenre())) {			
 			$genre = $em->getRepository(GenreAudiovisual::class)->findOneBy(["internationalName" => $entityToCopy->getGenre()->getInternationalName(), "language" => $language]);
-			
+
 			if(!empty($genre))
 				$entity->setGenre($genre);
 		}
@@ -301,7 +294,7 @@ class MovieAdminController extends AdminGenericController
 		$entity->setReviewScores($entityToCopy->getReviewScores());
 		$entity->setSocialNetworkIdentifiers($entityToCopy->getSocialNetworkIdentifiers());
 		$entity->setIdentifiers($entityToCopy->getIdentifiers());
-		
+
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
 			$wikidata = new \App\Service\Wikidata($em);
 			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
@@ -313,21 +306,21 @@ class MovieAdminController extends AdminGenericController
 					"url" => $data["url"],
 					"type" => "url",
 				]];
-				
+
 				$entity->setSource(json_encode($sourceArray));
-				
+
 				if(!empty($title = $data["title"]))
 					$entity->setTitle($title);
 			}
 		}
 
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
-		
+
 		foreach($entityToCopy->getMovieBiographies() as $mbToCopy) {
 			$mb = new MovieBiography();
-			
+
 			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getBiography()->getInternationalName(), "language" => $language]);
-			
+
 			if(empty($biography))
 				continue;
 			$mb->setRole($mbToCopy->getRole());
@@ -337,9 +330,9 @@ class MovieAdminController extends AdminGenericController
 			
 			$mbArray->add($mb);
 		}
-		
+
 		$entity->setMovieBiographies($mbArray);
-		
+
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();
 			$illustration->setTitleFile($ci->getTitleFile());
@@ -348,7 +341,7 @@ class MovieAdminController extends AdminGenericController
 			$illustration->setLicense($ci->getLicense());
 			$illustration->setAuthor($ci->getAuthor());
 			$illustration->setUrlSource($ci->getUrlSource());
-			
+
 			$entity->setIllustration($illustration);
 		}
 
@@ -358,12 +351,11 @@ class MovieAdminController extends AdminGenericController
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 	
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
-		
+
 		$res = $wikidata->getMovieDatas($code, $language->getAbbreviation());
 
 		return new JsonResponse($res);

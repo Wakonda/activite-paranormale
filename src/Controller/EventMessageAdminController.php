@@ -79,12 +79,12 @@ class EventMessageAdminController extends AdminGenericController
 		$entity = new EventMessage();
 
 		$twig = 'page/EventMessageAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = EventMessageAdminType::class;
 
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
@@ -96,12 +96,11 @@ class EventMessageAdminController extends AdminGenericController
 		$formType = EventMessageAdminType::class;
 		
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$em = $this->getDoctrine()->getManager();
 		$comments = $em->getRepository("\App\Entity\EventMessageComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
 		$votes = $em->getRepository("\App\Entity\EventMessageVote")->findBy(["eventMessage" => $id]);
@@ -137,26 +136,22 @@ class EventMessageAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-    public function indexStateAction(Request $request, $state)
+    public function indexStateAction(Request $request, EntityManagerInterface $em, $state)
     {
-        $em = $this->getDoctrine()->getManager();
-		
         $entities = $em->getRepository($this->className)->getByStateAdmin($state);
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
 		
-        return $this->render('page/EventMessageAdmin/indexState.html.twig', array(
+        return $this->render('page/EventMessageAdmin/indexState.html.twig', [
             'entities' => $entities,
 			'state' => $state
-        ));
+        ]);
     }
 
-	public function changeStateAction(Request $request, $id, $state)
+	public function changeStateAction(Request $request, EntityManagerInterface $em, $id, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $request->getLocale();
 		
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
-
 		$entity = $em->getRepository($this->className)->find($id);
 		
 		$entity->setState($state);
@@ -179,9 +174,8 @@ class EventMessageAdminController extends AdminGenericController
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 
-	public function countByStateAction($state)
+	public function countByStateAction(EntityManagerInterface $em, $state)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
 	}
@@ -190,8 +184,7 @@ class EventMessageAdminController extends AdminGenericController
     {
 		$formType = EventMessageAdminType::class;
 		$entity = new EventMessage();
-		
-		$em = $this->getDoctrine()->getManager();
+
 		$entityToCopy = $em->getRepository(EventMessage::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$entity->setLanguage($language);
@@ -276,9 +269,8 @@ class EventMessageAdminController extends AdminGenericController
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 

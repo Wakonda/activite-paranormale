@@ -46,7 +46,6 @@ class UsefulLinkAdminController extends AdminGenericController
 		$html = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $dom->saveHTML());
 
 		$entityBindded->setText($html);
-        $em = $this->getDoctrine()->getManager();
 		$em->persist($entityBindded);
 		$em->flush();
 	}
@@ -78,12 +77,12 @@ class UsefulLinkAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository($this->className)->find($id);
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
@@ -95,7 +94,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -105,8 +104,6 @@ class UsefulLinkAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $request->query->all());
@@ -164,10 +161,8 @@ class UsefulLinkAdminController extends AdminGenericController
 		return $this->render('usefullink/UsefulLinkAdmin/generateLinkStore.html.twig', ['form' => $form->createView(), "partnerId" => $partnerId]);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request)
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 

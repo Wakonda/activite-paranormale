@@ -38,7 +38,6 @@ class BiographyAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
-		$em = $this->getDoctrine()->getManager();
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 
 		if($searchForDoublons > 0)
@@ -47,7 +46,7 @@ class BiographyAdminController extends AdminGenericController
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
-		$biographies = $this->getDoctrine()->getManager()->getRepository($this->className)->findBy(["internationalName" => $entityBindded->getInternationalName()]);
+		$biographies = $em->getRepository($this->className)->findBy(["internationalName" => $entityBindded->getInternationalName()]);
 
 		if(count($biographies) == 1)
 			return;
@@ -95,8 +94,6 @@ class BiographyAdminController extends AdminGenericController
 
 		if(isset($datas["identifiers"]))
 			$datas["identifiers"] = array_map("unserialize", array_unique(array_map("serialize", $datas["identifiers"])));
-
-        $em = $this->getDoctrine()->getManager();
 
 		foreach ($biographies as $biography) {
 			if(isset($datas["birthDate"]))
@@ -221,12 +218,12 @@ class BiographyAdminController extends AdminGenericController
 		$entity = new Biography();
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
     {
-		$entity = $this->getDoctrine()->getManager()->getRepository(Biography::class)->find($id);
+		$entity = $em->getRepository(Biography::class)->find($id);
 		$formType = BiographyAdminType::class;
 
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
@@ -238,7 +235,7 @@ class BiographyAdminController extends AdminGenericController
 		$formType = BiographyAdminType::class;
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -258,8 +255,6 @@ class BiographyAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$em = $this->getDoctrine()->getManager();
-
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 		
 		$toComplete = $request->query->get("toComplete");
@@ -291,20 +286,20 @@ class BiographyAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-	public function autocompleteAction(Request $request)
+	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
 
 		if(is_numeric($locale)) {
-			$language = $this->getDoctrine()->getManager()->getRepository(Language::class)->find($locale);
+			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
-	
-		$datas =  $this->getDoctrine()->getManager()->getRepository(Biography::class)->getAutocomplete($locale, $query);
-		
+
+		$datas =  $em->getRepository(Biography::class)->getAutocomplete($locale, $query);
+
 		$results = [];
-		
+
 		foreach($datas as $data)
 		{
 			$obj = new \stdClass();
@@ -320,10 +315,8 @@ class BiographyAdminController extends AdminGenericController
         return new JsonResponse(["results" => $results]);
 	}
 
-	public function reloadByLanguageAction(Request $request)
+	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
-		
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 
@@ -342,9 +335,8 @@ class BiographyAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
-	public function wikidataAction(Request $request, \App\Service\Wikidata $wikidata)
+	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 
@@ -353,9 +345,8 @@ class BiographyAdminController extends AdminGenericController
 		return new JsonResponse($res);
 	}
 
-	public function validateBiographyAction(Request $request)
+	public function validateBiographyAction(Request $request, EntityManagerInterface $em)
 	{
-		$em = $this->getDoctrine()->getManager();
 		$wikidata = $request->query->get("wikidata");
 		$title = $request->query->get("title");
 		$language = $request->query->get("language");
@@ -368,18 +359,17 @@ class BiographyAdminController extends AdminGenericController
 		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path, "language" => $language, "wikidata" => $wikidata, "title" => $title, "internationalName" => $internationalName]);
 	}
 	
-	public function quickAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title)
+	public function quickAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title)
 	{
 		$wikidata = $request->query->get("wikidata");
 		$internationalName = $request->query->get("internationalName");
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
 
-		$em = $this->getDoctrine()->getManager();
 		$language = $em->getRepository(Language::class)->find($locale);
 
 		$entityToCopy = null;
-		
+
 		if(!empty($internationalName) or !empty($wikidata)) {
 			if(!empty($internationalName))
 				$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName]);
