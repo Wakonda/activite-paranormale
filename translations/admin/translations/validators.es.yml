@@ -24,6 +24,9 @@ admin:
         File: "Archivo"
         Size: "Tamaño"
         Generate: "Generar"
+        DeleteSelectedItems: "Eliminar elementos seleccionados"
+        SelectVisibleItems: "Seleccionar elementos visibles"
+        DeselectVisibleItems: "Deseleccionar elementos visibles"
     index:
         Welcome: "Bienvenido"
         InfoGene: "Información General"

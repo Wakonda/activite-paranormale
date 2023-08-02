@@ -24,6 +24,9 @@ admin:
         File: "File"
         Size: "Size"
         Generate: "Generate"
+        DeleteSelectedItems: "Delete selected items"
+        SelectVisibleItems: "Select visible items"
+        DeselectVisibleItems: "Deselect visible items"
     index:
         Welcome: "Welcome"
         InfoGene: "General information"

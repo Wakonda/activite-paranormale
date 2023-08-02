@@ -30,6 +30,10 @@ Contact_Admin_Delete:
     path:  /{id}/delete
     controller: App\Controller\ContactAdminController::deleteAction
 
+Contact_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\ContactAdminController::deleteMultiple
+
 Contact_Admin_IndexDatatables:
     path:  /datatables
     controller: App\Controller\ContactAdminController::indexDatatablesAction

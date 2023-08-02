@@ -214,4 +214,18 @@ class ContactAdminController extends AdminGenericController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+		
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+		
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+		
+		return new Response();
+	}
 }
