@@ -1,6 +1,7 @@
 Testimony_Admin_Index:
-    path:  /
+    path:  /index/{state}/{display}
     controller: App\Controller\TestimonyAdminController::indexAction
+    defaults:   { state: null, display: 1 }
 
 Testimony_Admin_Show:
     path:  /{id}/show
@@ -47,3 +48,7 @@ Testimony_Admin_Archive:
     controller: App\Controller\TestimonyAdminController::archiveAction
     requirements:
         id: \d+
+
+Testimony_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\TestimonyAdminController::deleteMultiple

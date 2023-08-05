@@ -132,6 +132,21 @@ class TestimonyRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
+
+		if(!empty($searchByColumns))
+		{
+			$aSearchColumns = ['c.id', 'c.title', 'c.pseudoUsed', 's.internationalName', 'c.writingDate'];
+			for($i = 0; $i < count($aSearchColumns); $i++)
+			{
+				if(!empty($searchByColumns[$i]))
+				{
+					$search = "%".$searchByColumns[$i]."%";
+					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					   ->setParameter("searchByColumn".$i, $search);
+				}
+			}
+		}
+
 		if($count)
 		{
 			$qb->select("count(c)");
