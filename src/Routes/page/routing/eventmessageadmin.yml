@@ -1,6 +1,7 @@
 EventMessage_Admin_Index:
-    path:  /
+    path:  /index/{state}/{display}
     controller: App\Controller\EventMessageAdminController::indexAction
+    defaults:   { state: null, display: 1 }
 
 EventMessage_Admin_Show:
     path:  /{id}/show
@@ -71,3 +72,7 @@ EventMessage_Admin_LoadImageSelectorColorbox:
 EventMessage_Admin_Wikidata:
     path: /wikidata
     controller: App\Controller\EventMessageAdminController::wikidataAction
+
+EventMessage_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\EventMessageAdminController::deleteMultiple

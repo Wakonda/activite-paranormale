@@ -126,6 +126,7 @@ class EventMessageAdminController extends AdminGenericController
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
+			$row[] = $entity->getState()->getTitle();
 			$row[] = "
 			 <a href='".$this->generateUrl('EventMessage_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
 			 <a href='".$this->generateUrl('EventMessage_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>";
@@ -277,5 +278,19 @@ class EventMessageAdminController extends AdminGenericController
 		$res = $wikidata->getEventDatas($code, $language->getAbbreviation());
 
 		return new JsonResponse($res);
+	}
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+
+		return new Response();
 	}
 }

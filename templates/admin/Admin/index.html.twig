@@ -434,7 +434,7 @@
 							<tr>
 								<td>{{ "admin.moderation.EventsToModerate"|trans([], "validators") }}</td>
 								<td>
-									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('EventMessage_Admin_State', {'state':'Waiting'}) }}" alt="" >{{ render(controller('App\\Controller\\EventMessageAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('EventMessage_Admin_State', {'state':'Waiting, 'display' : 0'}) }}" alt="" >{{ render(controller('App\\Controller\\EventMessageAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
 								</td>
 							</tr>
 							<tr>
@@ -448,8 +448,8 @@
 							<tr>
 								<td>{{ "admin.moderation.TestimoniesToModerate"|trans([], "validators") }}</td>
 								<td>
-									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Testimony_Admin_Index', {'state': 'Waiting', 'page' : 1}) }}" alt="" >{{ render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Waiting'})) }}</a>]
-									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('Testimony_Admin_Index', {'state': 'Warned', 'page' : 1}) }}" alt="" >{{ render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Warned'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Testimony_Admin_Index', {'state': 'Waiting', 'display' : 0}) }}" alt="" >{{ render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('Testimony_Admin_Index', {'state': 'Warned', 'display' : 0}) }}" alt="" >{{ render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Warned'})) }}</a>]
 								</td>
 							</tr>
 							<tr>
