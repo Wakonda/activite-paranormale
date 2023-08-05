@@ -69,7 +69,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 			->setParameter('monthDayEnd', $monthEnd."-".$dayEnd)
 		    ->andWhere("c.archive = false")
 			;
-// dd($qb->getQuery()->getParameters());
+
 		return $qb->getQuery()->getResult();
 	}
 	
@@ -143,6 +143,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
+		   ->innerjoin('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
@@ -156,6 +157,21 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
+		
+		if(!empty($searchByColumns))
+		{
+			$aSearchColumns = ['c.id', 'c.title', 'l.abbreviation', 's.internationalName'];
+			for($i = 0; $i < count($aSearchColumns); $i++)
+			{
+				if(!empty($searchByColumns[$i]))
+				{
+					$search = "%".$searchByColumns[$i]."%";
+					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					   ->setParameter("searchByColumn".$i, $search);
+				}
+			}
+		}
+
 		if($count)
 		{
 			$qb->select("count(c)");

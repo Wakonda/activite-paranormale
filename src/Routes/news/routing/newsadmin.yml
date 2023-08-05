@@ -39,10 +39,6 @@ News_Admin_Search:
     requirements:
         page: \d+
 
-News_Admin_State:
-    path:  /bystate/{state}
-    controller: App\Controller\NewsAdminController::indexStateAction
-
 News_Admin_IndexDatatables:
     path:  /datatables
     controller: App\Controller\NewsAdminController::indexDatatablesAction

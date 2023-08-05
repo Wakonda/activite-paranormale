@@ -47,10 +47,6 @@ EventMessage_Admin_WYSIWYG_UploadFile:
     path: /wysiwyg_uploadfile
     controller: App\Controller\EventMessageAdminEventMessageAdminController::WYSIWYGUploadFileAction
 
-EventMessage_Admin_State:
-    path:  /bystate/{state}
-    controller: App\Controller\EventMessageAdminController::indexStateAction
-
 EventMessage_Admin_ChangeState:
     path: /change_state/{id}/{state}
     controller: App\Controller\EventMessageAdminController::changeStateAction

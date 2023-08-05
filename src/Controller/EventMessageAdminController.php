@@ -137,17 +137,6 @@ class EventMessageAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-    public function indexStateAction(Request $request, EntityManagerInterface $em, $state)
-    {
-        $entities = $em->getRepository($this->className)->getByStateAdmin($state);
-		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
-		
-        return $this->render('page/EventMessageAdmin/indexState.html.twig', [
-            'entities' => $entities,
-			'state' => $state
-        ]);
-    }
-
 	public function changeStateAction(Request $request, EntityManagerInterface $em, $id, $state)
 	{
 		$language = $request->getLocale();

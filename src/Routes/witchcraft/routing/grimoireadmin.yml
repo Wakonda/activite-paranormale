@@ -41,10 +41,6 @@ Grimoire_Admin_ReloadListsByLanguage:
     path:  /reloadlistsbylanguage
     controller: App\Controller\GrimoireAdminController::reloadListsByLanguageAction
 
-Grimoire_Admin_State:
-    path:  /bystate/{state}
-    controller: App\Controller\GrimoireAdminController::indexStateAction
-
 Grimoire_Admin_ChangeState:
     path: /change_state/{id}/{state}
     controller: App\Controller\GrimoireAdminController::changeStateAction
