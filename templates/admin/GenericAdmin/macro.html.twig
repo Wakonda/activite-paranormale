@@ -187,3 +187,111 @@
 	});
 </script>
 {% endmacro %}
+
+{% macro moderation_buttons(path_delete) %}
+	var selected = [];
+	var inButton = document.createElement("button");
+	inButton.setAttribute("title", "{{ 'admin.general.DeleteSelectedItems'|trans([], 'validators') }}");
+	inButton.classList.add("btn");
+	inButton.classList.add("btn-danger");
+	inButton.classList.add("moderationButton");
+
+	inButton.innerHTML = "<i class='fa-solid fa-trash'></i>";
+
+	inButton.addEventListener("click", function(e) {
+		let xmlHttp = new XMLHttpRequest();
+
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				console.log(oTable)
+				oTable.ajax.reload();
+			}
+		}
+
+		xmlHttp.open("POST", "{{ path(path_delete) }}", true);
+		xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+		xmlHttp.send("ids=" + JSON.stringify(selected));
+	});
+
+	document.querySelector(".index_admin").insertAdjacentElement('afterend', inButton);
+
+	var selectAllButton = document.createElement("button");
+	selectAllButton.setAttribute("title", "{{ 'admin.general.SelectVisibleItems'|trans([], 'validators') }}");
+	selectAllButton.classList.add("btn");
+	selectAllButton.classList.add("btn-success");
+	selectAllButton.classList.add("mr-2");
+	selectAllButton.classList.add("moderationButton");
+	
+	selectAllButton.innerHTML = "<i class='fa-regular fa-square-check'></i>";
+	
+	selectAllButton.addEventListener("click", function(e) {
+		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
+			document.querySelector(".index_admin tbody").children.item(i).classList.add('table-info');
+			var iPos = oTable.row(row).index();
+			var aData = oTable.row(iPos).data();
+			selected.push(aData[0]);
+		});
+	});
+
+	document.querySelector(".index_admin").insertAdjacentElement('afterend', selectAllButton);
+
+	var unselectAllButton = document.createElement("button");
+	unselectAllButton.setAttribute("title", "{{ 'admin.general.DeselectVisibleItems'|trans([], 'validators') }}");
+	unselectAllButton.classList.add("btn");
+	unselectAllButton.classList.add("btn-warning");
+	unselectAllButton.classList.add("mr-2");
+	unselectAllButton.classList.add("moderationButton");
+
+	unselectAllButton.innerHTML = "<i class='fa-regular fa-square'></i>";
+
+	unselectAllButton.addEventListener("click", function(e) {
+		selected = [];
+		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
+			document.querySelector(".index_admin tbody").children.item(i).classList.remove('table-info');
+		});
+	});
+
+	document.querySelector(".index_admin").insertAdjacentElement('afterend', unselectAllButton);
+{% endmacro %}
+
+{% macro datatables_moderation_additional_options() %}
+	"fnRowCallback": function(nRow, aData, iDisplayIndex) {
+		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
+			if (selected.includes(aData[0]) != false)
+				row.classList.add('table-info')
+		});
+
+		return nRow;
+	},
+	"fnDrawCallback": function(oSettings) {
+		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
+			var iPos = oTable.row(row).index();
+			if (iPos != null) {
+				var aData = oTable.row(iPos).data();
+
+				if (selected.includes(aData[0]) != false)
+					document.querySelector(".index_admin tbody").children.item(i).classList.add('table-info');
+			}
+
+			document.querySelector(".index_admin tbody").children.item(i).addEventListener("click", function(e) {
+				var iPos = oTable.row(row).index();
+				var aData = oTable.row(iPos).data();
+				var iId = aData[0];
+				is_in_array = selected.includes(iId);
+
+				if (is_in_array == false) {
+					selected[selected.length] = iId;
+				} else {
+					selected = selected.filter(function(value) {
+						return value != iId;
+					});
+				}
+
+				if(e.currentTarget.classList.contains('table-info'))
+					e.currentTarget.classList.remove('table-info');
+				else
+					e.currentTarget.classList.add('table-info')
+			});
+		});
+	}
+{% endmacro %}

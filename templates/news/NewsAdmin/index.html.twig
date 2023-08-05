@@ -6,20 +6,38 @@
 {% block indexdatatables_admin_route %}{{ path('News_Admin_IndexDatatables') }}{% endblock %}
 
 {% block js_edit_additional %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.moderation_buttons("News_Admin_DeleteMultiple") }}
+
+	document.querySelector(".index_admin").insertAdjacentElement('afterend', unselectAllButton);
+	
+	for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'none';
+	
+	{% if app.request.attributes.get('display') == 0 %}
+		for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'inline-block';
+	{% endif %}
+
 	document.querySelector("select#selected_state").addEventListener("change", (e) => {
-		oTable.fnFilter(e.target.value, 5);
+		if(e.target.options[e.target.selectedIndex].getAttribute('data-display') == 1)
+			for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'none';
+		else
+			for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'inline-block';
+
+		oTable.columns(5).search(e.target.value).draw();
 	});
 {% endblock %}
 
 {% block body_main_additional %}
 	<div class="container-fluid mt-3">
 		{% set states = ""|states_by_language %}
+	
 		<label>{{ "news.admin.State"|trans([], "validators") }}</label>
 		<select id="selected_state" class="form-control">
 			<option value=""></option>
-		{% for state in states %}
-			<option value="{{ state.internationalName }}">{{ state.title }}</option>
-		{% endfor %}
+			{% for state in states %}
+				<option value="{{ state.internationalName }}" data-display="{{ state.displayState }}" {% if app.request.attributes.get('state') == state.internationalName %}selected{% endif %}>{{ state.title }}</option>
+			{% endfor %}
 		</select>
 		<hr>
 	</div>
@@ -57,4 +75,20 @@
 			</tr>
 		</table>
 	</div>
+{% endblock %}
+
+{% block datatables_additional_options %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.datatables_moderation_additional_options() }},
+    searchCols: [
+      null,
+      null,
+      null,
+      null,
+      null,
+      {'search': '{{ app.request.attributes.get('state') }}' },
+      null,
+      null,
+    ]
 {% endblock %}

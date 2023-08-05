@@ -421,8 +421,8 @@
 							<tr>
 								<td>{{ "admin.moderation.NewsToModerate"|trans([], "validators") }}</td>
 								<td>
-									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('News_Admin_State', {'state':'Waiting'}) }}" alt="" >{{ render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Waiting'})) }}</a>]
-									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('News_Admin_State', {'state':'Warned'}) }}" alt="" >{{ render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Warned'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('News_Admin_Index', {'state':'Waiting', display: 0}) }}" alt="" >{{ render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('News_Admin_Index', {'state':'Warned', display: 0}) }}" alt="" >{{ render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Warned'})) }}</a>]
 								</td>
 							</tr>
 							<tr>

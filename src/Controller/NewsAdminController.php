@@ -153,17 +153,6 @@ class NewsAdminController extends AdminGenericController
 		return $response;
 	}
 
-    public function indexStateAction(Request $request, EntityManagerInterface $em, $state)
-    {
-        $entities = $em->getRepository($this->className)->getNewsByStateAdmin($state);
-		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
-		
-        return $this->render('news/NewsAdmin/indexState.html.twig', [
-            'entities' => $entities,
-			'state' => $state
-        ]);
-    }
-
     public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
     {
 		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new News());
@@ -394,5 +383,19 @@ class NewsAdminController extends AdminGenericController
 
 		$twig = 'news/NewsAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+	}
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+
+		return new Response();
 	}
 }

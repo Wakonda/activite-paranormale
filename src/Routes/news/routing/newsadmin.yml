@@ -1,6 +1,7 @@
 News_Admin_Index:
-    path:  /
+    path:  /index/{state}/{display}
     controller: App\Controller\NewsAdminController::indexAction
+    defaults:   { state: null, display: 1 }
 
 News_Admin_Show:
     path:  /show/{id}
@@ -79,3 +80,7 @@ News_Admin_Archive:
 News_Admin_Internationalization:
     path:  /internationalization/{id}
     controller: App\Controller\NewsAdminController::internationalizationAction
+
+News_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\NewsAdminController::deleteMultiple

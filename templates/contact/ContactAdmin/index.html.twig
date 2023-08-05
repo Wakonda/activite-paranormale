@@ -4,6 +4,7 @@
 
 {% block new_admin_route %}{{ path('Contact_Admin_New') }}{% endblock %}
 {% block indexdatatables_admin_route %}{{ path('Contact_Admin_IndexDatatables') }}{% endblock %}
+{% block removemultiple_admin_route %}{{ path('Contact_Admin_DeleteMultiple') }}{% endblock %}
 
 {% block thead_admin_table %}
 	<th class="label_form">Id</th>
@@ -23,106 +24,14 @@
 	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}
 
-{% block datatables_additional_options %}
-	"fnRowCallback": function(nRow, aData, iDisplayIndex) {
-		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
-			if (selected.includes(aData[0]) != false)
-				row.classList.add('table-info')
-		});
-
-		return nRow;
-	},
-	"fnDrawCallback": function(oSettings) {
-		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
-			var iPos = oTable.row(row).index();
-			if (iPos != null) {
-				var aData = oTable.row(iPos).data();
-
-				if (selected.includes(aData[0]) != false)
-					document.querySelector(".index_admin tbody").children.item(i).classList.add('table-info');
-			}
-
-			document.querySelector(".index_admin tbody").children.item(i).addEventListener("click", function(e) {
-				var iPos = oTable.row(row).index();
-				var aData = oTable.row(iPos).data();
-				var iId = aData[0];
-				is_in_array = selected.includes(iId);
-
-				if (is_in_array == false) {
-					selected[selected.length] = iId;
-				} else {
-					selected = selected.filter(function(value) {
-						return value != iId;
-					});
-				}
-
-				if(e.currentTarget.classList.contains('table-info'))
-					e.currentTarget.classList.remove('table-info');
-				else
-					e.currentTarget.classList.add('table-info')
-			});
-		});
-	}
+{% block js_edit_additional %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.moderation_buttons("Contact_Admin_DeleteMultiple") }}
 {% endblock %}
 
-{% block js_edit_additional %}var selected = [];
-	var inButton = document.createElement("button");
-	inButton.setAttribute("title", "{{ 'admin.general.DeleteSelectedItems'|trans([], 'validators') }}");
-	inButton.classList.add("btn");
-	inButton.classList.add("btn-danger");
-
-	inButton.innerHTML = "<i class='fa-solid fa-trash'></i>";
-
-	inButton.addEventListener("click", function(e) {
-		let xmlHttp = new XMLHttpRequest();
-
-		xmlHttp.onreadystatechange = function() {
-			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-				console.log(oTable)
-				oTable.ajax.reload();
-			}
-		}
-
-		xmlHttp.open("POST", "{{ path('Contact_Admin_DeleteMultiple') }}", true);
-		xmlHttp.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-		xmlHttp.send("ids=" + JSON.stringify(selected));
-	});
-
-	document.querySelector(".index_admin").insertAdjacentElement('afterend', inButton);
-
-	var selectAllButton = document.createElement("button");
-	selectAllButton.setAttribute("title", "{{ 'admin.general.SelectVisibleItems'|trans([], 'validators') }}");
-	selectAllButton.classList.add("btn");
-	selectAllButton.classList.add("btn-success");
-	selectAllButton.classList.add("mr-2");
+{% block datatables_additional_options %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
 	
-	selectAllButton.innerHTML = "<i class='fa-regular fa-square-check'></i>";
-	
-	selectAllButton.addEventListener("click", function(e) {
-		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
-			document.querySelector(".index_admin tbody").children.item(i).classList.add('table-info');
-			var iPos = oTable.row(row).index();
-			var aData = oTable.row(iPos).data();
-			selected.push(aData[0]);
-		});
-	});
-
-	document.querySelector(".index_admin").insertAdjacentElement('afterend', selectAllButton);
-
-	var unselectAllButton = document.createElement("button");
-	unselectAllButton.setAttribute("title", "{{ 'admin.general.DeselectVisibleItems'|trans([], 'validators') }}");
-	unselectAllButton.classList.add("btn");
-	unselectAllButton.classList.add("btn-warning");
-	unselectAllButton.classList.add("mr-2");
-
-	unselectAllButton.innerHTML = "<i class='fa-regular fa-square'></i>";
-
-	unselectAllButton.addEventListener("click", function(e) {
-		selected = [];
-		document.querySelectorAll(".index_admin tbody tr").forEach(function(row, i) {
-			document.querySelector(".index_admin tbody").children.item(i).classList.remove('table-info');
-		});
-	});
-
-	document.querySelector(".index_admin").insertAdjacentElement('afterend', unselectAllButton);
+	{{ macro_admin.datatables_moderation_additional_options() }}
 {% endblock %}
