@@ -145,17 +145,6 @@ class GrimoireAdminController extends AdminGenericController
 		return $response;
 	}
 
-    public function indexStateAction(Request $request, EntityManagerInterface $em, $state)
-    {
-        $entities = $em->getRepository($this->className)->getByStateAdmin($state);
-		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($request->getLocale(), $state);
-		
-        return $this->render('witchcraft/GrimoireAdmin/indexState.html.twig', [
-            'entities' => $entities,
-			'state' => $state
-        ]);
-    }
-
 	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
