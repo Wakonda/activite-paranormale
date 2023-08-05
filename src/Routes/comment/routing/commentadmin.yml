@@ -23,3 +23,7 @@ Comment_Admin_ChangeState:
     controller: App\Controller\CommentAdminController::changeStateAction
     requirements:
         _method: get
+
+Comment_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\CommentAdminController::deleteMultiple

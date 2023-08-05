@@ -5,6 +5,10 @@
 {% block indexdatatables_admin_route %}{{ path('Comment_Admin_IndexDatatables') }}{% endblock %}
 
 {% block js_edit_additional %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.moderation_buttons("Comment_Admin_DeleteMultiple") }}
+
 	document.querySelector("select#selected_state").addEventListener("change", (e) => {
 		oTable.columns(4).search(e.target.value).draw();
 	});
@@ -42,6 +46,9 @@
 {% endblock %}
 
 {% block datatables_additional_options %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.datatables_moderation_additional_options() }},
 	"aoColumns": [
 		null,
 		null,

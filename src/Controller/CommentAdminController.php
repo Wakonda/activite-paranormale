@@ -152,4 +152,18 @@ class CommentAdminController extends AdminGenericController
             ->getForm()
         ;
     }
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+
+		return new Response();
+	}
 }
