@@ -86,13 +86,19 @@ class CommentRepository extends EntityRepository
 			{
 				if($searchByColumns[$i] != "")
 				{
-					$search = "%".$searchByColumns[$i]."%";
-					$qb->andWhere($aColumns[$i]." LIKE :searchByColumn".$i)
-					   ->setParameter("searchByColumn".$i, $search);
+					if(is_numeric($searchByColumns[$i]) and $i == 4) {
+						$search = $searchByColumns[$i];
+						$qb->andWhere($aColumns[$i]." = :searchByColumn".$i);
+					} else {
+						$search = "%".$searchByColumns[$i]."%";
+						$qb->andWhere($aColumns[$i]." LIKE :searchByColumn".$i);
+					}
+					
+					$qb->setParameter("searchByColumn".$i, $search);
 				}
 			}
 		}
-		
+
 		if($count)
 		{
 			$qb->select("count(c)");

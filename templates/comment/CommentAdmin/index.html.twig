@@ -6,7 +6,7 @@
 
 {% block js_edit_additional %}
 	document.querySelector("select#selected_state").addEventListener("change", (e) => {
-		oTable.fnFilter(e.target.value, 4);
+		oTable.columns(4).search(e.target.value).draw();
 	});
 {% endblock %}
 
