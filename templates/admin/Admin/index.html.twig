@@ -428,7 +428,7 @@
 							<tr>
 								<td>{{ "admin.moderation.RitualsToModerate"|trans([], "validators") }}</td>
 								<td>
-									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Grimoire_Admin_State', {'state':'Waiting'}) }}" alt="" >{{ render(controller('App\\Controller\\GrimoireAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Grimoire_Admin_Index', {'state':'Waiting', display: 0}) }}" alt="" >{{ render(controller('App\\Controller\\GrimoireAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
 								</td>
 							</tr>
 							<tr>

@@ -278,4 +278,18 @@ class GrimoireAdminController extends AdminGenericController
 		$twig = 'witchcraft/GrimoireAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+
+		return new Response();
+	}
 }

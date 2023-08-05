@@ -1,10 +1,7 @@
 Grimoire_Admin_Index:
-    path:  /{page}
+    path:  /index/{state}/{display}
     controller: App\Controller\GrimoireAdminController::indexAction
-    defaults:
-        page: 1
-    requirements:
-        page: \d+
+    defaults:   { state: null, display: 1 }
 
 Grimoire_Admin_Show:
     path:  /{id}/show
@@ -75,3 +72,7 @@ Grimoire_Admin_LoadImageSelectorColorbox:
 Grimoire_Admin_Internationalization:
     path:  /internationalization/{id}
     controller: App\Controller\GrimoireAdminController::internationalizationAction
+
+Grimoire_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\GrimoireAdminController::deleteMultiple
