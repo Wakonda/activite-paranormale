@@ -15,12 +15,12 @@ use App\Entity\Language;
 
 class UsefulLinkController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $tag)
     {
 		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		$entity = $em->getRepository(Page::class)->findOneBy(["language" => $language, "internationalName" => UsefulLink::DEVELOPMENT_FAMILY]);
 
-		$query = $em->getRepository(UsefulLink::class)->getUsefulLLinks(UsefulLink::DEVELOPMENT_FAMILY, $page, $request->getLocale());
+		$query = $em->getRepository(UsefulLink::class)->getDevelopmentLinksForIndex($request->getLocale(), $tag);
 
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
@@ -30,6 +30,13 @@ class UsefulLinkController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
-		return $this->render('usefullink/UsefulLink/index.html.twig', ["entity" => $entity, 'pagination' => $pagination]);
+		return $this->render('usefullink/UsefulLink/index.html.twig', ["entity" => $entity, 'pagination' => $pagination, 'tag' => $tag]);
     }
+
+	public function read(EntityManagerInterface $em, $id)
+	{
+		$entity = $em->getRepository(UsefulLink::class)->find($id);
+		
+		return $this->render("usefullink/UsefulLink/read.html.twig", ["entity" => $entity]);
+	}
 }

@@ -41,6 +41,10 @@
 			
 			foreach($datas as $data) {
 				$subRes = [];
+				
+				if(!isset($data["type"]) or empty($data["type"]))
+					$data["type"] = "url";
+				
 				switch($data["type"]) {
 					case "url":
 						$wd = null;

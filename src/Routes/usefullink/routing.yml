@@ -1,10 +1,15 @@
 UsefulLink_Index:
-    path:  /usefullink/{page}
-    controller: App\Controller\UsefulLinkController::indexAction
+    path:  /usefullink/{page}/{tag}
+    controller: App\Controller\UsefulLinkController::index
     defaults:
         page: 1
+        tag: null
     requirements:
        page: \d+
+
+UsefulLink_Read:
+    path:  /usefullink/read/{id}
+    controller: App\Controller\UsefulLinkController::read
 
 # Administration
 UsefulLink_Admin:

@@ -14,19 +14,6 @@ use App\Entity\UsefulLink;
  */
 class UsefulLinkRepository extends EntityRepository
 {
-	public function getUsefulLLinks($category, $page, $locale) {
-		$qb = $this->createQueryBuilder("c");
-		
-		$qb->join("c.language", "l")
-		   ->where("l.abbreviation = :locale")
-		   ->setParameter("locale", $locale)
-		   ->andWhere("c.category = :category")
-		   ->setParameter("category", $category)
-		   ->orderBy("c.id", "desc");
-		   
-		return $qb->getQuery();
-	}
-	
 	public function countAdmin()
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -77,6 +64,26 @@ class UsefulLinkRepository extends EntityRepository
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		return $qb->getQuery()->getResult();
+	}
+
+	public function getDevelopmentLinksForIndex($locale, $tag = null)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$qb->join('c.language', 'l')
+			->where('l.abbreviation = :locale')
+			->setParameter('locale', $locale)
+			->andWhere("c.category = :category")
+			->setParameter("category", UsefulLink::DEVELOPMENT_FAMILY);
+
+
+		if(!empty($tag)) {
+			$qb->andWhere("JSON_CONTAINS(JSON_EXTRACT(LOWER(c.tags), '$[*].value'), LOWER('\"".$tag."\"'), '$') = true");
+		}
+
+		$qb->orderBy("c.id", "desc");
+		
+		return $qb->getQuery();
 	}
 	
 	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
