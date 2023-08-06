@@ -1,0 +1,45 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		$(function ()
+		{
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				$('#showColorboxByLicenceModal').modal('show');
+				e.preventDefault();
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+
+	{% if entity.photoIllustrationFilename is not empty %}
+		<p class="image mb-2">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, entity.photoIllustrationCaption)|raw }}</p>
+	{% endif %}
+
+	<div>
+		{{ entity.text|raw }}
+	</div>
+
+	<br>
+
+	{% if entity.links is not empty %}
+		<h3><i class="fas fa-link"></i> {{ "usefullink.index.Sources"|trans([], "validators") }}</h3>
+		{{ source_document(entity.links, entity.language) }}
+	{% endif %}
+
+	<hr class="hr2">
+	<p>
+		{% if entity.tags is not empty %}<i class="fas fa-dragon"></i> {% for tag in json_decode(entity.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}
+
+		 - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+	</p>
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
