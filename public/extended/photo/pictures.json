@@ -307,7 +307,7 @@
 	},
 	{
 		"url": "https://www.publicdomainpictures.net/fr/view-image.php?image=65071&picture=fantastyval",
-		"filename": "quotation-random.jpg",
+		"filename": "quotation-random.webp",
 		"author": "Ben van Broekhoven",
 		"license": "<a href='https://creativecommons.org/publicdomain/zero/1.0/deed.en'>Creative Commons Zero - CC0</a>"
 	},
@@ -914,6 +914,24 @@
 	{
 		"url": "https://pixai.art/",
 		"filename": "tag-index.png",
+		"author": "pixai.art",
+		"license": "CC0"
+	},
+	{
+		"url": "https://pixai.art/",
+		"filename": "poem.webp",
+		"author": "pixai.art",
+		"license": "CC0"
+	},
+	{
+		"url": "https://pixai.art/",
+		"filename": "poem-read.webp",
+		"author": "pixai.art",
+		"license": "CC0"
+	},
+	{
+		"url": "https://pixai.art/",
+		"filename": "woman-computer.webp",
 		"author": "pixai.art",
 		"license": "CC0"
 	}

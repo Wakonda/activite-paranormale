@@ -4,6 +4,15 @@
 {% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.min.css') }}" />
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.js') }}"></script>
+	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-copy-to-clipboard.min.js') }}"></script>
+
 	<script>
 		$(function ()
 		{
@@ -35,9 +44,9 @@
 
 	<hr class="hr2">
 	<p>
-		{% if entity.tags is not empty %}<i class="fas fa-dragon"></i> {% for tag in json_decode(entity.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}
+		{% if entity.tags is not empty %}<i class="fas fa-dragon"></i> {% for tag in json_decode(entity.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}/#tutorial">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}
 
-		 - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+		{% if entity.licence is not empty %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
 	</p>
 
 	<hr class="hr2">
