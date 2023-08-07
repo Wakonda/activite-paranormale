@@ -274,11 +274,14 @@
 						<div class="card-body">
 							<div class="news_section text-center">
 								<script>
-									$(function (){
-										$(".horoscope_iframe").attr('marginwidth', '0');
-										$(".horoscope_iframe").attr('marginheight', '0');
-										$(".horoscope_iframe").attr('frameborder', '0');
-										$(".horoscope_iframe").attr('border', '0');
+									document.addEventListener("DOMContentLoaded", function() {
+									  var horoscopeIframes = document.querySelectorAll(".horoscope_iframe");
+									  horoscopeIframes.forEach(function(iframe) {
+										iframe.setAttribute("marginwidth", "0");
+										iframe.setAttribute("marginheight", "0");
+										iframe.setAttribute("frameborder", "0");
+										iframe.setAttribute("border", "0");
+									  });
 									});
 								</script>
 								{% if app.request.locale == 'fr' %}

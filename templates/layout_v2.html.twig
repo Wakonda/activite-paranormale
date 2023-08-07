@@ -246,11 +246,14 @@
 							<h2><span class="float-left"><img src="{{ asset('extended/photo/crystal_ball.png') }}" width="25" class="mt-1" alt="Crystal ball"/></span>{{ "index.leftMenu.Horoscope"|trans([], "validators") }}</h2>
 							<div class="side_column_box_content">
 								<script>
-									$(function (){
-										$(".horoscope_iframe").attr('marginwidth', '0');
-										$(".horoscope_iframe").attr('marginheight', '0');
-										$(".horoscope_iframe").attr('frameborder', '0');
-										$(".horoscope_iframe").attr('border', '0');
+									document.addEventListener("DOMContentLoaded", function() {
+									  var horoscopeIframes = document.querySelectorAll(".horoscope_iframe");
+									  horoscopeIframes.forEach(function(iframe) {
+										iframe.setAttribute("marginwidth", "0");
+										iframe.setAttribute("marginheight", "0");
+										iframe.setAttribute("frameborder", "0");
+										iframe.setAttribute("border", "0");
+									  });
 									});
 								</script>
 								{% if app.request.locale == 'fr' %}

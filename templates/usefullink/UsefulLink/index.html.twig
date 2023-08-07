@@ -41,14 +41,14 @@
 			<br>
 			{% if tag is not empty %}
 				<div class="text-center mb-3">
-					<a href="{{ path('UsefulLink_Index') }}" class="btn btn-danger text-white"><i class="fa-solid fa-trash"></i> {{ "usefullink.index.ShowAll"|trans([], "validators") }}</a>
+					<a href="{{ path('UsefulLink_Index') }}/#tutorial" class="btn btn-danger text-white"><i class="fa-solid fa-trash"></i> {{ "usefullink.index.ShowAll"|trans([], "validators") }}</a>
 				</div>
 			{% endif %}
 			<table class="table table-bordered">
 				<thead>
 					<tr class="trGene">
-						<th class="label_form">Titre</th>
-						<th class="label_form">Tags</th>
+						<th class="label_form">{{ "usefullink.index.Title"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "usefullink.index.Tags"|trans([], "validators") }}</th>
 					</tr>
 				</thead>
 				<tbody>
