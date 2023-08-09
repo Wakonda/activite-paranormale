@@ -74,6 +74,7 @@ class AdminController extends AbstractController
 
 	public function maintenanceAction(Request $request, ParameterBagInterface $parameterBag, $mode)
 	{
+		$sitemaps = array_diff(scandir("sitemaps"), array('.', '..'));
 		$robotstxt = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."robots.txt";
 		$htaccessPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess";
 		$htaccessMaintenanceOnPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceon.htaccess";
@@ -92,7 +93,7 @@ class AdminController extends AbstractController
 		$line = fgets(fopen($parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess", 'r'));
 		$mode = ltrim(trim($line), "#");
 
-		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode, "robotstxt" => file_get_contents($robotstxt)]);
+		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode, "robotstxt" => file_get_contents($robotstxt), "sitemaps" => $sitemaps]);
 	}
 
 	private function get_ip(): string {
@@ -1221,5 +1222,39 @@ class AdminController extends AbstractController
 		}
 
 		return null;
+	}
+
+	public function generateSitemap(Request $request, EntityManagerInterface $em)
+	{
+		$urls = $em->getRepository(\App\Entity\News::class)->getDatasForSitemap((new \App\Entity\News())->getShowRoute());
+// dd(("sitemaps"));
+		if(!file_exists("sitemaps"))
+			mkdir("sitemaps", 0777, true);
+		$urls = array_map(function($e) { return $this->generateUrl((new \App\Entity\News())->getShowRoute(), ["id" => $e["id"], "title_slug" => $e["slug"]], UrlGeneratorInterface::ABSOLUTE_URL); }, $urls);
+		
+		$this->generateSitemapFile($urls, "news");
+		
+		return $this->redirectToRoute("Admin_Maintenance");
+	}
+
+	function generateSitemapFile($urls, $filename) {
+		$xml = new \DOMDocument('1.0', 'UTF-8');
+
+		$xml->formatOutput = true;
+		$xml->preserveWhiteSpace = false;
+
+		$urlset = $xml->createElement('urlset');
+		$urlset->setAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
+		$xml->appendChild($urlset);
+
+		foreach ($urls as $url) {
+			$urlElement = $xml->createElement('url');
+			$urlset->appendChild($urlElement);
+
+			$loc = $xml->createElement('loc', htmlspecialchars($url));
+			$urlElement->appendChild($loc);
+		}
+
+		$xml->save('sitemaps/sitemap_'.$filename.'.xml');
 	}
 }

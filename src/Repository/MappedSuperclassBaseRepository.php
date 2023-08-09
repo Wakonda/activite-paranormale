@@ -107,4 +107,16 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getDatasForSitemap()
+	{
+		$qb = $this->createQueryBuilder('o');
+		
+		$qb->select("o.id, o.slug")
+		   ->join('o.state', 's')
+		   ->where("o.archive = 0")
+		   ->andWhere('s.displayState = 1');
+		
+		return $qb->getQuery()->getResult();
+	}
 }

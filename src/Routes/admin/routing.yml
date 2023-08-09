@@ -111,6 +111,10 @@ Admin_Maintenance:
     defaults:
         mode: ""
 
+Admin_Sitemap:
+    path: /admin/sitemap
+    controller: App\Controller\AdminController::generateSitemap
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index
