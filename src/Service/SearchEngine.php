@@ -41,7 +41,7 @@ class SearchEngine {
 	
 	public function run(string $filename, string $query, string $classname) {
 		$pdo = new PDO($this->dsn, $this->user, $this->password);
-		
+
 		if ($pdo) {
 			$statement = $pdo->query($query);
 			$datas = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -100,7 +100,7 @@ class SearchEngine {
 				unset($data["language"]);
 
 				foreach($data as $d) {
-					if(preg_match('/\.(jpe?g|png|gif|bmp)$/i', $d))
+					if(preg_match('/\.(jpe?g|png|gif|bmp|webp|svg)$/i', $d))
 						$pdoSqlite->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '${d}', '${language}')");
 					else {
 						libxml_use_internal_errors(true);

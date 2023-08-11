@@ -62,6 +62,12 @@ class SurThemeGrimoire
      */
     private $menuGrimoire;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\SurThemeGrimoire")
+	 * @Assert\NotBlank(groups={"stg_validation"})
+     */
+    private $parentTheme;
+
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
 	 * @Assert\NotBlank(groups={"stg_validation"})
@@ -274,5 +280,15 @@ class SurThemeGrimoire
     public function getInternationalName()
     {
         return $this->internationalName;
+    }
+
+    public function getParentTheme()
+    {
+        return $this->parentTheme;
+    }
+
+    public function setParentTheme(SurThemeGrimoire $parentTheme)
+    {
+        $this->parentTheme = $parentTheme;
     }
 }
