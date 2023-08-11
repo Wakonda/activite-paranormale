@@ -1227,7 +1227,7 @@ class AdminController extends AbstractController
 	public function generateSitemap(Request $request, EntityManagerInterface $em)
 	{
 		$urls = $em->getRepository(\App\Entity\News::class)->getDatasForSitemap((new \App\Entity\News())->getShowRoute());
-// dd(("sitemaps"));
+
 		if(!file_exists("sitemaps"))
 			mkdir("sitemaps", 0777, true);
 		$urls = array_map(function($e) { return $this->generateUrl((new \App\Entity\News())->getShowRoute(), ["id" => $e["id"], "title_slug" => $e["slug"]], UrlGeneratorInterface::ABSOLUTE_URL); }, $urls);

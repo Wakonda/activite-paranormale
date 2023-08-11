@@ -134,8 +134,6 @@
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
 
-	{{ getTagsByEntityForDisplay(entity) }}
-
 	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'TelevisionSerie' })) }}
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
