@@ -28,7 +28,7 @@ class PaginatorNativeSQL
         $offset = ($page - 1) * $pagesize;
         if(is_null($total)){
             $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);
-            $total = $this->connection->executeQuery($countQuery)->fetchColumn(0);
+            $total = $this->connection->executeQuery($countQuery)->fetchNumeric()[0];
         }
         $query .= ' LIMIT ' . $offset . ',' . $pagesize;
         $list = $this->connection->executeQuery($query)->fetchAll();
