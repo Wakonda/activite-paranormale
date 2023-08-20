@@ -55,12 +55,18 @@
 	{% set i = i + 1 %}
 	{% if i == adLocation %}
 		<div class="media-container m-0 mt-3">
+			{% set ads = advertising(728, 90) %}
 			<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
 			<br>
-			<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8068030897" data-ad-format="auto" data-full-width-responsive="true"></ins>
+			<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8068030897" data-ad-format="auto" data-full-width-responsive="true">
+				{% if ads is not empty %}
+					<div class="text-center">
+						{{ ads.text|raw }}
+					</div>
+				{% endif %}
+			</ins>
 			<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-			{% set ads = advertising(728, 90) %}
 			{% if ads is not empty %}
 			<div class="d-none advertising-alternative advertising_image text-center">
 				{{ ads.text|raw }}

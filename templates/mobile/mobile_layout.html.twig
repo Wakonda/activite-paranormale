@@ -22,6 +22,12 @@
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tarteaucitron_js() }}
 
+	<script type="text/javascript">
+		tarteaucitron.user.gtagUa = 'G-F5KWDJ9VW2';
+		tarteaucitron.user.gtagMore = function () { };
+		(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
+	</script>
+
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
   </head>
 
@@ -69,11 +75,17 @@
 
 				{% block body_content %}{% endblock %}
 				
+				{% set ads = advertising(728, 90) %}
 				<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
-				<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto" data-full-width-responsive="true"></ins>
+				<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto" data-full-width-responsive="true">
+					{% if ads is not empty %}
+						<div class="text-center">
+							{{ ads.text|raw }}
+						</div>
+					{% endif %}
+				</ins>
 				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-				{% set ads = advertising(728, 90) %}
 				{% if ads is not empty %}
 				<div class="d-none advertising-alternative advertising_image text-center">
 					{{ ads.text|raw }}

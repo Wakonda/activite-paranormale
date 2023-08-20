@@ -21,14 +21,10 @@
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.tarteaucitron_js() }}
 
-        <script>
-			tarteaucitron.user.analyticsUa = 'UA-12307735-3';
-			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
-			tarteaucitron.user.analyticsUaCreate = { /* optionnal create configuration */ };
-			tarteaucitron.user.analyticsAnonymizeIp = true;
-			tarteaucitron.user.analyticsPageView = { /* optionnal pageview configuration */ };
-			tarteaucitron.user.analyticsMore = function () { /* optionnal ga.push() */ };
-			(tarteaucitron.job = tarteaucitron.job || []).push('analytics');
+        <script type="text/javascript">
+			tarteaucitron.user.gtagUa = 'G-F5KWDJ9VW2';
+			tarteaucitron.user.gtagMore = function () { };
+			(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
         </script>
 
 		{% block header_plus %}{% endblock %}
@@ -160,11 +156,17 @@
 								</ul>
 							</div>
 							<div id="publicity_right_menu" class="news_section">
+								{% set ads = advertising(300, 250) %}
 								<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
-								<ins class="adsbygoogle" style="display:inline-block;width:200;height:200" data-ad-client="ca-pub-1951906303386196" data-ad-slot="0150773125"></ins>
+								<ins class="adsbygoogle" style="display:inline-block;width:200;height:200" data-ad-client="ca-pub-1951906303386196" data-ad-slot="0150773125">
+									{% if ads is not empty %}
+										<div class="text-center">
+											{{ ads.text|raw }}
+										</div>
+									{% endif %}
+								</ins>
 								<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 
-								{% set ads = advertising(300, 250) %}
 								{% if ads is not empty %}
 								<div class="d-none advertising-alternative advertising_image text-center">
 									{{ ads.text|raw }}

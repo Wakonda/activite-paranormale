@@ -535,3 +535,9 @@ div.store_embedded_image a img, div.advertising_image a img {
 .sf-minitoolbar {
 	background-color: white !important;
 }
+ins.adsbygoogle div {
+    display: none !important;
+}
+ins.adsbygoogle[data-ad-status="unfilled"] div {
+    display: block;
+}
