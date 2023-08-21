@@ -35,7 +35,7 @@ class Quotation
     /**
      * @var text $title
      *
-     * @ORM\Column(name="title", type="string")
+     * @ORM\Column(name="title", type="string", nullable=true)
      */
     private $title;
 

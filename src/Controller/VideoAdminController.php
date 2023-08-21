@@ -43,7 +43,7 @@ class VideoAdminController extends AdminGenericController
 		if($entityBindded->getPlatform() != "AP")
 			unset($this->illustrations[1]);
 
-		$params = $request->request->get($form->getName());
+		$params = $request->request->all($form->getName());
 
 		if(isset($params['mediaVideo_selector']) and !empty($params['mediaVideo_selector']))
 			$entityBindded->setMediaVideo($params['mediaVideo_selector']);
