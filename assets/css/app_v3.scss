@@ -696,5 +696,9 @@ ins.adsbygoogle div {
     display: none !important;
 }
 ins.adsbygoogle[data-ad-status="unfilled"] div {
-    display: block;
+	display: block !important;
+}
+ins.adsbygoogle[data-ad-status="unfilled"] {
+    height: auto !important;
+    width: auto !important;
 }

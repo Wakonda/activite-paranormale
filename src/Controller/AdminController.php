@@ -74,7 +74,7 @@ class AdminController extends AbstractController
 
 	public function maintenanceAction(Request $request, ParameterBagInterface $parameterBag, $mode)
 	{
-		$sitemaps = array_diff(scandir("sitemaps"), array('.', '..'));
+		$sitemaps = array_diff(!empty($sm = scandir("sitemaps")) ? $sm : [], ['.', '..']);
 		$robotstxt = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."robots.txt";
 		$htaccessPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess";
 		$htaccessMaintenanceOnPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."maintenance".DIRECTORY_SEPARATOR."maintenanceon.htaccess";
