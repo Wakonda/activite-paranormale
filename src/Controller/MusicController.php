@@ -28,12 +28,12 @@ class MusicController extends AbstractController
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
-		$sSearch = $request->query->get('search')["value"];
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($order = $request->query->get('order')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
 			$sortByColumn[] = $order[$i]['column'];
 			$sortDirColumn[] = $order[$i]['dir'];

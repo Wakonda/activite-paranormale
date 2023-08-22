@@ -136,7 +136,7 @@ class CartographyController extends AbstractController
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
-		$sSearch = $request->query->get('search')["value"];
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
