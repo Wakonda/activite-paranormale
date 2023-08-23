@@ -45,6 +45,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.SightingDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.sightingDate|doPartialDateTime(app.request.locale) }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Licence"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.licence }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>
 	

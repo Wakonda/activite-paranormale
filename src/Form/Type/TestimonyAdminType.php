@@ -4,7 +4,6 @@ namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -93,10 +92,15 @@ class TestimonyAdminType extends AbstractType
 					},
 					"data" => $country,
 					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
+			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
+					'choice_label'=>'title', 
+					'required' => true,
+					'constraints' => [new NotBlank()],
+					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
+			))
 			->add('location_selector', ChoiceType::class, ['choices' => [$locationValue => $locationValue], 'data' => $locationValue, 'multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
-			->add('sightingDate', DateTimePartialType::class, ['required' => false])
-		;
+			->add('sightingDate', DateTimePartialType::class, ['required' => false]);
     }
 
     public function getBlockPrefix()
@@ -108,7 +112,6 @@ class TestimonyAdminType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Testimony',
-			'validation_groups' => ['testimony_validation', 'mappedsuperclass_validation'],
 			'locale' => 'fr'
 		]);
 	}

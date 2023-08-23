@@ -18,6 +18,7 @@ testimony:
         Location: "Location"
         SightingDate: "Sighting Date / Time"
         Country: "Country"
+        Licence: "Licence"
     index:
         Testimony: "Testimony"
         NbrTotalTestimony: "Total number of testimonies: "
