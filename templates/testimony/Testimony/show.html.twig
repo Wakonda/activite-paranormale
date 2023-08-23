@@ -23,6 +23,18 @@
 	<p>{{ entity.text|raw }}</p>
 	<br>
 	{{ render(controller("App\\Controller\\FileManagementController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+	
+	{% if entity.sightingDate is not empty %}
+		<p><b>{{ "testimony.read.SightingDate"|trans([], "validators") }}</b> : {{ entity.sightingDate|doPartialDateTime(app.request.locale) }}</p>
+	{% endif %}
+	
+	{% if entity.sightingDate is not empty %}
+		<h3>{{ "testimony.read.Location"|trans([], "validators") }}</h3>
+		<p>{{ entity.locationArray|join(", ") }}</p>
+		
+		{{ dump(entity.location)}}
+	{% endif %}
+
 	<hr class="hr2">
 	<p>
 		<i class="fas fa-dragon"></i> <a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.authorToString }}{% endif %}{% if entity.licence is not empty %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" />

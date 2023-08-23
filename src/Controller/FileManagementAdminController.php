@@ -60,94 +60,94 @@ class FileManagementAdminController extends AbstractController
 
 			switch($selectedFolder) {
 				case "album":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Album_Admin_Show\" as route
 						FROM album n
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
 						WHERE fm.realNameFile = '".addslashes($file)."';");
 				break;
 				case "banner":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Banner_Admin_Show\" as route
 						FROM banner n
 						WHERE n.image = '".$file."';");
 				break;
 				case "movie\genreaudiovisual":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"GenreAudiovisual_Admin_Show\" as route
 						FROM GenreAudiovisual n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "biography":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Biography_Admin_Show\" as route
 						FROM biography n
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
 						WHERE fm.realNameFile = '".$file."';");
 				break;
 				case "blog":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Book_Admin_Show\" as route
 						FROM blog n
 						WHERE n.banner = '".$file."';");
 				break;
 				case "book":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Book_Admin_Show\" as route
 						FROM book n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "book\publisher":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Publisher_Admin_Show\" as route
 						FROM book n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "cartography":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Cartography_Admin_Show\" as route
 						FROM cartography n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "country":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Region_Admin_Show\" as route
 						FROM region n
 						WHERE n.flag = '".$file."';");
 				break;
 				case "document":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Document_Admin_Show\" as route
 						FROM document n
 						WHERE n.pdfDoc = '".$file."';");
 				break;
 				case "eventMessage":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"EventMessage_Admin_Show\" as route
 						FROM eventMessage n
 						WHERE n.photo = '".$file."' OR n.thumbnail = '".$file."';");
 				break;
 				case "language":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Language_Admin_Show\" as route
 						FROM language n
 						WHERE n.logo = '".$file."';");
 				break;
 				case "licence":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Licence_Admin_Show\" as route
 						FROM licence n
 						WHERE n.logo = '".$file."';");
 				break;
 				case "music":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.musicPiece, \"Music_Admin_Show\" as route
 						FROM music n
 						WHERE n.musicPieceFile = '".$file."';");
 				break;
 				case "news":
 					$regex = "\[\/\"\']{1}".$file."[\'\"]{1}";
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"News_Admin_Show\" as route
 						FROM news n
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
@@ -156,38 +156,38 @@ class FileManagementAdminController extends AbstractController
 				break;
 				case "page":
 					$regex = "\[\/\"\']{1}".$file."[\'\"]{1}";
-					$res = array_merge($conn->fetchAll("
+					$res = array_merge($conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Page_Admin_Show\" as route
 						FROM page n
 						WHERE n.text REGEXP '".$regex."';"),
-						$conn->fetchAll("
+						$conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"President_Admin_Show\" as route
 						FROM president n
 						WHERE n.photo = '".$file."';")
 						);
 				break;
 				case "partner":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Partner_Admin_Show\" as route
 						FROM partner n
 						WHERE n.text REGEXP '".$regex."';");
 				break;
 				case "quotation":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.textQuotation, \"Quotation_Admin_Show\" as route
 						FROM quotation n
 						LEFT JOIN quotationimage fm ON n.id = fm.quotation_id
 						WHERE fm.image = '".$file."';");
 				break;
 				case "photo":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Photo_Admin_Show\" as route
 						FROM photo n
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
 						WHERE fm.realNameFile = '".$file."';");
 				break;
 				case "testimony":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title
 						FROM testimony n
 						JOIN testimonyfilemanagement tfm ON n.id = tfm.testimony_id
@@ -195,38 +195,38 @@ class FileManagementAdminController extends AbstractController
 						WHERE fm.realNameFile = '".$file."';");
 				break;
 				case "theme":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Theme_Admin_Show\" as route
 						FROM theme n
 						WHERE n.photo = '".$file."' OR n.pdfTheme = '".$file."';");
 				break;
 				case "user":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.username AS title, \"apadminuser_show\" as route
 						FROM ap_user n
 						WHERE n.avatar = '".$file."';");
 				break;
 				case "video":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Video_Admin_Show\" as route
 						FROM video n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "webdirectory":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"WebDirectory_Admin_Show\" as route
 						FROM webdirectory n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "tag":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Movie_Admin_Show\" as route
 						FROM tagword n
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
 						WHERE fm.realNameFile = '".$file."';");
 				break;
 				case "movie":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Movie_Admin_Show\" as route
 						FROM movie n
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
@@ -234,17 +234,17 @@ class FileManagementAdminController extends AbstractController
 				break;
 				case "witchcraft":
 					$res = array_merge(
-						$conn->fetchAll("
+						$conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"MenuGrimoire_Admin_Show\" as route
 						FROM menugrimoire n
 						WHERE n.photo = '".$file."';"),
-						$conn->fetchAll("
+						$conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"SurThemeGrimoire_Admin_Show\" as route
 						FROM surthemegrimoire n
 						WHERE n.photo = '".$file."';"));
 				break;
 				case "witchcraft\grimoire":
-					$res = $conn->fetchAll("
+					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Grimoire_Admin_Show\" as route
 						FROM grimoire n
 						WHERE n.photo = '".$file."';");

@@ -29,6 +29,9 @@ testimony:
         Title: "Titre"
         Language: "Langue"
         PublicationDate: "Date de publication"
+    read:
+        Location: "Lieu"
+        SightingDate: "Date / heure d'observation"
     error:
         NotBlank: "Ce champ ne peut pas être vide"
     new:
