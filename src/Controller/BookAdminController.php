@@ -56,8 +56,8 @@ class BookAdminController extends AdminGenericController
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
 		if($form->isValid()) {
-			$this->saveNewBiographies($entityBindded, $form, "authors", false);
-			$this->saveNewBiographies($entityBindded, $form, "fictionalCharacters", false);
+			$this->saveNewBiographies($em, $entityBindded, $form, "authors", false);
+			$this->saveNewBiographies($em, $entityBindded, $form, "fictionalCharacters", false);
 		}
 	}
 

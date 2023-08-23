@@ -57,7 +57,7 @@ class TelevisionSerieAdminController extends AdminGenericController
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
 		if($form->isValid())
-			$this->saveNewBiographies($entityBindded, $form, "televisionSerieBiographies");
+			$this->saveNewBiographies($em, $entityBindded, $form, "televisionSerieBiographies");
 	}
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)

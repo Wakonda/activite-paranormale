@@ -60,7 +60,7 @@ class MovieAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		if($form->isValid())
-			$this->saveNewBiographies($entityBindded, $form, "movieBiographies");
+			$this->saveNewBiographies($em, $entityBindded, $form, "movieBiographies");
 	}
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)

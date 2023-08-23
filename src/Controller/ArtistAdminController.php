@@ -51,7 +51,7 @@ class ArtistAdminController extends AdminGenericController
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 		
 		if($form->isValid())
-			$this->saveNewBiographies($entityBindded, $form, "artistBiographies");
+			$this->saveNewBiographies($em, $entityBindded, $form, "artistBiographies");
 	}
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
