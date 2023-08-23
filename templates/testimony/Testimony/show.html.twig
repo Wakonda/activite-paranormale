@@ -8,13 +8,34 @@
 {% endblock %}
 
 {% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+	<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet' />
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
 	<script>
 		document.addEventListener("DOMContentLoaded", function(event) {
 			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
 				$('#showColorboxByLicenceModal').modal('show');
 				e.preventDefault();
 			});
+		
+			{% set addressDatas = json_decode(entity.location) %}
+			
+			{% if addressDatas.lon is defined and addressDatas.lat is defined %}
+				var map = L.map('map-canvas').setView([{{ addressDatas.lat }}, {{ addressDatas.lon }}], 15);
+
+				L.marker([{{ addressDatas.lat }}, {{ addressDatas.lon }}]).addTo(map);
+
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+				}).addTo(map);
+
+				map.addControl(new L.Control.Fullscreen());
+			{% endif %}
 		});
+
 	</script>
 {% endblock %}
 
@@ -32,7 +53,11 @@
 		<h3>{{ "testimony.read.Location"|trans([], "validators") }}</h3>
 		<p>{{ entity.locationArray|join(", ") }}</p>
 		
-		{{ dump(entity.location)}}
+		{% set addressDatas = json_decode(entity.location) %}
+		
+		{% if addressDatas.lon is defined and addressDatas.lat is defined %}
+			<div id="map-canvas" style="width:100%; height:400px"></div>
+		{% endif %}
 	{% endif %}
 
 	<hr class="hr2">
