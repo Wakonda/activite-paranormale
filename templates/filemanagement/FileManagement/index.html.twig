@@ -133,7 +133,7 @@
 					data: DATA,
 					processData: false,
 					cache: false,
-					success: function(data){alert("kkk");
+					success: function(data){
 						$('#file_management_control').html(data);
 					}
 				});
@@ -174,7 +174,7 @@
 			}
 			else
 			{
-				document.getElementById("errorFile").innerHTML = "<ul class='error'><li>"+sError+"</li></ul>";
+				document.getElementById("errorFile").innerHTML = "<div class='alert alert-danger'>"+sError+"</div>";
 				document.getElementById("uploadSubmit").disabled = false;
 			}
 		}

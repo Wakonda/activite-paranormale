@@ -10,7 +10,7 @@ file:
         NoFileSelected: "Aucun fichier sélectionné"
     uploadFile:
         FileTooLarge: "Le fichier est trop volumineux"
-        UnauthorizedExtension: "Extension non autorisé"
+        UnauthorizedExtension: "Extension non autorisée"
         NoFileSelected: "Aucun fichier sélectionné"
         FileAddedWithSuccess: "Fichier ajouté avec succès"
         NoFile: "Aucun fichier"

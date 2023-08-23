@@ -68,7 +68,7 @@ class TestimonyController extends AbstractController
 		return $this->generateCreateUpdate($request, $em, $security, $authorizationChecker);
     }
 
-	public function addFileAction(EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+	public function addFileAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
 		$entity = $em->getRepository(Testimony::class)->find($id);

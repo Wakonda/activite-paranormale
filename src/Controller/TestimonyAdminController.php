@@ -72,7 +72,7 @@ class TestimonyAdminController extends AdminGenericController
     {
 		$formType = TestimonyAdminType::class;
 		$entity = $em->getRepository($this->className)->find($id);
-
+// dd($entity);
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
 		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
@@ -158,7 +158,7 @@ class TestimonyAdminController extends AdminGenericController
 		$entity = $em->getRepository(Testimony::class)->find($id);
 
 		$entity->setState($state);
-		
+
 		if($state->getInternationalName() == "Validate") {
 			if(empty($entity->getTitle()) or empty($entity->getTheme()))
 				return $this->redirect($this->generateUrl('Testimony_Admin_Edit', ['id' => $id]));

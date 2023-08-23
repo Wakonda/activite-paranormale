@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Doctrine\ORM\EntityManagerInterface;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
@@ -22,12 +23,27 @@ use App\Form\Field\DateTimePartialType;
 
 class TestimonyAdminType extends AbstractType
 {
+	private $entityManager;
+
+	public function __construct(EntityManagerInterface $entityManager) {
+		$this->entityManager = $entityManager;
+	}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		$locationValue = null;
+		$country = null;
+		
+		if(!empty($location = $builder->getData()->getLocation())) {
+			$location = json_decode($location);
+			$country = $this->entityManager->getRepository(\App\Entity\Region::class)->findOneBy(["internationalName" => $location->country_code]);
+			$locationValue = $location->value;
+		}
+
 		$language = $options["locale"];
         $builder
-            ->add('title', TextType::class, ['label' => 'Titre', 'required' => true])
-            ->add('text', TextareaType::class, ['label' => 'Témoignage', 'required' => true])
+            ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('text', TextareaType::class, ['required' => true, 'constraints' => [new NotBlank()]])
 			->add('pseudoUsed', TextType::class)
 			->add('publicationDate', DateType::class, ['required' => true, 'widget' => 'single_text'])
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
@@ -75,8 +91,9 @@ class TestimonyAdminType extends AbstractType
 					'choice_value' => function ($entity) {
 						return $entity ? $entity->getInternationalName() : '';
 					},
+					"data" => $country,
 					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
-			->add('location_selector', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
+			->add('location_selector', ChoiceType::class, ['choices' => [$locationValue => $locationValue], 'data' => $locationValue, 'multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false])
 		;
