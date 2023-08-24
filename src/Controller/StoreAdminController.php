@@ -135,7 +135,7 @@ class StoreAdminController extends AdminGenericController
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
     }
 	
-    public function createAction(Request $request, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
     {
 		$class = $this->getDataClass($category);
 		$formType = StoreAdminType::class;
@@ -143,7 +143,7 @@ class StoreAdminController extends AdminGenericController
 		$entity->setCategory($category);
 
 		$twig = 'store/StoreAdmin/new.html.twig';
-		return $this->createGenericAction($request, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)

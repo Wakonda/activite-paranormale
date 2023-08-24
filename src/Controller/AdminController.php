@@ -27,6 +27,7 @@ use App\Service\Mastodon;
 use App\Service\Instagram;
 use App\Service\Diaspora;
 use App\Entity\Stores\Store;
+use App\Twig\APExtension;
 
 class AdminController extends AbstractController
 {
@@ -150,11 +151,10 @@ class AdminController extends AbstractController
 	}
 
 	// Blogger
-	public function bloggerTagsAction(Request $request, EntityManagerInterface $em, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
+	public function bloggerTagsAction(Request $request, EntityManagerInterface $em, APExtension $apExtension, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
 	{
-		$twig = $this->get("twig");
 		$type = $request->query->get("type");
-		$tags = $twig->getExtensions()["App\Twig\APExtension"]->getBloggerTags($type);
+		$tags = $apExtension->getBloggerTags($type);
 		$entity = $em->getRepository(urldecode($path))->find($id);
 		$blogId = $blogger->blogId_array[$blogger->getCorrectBlog($type)];
 
@@ -203,7 +203,7 @@ class AdminController extends AbstractController
 		return new Response();
 	}
 
-	public function bloggerPostAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, GoogleBlogger $blogger, TranslatorInterface $translator, UrlGeneratorInterface $router)
+	public function bloggerPostAction(Request $request, EntityManagerInterface $em, APExtension $apExtension, APImgSize $imgSize, APParseHTML $parser, GoogleBlogger $blogger, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$code = $request->query->get("code");
 		$session = $request->getSession();
@@ -298,9 +298,8 @@ class AdminController extends AbstractController
 				case "Book":
 					$imgProperty = $entity->getTheme()->getPhoto();
 					$img = $entity->getTheme()->getAssetImagePath().$imgProperty;
-					$twig = $this->get("twig");
 					$text = $entity->getText()."<br>";
-					$text .= $twig->getExtensions()["App\Twig\APStoreExtension"]->getImageEmbeddedCodeByEntity($entity->getBookEditions()->first(), "book", "BookStore")."<br>";
+					$text .= $apExtension->getImageEmbeddedCodeByEntity($entity->getBookEditions()->first(), "book", "BookStore")."<br>";
 					$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getAuthors()->getValues()))."<br>";
 					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
 					break;
@@ -327,7 +326,7 @@ class AdminController extends AbstractController
 						$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
 						$img = $imgProperty;
 					}
-					$twig = $this->get("twig");
+
 					$text = $entity->getText()."<br>";
 					$language = $entity->getBook()->getBook()->getLanguage()->getAbbreviation();
 					$title = $translator->trans('book.index.Book', [], 'validators', $language)." - ".$entity->getTitle();
@@ -340,7 +339,7 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getIsbn13()) ? "<b>ISBN 13 : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getNumberPage()) ? "<b>".$translator->trans('bookEdition.admin.NumberPage', [], 'validators', $language)." : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getPublisher()->getTitle()) ? "<b>".$translator->trans('bookEdition.admin.Publisher', [], 'validators', $language)." : </b>".$d."<br>" : "");
-					$text .= (!empty($d = $entity->getBook()->getPublicationDate()) ? "<b>".$translator->trans('bookEdition.admin.PublicationDate', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."<br>" : "");
+					$text .= (!empty($d = $entity->getBook()->getPublicationDate()) ? "<b>".$translator->trans('bookEdition.admin.PublicationDate', [], 'validators', $language)." : </b>".$apExtension->doPartialDateFilter($d, $entity->getBook()->getBook()->getLanguage()->getAbbreviation())."<br>" : "");
 
 					$storeURL = null;
 					$storeTitle = null;
@@ -378,11 +377,10 @@ class AdminController extends AbstractController
 						$img = $imgProperty;
 					}
 					$language = $entity->getAlbum()->getLanguage()->getAbbreviation();
-					$twig = $this->get("twig");
 					$text = $entity->getText()."<br>";
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
 					$text .= (!empty($d = $entity->getAlbum()->getArtist()) ? "<b>".$translator->trans('album.admin.Artist', [], 'validators', $language)." : </b>".$d->getTitle()."<br>" : "");
-					$text .= (!empty($d = $entity->getAlbum()->getReleaseYear()) ? "<b>".$translator->trans('album.admin.ReleaseYear', [], 'validators', $language)." : </b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getAlbum()->getLanguage()->getAbbreviation())."<br>" : "");
+					$text .= (!empty($d = $entity->getAlbum()->getReleaseYear()) ? "<b>".$translator->trans('album.admin.ReleaseYear', [], 'validators', $language)." : </b>".$apExtension->doPartialDateFilter($d, $entity->getAlbum()->getLanguage()->getAbbreviation())."<br>" : "");
 					$text .= (!empty($d = $entity->getAlbum()->getArtist()->getGenre()) ? "<b>".$translator->trans('artist.admin.Sound', [], 'validators', $language)." : </b>".$d->getTitle()."<br>" : "");
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
 					break;
@@ -395,18 +393,17 @@ class AdminController extends AbstractController
 						$img = $imgProperty;
 					}
 					$language = $entity->getMovie()->getLanguage()->getAbbreviation();
-					$twig = $this->get("twig");
 					$text = $entity->getText()."<br>";
 					$text .= (!empty($d = $entity->getMovie()->getText()) ? "<b>>".$translator->trans('movie.admin.Text', [], 'validators', $language)."</b>".$d."<br>" : "");
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
 					$text .= (!empty($d = $entity->getMovie()->getDuration()) ? "<b>".$translator->trans('movie.admin.Duration', [], 'validators', $language)." :</b>".$d." minutes<br>" : "");
 					$text .= (!empty($d = $entity->getMovie()->getGenre()) ? "<b>".$translator->trans('movie.admin.Genre', [], 'validators', $language)." :</b>".$d."<br>" : "");
-					$text .= (!empty($d = $entity->getMovie()->getReleaseYear()) ? "<b>".$translator->trans('movie.admin.ReleaseYear', [], 'validators', $language)." :</b>".$twig->getExtensions()["App\Twig\APExtension"]->doPartialDateFilter($d, $entity->getMovie()->getLanguage()->getAbbreviation())."<br>" : "");
+					$text .= (!empty($d = $entity->getMovie()->getReleaseYear()) ? "<b>".$translator->trans('movie.admin.ReleaseYear', [], 'validators', $language)." :</b>".$apExtension->doPartialDateFilter($d, $entity->getMovie()->getLanguage()->getAbbreviation())."<br>" : "");
 					$text .= (!empty($d = $entity->getMovie()->getTrailer()) ? "<b>".$translator->trans('movie.admin.Trailer', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 
 					$actorArray = [];
 
-					$biographyDatas = $twig->getExtensions()["App\Twig\APMovieExtension"]->getMovieBiographiesByOccupation($entity->getMovie());
+					$biographyDatas = $apExtension->getMovieBiographiesByOccupation($entity->getMovie());
 
 					foreach($biographyDatas as $occupation => $biographies) {
 						if ($occupation == \App\Entity\Movies\MediaInterface::ACTOR_OCCUPATION) {
@@ -428,7 +425,6 @@ class AdminController extends AbstractController
 					}
 
 					$language = $entity->getTelevisionSerie()->getLanguage()->getAbbreviation();
-					$twig = $this->get("twig");
 					$text = $entity->getText()."<br>";
 					$text .= (!empty($d = $entity->getTelevisionSerie()->getText()) ? "<b>".$translator->trans('televisionSerie.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
@@ -436,7 +432,7 @@ class AdminController extends AbstractController
 
 					$actorArray = [];
 
-					$biographyDatas = $twig->getExtensions()["App\Twig\APMovieExtension"]->getTelevisionSerieBiographiesByOccupation($entity->getTelevisionSerie());
+					$biographyDatas = $apExtension->getTelevisionSerieBiographiesByOccupation($entity->getTelevisionSerie());
 
 					foreach($biographyDatas as $occupation => $biographies) {
 						if ($occupation == \App\Entity\Movies\MediaInterface::ACTOR_OCCUPATION) {
@@ -464,13 +460,10 @@ class AdminController extends AbstractController
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
 					break;
 				case "Music":
-					$twig = $this->get("twig");
-					$twigExtension = $twig->getExtensions()["App\Twig\APExtension"];
-
 					$language = !empty($ar = $entity->getArtist()) ? $ar->getLanguage()->getAbbreviation() : $entity->getAlbum()->getLanguage()->getAbbreviation();
 					$text = $entity->getEmbeddedCode();
 					$text .= "<br><b>".$translator->trans("music.admin.Morceau", [], "validators", $language)." :</b> ".$entity->getMusicPiece();
-					$text .= "<br><b>".$translator->trans("music.admin.Duration", [], "validators", $language)." :</b> ".$twigExtension->stringDurationVideoFilter($entity->getLength());
+					$text .= "<br><b>".$translator->trans("music.admin.Duration", [], "validators", $language)." :</b> ".$apExtension->stringDurationVideoFilter($entity->getLength());
 					
 					if(!empty($a = $entity->getAlbum()))
 						$text .= "<br><b>".$translator->trans("music.admin.Album", [], "validators", $language)." :</b> ".$a->getTitle();
@@ -478,8 +471,6 @@ class AdminController extends AbstractController
 					$artist = !empty($ar = $entity->getArtist()) ? $ar : $entity->getAlbum()->getArtist();
 					
 					$text .= "<br><b>".$translator->trans("album.admin.Artist", [], "validators", $language)." :</b> ".$artist->getTitle();
-					
-					
 					$text .= "<hr>".$entity->getText();
 					$text .= "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation());
 					break;
