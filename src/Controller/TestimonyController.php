@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Testimony;

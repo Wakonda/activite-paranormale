@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Grimoire;
@@ -248,7 +249,7 @@ class WitchcraftController extends AbstractController
 
 		$user = $this->getUser();
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and ($user->getId() != $entity->getAuthor()->getId() and $entity->getAuthor()->getUsername() != "Anonymous")))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 		
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
