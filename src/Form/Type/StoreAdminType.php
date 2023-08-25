@@ -150,7 +150,17 @@ class StoreAdminType extends AbstractType
 					]);
 				break;
 			default:
-				$builder->add('category', ChoiceType::class, ['choices' => ["store.admin.".ucfirst(Store::CLOTH_CATEGORY) => Store::CLOTH_CATEGORY, "store.admin.".ucfirst(Store::FUNNY_CATEGORY) => Store::FUNNY_CATEGORY, "store.admin.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY) => Store::GOTHIC_CLOTH_CATEGORY], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators']);
+				$categories = [
+						$this->translator->trans("store.index.".ucfirst(Store::CLOTH_CATEGORY), [], 'validators') => Store::CLOTH_CATEGORY,
+						$this->translator->trans("store.index.".ucfirst(Store::FUNNY_CATEGORY), [], 'validators') => Store::FUNNY_CATEGORY,
+						$this->translator->trans("store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY), [], 'validators') => Store::GOTHIC_CLOTH_CATEGORY,
+						$this->translator->trans("store.index.".ucfirst(Store::MUG_CATEGORY), [], 'validators') => Store::MUG_CATEGORY,
+						$this->translator->trans("store.index.".ucfirst(Store::STICKER_CATEGORY), [], 'validators') => Store::STICKER_CATEGORY
+				];
+
+				ksort($categories);
+
+				$builder->add('category', ChoiceType::class, ['choices' => $categories, 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators']);
 		}
 
         $builder
@@ -188,6 +198,17 @@ class StoreAdminType extends AbstractType
 					$form->get('price')->addError(new FormError($notBlank->message));
 				if(empty($data->getPrice()))
 					$form->get('price')->addError(new FormError($notBlank->message));
+			}
+		});
+		
+		$builder->addEventListener(FormEvents::PRE_SUBMIT, function(FormEvent $event){
+			$data = $event->getData();
+
+			if(!empty($url = $data["imageEmbeddedCode"])) {
+				if(filter_var($url, FILTER_VALIDATE_URL) !== false) {
+					$data["imageEmbeddedCode"] = '<img src="'.$url.'" style="width: 100%" />';
+					$event->setData($data);
+				}
 			}
 		});
     }

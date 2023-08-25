@@ -40,19 +40,11 @@ class SurThemeGrimoireAdminType extends AbstractType
 										->orderBy('u.title', 'ASC');
 							},
 			))
-			->add('menuGrimoire', EntityType::class, array('class'=>'App\Entity\MenuGrimoire',
-					'choice_label'=>'title',
-					'constraints' => array(new NotBlank()),
-					'required' => true,
-					'query_builder' => function(EntityRepository $er) use ($language)
-					{
-						return $er->createQueryBuilder('u')
-						        ->join("u.language", "l")
-								->where("l.abbreviation = :language")
-								->setParameter("language", $language)
-								->orderBy('u.title', 'ASC');
-					},
-			))
+			->add('parentTheme', EntityType::class, ['class'=>'App\Entity\SurThemeGrimoire', 
+				'choice_label'=>'title',
+				'required' => false,
+				'query_builder' => function(\App\Repository\SurThemeGrimoireRepository $repository) use($language) { return $repository->getParentThemeByLanguage($language);}
+			])
         ;
     }
 

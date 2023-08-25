@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\SurThemeGrimoire;
-use App\Entity\MenuGrimoire;
 use App\Entity\Language;
 use App\Form\Type\SurThemeGrimoireAdminType;
 use App\Service\ConstraintControllerValidator;
@@ -106,7 +105,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 			$row = [];
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
-			$row[] = $entity->getMenuGrimoire()->getTitle()." (".$entity->getTheme().")";
+			$row[] = !empty($parentTheme = $entity->getParentTheme()) ? $parentTheme->getTitle()." (".$entity->getTheme().")" : $entity->getTheme();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getAssetImagePath().$entity->getPhoto().'" alt="" width="100px">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
@@ -126,9 +125,9 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$translateArray = [];
 		
 		if(!empty($language))
-			$menuGrimoires = $em->getRepository(MenuGrimoire::class)->findByLanguage($language, array('title' => 'ASC'));
+			$menuGrimoires = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguageForList($language->getAbbreviation(), $request->getLocale());
 		else
-			$menuGrimoires = $em->getRepository(MenuGrimoire::class)->findAll();
+			$menuGrimoires = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguageForList(null, $request->getLocale());
 
 		$menuGrimoireArray = [];
 
@@ -154,10 +153,10 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 
 		$entityToCopy = $em->getRepository(SurThemeGrimoire::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
-		$menuGrimoire = $em->getRepository(MenuGrimoire::class)->findOneBy(["internationalName" => $entityToCopy->getMenuGrimoire()->getInternationalName(), "language" => $language]);
+		$menuGrimoire = $em->getRepository(MenuGrimoire::class)->findOneBy(["internationalName" => $entityToCopy->getParentTheme()->getInternationalName(), "language" => $language]);
 
 		if(!empty($menuGrimoire))
-			$entity->setMenuGrimoire($menuGrimoire);
+			$entity->setParentTheme($menuGrimoire);
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setPhoto($entityToCopy->getPhoto());

@@ -90,10 +90,6 @@ WitchcraftTool_Show:
        id: \d+
 
 # Administration
-MenuGrimoire_Admin:
-    resource: "routing/menugrimoireadmin.yml"
-    prefix:   /admin/menu_grimoire
-
 SurThemeGrimoire_Admin:
     resource: "routing/surthemegrimoireadmin.yml"
     prefix:   /admin/theme_grimoire

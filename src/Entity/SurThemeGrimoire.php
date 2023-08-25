@@ -36,7 +36,7 @@ class SurThemeGrimoire
     /**
      * @var string $theme
      *
-     * @ORM\Column(name="theme", type="string", length=255)
+     * @ORM\Column(name="theme", type="string", length=255, nullable=true)
 	 * @Assert\NotBlank(groups={"stg_validation"})
      */
     private $theme;
@@ -44,7 +44,7 @@ class SurThemeGrimoire
     /**
      * @var text $text
      *
-     * @ORM\Column(name="text", type="text")
+     * @ORM\Column(name="text", type="text", nullable=true)
 	 * @Assert\NotBlank(groups={"stg_validation"})
      */
     private $text;

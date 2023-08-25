@@ -7,15 +7,15 @@
 			data: { "id" : $(this).val() },
 			success: function(data)
 			{
-				var menuGrimoire = data.menuGrimoire;
-				$("#{{ form.menuGrimoire.vars.id }} option").remove();
-				$.each(menuGrimoire, function(index, element)
+				var parentTheme = data.parentTheme;
+				$("#{{ form.parentTheme.vars.id }} option").remove();
+				$.each(parentTheme, function(index, element)
 				{
-					$("#{{ form.menuGrimoire.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+					$("#{{ form.parentTheme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
 				});
 				
-				{% if form.vars.value.menuGrimoire.id is defined %}
-					$("#{{ form.menuGrimoire.vars.id }}").val("{{ form.vars.value.menuGrimoire.id }}");
+				{% if form.vars.value.parentTheme.id is defined %}
+					$("#{{ form.parentTheme.vars.id }}").val("{{ form.vars.value.parentTheme.id }}");
 				{% endif %}
 			}
 		});

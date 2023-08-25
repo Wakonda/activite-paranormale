@@ -26,16 +26,16 @@ class ArchiveController extends AbstractController
 			default:
 				return "Archive_Theme";
 		}
-		
+
 		return "";
 	}
-	
+
 	public function archiveAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $language)
 	{
 		$languages = $em->getRepository(Language::class)->findAll();
-		
+
 		$res = [];
-		
+
 		$locale = empty($language) ? $request->getLocale() : $language;
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $locale]);
 
@@ -53,12 +53,12 @@ class ArchiveController extends AbstractController
 			return $a['canonicalName'] <=> $b['canonicalName'];
 		});
 
-		return $this->render('index/Archive/archive.html.twig', array (
+		return $this->render('index/Archive/archive.html.twig', [
 			'datas' => $res,
 			'total' => array_sum(array_column($res, "count")),
 			'languages' => $languages,
 			'currentLanguage' => $currentLanguage
-		));
+		]);
 	}
 	
 	public function archiveThemesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $className, $language)
@@ -82,13 +82,13 @@ class ArchiveController extends AbstractController
 			return $a['title'] <=> $b['title'];
 		});
 
-		return $this->render('index/Archive/archive_theme.html.twig', array (
+		return $this->render('index/Archive/archive_theme.html.twig', [
 			'parentTheme' => $parentTheme,
 			'nbrArchive' => array_sum(array_column($countTheme, "count")),
 			'themes' => $countTheme,
 			'className' => base64_encode($className),
 			'title' => $translator->trans("index.className.".(new \ReflectionClass(new $className()))->getShortName(), [], 'validators')
-		));
+		]);
 	}
 	
 	public function archiveWitchcraftsAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $className, $language)
@@ -112,13 +112,13 @@ class ArchiveController extends AbstractController
 			return $a['title'] <=> $b['title'];
 		});
 
-		return $this->render('index/Archive/archive_witchcraft.html.twig', array (
+		return $this->render('index/Archive/archive_witchcraft.html.twig', [
 			'menuGrimoire' => $menuGrimoire,
 			'nbrArchive' => array_sum(array_column($countTheme, "count")),
 			'themes' => $countTheme,
 			'className' => base64_encode($className),
 			'title' => $translator->trans("index.className.Grimoire", [], 'validators')
-		));
+		]);
 	}
 
 	public function tabarchiveAction(Request $request, $id, $theme, $className)
@@ -126,13 +126,13 @@ class ArchiveController extends AbstractController
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
 			return $this->redirect($this->generateUrl("Archive_Index"));
 
-		return $this->render('index/Archive/tabArchive.html.twig', array(
+		return $this->render('index/Archive/tabArchive.html.twig', [
 			'themeDisplay' => $theme,
 			'themeId' => $id,
 			'className' => $className
-		));		
+		]);
 	}
-	
+
 	public function tabarchiveDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
@@ -144,7 +144,7 @@ class ArchiveController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
+	
 		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
 		{
 			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
@@ -155,16 +155,16 @@ class ArchiveController extends AbstractController
 		}
 
 		$className = base64_decode($className);
-		
+
         $entities = $em->getRepository($className)->getTabArchive($themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository($className)->getTabArchive($themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
-		$output = array(
+		$output = [
 			"sEcho" => $request->query->get('sEcho'),
 			"iTotalRecords" => $iTotal,
 			"iTotalDisplayRecords" => $iTotal,
 			"aaData" => []
-		);
+		];
 
 		foreach($entities as $entity)
 		{
@@ -177,7 +177,7 @@ class ArchiveController extends AbstractController
 
 		return new JsonResponse($output);
 	}
-	
+
 	public function readAction(EntityManagerInterface $em, $id, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))

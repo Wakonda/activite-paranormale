@@ -307,6 +307,8 @@ class AdminController extends AbstractController
 					if(!empty($entity->getPhoto())) {
 						$imgProperty = $entity->getPhoto();
 						$img = $entity->getAssetImagePath().$imgProperty;
+					} elseif($entity->isSpreadShopPlatform()) {
+						$imgProperty = $img = null;
 					} else {
 						$imgProperty = strtolower($entity->getCategory()).".jpg";
 						$img = $entity->getAssetImagePath()."category/".$imgProperty;
@@ -484,7 +486,7 @@ class AdminController extends AbstractController
 				elseif(Store::AMAZON_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
 				elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
-					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
+					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
 			}
 
 			$img = !empty($img) ? $imgSize->adaptImageSize(550, $img) : null;

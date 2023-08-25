@@ -20,7 +20,7 @@
 		{% endif %}
 
 		<hr class="hr2">
-		<p class="mt-7">{% if entity.author is not empty or entity.pseudoUsed is not empty %}<i class="fas fa-user"></i> {% endif %}{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}<i class="fas fa-dragon"></i>  {{ entity.surTheme.menuGrimoire.title }} - <a href="{{ path('ap_witchcraftmobile_index', {theme: entity.surTheme.title}) }}">{{ entity.surTheme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|date_mobile(app.request.locale) }}</p>
+		<p class="mt-7">{% if entity.author is not empty or entity.pseudoUsed is not empty %}<i class="fas fa-user"></i> {% endif %}{% if entity.author is not empty %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a> - {% elseif entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}<i class="fas fa-dragon"></i>  {{ entity.surTheme.parentTheme.title }} - <a href="{{ path('ap_witchcraftmobile_index', {theme: entity.surTheme.title}) }}">{{ entity.surTheme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|date_mobile(app.request.locale) }}</p>
 	</div>
 {% endblock %}
 

@@ -43,6 +43,8 @@ class Store
 	const MOVIE_CATEGORY = "movie";
 	const TELEVISION_SERIE_CATEGORY = "televisionSerie";
 	const WITCHCRAFT_TOOL_CATEGORY = "witchcraftTool";
+	const STICKER_CATEGORY = "sticker";
+	const MUG_CATEGORY = "mug";
 	
     /**
      * @var integer $id
@@ -166,6 +168,18 @@ class Store
 		return $this->category == self::WITCHCRAFT_TOOL_CATEGORY;
 	}
 	
+	public function isStickerCategory(): bool {
+		return $this->category == self::STICKER_CATEGORY;
+	}
+	
+	public function isMugCategory(): bool {
+		return $this->category == self::MUG_CATEGORY;
+	}
+	
+	public function isSpreadShopPlatform(): bool {
+		return $this->platform == self::SPREADSHOP_PLATFORM;
+	}
+	
     /**
 	 * @Groups("api_read")
      */
@@ -200,6 +214,10 @@ class Store
 	public function getAssetImagePath()
 	{
 		return "extended/photo/store/";
+	}
+
+	public function getUrlSlug() {
+		return $this->title;
 	}
 
     /**

@@ -19,7 +19,7 @@
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "grimoire.admin.Theme"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{% if entity.surTheme is not empty %}{{ entity.surTheme.title }} ({{ entity.surTheme.menuGrimoire.title }}){% endif %}</div>
+	<div class="form-table-cell">{% if entity.surTheme is not empty %}{{ entity.surTheme.title }} ({{ entity.surTheme.parentTheme.title }}){% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "grimoire.admin.WritingDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.writingDate|dodate(false, app.request.locale) }}</div>
@@ -52,7 +52,7 @@
 			{% import "index/macro/macro_index.html.twig" as macro_index %}
 
 			{% if entity.surTheme is not empty %}
-				{{ macro_index.blogger_form(entity, entity.surTheme.menuGrimoire.internationalName) }}
+				{{ macro_index.blogger_form(entity, entity.surTheme.parentTheme.internationalName) }}
 			{% endif %}
 			{{ macro_index.shopify_form(entity, "magic") }}
 		{% endif %}

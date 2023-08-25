@@ -7,8 +7,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-use App\Entity\Theme;
-use App\Entity\SurTheme;
+use App\Entity\SurThemeGrimoire;
+use App\Entity\MenuGrimoire;
 use Ausi\SlugGenerator\SlugGenerator;
 
 class ThemeGrimoireCommand extends Command
@@ -32,30 +32,32 @@ class ThemeGrimoireCommand extends Command
     {
 		$output->writeln("Start Theme migration");
 		
-		$surThemes = $this->em->getRepository(SurTheme::class)->findAll();
+		$surThemes = $this->em->getRepository(MenuGrimoire::class)->findAll();
 		
 		foreach($surThemes as $surTheme) {
-			$st = $this->em->getRepository(Theme::class)->findOneBy(["internationalName" => $surTheme->getInternationalName(), "language" => $surTheme->getLanguage()]);
+			$st = $this->em->getRepository(SurThemeGrimoire::class)->findOneBy(["internationalName" => $surTheme->getInternationalName(), "language" => $surTheme->getLanguage()]);
 
 			if(empty($st))
-				$st = new Theme();
+				$st = new SurThemeGrimoire();
 			
 			$st->setTitle($surTheme->getTitle());
 			$st->setInternationalName($surTheme->getInternationalName());
 			$st->setLanguage($surTheme->getLanguage());
+			$st->setText($surTheme->getText());
+			$st->setPhoto($surTheme->getPhoto());
 			
 			$this->em->persist($st);
 		}
 
 		$this->em->flush();
 		
-		$themes = $this->em->getRepository(Theme::class)->findAll();
+		$themes = $this->em->getRepository(SurThemeGrimoire::class)->findAll();
 		
 		foreach($themes as $theme) {
-			if(empty($theme->getSurTheme()))
+			if(empty($theme->getMenuGrimoire()))
 				continue;
 
-			$st = $this->em->getRepository(Theme::class)->findOneBy(["internationalName" => $theme->getSurTheme()->getInternationalName(), "language" => $theme->getSurTheme()->getLanguage()]);
+			$st = $this->em->getRepository(SurThemeGrimoire::class)->findOneBy(["internationalName" => $theme->getMenuGrimoire()->getInternationalName(), "language" => $theme->getMenuGrimoire()->getLanguage()]);
 
 			$theme->setParentTheme($st);
 			

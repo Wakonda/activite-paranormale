@@ -33,14 +33,15 @@ class StoreSearchType extends AbstractType
 				$this->translator->trans("store.index.".ucfirst(Store::TELEVISION_SERIE_CATEGORY), [], 'validators') => Store::TELEVISION_SERIE_CATEGORY,
 				$this->translator->trans("store.index.".ucfirst(Store::WITCHCRAFT_TOOL_CATEGORY), [], 'validators') => Store::WITCHCRAFT_TOOL_CATEGORY,
 				$this->translator->trans("store.index.".ucfirst(Store::FUNNY_CATEGORY), [], 'validators') => Store::FUNNY_CATEGORY,
-				$this->translator->trans("store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY), [], 'validators') => Store::GOTHIC_CLOTH_CATEGORY
+				$this->translator->trans("store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY), [], 'validators') => Store::GOTHIC_CLOTH_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::MUG_CATEGORY), [], 'validators') => Store::MUG_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::STICKER_CATEGORY), [], 'validators') => Store::STICKER_CATEGORY
 			];
-		
+
 		ksort($categories);
-		
+
         $builder
-			->add('category', ChoiceType::class, [
-			'choices' => $categories, 'expanded' => false, 'multiple' => false, "required" => false])
+			->add('category', ChoiceType::class, ['choices' => $categories, 'expanded' => false, 'multiple' => false, "required" => false])
 			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
 		;
     }
