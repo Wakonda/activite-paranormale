@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use App\Entity\UsefulLink;
 use App\Entity\Language;
@@ -21,6 +22,9 @@ use App\Service\Wikidata;
 
 // Example: php bin/console app:migrate-import-wikipedia --locale=en --url=https://en.wikipedia.org/wiki/List_of_symphonic_metal_bands --theme=1
 
+#[AsCommand(
+   name: 'app:migrate-import-wikipedia'
+)]
 class MigrateImportDataFromWikipediaCommand extends Command
 {
     private $em;
@@ -34,9 +38,6 @@ class MigrateImportDataFromWikipediaCommand extends Command
         $this->wikipedia = $wikipedia;
         $this->wikidata = $wikidata;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:migrate-import-wikipedia';
 
     protected function configure()
     {

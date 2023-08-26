@@ -5,6 +5,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -13,6 +14,9 @@ use App\Entity\Language;
 use App\Entity\Licence;
 use App\Entity\State;
 
+#[AsCommand(
+   name: 'app:create-development-page'
+)]
 class CreateDevelopmentPageCommand extends Command
 {
     private $em;
@@ -22,8 +26,6 @@ class CreateDevelopmentPageCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    protected static $defaultName = 'app:create-development-page';
 
     protected function configure()
     {

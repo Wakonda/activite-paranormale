@@ -6,10 +6,14 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 
 use App\Entity\Region;
 use Ausi\SlugGenerator\SlugGenerator;
 
+#[AsCommand(
+   name: 'app:migrate-region'
+)]
 class RegionCommand extends Command
 {
     private $em;
@@ -19,9 +23,6 @@ class RegionCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:migrate-region';
 
     protected function configure()
     {

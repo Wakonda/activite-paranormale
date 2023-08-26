@@ -5,6 +5,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Book;
@@ -24,6 +25,9 @@ use App\Entity\WebDirectory;
 use App\Entity\Quotation;
 use App\Entity\WitchcraftTool;
 
+#[AsCommand(
+   name: 'app:social-network-identifiers-format'
+)]
 class SocialNetworkIdentifiersFormatCommand extends Command
 {
     private $em;
@@ -33,9 +37,6 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:social-network-identifiers-format';
 
     protected function configure()
     {

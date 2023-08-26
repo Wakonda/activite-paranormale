@@ -14,7 +14,7 @@
 		{{ MG.text|raw }}
 		<ul class="fa-ul">
 		{% for surThemeGrimoire in surThemeGrimoires %}
-			{% if MG.id == surThemeGrimoire.menuGrimoire.id %}
+			{% if MG.id == surThemeGrimoire.parentTheme.id %}
 				<li>
 					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
 					<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': MG.title, 'id': surThemeGrimoire.id, 'theme' : surThemeGrimoire.title })}}">{{ surThemeGrimoire.title }}</a>

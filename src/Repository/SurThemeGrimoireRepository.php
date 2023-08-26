@@ -16,7 +16,7 @@ class SurThemeGrimoireRepository extends EntityRepository
 	{
 		$queryBuilder = $this->createQueryBuilder('o');
 		$queryBuilder->join('o.language', 'l')
-					 ->join('o.menuGrimoire', 'm')
+					 ->join('o.parentTheme', 'm')
 					 ->where('l.abbreviation = :lang')
 					 ->setParameter('lang', $lang)
 					 ->andWhere('m.title = :surtheme')
@@ -44,6 +44,7 @@ class SurThemeGrimoireRepository extends EntityRepository
 		$qb->join('o.language', 'l')
 		   ->where('l.abbreviation = :lang')
 		   ->setParameter('lang', $lang)
+		   ->andWhere("o.parentTheme IS NOT NULL")
 		   ->orderBy('o.title');
 
 		return $qb->getQuery()->getResult();	
@@ -99,9 +100,9 @@ class SurThemeGrimoireRepository extends EntityRepository
 		   ->innerjoin("b.language", "l")
 		   ->andWhere("l.abbreviation = :abbreviation")
 		   ->setParameter("abbreviation", $entity->getLanguage()->getAbbreviation())
-		   ->innerjoin("b.menuGrimoire", "mg")
+		   ->innerjoin("b.parentTheme", "mg")
 		   ->andWhere("mg.title = :mgTitle")
-		   ->setParameter("mgTitle", $entity->getMenuGrimoire()->getTitle());
+		   ->setParameter("mgTitle", $entity->getParentTheme()->getTitle());
 		   
 		if($entity->getId() != null)
 		{

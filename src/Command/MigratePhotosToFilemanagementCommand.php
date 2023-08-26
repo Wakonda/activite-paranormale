@@ -5,6 +5,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\News;
@@ -12,6 +13,9 @@ use App\Entity\Photo;
 use App\Entity\Biography;
 use App\Entity\FileManagement;
 
+#[AsCommand(
+   name: 'app:migrate-photos'
+)]
 class MigratePhotosToFilemanagementCommand extends Command
 {
     private $em;
@@ -21,9 +25,6 @@ class MigratePhotosToFilemanagementCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:migrate-photos';
 
     protected function configure()
     {

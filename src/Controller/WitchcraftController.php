@@ -28,9 +28,9 @@ class WitchcraftController extends AbstractController
 {
     public function indexAction(Request $request, EntityManagerInterface $em)
     {
-		$menuGrimoire = $em->getRepository(MenuGrimoire::class)->getParentThemeByLanguage($request->getLocale())->getQuery()->getResult();
+		$menuGrimoire = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale())->getQuery()->getResult();
 		$surThemeGrimoire = $em->getRepository(SurThemeGrimoire::class)->getSurThemeByLanguage($request->getLocale());
-        
+
 		return $this->render('witchcraft/Witchcraft/index.html.twig', [
 			'surThemeGrimoires' => $surThemeGrimoire,
 			'menuGrimoire' => $menuGrimoire

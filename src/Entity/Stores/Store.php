@@ -412,6 +412,9 @@ class Store
 
     public function getCharacteristic()
     {
+		if(empty($this->characteristic))
+			return null;
+
         return json_decode($this->characteristic, true);
     }
 

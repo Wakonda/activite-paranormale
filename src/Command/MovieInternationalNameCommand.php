@@ -5,11 +5,15 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Movies\Movie;
 use Ausi\SlugGenerator\SlugGenerator;
 
+#[AsCommand(
+   name: 'app:movie-international-name'
+)]
 class MovieInternationalNameCommand extends Command
 {
     private $em;
@@ -19,9 +23,6 @@ class MovieInternationalNameCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:movie-international-name';
 
     protected function configure()
     {

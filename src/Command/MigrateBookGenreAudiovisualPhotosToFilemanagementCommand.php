@@ -5,6 +5,7 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Book;
@@ -12,6 +13,9 @@ use App\Entity\Movies\GenreAudiovisual;
 use App\Entity\FileManagement;
 use Ausi\SlugGenerator\SlugGenerator;
 
+#[AsCommand(
+   name: 'app:migrate-update-book-genreaudiovisual'
+)]
 class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 {
     private $em;
@@ -21,9 +25,6 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:migrate-book-genreaudiovisual';
 
     protected function configure()
     {

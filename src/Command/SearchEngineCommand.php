@@ -6,12 +6,16 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 
 use App\Service\SearchEngine;
 
 use App\Entity\Interfaces\SearchEngineInterface;
 
+#[AsCommand(
+   name: 'app:search-engine'
+)]
 class SearchEngineCommand extends Command
 {
     private $em;
@@ -25,9 +29,6 @@ class SearchEngineCommand extends Command
         $this->searchEngine = $searchEngine;
 		$this->parameterBag = $parameterBag;
     }
-
-    // the name of the command (the part after "bin/console")
-    protected static $defaultName = 'app:search-engine';
 
     protected function configure()
     {

@@ -5,12 +5,16 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\SurThemeGrimoire;
 use App\Entity\MenuGrimoire;
 use Ausi\SlugGenerator\SlugGenerator;
 
+#[AsCommand(
+   name: 'app:migrate-theme-grimoire'
+)]
 class ThemeGrimoireCommand extends Command
 {
     private $em;
@@ -20,8 +24,6 @@ class ThemeGrimoireCommand extends Command
 		parent::__construct();
         $this->em = $em;
     }
-
-    protected static $defaultName = 'app:migrate-theme-grimoire';
 
     protected function configure()
     {
