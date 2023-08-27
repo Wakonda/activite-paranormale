@@ -1,8 +1,4 @@
 services:
-    # ap.twig.ap_extension:
-        # class: App\Twig\APExtension
-        # public: true
-
     app.locale_listener:
         class: App\Service\LocaleListener
         arguments: ['%kernel.default_locale%']
