@@ -413,7 +413,7 @@ class BiographyAdminController extends AdminGenericController
 
 		if ($request->isMethod(Request::METHOD_POST)) {
 			$form->handleRequest($request);
-			$this->validationForm($request, $ccv, $translator, $form, $entity, $entity);
+			$this->validationForm($request, $em, $ccv, $translator, $form, $entity, $entity);
 
 			if ($form->isValid()) {
 				$this->uploadFile($entity, $form);
