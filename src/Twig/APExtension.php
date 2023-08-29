@@ -335,17 +335,17 @@
 				if($language == "fr")
 				{
 					$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-					$dateString = $dateArray[2]." ".$monthFrench[$dateArray[1]-1]." ".$dateArray[0];
+					$dateString = $dateArray[2]." ".$monthFrench[$dateArray[1]-1]." ".ltrim($dateArray[0], "0");
 				}
 				else if($language == "es")
 				{
 					$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-					$dateString = $dateArray[2]." de ".$monthSpain[$dateArray[1]-1]." de ".$dateArray[0];
+					$dateString = $dateArray[2]." de ".$monthSpain[$dateArray[1]-1]." de ".ltrim($dateArray[0], "0");
 				}
 				else
 				{
 					$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-					$dateString = $dateArray[2]."th ".$monthEnglish[$dateArray[1]-1]." ".$dateArray[0];
+					$dateString = $dateArray[2]."th ".$monthEnglish[$dateArray[1]-1]." ".ltrim($dateArray[0], "0");
 				}
 				
 				if($time)
