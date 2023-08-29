@@ -18,6 +18,16 @@ class LocaleListener implements EventSubscriberInterface
     public function onKernelRequest(RequestEvent $event)
     {
         $request = $event->getRequest();
+
+		// V3
+		$session = $request->getSession();
+		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
+			$session->set('v', "v3");
+		else {
+			if($request->query->has("v") and !empty($v = $request->query->get("v")))
+				$session->set('v', $v);
+		}
+		
         if (!$request->hasPreviousSession()) {
             return;
         }
@@ -29,15 +39,6 @@ class LocaleListener implements EventSubscriberInterface
             // if no explicit locale has been set on this request, use one from the session
             $request->setLocale($request->getSession()->get('_locale', $this->defaultLocale));
         }
-		
-		// V3
-		$session = $request->getSession();
-		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
-			$session->set('v', "v3");
-		else {
-			if($request->query->has("v") and !empty($v = $request->query->get("v")))
-				$session->set('v', $v);
-		}
     }
 
     public static function getSubscribedEvents()

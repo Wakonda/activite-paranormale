@@ -89,7 +89,7 @@ class SurThemeGrimoire
 
 	public function getMenuGrimoireTitle()
 	{
-		return $this->menuGrimoire->getTitle();
+		return !empty($parentTheme = $this->parentTheme) ? $parentTheme->getTitle() : null;
 	}
 	
     /**
