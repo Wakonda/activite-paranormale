@@ -1,18 +1,18 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "index.archive.Archive"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "index.archive.Archive"|trans([], "validators") }} - {{ title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "index.archive.Archive"|trans([], "validators") }} - {{ title }}</h2>{% endblock h2_title %}
 {% block header_plus %}
 {% endblock %}
 {% block APBlog_body %}
 	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/archive.jpg') }}" width="550" alt="Strange dream" /></p>
 	<hr>
-	{{ "index.archive.DocArchive"|trans([], "validators") }}<span class="badge badge-danger">{{ nbrArchive }}</span>
+	{{ "index.archive.DocArchive"|trans([], "validators") }}<span class="badge bg-danger">{{ nbrArchive }}</span>
 	<hr>	
 	{% set i = 0 %}
 	<div id="accordion">
 		{% for ST in menuGrimoire %}
-			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
+			<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
 			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
 			<br />
 			<table class="table table-bordered">
@@ -24,7 +24,7 @@
 			{% for theme in themes %}
 				{% if theme.surTheme == ST.id %}
 					<tr><td class="td_form_table"><a href="{{ path('Archive_Tab', {'id' : theme.id, 'theme' : theme.title, className: className })}}" >{{ theme.title }}</a></td>
-					<td class="tdGene"><span class="badge badge-info">{{ theme.count }}</span></td></tr>
+					<td class="tdGene"><span class="badge bg-info">{{ theme.count }}</span></td></tr>
 				{% endif %}
 			{% endfor %}
 			</table>

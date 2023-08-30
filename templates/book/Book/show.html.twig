@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/book-read.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/book-read.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script>
@@ -84,7 +84,7 @@
 		{% for bookEdition in entity.bookEditions %}
 			<div class="card border-0 mb-1">
 				<div class="card-header" id="heading_{{ bookEdition.id }}">
-					<h5><button class="btn btn-block text-left collapsed py-0" type="button" data-toggle="collapse" data-target="#collapse_{{ bookEdition.id }}" aria-expanded="false" aria-controls="collapse_{{ bookEdition.id }}"><i class="fas fa-space-shuttle"></i> {{ bookEdition.publisher.title }}</button></h5>
+					<h5><button class="btn btn-block text-start collapsed py-0" type="button" data-bs-toggle="collapse" data-target="#collapse_{{ bookEdition.id }}" aria-expanded="false" aria-controls="collapse_{{ bookEdition.id }}"><i class="fas fa-space-shuttle"></i> {{ bookEdition.publisher.title }}</button></h5>
 				</div>
 				
 				<div id="collapse_{{ bookEdition.id }}" class="collapse" aria-labelledby="heading_{{ bookEdition.id }}" data-parent="#accordionBookEdition">

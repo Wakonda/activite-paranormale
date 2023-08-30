@@ -18,7 +18,7 @@
 
 <script>
 	function addDeleteButtonFormDeleteLink($tagFormLi) {
-		var $removeFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-danger mt-2 float-right"><i class="fas fa-trash"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
+		var $removeFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-danger mt-2 float-end"><i class="fas fa-trash"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 
 		$tagFormLi.appendChild($removeFormButton);
 
@@ -40,11 +40,11 @@
 			internationalName.value = "+";
 
 		if (count == 0 || internationalName.value != "")
-			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-success mt-2 float-left choose-biography" title="{{ 'biography.admin.BiographyValidated'|trans([], 'validators') }}"><i class="fas fa-check state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
+			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-success mt-2 float-start choose-biography" title="{{ 'biography.admin.BiographyValidated'|trans([], 'validators') }}"><i class="fas fa-check state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 		else
-			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-secondary mt-2 float-left choose-biography" title="{{ 'biography.admin.YouMustValidateThisBiography'|trans([], 'validators') }}"><i class="far fa-minus-square state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
+			var $validateFormButton = new DOMParser().parseFromString('<button type="button" class="btn btn-secondary mt-2 float-start choose-biography" title="{{ 'biography.admin.YouMustValidateThisBiography'|trans([], 'validators') }}"><i class="far fa-minus-square state-biography"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 
-		var $duplicateButton = new DOMParser().parseFromString('<button type="button" class="btn btn-warning mt-2 mr-2 float-left duplicate-biography" title="{{ 'biography.admin.Duplicate'|trans([], 'validators') }}"><i class="fas fa-clone"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
+		var $duplicateButton = new DOMParser().parseFromString('<button type="button" class="btn btn-warning mt-2 me-2 float-start duplicate-biography" title="{{ 'biography.admin.Duplicate'|trans([], 'validators') }}"><i class="fas fa-clone"></i></button>', 'text/html').documentElement.querySelector('body').firstChild;
 		$tagFormLi.appendChild($duplicateButton);
 		
 		$duplicateButton.addEventListener('click', (e) => {

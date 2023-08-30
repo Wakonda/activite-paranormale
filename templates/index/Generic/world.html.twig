@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block h2_title %}
-	<h2><span class="float-left"><img src="{{ asset('extended/photo/in-the-world-icon.png') }}" width="25" class="mt-1" alt="In the World"/></span>{{ block ("title") }}{% if app.request.attributes.get('language') != 'all' %} - {{ title }}{# {{ app.request.attributes.get('language') }} #}{% endif %}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/in-the-world-icon.png') }}" width="25" class="mt-1" alt="In the World"/></span>{{ block ("title") }}{% if app.request.attributes.get('language') != 'all' %} - {{ title }}{# {{ app.request.attributes.get('language') }} #}{% endif %}</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}

@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ musicGenre.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ musicGenre.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ musicGenre.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
@@ -27,7 +27,7 @@
 	{{ musicGenre.text|raw }}
 
 	<hr>
-	<p>{{ "musicGenre.index.NumberOfArtists"|trans([], "validators") }} <span class="badge badge-danger">{{ entities|length }}</span></p>
+	<p>{{ "musicGenre.index.NumberOfArtists"|trans([], "validators") }} <span class="badge bg-danger">{{ entities|length }}</span></p>
 	<hr>
 	<table class="doc_datatables dt-responsive w-100">
 		<thead>

@@ -2,7 +2,7 @@
 {% for entity in entities %}
 	<div class="comment mt-2 p-2">
 		<p class="pseudoComment">
-			<span class="text-success font-weight-bold">
+			<span class="text-success fw-bold">
 				{% if entity.anonymousComment == 0 %}
 					{{ entity.authorComment.username }}
 				{% else %}

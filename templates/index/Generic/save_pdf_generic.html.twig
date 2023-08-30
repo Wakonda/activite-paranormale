@@ -20,7 +20,7 @@
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
 			<a class="navbar-brand" href="#"><img src="{{ asset('extended/photo/devil.png') }}" width="40" alt="Devil"/></a>
-			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 			</button>
 			<div class="collapse navbar-collapse" id="navbarNav">
@@ -41,7 +41,7 @@
 		{% if is_mobile() or is_tablet() %}
 			<div id="pdf-canvas-action" class="text-center">
 				<div class="btn-toolbar my-2 d-inline-flex">
-					<div class="mr-2">
+					<div class="me-2">
 						<button id="prev" class="btn btn-light btn-sm"><i class="fas fa-arrow-left"></i></button>
 						<button id="next" class="btn btn-light btn-sm"><i class="fas fa-arrow-right"></i></button>
 					</div>
@@ -51,7 +51,7 @@
 							<span class="input-group-text" id="basic-addon2">/&nbsp;<span id="page_count"></span></span>
 						</div>
 					</div>
-					<div class="ml-2">
+					<div class="ms-2">
 						<button id="zoominbutton" type="button" class="btn btn-light btn-sm"><i class="fas fa-plus"></i></button>
 						<button id="zoomoutbutton" type="button" class="btn btn-light btn-sm"><i class="fas fa-minus"></i></button>
 					</div>
@@ -66,7 +66,7 @@
 		{% endif %}
 		
 		<div id="footer" class="pt-1 mt-2">
-			<span class="mt-2 text-light ml-3"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</span>
+			<span class="mt-2 text-light ms-3"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</span>
 		</div>
 		
 		<script>

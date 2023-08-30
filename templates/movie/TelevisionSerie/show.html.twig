@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
@@ -88,7 +88,7 @@
 				{% for episode in episodes %}
 					<tr>
 						<td><a href="{{ path('TelevisionSerie_Season', {id: entity.id, title_slug: entity.urlSlug, season: episode.season}) }}">{{ "televisionSerie.read.Season"|trans([], "validators") }} {{ episode.season }}</a></td>
-						<td><span class="badge badge-danger">{{ episode.totalEpisodes }}</span></td>
+						<td><span class="badge bg-danger">{{ episode.totalEpisodes }}</span></td>
 						<td>{{ episode.minDate|dodate(false, app.request.locale) }} - {{ episode.maxDate|dodate(false, app.request.locale) }}</td>
 					</tr>
 				{% endfor %}

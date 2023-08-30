@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mr-2" alt="Robot"/></span>{{ entity.title }}{% endblock %}
+{% block page_title %}<span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="me-2" alt="Robot"/></span>{{ entity.title }}{% endblock %}
 
 {% block meta_plus %}
 	<link rel="canonical" href="{{ url('News_ReadNews_New', {'id' : entity.id, 'title_slug': entity.getUrlSlug() }) }}">

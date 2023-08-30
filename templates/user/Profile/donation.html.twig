@@ -1,7 +1,7 @@
 {% set i = 0 %}
 <div id="accordion">
 	{% for donation in donations %}
-		<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ donation.title }}" aria-expanded="{% if i == 0 %}true{% else %}false{% endif %}" aria-controls="collapse_{{ donation.title }}"><img src="{{ asset('extended/photo/store/cryptoCurrencies/'~(donation.title|lower)~'.svg') }}" width="20">  {{ donation.title }}</h3>
+		<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-target="#collapse_{{ donation.title }}" aria-expanded="{% if i == 0 %}true{% else %}false{% endif %}" aria-controls="collapse_{{ donation.title }}"><img src="{{ asset('extended/photo/store/cryptoCurrencies/'~(donation.title|lower)~'.svg') }}" width="20">  {{ donation.title }}</h3>
 		<div id="collapse_{{ donation.title }}" class="collapse {% if i == 0 %}show{% endif %}" data-parent="#accordion">
 		<br>
 			<div class="text-center">

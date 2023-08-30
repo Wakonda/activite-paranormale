@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "search.index.Search"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/search-icon.png') }}" width="25" class="mt-1" alt="Search"/></span>{{ "search.index.Search"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/search-icon.png') }}" width="25" class="mt-1" alt="Search"/></span>{{ "search.index.Search"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
 	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_newsmobile_search') }}">
@@ -27,8 +27,8 @@
 
 	<div class="search-result-box card-box mt-4">
 		<ul class="nav nav-tabs tabs-bordered" role="tablist">
-			<li class="nav-item"><a class="nav-link {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'active' : '' }}" id="web-tab" data-toggle="tab" href="#web" role="tab" aria-controls="web" aria-selected="true"><i class="fas fa-satellite"></i> Web <span class="badge badge-primary ml-1">{{ total }}</span></a></li>
-			<li class="nav-item"><a class="nav-link {{ app.request.query.get('type') == 'image' ? 'active' : '' }}" id="image-tab" data-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="image"><i class="far fa-image"></i> {{ "search.index.Image"|trans([], "validators") }} <span class="badge badge-primary ml-1">{{ totalImage }}</span></a></li>
+			<li class="nav-item"><a class="nav-link {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'active' : '' }}" id="web-tab" data-bs-toggle="tab" href="#web" role="tab" aria-controls="web" aria-selected="true"><i class="fas fa-satellite"></i> Web <span class="badge bg-primary ms-1">{{ total }}</span></a></li>
+			<li class="nav-item"><a class="nav-link {{ app.request.query.get('type') == 'image' ? 'active' : '' }}" id="image-tab" data-bs-toggle="tab" href="#image" role="tab" aria-controls="image" aria-selected="image"><i class="far fa-image"></i> {{ "search.index.Image"|trans([], "validators") }} <span class="badge bg-primary ms-1">{{ totalImage }}</span></a></li>
 		</ul>
 		<div class="tab-content">
 			<div class="tab-pane fade {{ (app.request.query.get('type') is empty or app.request.query.get('type') == 'text') ? 'show active' : '' }}" id="web" role="tabpanel" aria-labelledby="web-tab">
@@ -46,7 +46,7 @@
 								<div class="font-13 text-success mb-3"><i class="fas fa-caret-right"></i> {{ url(results[item.id~"_"~item.classname].showRoute, {id: item.id}) }}</div>
 								<div class="d-flex">
 									{% if results[item.id~"_"~item.classname].illustration is defined and results[item.id~"_"~item.classname].illustration is not empty %}
-										{{ results[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(60, results[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'mr-2 mt-1'}, {}, false)|raw }}
+										{{ results[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(60, results[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'me-2 mt-1'}, {}, false)|raw }}
 									{% endif %}
 									<p class="mb-0 text-muted">{{ item.searchText|slice(0, 150) }}</p>
 								</div>

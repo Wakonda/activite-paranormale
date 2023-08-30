@@ -6,7 +6,7 @@
 	{{ macro_index.tinymce_js(form.presentation.vars.id) }}
 {% endblock %}
 
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/rune.png') }}" width="25" class="mt-1" alt="Egypt God"/></span>{{ "user.index.ModifCompte"|trans([], "validators") }}</h2>{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/rune.png') }}" width="25" class="mt-1" alt="Egypt God"/></span>{{ "user.index.ModifCompte"|trans([], "validators") }}</h2>{% endblock %}
 
 {% block APBlog_body %}
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
@@ -29,14 +29,14 @@
 				{{ form_widget(form.civility, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.avatar, "user.register.Avatar"|trans([], "validators")) }}</div>
-			<div class="form-table-cell text-left">
+			<div class="form-table-cell text-start">
 				<b><u>{{ "admin.general.CurrentFile"|trans([], "validators") }}</u></b> {{ user.avatar }}
 				{{ form_errors(form.avatar) }}
 				{{ form_widget(form.avatar, {'attr':{'class' : 'form-control'}}) }}
 					<div>
-						<span class="font-weight-bold">{{ "user.register.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
+						<span class="fw-bold">{{ "user.register.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
 						<br>
-						<span class="font-weight-bold">{{ "user.register.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
+						<span class="fw-bold">{{ "user.register.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
 					</div>
 			</div>
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.birthDate, "user.register.BirthDate"|trans([], "validators")) }}</div>
@@ -110,7 +110,7 @@
 		{{ form_rest(form) }}
 		{{ form_errors(form) }}
 		<div class="clearfix">
-		<div class="mt-3 float-right">
+		<div class="mt-3 float-end">
 			<input type="submit" value="{{ 'profile.edit.submit'|trans({}, 'FOSUserBundle') }}" class="submitcomment btn" />
 		</div>
 		</div>

@@ -48,8 +48,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .cleaner { clear: both; width: 100%; height: 0px; font-size: 0px;  }
 
-.float-left { float: left; }
-.float-right { float: right; }
+.float-start { float: left; }
+.float-end { float: right; }
 
 .bg-light { background-color: #f8f9fa !important; }
 
@@ -411,7 +411,7 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 	font-size: 1.1em;
 }
 
-.text-right
+.text-end
 {
 	text-align: right;
 }
@@ -649,7 +649,7 @@ ol.controls li a:focus, .prevBtn a:focus, .nextBtn a:focus{outline:none;}
 	display: none;
 }
 
-.text-left {
+.text-start {
 	text-align: left;
 }
 
@@ -657,7 +657,7 @@ ol.controls li a:focus, .prevBtn a:focus, .nextBtn a:focus{outline:none;}
 	font-style:italic;
 }
 
-.font-weight-bold {
+.fw-bold {
 	font-weight:bold !important;
 }
 
@@ -1133,10 +1133,10 @@ h2 span img {
 .mb-0, .my-0 {
     margin-bottom: 0!important;
 }
-.mr-0, .mx-0 {
+.me-0, .mx-0 {
     margin-right: 0!important;
 }
-.mr-1,
+.me-1,
 .mx-1 {
   margin-right: 0.25rem !important;
 }
@@ -1146,11 +1146,11 @@ h2 span img {
   margin-bottom: 0.25rem !important;
 }
 
-.ml-1,
+.ms-1,
 .mx-1 {
   margin-left: 0.25rem !important;
 }
-.mr-auto,
+.me-auto,
 .mx-auto {
   margin-right: auto !important;
 }
@@ -1160,7 +1160,7 @@ h2 span img {
   margin-bottom: auto !important;
 }
 
-.ml-auto,
+.ms-auto,
 .mx-auto {
   margin-left: auto !important;
 }
@@ -1180,7 +1180,7 @@ h2 span img {
 .my-2 {
   margin-top: 0.5rem !important;
 }
-.ml-2,
+.ms-2,
 .mx-2 {
   margin-left: 0.5rem !important;
 }
@@ -1195,10 +1195,10 @@ h2 span img {
 .p-2 {
   padding: 0.5rem !important;
 }
-.pl-3, .px-3 {
+.ps-3, .px-3 {
     padding-left: 1rem!important;
 }
-.mr-2,
+.me-2,
 .mx-2 {
   margin-right: 0.5rem !important;
 }
@@ -1478,27 +1478,27 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
   border-radius: 0.25rem;
   transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-.badge-danger {
+.bg-danger {
   color: #fff;
   background-color: #dc3545;
 }
-.badge-info {
+.bg-info {
   color: #fff;
   background-color: #17a2b8;
 }
-.badge-secondary {
+.bg-secondary {
   color: #fff;
   background-color: #6c757d;
 }
-.badge-success {
+.bg-success {
   color: #fff;
   background-color: #28a745;
 }
-.badge-warning {
+.bg-warning {
   color: #212529;
   background-color: #ffc107;
 }
-.badge-primary {
+.bg-primary {
   color: #fff;
   background-color: #007bff;
 }

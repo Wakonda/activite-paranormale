@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/witchcrafttools-index.svg') }}" width="27" class="mt-1" alt="Witchcraft Tool"/></span>{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/witchcrafttools-index.svg') }}" width="27" class="mt-1" alt="Witchcraft Tool"/></span>{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script>
@@ -63,7 +63,7 @@
 			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right mt-3">{{ "witchcraftTool.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3">{{ "witchcraftTool.search.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<br>
@@ -83,7 +83,7 @@
 					</div>
 					<div class="card-footer text-center">
 						<a class="btn read" href="{{ path('WitchcraftTool_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
-							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
 							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
 						</a>
 					</div>
@@ -92,7 +92,7 @@
 		</div>
 		<hr class="hr2">
 	{% else %}
-		<div class="alert alert-danger font-italic text-center">{{ "witchcraftTool.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<div class="alert alert-danger fst-italic text-center">{{ "witchcraftTool.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
 	

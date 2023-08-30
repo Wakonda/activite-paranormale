@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "biography.index.Biography"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire" /></span>{{ "biography.index.Biography"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire" /></span>{{ "biography.index.Biography"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
@@ -50,7 +50,7 @@
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/biography-index.jpg') }}" alt="Bigraphy" width="550" /></p>
 	<hr>
-	<p>{{ "biography.search.NumberOfBiographies"|trans([], "validators") }}<span class="badge badge-danger" id="count_biography"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
+	<p>{{ "biography.search.NumberOfBiographies"|trans([], "validators") }}<span class="badge bg-danger" id="count_biography"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
 	<hr>
 	<h3>{{ "biography.search.SearchSort"|trans([], "validators") }}</h3>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
@@ -66,7 +66,7 @@
 			<div class="form-table-cell">{{ form_errors(form.occupation) }}{{ form_widget(form.occupation, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right">{{ "biography.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end">{{ "biography.search.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<hr>

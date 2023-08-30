@@ -31,15 +31,15 @@
 		<table class="table table-striped table-bordered">
 			<tr>
 				<th>{{ "admin.general.Disable"|trans([], "validators") }}</th>
-				<td><span class="badge badge-success">{{ count_availability(0) }}</span></td>
+				<td><span class="badge bg-success">{{ count_availability(0) }}</span></td>
 			</tr>
 			<tr>
 				<th>{{ "admin.general.Available"|trans([], "validators") }}</th>
-				<td><span class="badge badge-warning">{{ count_availability(1) }}</span></td>
+				<td><span class="badge bg-warning">{{ count_availability(1) }}</span></td>
 			</tr>
 			<tr>
 				<th>{{ "admin.general.Archived"|trans([], "validators") }}</th>
-				<td><span class="badge badge-danger">{{ count_archived("App\\Entity\\Video") }}</span></td>
+				<td><span class="badge bg-danger">{{ count_archived("App\\Entity\\Video") }}</span></td>
 			</tr>
 		</table>
 	</div>

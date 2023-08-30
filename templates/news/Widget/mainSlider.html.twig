@@ -32,7 +32,7 @@
 			{% for worldNew in worldNews %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<div class="card mb-3">
-						<div class="card-header h-100 text-left">
+						<div class="card-header h-100 text-start">
 							<img class="image_wrapper" src="{{ asset(worldNew.language.getAssetImagePath()) }}{{ worldNew.language.logo }}" title="{{ worldNew.language.abbreviation }}" width="20" height="13" alt="{{ worldNew.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ worldNew.title }}</span>
 						</div>
 						<div class="row no-gutters">
@@ -45,7 +45,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-footer text-muted text-right">
+						<div class="card-footer text-muted text-end">
 							<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': worldNew.id, 'title_slug':worldNew.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
 						</div>
 					</div>

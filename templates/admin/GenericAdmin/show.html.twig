@@ -29,7 +29,7 @@
 	
 	{% if block("internalization_admin_route") is defined %}
 		<li class="nav-item dropdown">
-			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown"><i class="fas fa-flag" aria-hidden="true"></i> {{ "admin.general.CreateIn"|trans([], "validators") }} <b class="caret"></b></a>
+			<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-flag" aria-hidden="true"></i> {{ "admin.general.CreateIn"|trans([], "validators") }} <b class="caret"></b></a>
 			<div class="dropdown-menu">
 				{% for language in allAvailableLanguages() %}
 					<a class="dropdown-item" href="{{ path(block('internalization_admin_route'), {'id': entity.id, 'locale': language.abbreviation})}}"> <img src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" class="rounded-circle" alt="" width="20" height="13" /> {{ language.title }}</a>

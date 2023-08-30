@@ -256,7 +256,7 @@ abstract class AdminGenericController extends AbstractController
     {
 		$file = $request->files->get('image');
 
-		$mimeTypeAvailable = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg'];
+		$mimeTypeAvailable = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/webp'];
 		
 		if(in_array($file->getClientMimeType(), $mimeTypeAvailable))
 		{

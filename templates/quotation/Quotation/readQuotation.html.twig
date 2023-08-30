@@ -1,16 +1,16 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "quotation.index.Quotation"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Quotation"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Quotation"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<div id="quotation_bubble_parent">
-		<div id="quotation_bubble" class="font-italic">
+		<div id="quotation_bubble" class="fst-italic">
 			&ldquo;{{ entity.textQuotation }}&rdquo;
 		</div>
 	</div>
 
-	<span id="author_quotation"><a href="{{ path('Biography_Show', { 'id' : entity.authorQuotation.id, 'title': entity.authorQuotation.title }) }}" alt="{{ entity.authorQuotation.title }}" class="font-weight-bold">{{ entity.authorQuotation.title }}</a></span>
+	<span id="author_quotation"><a href="{{ path('Biography_Show', { 'id' : entity.authorQuotation.id, 'title': entity.authorQuotation.title }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></span>
 
 	{% if entity.images is not empty %}
 		<div id="carousel-quote-read" class="carousel-pagination carousel slide mt-3" data-interval="false">

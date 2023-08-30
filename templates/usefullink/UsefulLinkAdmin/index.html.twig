@@ -16,7 +16,7 @@
 	<form class="form-inline" id="usefullink_filter">
 	<div class="form-group">
 		<label>{{ "usefullink.admin.Category"|trans([], "validators") }}</label>
-		<select id="category_filter" class="form-control ml-2">
+		<select id="category_filter" class="form-control ms-2">
 			<option value=""></option>
 			<option value="{{ constant('App\\Entity\\UsefulLink::DEVELOPMENT_FAMILY') }}">{{ ("usefullink.admin." ~ constant('App\\Entity\\UsefulLink::DEVELOPMENT_FAMILY')|capitalize)|trans([], "validators") }}</option>
 			<option value="{{ constant('App\\Entity\\UsefulLink::TECHNICAL_FAMILY') }}">{{ ("usefullink.admin." ~ constant('App\\Entity\\UsefulLink::TECHNICAL_FAMILY')|capitalize)|trans([], "validators") }}</option>
@@ -26,10 +26,10 @@
 		<hr>
 	</div>
 	<div class="form-group">
-		<label class="ml-2">{{ "usefullink.admin.Tags"|trans([], "validators") }}</label>
-		<input id="tags_filter" type="text" class="form-control ml-2" />
+		<label class="ms-2">{{ "usefullink.admin.Tags"|trans([], "validators") }}</label>
+		<input id="tags_filter" type="text" class="form-control ms-2" />
 	</div>
-	<button type="submit" class="btn btn-primary ml-2">{{ "usefullink.admin.Search"|trans([], "validators") }}</button>
+	<button type="submit" class="btn btn-primary ms-2">{{ "usefullink.admin.Search"|trans([], "validators") }}</button>
 	</form>
 	<hr>
 {% endblock %}

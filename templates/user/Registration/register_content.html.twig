@@ -37,9 +37,9 @@
 			{{ form_errors(form.avatar) }}
 			{{ form_widget(form.avatar) }}
 			<div>
-				<span class="font-weight-bold">{{ "user.register.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
+				<span class="fw-bold">{{ "user.register.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
 				<br>
-				<span class="font-weight-bold">{{ "user.register.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
+				<span class="fw-bold">{{ "user.register.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
 			</div>
 		</div>
 		<div class="form-table-cell form-table-cell-head">{{ form_label(form.birthDate, "user.register.BirthDate"|trans([], "validators")) }}</div>
@@ -118,7 +118,7 @@
 	{{ form_rest(form) }}
 	{{ form_errors(form) }}
 	<div class="clearfix">
-		<div class="mt-3 float-right">
+		<div class="mt-3 float-end">
 			<input type="submit" value="{{ 'registration.submit'|trans({}, 'FOSUserBundle') }}" class="submitcomment btn" />
 		</div>
 	</div>

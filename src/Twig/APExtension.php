@@ -264,7 +264,7 @@
 								</div>
 							  </div>
 							</div>';
-				$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge badge-info float-right" data-toggle="modal" data-target="#fileManagementModal"><i class="fas fa-info fa-fw"></i></a>' : '';
+				$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge bg-info float-end" data-bs-toggle="modal" data-target="#fileManagementModal"><i class="fas fa-info fa-fw"></i></a>' : '';
 				
 				if(empty($imgContent))
 					$res = '<div class="image">'.$res.'<p>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</p></div>'.(!empty($c = $caption["caption"]) ? $modal : '');
@@ -621,7 +621,7 @@
 			$html = "";
 			
 			if($action)
-				$html = '<a href="'.$this->router->generate("TagWord_Admin_Show", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="'.$this->router->generate("TagWord_Admin_Edit", ["id" => $tag->getTagWord()->getId()]).'" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> ';
+				$html = '<a href="'.$this->router->generate("TagWord_Admin_Show", ["id" => $tag->getTagWord()->getId()]).'" class="badge bg-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="'.$this->router->generate("TagWord_Admin_Edit", ["id" => $tag->getTagWord()->getId()]).'" class="badge bg-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> ';
 
 				$tagArray[] = !$clean ? $html.$tag->getTagWord()->getTitle() : $tag->getTagWord()->cleanTags();
 			}
@@ -922,11 +922,11 @@
 		public function formatHistory($text)
 		{
 			return "<pre>".implode(PHP_EOL, array_map(function ($string) {
-				$string = preg_replace('/(@@ [A-Za-z0-9,\-+\s]* @@)/', '<div class="alert alert-info font-weight-bold mb-0">$1</div>', $string);
-				$string = preg_replace('/((\\+){3} New)/', '<div class="alert alert-success font-weight-bold mb-0">$1</div>', $string);
-				$string = preg_replace('/^(\\+){1}/', '<div class="alert alert-success font-weight-bold mb-0"><i class="fas fa-plus"></i></div>', $string);
-				$string = preg_replace('/^((\\-){3} Original)/', '<div class="alert alert-danger font-weight-bold mb-0">$1</div>', $string);
-				$string = preg_replace('/^(\\-){1}/', '<div class="alert alert-danger font-weight-bold mb-0"><i class="fas fa-minus"></i></div>', $string);
+				$string = preg_replace('/(@@ [A-Za-z0-9,\-+\s]* @@)/', '<div class="alert alert-info fw-bold mb-0">$1</div>', $string);
+				$string = preg_replace('/((\\+){3} New)/', '<div class="alert alert-success fw-bold mb-0">$1</div>', $string);
+				$string = preg_replace('/^(\\+){1}/', '<div class="alert alert-success fw-bold mb-0"><i class="fas fa-plus"></i></div>', $string);
+				$string = preg_replace('/^((\\-){3} Original)/', '<div class="alert alert-danger fw-bold mb-0">$1</div>', $string);
+				$string = preg_replace('/^(\\-){1}/', '<div class="alert alert-danger fw-bold mb-0"><i class="fas fa-minus"></i></div>', $string);
 				$string = str_repeat(' ', 6) . $string;
 			 return $string;
 			}, explode(PHP_EOL, $text)))."</pre>";

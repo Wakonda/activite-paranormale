@@ -1,5 +1,5 @@
 {% set width = "40" %}
-<div class="float-left mr-1" style="max-width: {{ width }}px">
+<div class="float-start me-1" style="max-width: {{ width }}px">
 	{% if entity is not empty %}
 		<a href="{{ path('Logo_Read', { 'id' : entity.id }) }}">{{ entity.image|imgsize(40, entity.getAssetImagePath()~entity.folder~'/', true, { 'title': entity.title })|raw }}</a>
 	{% else %}

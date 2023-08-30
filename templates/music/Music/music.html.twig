@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.musicPiece }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script>
@@ -28,10 +28,10 @@
 	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.length|string_duration)|default('-') }}</p>
 	<hr>
 	<ul class="fa-ul">
-		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="font-weight-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.title}) }}">{{ artist.title }}</a></li>
+		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="fw-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.title}) }}">{{ artist.title }}</a></li>
 		
 		{% if album is not empty %}
-			<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="font-weight-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.title, album: album.title}) }}">{{ album.title }}</a></li>
+			<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="fw-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.title, album: album.title}) }}">{{ album.title }}</a></li>
 		{% endif %}
 	</ul>
 	<hr>
