@@ -264,7 +264,7 @@
 								</div>
 							  </div>
 							</div>';
-				$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge bg-info float-end" data-bs-toggle="modal" data-target="#fileManagementModal"><i class="fas fa-info fa-fw"></i></a>' : '';
+				$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge bg-info float-end" data-bs-toggle="modal" data-bs-target="#fileManagementModal"><i class="fas fa-info fa-fw"></i></a>' : '';
 				
 				if(empty($imgContent))
 					$res = '<div class="image">'.$res.'<p>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</p></div>'.(!empty($c = $caption["caption"]) ? $modal : '');
@@ -323,7 +323,7 @@
 			return $dom->saveHTML();
 		}
 
-		public function dodateFilter($date, $time = false, $language)
+		public function dodateFilter($date, $time, $language)
 		{
 			if((is_object($date) or is_string($date)) and !empty($date))
 			{
@@ -507,8 +507,8 @@
 				return null;
 
 			$webPath = $this->parameterBag->get('kernel.project_dir').'/public/extended/photo/banner/';
-			
-			if(!$webPath."/".$entity->getImage())
+
+			if(!file_exists($webPath.$entity->getImage()))
 				return null;
 
 			$imageSize = getimagesize($webPath."/".$entity->getImage());

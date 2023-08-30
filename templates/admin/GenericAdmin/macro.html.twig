@@ -10,9 +10,7 @@
 </style>
 
 <div class="input-group mb-2">
-	<div class="input-group-prepend">
-		<span class="input-group-text"><i class="fab fa-wikipedia-w"></i></span>
-	</div>
+	<span class="input-group-text"><i class="fab fa-wikipedia-w"></i></span>
 	<input type="text" id="url_{{ fieldId }}" class="form-control wikidata-url"/>
 	<select id="sections_{{ fieldId }}" name="sections[]" multiple="multiple" style="min-width: 25%"></select>
 	<button type="button" class="btn btn-success" id="import_url_{{ fieldId }}"><i class="fas fa-check" id="import_url_icon_{{ fieldId }}"></i></button>
@@ -120,9 +118,7 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.wikidata, "Wikidata") }}</div>
 <div class="form-table-cell">
 	<div class="input-group">{{ form_errors(form.wikidata) }}{{ form_widget(form.wikidata, { 'attr': {'class': 'form-control'}}) }}
-		<div class="input-group-append">
-			<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-arrows-rotate"></i></button>
-		</div>
+		<button id="wikidata" class="btn btn-outline-secondary" type="button"><i class="fas fa-arrows-rotate"></i></button>
 	</div>
 </div>
 {% endmacro %}

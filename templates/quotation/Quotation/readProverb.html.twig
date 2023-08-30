@@ -19,7 +19,7 @@
 			{% set i = 0 %}
 			{% set j = 1 %}
 			{% for imageEntity in entity.images %}
-				<li data-target="#carousel-quote-read" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+				<li data-bs-target="#carousel-quote-read" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
 				{% set i = i + 1 %}
 				{% set j = j + 1 %}
 			{% endfor %}
@@ -55,19 +55,4 @@
 	<br>
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
-{% endblock %}
-
-{% block header_plus %}
-	<script>
-		$(document).ready(function(){
-			$('#carousel-quote-read').carousel({
-				interval: false
-			}).on('slide.bs.carousel', function (e) {
-				var nextH = $(e.relatedTarget).height();
-				$(this).find('.active.carousel-item').parent().animate({
-					height: nextH
-				}, 500);
-			});
-		});
-	</script>
 {% endblock %}

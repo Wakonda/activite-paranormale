@@ -2,14 +2,10 @@
     {% apply spaceless %}
 		<div class="input-group mt-2" id="{{ form.vars.id }}_container">
 			{% if base_path is not null %}
-			<div class="input-group-prepend">
 				<a href="#" class="input-group-text select_files_colorbox"><i class="fas fa-camera-retro" aria-hidden="true"></i></a>
-			</div>
 			{% endif %}
 			{{ form_widget(form, {'attr':{'class': 'existing_photo_colorbox form-control', 'placeholder': "admin.general.EnterURL"|trans([], "validators") }}) }}
-			<div class="input-group-append">
 			<a href="#" class="input-group-text remove_files_colorbox"><i class="fas fa-times" aria-hidden="true"></i></a>
-			</div>
 		</div>
 
 		<div class="modal fade selectFileModal" id="selectFileModal_{{ form.vars.id }}" data-field-id="{{ form.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="selectFileModalLabel_{{ form.vars.id }}" aria-hidden="true">
@@ -59,9 +55,9 @@
 
 	<div class="input-group">
 		{{ form_widget(form.day, {'attr':{'class': 'form-control'}}) }}
-		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
+		<span class="input-group-text">/</span>
 		{{ form_widget(form.month, {'attr':{'class': 'form-control'}}) }}
-		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
+		<span class="input-group-text">/</span>
 		{{ form_widget(form.year, {'attr':{'class': 'form-control'}}) }}
 	</div>
 
@@ -91,15 +87,15 @@
 
 	<div class="input-group">
 		{{ form_widget(form.day, {'attr':{'class': 'form-control'}}) }}
-		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
+		<span class="input-group-text">/</span>
 		{{ form_widget(form.month, {'attr':{'class': 'form-control'}}) }}
-		<div class="input-group-append input-group-prepend"><span class="input-group-text">/</span></div>
+		<span class="input-group-text">/</span>
 		{{ form_widget(form.year, {'attr':{'class': 'form-control'}}) }}
 	</div>
 	<div class="input-group mt-2">
-		<div class="input-group-prepend"><span class="input-group-text"><i class="far fa-clock"></i></span></div>
+		<span class="input-group-text"><i class="far fa-clock"></i></span>
 		{{ form_widget(form.hour, {'attr':{'class': 'form-control'}}) }}
-		<div class="input-group-append input-group-prepend"><span class="input-group-text">:</span></div>
+		<span class="input-group-text">:</span>
 		{{ form_widget(form.minute, {'attr':{'class': 'form-control'}}) }}
 	</div>
 
@@ -143,23 +139,17 @@
 
 	<div class="d-flex mt-3">
 		<div class="input-group mb-3">
-			<div class="input-group-prepend">
-				<span class="input-group-text" id="basic-addon1"><i class="fas fa-balance-scale-right"></i></span>
-			</div>
+			<span class="input-group-text" id="basic-addon1"><i class="fas fa-balance-scale-right"></i></span>
 			{{ form_widget(form.license, {'attr':{'class': 'form-control'}}) }}
 		</div>
 
 		<div class="input-group mb-3">
-			<div class="input-group-prepend">
-				<span class="input-group-text" id="basic-addon1"><i class="fas fa-user-tie"></i></span>
-			</div>
+			<span class="input-group-text" id="basic-addon1"><i class="fas fa-user-tie"></i></span>
 			{{ form_widget(form.author, {'attr':{'class': 'form-control'}}) }}
 		</div>
 
 		<div class="input-group mb-3">
-			<div class="input-group-prepend">
-				<span class="input-group-text" id="basic-addon1"><i class="fas fa-link"></i></span>
-			</div>
+			<span class="input-group-text" id="basic-addon1"><i class="fas fa-link"></i></span>
 			{{ form_widget(form.urlSource, {'attr':{'class': 'form-control'}}) }}
 		</div>
 	</div>
@@ -194,7 +184,7 @@
 
 							tinymce.get("{{ form.caption.vars.id }}").setContent(obj.description);
 						}
-					 }
+					}
 				}
 			};
 			xmlhttp.send(null);

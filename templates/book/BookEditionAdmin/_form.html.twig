@@ -11,9 +11,7 @@
 <div class="form-table-cell">
 	<div id="error_data_{{ form.isbn10.vars.id }}" class="alert alert-danger" style="display: none;">{{ "admin.error.NotDataFound"|trans([], "validators") }}</div>
 	<div class="input-group">{{ form_errors(form.isbn10) }}{{ form_widget(form.isbn10, { 'attr': {'class': 'form-control'} }) }}
-		<div class="input-group-append">
-			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn10.vars.id }}" type="button"><i class="fas fa-arrows-rotate"></i></button>
-		</div>
+		<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn10.vars.id }}" type="button"><i class="fas fa-arrows-rotate"></i></button>
 	</div>
 </div>
 
@@ -21,9 +19,7 @@
 <div class="form-table-cell">
 	<div id="error_data_{{ form.isbn13.vars.id }}" class="alert alert-danger" style="display: none;">{{ "admin.error.NotDataFound"|trans([], "validators") }}</div>
 	<div class="input-group">{{ form_errors(form.isbn13) }}{{ form_widget(form.isbn13, { 'attr': {'class': 'form-control'} }) }}
-		<div class="input-group-append">
-			<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn13.vars.id }}" type="button"><i class="fas fa-arrows-rotate"></i></button>
-		</div>
+		<button class="btn btn-outline-secondary googleBook" data-field="{{ form.isbn13.vars.id }}" type="button"><i class="fas fa-arrows-rotate"></i></button>
 	</div>
 </div>
 

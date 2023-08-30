@@ -30,7 +30,9 @@
 				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
 			}
 			
-			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			/*var myModal = new bootstrap.Modal(document.getElementById('news_licence_link'));
+			console.log(myModal)*/
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {alert("oooo")
 				$('#showColorboxByLicenceModal').modal('show');
 				e.preventDefault();
 			});

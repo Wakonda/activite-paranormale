@@ -124,15 +124,13 @@
 		
 		<h3>{{ "document.abstract.Share"|trans([], "validators") }}</h3>
 		<div id="success_copy"><span></span></div>
-		<textarea id="embedded_document" class="generation bg-light text-muted form-control" readonly cols="65" rows="3"><iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe></textarea>
+		<textarea id="embedded_document" class="generation bg-light text-white-50 form-control" readonly cols="65" rows="3"><iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe></textarea>
 		
 		<div class="form-group mt-2">
 			<span>{{ "document.abstract.DocumentSize"|trans([], "validators") }} </span>
 			<div class="input-group">
 				<input type="integer" id="custom_width" class="size_embedded form-control">
-				<div class="input-group-prepend input-group-append">
-					<span class="input-group-text"><i class="fas fa-times"></i></span>
-				</div>
+				<span class="input-group-text"><i class="fas fa-times"></i></span>
 				<input type="integer" id="custom_height" class="size_embedded form-control">
 			</div>
 		</div>

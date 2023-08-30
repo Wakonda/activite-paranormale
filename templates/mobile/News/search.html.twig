@@ -20,9 +20,7 @@
 	{{ form_start(form, {'action': path('ap_newsmobile_search'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="input-group">
 			{{ form_widget(form.query, {'attr':{'class' : 'form-control', value: keyword}}) }}
-			<div class="input-group-append">
-				<button name="Search" class="submitcomment bouton searchSubmit input-group-text border-0" type="submit" alt="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-			</div>
+			<button name="Search" class="submitcomment bouton searchSubmit input-group-text border-0" type="submit" alt="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
 		</div>
 	{{ form_end(form) }}
 
@@ -49,7 +47,7 @@
 									{% if results[item.id~"_"~item.classname].entity.illustration is defined and results[item.id~"_"~item.classname].entity.illustration is not empty %}
 										<div>{{ results[item.id~"_"~item.classname].entity.photoIllustrationFilename|imgsize(100, results[item.id~"_"~item.classname].entity.getAssetImagePath(), true, { 'class': 'me-2 mt-1'}, {}, false)|raw }}</div>
 									{% endif %}
-									<p class="mb-0 text-muted">{{ item.searchText|slice(0, 150) }}</p>
+									<p class="mb-0 text-white-50">{{ item.searchText|slice(0, 150) }}</p>
 								</div>
 							</div>
 						{% else %}
@@ -83,7 +81,7 @@
 									<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].entity.title }}</h6>
 
 									{% set size = getimagesize(resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename, resultImages[item.id~"_"~item.classname].showRoute) %}
-									<p class="card-text text-center"><small class="text-muted">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
+									<p class="card-text text-center"><small class="text-white-50">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
 									<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">{{ "search.index.Read"|trans([], "validators") }}</a></p>
 								</div>
 							</div>

@@ -38,7 +38,7 @@
 				{{ render(controller('App\\Controller\\PageController::displayLogoAction')) }}
 				<a class="navbar-brand fw-bold me-0 me-sm-2" href="{{ path('Index_Index') }}">
 				Activité-Paranormale</a>
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>
 				</button>
 				<div class="collapse navbar-collapse" id="navbarResponsive">
@@ -178,9 +178,7 @@
 								<form name="ap_search_searchenginetype" action="{{ path('Search_Query') }}" method="post">
 									<div class="input-group">
 										<input class="form-control" type="text" name="ap_search_searchenginetype[query]" value="" placeholder="{{ 'index.leftMenu.Search'|trans([], 'validators') }}" />
-										<div class="input-group-append">
-											<button name="Search" class="submitcomment bouton searchSubmit input-group-text border-0" type="submit" alt="Search" aria-label="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
-										</div>
+										<button name="Search" class="submitcomment bouton searchSubmit input-group-text border-0" type="submit" alt="Search" aria-label="Search"><i class="fa fa-search" aria-hidden="true"></i></button>
 									</div>
 								</form>
 							</div>
@@ -347,17 +345,17 @@
 				{% else %}
 					<span class="p-2"><a class="fw-bold" href="//forum-en.activite-paranormale.com/" title="Forum">Forum</a></span>
 				{% endif %}
-				<span class="p-2 text-muted">|</span>
+				<span class="p-2 text-white-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="{{ path('ap_tags_index') }}" title="Tag">{{ "index.footerMenu.Tag"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-muted">|</span>
+				<span class="p-2 text-white-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="https://wakonda.guru" target="_parent">Wakonda.Guru</a></span>
-				<span class="p-2 text-muted">|</span>
+				<span class="p-2 text-white-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="{{ path('Page_About') }}" title="About">{{ "index.footerMenu.About"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-muted">|</span>
+				<span class="p-2 text-white-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="{{ path('Page_PrivacyPolicy') }}" title="Privacy policy">{{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-muted">|</span>
+				<span class="p-2 text-white-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="{{ path('Contact_Index') }}">{{ "index.footerMenu.Contact"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-muted">|</span>
+				<span class="p-2 text-white-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></span>
 			</div>
 		</div>

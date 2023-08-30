@@ -26,9 +26,7 @@
 
 <div class="input-group mb-3 mt-2">
 	{{ form_widget(form.language, { 'attr': {'class': 'form-control'}}) }}
-	<div class="input-group-append">
-		<a href="#" class="btn btn-success" id="{{ form.language.vars.id }}_select_language">{{ "admin.general.Create"|trans([], "validators") }}</a>
-	</div>
+	<a href="#" class="btn btn-success" id="{{ form.language.vars.id }}_select_language">{{ "admin.general.Create"|trans([], "validators") }}</a>
 </div>
 
 <script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>

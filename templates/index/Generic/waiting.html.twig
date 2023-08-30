@@ -7,7 +7,7 @@
 {% block APBlog_body %}
 	{% if entity.state.isWaiting %}
 		<div class="alert alert-success" role="alert">
-			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-target="#collapseWaiting" aria-expanded="false" aria-controls="collapseWaiting"><i class="fab fa-sticker-mule"></i> {{ entity.state.title }}</p>
+			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-bs-target="#collapseWaiting" aria-expanded="false" aria-controls="collapseWaiting"><i class="fab fa-sticker-mule"></i> {{ entity.state.title }}</p>
 			{% if entity.state.text is not empty %}
 				<div id="collapseWaiting" class="collapse">
 					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
@@ -16,7 +16,7 @@
 		</div>
 	{% elseif entity.state.isDraft %}
 		<div class="alert alert-info">
-			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-target="#collapseDraft" aria-expanded="false" aria-controls="collapseDraft"><i class="fas fa-drafting-compass"></i> {{ entity.state.title }}</p>
+			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-bs-target="#collapseDraft" aria-expanded="false" aria-controls="collapseDraft"><i class="fas fa-drafting-compass"></i> {{ entity.state.title }}</p>
 			{% if entity.state.text is not empty %}
 				<div id="collapseDraft" class="collapse">
 					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
@@ -25,7 +25,7 @@
 		</div>
 	{% elseif entity.state.isPreview %}
 		<div class="alert alert-primary" role="alert">
-			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-target="#collapsePreview" aria-expanded="false" aria-controls="collapsePreview"><i class="fas fa-binoculars"></i> {{ entity.state.title }}</p>
+			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-bs-target="#collapsePreview" aria-expanded="false" aria-controls="collapsePreview"><i class="fas fa-binoculars"></i> {{ entity.state.title }}</p>
 			{% if entity.state.text is not empty %}
 				<div id="collapsePreview" class="collapse">
 					<p class="mt-2"><i>{{ entity.state.text }}</i></p>
@@ -34,7 +34,7 @@
 		</div>
 	{% elseif entity.state.isWriting %}
 		<div class="alert alert-dark" role="alert">
-			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-target="#collapseWriting" aria-expanded="false" aria-controls="collapseWriting"><i class="fas fa-highlighter"></i> {{ entity.state.title }}</p>
+			<p class="fw-bold cursor-pointer mb-0"  data-bs-toggle="collapse" data-bs-target="#collapseWriting" aria-expanded="false" aria-controls="collapseWriting"><i class="fas fa-highlighter"></i> {{ entity.state.title }}</p>
 			{% if entity.state.text is not empty %}
 				<div id="collapseWriting" class="collapse">
 					<p class="mt-2"><i>{{ entity.state.text }}</i></p>

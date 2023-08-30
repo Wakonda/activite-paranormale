@@ -42,6 +42,8 @@ h4 {
 
 hr {
 	background-color: white;
+	opacity: initial;
+	border-top: 1px solid rgba(0,0,0,.1);
 }
 
 nav.navbar {
@@ -253,6 +255,9 @@ table.dataTable tr.odd {
 .content .card .content-card {
 	border-left: 1px solid #d7e13d;
 	margin-left: -1px;
+}
+.content .card .card-body {
+	color: #aa9a6f !important;
 }
 
 .topic.card {

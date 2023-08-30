@@ -28,7 +28,7 @@
 		<a href="#" class="btn social-share flipboard share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Flipboard"><i class="fab fa-flipboard fa-lg fa-fw"></i></a>
 	</div>
 	<div class="pe-1 pb-1">
-		<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-bs-toggle="modal" data-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
+		<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-bs-toggle="modal" data-bs-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
 	</div>
 	<div class="pb-1">
 		<a href="#" class="btn social-share weibo share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Sina Weibo"><i class="fab fa-weibo fa-lg fa-fw"></i></a>
@@ -47,9 +47,7 @@
 			<div class="modal-body">
 				<p class="text-white h5">{{ "mastodon.index.ChooseAnInstance"|trans([], "validators") }}</p>
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text">https://</span>
-					</div>
+					<span class="input-group-text">https://</span>
 					<input type="text" class="form-control" placeholder="URL" id="url-mastodon-value" value="mastodon.social">
 				</div>
 			</div>

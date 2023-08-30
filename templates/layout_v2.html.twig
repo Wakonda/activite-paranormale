@@ -72,7 +72,7 @@
 							<div class="side_column_box_content">
 								<div class="news_section">
 									<div>
-										<h3 class="cursor-pointer" data-bs-toggle="collapse" data-target="#collapseAccountMenu" aria-expanded="false" aria-controls="collapseAccountMenu">
+										<h3 class="cursor-pointer" data-bs-toggle="collapse" data-bs-target="#collapseAccountMenu" aria-expanded="false" aria-controls="collapseAccountMenu">
 										{% if (app.user.lastlogin is defined) and (is_granted("IS_AUTHENTICATED_FULLY")) %}
 											{{ "index.leftMenu.Account"|trans([], "validators") }}
 										{% else %}
@@ -162,9 +162,7 @@
 									<form name="ap_search_searchenginetype" action="{{ path('Search_Query') }}" method="post">
 										<div class="input-group mb-3">
 											<input type="text" name="ap_search_searchenginetype[query]" value="" placeholder="{{ 'index.leftMenu.Search'|trans([], 'validators') }}" />
-											<div class="input-group-append">
-												<button type="submit" name="Search" title="Search" class="submitcomment bouton border-0" aria-label="Search"><i class="fas fa-search"></i></button>
-											</div>
+											<button type="submit" name="Search" title="Search" class="submitcomment bouton border-0" aria-label="Search"><i class="fas fa-search"></i></button>
 										</div>
 									</form>
 								</div>

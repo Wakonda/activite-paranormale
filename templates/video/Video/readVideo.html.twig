@@ -149,13 +149,11 @@
 		{% if video.mediaVideo is not empty %}
 			<h3>{{ "video.read.Share"|trans([], "validators") }}</h3>
 			<div id="success_copy"><span></span></div>
-			<textarea id="embedded_document" class="generation bg-light text-muted form-control mb-2" cols="65" rows="4"><iframe src="{{ url('Video_Export', { 'id' : video.id, 'title' : video.title }) }}" width="550" height="309"></iframe></textarea>
+			<textarea id="embedded_document" class="generation bg-light text-white-50 form-control mb-2" cols="65" rows="4"><iframe src="{{ url('Video_Export', { 'id' : video.id, 'title' : video.title }) }}" width="550" height="309"></iframe></textarea>
 			<span>{{ "video.read.VideoSize"|trans([], "validators") }} </span>
 			<div class="input-group">
 				<input type="integer" id="custom_width" class="size_embedded form-control">
-				<div class="input-group-prepend input-group-append">
-					<span class="input-group-text"><i class="fas fa-times"></i></span>
-				</div>
+				<span class="input-group-text"><i class="fas fa-times"></i></span>
 				<input type="integer" id="custom_height" class="size_embedded form-control">
 			</div>
 			

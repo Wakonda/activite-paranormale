@@ -22,7 +22,7 @@
 		<ol class="carousel-indicators">
 		{% set i = 0 %}
 		{% for theme in themes %}
-			<li data-target="#carouselWitchcraftToolTheme" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}></li>
+			<li data-bs-target="#carouselWitchcraftToolTheme" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}></li>
 			{% set i = i + 1 %}
 		{% endfor %}
 		</ol>

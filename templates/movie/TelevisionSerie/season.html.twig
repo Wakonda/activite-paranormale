@@ -17,7 +17,7 @@
 	<hr>
 	<div id="accordion">
 		{% for entity in entities %}
-			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-bs-toggle="collapse" data-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
+			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
 				{{ "televisionSerie.read.Episode"|trans([], "validators") }} {{ entity.episodeNumber }} - {{ entity.title }}
 				<button onClick="javascript:window.location.href='{{ path('TelevisionSerie_Episode', {id: entity.id, title_slug: entity.urlSlug }) }}'" class="badge bg-info float-end"><i class="fas fa-info fa-fw"></i></button>
 			</h3>
