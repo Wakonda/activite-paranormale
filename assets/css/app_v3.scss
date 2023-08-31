@@ -155,9 +155,10 @@ table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, 
 table.dataTable thead .sorting:before, table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:before, table.dataTable thead .sorting_desc_disabled:after {
 	display: flex !important;
 }
-table.table, table {
+table.table, table, .table>:not(caption)>*>* {
 	color: #aa9a6f;
 	border: #d7e13d solid 1px;
+	background-color: initial;
 }
 .table thead th {
     border-bottom: 1px solid #d7e13d;
@@ -193,7 +194,7 @@ td.child
 }
 
 .td_form_table {
-    background-color: #000e00;
+    background-color: #000e00 !important;
 }
 table.dataTable tr.odd td.sorting_1 {
     background-color: #001600 !important;

@@ -14,9 +14,9 @@
 		document.addEventListener('DOMContentLoaded', () => {
 			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
 		
-			document.getElementById('help_licence_link').addEventListener("click", (e) =>
-			{
-				$('#showColorboxByLicenceModal').modal('show');
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 				e.preventDefault();
 			});
 		});

@@ -22,7 +22,7 @@
 						<div class="card-header h-100 text-start">
 							<img class="image_wrapper" src="{{ asset(worldNew.language.getAssetImagePath()) }}{{ worldNew.language.logo }}" title="{{ worldNew.language.abbreviation }}" width="20" height="13" alt="{{ worldNew.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ worldNew.title }}</span>
 						</div>
-						<div class="row no-gutters">
+						<div class="row g-0">
 							<div class="col-md-4 mt-3">
 								{{ worldNew.photoIllustrationFilename|imgsize(null, worldNew.getAssetImagePath(), true, { 'loading': 'lazy'})|raw }}
 							</div>

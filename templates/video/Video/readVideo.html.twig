@@ -82,9 +82,10 @@
 					$("#success_copy span").empty();
 				}
 			{% endif %}
-			
+
 			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-				$('#showColorboxByLicenceModal').modal('show');
+				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 				e.preventDefault();
 			});
 		});
@@ -108,7 +109,7 @@
 		  </div>
 		  <div class="modal-footer">
 			<a href='{{ path('Video_Notify', { 'id' : video.id }) }}' alt='' rel='nofollow' class='confirmation_delete_video me-auto btn btn-success text-white'>{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}</a>
-			<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
+			<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
 		  </div>
 		</div>
 	  </div>

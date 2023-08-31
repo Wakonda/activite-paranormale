@@ -104,3 +104,13 @@
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
+
+{% block additional_javascript %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+			e.preventDefault();
+		});
+	</script>
+{% endblock %}

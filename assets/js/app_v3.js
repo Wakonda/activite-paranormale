@@ -16,6 +16,8 @@ global.$ = global.jQuery = window.$ = window.jQuery = require('jquery');
 
 require('bootstrap');
 
+window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
+
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
 

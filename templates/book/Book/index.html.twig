@@ -46,7 +46,7 @@
 	<br>
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
-			<div class="row no-gutters">
+			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center store_embedded_image">
 					{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
 					{% if dataStore is not empty %}

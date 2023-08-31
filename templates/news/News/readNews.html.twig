@@ -29,11 +29,10 @@
 				$("p.image object").remove();
 				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
 			}
-			
-			/*var myModal = new bootstrap.Modal(document.getElementById('news_licence_link'));
-			console.log(myModal)*/
+
 			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {alert("oooo")
-				$('#showColorboxByLicenceModal').modal('show');
+				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 				e.preventDefault();
 			});
 		});

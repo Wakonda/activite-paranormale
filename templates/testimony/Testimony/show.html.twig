@@ -17,7 +17,8 @@
 	<script>
 		document.addEventListener("DOMContentLoaded", function(event) {
 			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-				$('#showColorboxByLicenceModal').modal('show');
+				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 				e.preventDefault();
 			});
 		
@@ -35,7 +36,6 @@
 				map.addControl(new L.Control.Fullscreen());
 			{% endif %}
 		});
-
 	</script>
 {% endblock %}
 

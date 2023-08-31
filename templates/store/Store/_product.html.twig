@@ -1,5 +1,5 @@
 <div class="card mb-3">
-	<div class="row no-gutters">
+	<div class="row g-0">
 		<div class="col-md-4 align-self-center text-center">
 			{% if entity.photo is not empty %}
 				{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}

@@ -29,7 +29,8 @@
 {% block additional_javascript %}
 	<script>
 		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			$('#showColorboxByLicenceModal').modal('show');
+			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 			e.preventDefault();
 		});
 	</script>

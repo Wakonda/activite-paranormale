@@ -1,3 +1,11 @@
+<script>
+	document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+		var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+		licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+		e.preventDefault();
+	});
+</script>
+
 {% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 <div class="modal fade black_modal" tabindex="-1" role="dialog" id="checkVideo">
   <div class="modal-dialog" role="document">
@@ -10,7 +18,7 @@
 	  </div>
 	  <div class="modal-footer">
 		<a href='{{ path('Video_Notify', { 'id' : entity.id }) }}' alt='' rel='nofollow' class='confirmation_delete_video me-auto btn btn-success text-white'>{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}</a>
-		<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
+		<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
 	  </div>
 	</div>
   </div>

@@ -49,7 +49,7 @@
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
 			<div class="card-body">
-				<div class="row no-gutters">
+				<div class="row g-0">
 					{% if entity.illustration is not empty %}
 						<div class="col-md-4 align-self-center text-center">
 							{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
