@@ -14,3 +14,12 @@ WebDirectory_SearchDatatables:
 WebDirectory_Admin:
     resource: "routing/webdirectoryadmin.yml"
     prefix:   /admin/directory
+
+# WebDirectory User
+WebDirectory_User_New:
+    path:  /directory/published
+    controller: App\Controller\WebDirectoryController::newAction
+
+WebDirectory_User_Create:
+    path:  /directory/published/create
+    controller: App\Controller\WebDirectoryController::createAction

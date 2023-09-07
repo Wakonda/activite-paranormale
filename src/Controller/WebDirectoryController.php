@@ -8,8 +8,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
+use App\Entity\State;
+use App\Entity\Language;
 use App\Entity\WebDirectory;
 use App\Service\APImgSize;
+use App\Form\Type\WebDirectoryUserParticipationType;
 
 class WebDirectoryController extends AbstractController
 {
@@ -72,5 +75,57 @@ class WebDirectoryController extends AbstractController
 		}
 
 		return new JsonResponse($output);
+	}
+
+	// USER PARTICIPATION
+    public function newAction(Request $request)
+    {
+        $entity = new WebDirectory();
+
+        $form = $this->createForm(WebDirectoryUserParticipationType::class, $entity);
+
+        return $this->render('webdirectory/WebDirectory/new.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView()
+        ]);
+    }
+	
+	public function createAction(Request $request, EntityManagerInterface $em)
+    {
+		return $this->genericCreateUpdate($request, $em);
+    }
+
+	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, $id = 0)
+	{
+		$locale = $request->getLocale();
+		$user = $this->getUser();
+
+		if(empty($id))
+			$entity = new WebDirectory();
+		else {
+			$entity = $em->getRepository(WebDirectory::class)->find($id);
+		}
+
+        $form = $this->createForm(WebDirectoryUserParticipationType::class, $entity);
+        $form->handleRequest($request);
+
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $locale]);
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
+
+		$entity->setState($state);
+		$entity->setLanguage($language);
+
+        if ($form->isValid()) {
+			$em->persist($entity);
+			$em->flush();
+			
+
+			return $this->render('page/EventMessage/validate_externaluser_text.html.twig');
+        }
+
+        return $this->render('webdirectory/WebDirectory/new.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView()
+        ]);
 	}
 }

@@ -101,6 +101,11 @@ class WebDirectory
 	 */
 	private $internationalName;
 
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\State")
+     */
+    protected $state;
+
     /**
      * Get id
      *
@@ -397,5 +402,15 @@ class WebDirectory
     public function setWebsiteLanguage(Language $websiteLanguage)
     {
         $this->websiteLanguage = $websiteLanguage;
+    }
+
+	public function getState()
+    {
+        return $this->state;
+    }
+
+    public function setState(State $state)
+    {
+        $this->state = $state;
     }
 }
