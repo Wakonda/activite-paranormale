@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
-{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mr-2" alt="Anger"/></span>{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
+{% block page_title %}<span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="me-2" alt="Anger"/></span>{{ "testimony.new.NewTestimony"|trans([], "validators") }}{% endblock %}
 
 {% block header_mobile_plus %}
 	{% import "testimony/TestimonyAdmin/macro_testimony.html.twig" as macro_testimony %}
@@ -105,7 +105,7 @@
 		</div>
 		{% endif %}
 
-		<div class="text-right">
+		<div class="text-end">
 			{{ form_widget(form.addFile, {'label' : "testimony.new.NextStep"|trans([], "validators"), 'attr':{'class' : 'btn btn-info'}}) }}
 			{{ form_widget(form.save, {'label' : "testimony.addFile.Finish"|trans([], "validators"), 'attr':{'class' : 'btn btn-success'}}) }}
 		</div>

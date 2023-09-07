@@ -1,17 +1,4 @@
 {% if entities|length > 0 %}
-	<script >
-		$(document).ready(function(){
-			$('#carousel-filemanagement-show').carousel({
-				interval: false
-			}).on('slide.bs.carousel', function (e) {
-				var nextH = $(e.relatedTarget).height();
-				$(this).find('.active.carousel-item').parent().animate({
-					height: nextH
-				}, 500);
-			});
-		});
-	</script>
-
 	<div id="carousel-filemanagement-show" class="carousel-pagination carousel slide" data-interval="false">
 		<!-- Indicators -->
 		<ol class="carousel-indicators carousel-indicators-numbers pagination">
@@ -19,7 +6,7 @@
 		{% set j = 1 %}
 		{% for entity in entities %}
 			{% if entity.extensionFile|is_image %}
-			<li data-target="#carousel-filemanagement-show" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+			<li data-bs-target="#carousel-filemanagement-show" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
 			{% set i = i + 1 %}
 			{% set j = j + 1 %}
 			{% endif %}

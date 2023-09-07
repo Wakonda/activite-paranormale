@@ -80,7 +80,7 @@
 			if($language == "fr")
 			{
 				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]." " : "").$monthFrench[$dateArray[1]-1]." ".$dateArray[0];
+				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? intval($dateArray[2])." " : "").$monthFrench[$dateArray[1]-1]." ".$dateArray[0];
 			}
 			else if($language == "es")
 			{

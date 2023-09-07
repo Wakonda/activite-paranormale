@@ -1,14 +1,14 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ televisionSerie.title }} - {{ "televisionSerie.read.Season"|trans([], "validators") }} {{ season }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ televisionSerie.title }} - {{ "televisionSerie.read.Season"|trans([], "validators") }} {{ season }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ televisionSerie.title }} - {{ "televisionSerie.read.Season"|trans([], "validators") }} {{ season }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/episodeTelevisionSerie.jpg') }}" width="550" alt="Episode TV show" /></p>
 	<hr>
 		<ul class="fa-ul">
 			<li><span class="fa-li"><i class="fas fa-tv"></i></span> {{ "televisionSerie.read.TelevisionSerie"|trans([], "validators") }} <a href="{{ path('TelevisionSerie_Show', {id: televisionSerie.id, title_slug: televisionSerie.urlSlug}) }}">{{ televisionSerie.title }}</a></li>
-			<li><span class="fa-li"><i class="fas fa-list-ol"></i></span> {{ "televisionSerie.read.NumberEpisodesTitle"|trans([], "validators") }} <span class="badge badge-danger">{{ entities|length }}</span></li>
+			<li><span class="fa-li"><i class="fas fa-list-ol"></i></span> {{ "televisionSerie.read.NumberEpisodesTitle"|trans([], "validators") }} <span class="badge bg-danger">{{ entities|length }}</span></li>
 			
 			{% set first = entities|first %}
 			{% set last = entities|last %}
@@ -17,9 +17,9 @@
 	<hr>
 	<div id="accordion">
 		{% for entity in entities %}
-			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-toggle="collapse" data-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
+			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
 				{{ "televisionSerie.read.Episode"|trans([], "validators") }} {{ entity.episodeNumber }} - {{ entity.title }}
-				<button onClick="javascript:window.location.href='{{ path('TelevisionSerie_Episode', {id: entity.id, title_slug: entity.urlSlug }) }}'" class="badge badge-info float-right"><i class="fas fa-info fa-fw"></i></button>
+				<button onClick="javascript:window.location.href='{{ path('TelevisionSerie_Episode', {id: entity.id, title_slug: entity.urlSlug }) }}'" class="badge bg-info float-end"><i class="fas fa-info fa-fw"></i></button>
 			</h3>
 			<div id="collapse{{ entity.episodeNumber }}" class="collapse{% if first.id == entity.id %} show{% endif %}" aria-labelledby="heading{{ entity.episodeNumber }}" data-parent="#accordion">
 				<table class="table">

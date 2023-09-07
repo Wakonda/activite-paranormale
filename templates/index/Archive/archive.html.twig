@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "index.archive.Archive"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "index.archive.Archive"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "index.archive.Archive"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block header_plus %}
 {% endblock %}
 {% block APBlog_body %}
@@ -11,7 +11,7 @@
 	{% if is_granted('ROLE_ARCHIVIST') == false %}
 		{{ ("index.archive.Unauthorized"|trans({"%urlAccount%": path("Registration_Register"), "%urlContact%": path("Contact_Index")}, "validators"))|raw }}
 	{% else %}
-		{{ "index.archive.DocArchive"|trans([], "validators") }}<span class="badge badge-danger">{{ total }}</span>
+		{{ "index.archive.DocArchive"|trans([], "validators") }}<span class="badge bg-danger">{{ total }}</span>
 		<hr>
 		<a href="{{ path('Archive_Index', {'language': 'all'}) }}" title="World"><img class="flagLang {% if app.request.attributes.get('language') == 'all' %}select_language_language{% endif %}" src="{{ asset('extended/photo/language/earthFlag.png') }}" alt="World earth" width="20" height="13" /></a>
 		{% for flag in languages %}
@@ -26,7 +26,7 @@
 			{% for data in datas %}
 				<tr>
 					<td class="td_form_table"><a href="{{ path(data.path, {className: data.className, language: currentLanguage.abbreviation}) }}" >{{ data.canonicalName }}</a></td>
-					<td class="tdGene"><span class="badge badge-info">{{ data.count }}</span></td>
+					<td class="tdGene"><span class="badge bg-info">{{ data.count }}</span></td>
 				</tr>
 			{% endfor %}
 		</table>

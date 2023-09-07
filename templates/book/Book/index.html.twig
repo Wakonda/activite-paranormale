@@ -10,7 +10,7 @@
 
 {% block h2_title %}
 	<h2>
-		<span class="float-left"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "book.index.Book"|trans([], "validators") }}
+		<span class="float-start"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "book.index.Book"|trans([], "validators") }}
 
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
@@ -39,14 +39,14 @@
 			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right mt-3">{{ "book.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3">{{ "book.search.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<br>
 	<br>
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
-			<div class="row no-gutters">
+			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center store_embedded_image">
 					{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
 					{% if dataStore is not empty %}
@@ -76,7 +76,7 @@
 					</div>
 					<div class="card-footer text-center">
 						<a class="btn read" href="{{ path('Book_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
-							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
 							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
 						</a>
 					</div>
@@ -85,7 +85,7 @@
 		</div>
 		<hr class="hr2">
 	{% else %}
-		<div class="alert alert-danger font-italic text-center">{{ "book.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<div class="alert alert-danger fst-italic text-center">{{ "book.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
 

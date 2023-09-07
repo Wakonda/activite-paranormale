@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-left"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span>
 		{{ "news.index.Actualite"|trans([], "validators") }}
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
@@ -46,12 +46,12 @@
 	{% set i = 0 %}
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
-			<div class="row no-gutters">
+			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center">
 					{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
 				</div>
 				<div class="col-md-8 content-card">
-					<div class="card-body p-2 pl-3">
+					<div class="card-body p-2 ps-3">
 						<h5 class="card-title text-center">{{ entity.title }}</h5>
 						<hr>
 						<p class="card-text mb-0 text-center">{{ entity.Theme.title }} - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>

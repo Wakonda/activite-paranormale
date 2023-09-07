@@ -1,30 +1,31 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "music.index.Music"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/jukebox.png') }}" width="25" class="mt-1" alt="Jukebox"/></span>{{ "music.index.Music"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/jukebox.png') }}" width="25" class="mt-1" alt="Jukebox"/></span>{{ "music.index.Music"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 	<script>
 		$(function ()
 		{
 			oTable = $('table.music_datatables').DataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bSort": true,
-				"bLengthChange": true,
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": {{ total_line_display }},
-				"bProcessing": true,
-				"bServerSide": true,
-				"aaSorting": [[ 0, "asc" ]],
+				"searching": true,
+				"info": true,
+				"ordering": true,
+				"lengthChange": true,
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
+				"order": [[ 0, "asc" ]],
 				"ajax": {
 					"url": "{{ path('Music_ListDatatables') }}",
 					"type": "GET",
@@ -50,7 +51,7 @@
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/metalGirl.jpg') }}" width="550" alt="Métal Girl" /></p>
 	<hr>
-	<p>{{ "music.index.NbrArt"|trans([], "validators") }}<span class="badge badge-danger" id="count_artist"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
+	<p>{{ "music.index.NbrArt"|trans([], "validators") }}<span class="badge bg-danger" id="count_artist"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
 	<hr>
 	<h3>{{ "artist.search.SearchSort"|trans([], "validators") }}</h3>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
@@ -69,7 +70,7 @@
 			<div class="form-table-cell">{{ form_errors(form.bandStartingWith) }}{{ form_widget(form.bandStartingWith, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right">{{ "artist.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end">{{ "artist.search.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<hr>

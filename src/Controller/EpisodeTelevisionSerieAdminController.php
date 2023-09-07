@@ -142,20 +142,17 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $televisionSerieId)
 	{
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
 		// Search on individual column
@@ -170,12 +167,11 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $televisionSerieId);
 		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $televisionSerieId, true);
 
-		$output = array(
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
-		);
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
 
 		foreach($entities as $entity)
 		{
@@ -188,7 +184,7 @@ class EpisodeTelevisionSerieAdminController extends AdminGenericController
 			 <a href='".$this->generateUrl('EpisodeTelevisionSerie_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

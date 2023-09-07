@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/spells-icon.png') }}" width="25" class="mt-1" alt="Spells"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/spells-icon.png') }}" width="25" class="mt-1" alt="Spells"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
 	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_witchcraftmobile_read', {'id' : entity.id}) }}">
@@ -36,9 +36,9 @@
 		{% endif %}
 
 		{% if previousAndNextEntities["next"] is not empty %}
-			<a class="float-right" href="{{ path('Witchcraft_ReadGrimoire', {surtheme: entity.surTheme.title, id: previousAndNextEntities["next"].id, title_slug: previousAndNextEntities["next"].title})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+			<a class="float-end" href="{{ path('Witchcraft_ReadGrimoire', {surtheme: entity.surTheme.title, id: previousAndNextEntities["next"].id, title_slug: previousAndNextEntities["next"].title})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
 		{% else %}
-			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+			<span class="previous_next_disable_right float-end"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
 		{% endif %}
 	</div>
 

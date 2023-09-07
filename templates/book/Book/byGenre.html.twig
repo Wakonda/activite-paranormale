@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ genre.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="Movie"/></span>{{ genre.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="Movie"/></span>{{ genre.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ genre.photoIllustrationFilename|imgsize(550, genre.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, genre.photoIllustrationCaption)|raw }}</p>
@@ -9,7 +9,7 @@
 	<hr class="hr2">
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
-			<div class="row no-gutters">
+			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center store_embedded_image">
 					{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
 					{% if dataStore is not empty %}
@@ -39,7 +39,7 @@
 					</div>
 					<div class="card-footer text-center">
 						<a class="btn read" href="{{ path('Book_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
-							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
 							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
 						</a>
 					</div>
@@ -48,7 +48,7 @@
 		</div>
 		<hr class="hr2">
 	{% else %}
-		<div class="alert alert-danger font-italic text-center">{{ "movie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<div class="alert alert-danger fst-italic text-center">{{ "movie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
 

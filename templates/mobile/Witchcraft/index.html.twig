@@ -2,7 +2,7 @@
 
 {% block title %}{{ "mobile.main.Witchcraft"|trans([], "validators") }}{% endblock %}
 {% block page_title %}
-	<span class="float-left"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="mr-2" alt="Skull"/>
+	<span class="float-start"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="me-2" alt="Skull"/>
 	{{ "mobile.main.Witchcraft"|trans([], "validators") }}
 	{% if app.request.attributes.get('theme') != "" %}
 		{{ (" - "~app.request.attributes.get('theme')) }}
@@ -31,8 +31,8 @@
 {% endblock %}
 
 {% block body_content %}
-	<form name="choixTheme" id="choose_theme_news" action="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}" method="post" class="form-inline">
-		<div class="form-group mr-2">
+	<form name="choixTheme" id="choose_theme_news" action="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
+		<div class="form-group me-2">
 			<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
 			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">
 				<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>

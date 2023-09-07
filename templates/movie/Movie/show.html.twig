@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
@@ -174,4 +174,14 @@
 
 {% block sub_content %}
 	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Movie' })) }}
+{% endblock %}
+
+{% block additional_javascript %}
+	<script>
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+			e.preventDefault();
+		});
+	</script>
 {% endblock %}

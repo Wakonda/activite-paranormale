@@ -26,18 +26,15 @@
 
 <div class="input-group mb-3 mt-2">
 	{{ form_widget(form.language, { 'attr': {'class': 'form-control'}}) }}
-	<div class="input-group-append">
-		<a href="#" class="btn btn-success" id="{{ form.language.vars.id }}_select_language">{{ "admin.general.Create"|trans([], "validators") }}</a>
-	</div>
+	<a href="#" class="btn btn-success" id="{{ form.language.vars.id }}_select_language">{{ "admin.general.Create"|trans([], "validators") }}</a>
 </div>
 
-<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 <script>
 	document.querySelector("#{{ form.language.vars.id }}_select_language").addEventListener("click", (e) => {
 		e.preventDefault();
@@ -47,21 +44,15 @@
 	$(function ()
 	{
 		$('.doc_datatables').DataTable( {
-			"oLanguage": {
-				"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+			"language": {
+				"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 			},
-			"sPaginationType": "full_numbers",
-			"bInfo": false,
-			"bLengthChange": false,
-			"bFilter": false,
-			"aaSorting": [[ 0, "desc" ]],
-			"responsive": {
-				"details": {
-					display: $.fn.dataTable.Responsive.display.childRowImmediate,
-					type: 'none',
-					target: ''
-				}
-			}
+			"pagingType": "full_numbers",
+			"info": false,
+			"lengthChange": false,
+			"searching": false,
+			"order": [[ 0, "desc" ]],
+			"responsive": true
 		});
 	});
 </script>

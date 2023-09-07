@@ -1,7 +1,7 @@
 {# src/AP/UserBundle/Resources/view/Security/login.html.twig #}
 {% extends "content_layout.html.twig" %}
 {% block title %}{{ "user.otherProfile.AccountOf"|trans([], "validators") }}{{ user.username }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/voodoo-doll-icon.png') }}" width="28" class="mt-1" alt="Voodoo doll"/></span>{{ "user.otherProfile.AccountOf"|trans([], "validators") }} {{ user.username }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/voodoo-doll-icon.png') }}" width="28" class="mt-1" alt="Voodoo doll"/></span>{{ "user.otherProfile.AccountOf"|trans([], "validators") }} {{ user.username }}</h2>{% endblock h2_title %}
 	
 {% block APBlog_body %}
 	{% block fos_user_content %}
@@ -48,7 +48,7 @@
 				<h3>{{ "user.donation.RewardThisAuthor"|trans([], "validators") }}</h3>
 				<p>{{ "user.donation.RewardThisAuthorSentence"|trans([], "validators") }}</p>
 				<div class="text-center">
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#donationModal">{{ "user.donation.DonateToThisAuthor"|trans([], "validators") }}</button>
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#donationModal">{{ "user.donation.DonateToThisAuthor"|trans([], "validators") }}</button>
 				</div>
 				<div class="modal fade black_modal" id="donationModal" tabindex="-1" role="dialog" aria-labelledby="donationModalLabel" aria-hidden="true">
 					<div class="modal-dialog" role="document">
@@ -60,7 +60,7 @@
 								{{ render(controller('App\\Controller\\UserController::donationUser', {user: user})) }}
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+								<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 							</div>
 						</div>
 					</div>

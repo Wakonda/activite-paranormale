@@ -262,12 +262,11 @@ class BiographyAdminController extends AdminGenericController
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $toComplete);
 		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $toComplete, true);
 
-		$output = array(
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
-		);
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
 
 		foreach($entities as $entity)
 		{
@@ -280,7 +279,7 @@ class BiographyAdminController extends AdminGenericController
 			 <a href='".$this->generateUrl('Biography_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

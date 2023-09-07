@@ -3,7 +3,7 @@
 {% block title %}{{ "rssFeed.index.SubscribeToRSSFeeds"|trans([], "validators") }}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-left"><img src="{{ asset('extended/photo/feedrss_icon.png') }}" width="25" class="mt-1" alt="RSS"/></span>{{ "rssFeed.index.SubscribeToRSSFeeds"|trans([], "validators") }}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/feedrss_icon.png') }}" width="25" class="mt-1" alt="RSS"/></span>{{ "rssFeed.index.SubscribeToRSSFeeds"|trans([], "validators") }}</h2>
 {% endblock h2_title %}
 
 {% block header_plus %}
@@ -124,9 +124,9 @@
 	<h3>{{ "rssFeed.index.RSSFeedCreatedTitle"|trans([], "validators") }}</h3>
 	<p>{{ "rssFeed.index.RSSFeedCreatedText"|trans([], "validators") }}</p>
 	<div id="success_copy"><span></span></div>
-	<textarea id="page_generaterssfeed" class="generation bg-light text-muted form-control" readonly>{{ url("Page_GenerateRSSFeed") }}</textarea>
+	<textarea id="page_generaterssfeed" class="generation bg-light text-white-50 form-control" readonly>{{ url("Page_GenerateRSSFeed") }}</textarea>
 	<div class="clearfix mt-2">
-	<button type="button" id="copy-button" class="submitcomment btn clip_button float-right" data-clipboard-action="copy" data-clipboard-target="#page_generaterssfeed" title="Click to copy me.">{{ "rssFeed.read.CopyToClipboard"|trans([], "validators") }}</button>
+	<button type="button" id="copy-button" class="submitcomment btn clip_button float-end" data-clipboard-action="copy" data-clipboard-target="#page_generaterssfeed" title="Click to copy me.">{{ "rssFeed.read.CopyToClipboard"|trans([], "validators") }}</button>
 	</div>
 	<div class="text-center">
 		<a href="http://feedvalidator.org/check.cgi?url=http%3A//activite-paranormale.net/rssfeed%3Ftheme%3Dnews%26language%3Des%26length%3D30"><img src="{{ asset('extended/photo/valid-rss-rogers.png') }}" alt="[Valid RSS]" title="Validate my RSS feed" /></a>

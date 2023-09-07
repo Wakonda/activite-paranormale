@@ -1,4 +1,4 @@
-<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 <link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/jquery.dataTables.css') }}" type="text/css" media="screen" />
 <script>
 	document.querySelector(".musicContainer a.file_link").addEventListener("click", (e) => {
@@ -11,10 +11,10 @@
 
 	$(function()
 	{
-		$('table.index_admin').dataTable({
-			"bFilter": false,
-			"bInfo": false,
-			"bPaginate": false,
+		$('table.index_admin').DataTable({
+			"searching": false,
+			"info": false,
+			"paging": false,
 		});
 	}); 
 </script>

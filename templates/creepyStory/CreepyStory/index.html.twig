@@ -1,12 +1,12 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "creepyStory.index.CreepyStory"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ "creepyStory.index.CreepyStory"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ "creepyStory.index.CreepyStory"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block header_plus %}
 {% endblock %}
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/creepy-story-index.jpg') }}" width="550" alt="Creepy Story" /></p>
-	<p>{{ "creepyStory.index.CountCreepyStory"|trans([], "validators") }}<span class="badge badge-danger">{{ nbr }}</span></p>
+	<p>{{ "creepyStory.index.CountCreepyStory"|trans([], "validators") }}<span class="badge bg-danger">{{ nbr }}</span></p>
 	<hr>
 
 	{% set nbrTheme1 = nbrTheme - 1 %}
@@ -14,7 +14,7 @@
 	{% set i = 0 %}
 	<div id="accordion">
 		{% for ST in parentTheme %}
-			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
+			<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-bs-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
 			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
 			<br>
 			<table class="table table-bordered">
@@ -28,7 +28,7 @@
 					{% for i in 0..nbrTheme1 %}
 						{% if T.title == tabThemeNbr[i][0] %}
 							<tr><td class="td_form_table"><a href="{{ path('CreepyStory_Tab', {'id' : T.id, 'theme' : T.title})}}" >{{ tabThemeNbr[i][0] }}</a></td>
-							<td class="tdGene"><span class="badge badge-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
+							<td class="tdGene"><span class="badge bg-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
 						{% endif %}
 					{% endfor %}
 				{% endif %}

@@ -139,11 +139,11 @@ class HistoryListener
 	
 	private function formatHistory($text) {
 		return implode(PHP_EOL, array_map(function ($string) {
-			$string = preg_replace('/(@@ [A-Za-z0-9,\-+\s]* @@)/', '<div class="alert alert-info font-weight-bold mb-0">$1</div>', $string);
-			// $string = preg_replace('/((\\+){3} New)/', '<div class="alert alert-success font-weight-bold mb-0">$1</div>', $string);
-			$string = preg_replace('/^(\\+){1}/', '<div class="alert alert-success font-weight-bold my-2"><i class="fas fa-plus"></i></div>', $string);
-			// $string = preg_replace('/^((\\-){3} Original)/', '<div class="alert alert-danger font-weight-bold mb-0">$1</div>', $string);
-			$string = preg_replace('/^(\\-){1}/', '<div class="alert alert-danger font-weight-bold my-2"><i class="fas fa-minus"></i></div>', $string);
+			$string = preg_replace('/(@@ [A-Za-z0-9,\-+\s]* @@)/', '<div class="alert alert-info fw-bold mb-0">$1</div>', $string);
+			// $string = preg_replace('/((\\+){3} New)/', '<div class="alert alert-success fw-bold mb-0">$1</div>', $string);
+			$string = preg_replace('/^(\\+){1}/', '<div class="alert alert-success fw-bold my-2"><i class="fas fa-plus"></i></div>', $string);
+			// $string = preg_replace('/^((\\-){3} Original)/', '<div class="alert alert-danger fw-bold mb-0">$1</div>', $string);
+			$string = preg_replace('/^(\\-){1}/', '<div class="alert alert-danger fw-bold my-2"><i class="fas fa-minus"></i></div>', $string);
 			$string = str_repeat(' ', 6) . $string;
 			return $string;
 		}, explode(PHP_EOL, $text)));

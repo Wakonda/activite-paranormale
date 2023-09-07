@@ -1,16 +1,14 @@
 {% macro select_list_theme(themes, routePath, text_button) %}
-	<form name="choixTheme" id="choose_theme_news" action="{{ path(routePath, { 'page' : 1}) }}" method="post" class="form-inline">
+	<form name="choixTheme" id="choose_theme_news" action="{{ path(routePath, { 'page' : 1}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
 		<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
-		<div class="input-group">
+		<div class="input-group w-auto">
 			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">
 				<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
 				{% for theme in themes %}
 					<option value="{{ theme.id }}">{{ theme.title }}</option>
 				{% endfor %}
 			</select>
-			<div class="input-group-append">
-				<button id="selectTheme" type="submit" class="btn btn-primary" aria-label="{{ text_button|trans([], 'validators') }}"><i class="far fa-eye" aria-hidden="true"></i>{% if is_mobile() == false %} {{ text_button|trans([], 'validators') }}{% endif %}</button> 
-			</div>
+			<button id="selectTheme" type="submit" class="btn btn-primary" aria-label="{{ text_button|trans([], 'validators') }}"><i class="far fa-eye" aria-hidden="true"></i>{% if is_mobile() == false %} {{ text_button|trans([], 'validators') }}{% endif %}</button> 
 		</div>
 	</form>
 {% endmacro %}

@@ -10,7 +10,7 @@
 
 {% block h2_title %}
 	<h2>
-		<span class="float-left"><img src="{{ asset('extended/photo/bio-hazard-icon.png') }}" width="25" class="mt-1" alt="Biohazard"/></span>{{ 'cartography.index.Cartography'|trans([], "validators") }}
+		<span class="float-start"><img src="{{ asset('extended/photo/bio-hazard-icon.png') }}" width="25" class="mt-1" alt="Biohazard"/></span>{{ 'cartography.index.Cartography'|trans([], "validators") }}
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
 		{% endif %}
@@ -23,7 +23,7 @@
 	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
@@ -41,18 +41,18 @@
 			map.addControl(new L.Control.Fullscreen());
 
 			oTable = $('table.doc_datatables').DataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bSort": true,
-				"bLengthChange": true,
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": {{ total_line_display }},
-				"bProcessing": true,
-				"bServerSide": true,
-				"aaSorting": [[ 0, "asc" ]],
+				"searching": true,
+				"info": true,
+				"ordering": true,
+				"lengthChange": true,
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
+				"order": [[ 0, "asc" ]],
 				"ajax": {
 					"url": "{{ path('Cartography_ListDatatables') }}",
 					"type": "GET",
@@ -94,14 +94,14 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}
 	<h3 id="title_cartography_maps">{{ "cartography.index.SectionIndex"|trans([], "validators") }}</h3>
 	<div id="map-canvas" style="width:100%; height:400px"></div>
 	<hr>
-	{{ "cartography.index.TotalNumber"|trans([], "validators") }}<span class="badge badge-danger" id="count_document"></span>
+	{{ "cartography.index.TotalNumber"|trans([], "validators") }}<span class="badge bg-danger" id="count_document"></span>
 	<hr>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'method': 'POST', 'attr': {id: form.vars.id, 'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
@@ -110,7 +110,7 @@
 			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right">{{ "cartography.index.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end">{{ "cartography.index.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<hr>

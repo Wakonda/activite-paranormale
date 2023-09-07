@@ -34,8 +34,8 @@
   <body>
     <nav class="navbar navbar-dark navbar-expand-lg fixed-top pt-1">
       <div class="container">
-		  <a class="navbar-brand" id="main_title" href="{{ path('ap_newsmobile_index', { 'page' : 1}) }}"><img src="{{ asset('extended/photo/devil.png') }}" width="40" class="mr-2" alt="Devil">Activité-Paranormale</a>
-		  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		  <a class="navbar-brand" id="main_title" href="{{ path('ap_newsmobile_index', { 'page' : 1}) }}"><img src="{{ asset('extended/photo/devil.png') }}" width="40" class="me-2" alt="Devil">Activité-Paranormale</a>
+		  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		  </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -48,7 +48,7 @@
             <li class="nav-item {{ 'witchcraft'|linkFollowMobile(currentRoute) }}"><a class="nav-link" href="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}">{{ "mobile.main.Witchcraft"|trans([], "validators") }}</a></li>
             <li class="nav-item {{ 'search'|linkFollowMobile(currentRoute) }}"><a class="nav-link" href="{{ path('ap_newsmobile_search') }}">{{ "mobile.main.Search"|trans([], "validators") }}</a></li>
 			<li class="nav-item dropdown">
-				<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" id="navbarDropdownMenuLink" aria-expanded="false">{{ "mobile.main.Contribute"|trans([], "validators") }} <span class="caret"></span></a>
+				<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" id="navbarDropdownMenuLink" aria-expanded="false">{{ "mobile.main.Contribute"|trans([], "validators") }} <span class="caret"></span></a>
 				
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="{{ path('ap_witchcraftmobile_new') }}"><i class="fas fa-angle-right"></i> {{ "witchcraft.new.AddRitual"|trans([], "validators") }}</a>

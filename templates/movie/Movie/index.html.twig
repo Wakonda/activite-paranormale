@@ -10,7 +10,7 @@
 
 {% block h2_title %}
 	<h2>
-		<span class="float-left"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ "movie.index.Movie"|trans([], "validators") }}
+		<span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ "movie.index.Movie"|trans([], "validators") }}
 
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
@@ -41,7 +41,7 @@
 			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right">{{ "movie.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end">{{ "movie.search.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<br>
@@ -49,14 +49,14 @@
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
 			<div class="card-body">
-				<div class="row no-gutters">
+				<div class="row g-0">
 					{% if entity.illustration is not empty %}
 						<div class="col-md-4 align-self-center text-center">
 							{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
 						</div>
 					{% endif %}
 					<div class="col-md-{% if entity.illustration is not empty %}8{% else %}12{% endif %}">
-						<div{% if entity.illustration is not empty %} class="pl-3"{% endif %}>
+						<div{% if entity.illustration is not empty %} class="ps-3"{% endif %}>
 							<h5 class="card-title text-center"><a href="{{ path('Movie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">{{ entity.title }}</a></h5>
 							<hr>
 							<div class="d-flex justify-content-around">
@@ -67,9 +67,9 @@
 
 							<p class="card-text mb-0 text-center my-3"></p>
 							<hr>
-							<div class="text-right">
-								<a class="btn read text-left" href="{{ path('Movie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">
-									<span class="mr-2"><i class="fas fa-ticket-alt fa-fw"></i></span>
+							<div class="text-end">
+								<a class="btn read text-start" href="{{ path('Movie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">
+									<span class="me-2"><i class="fas fa-ticket-alt fa-fw"></i></span>
 									<b class="align-middle">{{ "movie.index.Read"|trans([], "validators") }}</b>
 								</a>
 							</div>
@@ -80,7 +80,7 @@
 		</div>
 		<hr class="hr2">
 	{% else %}
-		<div class="alert alert-danger font-italic text-center">{{ "movie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<div class="alert alert-danger fst-italic text-center">{{ "movie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
 

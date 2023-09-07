@@ -46,7 +46,7 @@
 	<div class="form-table-cell form-table-cell-head">{{ "bookEdition.admin.Biographies"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
 	{% for author in entity.biographies %}
-		<p><a href="{{ path('Biography_Admin_Show', {id: author.biography.id}) }}" class="badge badge-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: author.biography.id}) }}" class="badge badge-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> <b>{{ author.biography.title }}</b> - {{ ("biographies.admin."~author.occupation|ucfirst)|trans([], "validators") }}{{ (author.role is not empty ? " (<i>"~author.role~"</i>)" : "")|raw }}</p>
+		<p><a href="{{ path('Biography_Admin_Show', {id: author.biography.id}) }}" class="badge bg-info text-white"><i class="fas fa-eye fa-fw"></i></a> <a href="{{ path('Biography_Admin_Edit', {id: author.biography.id}) }}" class="badge bg-success text-white"><i class="fas fa-pencil-alt fa-fw"></i></a> <b>{{ author.biography.title }}</b> - {{ ("biographies.admin."~author.occupation|ucfirst)|trans([], "validators") }}{{ (author.role is not empty ? " (<i>"~author.role~"</i>)" : "")|raw }}</p>
 	{% endfor %}
 	</div>
 

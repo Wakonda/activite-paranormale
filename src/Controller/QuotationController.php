@@ -40,30 +40,26 @@ class QuotationController extends AbstractController
     {
 		$language = $request->getLocale();
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true")
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
         $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language);
 		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -72,7 +68,7 @@ class QuotationController extends AbstractController
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));
@@ -85,30 +81,26 @@ class QuotationController extends AbstractController
     {
 		$language = $request->getLocale();
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
         $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language);
 		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -118,7 +110,7 @@ class QuotationController extends AbstractController
 			$flag = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20" height="13">';
 			$row[] = "$flag <a href='".$this->generateUrl('Proverb_Country_Show', ['id' => $entity->getCountry()->getId(), 'title' => $entity->getCountry()->getTitle()])."'>".$entity->getCountry()."</a>";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));
@@ -131,30 +123,26 @@ class QuotationController extends AbstractController
     {
 		$language = $request->getLocale();
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
         $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language);
 		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -163,7 +151,7 @@ class QuotationController extends AbstractController
 			$row[] = "<a href='".$this->generateUrl("Poem_Read", ["id" => $entity->getId()])."'>".$entity->getTitle()."</a>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));
@@ -181,30 +169,26 @@ class QuotationController extends AbstractController
 	public function listProverbByCountryDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $countryId) {
 		$language = $request->getLocale();
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
         $entities = $em->getRepository(Quotation::class)->getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language);
 		$iTotal = $em->getRepository(Quotation::class)->getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -213,7 +197,7 @@ class QuotationController extends AbstractController
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$row[] = "<a href='".$this->generateUrl('Proverb_Read', ['id' => $entity->getId()])."'>".$translator->trans("quotation.list.Read", [], 'validators')."</a>";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));

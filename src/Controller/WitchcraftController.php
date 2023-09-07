@@ -50,9 +50,9 @@ class WitchcraftController extends AbstractController
 
 	public function tabGrimoireDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, $themeId)
 	{
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 		$language = $request->getLocale();
 
 		$sortByColumn = [];
@@ -71,10 +71,9 @@ class WitchcraftController extends AbstractController
 		$iTotal = $em->getRepository(Grimoire::class)->getTabGrimoire($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -86,7 +85,7 @@ class WitchcraftController extends AbstractController
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';			
 			$row[] = '<a href="'.$this->generateUrl("Witchcraft_ReadGrimoire", ['id' => $entity->getId(), 'title_slug' => $entity->getTitle(), 'surtheme' => $entity->getSurTheme()->getTitle()]).'" >'.$entity->getTitle().'</a>';
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));
@@ -323,30 +322,26 @@ class WitchcraftController extends AbstractController
 	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
         $entities = $em->getRepository(Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -358,7 +353,7 @@ class WitchcraftController extends AbstractController
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));

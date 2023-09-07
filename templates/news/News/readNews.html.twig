@@ -4,7 +4,7 @@
 
 {% block main_card_properties %}itemscope itemtype="http://schema.org/Article"{% endblock %}
 
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 {% block meta_description %}{{ entity.abstractText|strip_tags }}{% endblock %}
 
 {% block meta_plus %}
@@ -29,9 +29,10 @@
 				$("p.image object").remove();
 				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
 			}
-			
+
 			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-				$('#showColorboxByLicenceModal').modal('show');
+				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 				e.preventDefault();
 			});
 		});
@@ -69,9 +70,9 @@
 		{% endif %}
 
 		{% if previousAndNextEntities["next"] is not empty %}
-			<a class="previous_next_enable_right float-right" href="{{ path('News_ReadNews_New', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
+			<a class="previous_next_enable_right float-end" href="{{ path('News_ReadNews_New', {'id' : previousAndNextEntities["next"].id, 'title_slug' : previousAndNextEntities["next"].getUrlSlug()})}}" title="{{ previousAndNextEntities["next"].title }}"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></a>
 		{% else %}
-			<span class="previous_next_disable_right float-right"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
+			<span class="previous_next_disable_right float-end"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
 		{% endif %}
 	</div>
 

@@ -3,8 +3,8 @@
 {% block h2_title %}{% endblock %}
 
 {% block style_edit %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block new_entry %}
@@ -32,26 +32,26 @@
 {% endblock %}
 
 {% block js_edit %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}" defer></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}" defer></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}" defer></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}" defer></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script defer>
 		$(function ()
 		{
 			oTable = $('table.index_admin').DataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bLengthChange": true,
-				"aaSorting": [[ 0, "desc" ]],
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": {{ total_line_display }},
-				"bProcessing": true,
-				"bServerSide": true,
-				"sAjaxSource": "{% block indexdatatables_admin_route %}{% endblock %}",
+				"searching": true,
+				"info": true,
+				"lengthChange": true,
+				"order": [[ 0, "desc" ]],
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
+				"ajax": "{% block indexdatatables_admin_route %}{% endblock %}",
 				{% block datatables_additional_options %}{% endblock %}
 			});
 		});

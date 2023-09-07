@@ -1,17 +1,4 @@
 {% if entities is not empty %}
-	<script>
-		$(function() {
-			$('#carousel-photo-index').carousel({
-				interval: false
-			}).on('slide.bs.carousel', function (e) {
-				var nextH = $(e.relatedTarget).height();
-				$(this).find('.active.carousel-item').parent().animate({
-					height: nextH
-				}, 500);
-			});
-		});
-	</script>
-
 	<h3>{{ "index.main.Gallery"|trans([], "validators") }}</h3>
 
 	<div id="carousel-photo-index" class="carousel-pagination carousel slide" data-interval="false">
@@ -19,7 +6,7 @@
 		{% set i = 0 %}
 		{% set j = 1 %}
 		{% for entity in entities %}
-			<li data-target="#carousel-photo-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+			<li data-bs-target="#carousel-photo-index" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
 			{% set i = i + 1 %}
 			{% set j = j + 1 %}
 		{% endfor %}

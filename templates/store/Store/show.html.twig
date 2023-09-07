@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	{% if entity.photo is not empty %}
@@ -19,17 +19,17 @@
 	<div class="text-center">
 		{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
 			<a class="btn amazon" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
-				<span class="mr-2"><i class="fab fa-amazon fa-fw"></i></span>
+				<span class="me-2"><i class="fab fa-amazon fa-fw"></i></span>
 				<b class="align-middle">{{ "store.index.BuyOnAmazon"|trans([], "validators") }}</b>
 			</a>
 		{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') %}
 			<a class="btn aliexpress" href="{{ entity.url }}" rel="nofollow" target="_blank">
-				<span class="mr-2"><i class="fab fa-alipay fa-fw"></i></span>
+				<span class="me-2"><i class="fab fa-alipay fa-fw"></i></span>
 				<b class="align-middle">{{ "store.index.BuyOnAliexpress"|trans([], "validators") }}</b>
 			</a>
 		{% else %}
 			<a class="btn spreadshop" href="{{ entity.url }}" rel="nofollow" target="_blank">
-				<span class="mr-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
+				<span class="me-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
 				<b class="align-middle">{{ "store.index.BuyOnSpreadshop"|trans([], "validators") }}</b>
 			</a>
 		{% endif %}
@@ -210,8 +210,8 @@
 		<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (musics|duration_entities)|default('-') }}</p>
 		<hr>
 		<ul class="fa-ul">
-			<li><span class="fa-li"><i class="fas fa-music"></i></span> <span class="font-weight-bold">{{ "music.listen.NbrTitle"|trans([], "validators") }}</span> {{ musics|length }}</li>
-			<li><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> <span class="font-weight-bold">{{ "music.listen.ReleaseDate"|trans([], "validators") }}</span> {{ album.releaseYear|doPartialDate(app.request.locale) }}</li>
+			<li><span class="fa-li"><i class="fas fa-music"></i></span> <span class="fw-bold">{{ "music.listen.NbrTitle"|trans([], "validators") }}</span> {{ musics|length }}</li>
+			<li><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> <span class="fw-bold">{{ "music.listen.ReleaseDate"|trans([], "validators") }}</span> {{ album.releaseYear|doPartialDate(app.request.locale) }}</li>
 		</ul>
 		<hr>
 		<table class="doc_datatables table dt-responsive w-100">
@@ -224,7 +224,7 @@
 			<tbody>
 				{% for music in musics %}
 					<tr>
-					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : music.id, 'music' : music.musicPiece }) }}" alt="" class="font-weight-bold">{{ music.musicPiece }}</a></td>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : music.id, 'music' : music.musicPiece }) }}" alt="" class="fw-bold">{{ music.musicPiece }}</a></td>
 					<td><i class="far fa-clock"></i> {{ (music.length|string_duration)|default('-') }}</td>
 					</tr>
 				{% endfor %}
@@ -301,7 +301,7 @@
 	{% if url is not null %}
 	<div class="text-center">
 		<a class="btn read" href="{{ url }}">
-			<span class="mr-2"><i class="fas fa-plus fa-fw"></i></span>
+			<span class="me-2"><i class="fas fa-plus fa-fw"></i></span>
 			<b class="align-middle">{{ "store.index.MoreInformationOn"|trans([], "validators") }}</b>
 		</a>
 	</div>

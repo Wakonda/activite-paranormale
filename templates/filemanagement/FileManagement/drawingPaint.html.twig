@@ -18,15 +18,15 @@
 	
 	<script>
 		$(function() {
-			$('.doc_datatables_drawing').dataTable({
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
+			$('.doc_datatables_drawing').DataTable({
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
 				},
-				"bPaginate": false,
-				"bLengthChange": false,
-				"bFilter": false,
-				"bSort": true,
-				"bInfo": false,
+				"paging": false,
+				"lengthChange": false,
+				"searching": false,
+				"ordering": true,
+				"info": false,
 				"responsive": {
 					"details": {
 						display: $.fn.dataTable.Responsive.display.childRowImmediate,
@@ -89,7 +89,7 @@
 			<p class='image'></p>
 		  </div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+			<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 		  </div>
 		</div>
 	  </div>

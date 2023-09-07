@@ -1,16 +1,16 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "quotation.index.Proverb"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Proverb"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Proverb"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<div id="quotation_bubble_parent" class="mb-3">
-		<div id="quotation_bubble" class="font-italic">
+		<div id="quotation_bubble" class="fst-italic">
 			&ldquo;{{ entity.textQuotation }}&rdquo;
 		</div>
 	</div>
 
-	<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" /> <a href="{{ path('Proverb_Country_Show', { 'id' : entity.country.id, 'title': entity.country.title }) }}" alt="{{ entity.country.title }}" class="font-weight-bold">{{ entity.country.title }}</a></span>
+	<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" /> <a href="{{ path('Proverb_Country_Show', { 'id' : entity.country.id, 'title': entity.country.title }) }}" alt="{{ entity.country.title }}" class="fw-bold">{{ entity.country.title }}</a></span>
 
 	{% if entity.images is not empty %}
 		<div id="carousel-quote-read" class="carousel-pagination carousel slide mt-3" data-interval="false">
@@ -19,7 +19,7 @@
 			{% set i = 0 %}
 			{% set j = 1 %}
 			{% for imageEntity in entity.images %}
-				<li data-target="#carousel-quote-read" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+				<li data-bs-target="#carousel-quote-read" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
 				{% set i = i + 1 %}
 				{% set j = j + 1 %}
 			{% endfor %}
@@ -55,19 +55,4 @@
 	<br>
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
-{% endblock %}
-
-{% block header_plus %}
-	<script>
-		$(document).ready(function(){
-			$('#carousel-quote-read').carousel({
-				interval: false
-			}).on('slide.bs.carousel', function (e) {
-				var nextH = $(e.relatedTarget).height();
-				$(this).find('.active.carousel-item').parent().animate({
-					height: nextH
-				}, 500);
-			});
-		});
-	</script>
 {% endblock %}

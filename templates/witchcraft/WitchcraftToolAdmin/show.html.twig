@@ -48,7 +48,7 @@
 
 	<div class="d-flex flex-row mt-3">
 		<div><a href="{{ path('WitchcraftTool_Show', { 'id' : entity.id, 'title_slug' : entity.urlSlug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a></div>
-		<div class="ml-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>
+		<div class="ms-2"><a href="{{ path('Store_Admin_New', {category: constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY'), id: entity.id}) }}" class="btn btn-info"><i class="fas fa-store"></i> {{ "store.admin.AddProduct"|trans([], "validators") }}</a></div>
 	</div>
 {% endblock %}
 

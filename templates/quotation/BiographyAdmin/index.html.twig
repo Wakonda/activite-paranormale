@@ -8,7 +8,7 @@
 
 {% block js_edit_additional %}
 	document.querySelector("select#selected_state").addEventListener("change", (e) => {
-		oTable.api().ajax.url('{{ path('Biography_Admin_IndexDatatables') }}?toComplete=' + e.target.value).load();
+		oTable.ajax.url('{{ path('Biography_Admin_IndexDatatables') }}?toComplete=' + e.target.value).load();
 	});
 {% endblock %}
 

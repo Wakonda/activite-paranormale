@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ publisher.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="{{ publisher.title }}"/></span>{{ publisher.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="{{ publisher.title }}"/></span>{{ publisher.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ publisher.photo|imgsize(550, publisher.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
@@ -19,7 +19,7 @@
 
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
-			<div class="row no-gutters">
+			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center">
 					{% set dataStore = (entity is not empty ? image_embedded_code(entity, "book", "BookStore") : null) %}
 					{% if dataStore is not empty %}
@@ -52,7 +52,7 @@
 					</div>
 					<div class="card-footer text-center">
 						<a class="btn read" href="{{ path('Book_Show', {'id': entity.book.id, 'title_slug': entity.book.urlSlug}) }}">
-							<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
 							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
 						</a>
 					</div>

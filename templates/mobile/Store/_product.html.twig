@@ -21,22 +21,22 @@
 	
 	<hr>
 	<a class="btn btn-info text-white" href="{{ path('ap_storemobile_read', {'id': entity.id}) }}">
-		<span class="mr-2"><i class="fas fa-book fa-fw"></i></span>
+		<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
 		<b class="align-middle">{{ "store.search.Read"|trans([], "validators") }}</b>
 	</a>
 	{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
 		<a class="btn btn-warning text-dark" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
-			<span class="mr-2"><i class="fab fa-amazon fa-fw"></i></span>
+			<span class="me-2"><i class="fab fa-amazon fa-fw"></i></span>
 			<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
 		</a>
 	{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') %}
 		<a class="btn btn-danger text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
-			<span class="mr-2"><i class="fab fa-alipay fa-fw"></i></span>
+			<span class="me-2"><i class="fab fa-alipay fa-fw"></i></span>
 			<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
 		</a>
 	{% else %}
 		<a class="btn spreadshop text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
-			<span class="mr-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
+			<span class="me-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
 			<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
 		</a>
 	{% endif %}

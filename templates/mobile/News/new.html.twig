@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ "index.leftMenu.AddNews"|trans([], "validators") }}{% endblock %}
-{% block page_title %}<span class="float-left"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mr-2" alt="Anger"/></span>{{ "index.leftMenu.AddNews"|trans([], "validators") }}{% endblock %}
+{% block page_title %}<span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="me-2" alt="Anger"/></span>{{ "index.leftMenu.AddNews"|trans([], "validators") }}{% endblock %}
 
 {% block body_content %}
 	{% include 'index/Licence/showColorboxModal.html.twig' %}
@@ -40,9 +40,9 @@
 			<div class="col-sm-10">
 				{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}
 				<div>
-					<span class="font-weight-bold">{{ "news.new.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
+					<span class="fw-bold">{{ "news.new.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
 					<br>
-					<span class="font-weight-bold">{{ "news.new.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
+					<span class="fw-bold">{{ "news.new.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
 				</div>
 			</div>
 		</div>
@@ -87,7 +87,7 @@
 		
 		<div class="clearfix">
 			<div class="mt-3">
-				<div class="float-right">
+				<div class="float-end">
 					{{ form_widget(form.validate, { 'label': "news.new.Validate"|trans([], "validators") }) }}
 				</div>
 			</div>

@@ -2,13 +2,13 @@
 
 {% block title %}{{ "history.show.History"|trans([], "validators") }}{% endblock %}
 
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ "history.show.History"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ "history.show.History"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 
 	<script>
@@ -38,7 +38,8 @@
 		color: #6f42c1;
 	}
 	</style>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}
@@ -49,14 +50,14 @@
 			<h4 class="modal-title w-100">{{ "history.show.History"|trans([], "validators") }}</h4>
 		  </div>
 		  <div class="modal-body text-prewrap">
-			<div class="alert alert-success font-weight-bold mb-0 w-40 float-right">+++ New</div>
-			<div class="alert alert-danger font-weight-bold mb-0 w-40 float-left">--- Original</div>
+			<div class="alert alert-success fw-bold mb-0 w-40 float-end">+++ New</div>
+			<div class="alert alert-danger fw-bold mb-0 w-40 float-start">--- Original</div>
 			<div class="clearfix"></div>
 			<hr>
 			<div class="history-details"></div>
 		  </div>
 		  <div class="modal-footer">
-			<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+			<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 		  </div>
 		</div>
 	  </div>
@@ -65,7 +66,7 @@
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/historic.jpg') }}" width="550" alt="Heaven's gate apocalypse" /></p>
 	<hr />
 	<div class="alert alert-info">
-		<i class="fas fa-info-circle"></i> {{ "history.show.RevisionHistory"|trans([], "validators") }} « <i><a href="{{ path }}" class="alert-link font-weight-bold">{{ titleEntity }}</a></i> ».
+		<i class="fas fa-info-circle"></i> {{ "history.show.RevisionHistory"|trans([], "validators") }} « <i><a href="{{ path }}" class="alert-link fw-bold">{{ titleEntity }}</a></i> ».
 	</div>
 	<table class="doc_datatables dt-responsive w-100">
 		<thead>
@@ -80,7 +81,7 @@
 				<tr class="trGene">
 					<td class="tdGene">{{ entity.modificationDateTime|dodate(true, app.request.locale) }}</td>
 					<td class="tdGene"><b>{{ entity.user }}</b><br>(<i style="word-break: break-all;">{{ entity.ipAddress }}</i>)</td>
-					<td class="tdGene">{% if entity.diffText is not empty %}<button onclick="showHistoryModal(event);" class="btn submitcomment show_history_link text-left text-dark font-weight-bold" data-diff="{{ format_history(entity.diffText|join('<hr>')) }}"><i class="fas fa-history"></i></button>{% endif %}</td>
+					<td class="tdGene">{% if entity.diffText is not empty %}<button onclick="showHistoryModal(event);" class="btn submitcomment show_history_link text-start text-dark fw-bold" data-diff="{{ format_history(entity.diffText|join('<hr>')) }}"><i class="fas fa-history"></i></button>{% endif %}</td>
 				</tr>
 			{% endfor %}
 		</tbody>

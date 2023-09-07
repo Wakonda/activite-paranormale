@@ -1,13 +1,13 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/nessy-icon-biography.png') }}" width="30" class="mt-1" alt="Sea monster"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nessy-icon-biography.png') }}" width="30" class="mt-1" alt="Sea monster"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 	<script>
 		$(function ()
@@ -45,7 +45,8 @@
 			loadQuotations("{{ path('Quotation_quotationsServerSide', { 'authorId' : entity.id }) }}");
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}

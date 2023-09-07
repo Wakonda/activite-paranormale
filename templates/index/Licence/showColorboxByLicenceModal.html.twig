@@ -1,9 +1,9 @@
 {% if entity.licence is not null %}
 	<script>
-		$(function() {
-			$('#showColorboxByLicenceModal').on('show.bs.modal', function (e) {
-				$(this).find('.modal-body').load("{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}");
-			});
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+			e.preventDefault();
 		});
 	</script>
 
@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+					<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 				</div>
 			</div>
 		</div>

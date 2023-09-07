@@ -6,10 +6,24 @@
  *
  * NOTE: this file must be saved in UTF-8 encoding.
  *
- * @see http://github.com/kartik-v/bootstrap-star-rating
- * @author Kartik Visweswaran <kartikv2@gmail.com>
+ * bootstrap-star-rating v4.1.3
+ * http://plugins.krajee.com/star-rating
+ *
+ * Copyright: 2013 - 2021, Kartik Visweswaran, Krajee.com
+ *
+ * Licensed under the BSD 3-Clause
+ * https://github.com/kartik-v/bootstrap-star-rating/blob/master/LICENSE.md
  */
-(function ($) {
+(function (factory) {
+    'use strict';
+    if (typeof define === 'function' && define.amd) {
+        define(['jquery'], factory);
+    } else if (typeof module === 'object' && typeof module.exports === 'object') { 
+        factory(require('jquery'));
+    } else { 
+        factory(window.jQuery);
+    }
+}(function ($) {
     "use strict";
     $.fn.ratingLocales.es = {
         defaultCaption: '{rating} Estrellas',
@@ -28,4 +42,4 @@
         clearButtonTitle: 'Limpiar',
         clearCaption: 'Sin Calificar'
     };
-})(window.jQuery);
+}));

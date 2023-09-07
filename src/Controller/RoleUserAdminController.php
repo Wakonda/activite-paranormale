@@ -106,7 +106,7 @@ class RoleUserAdminController extends AdminGenericController
 			 <a href='".$this->generateUrl('RoleUser_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
 			 <a href='".$this->generateUrl('RoleUser_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

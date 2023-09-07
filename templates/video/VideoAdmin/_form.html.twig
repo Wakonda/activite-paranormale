@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title w-100 font-weight-bold">{{ "video.admin.ChooseAnExistingFile"|trans([], "validators") }}</h2>
+				<h2 class="modal-title w-100 fw-bold">{{ "video.admin.ChooseAnExistingFile"|trans([], "validators") }}</h2>
 			</div>
 			<div class="modal-body">
 				<div class="text-center">
@@ -10,7 +10,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 			</div>
 		</div>
 	</div>
@@ -37,13 +37,9 @@
 	{{ form_widget(form.mediaVideo, { 'attr': {'class': 'media_video form-control'} }) }}
 
 	<div class="input-group mt-2" id="{{ form.existingFile.vars.id }}">
-		<div class="input-group-prepend">
-			<a href="#" class="input-group-text select_files_colorbox"><i class="fas fa-camera-retro" aria-hidden="true"></i></a>
-		</div>
+		<a href="#" class="input-group-text select_files_colorbox"><i class="fas fa-camera-retro" aria-hidden="true"></i></a>
 		{{ form_widget(form.existingFile, {'attr':{'class': 'existing_video_colorbox form-control'}}) }}
-		<div class="input-group-append">
 		<a href="#" class="input-group-text remove_files_colorbox"><i class="fas fa-times" aria-hidden="true"></i></a>
-		</div>
 	</div>#}
 </div>
 
@@ -58,19 +54,19 @@
 			<div class="col-md-4 col-sm-4">
 				<div class="input-group">
 					{{ form_widget(form.hourDuration, { 'attr': {'class': 'form-control'}}) }}
-					<div class="input-group-append"><span class="input-group-text">{{ "video.admin.HoursEdit"|trans([], "validators") }}</span></div>
+					<span class="input-group-text">{{ "video.admin.HoursEdit"|trans([], "validators") }}</span>
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-4">
 				<div class="input-group">
 					{{ form_widget(form.minuteDuration, { 'attr': {'class': 'form-control'}}) }}
-					<div class="input-group-append"><span class="input-group-text">{{ "video.admin.MinutesEdit"|trans([], "validators") }}</span></div>
+					<span class="input-group-text">{{ "video.admin.MinutesEdit"|trans([], "validators") }}</span>
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-4">
 				<div class="input-group">
 					{{ form_widget(form.secondDuration, { 'attr': {'class': 'form-control'}}) }}
-					<div class="input-group-append"><span class="input-group-text">{{ "video.admin.SecondsEdit"|trans([], "validators") }}</span></div>
+					<span class="input-group-text">{{ "video.admin.SecondsEdit"|trans([], "validators") }}</span>
 				</div>
 			</div>
 		</div>

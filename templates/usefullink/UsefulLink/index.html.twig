@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-left"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span> {{ entity.title }}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/news.png') }}" width="25" class="mt-1" alt="News" /></span> {{ entity.title }}</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}
@@ -34,7 +34,7 @@
 {% block sub_content %}
 	<div class="card main_column_section mt-3">
 		<div class="card-header">
-			<h2 id="tutorial"><span class="float-left"><img src="{{ asset('extended/photo/usefullink-logo.svg') }}" width="25" class="mt-1" alt="Comments"/></span>{{ "usefullink.index.TipsAndTricks"|trans([], "validators") }}{% if tag is not empty %} - {{ tag }}{% endif %}</h2>
+			<h2 id="tutorial"><span class="float-start"><img src="{{ asset('extended/photo/usefullink-logo.svg') }}" width="25" class="mt-1" alt="Comments"/></span>{{ "usefullink.index.TipsAndTricks"|trans([], "validators") }}{% if tag is not empty %} - {{ tag }}{% endif %}</h2>
 		</div>
 		<div class="card-body">
 			<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/woman-computer.webp') }}" alt="Woman on computer" width="333" /></p>
@@ -61,7 +61,7 @@
 							<hr>
 						{% endif %}
 					{% else %}
-						<div class="alert alert-danger font-italic text-center">{{ "usefullink.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+						<div class="alert alert-danger fst-italic text-center">{{ "usefullink.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 						<br>
 					{% endfor %}
 				</tbody>

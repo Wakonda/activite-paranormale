@@ -21,7 +21,7 @@
 				<div class="card card-block w-100">
 					<img class="card-img-top" src="{{ selectedFile.src }}">
 					<div class="card-body">
-						<p class="font-weight-bold text-{{ selectedFile.rootFolder == 'public' ? 'success' : 'danger' }}">{{ selectedFile.rootFolder|upper }}</p>
+						<p class="fw-bold text-{{ selectedFile.rootFolder == 'public' ? 'success' : 'danger' }}">{{ selectedFile.rootFolder|upper }}</p>
 						{% if selectedFile.res is not empty %}
 							<ul>
 								{% for res in selectedFile.res %}

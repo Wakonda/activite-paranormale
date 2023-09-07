@@ -6,15 +6,15 @@
 
 <div class="star_rate mt-2">
 	{{ form_start(form, {'attr': {'class' : 'star_rating', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
-		<div class="row alert alert-dark no-gutters">
+		<div class="row alert alert-dark g-0">
 			<div class="col-sm mt-1">
 			{{ form_widget(form.valueVote) }}
 			</div>
-			<div class="col-sm text-right">
+			<div class="col-sm text-end">
 				<span id="resultVote">
 					{% apply spaceless %}
 					{{ "vote.edit.AverageScore"|trans([], "validators") }} <span class="averageVote">{{ averageVote|round(1) }}</span>
-					(<span class="badge badge-danger countVoteByClassName">{{ countVoteByClassName }}</span>
+					(<span class="badge bg-danger countVoteByClassName">{{ countVoteByClassName }}</span>
 
 					{% if countVoteByClassName <= 1 %} 
 						{{ "vote.edit.Vote"|trans([], "validators") }}

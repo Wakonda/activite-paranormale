@@ -1,10 +1,10 @@
 <div id="social_network" class="d-flex justify-content-between justify-content-md-start flex-wrap">
 	{% if entity.getPdfVersionRoute() is defined %}
-	<div class="d-none d-sm-inline pr-1 pb-1">
+	<div class="d-none d-sm-inline pe-1 pb-1">
 		<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select" /></a>
 	</div>
 	{% endif %}
-	<div class="d-none d-sm-inline pr-1 pb-1">
+	<div class="d-none d-sm-inline pe-1 pb-1">
 		<span id="print_page" class="social_network_to_select"><img src="{{ asset('extended/photo/print.svg') }}" width="40" alt="Print version" /></span>
 		<script>
 			document.getElementById("print_page").addEventListener("click", (e) => {
@@ -12,23 +12,23 @@
 			});
 		</script>
 	</div>
-	<div class="pr-1 pb-1">
+	<div class="pe-1 pb-1">
 		<a href="#" class="btn social-share facebook share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Facebook"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
 	</div>
-	<div class="pr-1 pb-1">
+	<div class="pe-1 pb-1">
 		<a href="#" class="btn social-share twitter share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Twitter"><i class="fab fa-twitter fa-lg fa-fw"></i></a>
 	</div>
-	<div class="pr-1 pb-1">
+	<div class="pe-1 pb-1">
 		<a href="#" class="btn social-share whatsapp share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="WhatsApp"><i class="fab fa-whatsapp fa-lg fa-fw"></i></a>
 	</div>
-	<div class="pr-1 pb-1">
+	<div class="pe-1 pb-1">
 		<a href="#" class="btn social-share linkedin share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="LinkedIn"><i class="fab fa-linkedin-in fa-lg fa-fw"></i></a>
 	</div>
-	<div class="pr-1 pb-1">
+	<div class="pe-1 pb-1">
 		<a href="#" class="btn social-share flipboard share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Flipboard"><i class="fab fa-flipboard fa-lg fa-fw"></i></a>
 	</div>
-	<div class="pr-1 pb-1">
-		<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-toggle="modal" data-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
+	<div class="pe-1 pb-1">
+		<a href="#" class="btn social-share mastodon {{ is_mobile() ? 'btn-sm' : '' }}" title="Mastodon" data-bs-toggle="modal" data-bs-target="#mastodonModal"><i class="fab fa-mastodon fa-lg fa-fw"></i></a>
 	</div>
 	<div class="pb-1">
 		<a href="#" class="btn social-share weibo share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Sina Weibo"><i class="fab fa-weibo fa-lg fa-fw"></i></a>
@@ -40,16 +40,14 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<h4 class="modal-title text-white h4" id="mastodonModalLabel"><i class="fab fa-mastodon"></i> {{ "mastodon.index.PleaseEnterYourInstance"|trans([], "validators") }}</h4>
-				<button type="button" class="close text-danger" data-dismiss="modal" aria-label="Close">
+				<button type="button" class="close text-danger" data-bs-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true"><i class="fas fa-times"></i></span>
 				</button>
 			</div>
 			<div class="modal-body">
 				<p class="text-white h5">{{ "mastodon.index.ChooseAnInstance"|trans([], "validators") }}</p>
 				<div class="input-group">
-					<div class="input-group-prepend">
-						<span class="input-group-text">https://</span>
-					</div>
+					<span class="input-group-text">https://</span>
 					<input type="text" class="form-control" placeholder="URL" id="url-mastodon-value" value="mastodon.social">
 				</div>
 			</div>

@@ -6,7 +6,7 @@
 	{{ macro_index.tinymce_js(form.presentation.vars.id) }}
 {% endblock %}
 
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/pyramid.png') }}" width="25" class="mt-1" alt="Maya pyramid"/></span>{{ "user.index.CreateAccount"|trans([], "validators") }}</h2>{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/pyramid.png') }}" width="25" class="mt-1" alt="Maya pyramid"/></span>{{ "user.index.CreateAccount"|trans([], "validators") }}</h2>{% endblock %}
 {% block APBlog_body %}
 	{% block fos_user_content %}
 	{% include "user/Registration/register_content.html.twig" %}

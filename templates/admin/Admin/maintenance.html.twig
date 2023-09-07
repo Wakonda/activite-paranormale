@@ -8,12 +8,8 @@
 	<li class="nav-item"><a class="nav-link" href="https://github.com/Wakonda/activite-paranormale"><i class="fab fa-github-alt"></i> Github</a></li>
 {% endblock %}
 
-{% block style_edit %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-{% endblock %}
-
 {% block body_main %}
-	<h3><i class="fa-solid fa-computer fa-sm mr-2"></i>{{ "admin.index.ActivateDesactivateMaintenance"|trans([], "validators") }}</h3>
+	<h3><i class="fa-solid fa-computer fa-sm me-2"></i>{{ "admin.index.ActivateDesactivateMaintenance"|trans([], "validators") }}</h3>
 	{% if mode == "MaintenanceOff" %}
 		<a href="{{ path('Admin_Maintenance', {mode: 'MaintenanceOn'}) }}" class="btn btn-success">{{ "admin.index.ActivateMaintenance"|trans([], "validators") }}</a>
 	{% else %}
@@ -32,7 +28,7 @@
 	<a href="{{ path('Admin_Sitemap') }}" class="btn btn-success mt-2">{{ "admin.general.Update"|trans([], "validators") }}</a>
 	<hr>
 
-	<h3 class="mt-2"><i class="fa-solid fa-robot fa-sm mr-2"></i>robots.txt</h3>
+	<h3 class="mt-2"><i class="fa-solid fa-robot fa-sm me-2"></i>robots.txt</h3>
 	<form action="{{ path('Admin_Maintenance', {mode: 'robotstxt'}) }}">
 		<textarea name="robotstxt_content" class="form-control" rows="5">{{ robotstxt }}</textarea>
 		<button type="submit" class="btn btn-success mt-2">{{ "admin.general.Update"|trans([], "validators") }}</button>

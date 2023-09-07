@@ -1,27 +1,27 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "user.showProfile.Contribution"|trans([], "validators") }} - {{ entityName }} - {{ user.username }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/contribution_user_icon.png') }}" width="25" class="mt-1" alt="Alien"/></span>{{ "user.showProfile.Contribution"|trans([], "validators") }} - {{ entityName }} - {{ user.username }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/contribution_user_icon.png') }}" width="25" class="mt-1" alt="Alien"/></span>{{ "user.showProfile.Contribution"|trans([], "validators") }} - {{ entityName }} - {{ user.username }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			oTable = $('table.doc_datatables').dataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+			oTable = $('table.doc_datatables').DataTable( {
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bLengthChange": true,
-				"aaSorting": [[ 3, "desc" ]],
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": 35,
-				"bProcessing": true,
-				"bServerSide": true,
+				"searching": true,
+				"info": true,
+				"lengthChange": true,
+				"order": [[ 3, "desc" ]],
+				"pagingType": "full_numbers",
+				"pageLength": 35,
+				"processing": true,
+				"serverSide": true,
 				"responsive": {
 					"details": {
 						display: $.fn.dataTable.Responsive.display.childRowImmediate,
@@ -29,7 +29,7 @@
 						target: ''
 					}
 				},
-				"sAjaxSource": "{{ path('APUserBunble_contributionuserdatatables', { 'id' : id, 'bundleClassName' : bundleClassName, 'displayState' : displayState }) }}",
+				"ajax": "{{ path('APUserBunble_contributionuserdatatables', { 'id' : id, 'bundleClassName' : bundleClassName, 'displayState' : displayState }) }}",
 				"aoColumns": [
 				  { "sClass": "longType" },
 				  null,
@@ -39,8 +39,8 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}

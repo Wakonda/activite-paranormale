@@ -113,7 +113,7 @@ class GenreAudiovisualAdminController extends AdminGenericController
 			 <a href='".$this->generateUrl('GenreAudiovisual_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

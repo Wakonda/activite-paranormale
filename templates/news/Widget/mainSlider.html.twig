@@ -1,26 +1,13 @@
 ﻿{% if worldNews is not empty %}
-	<script>
-		$(function() {
-			$('#carousel-world-news-index').carousel({
-				interval: 5000
-			}).on('slide.bs.carousel', function (e) {
-				var nextH = $(e.relatedTarget).height();
-				$(this).find('.active.carousel-item').parent().animate({
-					height: nextH
-				}, 500);
-			});
-		});
-	</script>
-
 	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
 
-	<div id="carousel-world-news-index" class="carousel-pagination carousel slide" data-ride="carousel">
+	<div id="carousel-world-news-index" class="carousel-pagination carousel slide" data-bs-ride="carousel">
 		<!-- Indicators -->
 		<ol class="carousel-indicators carousel-indicators-numbers pagination">
 		{% set i = 0 %}
 		{% set j = 1 %}
 		{% for worldNew in worldNews %}
-			<li data-target="#carousel-world-news-index" data-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+			<li data-bs-target="#carousel-world-news-index" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
 			{% set i = i + 1 %}
 			{% set j = j + 1 %}
 		{% endfor %}
@@ -32,10 +19,10 @@
 			{% for worldNew in worldNews %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<div class="card mb-3">
-						<div class="card-header h-100 text-left">
+						<div class="card-header h-100 text-start">
 							<img class="image_wrapper" src="{{ asset(worldNew.language.getAssetImagePath()) }}{{ worldNew.language.logo }}" title="{{ worldNew.language.abbreviation }}" width="20" height="13" alt="{{ worldNew.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ worldNew.title }}</span>
 						</div>
-						<div class="row no-gutters">
+						<div class="row g-0">
 							<div class="col-md-4 mt-3">
 								{{ worldNew.photoIllustrationFilename|imgsize(null, worldNew.getAssetImagePath(), true, { 'loading': 'lazy'})|raw }}
 							</div>
@@ -45,7 +32,7 @@
 								</div>
 							</div>
 						</div>
-						<div class="card-footer text-muted text-right">
+						<div class="card-footer text-white-50 text-end">
 							<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': worldNew.id, 'title_slug':worldNew.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
 						</div>
 					</div>

@@ -1,7 +1,7 @@
 {% extends "mobile/mobile_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block page_title%}<span class="float-left"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mr-2" alt="Abduction"/></span>{{ entity.title }}{% endblock %}
+{% block page_title%}<span class="float-start"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="me-2" alt="Abduction"/></span>{{ entity.title }}{% endblock %}
 
 {% block meta_plus %}
 	<link rel="canonical" href="{{ url('Photo_Read', {'id' : entity.id, 'title_slug' : entity.getUrlSlug()}) }}">
@@ -28,7 +28,8 @@
 {% block additional_javascript %}
 	<script>
 		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			$('#showColorboxByLicenceModal').modal('show');
+			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
 			e.preventDefault();
 		});
 	</script>

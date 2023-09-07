@@ -48,13 +48,12 @@ class MusicController extends AbstractController
         $entities = $em->getRepository(Artist::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData());
 		$iTotal = $em->getRepository(Artist::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData(), true);
 
-		$output = array(
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
-		);
-		
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
 		foreach($entities as $entity)
 		{
 			$row = [];
@@ -62,7 +61,7 @@ class MusicController extends AbstractController
 			$row[] = !empty($genre = $entity->getGenre()) ? $genre->getTitle() : null;
 			$row[] = '<a href="'.$this->generateUrl("Music_Album", ['id' => $entity->getId(), 'title_slug' => $entity->getTitle()]).'" >'.$translator->trans('music.index.Listen', [], 'validators').'</a>';
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));

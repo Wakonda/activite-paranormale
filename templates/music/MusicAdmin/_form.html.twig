@@ -4,7 +4,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h2 class="modal-title w-100 font-weight-bold">{{ "video.admin.ChooseAnExistingFile"|trans([], "validators") }}</h2>
+				<h2 class="modal-title w-100 fw-bold">{{ "video.admin.ChooseAnExistingFile"|trans([], "validators") }}</h2>
 			</div>
 			<div class="modal-body">
 				<div class="text-center">
@@ -12,7 +12,7 @@
 				</div>
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 			</div>
 		</div>
 	</div>
@@ -39,10 +39,10 @@
 <div class="form-table-cell musicContainer">
 	<ul class="nav nav-tabs mb-3" id="pills-tab" role="tablist">
 		<li class="nav-item" role="presentation">
-			<a class="nav-link active" id="pills-audio-tab" data-toggle="pill" href="#pills-audio" role="tab" aria-controls="pills-audio" aria-selected="true"><i class="fas fa-headphones fa-fw"></i> {{ "music.admin.AudioFile"|trans([], "validators") }}</a>
+			<a class="nav-link active" id="pills-audio-tab" data-bs-toggle="pill" href="#pills-audio" role="tab" aria-controls="pills-audio" aria-selected="true"><i class="fas fa-headphones fa-fw"></i> {{ "music.admin.AudioFile"|trans([], "validators") }}</a>
 		</li>
 		<li class="nav-item" role="presentation">
-			<a class="nav-link" id="pills-video-tab" data-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="false"><i class="fas fa-video fa-fw"></i> {{ "music.admin.Video"|trans([], "validators") }}</a>
+			<a class="nav-link" id="pills-video-tab" data-bs-toggle="pill" href="#pills-video" role="tab" aria-controls="pills-video" aria-selected="false"><i class="fas fa-video fa-fw"></i> {{ "music.admin.Video"|trans([], "validators") }}</a>
 		</li>
 	</ul>
 	<div class="tab-content" id="pills-tabContent">
@@ -71,25 +71,19 @@
 			<div class="col-md-4 col-sm-4">
 				<div class="input-group">
 					{{ form_widget(form.hourDuration, { 'attr': {'class': 'form-control'}}) }}
-					<div class="input-group-append">
-						<span class="input-group-text">{{ "video.admin.HoursEdit"|trans([], "validators") }}</span>
-					</div>
+					<span class="input-group-text">{{ "video.admin.HoursEdit"|trans([], "validators") }}</span>
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-4">
 				<div class="input-group">
 					{{ form_widget(form.minuteDuration, { 'attr': {'class': 'form-control'}}) }}
-					<div class="input-group-append">
-						<span class="input-group-text">{{ "video.admin.MinutesEdit"|trans([], "validators") }}</span>
-					</div>
+					<span class="input-group-text">{{ "video.admin.MinutesEdit"|trans([], "validators") }}</span>
 				</div>
 			</div>
 			<div class="col-md-4 col-sm-4">
 				<div class="input-group">
 					{{ form_widget(form.secondDuration, { 'attr': {'class': 'form-control'}}) }}
-					<div class="input-group-append">
-						<span class="input-group-text">{{ "video.admin.SecondsEdit"|trans([], "validators") }}</span>
-					</div>
+					<span class="input-group-text">{{ "video.admin.SecondsEdit"|trans([], "validators") }}</span>
 				</div>
 			</div>
 		</div>
@@ -133,7 +127,7 @@
 	</ul>
 	
     <button type="button"
-        class="add-another-collection-widget btn btn-success float-right"
+        class="add-another-collection-widget btn btn-success float-end"
         data-list-selector="#biography-fields-list"><i class="fas fa-plus"></i></button>
 		
 	<div class="d-none">

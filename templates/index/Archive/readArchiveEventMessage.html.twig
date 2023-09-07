@@ -6,21 +6,20 @@
 <script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
 <script>
-	$(function() {
-		var map = L.map('map-canvas').setView([{{ entity.latitude }}, {{ entity.longitude }}], 15);
-		
-		L.marker([{{ entity.latitude }}, {{ entity.longitude }}]).addTo(map);
+	var map = L.map('map-canvas').setView([{{ entity.latitude }}, {{ entity.longitude }}], 15);
 
-		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-		}).addTo(map);
+	L.marker([{{ entity.latitude }}, {{ entity.longitude }}]).addTo(map);
 
-		map.addControl(new L.Control.Fullscreen());
-		
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			$('#showColorboxByLicenceModal').modal('show');
-			e.preventDefault();
-		});
+	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+	}).addTo(map);
+
+	map.addControl(new L.Control.Fullscreen());
+
+	document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+		var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+		licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+		e.preventDefault();
 	});
 </script>
 {% endif %}

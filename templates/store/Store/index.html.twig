@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "store.index.Store"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Store"/></span>{{ "store.index.Store"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Store"/></span>{{ "store.index.Store"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	{% if app.request.query.has("category") %}
@@ -24,7 +24,7 @@
 			<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, {'attr':{'class' : 'form-control'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-right mt-3">{{ "store.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3">{{ "store.search.Validate"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<br>
@@ -33,7 +33,7 @@
 		{% include "store/Store/_product.html.twig" with { entity: entity } %}
 		<hr class="hr2">
 	{% else %}
-		<div class="alert alert-danger font-italic text-center">{{ "store.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<div class="alert alert-danger fst-italic text-center">{{ "store.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
 	

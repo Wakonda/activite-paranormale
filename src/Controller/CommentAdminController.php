@@ -94,7 +94,7 @@ class CommentAdminController extends AdminGenericController
 			$row[] = "
 			 <a href='".$this->generateUrl('Comment_Admin_Show', array('id' => $entity[0]->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
 			";
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));

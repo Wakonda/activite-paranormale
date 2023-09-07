@@ -3,21 +3,24 @@
 {% block title %}{% if entity is not empty %}{{ entity.title }}{% endif %}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-left"><img src="{{ asset('extended/photo/creative-commons-icon.png') }}" width="25" class="mt-1" alt="Law"/></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/creative-commons-icon.png') }}" width="25" class="mt-1" alt="Law"/></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
 {% endblock h2_title %}
 
 {% block header_plus %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
 		$(function ()
 		{
-			$('table.index_copyright').dataTable({
-				"bFilter": false,
-				"bInfo": false,
-				"bPaginate": true,
+			$('table.index_copyright').DataTable({
+				"searching": false,
+				"info": false,
+				"paging": true,
 				"bLength": false
 			});
 		});

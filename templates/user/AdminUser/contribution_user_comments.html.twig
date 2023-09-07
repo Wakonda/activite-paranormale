@@ -1,27 +1,27 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "user.contributionUserComments.Comment"|trans([], "validators") }} - {{ user.username }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/contribution_user_icon.png') }}" width="25" class="mt-1" alt="Alien"/></span>{{ "user.contributionUserComments.Comment"|trans([], "validators") }} - {{ user.username }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/contribution_user_icon.png') }}" width="25" class="mt-1" alt="Alien"/></span>{{ "user.contributionUserComments.Comment"|trans([], "validators") }} - {{ user.username }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
 			oTable = $('table.doc_datatables').DataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bLengthChange": true,
-				"aaSorting": [[ 0, "desc" ]],
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": {{ total_line_display }},
-				"bProcessing": true,
-				"bServerSide": true,
+				"searching": true,
+				"info": true,
+				"lengthChange": true,
+				"order": [[ 0, "desc" ]],
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
 				"responsive": {
 					"details": {
 						display: $.fn.dataTable.Responsive.display.childRowImmediate,
@@ -29,7 +29,7 @@
 						target: ''
 					}
 				},
-				"sAjaxSource": "{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=" + document.getElementById("comments_entity").value,
+				"ajax": "{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=" + document.getElementById("comments_entity").value,
 				"aoColumns": [
 				  { "sclass": "longType" },
 				  null,
@@ -41,8 +41,9 @@
 				oTable.ajax.url('{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=' + e.target.value).load();
 			});
 		});
-	</script><link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}

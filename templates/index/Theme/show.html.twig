@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "theme.read.Theme"|trans([], "validators") }} - {{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/dildo-icon.svg') }}" width="27" class="mt-1" alt="Skull"/></span>{{ "theme.read.Theme"|trans([], "validators") }} - {{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/dildo-icon.svg') }}" width="27" class="mt-1" alt="Skull"/></span>{{ "theme.read.Theme"|trans([], "validators") }} - {{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
@@ -23,7 +23,7 @@
 	{% endif %}
 		{% for key, publication in publications %}
 			{% if countTheme > 1 %}
-			<h3 class="cursor-pointer mt-2" data-toggle="collapse" data-target="#collapse_theme_{{ i }}" aria-expanded="false" aria-controls="collapse_theme_{{ i }}">{{ key }}</h3>
+			<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-bs-target="#collapse_theme_{{ i }}" aria-expanded="false" aria-controls="collapse_theme_{{ i }}">{{ key }}</h3>
 			<div id="collapse_theme_{{ i }}" class="collapse" data-parent="#accordion">
 				<br>
 			{% endif %}

@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-left"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-okaidia.min.css') }}" />
@@ -14,12 +14,10 @@
 	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-copy-to-clipboard.min.js') }}"></script>
 
 	<script>
-		$(function ()
-		{
-			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-				$('#showColorboxByLicenceModal').modal('show');
-				e.preventDefault();
-			});
+		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+			e.preventDefault();
 		});
 	</script>
 {% endblock %}
