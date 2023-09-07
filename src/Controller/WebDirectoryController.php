@@ -35,30 +35,26 @@ class WebDirectoryController extends AbstractController
 	{
 		$language = $request->getLocale();
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
         $entities = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language);
 		$iTotal = $em->getRepository(WebDirectory::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $language, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -72,7 +68,7 @@ class WebDirectoryController extends AbstractController
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getWebsiteLanguage()->getAssetImagePath().$entity->getWebsiteLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = "<a href='".$entity->getLink()."'>".$translator->trans('directory.index.Visiter', [], 'validators')."</a>";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

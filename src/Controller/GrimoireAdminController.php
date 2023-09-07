@@ -137,7 +137,7 @@ class GrimoireAdminController extends AdminGenericController
 			 <a href='".$this->generateUrl('Grimoire_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));

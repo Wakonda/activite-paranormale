@@ -53,9 +53,9 @@ class CreepyStoryController extends AbstractController
 
 	public function tabDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];;
 		$language = $request->getLocale();
 
 		$sortByColumn = [];
@@ -74,10 +74,9 @@ class CreepyStoryController extends AbstractController
 		$iTotal = $em->getRepository(CreepyStory::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -89,7 +88,7 @@ class CreepyStoryController extends AbstractController
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		$response = new Response(json_encode($output));

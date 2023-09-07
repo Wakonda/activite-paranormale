@@ -39,10 +39,9 @@ class TagsController extends AbstractController
 		$iTotal = $em->getRepository(TagWord::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -54,7 +53,7 @@ class TagsController extends AbstractController
 			$row[] = '<a href="'.$this->generateUrl("ap_tags_search", ['id' => $entity->getId(), 'title' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);
@@ -70,9 +69,9 @@ class TagsController extends AbstractController
 
 	public function searchDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date, $id, $title)
 	{
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$locale = $request->getLocale();
 
@@ -81,10 +80,9 @@ class TagsController extends AbstractController
 		$iTotal = $em->getRepository(Tags::class)->getDatatablesForSearchTagsAdmin($tagWord, $locale, $iDisplayStart, $iDisplayLength, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -95,7 +93,7 @@ class TagsController extends AbstractController
 			$row[] = (!empty($theme = $entity->getEntity()->getTheme())) ? $theme->getTitle() : "";
 			$row[] =  $date->doDate($request->getLocale(), $entity->getEntity()->getPublicationDate());
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

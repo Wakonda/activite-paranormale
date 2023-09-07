@@ -198,7 +198,7 @@
 			}
 
 			$optionString = "";
-			
+
 			if(empty($width)) 
 			{
 				if(empty($options))
@@ -232,7 +232,7 @@
 			}
 
 			if($svg->isSVG())
-				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100" />';
+				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white" />';
 			else
 				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' alt="" '.$optionString.' />';
 
@@ -253,7 +253,7 @@
 							  <div class="modal-dialog" role="document">
 								<div class="modal-content">
 								  <div class="modal-body">
-									<img src="'.$src.'" class="w-100" />
+									<img src="'.$src.'" class="w-100 bg-white" />
 									'.(!empty($infosPicture) ? '<hr class="hr2"><ul class="fa-ul">'.$infosPicture.'</ul>' : "").'
 									<hr class="hr2">
 									'.$caption["caption"].'
@@ -647,7 +647,7 @@
 				if(empty($tagsArray))
 					return null;
 
-				return '<fieldset class="p-2"><legend class="ml-2"> Tags </legend>'.implode('', $tagsArray).'</fieldset><br>';
+				return '<fieldset class="p-2"><legend class="ml-2 float-none"> Tags </legend>'.implode('', $tagsArray).'</fieldset><br>';
 			}
 			return null;
 		}

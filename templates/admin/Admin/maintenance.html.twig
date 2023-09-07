@@ -8,10 +8,6 @@
 	<li class="nav-item"><a class="nav-link" href="https://github.com/Wakonda/activite-paranormale"><i class="fab fa-github-alt"></i> Github</a></li>
 {% endblock %}
 
-{% block style_edit %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-{% endblock %}
-
 {% block body_main %}
 	<h3><i class="fa-solid fa-computer fa-sm me-2"></i>{{ "admin.index.ActivateDesactivateMaintenance"|trans([], "validators") }}</h3>
 	{% if mode == "MaintenanceOff" %}

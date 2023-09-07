@@ -4,26 +4,26 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bonejangles-icon.png') }}" width="25" class="mt-1" alt="Killer"/></span>{{ "tag.index.Tag"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
 		$(function ()
 		{
 			oTable = $('table.biography_datatables').DataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bSort": true,
-				"bLengthChange": true,
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": {{ total_line_display }},
-				"bProcessing": true,
-				"bServerSide": true,
-				"aaSorting": [[ 0, "asc" ]],
+				"searching": true,
+				"info": true,
+				"ordering": true,
+				"lengthChange": true,
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
+				"order": [[ 0, "asc" ]],
 				"ajax": {
 					"url": "{{ path('ap_tags_ListDatatables') }}",
 					"type": "GET"
@@ -38,7 +38,8 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}

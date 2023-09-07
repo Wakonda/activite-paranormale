@@ -20,10 +20,10 @@ class ContactController extends AbstractController
         $entity = new Contact();
         $form = $this->createForm(ContactType::class, $entity);
 
-        return $this->render('contact/Contact/index.html.twig', array(
+        return $this->render('contact/Contact/index.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
-        ));
+        ]);
     }
 
     public function sendAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)

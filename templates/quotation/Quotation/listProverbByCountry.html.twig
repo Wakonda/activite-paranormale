@@ -4,25 +4,25 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset(country.getAssetImagePath()) }}{{ country.flag }}" alt="" width="20" height="13" /></span>{{ "quotation.index.Proverb"|trans([], "validators") }} - {{ country.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
 		$(function ()
 		{
-			oTable = $('table.doc_datatables').dataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+			oTable = $('table.doc_datatables').DataTable( {
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
-				"bFilter": true,
-				"bInfo": true,
-				"bLengthChange": true,
-				"aaSorting": [[ 0, "desc" ]],
-				"sPaginationType": "full_numbers",
-				"iDisplayLength": {{ total_line_display }},
-				"bProcessing": true,
-				"bServerSide": true,
+				"searching": true,
+				"info": true,
+				"lengthChange": true,
+				"order": [[ 0, "desc" ]],
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
 				"responsive": {
 					"details": {
 						display: $.fn.dataTable.Responsive.display.childRowImmediate,
@@ -30,12 +30,12 @@
 						target: ''
 					}
 				},
-				"sAjaxSource": "{{ path('Proverb_listProverbByCountryDatatables', { countryId: country.id }) }}",
+				"ajax": "{{ path('Proverb_listProverbByCountryDatatables', { countryId: country.id }) }}",
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block APBlog_body %}

@@ -581,7 +581,9 @@ div.dataTables_wrapper div.dataTables_paginate.paging_full_numbers a.paginate_bu
     color: #333 !important;
     border: 1px solid #aaa;
 }
-
+div.dataTables_processing > div > div {
+    background: #e4ff00 !important;
+}
 div.dataTables_wrapper div.dataTables_paginate a.paginate_button:active, div.dataTables_wrapper div.dataTables_paginate a.paginate_button.current {
     background: #99B3FF;
 }
@@ -1423,28 +1425,6 @@ h2 span img {
   max-width: 100%;
   margin-bottom: 1rem;
     border-collapse: collapse !important;
-}
-table.dataTable thead .sorting:before, table.dataTable thead .sorting_asc:before, table.dataTable thead .sorting_desc:before, table.dataTable thead .sorting_asc_disabled:before, table.dataTable thead .sorting_desc_disabled:before {
-    right: 1em;
-    content: "\2191";
-    position: absolute;
-    top: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-}
-table.dataTable thead .sorting:after, table.dataTable thead .sorting_asc:after, table.dataTable thead .sorting_desc:after, table.dataTable thead .sorting_asc_disabled:after, table.dataTable thead .sorting_desc_disabled:after {
-    right: 0.5em;
-    content: "\2193";
-    position: absolute;
-    top: 0;
-    height: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
 }
 .dataTables_wrapper.container-fluid {
 	padding-left: initial;

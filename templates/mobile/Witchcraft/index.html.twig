@@ -31,7 +31,7 @@
 {% endblock %}
 
 {% block body_content %}
-	<form name="choixTheme" id="choose_theme_news" action="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}" method="post" class="form-inline">
+	<form name="choixTheme" id="choose_theme_news" action="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
 		<div class="form-group me-2">
 			<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
 			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">

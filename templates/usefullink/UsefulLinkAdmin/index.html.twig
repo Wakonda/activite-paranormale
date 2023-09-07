@@ -8,12 +8,12 @@
 {% block js_edit_additional %}
 	document.querySelector("#usefullink_filter").addEventListener("submit", (e) => {
 		e.preventDefault();
-		oTable.api().ajax.url("{{ block('indexdatatables_admin_route') }}?category_filter=" + document.getElementById("category_filter").value + "&tags_filter=" + document.getElementById("tags_filter").value).load();
+		oTable.ajax.url("{{ block('indexdatatables_admin_route') }}?category_filter=" + document.getElementById("category_filter").value + "&tags_filter=" + document.getElementById("tags_filter").value).load();
 	});
 {% endblock %}
 
 {% block body_main_additional %}
-	<form class="form-inline" id="usefullink_filter">
+	<form class="d-flex flex-row align-items-center flex-wrap" id="usefullink_filter">
 	<div class="form-group">
 		<label>{{ "usefullink.admin.Category"|trans([], "validators") }}</label>
 		<select id="category_filter" class="form-control ms-2">

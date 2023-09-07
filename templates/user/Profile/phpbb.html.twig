@@ -10,7 +10,7 @@
 				{% if forum.exists %}
 					<a href="{{ forum.url }}/ucp.php?mode=login" target="_blank" class="btn btn-success text-white">{{ "user.phpbb.LogIn"|trans([], "validators") }}</a>
 				{% else %}
-					<form method="post" action="{{ path('Profile_PHPBB') }}" class="form-inline">
+					<form method="post" action="{{ path('Profile_PHPBB') }}" class="d-flex flex-row align-items-center flex-wrap">
 						{{ form_widget(form["password" ~ forum.language|lower], {'attr': {'class': 'form-control', 'placeholder': "user.phpbb.YourForumPassword"|trans([], "validators")}})}}
 						<button type="submit" name="language[{{ forum.language|lower }}]" class="btn btn-success">{{ "user.phpbb.CreateAccount"|trans([], "validators") }}</button>
 					</form>

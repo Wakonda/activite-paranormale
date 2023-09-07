@@ -64,7 +64,7 @@ class AdminUserController extends AdminGenericController
 			$row[] = "
 			 <a href='".$this->generateUrl('apadminuser_show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
 			";
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);
@@ -99,9 +99,9 @@ class AdminUserController extends AdminGenericController
 	{
 		$language = $request->getLocale();
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
@@ -121,10 +121,9 @@ class AdminUserController extends AdminGenericController
 		$iTotal = $em->getRepository(User::class)->getUsersContribution($user, base64_decode($bundleClassName), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true, $displayState);
 
 		$output = array(
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		);
 		
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $language));
@@ -149,7 +148,7 @@ class AdminUserController extends AdminGenericController
 				$row[] = $date->doDate($language->getAbbreviation(), $entity->getPublicationDate());
 			else
 				$row[] = $date->doDate($language->getAbbreviation(), $entity->getWritingDate());
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);
@@ -180,9 +179,9 @@ class AdminUserController extends AdminGenericController
 		$language = $request->getLocale();
 
 		$className = $request->query->get("className");
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
@@ -202,10 +201,9 @@ class AdminUserController extends AdminGenericController
 		$iTotal = $em->getRepository(User::class)->getUsersCommentContribution($user, $className, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -214,7 +212,7 @@ class AdminUserController extends AdminGenericController
 			$row[] = $entity->getMessageComment();
 			$row[] = $date->doDateTime($language, $entity->getDateComment());
 			$row[] = '<a href="'.$this->generateUrl($entity->getEntityLinked()->getShowRoute(), ["title" => $entity->getEntityLinked()->getTitle(), "id" => $entity->getEntityLinked()->getId()]).'">'.$translator->trans('user.contributionUserComments.Link', [], 'validators').'</a>';
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

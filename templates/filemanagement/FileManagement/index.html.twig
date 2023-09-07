@@ -1,60 +1,60 @@
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 
-	<script>
-		$(function ()
-		{
-			$('.doc_datatables').dataTable( {
-				"oLanguage": {
-					"sUrl": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
-				},
-				"bPaginate": false,
-				"bLengthChange": false,
-				"bFilter": false,
-				"bSort": true,
-				"bInfo": false,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
-				"bAutoWidth": false
-			});
-			
-			$(".displayInColorbox").click(function()
-			{
-				$('#displayPicture p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
-				$('#displayPicture .modal-title').html($(this).data("title"));
-				$('#displayPicture').modal('show');
-				event.preventDefault();
-			});
+<script>
+	$(function ()
+	{
+		$('.doc_datatables').DataTable( {
+			"language": {
+				"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
+			},
+			"paging": false,
+			"lengthChange": false,
+			"searching": false,
+			"ordering": true,
+			"info": false,
+			"responsive": {
+				"details": {
+					display: $.fn.dataTable.Responsive.display.childRowImmediate,
+					type: 'none',
+					target: ''
+				}
+			},
+			"bAutoWidth": false
 		});
-	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/extensions/Responsive/css/responsive.bootstrap4.min.css') }}" type="text/css" media="screen" />
+		
+		$(".displayInColorbox").click(function()
+		{
+			$('#displayPicture p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
+			$('#displayPicture .modal-title').html($(this).data("title"));
+			$('#displayPicture').modal('show');
+			event.preventDefault();
+		});
+	});
+</script>
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 
-	<div class="modal fade" tabindex="-1" role="dialog" id="displayPicture">
-	  <div class="modal-dialog" role="document">
-		<div class="modal-content">
-		  <div class="modal-header">
-			<h5 class="modal-title"></h5>
-		  </div>
-		  <div class="modal-body">
-			<p class='image'></p>
-		  </div>
-		  <div class="modal-footer">
-			<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
-		  </div>
-		</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="displayPicture">
+  <div class="modal-dialog" role="document">
+	<div class="modal-content">
+	  <div class="modal-header">
+		<h5 class="modal-title"></h5>
+	  </div>
+	  <div class="modal-body">
+		<p class='image'></p>
+	  </div>
+	  <div class="modal-footer">
+		<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 	  </div>
 	</div>
+  </div>
+</div>
 
-	<div id="errorFile" class="mt-3"></div>
-	<div id="file_management_control" class="mt-3">
+<div id="errorFile" class="mt-3"></div>
+<div id="file_management_control" class="mt-3">
 	<h3>{{ "file.add.AttachFile"|trans([], "validators") }}</h3>
 	{{ form_start(form, {'action': path('FileManagement_Create', {'idClassName':idClassName, 'className':className}), 'attr':{'class' : 'form-horizontal', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
@@ -178,5 +178,5 @@
 				document.getElementById("uploadSubmit").disabled = false;
 			}
 		}
-	  </script>
+	</script>
 </div>

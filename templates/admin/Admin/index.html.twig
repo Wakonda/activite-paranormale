@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block style_edit %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap4.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block body_main %}
@@ -517,15 +517,15 @@
 {% endblock %}
 
 {% block js_edit %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
 	<script>
 		$(function ()
 		{
-			$('table.index_admin').dataTable({
-				"bFilter": false,
-				"bInfo": false,
-				"bPaginate": false,
+			$('table.index_admin').DataTable({
+				"searching": false,
+				"info": false,
+				"paging": false,
 			});
 		});
 	</script>

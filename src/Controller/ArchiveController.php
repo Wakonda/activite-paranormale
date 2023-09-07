@@ -138,9 +138,9 @@ class ArchiveController extends AbstractController
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
 			return $this->redirect($this->generateUrl("Archive_Index"));
 
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
@@ -160,10 +160,9 @@ class ArchiveController extends AbstractController
 		$iTotal = $em->getRepository($className)->getTabArchive($themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 
 		foreach($entities as $entity)
@@ -172,7 +171,7 @@ class ArchiveController extends AbstractController
 			$row[] = '<a href="'.$this->generateUrl("Archive_Read", ['id' => $entity->getId(), "className" => base64_encode($className)]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
-			$output['aaData'][] = $row;
+			$output['data'][] = $row;
 		}
 
 		return new JsonResponse($output);

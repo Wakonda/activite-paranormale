@@ -45,7 +45,9 @@ class ArtistBiographyRepository extends EntityRepository
 		
 		foreach($qb->getQuery()->getResult() as $res) {
 			$res["occupations"] = explode("#", $res["occupations"]);
-			$res["years"] = implode(", ", array_unique(explode("#", $res["years"])));
+			
+			$years = explode(" - ", $res["years"]);
+			$res["years"] =  (isset($years[0]) ? (new \App\Service\APDate())->doPartialDate($years[0], "fr") : "")." - ".(isset($years[1]) ? (new \App\Service\APDate())->doPartialDate($years[1], "fr") : "");
 
 			if(empty($res["lastYear"]))
 				$datas["current"][] = $res;

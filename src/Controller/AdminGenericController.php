@@ -60,27 +60,26 @@ abstract class AdminGenericController extends AbstractController
 	}
 	
 	protected function datatablesParameters(Request $request): array {
-		$iDisplayStart = $request->query->get('iDisplayStart');
-		$iDisplayLength = $request->query->get('iDisplayLength');
-		$sSearch = $request->query->get('sSearch');
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
 		$searchByColumns = [];
-		$iColumns = $request->query->get('iColumns');
+		$iColumns = $request->query->all('columns');
 
-		for($i=0; $i < $iColumns; $i++)
-			$searchByColumns[] = $request->query->get('sSearch_'.$i);
+		for($i=0; $i < $iColumns; $i++) {
+			if(isset($iColumns[$i]))
+				$searchByColumns[] = $iColumns[$i]["search"];
+		}
 		
 		return [$iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns];
 	}
@@ -93,10 +92,9 @@ abstract class AdminGenericController extends AbstractController
 		$iTotal = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, true);
 
 		$output = [
-			"sEcho" => $request->query->get('sEcho'),
-			"iTotalRecords" => $iTotal,
-			"iTotalDisplayRecords" => $iTotal,
-			"aaData" => []
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
 		];
 		
 		return ['entities' => $entities, 'output' => $output];
