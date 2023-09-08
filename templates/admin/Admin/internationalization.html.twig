@@ -25,7 +25,7 @@
 {% endif %}
 
 <div class="input-group mb-3 mt-2">
-	{{ form_widget(form.language, { 'attr': {'class': 'form-control'}}) }}
+	{{ form_widget(form.language, { 'attr': {'class': 'form-select'}}) }}
 	<a href="#" class="btn btn-success" id="{{ form.language.vars.id }}_select_language">{{ "admin.general.Create"|trans([], "validators") }}</a>
 </div>
 

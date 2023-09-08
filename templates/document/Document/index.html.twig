@@ -76,7 +76,7 @@
 			<div class="form-table-cell">{{ form_errors(form.documentFamily) }}{{ form_widget(form.documentFamily, {'attr':{'class' : 'form-control'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "document.search.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
 		<button type="submit" class="btn submitcomment float-end">{{ "document.search.Validate"|trans([], "validators") }}</button>

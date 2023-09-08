@@ -26,10 +26,10 @@
 <div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "book.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "book.admin.LiteraryGenre"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.authors, "book.admin.Authors"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.authors) }}{{ form_widget(form.authors, { 'attr': {'data-width': '100%'} }) }}</div>
@@ -38,13 +38,13 @@
 <div class="form-table-cell fictional_character_container">{{ form_errors(form.fictionalCharacters) }}{{ form_widget(form.fictionalCharacters, { 'attr': {'data-width': '100%'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "book.admin.Theme"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "book.admin.State"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "book.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>

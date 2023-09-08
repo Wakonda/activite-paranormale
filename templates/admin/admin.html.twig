@@ -41,7 +41,7 @@
 								{% endfor %}
 							</div>
 						</li>
-						<li class="nav-item"><span class="navbar-text"><i class="fas fa-user" aria-hidden="true"></i> <b>{{ app.user.username }}</b></span></li>
+						<li class="nav-item py-2"><span class="navbar-text"><i class="fas fa-user" aria-hidden="true"></i> <b>{{ app.user.username }}</b></span></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
 						<li class="nav-item"><button onclick="self.location.href='{{ path('Security_Logout') }}'" type="button" class="btn btn-danger navbar-btn">{{ "index.leftMenu.Logout"|trans([], "validators") }} <i class="fas fa-sign-out-alt" aria-hidden="true"></i></button></li>
@@ -54,7 +54,7 @@
 			</div>
 
 			<div class="panel-footer" id="footer">
-				<p class="text-white-50 credit">Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }} <a href="/" target="_blank"><b>Activité-Paranormale</b></a></p>
+				<p class="text-secondary credit">Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }} <a href="/" target="_blank"><b>Activité-Paranormale</b></a></p>
 			</div>	
 		</div>
 		{% block js_edit %}

@@ -55,13 +55,13 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "testimony.new.Testimony"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "testimony.new.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>#}
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-select'}}) }}</div>#}
 			
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.sightingDate, "testimony.new.SightingDate"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.sightingDate) }}{{ form_widget(form.sightingDate) }}</div>
 			
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "testimony.new.Country"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-select'}}) }}</div>
 			
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.location_selector, "testimony.new.Location"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.location_selector) }}{{ form_widget(form.location_selector) }}</div>

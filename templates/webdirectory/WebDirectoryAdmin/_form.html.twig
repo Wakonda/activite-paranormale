@@ -17,7 +17,7 @@
 <div class="form-table-cell">{{ form_errors(form.websiteLanguage) }}{{ form_widget(form.websiteLanguage, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "directory.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "directory.admin.Description"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -70,10 +70,10 @@
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "directory.admin.State"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "directory.admin.Licence"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <script>
 	document.getElementById("wikidata").addEventListener("click", (e) => {

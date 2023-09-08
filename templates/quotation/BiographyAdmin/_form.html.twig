@@ -4,7 +4,7 @@
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "biography.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
 
@@ -24,7 +24,7 @@
 <div class="form-table-cell">{{ form_errors(form.deathDate) }}{{ form_widget(form.deathDate, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.nationality, "biography.admin.Nationality"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.nationality) }}{{ form_widget(form.nationality, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.nationality) }}{{ form_widget(form.nationality, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.kind, "biography.admin.Kind"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.kind) }}{{ form_widget(form.kind, { 'attr': {'class': 'form-control'}}) }}</div>

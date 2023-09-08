@@ -4,7 +4,7 @@
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "album.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.artist, "album.admin.Artist"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.artist) }}{{ form_widget(form.artist, { 'attr': {'class': 'form-control'} }) }}</div>
@@ -16,7 +16,7 @@
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "album.admin.Licence"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-select'} }) }}</div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
 

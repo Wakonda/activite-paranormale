@@ -18,13 +18,13 @@
 <div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "blog.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.languageOfBlog, "blog.admin.LanguageOfBlog"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.languageOfBlog) }}{{ form_widget(form.languageOfBlog, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.languageOfBlog) }}{{ form_widget(form.languageOfBlog, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.active, "blog.admin.Active"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.active) }}{{ form_widget(form.active, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "blog.admin.Category"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-select'} }) }}</div>

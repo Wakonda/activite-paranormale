@@ -21,13 +21,13 @@
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "televisionSerie.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "televisionSerie.admin.State"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "televisionSerie.admin.Theme"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-select'} }) }}</div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
 

@@ -107,7 +107,7 @@
 	{{ form_start(form, {'method': 'POST', 'attr': {id: form.vars.id, 'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "cartography.index.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
 		<button type="submit" class="btn submitcomment float-end">{{ "cartography.index.Validate"|trans([], "validators") }}</button>

@@ -62,7 +62,7 @@
 			</div>
 
 			{#<div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "news.new.Theme"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}</div>#}
+			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-select'}}) }}</div>#}
 
 			{% if app.user is null %}
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "news.new.Pseudo"|trans([], "validators")) }}</div>

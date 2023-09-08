@@ -22,7 +22,7 @@
 <div class="form-table-cell">{{ form_errors(form.type) }}{{ form_widget(form.type, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "eventMessage.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.dateFrom, "eventMessage.admin.DateFrom"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.dateFrom) }}{{ form_widget(form.dateFrom, { 'attr': {'class': 'form-control'} }) }}</div>
@@ -34,10 +34,10 @@
 <div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "eventMessage.admin.Licence"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "eventMessage.admin.State"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "eventMessage.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
@@ -50,7 +50,7 @@
 </div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "eventMessage.admin.Theme"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.latitude, "eventMessage.admin.Latitude"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.latitude) }}{{ form_widget(form.latitude, { 'attr': {'class': 'form-control'} }) }}</div>

@@ -934,5 +934,23 @@
 		"filename": "woman-computer.webp",
 		"author": "pixai.art",
 		"license": "CC0"
-	}
+	},
+	{
+		"url": "https://pixabay.com/fr/illustrations/ai-g%C3%A9n%C3%A9r%C3%A9-diable-d%C3%A9mon-monstre-8120055/",
+		"filename": "suggest-webdirectory.jpg",
+		"author": "<a href='https://pixabay.com/fr/users/thedigitalartist-202249/'>TheDigitalArtist</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixabay.com/fr/illustrations/ai-g%C3%A9n%C3%A9r%C3%A9-bi%C3%A8re-pub-kobold-vert-7920805/",
+		"filename": "suggest-webdirectory-socialnetwork.jpg",
+		"author": "<a href='https://pixabay.com/fr/users/rosesdotty-25686511/'>rosesdotty</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixabay.com/fr/illustrations/fille-gothique-sombre-fantaisie-7891091/",
+		"filename": "webdirectory-validate-user-participation.webp",
+		"author": "<a href='https://pixabay.com/fr/users/susan-lu4esm-7009216/'>susan-lu4esm</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
 ]
