@@ -434,6 +434,12 @@
 								</td>
 							</tr>
 							<tr>
+								<td>{{ "admin.moderation.WebDirectoriesToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('WebDirectory_Admin_Index', {'state':'Waiting', 'display' : 0}) }}" alt="" >{{ render(controller('App\\Controller\\WebDirectoryAdminController::countByStateAction', {'state':'Waiting'})) }}</a>]
+								</td>
+							</tr>
+							<tr>
 								<td>{{ "admin.index.Comment"|trans([], "validators") }}</td>
 								<td><strong><em>{{ "admin.moderation.CommentsToModerate"|trans([], "validators") }} </em></strong>[<a href="{{ path('Comment_Admin_Index') }}" alt="">{{ render(controller("App\\Controller\\CommentAdminController::countToModerateCommentsAction")) }}</a>]</td>
 							</tr>

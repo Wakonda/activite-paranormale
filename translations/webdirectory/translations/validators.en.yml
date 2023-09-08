@@ -6,6 +6,18 @@ directory:
         Title: "Title"
         Language: "Language"
         Link: "Link"
+        Promote: "Promote your website %start_link%by filling out this form%end_link% and get noticed!"
+    form:
+        Title: "Title"
+        Link: "Link"
+        Logo: "Logo"
+        WebsiteLanguage: "Website language"
+        SocialNetworks: "Social networks"
+        Validate: "Validate"
+    validate:
+        Validation: "Validation"
+        ThankForYourParticipation: "Thank you for your participation!"
+        ThankForYourParticipationText: "Your website has been successfully submitted. It will be published as soon as a moderator approves it."
     read:
         Link: "Link"
         Description: "Description"
@@ -23,3 +35,4 @@ directory:
         DefunctYear: "Defunct"
         Licence: "Licence"
         Sources: "Sources"
+        State: "State"

@@ -62,18 +62,4 @@ class ContactController extends AbstractController
             'form'   => $form->createView()
         ]);
     }
-
-	public function offerLinkAction(TranslatorInterface $translator)
-	{
-		$entity = new Contact();
-
-		$entity->setSubjectContact($translator->trans('index.leftMenu.OfferLink', [], 'validators'));
-
-        $form = $this->createForm(ContactType::class, $entity);
-
-        return $this->render('contact/Contact/index.html.twig', [
-            'entity' => $entity,
-            'form'   => $form->createView()
-        ]);
-	}
 }

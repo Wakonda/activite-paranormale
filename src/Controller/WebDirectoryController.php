@@ -118,9 +118,8 @@ class WebDirectoryController extends AbstractController
         if ($form->isValid()) {
 			$em->persist($entity);
 			$em->flush();
-			
 
-			return $this->render('page/EventMessage/validate_externaluser_text.html.twig');
+			return $this->render('webdirectory/WebDirectory/validate_externaluser_text.html.twig');
         }
 
         return $this->render('webdirectory/WebDirectory/new.html.twig', [

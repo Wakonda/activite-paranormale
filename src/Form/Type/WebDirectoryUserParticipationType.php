@@ -14,6 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,30 +25,14 @@ use App\Form\EventListener\InternationalNameFieldListener;
 
 use App\Entity\Language;
 
-class WebDirectoryAdminType extends AbstractType
+class WebDirectoryUserParticipationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$language = $options['locale'];
-
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
-            ->add('link', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('link', TextType::class, ['required' => true, 'constraints' => [new NotBlank(), new Url()]])
             ->add('logo', FileType::class, ['data_class' => null, 'required' => true])
-			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
-            ->add('language', EntityType::class, [
-				'class'=> Language::class,
-				'choice_label' => function ($choice, $key, $value) {
-					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
-				},
-				'required' => true,
-				'constraints' => [new NotBlank()],
-				'query_builder' => function(EntityRepository $er)
-				{
-					return $er->createQueryBuilder('u')
-							->orderBy('u.title', 'ASC');
-				},
-			])
 			->add('websiteLanguage', EntityType::class, [
 				'class'=> Language::class,
 				'choice_label'=>'title',
@@ -59,26 +44,10 @@ class WebDirectoryAdminType extends AbstractType
 							->orderBy('u.title', 'ASC');
 				},
 			])
-			->add('licence', EntityType::class, ['class'=>'App\Entity\Licence',
-				'choice_label'=>'title',
-				'required' => false,
-				'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-			])
-			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
-					'choice_label'=>'title',
-					'constraints' => array(new NotBlank()),
-					'choice_attr' => function($val, $key, $index) {
-						return ['data-intl' => $val->getInternationalName()];
-					},
-					'required' => true,
-					'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
-			))
 			->add('socialNetwork', HiddenType::class, ['label' => false, 'required' => false, 'attr' => ['class' => 'invisible']])
-			->add('text', TextareaType::class, ['required' => false])
-			->add('foundedYear', DatePartialType::class, ['required' => false])
-			->add('defunctYear', DatePartialType::class, ['required' => false])
-			->add('wikidata', TextType::class, ['required' => false])
-            ->add('source', SourceEditType::class, ['required' => false])
+			->add('validate', SubmitType::class, array(
+				'attr' => array('class' => 'submitcomment btn'),
+			))
 		;
 
 		$socialNetworkFacebookDefault = "";
@@ -184,14 +153,13 @@ class WebDirectoryAdminType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'ap_webdirectory_webdirectoryadmintype';
+        return 'ap_webdirectory_webdirectoryuserparticipationtype';
     }
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
-			'data_class' => 'App\Entity\WebDirectory',
-			'locale' => 'fr'
+			'data_class' => 'App\Entity\WebDirectory'
 		]);
 	}
 }

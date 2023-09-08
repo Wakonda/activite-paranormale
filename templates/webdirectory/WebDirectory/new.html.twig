@@ -1,0 +1,85 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "news.new.AddNews"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "news.new.AddNews"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<div class="alert alert-info">{{ "directory.index.Promote"|trans({'%start_link%': '', '%end_link%': ''}, "validators") }}</div>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-webdirectory.jpg" alt="Devil" width="550" /></p>
+	<br>
+	<hr class="hr2"/>
+	{{ form_start(form, {'action': path('WebDirectory_User_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "directory.form.Title"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.link, "directory.form.Link"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.link) }}{{ form_widget(form.link, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.logo, "directory.form.Logo"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.logo) }}{{ form_widget(form.logo) }}
+				<div>
+					<span class="fw-bold">{{ "news.new.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
+					<br>
+					<span class="fw-bold">{{ "news.new.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
+				</div>
+			</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.websiteLanguage, "directory.form.WebsiteLanguage"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.websiteLanguage) }}{{ form_widget(form.websiteLanguage, { 'attr': {'class': 'form-control'} }) }}</div>
+		</div>
+		<br>
+		<h3>{{ "directory.form.SocialNetworks"|trans([], "validators") }}</h3>
+		<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-webdirectory-socialnetwork.jpg" alt="Devil" width="250" /></p>
+		<br>
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkFacebook, "Facebook") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkFacebook) }}{{ form_widget(form.socialNetworkFacebook, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTwitter, "Twitter") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkTwitter) }}{{ form_widget(form.socialNetworkTwitter, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkRSS, "RSS") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkRSS) }}{{ form_widget(form.socialNetworkRSS, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkYoutube, "Youtube") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkYoutube) }}{{ form_widget(form.socialNetworkYoutube, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkInstagram, "Instagram") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkInstagram) }}{{ form_widget(form.socialNetworkInstagram, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkPinterest, "Pinterest") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkPinterest) }}{{ form_widget(form.socialNetworkPinterest, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkDelicious, "Delicious") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkDelicious) }}{{ form_widget(form.socialNetworkDelicious, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkGithub, "Github") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkGithub) }}{{ form_widget(form.socialNetworkGithub, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkLinkedin, "Linkedin") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkLinkedin) }}{{ form_widget(form.socialNetworkLinkedin, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTumblr, "Tumblr") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkTumblr) }}{{ form_widget(form.socialNetworkTumblr, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkVimeo, "Vimeo") }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetworkVimeo) }}{{ form_widget(form.socialNetworkVimeo, { 'attr': {'class': 'form-control'} }) }}</div>
+		</div>
+		
+		<div class="clearfix">
+			<div class="mt-3">
+			
+				<div class="float-end">
+					{{ form_widget(form.validate, { 'label': "directory.form.Validate"|trans([], "validators") }) }}
+				</div>
+			</div>
+		</div>
+		{{ form_rest(form) }}
+	{{ form_end(form) }}
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

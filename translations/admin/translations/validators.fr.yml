@@ -182,6 +182,7 @@ admin:
         RitualsToModerate: "Rituels / Prières à modérer"
         MessagesReceived: "Messages reçus"
         TestimoniesToModerate: "Témoignages à modérer"
+        WebDirectoriesToModerate: "Annuaires web à modérer"
         CommentsToModerate: "Commentaires à modérer"
         Waiting: "En attente"
         Warned: "Averti"

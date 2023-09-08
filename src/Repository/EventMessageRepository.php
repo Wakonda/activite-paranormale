@@ -163,9 +163,9 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 			$aSearchColumns = ['c.id', 'c.title', 'l.abbreviation', 's.internationalName'];
 			for($i = 0; $i < count($aSearchColumns); $i++)
 			{
-				if(!empty($searchByColumns[$i]))
+				if(!empty($value = $searchByColumns[$i]["value"]))
 				{
-					$search = "%".$searchByColumns[$i]."%";
+					$search = "%".$value."%";
 					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}

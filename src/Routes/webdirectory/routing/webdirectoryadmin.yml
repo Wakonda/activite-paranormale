@@ -52,6 +52,15 @@ WebDirectory_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\WebDirectoryAdminController::loadImageSelectorColorboxAction
 
+WebDirectory_Admin_ChangeState:
+    path: /change_state/{id}/{state}
+    controller: App\Controller\WebDirectoryAdminController::changeStateAction
+    requirements:
+        id: \d+
 WebDirectory_Admin_Wikidata:
     path: /wikidata
     controller: App\Controller\WebDirectoryAdminController::wikidataAction
+
+WebDirectory_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\WebDirectoryAdminController::deleteMultiple

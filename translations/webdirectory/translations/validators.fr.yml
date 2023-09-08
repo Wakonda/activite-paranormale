@@ -6,6 +6,18 @@ directory:
         Title: "Titre"
         Language: "Langue"
         Link: "Lien"
+        Promote: "Promouvez votre site web en %start_link%complétant ce formulaire%end_link% et faites-vous connaître !"
+    form:
+        Title: "Titre"
+        Link: "Lien"
+        Logo: "Logo"
+        WebsiteLanguage: "Langue du site Internet"
+        SocialNetworks: "Réseaux sociaux"
+        Validate: "Valider"
+    validate:
+        Validation: "Validation"
+        ThankForYourParticipation: "Merci pour votre participation !"
+        ThankForYourParticipationText: "Votre site Internet nous a bien été transmis. Il sera publié dès qu'un modérateur l'aura validé."
     read:
         Link: "Lien"
         Description: "Description"
@@ -23,3 +35,4 @@ directory:
         DefunctYear: "Fermeture"
         Licence: "Licence"
         Sources: "Sources"
+        State: "Etat"

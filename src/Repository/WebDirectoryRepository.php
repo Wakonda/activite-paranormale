@@ -27,7 +27,9 @@ class WebDirectoryRepository extends EntityRepository
 
 		$aColumns = array( 'wd.title', 'wd.title', 'l.abbreviation', 'wd.title');
 
-		$qb->join('wd.language', 'l');
+		$qb->join('wd.language', 'l')
+		    ->join('wd.state', 's')
+		    ->andWhere('s.displayState = 1');
 
 		$subQb = $this->createQueryBuilder("wd2");
 		
@@ -70,12 +72,24 @@ class WebDirectoryRepository extends EntityRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
+	public function countByStateAdmin($state)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("count(c)")
+		->innerjoin('c.state', 's')
+		->where('s.internationalName = :state')
+		->setParameter('state', $state);
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
+
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.link', 'c.logo', 'l.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.link', 'c.logo', 'l.title', 's.internationalName', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
+		   ->innerjoin('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
@@ -89,6 +103,21 @@ class WebDirectoryRepository extends EntityRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
+		
+		if(!empty($searchByColumns))
+		{
+			$aSearchColumns = ['c.id', 'c.title', 'c.link', 'c.logo', 'l.title', 's.internationalName'];
+			for($i = 0; $i < count($aSearchColumns); $i++)
+			{
+				if(!empty($value = $searchByColumns[$i]["value"]))
+				{
+					$search = "%".$value."%";
+					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					   ->setParameter("searchByColumn".$i, $search);
+				}
+			}
+		}
+		
 		if($count)
 		{
 			$qb->select("count(c)");

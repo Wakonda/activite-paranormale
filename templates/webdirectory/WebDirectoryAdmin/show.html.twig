@@ -51,9 +51,17 @@
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Licence"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.licence }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.State"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.state }}</div>
+
 	<a href="{{ path('WebDirectory_Read', { 'id' : entity.id, 'title' : entity.title }) }}" type="button" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "WebDirectory_Admin_Internationalization", "showRoute": "WebDirectory_Admin_Show", "editRoute": "WebDirectory_Admin_Edit"})) }}
+	{% if entity.state.isWaiting() %}
+		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "directory.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "directory.admin.Refuse"|trans([], "validators") }}</a>
+	{% else %}
+		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "WebDirectory_Admin_Internationalization", "showRoute": "WebDirectory_Admin_Show", "editRoute": "WebDirectory_Admin_Edit"})) }}
+	{% endif %}
 {% endblock %}
