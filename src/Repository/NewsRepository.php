@@ -373,13 +373,13 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id'];
-			for($i = 0; $i < count($aSearchColumns); $i++)
+			$aSearchColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id'];//dd($aSearchColumns, $searchByColumns);
+			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]))
 				{
-					$search = "%".$searchByColumns[$i]."%";
-					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					$search = "%".$searchByColumns[$i]["value"]."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}
 			}

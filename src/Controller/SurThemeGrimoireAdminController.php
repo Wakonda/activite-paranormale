@@ -153,10 +153,13 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 
 		$entityToCopy = $em->getRepository(SurThemeGrimoire::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
-		$menuGrimoire = $em->getRepository(MenuGrimoire::class)->findOneBy(["internationalName" => $entityToCopy->getParentTheme()->getInternationalName(), "language" => $language]);
+		
+		if(!empty($st = $entityToCopy->getParentTheme())) {
+			$menuGrimoire = $em->getRepository(SurThemeGrimoire::class)->findOneBy(["internationalName" => $entityToCopy->getParentTheme()->getInternationalName(), "language" => $language]);
 
-		if(!empty($menuGrimoire))
-			$entity->setParentTheme($menuGrimoire);
+			if(!empty($menuGrimoire))
+				$entity->setParentTheme($menuGrimoire);
+		}
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setPhoto($entityToCopy->getPhoto());

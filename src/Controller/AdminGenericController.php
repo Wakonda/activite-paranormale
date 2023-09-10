@@ -77,7 +77,7 @@ abstract class AdminGenericController extends AbstractController
 		$iColumns = $request->query->all('columns');
 
 		foreach($iColumns as $iColumn) {
-				$searchByColumns[] = $iColumn["search"];
+			$searchByColumns[] = $iColumn["search"];
 		}
 		
 		return [$iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns];

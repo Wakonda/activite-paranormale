@@ -196,7 +196,7 @@
 	<script src="{{ asset('extended/js/jsoneditor/jsoneditor.min.js') }}"></script>
 	{{ form_widget(form) }}
 
-	{% set noDataTR = '<tbody><tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr></tbody>' %}
+	{% set noDataTR = '<tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr>' %}
 
 	<div id="{{ form.vars.id}}_container" data-current-value="" data-current-datas="">
 	<div id='editor_holder_{{ form.vars.id}}' class='editor_holder'></div>
@@ -204,7 +204,7 @@
 	</div>
 
 	<table class="table table-bordered table-striped mt-2" id="{{ form.vars.id}}_values">
-		{{ noDataTR|raw }}
+		<tbody>{{ noDataTR|raw }}</tbody>
 	</table>
 
 	<script>
@@ -276,9 +276,9 @@
 		if(currentValue{{ form.vars.id }} !== "") {
 			valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
 
-			$("#{{ form.vars.id}}_values").html("");
+			$("#{{ form.vars.id}}_values tbody").html("");
 			for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-				$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 			}
 		}
 
@@ -303,10 +303,10 @@
 				valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
 
 				$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
-				$("#{{ form.vars.id}}_values").html("");
+				$("#{{ form.vars.id}}_values tbody").html("");
 
 				for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 				}
 
 				var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
@@ -335,7 +335,7 @@
 			$("#{{ form.vars.id}}_values tr[data-id=" + $(this).parent().parent().data("id") + "]").remove();
 
 			if($("#{{ form.vars.id}}_values tr").length == 0)
-				$("#{{ form.vars.id}}_values").append('{{ noDataTR|raw }}');
+				$("#{{ form.vars.id}}_values tbody").append('{{ noDataTR|raw }}');
 		});
 	</script>
 {% endblock %}
@@ -354,10 +354,10 @@
 		<button type="button" class="btn btn-success" id='add_source_{{ form.vars.id}}'><i class="far fa-save"></i> {{ "admin.source.Save"|trans([], "validators") }}</button>
 	</div>
 
-	{% set noDataTR = '<tbody><tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr></tbody>' %}
+	{% set noDataTR = '<tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr>' %}
 
 	<table class="table table-bordered table-striped mt-2" id="{{ form.vars.id}}_values">
-		{{ noDataTR|raw }}
+		<tbody>{{ noDataTR|raw }}</tbody>
 	</table>
 
 	<script>
@@ -594,12 +594,12 @@
 		if(currentValue{{ form.vars.id }} !== "") {
 			valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
 
-			$("#{{ form.vars.id}}_values").html("");
+			$("#{{ form.vars.id}}_values tbody").html("");
 			for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
 				if(valuesToSave{{ form.vars.id }}[i].type == "url")
-					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 				else
-					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
 			}
 		}
 
@@ -639,13 +639,13 @@
 						index === self.findIndex((t) => (t.type === arr.type && t.url === arr.url)));
 
 					$("#{{ form.vars.id }}").val(JSON.stringify(clean));
-					$("#{{ form.vars.id}}_values").html("");
+					$("#{{ form.vars.id}}_values tbody").html("");
 
 					for(var i = 0; i < clean.length; i++) {
 						if(clean[i].type == "url")
-							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + clean[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+							$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + clean[i].url + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 						else
-							$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + clean[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
+							$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + clean[i].title + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></tr>")
 					}
 
 					var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
@@ -674,7 +674,7 @@
 			$("#{{ form.vars.id}}_values tr[data-id=" + $(this).parent().parent().data("id") + "]").remove();
 
 			if($("#{{ form.vars.id}}_values tr").length == 0)
-				$("#{{ form.vars.id}}_values").append('{{ noDataTR|raw }}');
+				$("#{{ form.vars.id}}_values tbody").append('{{ noDataTR|raw }}');
 		});
 	</script>
 {% endblock %}
@@ -683,7 +683,7 @@
 	<script src="{{ asset('extended/js/jsoneditor/jsoneditor.min.js') }}"></script>
 	{{ form_widget(form) }}
 
-	{% set noDataTR = '<tbody><tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr></tbody>' %}
+	{% set noDataTR = '<tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr>' %}
 
 	<div id="{{ form.vars.id}}_container" data-current-value="" data-current-datas="">
 	<div id='editor_holder_{{ form.vars.id}}' class='editor_holder'></div>
@@ -691,15 +691,15 @@
 	</div>
 
 	<table class="table table-bordered table-striped mt-2" id="{{ form.vars.id}}_values">
-		{{ noDataTR|raw }}
+		<tbody>{{ noDataTR|raw }}</tbody>
 	</table>
 
 	<script>
 		function reload{{ form.vars.id }}(data) {
-			$("#{{ form.vars.id}}_values").html("");
+			$("#{{ form.vars.id}}_values tbody").html("");
 			if(typeof data.identifiers !== "undefined") {
 				for(var j = 0; j < data.identifiers.length; j++) {
-					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ j + "'><td>" + data.identifiers[j].identifier + " (" + data.identifiers[j].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ j + "'><td>" + data.identifiers[j].identifier + " (" + data.identifiers[j].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 				}
 			}
 		}
@@ -760,9 +760,9 @@
 		if(currentValue{{ form.vars.id }} !== "" && currentValue{{ form.vars.id }} !== "undefined") {
 			valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
 
-			$("#{{ form.vars.id}}_values").html("");
+			$("#{{ form.vars.id}}_values tbody").html("");
 			for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-				$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].identifier + " (" + valuesToSave{{ form.vars.id }}[i].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].identifier + " (" + valuesToSave{{ form.vars.id }}[i].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 			}
 		}
 
@@ -787,10 +787,10 @@
 				valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
 
 				$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
-				$("#{{ form.vars.id}}_values").html("");
+				$("#{{ form.vars.id}}_values tbody").html("");
 
 				for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].identifier + " (" + valuesToSave{{ form.vars.id }}[i].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].identifier + " (" + valuesToSave{{ form.vars.id }}[i].value + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 				}
 
 				var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
@@ -819,7 +819,7 @@
 			$("#{{ form.vars.id}}_values tr[data-id=" + $(this).parent().parent().data("id") + "]").remove();
 
 			if($("#{{ form.vars.id}}_values tr").length == 0)
-				$("#{{ form.vars.id}}_values").append('{{ noDataTR|raw }}');
+				$("#{{ form.vars.id}}_values tbody").append('{{ noDataTR|raw }}');
 		});
 	</script>
 {% endblock %}
@@ -828,7 +828,7 @@
 	<script src="{{ asset('extended/js/jsoneditor/jsoneditor.min.js') }}"></script>
 	{{ form_widget(form) }}
 
-	{% set noDataTR = '<tbody><tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr></tbody>' %}
+	{% set noDataTR = '<tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr>' %}
 
 	<div id="{{ form.vars.id}}_container" data-current-value="" data-current-datas="">
 	<div id='editor_holder_{{ form.vars.id}}' class='editor_holder'></div>
@@ -836,18 +836,18 @@
 	</div>
 
 	<table class="table table-bordered table-striped mt-2" id="{{ form.vars.id}}_values">
-		{{ noDataTR|raw }}
+		<tbody>{{ noDataTR|raw }}</tbody>
 	</table>
 
 	<script>
 		function reload{{ form.vars.id }}(data) {
-			$("#{{ form.vars.id}}_values").html("");
+			$("#{{ form.vars.id}}_values tbody").html("");
 			
 			if(typeof data.reviewScores === "undefined")
 				return;
 			
 			for(var j = 0; j < data.reviewScores.length; j++) {
-				$("#{{ form.vars.id}}_values").append("<tr data-id='"+ j + "'><td>" + data.reviewScores[j].source + " (" + data.reviewScores[j].score + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ j + "'><td>" + data.reviewScores[j].source + " (" + data.reviewScores[j].score + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 			}
 		}
 	
@@ -907,9 +907,9 @@
 		if(currentValue{{ form.vars.id }} !== "") {
 			valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
 
-			$("#{{ form.vars.id}}_values").html("");
+			$("#{{ form.vars.id}}_values tbody").html("");
 			for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-				$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].source + " (" + valuesToSave{{ form.vars.id }}[i].score + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].source + " (" + valuesToSave{{ form.vars.id }}[i].score + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 			}
 		}
 
@@ -934,10 +934,10 @@
 				valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
 
 				$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
-				$("#{{ form.vars.id}}_values").html("");
+				$("#{{ form.vars.id}}_values tbody").html("");
 
 				for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
-					$("#{{ form.vars.id}}_values").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].source + " (" + valuesToSave{{ form.vars.id }}[i].score + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].source + " (" + valuesToSave{{ form.vars.id }}[i].score + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 				}
 
 				var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
@@ -966,7 +966,7 @@
 			$("#{{ form.vars.id}}_values tr[data-id=" + $(this).parent().parent().data("id") + "]").remove();
 
 			if($("#{{ form.vars.id}}_values tr").length == 0)
-				$("#{{ form.vars.id}}_values").append('{{ noDataTR|raw }}');
+				$("#{{ form.vars.id}}_values tbody").append('{{ noDataTR|raw }}');
 		});
 	</script>
 {% endblock %}

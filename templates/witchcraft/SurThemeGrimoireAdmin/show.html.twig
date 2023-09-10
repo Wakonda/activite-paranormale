@@ -29,8 +29,10 @@
 	<div class="form-table-cell form-table-cell-head">{{ "magicbooktheme.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
 
-	<div class="form-table-cell form-table-cell-head">{{ "magicbooktheme.admin.WitchcraftMenu"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.parentTheme.title }}</div>
+	{% if entity.parentTheme is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "magicbooktheme.admin.WitchcraftMenu"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.parentTheme.title }}</div>
+	{% endif %}
 {% endblock %}
 
 {% block data_bottom %}
