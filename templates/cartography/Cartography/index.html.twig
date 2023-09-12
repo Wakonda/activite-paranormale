@@ -24,9 +24,8 @@
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap4.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/extensions/Responsive/js/responsive.bootstrap4.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 
 	<script>
@@ -66,8 +65,8 @@
 							layer.remove();
 					});
 
-					for(const data in settings.json.aaData) {
-						let item = settings.json.aaData[data];
+					for(const data in settings.json.data) {
+						let item = settings.json.data[data];
 
 						markersArray[item.id] = L.marker([item.latitud, item.longitud]).addTo(map)
 						.bindPopup(item.infoWindow, { maxWidth: 500 });
@@ -78,6 +77,7 @@
 					document.querySelectorAll(".location_coordinates").forEach(lc => {
 						lc.addEventListener('click', (e) => {
 							let id = e.target.getAttribute("id");
+
 							map.setView(markersArray[id].getLatLng(), 15);
 							markersArray[id].openPopup();
 						});

@@ -115,7 +115,7 @@
 		e.preventDefault();
 		e.stopPropagation();
 
-		$("#mastodonModal").modal("hide");
+		new bootstrap.Modal(document.getElementById('mastodonModal')).show();
 
 		let url = document.getElementById("url-mastodon-value").value
 		url = url.replace(/^https?:\/\//, '').replace(/^\/+|\/+$/g, '');

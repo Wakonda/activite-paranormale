@@ -22,6 +22,7 @@ require('./BackToTop/arrow-up.png');
 require('./BackToTop/BackToTop.css');
 
 require('bootstrap');
+window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 
 $(function() {
 	$(document).BackToTop();

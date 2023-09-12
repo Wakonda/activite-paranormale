@@ -179,23 +179,19 @@ class StoreAdminController extends AdminGenericController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 		
 		// Search on individual column
 		$searchByColumns = [];
-		$iColumns = $request->query->get('iColumns');
+		$iColumns = $request->query->all('columns');
 
-		for($i=0; $i < $iColumns; $i++)
-		{
-			$searchByColumns[] = $request->query->get('sSearch_'.$i);
+		foreach($iColumns as $iColumn) {
+			$searchByColumns[] = $iColumn["search"];
 		}
 
         $entities = $em->getRepository($this->className)->getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $type);

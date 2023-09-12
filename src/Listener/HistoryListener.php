@@ -82,7 +82,10 @@ class HistoryListener
 					$newText = $changeSet[1]->__toString();
 				else
 					$newText = $changeSet[1];
-
+				
+				if(!is_string($newText))
+					continue;
+				
 				$newText = str_replace(["\r"], '', str_replace(["\n"], ' ', $newText));
 
 				if($changeSet[0] == $newText)

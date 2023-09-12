@@ -41,7 +41,7 @@
 			{
 				$('#displayDrawing p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
 				$('#displayDrawing .modal-title').html($(this).data("title"));
-				$('#displayDrawing').modal('show');
+				new bootstrap.Modal(document.getElementById('displayDrawing')).show();
 				event.preventDefault();
 			});
 		

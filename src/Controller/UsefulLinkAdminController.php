@@ -20,7 +20,7 @@ class UsefulLinkAdminController extends AdminGenericController
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
 	
-	protected $indexRoute = "UsefulLink_Admin_Index"; 
+	protected $indexRoute = "UsefulLink_Admin_Index";
 	protected $showRoute = "UsefulLink_Admin_Show";
 	protected $formName = 'ap_usefullink_usefullinkadmintype';
 

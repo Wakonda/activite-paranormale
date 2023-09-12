@@ -5,7 +5,7 @@
 		e.preventDefault();
 		parent.$("div.mediaVideoContainer input.music_piece_file").val("");
 		parent.$("div.mediaVideoContainer input.existing_photo_colorbox").val(e.target.innerHTML);
-		$('.selectFileModal').modal('hide');
+		new bootstrap.Modal(document.querySelector('selectFileModal')).show();
 		return false;
 	});
 	

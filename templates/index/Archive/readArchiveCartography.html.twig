@@ -17,12 +17,6 @@
 	var marker = L.marker([{{ entity.coordXMap }}, {{ entity.coordYMap }}]).addTo(map);
 
 	map.setView(marker.getLatLng(), 15);
-
-	document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-		var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-		licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-		e.preventDefault();
-	});
 </script>
 
 {% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}

@@ -10,11 +10,6 @@
 	
 	<script>
 		$(function() {
-			document.getElementById('help_licence_link').addEventListener("click", (e) => {
-				$('#showColorboxLicencesModal').modal('show');
-				e.preventDefault();
-			});
-
 			{% if form.isAnonymous is defined %}
 				function publishAnonymously(value)
 				{

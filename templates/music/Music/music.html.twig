@@ -3,18 +3,6 @@
 {% block title %}{{ entity.musicPiece }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
 
-{% block header_plus %}
-	<script>
-		document.addEventListener('DOMContentLoaded', () => {
-			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-				e.preventDefault();
-			});
-		});
-	</script>
-{% endblock %}
-
 {% block APBlog_body %}
 	{% if album is not empty %}
 		{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': album } %}

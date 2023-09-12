@@ -97,11 +97,11 @@
 					document.querySelector("#validateBiographyModal .modal-body").appendChild(document.createRange().createContextualFragment(data));
 					document.getElementById("validateBiographyModal").setAttribute("data-input", internationalName.getAttribute("id"));
 					document.getElementById("validateBiographyModal").setAttribute("data-biography", biography.getAttribute("id"));
-					$("#validateBiographyModal").modal("show");
-		
+					new bootstrap.Modal(document.getElementById('validateBiographyModal')).show();
+
 					document.getElementById("create-new-biography").addEventListener("click", (e) => {
 						document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = "+";
-						$("#validateBiographyModal").modal("hide");
+						new bootstrap.Modal(document.getElementById('validateBiographyModal')).hide();
 					});
 		
 					$('#validateBiographyModal').on('hidden.bs.modal', function (e) {

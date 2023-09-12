@@ -113,12 +113,12 @@ class GrimoireRepository extends EntityRepository
 		if(!empty($searchByColumns))
 		{
 			$aSearchColumns = ['c.id', 'c.title', 'st.internationalName', 's.internationalName', 'l.abbreviation'];
-			for($i = 0; $i < count($aSearchColumns); $i++)
+			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]))
 				{
-					$search = "%".$searchByColumns[$i]."%";
-					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					$search = "%".$searchByColumns[$i]["value"]."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}
 			}

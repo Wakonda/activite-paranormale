@@ -5,14 +5,6 @@
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.js') }}"></script>
-
-	<script>
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-			e.preventDefault();
-		});
-	</script>
 	<link rel="stylesheet" href="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.css') }}" type="text/css" media="screen" />
 {% endblock %}
 

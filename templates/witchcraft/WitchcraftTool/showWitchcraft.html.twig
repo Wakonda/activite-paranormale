@@ -3,16 +3,6 @@
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/witchcrafttools-read.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
-{% block header_plus %}
-	<script>
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-			e.preventDefault();
-		});
-	</script>
-{% endblock %}
-
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>

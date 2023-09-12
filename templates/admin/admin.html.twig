@@ -24,29 +24,31 @@
 		<div class="container">
 			<div class="text-center"><a href="{{ path('Admin_Index') }}" alt="Back to home"><img src="{{ asset('extended/css/admin/banniere.jpg') }}" class="img-fluid" alt="Responsive image" /></a></div>
 			<nav class="navbar navbar-expand-lg navbar-light bg-light mb-3 rounded" role="navigation">
-				<!-- Brand and toggle get grouped for better mobile display -->
-				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-ex1-collapse" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon"></span>
-				</button>
+				<div class="container-fluid">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-ex1-collapse" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
-				<div class="collapse navbar-collapse navbar-ex1-collapse">
-					<ul class="navbar-nav me-auto">
-						{% block new_entry %}{% endblock %}
-						<li class="nav-item dropdown">
-							<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-flag" aria-hidden="true"></i> {{ "admin.general.Language"|trans([], "validators") }} <b class="caret"></b></a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-								{% for language in allAvailableLanguages() %}
-									<a class="dropdown-item" href="{{ path('Admin_SelectLanguage', {'language': language.abbreviation}) }}"> <img src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" class="rounded-circle" alt="" width="20" height="13" /> {{ language.title }}</a>
-								{% endfor %}
-							</div>
-						</li>
-						<li class="nav-item py-2"><span class="navbar-text"><i class="fas fa-user" aria-hidden="true"></i> <b>{{ app.user.username }}</b></span></li>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<li class="nav-item"><button onclick="self.location.href='{{ path('Security_Logout') }}'" type="button" class="btn btn-danger navbar-btn">{{ "index.leftMenu.Logout"|trans([], "validators") }} <i class="fas fa-sign-out-alt" aria-hidden="true"></i></button></li>
-					</ul>
-				</div><!-- /.navbar-collapse -->
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse navbar-ex1-collapse">
+						<ul class="navbar-nav me-auto">
+							{% block new_entry %}{% endblock %}
+							<li class="nav-item dropdown">
+								<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fas fa-flag" aria-hidden="true"></i> {{ "admin.general.Language"|trans([], "validators") }} <b class="caret"></b></a>
+								<div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+									{% for language in allAvailableLanguages() %}
+										<a class="dropdown-item" href="{{ path('Admin_SelectLanguage', {'language': language.abbreviation}) }}"> <img src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" class="rounded-circle" alt="" width="20" height="13" /> {{ language.title }}</a>
+									{% endfor %}
+								</div>
+							</li>
+							<li class="nav-item py-2"><span class="navbar-text"><i class="fas fa-user" aria-hidden="true"></i> <b>{{ app.user.username }}</b></span></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item"><button onclick="self.location.href='{{ path('Security_Logout') }}'" type="button" class="btn btn-danger navbar-btn">{{ "index.leftMenu.Logout"|trans([], "validators") }} <i class="fas fa-sign-out-alt" aria-hidden="true"></i></button></li>
+						</ul>
+					</div><!-- /.navbar-collapse -->
+				</div>
 			</nav>
 			<div class="content">
 				<h2 class="title"><b>{% block h2_title %}{% endblock %}</b></h2>

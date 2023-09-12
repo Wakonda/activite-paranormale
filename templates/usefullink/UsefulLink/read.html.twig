@@ -12,14 +12,6 @@
 	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-line-numbers.min.js') }}"></script>
 	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-toolbar.js') }}"></script>
 	<script src="{{ asset('extended/js/tinymce/js/tinymce/prism/prism-copy-to-clipboard.min.js') }}"></script>
-
-	<script>
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-			e.preventDefault();
-		});
-	</script>
 {% endblock %}
 
 {% block APBlog_body %}

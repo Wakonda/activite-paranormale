@@ -22,7 +22,7 @@
 
 		<script>
 			{% if base_path is not null %}
-				document.querySelector("#{{ form.vars.id }}_container div .select_files_colorbox").addEventListener('click', (e) => {
+				document.querySelector("div#{{ form.vars.id }}_container .select_files_colorbox").addEventListener('click', (e) => {
 					e.preventDefault();
 					
 					document.querySelector('#selectFileModal_{{ form.vars.id }} .modal-body').innerHTML = "";
@@ -35,7 +35,8 @@
 						var content = new DOMParser().parseFromString("<div>" + res + "</div>", 'text/html').documentElement.querySelector('body').firstChild;
 						document.querySelector('#selectFileModal_{{ form.vars.id }} .modal-body').appendChild(document.createRange().createContextualFragment(content.outerHTML));
 
-						$('#selectFileModal_{{ form.vars.id }}').modal({show:true});
+						var modal = new bootstrap.Modal(document.getElementById('selectFileModal_{{ form.vars.id }}'));
+						modal.show(document.getElementById('selectFileModal_{{ form.vars.id }}'));
 					})
 				});
 			{% endif %}

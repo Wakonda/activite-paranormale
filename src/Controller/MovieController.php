@@ -62,7 +62,7 @@ class MovieController extends AbstractController
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
 			$page, /*page number*/
-			12 /*limit per page*/
+			$nbMessageByPage /*limit per page*/
 		);
 
 		$pagination->setCustomParameters(['align' => 'center']);

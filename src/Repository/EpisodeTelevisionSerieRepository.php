@@ -56,12 +56,12 @@ class EpisodeTelevisionSerieRepository extends EntityRepository
 		if(!empty($searchByColumns))
 		{
 			$aSearchColumns = array('u.title', 'u.season', 'u.episodeNumber', 'u.id');
-			for($i = 0; $i < count($aSearchColumns); $i++)
+			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]))
 				{
-					$search = "%".$searchByColumns[$i]."%";
-					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					$search = "%".$searchByColumns[$i]["value"]."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}
 			}

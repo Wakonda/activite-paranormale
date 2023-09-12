@@ -18,7 +18,7 @@
 			{
 				e.preventDefault();
 				$('#selectMusicFileModal_{{ form.vars.id }} .modal-body').load('{{ path("Music_Admin_ChooseExistingFile") }}',function(){
-					$('#selectMusicFileModal_{{ form.vars.id }}').modal({show:true});
+					new bootstrap.Modal(document.getElementById('selectMusicFileModal_{{ form.vars.id }}')).show();
 				});
 			});
 

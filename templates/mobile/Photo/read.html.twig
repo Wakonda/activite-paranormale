@@ -25,16 +25,6 @@
 	<br>
 {% endblock %}
 
-{% block additional_javascript %}
-	<script>
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-			e.preventDefault();
-		});
-	</script>
-{% endblock %}
-
 {% block sub_content %}
 	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Photo' })) }}
 {% endblock %}

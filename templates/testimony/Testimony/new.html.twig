@@ -12,7 +12,7 @@
 	<script>
 		$(function() {
 			document.getElementById('help_licence_link').addEventListener("click", (e) => {
-				$('#showColorboxLicencesModal').modal('show');
+				new bootstrap.Modal(document.getElementById('showColorboxLicencesModal')).show();
 				e.preventDefault();
 			});
 		});

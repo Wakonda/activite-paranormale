@@ -65,13 +65,16 @@ class TelevisionSerieController extends AbstractController
 
 	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
 	{
+		$nbMessageByPage = 12;
+
 		$genre = $em->getRepository(GenreAudiovisual::class)->find($idGenre);
 		$entities = $em->getRepository(TelevisionSerie::class)->getByGenre($idGenre);
+		$query = $em->getRepository(TelevisionSerie::class)->getTelevisionSeriesByGenre($idGenre, $nbMessageByPage, $page);
 
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
 			$page, /*page number*/
-			12 /*limit per page*/
+			$nbMessageByPage /*limit per page*/
 		);
 
 		$pagination->setCustomParameters(['align' => 'center']);

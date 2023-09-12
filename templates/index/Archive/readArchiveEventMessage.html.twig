@@ -15,12 +15,6 @@
 	}).addTo(map);
 
 	map.addControl(new L.Control.Fullscreen());
-
-	document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-		var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-		licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-		e.preventDefault();
-	});
 </script>
 {% endif %}
 

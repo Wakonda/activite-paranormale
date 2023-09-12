@@ -1,9 +1,28 @@
 {% if entity.licence is not null %}
 	<script>
-		document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-			var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-			licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-			e.preventDefault();
+		document.addEventListener('DOMContentLoaded', (event) => {
+			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
+				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
+				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
+				e.preventDefault();
+			});
+			
+			document.querySelector("#showColorboxByLicenceModal").addEventListener('show.bs.modal', function (event) {
+				var xmlhttp = xmlhttp = new XMLHttpRequest();
+
+				xmlhttp.onreadystatechange = function() 
+				{
+					if (xmlhttp.readyState == XMLHttpRequest.DONE ) 
+					{
+						if(xmlhttp.status == 200) {
+							document.querySelector("#showColorboxByLicenceModal .modal-body").innerHTML = xmlhttp.responseText;
+						}
+					}
+				}
+
+				xmlhttp.open("GET", "{{ path('Licence_ShowColorboxByLicence', { id: entity.licence.id}) }}", true);
+				xmlhttp.send();
+			});
 		});
 	</script>
 
@@ -11,7 +30,7 @@
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header text-center">
-					<h4 class="modal-title w-100" id="showColorboxByLicenceLabel">{{ "licence.showColorboxByLicence.License"|trans([], "validators") }}</h4>
+					<h4 class="modal-title w-100">{{ "licence.showColorboxByLicence.License"|trans([], "validators") }}</h4>
 				</div>
 				<div class="modal-body">
 					<div class="text-center">

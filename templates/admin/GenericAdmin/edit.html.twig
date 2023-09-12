@@ -3,8 +3,7 @@
 {% block h2_title %}{% endblock %}
 
 {% block style_edit %}
-	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('extended/css/bootstrap/plugins/bootstrap-select/bootstrap-select.css') }}">
-	<link rel="stylesheet" type="text/css" media="screen" href="{{ asset('extended/css/bootstrap/plugins/bootstrap-datetimepicker-master/build/css/bootstrap-datetimepicker.min.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/select2/dist/css/select2.min.css') }}" media="screen" />
 {% endblock %}
 
 {% block new_entry %}
@@ -29,13 +28,13 @@
 {% endblock %}
 
 {% block js_edit %}
-	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-datetimepicker-master/build/js/bootstrap-datetimepicker.min.js') }}"></script>
-	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-datetimepicker-master/src/js/locales/bootstrap-datetimepicker.fr.js') }}"></script>
-	<script src="{{ asset('extended/css/bootstrap/plugins/bootstrap-select/bootstrap-select.js') }}"></script>
+	<script src="{{ asset('extended/js/select2/dist/js/select2.full.min.js') }}"></script>
+	<script src="{{ asset('extended/js/select2/dist/js/i18n/'~app.request.locale~'.js') }}"></script>
+	<script src="{{ asset('bundles/tetranzselect2entity/js/select2entity.js') }}"></script>
 	<script>
 		$(function()
 		{
-			$('.selectpicker').selectpicker();
+			$('.select2_list').select2();
 		});
 	</script>
 	{% block js_specific %}

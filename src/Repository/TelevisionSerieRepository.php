@@ -167,4 +167,21 @@ class TelevisionSerieRepository extends MappedSuperclassBaseRepository
 		
 		return $res;
 	}
+
+	public function getTelevisionSeriesByGenre($idGenre, $nbMessageByPage, $page)
+	{
+		$offset = ($page - 1) * $nbMessageByPage;
+
+		$qb = $this->createQueryBuilder("b");
+		$qb->innerjoin("b.genre", "p")
+		   ->where("p.id = :idGenre")
+		   ->setParameter("idGenre", $idGenre)
+		   ->andWhere("b.archive = false");
+
+		$qb->orderBy('b.title', 'ASC')
+		   ->setFirstResult($offset)
+		   ->setMaxResults($nbMessageByPage);
+
+		return $qb->getQuery();
+	}
 }

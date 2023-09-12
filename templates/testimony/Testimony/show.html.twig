@@ -16,12 +16,6 @@
 
 	<script>
 		document.addEventListener("DOMContentLoaded", function(event) {
-			document.querySelector("a#news_licence_link").addEventListener("click", (e) => {
-				var licenceModal = new bootstrap.Modal(document.getElementById('showColorboxByLicenceModal'));
-				licenceModal.show(document.getElementById('showColorboxByLicenceModal'));
-				e.preventDefault();
-			});
-		
 			{% set addressDatas = json_decode(entity.location) %}
 			
 			{% if addressDatas.lon is defined and addressDatas.lat is defined %}

@@ -29,7 +29,7 @@
 					<div class="card-body">
 						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
 							{% set tags = blogger_tags(type) %}
-							<select multiple name="blogger_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+							<select multiple name="blogger_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% elseif slug(tag) == slug(defaultValue) %}selected{% endif %}>{{ tag }}</option>
 								{% endfor %}
@@ -75,7 +75,7 @@
 							</div>
 							
 							<div class="col">
-								<select multiple name="blogger_tags[]" id="blogger_tags" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								<select multiple name="blogger_tags[]" id="blogger_tags" class="form-control" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								</select>
 							</div>
 						</div>
@@ -90,12 +90,15 @@
 	</div>
 	
 	<script>
+		$(function() {
+			$('#blogger_tags').select2();
+		});
 		function changeBlogger(val) {
 			let xmlHttp = new XMLHttpRequest();
 
 			xmlHttp.onreadystatechange = function() {
 				if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-					$('#blogger_tags').selectpicker('destroy');
+					$('#blogger_tags').select2('destroy');
 					document.querySelectorAll('#blogger_tags option').forEach(option => option.remove());
 					
 					let data = JSON.parse(xmlHttp.responseText);
@@ -105,7 +108,7 @@
 						document.querySelector("select#blogger_tags").add(new Option(data.tags[i], data.tags[i], isSelected, isSelected));
 					}
 					
-					$('#blogger_tags').selectpicker('refresh');
+					$('#blogger_tags').select2();
 					
 					document.querySelector('#blogger_multi_delete').innerHTML = '';
 					
@@ -157,7 +160,7 @@
 							{% else %}
 								{% set tags = themes_by_language(entity.language.abbreviation) %}
 							{% endif %}
-							<select multiple name="shopify_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+							<select multiple name="shopify_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}">{{ tag }}</option>
 								{% endfor %}
@@ -201,7 +204,7 @@
 						<div class="card-body">
 							<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
 								{% set tags = music_genres(entity.language.abbreviation) %}
-								<select multiple name="blogger_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								<select multiple name="blogger_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 									{% for tag in tags %}
 										<option value="{{ tag.title }}" {% if obj is not empty and tag.title in obj.labels %}selected{% elseif slug(tag.title) == slug(defaultValue) %}selected{% endif %}>{{ tag.title }}</option>
 									{% endfor %}
@@ -419,7 +422,7 @@
 	</script>
 {% endmacro %}
 
-{% macro mastodon_form(entity) %}
+{% macro mastodon_form(entity, textBefore = "") %}
 	{% if isMastodonAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentMastodon">
 		<div class="card sub_block">
@@ -444,7 +447,7 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -495,7 +498,7 @@
 	</script>
 {% endmacro %}
 
-{% macro twitter_form(entity, addPhoto = false) %}
+{% macro twitter_form(entity, addPhoto = false, textBefore = "") %}
 	{% if isTwitterAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentTwitter">
 		<div class="card sub_block">
@@ -526,7 +529,7 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -786,7 +789,7 @@
 						<form action="{{ path('Admin_TheDailyTruth', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
 							{% set tags = themes_by_language(entity.language.abbreviation) %}
 
-							<select multiple name="thedailytruth_tags[]" class="form-control selectpicker" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+							<select multiple name="thedailytruth_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}">{{ tag }}</option>
 								{% endfor %}

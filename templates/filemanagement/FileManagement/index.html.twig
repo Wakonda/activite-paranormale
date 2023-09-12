@@ -29,7 +29,7 @@
 		{
 			$('#displayPicture p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
 			$('#displayPicture .modal-title').html($(this).data("title"));
-			$('#displayPicture').modal('show');
+			new bootstrap.Modal(document.getElementById('displayPicture')).show();
 			event.preventDefault();
 		});
 	});

@@ -259,7 +259,7 @@
 									'.$caption["caption"].'
 								  </div>
 								  <div class="modal-footer">
-									<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fas fa-times"></i></button>
+									<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
 								  </div>
 								</div>
 							  </div>
@@ -728,8 +728,8 @@
 			$tags = curl_exec($ch);
 			curl_close($ch);
 
-			preg_match("/cat[(]{1}(.*?)[)]{1}[;]{1}$/", $tags, $matches);
-			
+			preg_match("/cat\((.*?)\)/s", $tags, $matches);
+
 			if(!isset($matches[1]))
 				return [];
 			

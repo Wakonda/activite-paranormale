@@ -54,12 +54,12 @@ class AdminUserRepository extends EntityRepository
 		if(!empty($searchByColumns))
 		{
 			$aSearchColumns = ['u.id', 'u.username', 'u.email', 'u.id', 'u.id'];
-			for($i = 0; $i < count($aSearchColumns); $i++)
+			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]))
 				{
-					$search = "%".$searchByColumns[$i]."%";
-					$qb->andWhere($aSearchColumns[$i]." LIKE :searchByColumn".$i)
+					$search = "%".$searchByColumns[$i]["value"]."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}
 			}

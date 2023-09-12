@@ -18,8 +18,8 @@
 		});
 
 		function showHistoryModal(e) {
-			$('#displayHistory').modal('show');
-			document.querySelector('#displayHistory .modal-body .history-details').textContent = e.currentTarget.dataset.diff;
+			new bootstrap.Modal(document.getElementById('displayHistory')).show();
+			document.querySelector('#displayHistory .modal-body .history-details').innerHTML = e.currentTarget.dataset.diff;
 			e.preventDefault();
 		}
 	</script>

@@ -6,7 +6,7 @@
 		}
 
 		document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = event.target.dataset.internationalName;
-		$("#validateBiographyModal").modal("hide");
+		new bootstrap.Modal(document.getElementById('validateBiographyModal')).hide();
 	}
 </script>
 
@@ -22,7 +22,7 @@
 				</div>
 			</div>
 		{% endfor %}
-		
+
 		{% set languageIds = entities[0].languages_id|split("#") %}
 
 		{% if entities|length == 1 %}
