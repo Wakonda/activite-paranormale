@@ -503,6 +503,77 @@ class EventMessageController extends AbstractController
 			"currentDate" => $currentDate
 		]);
 	}
+	
+	public function widget(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $apDate)
+	{
+		$year = date("Y");
+		$day = date("d");
+		$month = date("m");
+
+		$currentDate = new \DateTime($year."-".$month."-".$day);
+
+		$bc = $translator->trans("eventMessage.dayMonth.BC", [], "validators");
+
+		$res = [];
+		$currentEvent = [];
+
+		$entities = $em->getRepository(EventMessage::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
+
+		foreach($entities as $entity) {
+			$yearEvent = $entity->getYearFrom();
+			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
+			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
+
+			if($yearEvent != $year) {
+				$res[$entity->getType()][empty($yearEvent) ? "noYear" : $centuryText][$entity->getYearFrom()][] = [
+					"title" => $entity->getTitle(),
+					"theme" => $entity->getTheme()->getTitle(),
+					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
+					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
+				];
+			} else {
+				$currentEvent[$entity->getType()][] = [
+					"title" => $entity->getTitle(),
+					"theme" => $entity->getTheme()->getTitle(),
+					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
+					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
+				];
+			}
+		}
+
+		$entities = $em->getRepository(Biography::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
+
+		foreach($entities as $entity) {
+			$type = EventMessage::DEATH_DATE_TYPE;
+
+			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("m-d") == $month."-".$day)
+				$type = EventMessage::BIRTH_DATE_TYPE;
+
+			$get = "get".ucfirst($type);
+
+			$yearEvent = (new \DateTime($entity->$get()))->format("Y");
+			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
+			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
+
+			if($yearEvent != $year) {
+				$res[$type][$centuryText][(new \DateTime($entity->$get()))->format("Y")][] = [
+					"title" => $entity->getTitle(),
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+				];
+			} else {
+				$currentEvent[$type][] = [
+					"title" => $entity->getTitle(),
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+				];
+			}
+		}
+
+		return $this->render("page/EventMessage/widget.html.twig", [
+			"res" => $res,
+			"currentEvent" => $currentEvent,
+			"currentDate" => $apDate->doDate($request->getLocale(), new \DateTime(), true)
+		]);
+	}
 
 	public function getAllEventsByYearOrMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year, $month)
 	{
