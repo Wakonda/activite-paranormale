@@ -14,18 +14,22 @@ class TwitterAPI
 	public function sendTweet(string $message, string $locale, $image = false)
 	{
 		$this->setLanguage($locale);
+
 		$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->OAUTH_TOKEN, $this->OAUTH_TOKEN_SECRET);
 
-		$parameters = array(
-			'status' => $message
-		);
-
 		if(!empty($image)) {
-			$media = $connection->upload('media/upload', array('media' => $image));
-			$parameters['media_ids'] = implode(',', array($media->media_id_string));
+			$connection->setApiVersion('1.1');
+			$media = $connection->upload('media/upload', ['media' => $image]);
+			$parameters['media_ids'] = implode(',', [$media->media_id_string]);
 		}
+		
+		$connection->setApiVersion('2');
 
-		return $connection->post('statuses/update', $parameters);
+		$parameters = [
+			'text' => $message
+		];
+
+		return $connection->post('tweets', $parameters, true);
 	}
 	
 	public function setLanguage($language)
@@ -49,6 +53,12 @@ class TwitterAPI
 				$this->CONSUMER_SECRET = $_ENV["TWITTER_FR_CONSUMER_SECRET"];
 				$this->OAUTH_TOKEN = $_ENV["TWITTER_FR_OAUTH_TOKEN"];
 				$this->OAUTH_TOKEN_SECRET = $_ENV["TWITTER_FR_OAUTH_TOKEN_SECRET"];
+				break;
+			case "magic_fr":
+				$this->CONSUMER_KEY = $_ENV["TWITTER_MAGIC_FR_CONSUMER_KEY"];
+				$this->CONSUMER_SECRET = $_ENV["TWITTER_MAGIC_FR_CONSUMER_SECRET"];
+				$this->OAUTH_TOKEN = $_ENV["TWITTER_MAGIC_FR_OAUTH_TOKEN"];
+				$this->OAUTH_TOKEN_SECRET = $_ENV["TWITTER_MAGIC_FR_OAUTH_TOKEN_SECRET"];
 		}
 	}
 

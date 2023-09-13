@@ -128,6 +128,10 @@ class Grimoire
 			$this->illustration = clone $this->illustration;
 	}
 
+	public function getUrlSlug() {
+		return $this->title;
+	}
+
     public function getPhotoIllustrationCaption(): ?Array
     {
 		if(method_exists($this, "getIllustration") and !empty($this->getIllustration()))

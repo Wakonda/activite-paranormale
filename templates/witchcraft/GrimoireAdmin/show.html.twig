@@ -52,9 +52,10 @@
 			{% import "index/macro/macro_index.html.twig" as macro_index %}
 
 			{% if entity.surTheme is not empty %}
-				{{ macro_index.blogger_form(entity, entity.surTheme.parentTheme.internationalName) }}
+				{{ macro_index.blogger_form(entity, "magic", entity.surTheme.title) }}
+				{{ macro_index.twitter_form(entity) }}
 			{% endif %}
-			{{ macro_index.shopify_form(entity, "magic") }}
+			{{ macro_index.shopify_form(entity, "magic", entity.surTheme.title) }}
 		{% endif %}
 	{% endif %}
 
@@ -62,4 +63,9 @@
 		<a href="{{ path('Grimoire_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "grimoire.admin.Validate"|trans([], "validators") }}</a>
 		<a href="{{ path('Grimoire_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "grimoire.admin.Refuse"|trans([], "validators") }}</a>
 	{% endif %}
+{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.twitter_form_js() }}
 {% endblock %}

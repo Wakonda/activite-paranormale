@@ -781,12 +781,19 @@ class AdminController extends AbstractController
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
-		$res = $twitterAPI->sendTweet($requestParams->get($socialNetwork."_area")." ".$currentURL, $entity->getLanguage()->getAbbreviation(), $image);
+		$locale = $entity->getLanguage()->getAbbreviation();
 
-		if(property_exists($res, "errors")) {
-			$errorsArray = array_map(function($e) { return $e->code.": ".$e->message; }, $res->errors);
-			$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".implode(", ", $errorsArray).")");
+		switch($entity->getRealClass()) {
+			case "Grimoire":
+				$locale = "magic_".$entity->getLanguage()->getAbbreviation();
+			break;
+		}
+// dd($locale);
+		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
+		$res = $twitterAPI->sendTweet($requestParams->get($socialNetwork."_area")." ".$currentURL, $locale, $image);
+
+		if(property_exists($res, "status")) {
+			$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$res->status."; ".$res->detail.")");
 		}
 		else
 			$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
