@@ -35,10 +35,7 @@
 					}
 				},
 				"order": [[ lengthTd, "desc" ]],
-				"ajax": "{% block world_datatables %}{% endblock %}",
-				"fnServerParams": function ( aoData ) {
-					aoData.push( { "name" : "theme_id", "value": "{{ theme is defined and theme is not empty ? theme.id : '' }}" } );
-				}
+				"ajax": "{% block world_datatables %}{% endblock %}{% if theme is defined and theme is not empty %}?theme_id={{ theme.id }}{% endif %}"
 			});
 
 			{% if block("select_theme_for_index_world") is not empty %}
