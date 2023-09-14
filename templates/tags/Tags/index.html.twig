@@ -32,8 +32,7 @@
 					document.getElementById("count_tag").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
 				},
 				"drawCallback": function( settings ) {
-				console.log(settings)
-					document.getElementById("count_tag").innerHTML = settings.json.iTotalRecords;
+					document.getElementById("count_tag").innerHTML = settings.json.recordsTotal;
 				}
 			});
 		});

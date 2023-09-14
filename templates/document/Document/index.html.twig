@@ -48,10 +48,10 @@
 					document.getElementById("count_document").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
 				},
 				"drawCallback": function( settings ) {
-					document.getElementById("count_document").innerHTML = settings.json.iTotalRecords;
+					document.getElementById("count_document").innerHTML = settings.json.recordsTotal;
 				}
 			});
-		
+
 			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
 				e.preventDefault();
 				oTable.ajax.reload();

@@ -72,7 +72,7 @@
 						.bindPopup(item.infoWindow, { maxWidth: 500 });
 					}
 
-					document.getElementById("count_document").innerHTML = settings.json.iTotalRecords;
+					document.getElementById("count_document").innerHTML = settings.json.recordsTotal;
 
 					document.querySelectorAll(".location_coordinates").forEach(lc => {
 						lc.addEventListener('click', (e) => {
