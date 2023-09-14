@@ -1,5 +1,5 @@
 {% if entities is not empty %}
-	<h3>{{ "eventMessage.calendar.Events"|trans([], "validators") }}</h3>
+	<h3>{{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ "eventMessage.index.Today"|trans([], "validators") }}</h3>
 
 	<div id="carousel-event-index" class="carousel-pagination carousel slide" data-interval="false">
 		<!-- Indicators -->
@@ -19,13 +19,13 @@
 			{% for entity in entities %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<p><span style="font-weight: bold; font-size: 16px;">{{ entity.title }}</span></p>
-					<div class="image" style="float:left; margin-right: 5px;">{{ entity.photoIllustrationFilename|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" })|raw }}</div>
+					<div class="image" style="float:left; margin-right: 5px;">{{ entity.photoIllustrationFilename|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid", 'loading': 'lazy'})|raw }}</div>
 					<p><img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="20" class="align-middle"/> 
-					{% if entity.dateTo == entity.dateFrom %}
+					{% if entity.isDatesEqual() or entity.getDateToString() is empty %}
 						<a href="{{ path('EventMessage_SelectDayMonth', {year: entity.yearFrom, month: entity.monthFrom, day: entity.dayFrom}) }}">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
 					{% else %}
 						<a href="{{ path('EventMessage_SelectDayMonth', {year: entity.yearFrom, month: entity.monthFrom, day: entity.dayFrom}) }}">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a> - 
-						<a href="{{ path('EventMessage_SelectDayMonth', {year: entity.yearTo, month: entity.monthTo, day: entity.dayTo}) }}">{{ entity.dateTo|dodate(false, app.request.locale) }}</a>
+						<a href="{{ path('EventMessage_SelectDayMonth', {year: entity.yearTo, month: entity.monthTo, day: entity.dayTo}) }}">{{ entity.dayTo|doYearMonthDayDate(entity.monthTo, entity.yearTo, app.request.locale) }}</a>
 					{% endif %}
 					</p>
 					{{ entity.abstractText|raw }}

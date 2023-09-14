@@ -2,9 +2,15 @@
 
 {% set resKeys = res|keys %}	
 {% set currentEventKeys = currentEvent|keys %}
-{% set eventKeys = resKeys|merge(currentEventKeys) %}
+{% set eventKeys = [] %}
 
-<h3 class="mt-3">Éphéméride du {{ currentDate }}</h3>
+{% for key in resKeys|merge(currentEventKeys) %}
+	{% if key not in eventKeys %}
+		{% set eventKeys = eventKeys|merge([key]) %}
+	{% endif %}
+{% endfor %}
+
+<h3 class="mt-3">{{ "eventMessage.index.OnThisDay"|trans([], "validators") }} du {{ currentDate }}</h3>
 <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
 	{% for key in eventKeys %}
 		<li class="nav-item" role="presentation">
@@ -12,14 +18,16 @@
 		</li>
 	{% endfor %}
 </ul>
+
 <div class="tab-content border p-3 rounded" id="pills-tabContent">
 	{% for key in eventKeys %}
 		<div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="pills-{{ key }}" role="tabpanel" aria-labelledby="pills-{{ key }}-tab">
 			{% for theme, data in currentEvent %}
 				{% if theme == key %}
+					<h4><i>{{ "eventMessage.index.Today"|trans([], "validators") }}</i></h4>
 					<ul>
 						{% for event in data %}
-							<li><a href="{{ event.url }}">{{ event.title }}</a>{% if event.endDate is not null %} (jusqu'au {{ (event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale) }}){% endif %}</li>
+							<li><a href="{{ event.url }}">{{ event.title }}</a>{% if event.endDate is not null %} ({{ "eventMessage.index.Until"|trans([], "validators") }} {{ (event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale) }}){% endif %}</li>
 						{% endfor %}
 					</ul>
 				{% endif %}

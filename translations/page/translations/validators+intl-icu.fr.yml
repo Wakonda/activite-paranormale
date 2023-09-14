@@ -38,6 +38,9 @@ eventMessage:
     index:
         Event: "Événement"
         Sources: "Sources"
+        OnThisDay: "Éphéméride"
+        Today: "Aujourd'hui"
+        Until: "jusqu'au"
     tab:
         Photo: "Photo"
         Title: "Titre"

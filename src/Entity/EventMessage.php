@@ -143,7 +143,11 @@ class EventMessage extends MappedSuperclassBase
 	public function getDateToString(): String {
 		return implode("-", array_filter([$this->yearTo, $this->monthTo, $this->dayTo]));
 	}
-	
+
+	public function isDatesEqual() {
+		return $this->getDateFromString() == $this->getDateToString();
+	}
+
 	public function __clone()
 	{
 		$this->illustration = clone $this->illustration;

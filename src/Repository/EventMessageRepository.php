@@ -22,7 +22,7 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
 			->andWhere("c.yearFrom IS NOT NULL AND c.monthFrom IS NOT NULL AND c.dayFrom IS NOT NULL")
-			->andWhere("c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL")
+			// ->andWhere("c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL")
 			->andWhere("CURRENT_DATE() <= CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) OR CURRENT_DATE() <= CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
 		    ->andWhere("c.archive = false")
 			->orderBy('c.dateTo', 'asc')
