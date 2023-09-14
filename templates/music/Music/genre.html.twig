@@ -49,9 +49,10 @@
 		</tbody>
 	</table>
 	
-	{% if musicGenre.source is not empty %}
+	{% set sources = source_document(musicGenre.source, musicGenre.language) %}
+	{% if sources is not empty %}
 		<h3>{{ "musicGenre.index.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(musicGenre.source, musicGenre.language) }}
+		{{ sources }}
 	{% endif %}
 	<hr>
 	{{ "google"|advertisement|raw }}

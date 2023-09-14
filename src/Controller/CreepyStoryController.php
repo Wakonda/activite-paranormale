@@ -84,7 +84,7 @@ class CreepyStoryController extends AbstractController
 			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
 			$row = [];
 
-			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
+			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
@@ -142,5 +142,35 @@ class CreepyStoryController extends AbstractController
 		$sameTopics = $em->getRepository(CreepyStory::class)->getSameTopics($entity);
 		
 		return $this->render("creepyStory/CreepyStory/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
+	}
+
+	public function random() {
+		return $this->render("creepyStory/CreepyStory/random.html.twig");
+	}
+
+	public function loadRandom(Request $request, EntityManagerInterface $em, APDate $date, APImgSize $imgSize) {
+		$locale = $request->getLocale();
+		$entity = $em->getRepository(CreepyStory::class)->getRandom($locale);
+
+		$output = [];
+
+		if(!empty($entity)) {
+			preg_match('/^.{0,750}(?:.*?)\b/iu', $entity->getText(), $matches);
+
+			$photo = $imgSize->adaptImageSize(null, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
+
+			$output = [
+				"title" => $entity->getTitle(),
+				"text" => $matches[0]."...",
+				"author" => $entity->authorToString(),
+				"date" => $date->doDate($request->getLocale(), $entity->getPublicationDate()),
+				"photo" => '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" class="card-img img-fluid">',
+				"showRoute" => $this->generateUrl("CreepyStory_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()])
+			];
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+		return $response;
 	}
 }

@@ -938,7 +938,7 @@
 				$locale = $locale->getAbbreviation();
 			else
 				$locale = $this->translator->getLocale();
-			
+			// dd(json_decode($sourceJSON));
 			return (new \App\Service\FunctionsLibrary($this->em))->sourceString($sourceJSON, $locale, $classes);
 		}
 		

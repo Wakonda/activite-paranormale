@@ -79,10 +79,11 @@
 		<div id="map-canvas" style="width:100%; height:400px"></div>
 	{% endif %}
 
-	{% if entity.source is not empty %}
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
 		<br>
 		<h3>{{ "eventMessage.index.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(entity.source, entity.language) }}
+		{{ sources }}
 	{% endif %}
 
 	<hr class="hr2">

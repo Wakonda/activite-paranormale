@@ -169,10 +169,11 @@
 	</div>
 	{% endif %}
 
-	{% if entity.source is not empty %}
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
 		<br>
 		<h3>{{ "book.read.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(entity.source) }}
+		{{ sources }}
 	{% endif %}
 
 	<hr class="hr2">

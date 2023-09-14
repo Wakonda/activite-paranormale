@@ -43,10 +43,12 @@
 	<h3>{{ "quotation.read.Explanation"|trans([], "validators") }}</h3>
 	{{ entity.explanation|raw }}
 	{% endif %}
-	{% if entity.source is not empty %}
-	<br>
-	<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
-	{{ source_document(entity.source, entity.language) }}
+
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
+		<br>
+		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+		{{ sources }}
 	{% endif %}
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.country.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}

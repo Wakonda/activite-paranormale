@@ -22,6 +22,10 @@ CreepyStory_Pdfversion:
     path: /creepy_story/pdfversion/{id}
     controller: App\Controller\CreepyStoryController::pdfVersionAction
 
+CreepyStory_LoadRandom:
+    path: /creepy_story/random
+    controller: App\Controller\CreepyStoryController::loadRandom
+
 # Administration
 CreepyStory_Admin:
     resource: "routing/creepystoryadmin.yml"

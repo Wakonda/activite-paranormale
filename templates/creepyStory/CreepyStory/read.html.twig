@@ -21,9 +21,13 @@
 	<p>{{ entity.text|raw }}</p>	
 	</div>
 
-	<br>
-	<h3>{{ "creepyStory.index.Sources"|trans([], "validators") }}</h3>
-	{{ source_document(entity.source, entity.language) }}
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
+		<br>
+		<h3>{{ "creepyStory.index.Sources"|trans([], "validators") }}</h3>
+		{{ sources }}
+	{% endif %}
+	
 
 	<hr class="hr2">
 	<p>

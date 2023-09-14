@@ -149,10 +149,11 @@
 			{% endif %}
 		{% endif %}
 
-		{% if artist.source is not empty %}
+		{% set sources = source_document(artist.source, artist.language) %}
+		{% if sources is not empty %}
 			<br>
 			<h3>{{ "artist.read.Sources"|trans([], "validators") }}</h3>
-			{{ source_document(artist.source, artist.language) }}
+			{{ sources }}
 		{% endif %}
 		
 		<br>

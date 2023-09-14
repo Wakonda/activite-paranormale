@@ -54,10 +54,11 @@
 		{% endif %}
 	</div>
 
-	{% if genre.source is not empty %}
+	{% set sources = source_document(genre.source, genre.language) %}
+	{% if sources is not empty %}
 		<br>
 		<h3>{{ "movie.read.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(genre.source, genre.language) }}
+		{{ sources }}
 	{% endif %}
 
 	{{ "google"|advertisement|raw }}

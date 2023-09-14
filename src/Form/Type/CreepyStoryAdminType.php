@@ -51,7 +51,7 @@ class CreepyStoryAdminType extends AbstractType
 				'required' => true,
 				'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
 			])
-            ->add('source', SourceEditType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('source', SourceEditType::class, ['required' => false])
             ->add('pseudoUsed', TextType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
 			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'CreepyStory_Admin_ShowImageSelectorColorbox'])
 		    ->add('tags', Select2EntityType::class, [

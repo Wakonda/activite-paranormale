@@ -204,4 +204,33 @@ class CreepyStoryRepository extends MappedSuperclassBaseRepository
 		
 		return $res;
 	}
+
+	public function getRandom($locale)
+	{
+		$qb = $this->createQueryBuilder("o");
+
+		$qb->select("COUNT(o) AS countRow")
+		   ->join('o.language', 'l')
+		   ->join('o.state', 's')
+		   ->where('l.abbreviation = :locale')
+		   ->andWhere('o.archive = false')
+		   ->andWhere('s.displayState = 1')
+		   ->setParameter('locale', $locale);
+		
+		$max = max($qb->getQuery()->getSingleScalarResult() - 1, 0);
+		$offset = rand(0, $max);
+
+		$qb = $this->createQueryBuilder("o");
+
+		$qb->join('o.language', 'l')
+		   ->join('o.state', 's')
+		   ->where('l.abbreviation = :locale')
+		   ->andWhere('o.archive = false')
+		   ->andWhere('s.displayState = 1')
+		   ->setParameter('locale', $locale)
+		   ->setFirstResult($offset)
+		   ->setMaxResults(1);
+
+		return $qb->getQuery()->getOneOrNullResult();
+	}
 }

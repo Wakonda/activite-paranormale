@@ -13,10 +13,11 @@
 		<br>
 		<div>{{ entity.text|raw }}</div>
 
-		{% if entity.source is not empty %}
+		{% set sources = source_document(entity.source, entity.language) %}
+		{% if sources is not empty %}
 			<br>
 			<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
-			{{ source_document(entity.source, entity.language) }}
+			{{ sources }}
 		{% endif %}
 
 		<hr class="hr2">

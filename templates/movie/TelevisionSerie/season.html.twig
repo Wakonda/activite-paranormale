@@ -45,8 +45,9 @@
 						{% if entity.releaseDate is not empty %}
 							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.ReleaseDate"|trans([], "validators") }}</td><td>{{ entity.releaseDate|dodate(false, app.request.locale) }}</td></tr>
 						{% endif %}
-						{% if entity.source is not empty %}
-							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ source_document(entity.source, entity.language) }}</td></tr>
+						{% set sources = source_document(entity.source, entity.language) %}
+						{% if sources is not empty %}
+							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ sources }}</td></tr>
 						{% endif %}
 					</tbody>
 				</table>

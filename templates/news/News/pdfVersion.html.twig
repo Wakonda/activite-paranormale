@@ -8,8 +8,12 @@
 	{{ ((entity.abstractText|HTMLPurifier)|formatTextForPDFVersion(entity))|raw }}
 	<br />
 	{{ ((entity.text)|formatTextForPDFVersion(entity))|raw }}
-	<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
-	<span>{{ source_document(entity.source, entity.language) }}</span>
+	
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
+		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+		<span>{{ sources }}</span>
+	{% endif %}
 	<hr style="height: 1px"/>
 	<p>{{ entity.theme.title }} - {{ entity.publicationDate|dodate(false, app.request.locale) }} - {{ entity.pseudoUsed }} - {{ entity.licence.title }}</p>
 {% endblock %}

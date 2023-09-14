@@ -108,10 +108,11 @@
 		{% endif %}
 	{% endif %}
 
-	{% if entity.source is not empty %}
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
 		<br>
 		<h3>{{ "televisionSerie.read.Sources"|trans([], "validators") }}</h3>
-		{{ source_document(entity.source, entity.language) }}
+		{{ sources }}
 	{% endif %}
 	
 	{% set datas = get_store_by_entity(entity, "televisionSerie", "TelevisionSerieStore") %}
