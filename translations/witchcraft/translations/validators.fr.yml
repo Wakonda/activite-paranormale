@@ -28,7 +28,7 @@ magicbooktheme:
         Picture: "Image"
         Language: "Langue"
         InternationalName: "Nom international"
-        WitchcraftMenu: "Menu grimore"
+        WitchcraftMenu: "Menu grimoire"
 witchcraft:
     admin:
         Witchcraft: "Sorcellerie"
