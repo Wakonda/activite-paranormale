@@ -161,7 +161,7 @@ class CreepyStoryController extends AbstractController
 
 			$output = [
 				"title" => $entity->getTitle(),
-				"text" => $matches[0]."...",
+				"text" => substr($entity->getText(), 0, 250)."...",
 				"author" => $entity->authorToString(),
 				"date" => $date->doDate($request->getLocale(), $entity->getPublicationDate()),
 				"photo" => '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" class="card-img img-fluid">',

@@ -32,7 +32,7 @@
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "directory.read.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 
 	<hr>

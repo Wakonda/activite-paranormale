@@ -74,7 +74,7 @@
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "tag.search.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 	<br>
 	<hr class="hr2">

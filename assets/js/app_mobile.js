@@ -14,14 +14,16 @@ import '../css/app_mobile.scss';
 // jQuery
 global.$ = global.jQuery = window.$ = window.jQuery = require('jquery');
 
+require('bootstrap');
+
+window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
+
 require('@fortawesome/fontawesome-free/css/all.min.css');
 require('@fortawesome/fontawesome-free/js/all.js');
 
 require('./BackToTop/BackToTop')
 require('./BackToTop/arrow-up.png');
 require('./BackToTop/BackToTop.css');
-
-require('bootstrap');
 
 $(function() {
 	$(document).BackToTop();

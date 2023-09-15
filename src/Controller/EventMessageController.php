@@ -516,6 +516,7 @@ class EventMessageController extends AbstractController
 
 		$res = [];
 		$currentEvent = [];
+		$photos = [];
 
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
 
@@ -526,18 +527,24 @@ class EventMessageController extends AbstractController
 
 			if($yearEvent != $year) {
 				$res[$entity->getType()][empty($yearEvent) ? "noYear" : $centuryText][$entity->getYearFrom()][] = [
+					"id" => $entity->getId(), 
 					"title" => $entity->getTitle(),
 					"theme" => $entity->getTheme()->getTitle(),
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];
+
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			} else {
 				$currentEvent[$entity->getType()][] = [
+					"id" => $entity->getId(),
 					"title" => $entity->getTitle(),
 					"theme" => $entity->getTheme()->getTitle(),
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];
+
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			}
 		}
 
@@ -557,21 +564,28 @@ class EventMessageController extends AbstractController
 
 			if($yearEvent != $year) {
 				$res[$type][$centuryText][(new \DateTime($entity->$get()))->format("Y")][] = [
+					"id" => $entity->getId(), 
 					"title" => $entity->getTitle(),
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
 				];
+
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			} else {
 				$currentEvent[$type][] = [
+					"id" => $entity->getId(), 
 					"title" => $entity->getTitle(),
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
 				];
+
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			}
 		}
-
+// dd();
 		return $this->render("page/EventMessage/widget.html.twig", [
 			"res" => $res,
 			"currentEvent" => $currentEvent,
-			"currentDate" => $apDate->doDate($request->getLocale(), new \DateTime(), true)
+			"currentDate" => $apDate->doDate($request->getLocale(), new \DateTime(), true),
+			"illustration" => $photos[array_rand(array_filter($photos))]
 		]);
 	}
 

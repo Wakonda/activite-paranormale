@@ -30,7 +30,7 @@
 	{% set sources = source_document(entity.links, entity.language) %}
 	{% if sources is not empty %}
 		<h3><i class="fas fa-link"></i> {{ "usefullink.index.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 
 	<hr class="hr2">

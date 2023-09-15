@@ -47,7 +47,7 @@
 						{% endif %}
 						{% set sources = source_document(entity.source, entity.language) %}
 						{% if sources is not empty %}
-							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ sources }}</td></tr>
+							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ sources|raw }}</td></tr>
 						{% endif %}
 					</tbody>
 				</table>

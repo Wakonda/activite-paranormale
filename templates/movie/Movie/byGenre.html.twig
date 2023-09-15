@@ -58,7 +58,7 @@
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "movie.read.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 
 	{{ "google"|advertisement|raw }}

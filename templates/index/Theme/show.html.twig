@@ -48,7 +48,7 @@
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "theme.index.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 	
 	<hr class="hr2"/>

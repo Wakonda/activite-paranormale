@@ -65,7 +65,7 @@
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "book.read.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 
 	{{ "google"|advertisement|raw }}

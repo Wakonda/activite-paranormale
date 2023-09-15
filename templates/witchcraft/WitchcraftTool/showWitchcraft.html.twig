@@ -37,7 +37,7 @@
 	{% set sources = source_document(entity.source, entity.language) %}
 	{% if sources is not empty %}
 		<h3>{{ "witchcraftTool.index.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 
 	<hr class="hr2"/>

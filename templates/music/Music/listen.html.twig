@@ -110,7 +110,7 @@
 		{% set sources = source_document(album.source, album.language) %}
 		{% if sources is not empty %}
 			<h3>{{ "music.index.Sources"|trans([], "validators") }}</h3>
-			{{ sources }}
+			{{ sources|raw }}
 		{% endif %}
 		<hr>
 		<p class="image"><a href="" id="help_licence_link"><img src="{{ asset("extended/photo/licence/"~album.licence.logo) }}" alt="{{ album.licence.title }}" /></a></p>

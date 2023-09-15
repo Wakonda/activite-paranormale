@@ -99,7 +99,7 @@
 		{% set sources = source_document(entity.source, entity.language) %}
 		{% if sources is not empty %}
 			<h3>{{ "music.index.Sources"|trans([], "validators") }}</h3>
-			{{ sources }}
+			{{ sources|raw }}
 		{% endif %}
 		{{ "google"|advertisement|raw }}
 	</div>

@@ -48,7 +48,7 @@
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
-		{{ sources }}
+		{{ sources|raw }}
 	{% endif %}
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.country.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
