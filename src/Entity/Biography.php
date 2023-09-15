@@ -150,6 +150,26 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 			$this->illustration = clone $this->illustration;
 	}
 
+	public function getBirthDateToArray() {
+		$date = explode("-", $this->birthDate);
+		
+		return [
+			"day" => (isset($date[2]) and !empty($date[2])) ? intval($date[2]) : null,
+			"month" => (isset($date[1]) and !empty($date[1])) ? intval($date[1]) : null,
+			"year" => (isset($date[0]) and !empty($date[0])) ? intval($date[0]) : null, 
+		];
+	}
+
+	public function getDeathDateToArray() {
+		$date = explode("-", $this->deathDate);
+		
+		return [
+			"day" => (isset($date[2]) and !empty($date[2])) ? intval($date[2]) : null,
+			"month" => (isset($date[1]) and !empty($date[1])) ? intval($date[1]) : null,
+			"year" => (isset($date[0]) and !empty($date[0])) ? intval($date[0]) : null, 
+		];
+	}
+
 	protected function purifier($text)
 	{
 		$purifier = new APPurifierHTML();

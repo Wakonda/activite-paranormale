@@ -14,28 +14,28 @@ class SurThemeGrimoireRepository extends EntityRepository
 {
 	public function menuTheme($lang, $surtheme)
 	{
-		$queryBuilder = $this->createQueryBuilder('o');
-		$queryBuilder->join('o.language', 'l')
-					 ->join('o.parentTheme', 'm')
-					 ->where('l.abbreviation = :lang')
-					 ->setParameter('lang', $lang)
-					 ->andWhere('m.title = :surtheme')
-					 ->setParameter('surtheme', $surtheme)
-					 ->orderBy('o.title');
+		$qb = $this->createQueryBuilder('o');
+		$qb->join('o.language', 'l')
+		 ->join('o.parentTheme', 'm')
+		 ->where('l.abbreviation = :lang')
+		 ->setParameter('lang', $lang)
+		 ->andWhere('m.title = :surtheme')
+		 ->setParameter('surtheme', $surtheme)
+		 ->orderBy('o.title');
 
-		return $queryBuilder->getQuery()->getResult();	
+		return $qb->getQuery()->getResult();	
 	}		
 
 	public function recupTheme($lang, $idTheme)
 	{
-		$queryBuilder = $this->createQueryBuilder('o');
-		$queryBuilder->join('o.language', 'l')
-					 ->where('l.abbreviation = :lang')
-					 ->setParameter('lang', $lang)
-					 ->andWhere('o.id = :idTheme')
-					 ->setParameter('idTheme', $idTheme);
+		$qb = $this->createQueryBuilder('o');
+		$qb->join('o.language', 'l')
+		 ->where('l.abbreviation = :lang')
+		 ->setParameter('lang', $lang)
+		 ->andWhere('o.id = :idTheme')
+		 ->setParameter('idTheme', $idTheme);
 
-		return $queryBuilder->getQuery()->getSingleResult();
+		return $qb->getQuery()->getSingleResult();
 	}
 
 	public function getSurThemeByLanguage($lang)
@@ -100,9 +100,13 @@ class SurThemeGrimoireRepository extends EntityRepository
 		   ->innerjoin("b.language", "l")
 		   ->andWhere("l.abbreviation = :abbreviation")
 		   ->setParameter("abbreviation", $entity->getLanguage()->getAbbreviation())
-		   ->innerjoin("b.parentTheme", "mg")
-		   ->andWhere("mg.title = :mgTitle")
+		   ->innerjoin("b.parentTheme", "mg");
+		   
+		if(!empty($mg = $entity->getParentTheme())) {
+		   $qb->andWhere("mg.title = :mgTitle")
 		   ->setParameter("mgTitle", $entity->getParentTheme()->getTitle());
+		} else
+		   $qb->andWhere("mg.title IS NULL");
 		   
 		if($entity->getId() != null)
 		{

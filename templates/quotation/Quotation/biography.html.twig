@@ -55,10 +55,30 @@
 	{% set infos = [] %}
 
 	{% if entity.birthDate is not empty %}
-		{% set infos = infos|merge(["<b>"~"biography.index.BirthDate"|trans([], "validators")~"</b> "~entity.birthDate|doPartialDate(app.request.locale)]) %}
+		{% set dateArray = entity.birthDateToArray %}
+		
+		{% if dateArray.day is not empty and dateArray.month is not empty and dateArray.year is not empty %}
+			{% set url = path('EventMessage_SelectDayMonth', {year: dateArray.year, month: dateArray.month, day: dateArray.day}) %}
+		{% elseif dateArray.day is empty and dateArray.month is not empty and dateArray.year is not empty %}
+			{% set url = path('EventMessage_SelectYearMonth', {year: dateArray.year, month: dateArray.month}) %}
+		{% elseif dateArray.day is empty and dateArray.month is empty and dateArray.year is not empty %}
+			{% set url = path('EventMessage_SelectYear', {year: dateArray.year}) %}
+		{% endif %}
+
+		{% set infos = infos|merge(["<b>"~"biography.index.BirthDate"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.birthDate|doPartialDate(app.request.locale) ~ "</a>"]) %}
 	{% endif %}
 	{% if entity.deathDate is not empty %}
-		{% set infos = infos|merge(["<b>"~"biography.index.DeathDate"|trans([], "validators")~"</b> "~entity.deathDate|doPartialDate(app.request.locale)]) %}
+		{% set dateArray = entity.deathDateToArray %}
+		
+		{% if dateArray.day is not empty and dateArray.month is not empty and dateArray.year is not empty %}
+			{% set url = path('EventMessage_SelectDayMonth', {year: dateArray.year, month: dateArray.month, day: dateArray.day}) %}
+		{% elseif dateArray.day is empty and dateArray.month is not empty and dateArray.year is not empty %}
+			{% set url = path('EventMessage_SelectYearMonth', {year: dateArray.year, month: dateArray.month}) %}
+		{% elseif dateArray.day is empty and dateArray.month is empty and dateArray.year is not empty %}
+			{% set url = path('EventMessage_SelectYear', {year: dateArray.year}) %}
+		{% endif %}
+
+		{% set infos = infos|merge(["<b>"~"biography.index.DeathDate"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.deathDate|doPartialDate(app.request.locale) ~ "</a>"]) %}
 	{% endif %}
 	{% if entity.nationality is not empty %}
 		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20' height='13'>"~" "~entity.nationality.title]) %}
