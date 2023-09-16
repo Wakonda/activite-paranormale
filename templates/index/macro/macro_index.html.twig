@@ -45,6 +45,8 @@
 				</div>
 			</div>
 		</div>
+	{% else %}
+		{{ _self.blogger_multi_form(entity, type) }}
 	{% endif %}
 {% endmacro %}
 

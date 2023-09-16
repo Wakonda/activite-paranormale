@@ -33,6 +33,7 @@ class GrimoireAdminType extends AbstractType
 								  ->leftJoin('u.language', 'l')
 								  ->where('l.abbreviation = :abbreviation')
 								  ->setParameter('abbreviation', $language)
+								  ->andWhere("u.parentTheme IS NOT NULL")
 								  ->orderBy('u.title', 'ASC');
 					}
 			))

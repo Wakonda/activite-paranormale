@@ -18,14 +18,13 @@
 					document.getElementById("photoRandom").innerHTML = data.photo;
 					document.getElementById("titleRandom").setAttribute("href", data.showRoute);
 				}
-document.getElementById("randomIcon").remove();
-  var i = document.createElement("i")
-  i.classList.add("fa-solid", "fa-shuffle");
-  i.id = "randomIcon";
 
-  document.getElementById("randomCreeyStory").appendChild(i);
-					/*document.querySelector("#randomIcon").classList.remove("fa-arrows-rotate", "fa-spin");
-					document.querySelector("#randomIcon").classList.add("fa-shuffle");*/
+				document.getElementById("randomIcon").remove();
+				var i = document.createElement("i")
+				i.classList.add("fa-solid", "fa-shuffle");
+				i.id = "randomIcon";
+
+				document.getElementById("randomCreeyStory").appendChild(i);
 			}
 		}
 

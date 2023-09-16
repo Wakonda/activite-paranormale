@@ -52,7 +52,7 @@
 			{% import "index/macro/macro_index.html.twig" as macro_index %}
 
 			{% if entity.surTheme is not empty %}
-				{{ macro_index.blogger_form(entity, "magic", entity.surTheme.title) }}
+				{{ macro_index.blogger_form(entity, entity.surTheme.parentTheme.internationalName, entity.surTheme.title) }}
 				{{ macro_index.twitter_form(entity) }}
 			{% endif %}
 			{{ macro_index.shopify_form(entity, "magic", entity.surTheme.title) }}

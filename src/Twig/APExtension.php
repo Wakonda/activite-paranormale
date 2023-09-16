@@ -756,8 +756,11 @@
 			foreach($bloggerAPI->getTypes() as $type) {
 				list($f, $l) = explode("_", $type);
 				
-				if($locale == $l)
-					$datas[$type] = $bloggerAPI->getCorrectBlog($type);
+				if($locale == $l) {
+					$name = $bloggerAPI->getCorrectBlog($type);
+					if(!in_array($name, array_values($datas)))
+						$datas[$type] = $name;
+				}
 			}
 			
 			array_multisort($datas, SORT_ASC, $datas);
@@ -837,7 +840,7 @@
 		public function isBloggerAvailable($type): bool
 		{
 			$api = new GoogleBlogger();
-			
+
 			if($_ENV["APP_ENV"] == "dev")
 				$type = "test_".explode("_", $type)[1];
 
@@ -938,7 +941,7 @@
 				$locale = $locale->getAbbreviation();
 			else
 				$locale = $this->translator->getLocale();
-			// dd(json_decode($sourceJSON));
+
 			return (new \App\Service\FunctionsLibrary($this->em))->sourceString($sourceJSON, $locale, $classes);
 		}
 		
