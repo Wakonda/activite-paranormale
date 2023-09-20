@@ -130,14 +130,14 @@ div.media-container:nth-child(odd) {
 	background: #005a00;
 }
 
-a:link, a:visited
+a:not(.nav-link):link, a:not(.nav-link):visited
 {
 	color: #B9C322;
 	text-decoration: none;
 	font-weight: normal;
 }
 
-a:active, a:hover
+a:not(.nav-link):active, a:not(.nav-link):hover
 {
 	color: #FFCC00;
 	text-decoration: underline;

@@ -29,7 +29,7 @@
 					<div class="card-body">
 						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
 							{% set tags = blogger_tags(type) %}
-							<select multiple name="blogger_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+							<select multiple name="blogger_tags[]" class="form-select select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}" {% if obj is not empty and tag in obj.labels %}selected{% elseif slug(tag) == slug(defaultValue) %}selected{% endif %}>{{ tag }}</option>
 								{% endfor %}
@@ -69,7 +69,7 @@
 							<div class="col">
 								{% set list = blogger_list(entity.language.abbreviation) %}
 
-								<select name="blogger_list[]" id="blogger_list" class="form-control" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								<select name="blogger_list[]" id="blogger_list" class="form-select" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 									{% for t, l in list %}
 										<option value="{{ t }}" {{ type == t ? "selected" : "" }}>{{ l }}</option>
 									{% endfor %}
@@ -77,7 +77,7 @@
 							</div>
 							
 							<div class="col">
-								<select multiple name="blogger_tags[]" id="blogger_tags" class="form-control" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								<select multiple name="blogger_tags[]" id="blogger_tags" class="form-select" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								</select>
 							</div>
 						</div>
@@ -162,7 +162,7 @@
 							{% else %}
 								{% set tags = themes_by_language(entity.language.abbreviation) %}
 							{% endif %}
-							<select multiple name="shopify_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+							<select multiple name="shopify_tags[]" class="form-select select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}">{{ tag }}</option>
 								{% endfor %}
@@ -206,7 +206,7 @@
 						<div class="card-body">
 							<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
 								{% set tags = music_genres(entity.language.abbreviation) %}
-								<select multiple name="blogger_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+								<select multiple name="blogger_tags[]" class="form-select select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 									{% for tag in tags %}
 										<option value="{{ tag.title }}" {% if obj is not empty and tag.title in obj.labels %}selected{% elseif slug(tag.title) == slug(defaultValue) %}selected{% endif %}>{{ tag.title }}</option>
 									{% endfor %}
@@ -791,7 +791,7 @@
 						<form action="{{ path('Admin_TheDailyTruth', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
 							{% set tags = themes_by_language(entity.language.abbreviation) %}
 
-							<select multiple name="thedailytruth_tags[]" class="form-control select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
+							<select multiple name="thedailytruth_tags[]" class="form-select select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								{% for tag in tags %}
 									<option value="{{ tag }}">{{ tag }}</option>
 								{% endfor %}
@@ -855,17 +855,17 @@
 				<div class="modal-content">
 					<div class="modal-header">
 						<h4 class="modal-title" id="museModalLabel"><i class="fas fa-palette"></i> Muse</h4>
-						<button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
 							<span aria-hidden="true">&times;</span>
 						</button>
 					</div>
 					<div class="modal-body">
 						<form id="form" method="post" enctype="multipart/form-data">
-							<div class="form-group">
+							<div class="mb-3">
 								<label for="url">URL</label>
 								<input type="text" name="url" class="form-control" id="url" required>
 							</div>
-							<div class="form-group">
+							<div class="mb-3">
 								<label for="size">{{ "admin.general.Size"|trans([], "validators") }}</label>
 								<input type="number" name="size" class="form-control" id="size" value="35" required>
 							</div>
@@ -919,7 +919,7 @@
 	<form name="choixTheme" id="choose_theme_news" action="{{ path(routePath, { 'page' : 1}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
 		<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
 		<div class="input-group w-auto">
-			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">
+			<select id="theme_news" name="theme_news" class="form-select selected_theme_news">
 				<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
 				{% for theme in themes %}
 					<option value="{{ theme.id }}">{{ theme.title }}</option>

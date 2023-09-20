@@ -26,6 +26,7 @@ use App\Service\Facebook;
 use App\Service\Mastodon;
 use App\Service\Instagram;
 use App\Service\Diaspora;
+use App\Service\VK;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
 
@@ -1108,6 +1109,39 @@ class AdminController extends AbstractController
 		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
+
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+	}
+
+	// vk
+	public function vk(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, VK $vk, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	{
+		// $res = $vk->postMessage("test ", "https://vk.com/"));
+		
+		// "{"response":{"post_id":8}}"
+		dd("ok");
+	/*	$requestParams = $request->request;
+$redirectUri = $this->generateUrl("Admin_VK", ["id" => $id, "path" => $path, "routeToRedirect" => $routeToRedirect], UrlGeneratorInterface::ABSOLUTE_URL);
+if(isset($_GET["log"]) and !empty($_GET["log"])) {dd($redirectUri);
+die("r");
+echo '<script type="text/javascript">window.location.href = "'.$redirectUri.'?data=" + btoa(document.location.hash);</script>';die("eee");
+} 
+else {//dd($redirectUri);
+	$vk->getAccessToken($redirectUri);die;
+}
+die('rrr');*/
+		$path = urldecode($path);
+
+		$entity = $em->getRepository($path)->find($id);
+		$url = $requestParams->get("vk_url", null);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$res = $vk->postMessage($request->request->get("vk_area"), $currentURL, $entity->getLanguage()->getAbbreviation());
+
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.vk.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.vk.Success', [], 'validators')];
 
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 

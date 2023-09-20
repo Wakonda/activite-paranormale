@@ -32,9 +32,9 @@
 
 {% block body_content %}
 	<form name="choixTheme" id="choose_theme_news" action="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
-		<div class="form-group me-2">
-			<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
-			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">
+		<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
+		<div class="input-group w-auto">
+			<select id="theme_news" name="theme_news" class="form-select selected_theme_news">
 				<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
 				{% for key, theme in themeArray %}
 					<optgroup label="{{ key }}">
@@ -44,8 +44,8 @@
 					</optgroup>
 				{% endfor %}
 			</select>
+			<button id="selectTheme" type="submit" class="btn btn-primary"><i class="far fa-eye" aria-hidden="true"></i> {{ "mobile.witchcraft.AllRituals"|trans([], 'validators') }}</button>
 		</div>
-		<button id="selectTheme" type="submit" class="btn btn-primary"><i class="far fa-eye" aria-hidden="true"></i> {{ "mobile.witchcraft.AllRituals"|trans([], 'validators') }}</button> 
 	</form>
 
 	{% set adLocation = (pagination.items|length / 2)|round %}

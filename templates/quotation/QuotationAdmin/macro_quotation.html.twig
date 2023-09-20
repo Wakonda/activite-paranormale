@@ -11,19 +11,19 @@
 			<div id="collapseGenerateImage" class="collapse" aria-labelledby="headingGenerateImage" data-parent="#accordionParentGenerateImage">
 				<div class="card-body">
 					{{ form_start(imageGeneratorForm, { 'action': path('Quotation_Admin_GenerateImage', {'id': entity.id})}) }}
-						<div class="form-group row">
+						<div class="mb-3 row">
 							{{ form_label(imageGeneratorForm.image, "quotation.imageGenerator.Image"|trans([], "validators"), {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
 							<div class="col-sm-10">
 								{{ form_widget(imageGeneratorForm.image, {'attr': {'class': 'form-control'}}) }}
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="mb-3 row">
 							{{ form_label(imageGeneratorForm.font_size, "quotation.imageGenerator.FontSize"|trans([], "validators"), {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
 							<div class="col-sm-10">
 								{{ form_widget(imageGeneratorForm.font_size, {'attr': {'class': 'form-control'}}) }}
 							</div>
 						</div>
-						<div class="form-group row">
+						<div class="mb-3 row">
 							{{ form_label(imageGeneratorForm.invert_colors, "quotation.imageGenerator.InvertColors"|trans([], "validators"), {'label_attr': {'class': "col-sm-2 col-form-label"}}) }}
 							<div class="col-sm-10">
 								{{ form_widget(imageGeneratorForm.invert_colors) }}

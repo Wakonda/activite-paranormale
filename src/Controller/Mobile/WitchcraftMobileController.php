@@ -38,19 +38,20 @@ class WitchcraftMobileController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 		
-		$menuGrimoires = $em->getRepository(MenuGrimoire::class)->getSurThemeGrimoire($locale);
-		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->getSurThemeByLanguage($locale);
+		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $locale]);
+		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->findBy(["language" => $language]);
 		$themeArray = [];
 		
-		foreach($menuGrimoires as $menuGrimoire) {
-			$themeArray[$menuGrimoire->getTitle()] = [];
+		foreach($surThemeGrimoires as $menuGrimoire) {
+			if(empty($menuGrimoire->getParentTheme()))
+				$themeArray[$menuGrimoire->getTitle()] = [];
 		}
-		
+
 		foreach($themeArray as $key => $value) {
 			$subArray = [];
 			
 			foreach($surThemeGrimoires as $surThemeGrimoire) {
-				if($surThemeGrimoire->getMenuGrimoire()->getTitle() == $key) {
+				if(!empty($surThemeGrimoire->getParentTheme()) and $surThemeGrimoire->getParentTheme()->getTitle() == $key) {
 					$subArray[$surThemeGrimoire->getId()] = $surThemeGrimoire->getTitle();
 				}
 			}

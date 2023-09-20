@@ -25,7 +25,9 @@ iframe, object, embed {
 a {
     text-decoration: none;
 }
-
+a:not(.nav-link):hover {
+    text-decoration: underline;
+}
 .navbar{
 	padding-right: 10px;
 }

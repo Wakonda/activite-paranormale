@@ -33,7 +33,7 @@
 		{% set states = ""|states_by_language %}
 	
 		<label>{{ "news.admin.State"|trans([], "validators") }}</label>
-		<select id="selected_state" class="form-control">
+		<select id="selected_state" class="form-select">
 			<option value=""></option>
 			{% for state in states %}
 				<option value="{{ state.internationalName }}" data-display="{{ state.displayState }}" {% if app.request.attributes.get('state') == state.internationalName %}selected{% endif %}>{{ state.title }}</option>

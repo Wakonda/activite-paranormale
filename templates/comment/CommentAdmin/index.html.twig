@@ -17,7 +17,7 @@
 {% block body_main_additional %}
 	<div class="container-fluid mt-3">
 		<label>{{ "comment.admin.State"|trans([], "validators") }}</label>
-		<select id="selected_state" class="form-control">
+		<select id="selected_state" class="form-select">
 			<option value=""></option>
 			<option value="{{ approved_state() }}">{{ "comment.admin.Approved"|trans([], "validators") }}</option>
 			<option value="{{ denied_state() }}">{{ "comment.admin.Denied"|trans([], "validators") }}</option>

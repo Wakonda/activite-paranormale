@@ -80,7 +80,7 @@ class UsefulLinkAdminType extends AbstractType
 
 			$links = $form->get('links')->getNormData();
 
-			if(($data->isDevelopment() or $data->isTool() or $data->isUsefulLink()) and empty($links))
+			if(($data->isTool() or $data->isUsefulLink()) and empty($links))
 				$form->get('links')->addError(new FormError($notBlank->message));
 
 			$website = $form->get('website')->getNormData();

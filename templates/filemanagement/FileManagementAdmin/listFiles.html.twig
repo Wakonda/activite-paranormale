@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block body_main %}
-	<select class="form-control selectFolder">
+	<select class="form-select selectFolder">
 		{% for listFolder in listFolders %}
 			<option value="{{ listFolder }}" {{ (listFolder == folder ? "selected" : "") }}>{{ listFolder }}</option>
 		{% endfor %}

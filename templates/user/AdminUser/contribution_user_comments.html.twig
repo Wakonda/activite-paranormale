@@ -49,7 +49,7 @@
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/contribution-user.jpg') }}" alt="Yoga girl magic" width="550" /></p>
 	<hr>
-	<select id="comments_entity" name="comments_entity" class="form-control">
+	<select id="comments_entity" name="comments_entity" class="form-select">
 		{% for key, value in classArray %}
 			<option value="{{ key }}">{{ value }}</option>
 		{% endfor %}

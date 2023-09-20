@@ -106,7 +106,7 @@ class ArchiveController extends AbstractController
 
 		foreach($surThemeGrimoires as $surThemeGrimoire)
 			if(array_search($surThemeGrimoire->getTitle(), array_column($countTheme, 'title')) === false)
-				$countTheme[] = ["count" => 0, "title" => $surThemeGrimoire->getTitle(), "surTheme" => $surThemeGrimoire->getMenuGrimoire()->getId(), "id" => $surThemeGrimoire->getId()];
+				$countTheme[] = ["count" => 0, "title" => $surThemeGrimoire->getTitle(), "surTheme" => $surThemeGrimoire->getParentTheme()->getId(), "id" => $surThemeGrimoire->getId()];
 
 		usort($countTheme, function($a, $b) {
 			return $a['title'] <=> $b['title'];

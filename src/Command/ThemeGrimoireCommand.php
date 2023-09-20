@@ -56,10 +56,10 @@ class ThemeGrimoireCommand extends Command
 		$themes = $this->em->getRepository(SurThemeGrimoire::class)->findAll();
 		
 		foreach($themes as $theme) {
-			if(empty($theme->getMenuGrimoire()))
+			if(empty($theme->getParentTheme()))
 				continue;
 
-			$st = $this->em->getRepository(SurThemeGrimoire::class)->findOneBy(["internationalName" => $theme->getMenuGrimoire()->getInternationalName(), "language" => $theme->getMenuGrimoire()->getLanguage()]);
+			$st = $this->em->getRepository(SurThemeGrimoire::class)->findOneBy(["internationalName" => $theme->getParentTheme()->getInternationalName(), "language" => $theme->getParentTheme()->getLanguage()]);
 
 			$theme->setParentTheme($st);
 			

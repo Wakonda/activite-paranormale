@@ -85,7 +85,7 @@
 		<form name="choixTheme" id="choose_theme_news" action="{{ path(block('world_flag'), { 'language' : app.request.attributes.get('language')}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
 			<label for="theme_id">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
 			<div class="input-group w-auto">
-				<select name="theme_id" class="form-control selected_theme_news">
+				<select name="theme_id" class="form-select selected_theme_news">
 					<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
 					{% for language, themeArray in themes %}
 						<optgroup label="{{ language }}">

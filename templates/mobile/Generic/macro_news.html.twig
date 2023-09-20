@@ -2,7 +2,7 @@
 	<form name="choixTheme" id="choose_theme_news" action="{{ path(routePath, { 'page' : 1}) }}" method="post" class="d-flex flex-row align-items-center flex-wrap">
 		<label for="theme_news">{{ "news.index.ChoisissezUnTheme"|trans([], "validators") }} : </label>
 		<div class="input-group w-auto">
-			<select id="theme_news" name="theme_news" class="form-control selected_theme_news">
+			<select id="theme_news" name="theme_news" class="form-select selected_theme_news">
 				<option value="">{{ "news.index.Tout"|trans([], "validators") }}</option>
 				{% for theme in themes %}
 					<option value="{{ theme.id }}">{{ theme.title }}</option>

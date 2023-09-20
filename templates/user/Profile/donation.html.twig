@@ -16,7 +16,7 @@
 						<input type="hidden" name="item_name" value="Stackoverflow">
 						<input type="hidden" name="no_note" value="0">
 							{{ "user.donation.SelectCurrency"|trans([], "validators") }}
-							<select name="currency_code" class="form-control">
+							<select name="currency_code" class="form-select">
 								{% for currency in currencies %}
 									<option value="{{ currency.iso4217 }}" {% if currency.iso4217 == "EUR" %}selected{% endif %}>{{ currency.abbr }}</option>
 								{% endfor %}

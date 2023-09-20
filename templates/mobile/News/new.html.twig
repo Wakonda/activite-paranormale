@@ -10,7 +10,7 @@
 
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'action': path('ap_newsmobile_create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.title, "news.new.Title"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}} ) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.title) }}
@@ -18,7 +18,7 @@
 			</div>
 		</div>
 
-		{#<div class="form-group row d-none">
+		{#<div class="mb-3 row d-none">
 			{{ form_label(form.abstractText, "news.new.Abstract"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}} ) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.abstractText) }}
@@ -26,7 +26,7 @@
 			</div>
 		</div>#}
 
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.text, "news.new.Text"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}} ) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.text) }}
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.illustration, "news.new.Photo"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}} ) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}
@@ -46,7 +46,7 @@
 			</div>
 		</div>
 
-		{#<div class="form-group row d-none">
+		{#<div class="mb-3 row d-none">
 			{{ form_label(form.theme, "news.new.Theme"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}} ) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.theme) }}
@@ -57,7 +57,7 @@
 
 
 		{% if app.user is null %}
-			<div class="form-group row">
+			<div class="mb-3 row">
 				{{ form_label(form.pseudoUsed, "news.new.Pseudo"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 				<div class="col-sm-10">
 					{{ form_errors(form.pseudoUsed) }}
@@ -65,7 +65,7 @@
 				</div>
 			</div>
 		{% else %}
-			<div class="form-group row">
+			<div class="mb-3 row">
 				{{ form_label(form.isAnonymous, "news.new.IsAnonymous"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 				<div class="col-sm-10">
 					{{ form_errors(form.isAnonymous) }}
@@ -75,7 +75,7 @@
 			</div>
 		{% endif %}
 
-		{#<div class="form-group row">
+		{#<div class="mb-3 row">
 			{{ form_label(form.licence, "news.new.Licence"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}} ) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.licence) }}

@@ -15,8 +15,6 @@
 		{{ encore_entry_link_tags('app_mobile') }}
 	{% endblock %}
 	
-	{{ encore_entry_script_tags('app_mobile') }}
-	
 	{% block header_mobile_plus %}{% endblock %}
 	
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
@@ -41,12 +39,12 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="nav navbar-nav">
 			{% set currentRoute = app.request.attributes.get("_route") %}
-            <li class="nav-item {{ 'news'|linkFollowMobile(currentRoute, ['index', 'read']) }}"><a class="nav-link" href="{{ path('ap_newsmobile_index', { 'page' : 1}) }}">{{ "mobile.main.News"|trans([], "validators") }}</a></li>
-            <li class="nav-item {{ 'video'|linkFollowMobile(currentRoute) }}"><a class="nav-link" href="{{ path('ap_videomobile_index', { 'page' : 1}) }}">{{ "mobile.main.Video"|trans([], "validators") }}</a></li>
-            <li class="nav-item {{ 'photo'|linkFollowMobile(currentRoute) }}"><a class="nav-link" href="{{ path('ap_photomobile_index', { 'page' : 1}) }}">{{ "mobile.main.Photo"|trans([], "validators") }}</a></li>
-            <li class="nav-item {{ 'testimony'|linkFollowMobile(currentRoute, ['index', 'read']) }}"><a class="nav-link" href="{{ path('ap_testimonymobile_index', { 'page' : 1}) }}">{{ "mobile.main.Testimony"|trans([], "validators") }}</a></li>
-            <li class="nav-item {{ 'witchcraft'|linkFollowMobile(currentRoute) }}"><a class="nav-link" href="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}">{{ "mobile.main.Witchcraft"|trans([], "validators") }}</a></li>
-            <li class="nav-item {{ 'search'|linkFollowMobile(currentRoute) }}"><a class="nav-link" href="{{ path('ap_newsmobile_search') }}">{{ "mobile.main.Search"|trans([], "validators") }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ 'news'|linkFollowMobile(currentRoute, ['index', 'read']) }}" href="{{ path('ap_newsmobile_index', { 'page' : 1}) }}">{{ "mobile.main.News"|trans([], "validators") }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ 'video'|linkFollowMobile(currentRoute) }}" href="{{ path('ap_videomobile_index', { 'page' : 1}) }}">{{ "mobile.main.Video"|trans([], "validators") }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ 'photo'|linkFollowMobile(currentRoute) }}" href="{{ path('ap_photomobile_index', { 'page' : 1}) }}">{{ "mobile.main.Photo"|trans([], "validators") }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ 'testimony'|linkFollowMobile(currentRoute, ['index', 'read']) }}" href="{{ path('ap_testimonymobile_index', { 'page' : 1}) }}">{{ "mobile.main.Testimony"|trans([], "validators") }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ 'witchcraft'|linkFollowMobile(currentRoute) }}" href="{{ path('ap_witchcraftmobile_index', { 'page' : 1}) }}">{{ "mobile.main.Witchcraft"|trans([], "validators") }}</a></li>
+            <li class="nav-item"><a class="nav-link {{ 'search'|linkFollowMobile(currentRoute) }}" href="{{ path('ap_newsmobile_search') }}">{{ "mobile.main.Search"|trans([], "validators") }}</a></li>
 			<li class="nav-item dropdown">
 				<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" id="navbarDropdownMenuLink" aria-expanded="false">{{ "mobile.main.Contribute"|trans([], "validators") }} <span class="caret"></span></a>
 				
@@ -140,31 +138,7 @@
 	  </footer>
     </div>
 	{% block additional_javascript %}{% endblock %}
-	
-	<script>
-		async function detectAdBlock() {
-		  let adBlockEnabled = false
-		  const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
-		  try {
-			await fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true)
-		  } catch (e) {
-			adBlockEnabled = true
-		  } finally {
-			if(document.cookie.includes("tarteaucitron=!adsense=true") && adBlockEnabled == false) {
-				for (let element of document.getElementsByClassName("advertising-alternative"))
-					element.classList.add("d-none");
-				for (let element of document.getElementsByClassName("adsbygoogle"))
-					element.classList.remove("d-none");
-			} else {
-				for (let element of document.getElementsByClassName("advertising-alternative"))
-					element.classList.remove("d-none");
-				for (let element of document.getElementsByClassName("adsbygoogle"))
-					element.classList.add("d-none");
-			}
-		  }
-		}
-		
-		detectAdBlock();
-	</script>
+	{{ encore_entry_script_tags('app_mobile') }}
+
   </body>
 </html>

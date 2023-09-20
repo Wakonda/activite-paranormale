@@ -17,28 +17,28 @@
 	{{ form_start(form, {'action': path('ap_testimonymobile_create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="alert alert-info"><i class="fas fa-ghost"></i> {{ "testimony.new.Introduction"|trans([], "validators") }}</div>
 	
-		{#<div class="form-group row">
+		{#<div class="mb-3 row">
 			{{ form_label(form.title, "testimony.new.Title"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.title) }}
 				{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>#}
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.text, "testimony.new.Testimony"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.text) }}
 				{{ form_widget(form.text, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>
-		{#<div class="form-group row">
+		{#<div class="mb-3 row">
 			{{ form_label(form.theme, "testimony.new.Theme"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.theme) }}
 				{{ form_widget(form.theme, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>#}
-		{#<div class="form-group row">
+		{#<div class="mb-3 row">
 			{{ form_label(form.pseudoUsed, "testimony.new.Pseudo"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.pseudoUsed) }}
@@ -47,7 +47,7 @@
 		</div>#}
 		
 		{% if app.user is null %}
-			<div class="form-group row">
+			<div class="mb-3 row">
 				{{ form_label(form.pseudoUsed, "witchcraft.new.Pseudo"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 				<div class="col-sm-10">
 					{{ form_errors(form.pseudoUsed) }}
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 		{% else %}
-			<div class="form-group row">
+			<div class="mb-3 row">
 				{{ form_label(form.isAnonymous, "witchcraft.new.IsAnonymous"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 				<div class="col-sm-10">
 					{{ form_errors(form.isAnonymous) }}
@@ -65,28 +65,28 @@
 			</div>
 		{% endif %}
 		
-		{#<div class="form-group row">
+		{#<div class="mb-3 row">
 			{{ form_label(form.licence, "testimony.new.Licence"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.licence) }}
 				{{ form_widget(form.licence, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>#}
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.sightingDate, "testimony.new.SightingDate"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.sightingDate) }}
 				{{ form_widget(form.sightingDate, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.country, "testimony.new.Country"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.country) }}
 				{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}
 			</div>
 		</div>
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.location_selector, "testimony.new.Location"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.location_selector) }}
@@ -96,7 +96,7 @@
 		
 		{% if app.user is null %}
 		<div class="alert alert-warning"><i class="fas fa-at"></i> {{ "testimony.new.EmailConfidential"|trans([], "validators") }}</div>
-		<div class="form-group row">
+		<div class="mb-3 row">
 			{{ form_label(form.emailAuthor, "testimony.new.EmailAuthor"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.emailAuthor) }}
