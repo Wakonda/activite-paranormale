@@ -3,6 +3,16 @@
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
+{% block meta_plus %}
+	{% if entity.archive == true %}
+		<meta name="robots" content="noindex">
+	{% endif %}
+
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ entity.title }}" />
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+{% endblock %}
+
 {% block header_plus %}
 	{% if entity.longitude is not empty and entity.latitude is not empty %}
 	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
