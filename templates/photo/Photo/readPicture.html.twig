@@ -18,6 +18,8 @@
 {% endblock %}
 
 {% block meta_plus %}
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ picture.title }}" />
 	<meta property="og:image" content="{{ absolute_url(asset(picture.getAssetImagePath()~picture.photoIllustrationFilename)) }}" />
 	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_photomobile_read', {'id' : picture.id}) }}">
 {% endblock %}
