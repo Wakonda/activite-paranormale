@@ -10,6 +10,7 @@
 {% block header_plus %}
 	<link href="{{ asset('extended/css/google_search.min.css') }}" rel="stylesheet">
 {% endblock %}
+
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/search.jpg') }}" alt="Search" /></p>
 	<hr>
@@ -72,19 +73,23 @@
 				{% endif %}
 				
 				{% if resultImages is not empty %}
-					<div class="card-columns">
-						{% for item in paginationImage.items %}
-							<div class="card">
-								{{ resultImages[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
-								<div class="card-body text-center">
-									<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].title }}</h6>
+					<div class="container py-2">
+						<div class="grid-masonry">
+							{% for item in paginationImage.items %}
+								<div class="grid-item">
+									<div class="card">
+										{{ resultImages[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
+										<div class="card-body text-center">
+											<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].title }}</h6>
 
-									{% set size = getimagesize(resultImages[item.id~"_"~item.classname].photoIllustrationFilename, resultImages[item.id~"_"~item.classname].getAssetImagePath()) %}
-									<p class="card-text text-center"><small class="text-white-50">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
-									<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">{{ "search.index.Read"|trans([], "validators") }}</a></p>
+											{% set size = getimagesize(resultImages[item.id~"_"~item.classname].photoIllustrationFilename, resultImages[item.id~"_"~item.classname].getAssetImagePath()) %}
+											<p class="card-text text-center"><small class="text-white-50">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
+											<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">{{ "search.index.Read"|trans([], "validators") }}</a></p>
+										</div>
+									</div>
 								</div>
-							</div>
-						{% endfor %}
+							{% endfor %}
+						</div>
 					</div>
 				{% else %}
 					<div class="alert alert-info" role="alert">
@@ -103,4 +108,18 @@
 	
 	<br>
 	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+
+	<style>
+		.grid-masonry {
+			display: block;
+			columns: 12rem;
+			gap: 1rem;
+			margin-bottom: 3px;
+		}
+		.grid-masonry .grid-item {
+			margin-bottom: 1rem;
+			break-inside: avoid;
+		}
+	</style>
 {% endblock %}

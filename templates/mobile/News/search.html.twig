@@ -9,12 +9,14 @@
 
 {% block header_mobile_plus %}
 	<link href="{{ asset('extended/css/google_search.min.css') }}" rel="stylesheet">
+	<script src="{{ asset('extended/css/bootstrap/bootstrap/js/masonry.pkgd.min.js') }}" async></script>
 {% endblock %}
 
 {% block body_content %}
 	<div class="read-content">
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/search.jpg') }}" alt="Search" /></p>
 	<hr>
+
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 
 	{{ form_start(form, {'action': path('ap_newsmobile_search'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
@@ -73,19 +75,23 @@
 				{% endif %}
 				
 				{% if resultImages is not empty %}
-					<div class="card-columns">
-						{% for item in paginationImage.items %}
-							<div class="card">
-								{{ resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].showRoute, true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
-								<div class="card-body text-center">
-									<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].entity.title }}</h6>
+					<div class="container py-2">
+						<div class="grid-masonry">
+							{% for item in paginationImage.items %}
+							<div class="grid-item">
+								<div class="card">
+									{{ resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].entity.getAssetImagePath(), true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
+									<div class="card-body text-center">
+										<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].entity.title }}</h6>
 
-									{% set size = getimagesize(resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename, resultImages[item.id~"_"~item.classname].showRoute) %}
-									<p class="card-text text-center"><small class="text-white-50">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
-									<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">{{ "search.index.Read"|trans([], "validators") }}</a></p>
+										{% set size = getimagesize(resultImages[item.id~"_"~item.classname].entity.photoIllustrationFilename, resultImages[item.id~"_"~item.classname].entity.getAssetImagePath()) %}
+										<p class="card-text text-center"><small class="text-white-50">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
+										<p class="card-text text-center"><a href="{{ path(resultImages[item.id~"_"~item.classname].showRoute, {id: item.id}) }}" class="btn btn-primary text-white">{{ "search.index.Read"|trans([], "validators") }}</a></p>
+									</div>            
 								</div>
 							</div>
-						{% endfor %}
+							{% endfor %}
+						</div>
 					</div>
 				{% else %}
 					<div class="alert alert-info" role="alert">
@@ -101,4 +107,17 @@
 			</div>
 		</div>
 	</div>
+
+	<style>
+		.grid-masonry {
+			display: block;
+			columns: 12rem;
+			gap: 1rem;
+			margin-bottom: 3px;
+		}
+		.grid-masonry .grid-item {
+			margin-bottom: 1rem;
+			break-inside: avoid;
+		}
+	</style>
 {% endblock %}

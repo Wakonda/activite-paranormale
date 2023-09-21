@@ -90,7 +90,9 @@ div.content a:not(.btn), div h4.panel-title>a
 {
 	color: #0029ff;
 }
-
+.page-item.active .page-link {
+    color: #fff;
+}
 nav li p.navbar-text, nav li button.btn{
 	margin-left: 15px;
 }
@@ -186,7 +188,7 @@ span.required_star
 }
 
 /*********** DELETED *************/
-table > tbody > tr.deleted, table > tbody > tr.deleted > td.sorting_1
+table > tbody > tr.deleted > td, table > tbody > tr.deleted > td.sorting_1
 {
 	background-color: rgb(255, 200, 200) !important;
 }
