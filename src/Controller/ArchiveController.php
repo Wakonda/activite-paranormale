@@ -100,7 +100,7 @@ class ArchiveController extends AbstractController
 		
 		$locale = empty($language) ? $request->getLocale() : $language;
 
-		$menuGrimoire = $em->getRepository(\App\Entity\MenuGrimoire::class)->getSurThemeGrimoire($request->getLocale());
+		$menuGrimoire = $em->getRepository(\App\Entity\SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale())->getQuery()->getResult();
 		$surThemeGrimoires = $em->getRepository(\App\Entity\SurThemeGrimoire::class)->getSurThemeByLanguage($request->getLocale());
 		$countTheme = $em->getRepository($className)->countArchivedByTheme($locale);
 

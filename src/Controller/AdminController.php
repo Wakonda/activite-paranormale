@@ -1118,32 +1118,35 @@ class AdminController extends AbstractController
 	// vk
 	public function vk(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, VK $vk, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
-		// $res = $vk->postMessage("test ", "https://vk.com/"));
+		$session = $request->getSession();
+
+		$accessToken = null;
+		$redirectUri = $this->generateUrl("Admin_VK", ["id" => $id, "path" => $path, "routeToRedirect" => $routeToRedirect], UrlGeneratorInterface::ABSOLUTE_URL);
 		
-		// "{"response":{"post_id":8}}"
-		dd("ok");
-	/*	$requestParams = $request->request;
-$redirectUri = $this->generateUrl("Admin_VK", ["id" => $id, "path" => $path, "routeToRedirect" => $routeToRedirect], UrlGeneratorInterface::ABSOLUTE_URL);
-if(isset($_GET["log"]) and !empty($_GET["log"])) {dd($redirectUri);
-die("r");
-echo '<script type="text/javascript">window.location.href = "'.$redirectUri.'?data=" + btoa(document.location.hash);</script>';die("eee");
-} 
-else {//dd($redirectUri);
-	$vk->getAccessToken($redirectUri);die;
-}
-die('rrr');*/
-		$path = urldecode($path);
+		if($request->query->has("code")) {
+			$accessToken = $vk->getAccessToken($redirectUri, $request->query->get("code"))->access_token;
+		} else {
+			$session->set("vk_area", $request->request->get("vk_area"));
+			$session->set("vk_url", $request->request->get("vk_url"));
+			$vk->getCode($redirectUri);
+		}
 
-		$entity = $em->getRepository($path)->find($id);
-		$url = $requestParams->get("vk_url", null);
+		if(!empty($accessToken)) {
+			$requestParams = $request->request;
+			$path = urldecode($path);
 
-		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
+			$entity = $em->getRepository($path)->find($id);
+			$url = $session->get("vk_url");
 
-		$res = $vk->postMessage($request->request->get("vk_area"), $currentURL, $entity->getLanguage()->getAbbreviation());
+			$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.vk.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.vk.Success', [], 'validators')];
+			$res = $vk->postMessage($session->get("vk_area"), $currentURL, $entity->getLanguage()->getAbbreviation());
 
-		$this->addFlash($message["state"], $message["message"], [], 'validators');
+			$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.vk.Failed', [], 'validators'). "(".$res->error->error_msg.")"] : ['state' => 'success', 'message' => $translator->trans('admin.vk.Success', [], 'validators')];
+
+			$this->addFlash($message["state"], $message["message"], [], 'validators');
+		} else
+			$this->addFlash('error', $translator->trans('admin.vk.Failed', [], 'validators'), [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}

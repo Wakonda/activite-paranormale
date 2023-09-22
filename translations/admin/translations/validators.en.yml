@@ -151,6 +151,9 @@ admin:
     facebook:
         Success: "Message sent to Facebook successfully"
         Failed: "Failed to send to Facebook"
+    vk:
+        Success: "Message sent to VK successfully"
+        Failed: "Failed to send to VK"
     diaspora:
         Success: "Message sent to Diaspora successfully"
         Error: "Failed to send to Diaspora"

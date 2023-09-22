@@ -34,7 +34,7 @@ class GrimoireUserParticipationType extends AbstractType
 					'query_builder' => function(EntityRepository $er) use ($language) {
 						return $er->createQueryBuilder('u')
 								->innerJoin('u.language', 'l')
-								->innerJoin('u.menuGrimoire', 'mg')
+								->innerJoin('u.parentTheme', 'mg')
 								->where('l.abbreviation = :language')
 								->setParameter('language', $language)
 								->orderBy('u.title', 'ASC');

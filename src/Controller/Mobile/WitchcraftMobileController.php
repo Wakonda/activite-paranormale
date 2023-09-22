@@ -10,7 +10,6 @@ use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Grimoire;
-use App\Entity\MenuGrimoire;
 use App\Entity\SurThemeGrimoire;
 use App\Entity\User;
 use App\Entity\Language;

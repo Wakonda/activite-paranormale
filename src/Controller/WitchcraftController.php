@@ -9,7 +9,6 @@ use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Grimoire;
-use App\Entity\MenuGrimoire;
 use App\Entity\SurThemeGrimoire;
 use App\Entity\WitchcraftTool;
 use App\Entity\WitchcraftThemeTool;

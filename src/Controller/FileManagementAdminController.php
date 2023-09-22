@@ -233,15 +233,11 @@ class FileManagementAdminController extends AbstractController
 						WHERE fm.realNameFile = '".$file."';");
 				break;
 				case "witchcraft":
-					$res = array_merge(
+					$res = 
 						$conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"MenuGrimoire_Admin_Show\" as route
 						FROM menugrimoire n
-						WHERE n.photo = '".$file."';"),
-						$conn->fetchAllAssociative("
-						SELECT n.id, n.title, \"SurThemeGrimoire_Admin_Show\" as route
-						FROM surthemegrimoire n
-						WHERE n.photo = '".$file."';"));
+						WHERE n.photo = '".$file."';");
 				break;
 				case "witchcraft\grimoire":
 					$res = $conn->fetchAllAssociative("

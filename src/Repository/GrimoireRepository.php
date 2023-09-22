@@ -342,7 +342,7 @@ class GrimoireRepository extends EntityRepository
 			->join('c.language', 'l')
 		   ->join('c.surTheme', 't')
 		   ->join('c.state', 's')
-		   ->join('t.menuGrimoire', 'st')
+		   ->join('t.parentTheme', 'st')
 		   ->andWhere('s.displayState = true')
 		   ->andWhere('l.abbreviation = :locale')
 		   ->andWhere('c.archive = true')

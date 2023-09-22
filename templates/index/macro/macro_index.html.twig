@@ -358,6 +358,72 @@
 	</script>
 {% endmacro %}
 
+{% macro vk_form(entity, text = null) %}
+	{% if isVKAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentVK">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingVK">
+				<span class="panel-title">
+				<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseVK" aria-expanded="false" aria-controls="collapseVK">
+				<i class="fab fa-vk" aria-hidden="true"></i> VK
+				</a>
+				</span>
+			</div>
+			
+			<div id="collapseVK" class="collapse" aria-labelledby="headingVK" data-parent="#accordionParentVK">
+				<div class="card-body">
+					<form action="{{ path('Admin_VK', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<div id="tags_vk">
+							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+						</div>
+						<br>
+						{% set tags = get_tags(entity, false, true) %}
+						<textarea id="vk_area" name="vk_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						<br>
+						<input type="url" placeholder="https://example.com" name="vk_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro vk_form_js() %}
+	<script>
+		var datas = document.getElementById("vk_area").innerHTML.split(" ");
+
+		document.querySelectorAll("div#tags_vk a").forEach((e) => {
+			for(var i = 0; i < datas.length; i++) {
+				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
+					datas[i] = "#" + datas[i];
+			}
+		});
+
+		document.getElementById("vk_area").innerHTML = datas.join(" ");
+
+		document.querySelectorAll("div#tags_vk a").forEach(e => {
+			e.addEventListener('click', (e2) => {
+				e2.preventDefault();
+
+				let textToInsert = "#" + e2.srcElement.dataset.tag;
+				let position = document.getElementById("vk_area").selectionStart;
+				let textareaContent = document.getElementById('vk_area').value;
+				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
+
+				document.getElementById('vk_area').value = output;
+			});
+		});
+	</script>
+{% endmacro %}
+
 {% macro instagram_form(entity) %}
 	{% if isInstagramAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentInstagram">
