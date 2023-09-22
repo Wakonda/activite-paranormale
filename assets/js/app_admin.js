@@ -23,6 +23,6 @@ require('./BackToTop/BackToTop.css');
 
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 
-$(function() {
-	$(document).BackToTop();
+document.addEventListener('DOMContentLoaded', function () {
+	BackToTop();
 });

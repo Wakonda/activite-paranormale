@@ -23,6 +23,6 @@ require('./BackToTop/BackToTop')
 require('./BackToTop/arrow-up.png');
 require('./BackToTop/BackToTop.css');
 
-$(function() {
-	$(document).BackToTop();
+document.addEventListener('DOMContentLoaded', function () {
+	BackToTop();
 });
