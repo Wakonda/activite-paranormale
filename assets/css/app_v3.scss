@@ -113,7 +113,7 @@ a, button, #rate, .rating-container .star:hover, .social_network_to_select, inpu
 	cursor: url(images_v2/greenPointer.cur), auto !important;
 }
 .submitcomment {
-    background-color: #bdc62b;
+    background-color: #bdc62b !important;
     font-family: "Times New Roman",Arial,"Arial Black",Times,serif;
     font-size: 1.1em;
 }
@@ -620,6 +620,7 @@ a.navbar-brand:hover, a.navbar-brand:focus {
 .amazon:hover, .read:hover, .witchcraft:hover, .submitcomment:hover, .spreadshop:hover, .aliexpress:hover {
     opacity: .8;
 	text-decoration: none;
+	color: initial;
 }
 .amazon, .read, .witchcraft, .aliexpress, .spreadshop {
     background: #ffad1d !important;
