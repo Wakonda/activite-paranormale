@@ -24,6 +24,14 @@ use App\Service\APPurifierHTML;
  */
 class EntityLinkBiography
 {
+	const UFOLOGIST_OCCUPATION = "ufologist";
+	const THEOLOGIAN_OCCUPATION = "theologian";
+	const RELIGIOUS_OCCUPATION = "religious";
+	const OCCULTIST_OCCUPATION = "occultist";
+	const ALCHEMIST_OCCUPATION = "alchemist";
+	const POLITICIAN_OCCUPATION = "politician";
+	const SCIENTIST_OCCUPATION = "scientist";
+
     /**
      * @var integer $id
      *
@@ -48,9 +56,17 @@ class EntityLinkBiography
 	 * @ORM\JoinColumn(name="biography_id", referencedColumnName="id")
 	 */
 	private $biography;
-	
+
 	public static function getOccupations(): Array {
-		return [];
+		return [
+			self::UFOLOGIST_OCCUPATION,
+			self::THEOLOGIAN_OCCUPATION,
+			self::RELIGIOUS_OCCUPATION,
+			self::OCCULTIST_OCCUPATION,
+			self::ALCHEMIST_OCCUPATION,
+			self::POLITICIAN_OCCUPATION,
+			self::SCIENTIST_OCCUPATION
+		];
 	}
 	
     /**

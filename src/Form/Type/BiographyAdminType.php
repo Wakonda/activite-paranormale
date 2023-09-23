@@ -26,8 +26,15 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
+use App\Form\DataTransformer\OccupationBiographyTransformer;
+
 class BiographyAdminType extends AbstractType
 {
+    public function __construct(
+        private OccupationBiographyTransformer $occupationBiographyTransformer,
+    ) {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$action = $options['action'];
@@ -66,8 +73,18 @@ class BiographyAdminType extends AbstractType
 					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => ['class' => 'invisible']))
-			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()])
-		;
+			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()]);
+			
+
+		$occupationArray = [];
+		
+		foreach($dataClass::getOccupations() as $occupation)
+			$occupationArray["biographies.admin.".ucfirst($occupation)] = $occupation;
+
+        $builer->add('occupations', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $occupationArray)], "mapped" => false]);
+		
+		$this->occupationBiographyTransformer->biography = $builder->getData();
+		$builder->get('occupations')->addModelTransformer($this->occupationBiographyTransformer);
 
 		$socialNetworkWebsiteDefault = "";
 		$socialNetworkFacebookDefault = "";
