@@ -44,8 +44,8 @@ musicGenre:
         Sources: "Fuentes"
     index:
         NumberOfArtists: "Número de artistas:"
-        Country: "Country"
-        Artist: "Artist"
+        Country: "País"
+        Artist: "Artista"
         Read: "Leer"
         Sources: "Fuentes"
 biographies:
@@ -88,7 +88,7 @@ music:
         OfficialWebsite: "Sitio oficial"
         ToListen: "Escuchar"
         NbrArt: "Número total de artista: "
-        Artist: "Artist"
+        Artist: "Artista"
         Genre: "Género"
         Listen: "Escuchar"
         Sources: "Fuentes"

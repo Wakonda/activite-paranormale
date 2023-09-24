@@ -112,10 +112,12 @@ biography:
         Politician: "Politicien"
         Scientist: "Scientifique"
     search:
-        ArtistBiography: "Musique"
+        ArtistBiography: "Artiste"
+        MusicBiography: "Musique"
         MovieBiography: "Film"
         TelevisionSerieBiography: "Série télévisée"
         BookEditionBiography: "Livre (édition)"
+        EntityLinkBiography: "Autre"
         SearchSort: "Rechercher"
         Title: "Titre"
         Occupation: "Rôle"

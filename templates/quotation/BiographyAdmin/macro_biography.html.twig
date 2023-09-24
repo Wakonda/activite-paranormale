@@ -23,7 +23,7 @@
 
 	$('{{ selector }}').on('select2:unselecting', function (e) {
 		if(typeof e.params.args.data.element.dataset.color !== "undefined" && e.params.args.data.element.dataset.color == "Red") {
-			alert("Cet élément ne peut pas être supprimé.");
+			alert("{{ "biography.admin.ThisItemCannotBeDeleted"|trans([], "validators") }}");
 			return false;
 		}
 	});
