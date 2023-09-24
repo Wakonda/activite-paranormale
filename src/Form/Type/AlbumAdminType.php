@@ -22,17 +22,8 @@ use App\Entity\Artist;
 
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
-use Symfony\Contracts\Translation\TranslatorInterface;
-
 class AlbumAdminType extends AbstractType
 {
-	private $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
-    }
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];

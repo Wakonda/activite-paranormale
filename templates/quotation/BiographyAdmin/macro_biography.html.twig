@@ -18,12 +18,13 @@
 	});
 {% endmacro %}
 
-{% macro tagify(selector) %}
-	<link rel="stylesheet" type="text/css" href="{{ asset('extended/js/tagify/tagify.min.css') }}" media="screen" />
-	<script src="{{ asset('extended/js/tagify/tagify.min.js') }}"></script>
+{% macro select2(selector) %}
+	$("{{ selector }}").select2();
 
-	<script>
-		var input = document.querySelector('{{ selector }}');
-		new Tagify(input, {enforceWhitelist: true});
-	</script>
+	$('{{ selector }}').on('select2:unselecting', function (e) {
+		if(typeof e.params.args.data.element.dataset.color !== "undefined" && e.params.args.data.element.dataset.color == "Red") {
+			alert("Cet élément ne peut pas être supprimé.");
+			return false;
+		}
+	});
 {% endmacro %}

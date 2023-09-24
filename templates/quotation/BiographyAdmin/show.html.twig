@@ -52,6 +52,16 @@
 	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Source"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Occupations"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% set occupationArray = [] %}
+		{% for occupation in occupations_by_biography(entity) %}
+			{% set occupationArray = occupationArray|merge([(("biography.occupation."~(occupation|ucfirst))|trans([], "validators"))]) %}
+		{% endfor %}
+		
+		{{ occupationArray|join(', ') }}
+	</div>
+
 	{% if entity.links is not null %}
 		{% set linkArray = json_decode(entity.links) %}
 		{% for sn in linkArray %}

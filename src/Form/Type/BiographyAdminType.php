@@ -13,6 +13,7 @@ use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
 use App\Form\EventListener\InternationalNameFieldListener;
 use App\Entity\Biography;
+use App\Entity\EntityLinkBiography;
 use App\Form\Field\IdentifiersEditType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,11 +28,16 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
 use App\Form\DataTransformer\OccupationBiographyTransformer;
+use Doctrine\ORM\EntityManagerInterface;
+
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class BiographyAdminType extends AbstractType
 {
     public function __construct(
         private OccupationBiographyTransformer $occupationBiographyTransformer,
+        private TranslatorInterface $translator,
+        private EntityManagerInterface $entityManager,
     ) {
     }
 
@@ -74,15 +80,39 @@ class BiographyAdminType extends AbstractType
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => ['class' => 'invisible']))
 			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()]);
-			
+
+		$entities = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+		$occupationChoice = [];
+		
+		foreach($entities as $entity) {
+			if(is_subclass_of($entity, "App\Entity\EntityLinkBiography") or $entity == "App\Entity\EntityLinkBiography")
+				foreach($entity::getOccupations() as $occupation)
+					$occupationChoice[$this->translator->trans("biography.search.".(new \ReflectionClass($entity))->getShortName(), [], 'validators')][$occupation] = $this->translator->trans("biography.occupation.".ucfirst($occupation), [], 'validators');
+		}
+
+		$occupationByCanonicalName = array_flip(array_reduce($occupationChoice, 'array_merge', []));
+		$occupationChoiceDatas = [];
+		
+		foreach(array_merge(...array_values($occupationChoice)) as $search)
+		{
+			$found = array_filter($occupationChoice,function($v, $k) use ($search) {
+				return in_array($search, $v);
+			}, ARRAY_FILTER_USE_BOTH); 
+
+			$occupationChoiceDatas[implode(" / ", array_keys($found))][$search] = $occupationByCanonicalName[$search];
+		}
 
 		$occupationArray = [];
+		$occupationAttributeArray = [];
 		
-		foreach($dataClass::getOccupations() as $occupation)
-			$occupationArray["biographies.admin.".ucfirst($occupation)] = $occupation;
+		$roles = $this->entityManager->getRepository(\App\Entity\EntityLinkBiography::class)->findBy(["biography"=> $builder->getData()]);
+		
+		foreach($roles as $role)
+			if(get_class($roles[0]) != \App\Entity\EntityLinkBiography::class)
+				$occupationAttributeArray[$this->translator->trans("biography.occupation.".ucfirst($role->getOccupation()), [], 'validators')] = ["data-readonly" => 1];
 
-        $builer->add('occupations', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $occupationArray)], "mapped" => false]);
-		
+		$builder->add('occupations', ChoiceType::class, ['required' => false, 'choices' => $occupationChoiceDatas, 'translation_domain' => 'validators', "multiple" => true, "mapped" => false, 'choice_attr' =>  $occupationAttributeArray]);
+
 		$this->occupationBiographyTransformer->biography = $builder->getData();
 		$builder->get('occupations')->addModelTransformer($this->occupationBiographyTransformer);
 

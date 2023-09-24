@@ -62,6 +62,8 @@ biography:
         NonExistentBiography: "Biographie inexistante"
         Identifiers: "Numéros d'identification"
         Duplicate: "Dupliquer"
+        Occupations: "Activités"
+        ThisItemCannotBeDeleted: "Cet élément ne peut pas être supprimé."
     index:
         Quotations: "Citations"
         NoQuotation: "Aucune citation"
@@ -102,6 +104,13 @@ biography:
         Composer: "Compositeur"
         ExecutiveProducer: "Producteur exécutif"
         CostumeDesigner: "Costumier"
+        Ufologist: "Ufologue"
+        Theologian: "Théologien"
+        Religious: "Religieux"
+        Occultist: "Occultiste"
+        Alchemist: "Alchimiste"
+        Politician: "Politicien"
+        Scientist: "Scientifique"
     search:
         ArtistBiography: "Musique"
         MovieBiography: "Film"

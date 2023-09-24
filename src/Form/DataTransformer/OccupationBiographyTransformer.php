@@ -2,13 +2,9 @@
 
 namespace App\Form\DataTransformer;
 
-use App\Entity\TagWord;
-use App\Entity\Tags;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Exception\TransformationFailedException;
-
-use Symfony\Component\HttpFoundation\Request;
 
 use App\Entity\EntityLinkBiography;
 
@@ -30,9 +26,7 @@ class OccupationBiographyTransformer implements DataTransformerInterface
      */
     public function transform($entity)
     {
-		$datas = $this->entityManager->getRepository(EntityLinkBiography::class)->getOccupationsByBiography($this->biography->getId());
-		
-		return implode(",", $datas);
+		return $this->entityManager->getRepository(EntityLinkBiography::class)->getOccupationsByBiography($this->biography->getId());
     }
 
     /**
@@ -42,12 +36,8 @@ class OccupationBiographyTransformer implements DataTransformerInterface
      * @return Issue|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
-    public function reverseTransform($tags)
+    public function reverseTransform($values)
     {
-		$values = array_column(json_decode($tags, true), "value");
-		
-		$res = [];
-
 		foreach($values as $value) {
 			$entity = $this->entityManager->getRepository(EntityLinkBiography::class)->findOneBy(["biography" => $this->biography->getId(), "occupation" => $value]);
 			
