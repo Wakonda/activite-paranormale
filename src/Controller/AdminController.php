@@ -76,6 +76,9 @@ class AdminController extends AbstractController
 
 	public function maintenanceAction(Request $request, ParameterBagInterface $parameterBag, $mode)
 	{
+		if(!file_exists("sitemaps"))
+			mkdir("sitemaps");
+
 		$sitemaps = array_diff(!empty($sm = scandir("sitemaps")) ? $sm : [], ['.', '..']);
 		$robotstxt = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."robots.txt";
 		$htaccessPath = $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess";
@@ -94,6 +97,9 @@ class AdminController extends AbstractController
 
 		$line = fgets(fopen($parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.".htaccess", 'r'));
 		$mode = ltrim(trim($line), "#");
+
+		if(!file_exists($robotstxt))
+			touch($robotstxt);
 
 		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode, "robotstxt" => file_get_contents($robotstxt), "sitemaps" => $sitemaps]);
 	}
@@ -1294,4 +1300,12 @@ class AdminController extends AbstractController
 
 		$xml->save('sitemaps/sitemap_'.$filename.'.xml');
 	}
+
+    public function adminer()
+    {
+		ob_start();
+		include __DIR__.'/../Library/adminer/adminer-ap.php';
+
+		return new Response(ob_get_clean());
+    }
 }

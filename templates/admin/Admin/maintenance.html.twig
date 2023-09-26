@@ -33,4 +33,10 @@
 		<textarea name="robotstxt_content" class="form-control" rows="5">{{ robotstxt }}</textarea>
 		<button type="submit" class="btn btn-success mt-2">{{ "admin.general.Update"|trans([], "validators") }}</button>
 	</form>
+	
+	<hr>
+	
+
+	<h3 class="mt-2"><i class="fa-solid fa-database fa-sm me-2"></i>{{ "admin.index.DatabaseMaintenance"|trans([], "validators") }}</h3>
+	<a href="{{ path('Admin_Adminer') }}" class="btn btn-info mt-2">Adminer</a>
 {% endblock %}

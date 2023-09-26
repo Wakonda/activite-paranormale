@@ -97,6 +97,7 @@ admin:
         Maintenance: "Maintenance"
         ActivateMaintenance: "Activer le mode maintenance"
         DesactivateMaintenance: "Désactiver le mode maintenance"
+        DatabaseMaintenance: "Maintenance de la base de données"
     show:
         Internationalization: "Internationalisation"
         ReallyWantRemoveDatas: "Souhaitez-vous réellement supprimer ces données ?"

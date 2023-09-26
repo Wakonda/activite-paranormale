@@ -115,6 +115,10 @@ Admin_Maintenance:
     defaults:
         mode: ""
 
+Admin_Adminer:
+    path: /admin/adminer
+    controller: App\Controller\AdminController::adminer
+
 Admin_Sitemap:
     path: /admin/sitemap
     controller: App\Controller\AdminController::generateSitemap
