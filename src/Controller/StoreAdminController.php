@@ -88,6 +88,7 @@ class StoreAdminController extends AdminGenericController
 				break;
 			case "witchcraftTool":
 				$mainEntity = $em->getRepository("App\Entity\WitchcraftTool")->find($id);
+				$language = $mainEntity->getLanguage();
 				$entity->setWitchcraftTool($mainEntity);
 				$entity->setTitle($entity->getWitchcraftTool()->getTitle());
 				break;
