@@ -839,8 +839,17 @@
 		public function isTwitterAvailable($entity): bool
 		{
 			$api = new TwitterAPI();
+			
+			$locale = $entity->getLanguage()->getAbbreviation();
 
-			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+			switch($entity->getRealClass()) {
+				case "WitchcraftTool":
+				case "Grimoire":
+					$locale = "magic_".$locale;
+				break;
+			}
+
+			return in_array($locale, $api->getLanguages());
 		}
 
 		public function isBloggerAvailable($type): bool
@@ -880,7 +889,17 @@
 		public function isMastodonAvailable($entity): bool
 		{
 			$api = new \App\Service\Mastodon();
-			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+
+			$locale = $entity->getLanguage()->getAbbreviation();
+
+			switch($entity->getRealClass()) {
+				case "WitchcraftTool":
+				case "Grimoire":
+					$locale = "magic_".$locale;
+				break;
+			}
+
+			return in_array($locale, $api->getLanguages());
 		}
 
 		public function isTheDailyTruthAvailable($locale): bool

@@ -287,6 +287,13 @@ class AdminController extends AbstractController
 					$text = $parser->replacePathImgByFullURL($text."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
+				case "WitchcraftTool":
+					$imgProperty = $entity->getPhoto();
+					$img = $entity->getAssetImagePath().$imgProperty;
+					$text = $entity->getText();
+
+					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+					break;
 				case "President":
 					$imgProperty = $entity->getPhotoIllustrationFilename();
 					$img = $entity->getAssetImagePath().$imgProperty;
@@ -791,11 +798,12 @@ class AdminController extends AbstractController
 		$locale = $entity->getLanguage()->getAbbreviation();
 
 		switch($entity->getRealClass()) {
+			case "WitchcraftTool":
 			case "Grimoire":
 				$locale = "magic_".$entity->getLanguage()->getAbbreviation();
 			break;
 		}
-// dd($locale);
+
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
 		$res = $twitterAPI->sendTweet($requestParams->get($socialNetwork."_area")." ".$currentURL, $locale, $image);
 
