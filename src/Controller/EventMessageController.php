@@ -104,6 +104,7 @@ class EventMessageController extends AbstractController
 		foreach($entities as $entity)
 		{
 			if(empty($entity->getDateToString())) {
+				// dd($entity->getDateFromString());
 				$dt = new \DateTime($entity->getDateFromString());
 				if($this->checkDateBetween($dt, $startDate, $endDate)) {
 					$eventDates[$entity->getYearFrom()][] = $dt->format("m-d");
@@ -440,8 +441,9 @@ class EventMessageController extends AbstractController
 	{
 		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+		$yearForDateTime = $year < 0 ? "-".str_pad(abs($year), 4, "0", STR_PAD_LEFT) : $year;
 
-		$currentDate = new \DateTime($year."-".$month."-".$day);
+		$currentDate = new \DateTime($yearForDateTime."-".$month."-".$day);
 
 		$bc = $translator->trans("eventMessage.dayMonth.BC", [], "validators");
 

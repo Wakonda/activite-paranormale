@@ -16,6 +16,24 @@
 					<p class="card-text text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></p>
 				{% endif %}
 				<p class="text-center"><i class="fas fa-cash-register"></i> <a href="{{ path('Store_Index', {category: entity.category}) }}">{{ ("store.index."~(entity.category|ucfirst))|trans([], "validators") }}</a></p>
+				
+				{% if entity.isBookCategory %}
+					<div class="text-center">
+						{% set book = entity.book.book %}
+						{% if book.genre is not empty %}
+							<i class="fas fa-leaf"></i> <a href="{{ path('ByGenreBook_Index', {idGenre: book.genre.id, titleGenre: book.genre.title}) }}">{{ book.genre.title }}</a><br>
+						{% endif %}
+						<i class="fas fa-calendar-alt"></i> {{ book.publicationDate|dodate(false, app.request.locale) }}
+						{% set authorsArray = [] %}
+						{% for author in book.authors %}
+							{% set correctBio = biography_correct_language(author) %}
+							{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+						{% endfor %}
+						
+						<p class="card-text mb-0 text-center my-3">{% if book.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>
+					</div>
+				{% endif %}
+				
 				{% if entity.characteristic is not empty %}
 					{% for label, characteristic in entity.characteristic %}
 						<div class="text-center">

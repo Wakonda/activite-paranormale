@@ -137,11 +137,13 @@ class EventMessage extends MappedSuperclassBase
 	}
 	
 	public function getDateFromString(): String {
-		return implode("-", array_filter([$this->yearFrom, $this->monthFrom, $this->dayFrom]));
+		$yearFrom = $this->yearFrom < 0 ? "-".str_pad(abs($this->yearFrom), 4, "0", STR_PAD_LEFT) : $this->yearFrom;
+		return implode("-", array_filter([$yearFrom, str_pad($this->monthFrom, 2, "0", STR_PAD_LEFT), str_pad($this->dayFrom, 2, "0", STR_PAD_LEFT)]));
 	}
 	
 	public function getDateToString(): String {
-		return implode("-", array_filter([$this->yearTo, $this->monthTo, $this->dayTo]));
+		$yearTo = $this->yearTo < 0 ? "-".str_pad(abs($this->yearTo), 4, "0", STR_PAD_LEFT) : $this->yearTo;
+		return implode("-", array_filter([$yearTo, str_pad($this->monthTo, 2, "0", STR_PAD_LEFT), str_pad($this->dayTo, 2, "0", STR_PAD_LEFT)]));
 	}
 
 	public function isDatesEqual() {

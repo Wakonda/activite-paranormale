@@ -330,23 +330,28 @@
 			{
 				if(is_string($date))
 					$date = new \DateTime($date);
-				
-				$dateArray = explode("-", $date->format('Y-m-d'));
-			
+
+				$dateArray = array_values(array_filter(explode("-", $date->format('Y-m-d'))));
+
+				$year = ltrim($dateArray[0], "0");
+	
+				if ($date->format('Y-m-d')[0] == "-")
+					$year = "-".ltrim($dateArray[0], "0");
+
 				if($language == "fr")
 				{
 					$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-					$dateString = $dateArray[2]." ".$monthFrench[$dateArray[1]-1]." ".ltrim($dateArray[0], "0");
+					$dateString = ltrim($dateArray[2], "0")." ".$monthFrench[$dateArray[1]-1]." ".$year;
 				}
 				else if($language == "es")
 				{
 					$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-					$dateString = $dateArray[2]." de ".$monthSpain[$dateArray[1]-1]." de ".ltrim($dateArray[0], "0");
+					$dateString = ltrim($dateArray[2], "0")." de ".$monthSpain[$dateArray[1]-1]." de ".$year;
 				}
 				else
 				{
 					$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-					$dateString = $dateArray[2]."th ".$monthEnglish[$dateArray[1]-1]." ".ltrim($dateArray[0], "0");
+					$dateString = ltrim($dateArray[2], "0")."th ".$monthEnglish[$dateArray[1]-1]." ".$year;
 				}
 				
 				if($time)

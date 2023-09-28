@@ -5,20 +5,20 @@
 
 {% block header_plus %}
 	<script>
-		$(document).ready(function(){
-			$(".select_theme").click(function(event)
-			{
-				event.preventDefault();
-				$('.searchWitchcraftTool')[0].reset();
-				$("#{{ form.witchcraftThemeTool.vars.id }}").val($(this).data("theme"));
-				$('.searchWitchcraftTool').submit();
+		document.addEventListener('DOMContentLoaded', function () {
+			document.querySelectorAll('.select_theme').forEach(theme => {
+				theme.addEventListener('click', (e) => {
+					e.preventDefault();
+					document.getElementById("{{ form.witchcraftThemeTool.vars.id }}").value = event.target.dataset.theme;
+					document.querySelector('.searchWitchcraftTool').submit();
+				});
 			});
 		});
 	</script>
 {% endblock %}
 
 {% block APBlog_body %}
-	<div id="carouselWitchcraftToolTheme" class="carousel slide" data-ride="carousel">
+	<div id="carouselWitchcraftToolTheme" class="carousel slide" data-bs-ride="carousel">
 		<ol class="carousel-indicators">
 		{% set i = 0 %}
 		{% for theme in themes %}

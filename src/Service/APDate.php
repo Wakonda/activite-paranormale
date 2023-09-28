@@ -131,12 +131,12 @@
 			if($language == "fr")
 			{
 				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-				$dateString = $day." ".$monthFrench[$month-1]." ".$year;
+				$dateString = ltrim($day, "0")." ".$monthFrench[$month-1]." ".$year;
 			}
 			else if($language == "es")
 			{
 				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-				$dateString = ((!empty($day)) ? $day." de " : "").$monthSpain[$month-1].(!empty($year) ?? " de ".$year);
+				$dateString = ((!empty($day)) ? ltrim($day, "0")." de " : "").$monthSpain[$month-1].(!empty($year) ?? " de ".$year);
 			}
 			else
 			{
@@ -145,7 +145,7 @@
 				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 				$dateString = ((!empty($day)) ? $dt->format("jS")." " : "").$monthEnglish[$month-1]." ".$year;
 			}
-			
+
 			return $dateString;
 		}
 	}
