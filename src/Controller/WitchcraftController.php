@@ -269,7 +269,8 @@ class WitchcraftController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$datas = $form->getData();
 		} else if(!empty($themeId = $request->query->get("themeId"))) {
-			$datas = ["witchcraftThemeTool" => $em->getRepository(WitchcraftTool::class)->find($themeId)];
+			$form->setData(['witchcraftThemeTool' => $em->getRepository(WitchcraftThemeTool::class)->find($themeId)]);
+			$datas = $form->getData();
 		}
 
 		$query = $em->getRepository(WitchcraftTool::class)->getWitchcraftTools($datas, $request->getLocale());

@@ -11,7 +11,7 @@
 		<tbody>
 			<tr>
 				<td class="td_form_table">{{ "witchcraftTool.read.Theme"|trans([], "validators") }}</td>
-				<td class="tdGene">{{ entity.witchcraftThemeTool.title }}</td>
+				<td class="tdGene"><a href="{{ path('WitchcraftTool_Index', {themeId: entity.witchcraftThemeTool.id }) }}">{{ entity.witchcraftThemeTool.title }}</a></td>
 			</tr>
 			<tr>
 				<td class="td_form_table">{{ "witchcraftTool.read.PublishedOn"|trans([], "validators") }}</td>
