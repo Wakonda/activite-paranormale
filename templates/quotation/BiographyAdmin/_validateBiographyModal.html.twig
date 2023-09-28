@@ -3,9 +3,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title" id="validateBiographyModalLabel">{{ "biography.admin.SelectBiography"|trans([], "validators") }}</h4>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
       </div>
@@ -101,7 +99,7 @@
 
 					document.getElementById("create-new-biography").addEventListener("click", (e) => {
 						document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = "+";
-						new bootstrap.Modal(document.getElementById('validateBiographyModal')).hide();
+						bootstrap.Modal.getInstance(document.getElementById('validateBiographyModal')).hide();
 					});
 		
 					$('#validateBiographyModal').on('hidden.bs.modal', function (e) {

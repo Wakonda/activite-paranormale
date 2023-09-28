@@ -102,7 +102,7 @@
 <div class="form-table-cell">{{ form_errors(form.embeddedCode) }}{{ form_widget(form.embeddedCode, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.available, "video.admin.Available"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.available) }}{{ form_widget(form.available, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.available) }}{{ form_widget(form.available) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>

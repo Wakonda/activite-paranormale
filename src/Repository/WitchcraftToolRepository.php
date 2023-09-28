@@ -82,7 +82,7 @@ class WitchcraftToolRepository extends EntityRepository
 			$sort = explode("#", $datas["sort"]);
 			$qb->orderBy("b.".$sort[0], $sort[1]);
 		}
-		
+
 		if(isset($datas["keywords"]))
 		{
 			$qb->andWhere("(b.title LIKE :keyword OR b.text LIKE :keyword)")

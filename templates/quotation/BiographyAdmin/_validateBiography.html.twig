@@ -6,7 +6,7 @@
 		}
 
 		document.getElementById(document.getElementById("validateBiographyModal").dataset.input).value = event.target.dataset.internationalName;
-		new bootstrap.Modal(document.getElementById('validateBiographyModal')).hide();
+		bootstrap.Modal.getInstance(document.getElementById('validateBiographyModal')).hide();
 	}
 </script>
 

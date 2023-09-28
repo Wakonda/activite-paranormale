@@ -36,7 +36,7 @@
 					e.addEventListener("click", (event) => {
 						let id = window.parent.document.querySelector(".modal.show").dataset.fieldId;
 						window.parent.document.querySelector("#" + id + ".existing_photo_colorbox").value = event.target.getAttribute("title");
-						new bootstrap.Modal(document.querySelector('.selectFileModal')).hide();
+						bootstrap.Modal.getInstance(document.getElementById("selectFileModal_" + id)).hide();
 					});
 				});
 
