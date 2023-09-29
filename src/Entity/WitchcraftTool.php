@@ -58,6 +58,12 @@ class WitchcraftTool
     private $photo;
 
     /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $illustration;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     protected $writingDate;
@@ -123,6 +129,23 @@ class WitchcraftTool
 		$this->writingDate = new \DateTime();
 		$this->publicationDate = new \DateTime();
 	}
+
+	public function __clone()
+	{
+		if(!empty($this->illustration))
+			$this->illustration = clone $this->illustration;
+	}
+
+    public function getPhotoIllustrationCaption(): ?Array
+    {
+		if(method_exists($this, "getIllustration") and !empty($this->getIllustration()))
+			return [
+				"caption" => $this->getIllustration()->getCaption(),
+				"source" => ["author" => $this->getIllustration()->getAuthor(), "license" => $this->getIllustration()->getLicense(), "url" => $this->getIllustration()->getUrlSource()]
+		    ];
+		
+		return [];
+    }
 	
 	public function __toString(): string
 	{
@@ -220,6 +243,16 @@ class WitchcraftTool
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setPhoto($filename);
 		}
+    }
+
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 
     public function getWitchcraftThemeTool()

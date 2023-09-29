@@ -450,4 +450,25 @@ class GrimoireRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+	
+	public function getSameTopics($entity)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->join('c.language', 'l')
+		   ->join('c.state', 's')
+		   ->where('l.abbreviation = :lang')
+		   ->setParameter('lang', $entity->getLanguage()->getAbbreviation())
+		   ->andWhere('s.displayState = 1')
+		   ->andWhere("c.id != :id")
+		   ->setParameter("id", $entity->getId())
+		   ->join('c.surTheme', 'o')
+	       ->andWhere('o.id = :themeId')
+		   ->setParameter('themeId', $entity->getSurTheme()->getId())
+		   ->andWhere('c.archive = :archive')
+		   ->setParameter('archive', $entity->getArchive())
+		   ->orderBy('c.id', 'desc')
+		   ->setMaxResults(3);
+
+		return $qb->getQuery()->getResult();
+	}
 }

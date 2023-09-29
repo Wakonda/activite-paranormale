@@ -72,7 +72,7 @@
 		<div class="card mb-3">
 			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center">
-					{{ entity.photo|imgsize(null, entity.getAssetImagePath())|raw }}
+					{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
 				</div>
 				<div class="col-md-8 content-card">
 					<div class="card-body">

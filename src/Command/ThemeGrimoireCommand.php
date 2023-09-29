@@ -33,8 +33,23 @@ class ThemeGrimoireCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 		$output->writeln("Start Theme migration");
+
+		$conn = $this->em->getConnection();
+
+		$sql = "SELECT id, photo FROM witchcrafttool WHERE illustration_id IS NULL";
+		$datas = $conn->fetchAllAssociative($sql);
+
+		foreach($datas as $data)
+		{
+			$conn->exec("INSERT INTO `filemanagement` (`titleFile`, `realNameFile`, `extensionFile`, `kindFile`, `discr`, `caption`) VALUES ('".str_replace("'", "\'", $data['photo'])."', '".str_replace("'", "\'", $data['photo'])."', '".pathinfo(str_replace("'", "\'", $data['photo']), PATHINFO_EXTENSION)."', 'file', 'filemanagement', NULL)");
+			$fmId = $conn->fetchOne("SELECT LAST_INSERT_ID()");
+
+			$conn->exec("UPDATE witchcrafttool SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
+		}
 		
-		$surThemes = $this->em->getRepository(MenuGrimoire::class)->findAll();
+		echo "End witchcrafttool";
+
+		/*$surThemes = $this->em->getRepository(MenuGrimoire::class)->findAll();
 		
 		foreach($surThemes as $surTheme) {
 			$st = $this->em->getRepository(SurThemeGrimoire::class)->findOneBy(["internationalName" => $surTheme->getInternationalName(), "language" => $surTheme->getLanguage()]);
@@ -66,7 +81,7 @@ class ThemeGrimoireCommand extends Command
 			$this->em->persist($st);
 		}
 
-		$this->em->flush();
+		$this->em->flush();*/
 
         return 0;
     }

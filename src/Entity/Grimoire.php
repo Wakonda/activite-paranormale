@@ -121,7 +121,7 @@ class Grimoire
 		$this->publicationDate = new \DateTime();
 		$this->archive = false;
 	}
-	
+
 	public function __clone()
 	{
 		if(!empty($this->illustration))

@@ -33,11 +33,11 @@ class WitchcraftToolAdminController extends AdminGenericController
 	protected $indexRoute = "WitchcraftTool_Admin_Index"; 
 	protected $showRoute = "WitchcraftTool_Admin_Show";
 	protected $formName = 'ap_witchcraft_witchcrafttooladmintype';
-	protected $illustrations = [['field' => 'photo', 'selectorFile' => 'photo_selector']];
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);

@@ -35,8 +35,6 @@ class WitchcraftToolAdminType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('photo', FileType::class, array('data_class' => null, 'required' => true))
-			->add('photo_selector', FileSelectorType::class, array('required' => false, 'mapped' => false, 'base_path' => 'WitchcraftTool_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getPhoto()))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {
@@ -69,6 +67,7 @@ class WitchcraftToolAdminType extends AbstractType
 						return $repository->createQueryBuilder("p")->innerjoin("p.language", "l")->where("l.abbreviation = :language")->setParameter("language", $language)->orderBy("p.title", "ASC");
 					}
 			))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'WitchcraftTool_Admin_ShowImageSelectorColorbox'))
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false));
 

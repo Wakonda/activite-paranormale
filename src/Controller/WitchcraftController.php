@@ -369,4 +369,12 @@ class WitchcraftController extends AbstractController
 
 		return new Response($this->generateUrl('Witchcraft_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
+
+	public function getSameTopics(EntityManagerInterface $em, $id)
+	{
+		$entity = $em->getRepository(Grimoire::class)->find($id);
+		$sameTopics = $em->getRepository(Grimoire::class)->getSameTopics($entity);
+
+		return $this->render("witchcraft/Witchcraft/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
+	}
 }

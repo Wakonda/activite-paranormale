@@ -3,21 +3,17 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "witchcraftTool.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "witchcraftTool.admin.Photo"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
-	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
-	<br>
-	{{ form_widget(form.photo_selector) }}
-</div>
+{{ macro_admin.wikidata_html_generic(form) }}
+{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form.illustration) }}
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "witchcraftTool.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "witchcraftTool.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
 	{{ macro_admin.import_wikipedia(form.text.vars.id, form.source.vars.id) }}
 	{{ form_errors(form.text) }}{{ form_widget(form.text) }}
 </div>
-
-{{ macro_admin.wikidata_html_generic(form) }}
-{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "witchcraftTool.admin.PublicationDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
