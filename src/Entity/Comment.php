@@ -72,6 +72,11 @@ class Comment
 	 */
 	private $state;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Comment")
+     */
+    private $parentComment;
+
 	public static $approved = 1;
 	public static $denied = -1;
 	public static $notChecked = 0;
@@ -275,5 +280,15 @@ class Comment
     public function getState()
     {
         return $this->state;
+    }
+
+    public function getParentComment()
+    {
+        return $this->parentComment;
+    }
+
+    public function setParentComment(Comment $parentComment)
+    {
+        $this->parentComment = $parentComment;
     }
 }

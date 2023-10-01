@@ -28,11 +28,43 @@
 		{{ form_errors(commentType) }}
 	{{ form_end(commentType) }}
 
+	<div class="modal fade black_modal" tabindex="-1" role="dialog" id="replyModal">
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">Réponse</h5>
+		  </div>
+		  <div class="modal-body">
+			{{ render(controller('App\\Controller\\CommentController::reply', {idClassName: idClassName, className: className})) }}
+		  </div>
+		  <div class="modal-footer">
+		  </div>
+		</div>
+	  </div>
+	</div>
+
 	<div id="list_messages">
 		{% include 'comment/Comment/list.html.twig' %}
 	</div>
 
 	<script>
+		function reply() {
+			document.querySelectorAll("span.reply").forEach(comment => {
+				comment.addEventListener('click', (e) => {
+					document.getElementById('replyModal').setAttribute("data-comment-id", e.target.dataset.commentId);
+					var replyModal = new bootstrap.Modal(document.getElementById('replyModal'));
+					replyModal.show();
+				});
+			});
+		}
+
+		reply();
+
+		document.getElementById('replyModal').addEventListener('hidden.bs.modal', function (event) {
+			tinymce.remove("#{{ commentType.messageComment.vars.id }}")
+			loadTinyMCE{{ commentType.messageComment.vars.id }}("#{{ commentType.messageComment.vars.id }}");
+		});
+
 		document.querySelector("#{{ commentType.vars.id }}").addEventListener("submit", (e) => {
 			submitForm(e)
 		});
@@ -52,18 +84,18 @@
 			{
 				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 				{
-					document.getElementById('comment_refresh').innerHTML = xmlHttp.responseText;
+					document.getElementById('comment_refresh').innerHTML = "";
+				document.getElementById("comment_refresh").appendChild(document.createRange().createContextualFragment(xmlHttp.responseText));
 					tinymce.remove("#{{ commentType.messageComment.vars.id }}")
 					loadTinyMCE{{ commentType.messageComment.vars.id }}("#{{ commentType.messageComment.vars.id }}")
-					
+
 					document.querySelector("#{{ commentType.vars.id }}").addEventListener("submit", (e) => {
-						e.preventDefault()
-						
-						submitForm(e)
+						e.preventDefault();
+						submitForm(e);
 					});
 
-					document.querySelector(".submitcomment").disabled = false;
-					document.querySelector(".submitcomment").innerHTML = '{{ "comment.edit.Validate"|trans([], "validators") }}';
+					document.querySelector(".saveComment").disabled = false;
+					document.querySelector(".saveComment").innerHTML = '{{ "comment.edit.Validate"|trans([], "validators") }}';
 				}
 			}
 

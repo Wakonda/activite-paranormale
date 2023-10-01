@@ -22,6 +22,7 @@ class CommentRepository extends EntityRepository
 			->setParameter('classNameComment', $className)
 			->andWhere('o.idClassComment = :idClassComment')
 			->setParameter('idClassComment', $idClassName)
+			->andWhere("o.parentComment IS NULL")
 			->orderBy('o.dateComment', 'DESC')
 			->setFirstResult($premierMessageAafficher)
 			->setMaxResults($nbrMessageParPage);
@@ -36,7 +37,8 @@ class CommentRepository extends EntityRepository
 		    ->where('c.classNameComment = :classNameComment')
 			->setParameter('classNameComment', $className)
 			->andWhere('c.idClassComment = :idClassComment')
-			->setParameter('idClassComment', $idClassName);
+			->setParameter('idClassComment', $idClassName)
+			->andWhere("o.parentComment IS NULL");
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}

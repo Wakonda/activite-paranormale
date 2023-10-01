@@ -10,8 +10,31 @@
 				{% endif %}
 			</span>
 			- {{ entity.dateComment|dodate(true, app.request.locale) }}
+			
+			<span class="reply float-end cursor-pointer text-danger" data-comment-id="{{ entity.id }}"><i class="fa-solid fa-reply fa-flip-horizontal reply" data-comment-id="{{ entity.id }}"></i></span>
 		</p>
 		<p>{{ entity.messageComment|raw }}</p>
+
+		{% set childComments = child_comments(entity) %}
+
+		{% if childComments is not empty %}
+			<hr>
+			{% for childComment in childComments %}
+				<div class="ms-2">
+					<p class="pseudoComment">
+						<span class="text-info fw-bold">
+							{% if childComment.anonymousComment == 0 %}
+								{{ childComment.authorComment.username }}
+							{% else %}
+								{{ childComment.anonymousAuthorComment }}
+							{% endif %}
+						</span>
+						- {{ childComment.dateComment|dodate(true, app.request.locale) }}
+					</p>
+					<p>{{ childComment.messageComment|raw }}</p>
+				</div>
+			{% endfor %}
+		{% endif %}
 	</div>
 	{% if i == nbrMessageByPage-1 %}
 		{% set i = 0 %}
@@ -47,6 +70,7 @@
 			{
 				document.getElementById("list_messages").innerHTML = "";
 				document.querySelector("#list_messages").appendChild(document.createRange().createContextualFragment(xmlHttp.responseText));
+				reply();
 			}
 		}
 

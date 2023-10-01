@@ -6,6 +6,10 @@ APCommentBundle_create:
     path:  /comment/create/{idClassName}/{className}
     controller: App\Controller\CommentController::createAction
 
+APCommentBundle_reply:
+    path:  /comment/reply/{idClassName}/{className}
+    controller: App\Controller\CommentController::reply
+
 APCommentBundle_pagination:
     path:  /comment/pagination/{idClassName}/{className}
     controller: App\Controller\CommentController::paginationAction

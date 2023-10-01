@@ -22,6 +22,9 @@ use App\Entity\DocumentComment;
 use App\Entity\TelevisionSerieComment;
 use App\Form\Type\CommentType;
 
+use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+
 class CommentController extends AbstractController
 {
 	public static $nbrMessageByPage = 7;
@@ -154,7 +157,7 @@ class CommentController extends AbstractController
 		else {
 			$anonymousComment = false;
 		}
-		
+
 		$commentType = $this->createForm(CommentType::class, $entity, ['userType' => $anonymousComment]);
         
         $commentType->handleRequest($request);
@@ -200,7 +203,91 @@ class CommentController extends AbstractController
 			'path' => $path
 		));
     }
-	
+
+	public function reply(Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory, $idClassName, $className) {
+		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
+
+		$parentComment = null;
+		
+		if($request->query->has("commentId"))
+			$parentComment = $em->getRepository(Comment::class)->find($request->query->get("commentId"));
+
+		$user = $this->getUser();
+        
+		if(!is_object($user))
+			$anonymousComment = true;
+		else
+			$anonymousComment = false;
+		
+		$commentType = $formFactory->createNamed("reply_comment", CommentType::class, $entity, ['userType' => $anonymousComment]);
+
+		if($request->isXmlHttpRequest() and $request->isMethod('POST'))
+		{
+			$commentType->handleRequest($request);
+            if($commentType->isValid())
+            {
+				$entity->setParentComment($parentComment);
+
+				if(!is_object($user))
+				{
+					$entity->setAnonymousComment(1);
+				}
+				else
+				{
+					$entity->setAnonymousComment(0);
+					$entity->setAuthorComment($user);
+					$entity->setEmailComment($user->getEmail());
+					$entity->setAnonymousAuthorComment(0);
+				}
+
+                $em->persist($entity);
+                $em->flush();
+
+                list($entity, $path) = $this->getNewEntity($em, $className, $idClassName);
+                $commentType  = $this->createForm(CommentType::class, $entity, ['userType' => $anonymousComment]);
+
+				$page = 1;
+				$countComment = $em->getRepository($classNameComment)->countComment($idClassName);
+				$nbrOfPages = ceil($countComment/self::$nbrMessageByPage);
+				$entities = $em->getRepository($classNameComment)->getShowComment(self::$nbrMessageByPage, $page, $idClassName);
+
+				$content = $this->render('comment/Comment/edit.html.twig', array(
+					'idClassName' => $idClassName,
+					'className' => $className,
+					'entities' => $entities,
+					'commentType' => $commentType->createView(),
+					'entity' => $entity,
+					'nbrOfPages' => $nbrOfPages,
+					'nbrMessageByPage' => self::$nbrMessageByPage,
+					'currentPage' => $page,
+					'path' => $path
+				))->getContent();
+				
+				return new JsonResponse(["status" => "success", "content" => $content]);
+			} else {
+				$content = $this->render('comment/Comment/reply.html.twig', array(
+					'idClassName' => $idClassName,
+					'className' => $className,
+					'commentReplyType' => $commentType->createView(),
+					'entity' => $entity,
+					'path' => $path,
+					'parentComment' => $parentComment
+				))->getContent();
+
+				return new JsonResponse(["status" => "error", "content" => $content]);	
+			}
+		}
+
+		return $this->render('comment/Comment/reply.html.twig', array(
+			'idClassName' => $idClassName,
+			'className' => $className,
+			'commentReplyType' => $commentType->createView(),
+			'entity' => $entity,
+			'path' => $path,
+			'parentComment' => $parentComment
+		));
+	}
+
 	public function paginationAction(Request $request, EntityManagerInterface $em, $idClassName, $className) {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 		$countComment = $em->getRepository($classNameComment)->countComment($idClassName);

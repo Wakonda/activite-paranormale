@@ -109,6 +109,10 @@
 		 -
 		<a href="{{ path('ap_storemobile_index') }}"><i class="fab fa-shopify"></i> {{ "index.mainMenu.Store"|trans([], "validators") }}</a>
 		</span>
+		<span class="external-link">
+		 -
+		<a href="{{ path('Index_DownloadApplication') }}"><i class="fa-solid fa-mobile-retro"></i> {{ "index.application.App"|trans([], "validators") }}</a>
+		</span>
 		-
 		<a href="{{ path('ap_pagemobile_page', {page: 'privacyPolicy'}) }}"><i class="fas fa-balance-scale"></i> {{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a>
 		-
@@ -140,6 +144,5 @@
     </div>
 	{% block additional_javascript %}{% endblock %}
 	{{ encore_entry_script_tags('app_mobile') }}
-
   </body>
 </html>

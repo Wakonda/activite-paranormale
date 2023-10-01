@@ -104,6 +104,12 @@ index:
         PublicationDate: "Publication date"
         Section: "Section"
         Unauthorized: "Our archives are private. To get access, you need to <a href='%urlAccount%'>open an account</a> and <a href='%urlContact%'>request an access</a> to this informations. When you will be allowed to enter, you could consultate freely and unlimitedly all our archives."
+    application:
+        App: "App"
+        Version: "Version:"
+        Preview: "Preview"
+        DownloadForAndroid: "Download for Android"
+        Text: "Dive into the mystery with the 'Activité-Paranormale' Android application! Discover all the fascinating news about the unusual and the paranormal, directly from your smartphone. Explore the strange phenomena, mysterious stories and incredible discoveries that defy rational explanation. Always stay up to date with the latest investigations, intriguing videos, and exclusive interviews with paranormal researchers and experts. With 'Activité-Paranormale', the mystery is at your fingertips, ready to arouse your curiosity and plunge you into the unexplained!"
 civility:
     admin:
         Title: "Title"

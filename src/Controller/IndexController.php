@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class IndexController extends AbstractController
 {
@@ -19,6 +20,15 @@ class IndexController extends AbstractController
 
         return $this->render('index/Index/index.html.twig');
     }
+
+	public function application() {
+		return $this->render("index/Index/application.html.twig");
+	}
+
+	public function downloadApplication() {
+		$file = $this->getParameter('kernel.project_dir') . '/public/extended/photo/application/activite-paranormale-1.0.0.apk';
+		return $this->file($file, 'activite-paranormale-1.0.0.apk');
+	}
 
 	public function selectLanguageAction(Request $request, $lang)
     {

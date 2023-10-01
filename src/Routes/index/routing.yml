@@ -10,6 +10,14 @@ Index_SelectLanguage:
     path:  /selectLanguage/{lang}
     controller: App\Controller\IndexController::selectLanguageAction
 
+Index_Application:
+    path: /application
+    controller: App\Controller\IndexController::application
+
+Index_DownloadApplication:
+    path: /application/download
+    controller: App\Controller\IndexController::downloadApplication
+
 # Licence
 Licence_ShowColorbox:
     path: /showcolorbox

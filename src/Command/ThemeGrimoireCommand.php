@@ -35,6 +35,8 @@ class ThemeGrimoireCommand extends Command
 		$output->writeln("Start Theme migration");
 
 		$conn = $this->em->getConnection();
+		
+		$conn->exec("UPDATE comment SET dateComment = '2012-12-21 00:00:00' WHERE CAST(dateComment AS CHAR(20)) = '0000-00-00 00:00:00'");
 
 		$sql = "SELECT id, photo FROM witchcrafttool WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAllAssociative($sql);

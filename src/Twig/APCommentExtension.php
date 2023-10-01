@@ -32,7 +32,8 @@
 			return array(
 				new TwigFunction('approved_state', [$this, 'getApprovedState']),
 				new TwigFunction('notChecked_state', [$this, 'getNotCheckedState']),
-				new TwigFunction('denied_state', [$this, 'getDeniedState'])
+				new TwigFunction('denied_state', [$this, 'getDeniedState']),
+				new TwigFunction('child_comments', [$this, 'getChildComments'])
 			);
 		}
 
@@ -61,6 +62,10 @@
 		public function getDeniedState()
 		{
 			return Comment::$denied;
+		}
+
+		public function getChildComments($parentComment) {
+			return $this->em->getRepository(Comment::class)->findBy(["parentComment" => $parentComment]);
 		}
 
 		public function getName()
