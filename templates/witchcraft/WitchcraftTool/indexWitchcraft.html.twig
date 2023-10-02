@@ -19,13 +19,13 @@
 
 {% block APBlog_body %}
 	<div id="carouselWitchcraftToolTheme" class="carousel slide" data-bs-ride="carousel">
-		<ol class="carousel-indicators">
+		<div class="carousel-indicators">
 		{% set i = 0 %}
 		{% for theme in themes %}
-			<li data-bs-target="#carouselWitchcraftToolTheme" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}></li>
+			<button data-bs-target="#carouselWitchcraftToolTheme" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}></button>
 			{% set i = i + 1 %}
 		{% endfor %}
-		</ol>
+		</div>
 		<div class="carousel-inner">
 			{% set i = 0 %}
 			{% for theme in themes %}

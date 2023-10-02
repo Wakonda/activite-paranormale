@@ -1,0 +1,53 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "index.application.App"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}
+	<h2>
+	<span class="float-start">
+		<img src="{{ asset('extended/photo/anger.png') }}" width="25" class="mt-1" alt="Anger ghost"/>
+	</span>{{ "index.application.App"|trans([], "validators") }}
+	</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ "woman-phone.webp"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+	<hr class="hr2">
+	<div class="text-center">
+		<a href="{{ path('Index_DownloadApplication') }}" class="btn btn-warning" style="background-color: #00ff00"><i class="fa-brands fa-android"></i> {{ "index.application.DownloadForAndroid"|trans([], "validators") }}</a>
+	</div>
+	<br>
+	<p class="text-center"><b>{{ "index.application.Version"|trans([], "validators") }} </b>1.0.0</p>
+	<hr class="hr2">
+	<p>{{ "index.application.Text"|trans([], "validators") }}</p>
+	
+	<h3>{{ "index.application.Preview"|trans([], "validators") }}</h3>
+	<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+	  <div class="carousel-indicators">
+		<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+		<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+		<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+		<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 3"></button>
+		<button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 3"></button>
+	  </div>
+	  <div class="carousel-inner">
+		<div class="carousel-item active">
+		  <img src="{{ asset('extended/photo/application/0.jpg') }}" class="d-block w-100" alt="...">
+		</div>
+		<div class="carousel-item">
+		  <img src="{{ asset('extended/photo/application/1.jpg') }}" class="d-block w-100" alt="...">
+		</div>
+		<div class="carousel-item">
+		  <img src="{{ asset('extended/photo/application/2.jpg') }}" class="d-block w-100" alt="...">
+		</div>
+		<div class="carousel-item">
+		  <img src="{{ asset('extended/photo/application/3.jpg') }}" class="d-block w-100" alt="...">
+		</div>
+		<div class="carousel-item">
+		  <img src="{{ asset('extended/photo/application/4.jpg') }}" class="d-block w-100" alt="...">
+		</div>
+	  </div>
+	</div>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

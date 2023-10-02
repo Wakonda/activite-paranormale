@@ -109,6 +109,8 @@ a:link, a:visited {
 
 a:active, a:hover { color: #FFCC00; text-decoration: underline; }
 
+nav a:hover { text-decoration: none; }
+
 a, button, #rate, .rating-container .star:hover, .social_network_to_select, input[type="image"], input[type="button"], input[type="submit"], .degree, .cursor-pointer, .carousel-indicators li:hover
 {
 	cursor: url(images_v2/greenPointer.cur), auto !important;

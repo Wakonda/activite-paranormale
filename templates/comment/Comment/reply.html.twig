@@ -1,0 +1,77 @@
+{% import "index/macro/macro_index.html.twig" as macro_index %}
+
+{{ macro_index.tinymce_js(commentReplyType.messageComment.vars.id) }}
+
+<div id="comment_reply_refresh">
+	{% form_theme commentReplyType 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(commentReplyType, {'action': path('APCommentBundle_create', { 'idClassName' : idClassName, 'className': className }), 'attr':{'class' : 'form-horizontal', 'id': commentReplyType.vars.id, novalidate: 'novalidate'}}) }}
+		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+			{{ "comment.edit.LoggedAs"|trans([], "validators") }}<strong>{{ app.user.username }}</strong>
+		{% endif %}
+		<div class="form-table form-table-4cols form-table-collapse">
+			{% if is_granted("IS_AUTHENTICATED_REMEMBERED") == false %}
+			<div class="form-table-cell form-table-cell-head">{{ form_label(commentReplyType.anonymousAuthorComment, "comment.edit.Pseudo"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(commentReplyType.anonymousAuthorComment) }}{{ form_widget(commentReplyType.anonymousAuthorComment, {'attr':{'class':'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(commentReplyType.emailComment, "comment.edit.MailDisplay"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(commentReplyType.emailComment) }}{{ form_widget(commentReplyType.emailComment, {'attr':{'class': 'form-control'}}) }}</div>
+			{% endif %}
+			<div class="form-table-cell form-table-cell-head">{{ form_label(commentReplyType.messageComment, "comment.edit.Comment"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(commentReplyType.messageComment) }}{{ form_widget(commentReplyType.messageComment) }}</div>
+		</div>
+		<div class="mt-3 text-end">
+			<button class="submitcomment saveCommentReply btn" type="submit">{{ "comment.edit.Validate"|trans([], "validators") }}</button>
+		</div>
+		<hr class="hr2" />
+		{{ form_rest(commentReplyType) }}
+		{{ form_errors(commentReplyType) }}
+	{{ form_end(commentReplyType) }}
+
+	<script>
+		document.querySelector("#{{ commentReplyType.vars.id }}").addEventListener("submit", (e) => {
+			submitFormReply(e)
+		});
+
+		function submitFormReply(e)
+		{
+			e.preventDefault();
+			
+			let form = document.querySelector('#{{ commentReplyType.vars.id }}');
+			let formData = new FormData(form);
+
+			document.querySelector(".saveCommentReply").disabled = true;
+			document.querySelector(".saveCommentReply").innerHTML = "<i class='fas fa-arrows-rotate fa-spin'></i>";
+
+			var xmlHttp = new XMLHttpRequest();
+			xmlHttp.onreadystatechange = function()
+			{
+				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
+				{
+					let res = JSON.parse(xmlHttp.responseText);
+					
+					if(res.status == "success") {
+						bootstrap.Modal.getInstance(document.getElementById("replyModal")).hide();
+						document.getElementById("comment_refresh").innerHTML = "";
+						document.querySelector("#getElementById").appendChild(document.createRange().createContextualFragment(res.content));
+					} else {
+						document.getElementById('comment_reply_refresh').innerHTML = res.content;
+					}
+					tinymce.remove("#{{ commentReplyType.messageComment.vars.id }}")
+					loadTinyMCE{{ commentReplyType.messageComment.vars.id }}("#{{ commentReplyType.messageComment.vars.id }}")
+					
+					document.querySelector("#{{ commentReplyType.vars.id }}").addEventListener("submit", (e) => {
+						e.preventDefault()
+						submitFormReply(e)
+					});
+
+					document.querySelector(".saveCommentReply").disabled = false;
+					document.querySelector(".saveCommentReply").innerHTML = '{{ "comment.edit.Validate"|trans([], "validators") }}';
+				}
+			}
+
+			xmlHttp.open("post", "{{ path('APCommentBundle_reply', { 'idClassName' : idClassName, 'className': className }) }}?commentId=" + document.getElementById('replyModal').dataset.commentId); 
+			xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+			xmlHttp.send(formData);
+		}
+	</script>
+</div>
