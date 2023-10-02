@@ -61,10 +61,10 @@ class TagsController extends AbstractController
 
     public function searchAction(Request $request, EntityManagerInterface $em, $id, $title)
     {
-		$tagWord = $em->getRepository(TagWord::class)->find($id);
+		$entity = $em->getRepository(TagWord::class)->find($id);
 		$countEntities = $em->getRepository(Tags::class)->getEntitiesByTags($id, $request->getLocale(), true);
 
-        return $this->render('tags/Tags/search.html.twig', ['tagWord' => $tagWord, 'countEntities' => $countEntities]);
+        return $this->render('tags/Tags/search.html.twig', ['entity' => $entity, 'countEntities' => $countEntities]);
     }
 
 	public function searchDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date, $id, $title)

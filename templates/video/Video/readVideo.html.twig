@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ video.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/spiderman.png') }}" width="25" class="mt-1" alt="Clown"/></span>{{ video.title }}</h2>{% endblock h2_title %}
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/spiderman.png') }}" width="25" class="mt-1" alt="Clown"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
@@ -15,7 +15,7 @@
 			});
 
 			// Video embedded
-			{% if video.mediaVideo is not empty %}
+			{% if entity.mediaVideo is not empty %}
 				var videoTagRef = document.getElementById("video_embedded");
 				var iframe = $($("#embedded_document").val());
 				
@@ -87,11 +87,11 @@
 {% endblock %}
 
 {% block meta_plus %}
-	<meta property="og:image" content="{{ absolute_url(asset(video.getAssetImagePath()~video.photo)) }}" />
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />
 {% endblock %}
 
 {% block APBlog_body %}
-	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': video } %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<div class="modal fade black_modal" tabindex="-1" role="dialog" id="checkVideo">
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -102,7 +102,7 @@
 			<p class='image'><img src='{{ asset("extended/photo/video/delete/video-delete.jpg") }}' alt='Deleted video' class="mx-auto d-block w-100"/></p><p class='fw-bold colored_delete_video text-center'>{{ "video.read.ConfirmationVideoNotAvailable"|trans([], "validators") }}</p>
 		  </div>
 		  <div class="modal-footer">
-			<a href='{{ path('Video_Notify', { 'id' : video.id }) }}' alt='' rel='nofollow' class='confirmation_delete_video me-auto btn btn-success text-white'>{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}</a>
+			<a href='{{ path('Video_Notify', { 'id' : entity.id }) }}' alt='' rel='nofollow' class='confirmation_delete_video me-auto btn btn-success text-white'>{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}</a>
 			<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
 		  </div>
 		</div>
@@ -115,15 +115,15 @@
 		</div>
 	{% endfor %}
 	
-	{% if video.isAvailable == true %}
+	{% if entity.isAvailable == true %}
 		<div class="text-center">
-			{% if video.mediaVideo is not empty %}
+			{% if entity.mediaVideo is not empty %}
 				<video class="w-100" controls="controls" id="video_embedded">
-					<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~video.mediaVideo) }}" type="video/mp4" />
+					<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
 				</video>
 			{% else %}
 				<div class="embed-responsive embed-responsive-16by9">
-					{{ video.embeddedCode|raw }}
+					{{ entity.embeddedCode|raw }}
 				</div>
 			{% endif %}
 		</div>
@@ -132,19 +132,19 @@
 		<div class="alert alert-danger text-center"><i class="fas fa-video-slash"></i> {{ "video.read.VideoNotLongerAvailable"|trans([], "validators") }}</div>
 	{% endif %}
 	<div>
-		<p id="media_duration" class="mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (video.duration|string_duration)|default('-') }}</p>
+		<p id="media_duration" class="mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.duration|string_duration)|default('-') }}</p>
 		<hr>
-		<p>{{ video.text|raw }}</p>
+		<p>{{ entity.text|raw }}</p>
 		
-		{% if video.photo is not empty %}
+		{% if entity.photo is not empty %}
 			<br>
-			<p class="image">{{ video.photo|imgsize(550, video.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+			<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 		{% endif %}
 		
-		{% if video.mediaVideo is not empty %}
+		{% if entity.mediaVideo is not empty %}
 			<h3>{{ "video.read.Share"|trans([], "validators") }}</h3>
 			<div id="success_copy"><span></span></div>
-			<textarea id="embedded_document" class="generation bg-light text-white-50 form-control mb-2" cols="65" rows="4"><iframe src="{{ url('Video_Export', { 'id' : video.id, 'title' : video.title }) }}" width="550" height="309"></iframe></textarea>
+			<textarea id="embedded_document" class="generation bg-light text-white-50 form-control mb-2" cols="65" rows="4"><iframe src="{{ url('Video_Export', { 'id' : entity.id, 'title' : entity.title }) }}" width="550" height="309"></iframe></textarea>
 			<span>{{ "video.read.VideoSize"|trans([], "validators") }} </span>
 			<div class="input-group">
 				<input type="integer" id="custom_width" class="size_embedded form-control">
@@ -157,22 +157,22 @@
 	</div>
 	<br>
 	<div>
-		<p><i class="fas fa-info-circle text-danger"></i> {{ "video.read.VideoNotAvailable"|trans([], "validators") }} <a href="{# path('Video_Notify', { 'id' : video.id }) #}" alt="" rel="nofollow" id="confirm_colorbox">{{ "video.read.NotifyUs"|trans([], "validators") }}</a>
+		<p><i class="fas fa-info-circle text-danger"></i> {{ "video.read.VideoNotAvailable"|trans([], "validators") }} <a href="{# path('Video_Notify', { 'id' : entity.id }) #}" alt="" rel="nofollow" id="confirm_colorbox">{{ "video.read.NotifyUs"|trans([], "validators") }}</a>
 	</div>
 	<br>
 	<hr class="hr2">
 	<p>
-		<i class="fas fa-dragon"></i> <a dir="{{ video.language.direction }}" href="{{ path('Theme_Show', {id: video.theme.id, theme: video.theme.title}) }}">{{ video.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ video.writingDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if video.author is not empty and video.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: video.author.id}) }}">{{ video.author }}</a>{% else %}{{ video.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : video.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~video.licence.logo) }}" alt="{{ video.licence.title }}" /></a>
-		{% if is_current_languages(video.language.abbreviation) == false %}
-			- <a href="{{ path('Video_World', {'language' : video.language.abbreviation}) }}"><img src="{{ asset(video.language.getAssetImagePath()) }}{{ video.language.logo }}" class="align-middle" alt="{{ video.language.abbreviation }}" width="20" height="13" /></a>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.writingDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+		{% if is_current_languages(entity.language.abbreviation) == false %}
+			- <a href="{{ path('Video_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
 		{% endif %}
 		
-		{% include 'index/History/index.html.twig' with { 'entity': video } %}
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
 	</p>
 
-	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':video.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':video} %}
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity': entity} %}
 
-	{{ getTagsByEntityForDisplay(video) }}
+	{{ getTagsByEntityForDisplay(entity) }}
 
 	<div class="hidden_for_print">
 		{% if previousAndNextEntities["previous"] is not empty %}
@@ -188,13 +188,13 @@
 		{% endif %}
 	</div>
 
-	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : video.id, 'className': 'Video' })) }}
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Video' })) }}
 
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : video.id, 'className': 'Video' })) }}
-	{{ render(controller("App\\Controller\\VideoController::getSameTopicsAction", { 'id' : video.id })) }}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Video' })) }}
+	{{ render(controller("App\\Controller\\VideoController::getSameTopicsAction", { 'id' : entity.id })) }}
 {% endblock %}

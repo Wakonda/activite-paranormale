@@ -1,11 +1,10 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ picture.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ picture.title }}</h2>{% endblock h2_title %}
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.js') }}"></script>
-
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
 			$("#img_zoomed").ImageRotateZooming({
@@ -19,33 +18,33 @@
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ picture.title }}" />
-	<meta property="og:image" content="{{ absolute_url(asset(picture.getAssetImagePath()~picture.photoIllustrationFilename)) }}" />
-	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_photomobile_read', {'id' : picture.id}) }}">
+	<meta property="og:title" content="{{ entity.title }}" />
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_photomobile_read', {'id' : entity.id}) }}">
 {% endblock %}
 
 {% block APBlog_body %}
-	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': picture } %}
-	<p id="image">{{ picture.photoIllustrationFilename|imgsize(550, picture.getAssetImagePath(), 'imgGalery', { 'id': 'img_zoomed' })|raw }}</p>
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	<p id="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), 'imgGalery', { 'id': 'img_zoomed' })|raw }}</p>
 	<div>
-	<p>{{ picture.text|raw }}</p>	
+	<p>{{ entity.text|raw }}</p>
 	</div>
 
 	<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
-	{{ (picture.photoIllustrationCaption|imgCaption( asset(picture.getAssetImagePath()~picture.photoIllustrationFilename)))|raw }}
+	{{ (entity.photoIllustrationCaption|imgCaption( asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)))|raw }}
 
 	<hr class="hr2">
 	<p>
-		<i class="fas fa-dragon"></i> <a dir="{{ picture.language.direction }}" href="{{ path('Theme_Show', {id: picture.theme.id, theme: picture.theme.title}) }}">{{ picture.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ picture.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if picture.author is not empty and picture.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: picture.author.id}) }}">{{ picture.author }}</a>{% else %}{{ picture.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : picture.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~picture.licence.logo) }}" alt="{{ picture.licence.title }}" /></a>
-		{% if is_current_languages(picture.language.abbreviation) == false %}
-			- <a href="{{ path('Photo_World', {'language' : picture.language.abbreviation}) }}"><img src="{{ asset(picture.language.getAssetImagePath()) }}{{ picture.language.logo }}" class="align-middle" alt="{{ picture.language.abbreviation }}" width="20" height="13" /></a>
+		<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - <i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
+		{% if is_current_languages(entity.language.abbreviation) == false %}
+			- <a href="{{ path('Photo_World', {'language' : entity.language.abbreviation}) }}"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" /></a>
 		{% endif %}
 		
-		{% include 'index/History/index.html.twig' with { 'entity': picture } %}
+		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
 	</p>
 
-	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':picture.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':picture} %}
-	{{ getTagsByEntityForDisplay(picture) }}
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity':entity} %}
+	{{ getTagsByEntityForDisplay(entity) }}
 
 	<div class="hidden_for_print">
 		{% if previousAndNextEntities["previous"] is not empty %}
@@ -60,14 +59,13 @@
 			<span class="previous_next_disable_right float-end"><i class="fas fa-angle-double-right"></i> {{ "generality.read.Next"|trans([], "validators") }} <i class="fas fa-angle-double-right"></i></span>
 		{% endif %}
 	</div>
-
-	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : picture.id, 'className': 'Photo' })) }}
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'Photo' })) }}
 
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : picture.id, 'className': 'Photo' })) }}
-	{{ render(controller("App\\Controller\\PhotoController::getSameTopicsAction", { 'id' : picture.id })) }}
+	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Photo' })) }}
+	{{ render(controller("App\\Controller\\PhotoController::getSameTopicsAction", { 'id' : entity.id })) }}
 {% endblock %}

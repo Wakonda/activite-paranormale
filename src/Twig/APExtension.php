@@ -138,7 +138,7 @@
 
 			try {
 				$url = $this->router->generate($adminRoute, ["id" => $entity->getId()]);
-				return '<div class="mt-3 text-center"><a href="'.$url.'" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a></div>';
+				return '<div class="mt-3 text-center"><a href="'.$url.'" class="btn btn-success text-white"><i class="fa-solid fa-pen-to-square"></i></a></div>';
 			} catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
 			}
 

@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ tagWord.title }}"{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ tagWord.title }}"</h2>{% endblock h2_title %}
+{% block title %}{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ entity.title }}"{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ entity.title }}"</h2>{% endblock h2_title %}
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
@@ -31,22 +31,22 @@
 						target: ''
 					}
 				},
-				"ajax": "{{ path('ap_tags_searchdatatables', { 'id' : tagWord.id, 'title' : tagWord.title }) }}",
+				"ajax": "{{ path('ap_tags_searchdatatables', { 'id' : entity.id, 'title' : entity.title }) }}",
 			});
 		});
 	</script>
 {% endblock %}
 {% block APBlog_body %}
 	<p class="image">
-		{% if tagWord.photoIllustrationFilename is not empty %}
-			{{ tagWord.photoIllustrationFilename|imgsize(550, tagWord.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, tagWord.photoIllustrationCaption)|raw }}
+		{% if entity.photoIllustrationFilename is not empty %}
+			{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}
 		{% else %}
 			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.jpg') }}" width="550" alt="" />
 		{% endif %}
 	</p>
 	
-	{% if tagWord.text is not empty %}
-		{{ tagWord.text|raw }}
+	{% if entity.text is not empty %}
+		{{ entity.text|raw }}
 	{% endif %}
 	<hr>
 	<table class="index_tags dt-responsive w-100">
@@ -70,7 +70,7 @@
 		</tfoot>
 	</table>
 
-	{% set sources = source_document(tagWord.source, tagWord.language) %}
+	{% set sources = source_document(entity.source, entity.language) %}
 	{% if sources is not empty %}
 		<br>
 		<h3>{{ "tag.search.Sources"|trans([], "validators") }}</h3>

@@ -120,7 +120,7 @@ class VideoController extends AbstractController
 		
 		return $this->render('video/Video/readVideo.html.twig', [
 			'previousAndNextEntities' => $previousAndNextEntities,
-			'video' => $entity
+			'entity' => $entity
 		]);
 	}
 	

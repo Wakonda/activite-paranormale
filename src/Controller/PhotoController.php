@@ -98,16 +98,16 @@ class PhotoController extends AbstractController
 	
 	public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
-		$picture = $em->getRepository(Photo::class)->find($id);
+		$entity = $em->getRepository(Photo::class)->find($id);
 
-		if($picture->getArchive())
-			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $picture->getId(), "className" => base64_encode(get_class($picture))]));
+		if($entity->getArchive())
+			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $entity->getId(), "className" => base64_encode(get_class($entity))]));
 
-		$previousAndNextEntities = $em->getRepository(Photo::class)->getPreviousAndNextEntities($picture, $request->getLocale());
+		$previousAndNextEntities = $em->getRepository(Photo::class)->getPreviousAndNextEntities($entity, $request->getLocale());
 
 		return $this->render('photo/Photo/readPicture.html.twig', [
 			'previousAndNextEntities' => $previousAndNextEntities,
-			'picture' => $picture
+			'entity' => $entity
 		]);
 	}
 
