@@ -43,12 +43,15 @@ registration:
         subject: 'Welcome %username%!'
         message: |
             Hello %username%!
-
-            To finish activating your account - please visit %confirmationUrl%
-
+            <br>
+            <br>
+            To finish activating your account - please visit <a href="%confirmationUrl%">%confirmationUrl%</a>
+            <br>
             This link can only be used once to validate your account.
-
+            <br>
+            <br>
             Regards,
+            <br>
             the Team.
 
 resetting:

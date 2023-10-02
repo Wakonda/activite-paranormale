@@ -39,12 +39,15 @@ registration:
         subject: 'Bienvenue %username% !'
         message: |
             Bonjour %username% !
-
-            Pour valider votre compte utilisateur, merci de vous rendre sur %confirmationUrl%
-
+            <br>
+            <br>
+            Pour valider votre compte utilisateur, merci de vous rendre sur <a href="%confirmationUrl%">%confirmationUrl%</a>
+            <br>
             Ce lien ne peut être utilisé qu'une seule fois pour valider votre compte.
-
+            <br>
+            <br>
             Cordialement,
+            <br>
             L'équipe
 
 resetting:

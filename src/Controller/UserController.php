@@ -46,8 +46,21 @@ class UserController extends AbstractController
         $this->tokenStorage = $tokenStorage;
 	}
 
-    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
+    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
+		$user = $em->getRepository(User::class)->find(16);
+
+				$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+				$email = (new Email())
+					->from($_ENV["MAILER_USER"])
+					->to($user->getEmail())
+					->subject($translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle'))
+					->html($this->renderView('user/Registration/email.html.twig', ['user' => $user, 'confirmationUrl' => $url]));
+
+				$mailer->send($email);
+		die("ooo");
+		
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
