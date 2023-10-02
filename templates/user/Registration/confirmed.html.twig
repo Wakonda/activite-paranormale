@@ -6,9 +6,6 @@
 	{% block fos_user_content %}
 		<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}succes-black-gothic-girl.jpg" width="550" alt="Warrior girl" /></p>
 		<div class="alert alert-success">{{ 'registration.confirmed'|trans({'%username%': user.username}, 'FOSUserBundle') }}</div>
-		{% if app.session is not empty %}
-			{% set targetUrl = app.session.get('_security.target_path') %}
-			{% if targetUrl is not empty %}<p><a href="{{ targetUrl }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>{% endif %}
-		{% endif %}
+		<p><a href="{{ path('Security_Login') }}">{{ 'registration.back'|trans({}, 'FOSUserBundle') }}</a></p>
 	{% endblock fos_user_content %}
 {% endblock %}

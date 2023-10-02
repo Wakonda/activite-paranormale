@@ -138,12 +138,18 @@ class EventMessage extends MappedSuperclassBase
 	
 	public function getDateFromString(): String {
 		$yearFrom = $this->yearFrom < 0 ? "-".str_pad(abs($this->yearFrom), 4, "0", STR_PAD_LEFT) : $this->yearFrom;
-		return implode("-", array_filter([$yearFrom, str_pad($this->monthFrom, 2, "0", STR_PAD_LEFT), str_pad($this->dayFrom, 2, "0", STR_PAD_LEFT)]));
+		$monthFrom = !empty($this->monthFrom) ? str_pad($this->monthFrom, 2, "0", STR_PAD_LEFT) : $this->monthFrom;
+		$dayFrom = !empty($this->dayFrom) ? str_pad($this->dayFrom, 2, "0", STR_PAD_LEFT) : $this->dayFrom;
+
+		return implode("-", array_filter([$yearFrom, $monthFrom, $dayFrom]));
 	}
 	
 	public function getDateToString(): String {
 		$yearTo = $this->yearTo < 0 ? "-".str_pad(abs($this->yearTo), 4, "0", STR_PAD_LEFT) : $this->yearTo;
-		return implode("-", array_filter([$yearTo, str_pad($this->monthTo, 2, "0", STR_PAD_LEFT), str_pad($this->dayTo, 2, "0", STR_PAD_LEFT)]));
+		$monthTo = !empty($this->monthTo) ? str_pad($this->monthTo, 2, "0", STR_PAD_LEFT) : $this->monthTo;
+		$dayTo = !empty($this->dayTo) ? str_pad($this->dayTo, 2, "0", STR_PAD_LEFT) : $this->dayTo;
+
+		return implode("-", array_filter([$yearTo, $monthTo, $dayTo]));
 	}
 
 	public function isDatesEqual() {

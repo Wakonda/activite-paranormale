@@ -116,6 +116,7 @@ class EventMessageController extends AbstractController
 			}
 			else {
 				$interval = \DateInterval::createFromDateString("1 day");
+
 				$period = new \DatePeriod(new \DateTime($entity->getDateFromString()), $interval, (new \DateTime($entity->getDateToString()))->modify("+1 day"));
 
 				foreach($period as $dt) {

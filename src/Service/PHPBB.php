@@ -42,7 +42,7 @@ class PHPBB {
 
 		$result = json_decode($result);
 
-		return $result->jwt;
+		return !empty($result) ? $result->jwt : null;
 	}
 	
 	public function checkUserExists(?string $token, ?string $username): bool

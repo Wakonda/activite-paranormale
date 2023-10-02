@@ -288,6 +288,8 @@
 						<div class="main_column_section">
 							{% block content %}
 								{% block h2_title %}{% endblock %}
+								
+								{% if is_granted('ROLE_ADMIN') %}{{ quick_edit(entity is defined ? entity : null) }}{% endif %}
 							{% endblock %}
 							<div class="cleaner"></div>
 							<div class="bottom"></div>

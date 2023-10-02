@@ -41,7 +41,7 @@ class AdminUserController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request);
+		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));

@@ -123,8 +123,26 @@
 				new TwigFunction('parse_url', array($this, 'parseUrl')),
 				new TwigFunction('getimagesize', array($this, 'getimagesize')),
 				new TwigFunction('advertising', array($this, 'advertising')),
+				new TwigFunction('quick_edit', array($this, 'quickEdit'), array('is_safe' => array('html'))),
 				new TwigFunction('get_env', array($this, 'getEnv'))
 			);
+		}
+
+		public function quickEdit($entity) {
+			if(empty($entity))
+				return null;
+
+			$adminRoute = ((new \ReflectionClass($entity))->getShortName())."_Admin_Edit";
+			
+			$url = null;
+
+			try {
+				$url = $this->router->generate($adminRoute, ["id" => $entity->getId()]);
+				return '<div class="mt-3 text-center"><a href="'.$url.'" class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></a></div>';
+			} catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
+			}
+
+			return null;
 		}
 
 		// Filters
@@ -132,7 +150,7 @@
 		{
 			return urlencode($str);
 		}
-		
+
 		public function firstFilter($str)
 		{
 			return $str[0];

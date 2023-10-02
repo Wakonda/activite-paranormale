@@ -17,6 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
+
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -40,7 +41,7 @@ class UserController extends AbstractController
 	private $tokenTtl = 86400;
     private $tokenStorage;
 
-	public function __construct(UserPasswordHasherInterface $encoderFactory, TokenStorageInterface $tokenStorage) {
+	public function __construct(UserPasswordHasherInterface $encoderFactory, TokenStorageInterface $tokenStorage) {//dd($encoderFactory);
 		$this->encoderFactory = $encoderFactory;
         $this->tokenStorage = $tokenStorage;
 	}
@@ -120,23 +121,6 @@ class UserController extends AbstractController
     public function requestAction()
     {
         return $this->render('user/Resetting/request.html.twig');
-    }
-
-    /**
-     * @return string|null
-     */
-    private function getTargetUrlFromSession()
-    {
-		if(!method_exists($this->tokenStorage->getToken(), "getProviderKey"))
-			return null;
-
-        $key = sprintf('_security.%s.target_path', $this->tokenStorage->getToken()->getProviderKey());
-		$session = $request->getSession();
-
-        if ($session->has($key))
-            return $session->get($key);
-
-        return null;
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em)
@@ -248,7 +232,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 			$salt = base64_encode(random_bytes(32));
 			$user->setSalt($salt);
-			$user->setPassword($this->encoderFactory->encodePassword($user, $form->get("password")->getData(), $salt));
+			$user->setPassword($this->encoderFactory->hashPassword($user, $form->get("password")->getData(), $salt));
             $em->persist($user);
             $em->flush();
 			
@@ -279,7 +263,7 @@ class UserController extends AbstractController
 				
 				$salt = base64_encode(random_bytes(32));
 				$user->setSalt($salt);
-				$user->setPassword($this->encoderFactory->encodePassword($user, $form->get("password")->getData(), $salt));
+				$user->setPassword($this->encoderFactory->hashPassword($user, $form->get("password")->getData(), $salt));
 				
 				$em->persist($user);
 				$em->flush();
@@ -364,8 +348,7 @@ class UserController extends AbstractController
 		$em->flush();
 
         return $this->render('user/Registration/confirmed.html.twig', [
-            'user' => $user,
-            'targetUrl' => $this->getTargetUrlFromSession($request->getSession()),
+            'user' => $user
         ]);
     }
 
@@ -383,7 +366,7 @@ class UserController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
 			$salt = base64_encode(random_bytes(32));
 			$user->setSalt($salt);
-			$user->setPassword($this->encoderFactory->encodePassword($user, $form->get("password")->getData(), $salt));
+			$user->setPassword($this->encoderFactory->hashPassword($user, $form->get("password")->getData(), $salt));
 
             $em->persist($user);
             $em->flush();
