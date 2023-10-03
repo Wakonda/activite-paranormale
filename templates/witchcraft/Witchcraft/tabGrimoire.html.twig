@@ -39,7 +39,7 @@
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
-{% block APBlog_body %}
+{% block APBlog_body %}{{ dump(fob) }}
 	<p class="image">{{ fob.photo|imgsize(550, fob.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<hr>
 	{{ fob.text|raw }}
@@ -61,6 +61,11 @@
 		</tfoot>
 	</table>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
+	{% if fob.parentTheme is not empty %}
+		<p><span><i class="fas fa-dragon"></i> <a href="{{ path('Witchcraft_Theme', {id: fob.parentTheme.id}) }}">{{ fob.parentTheme.title }}</a></p>
+	{% endif %}
+	<hr class="hr2">
+	
 	{{ "google"|advertisement|raw }}
 {% endblock %}

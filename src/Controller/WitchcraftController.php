@@ -25,14 +25,36 @@ use App\Form\Type\WitchcraftToolSearchType;
 
 class WitchcraftController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
-		$menuGrimoire = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale())->getQuery()->getResult();
-		$surThemeGrimoire = $em->getRepository(SurThemeGrimoire::class)->getSurThemeByLanguage($request->getLocale());
+		$menuGrimoires = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale());
+
+		$pagination = $paginator->paginate(
+			$menuGrimoires, /* query NOT result */
+			$page, /*page number*/
+			10 /*limit per page*/
+		);
+
+		$datas = [];
+
+		foreach($pagination->getItems() as $menuGrimoire) {
+			$html = $menuGrimoire->getText();
+			$dom = new \DOMDocument();
+			$dom->loadHTML('<?xml encoding="utf-8" ?>' . $html);
+			$xpath = new \DOMXPath($dom);
+			$firstPTag = $xpath->query('//p')->item(0);
+
+			if ($firstPTag)
+				$html = $firstPTag->nodeValue;
+
+			$datas[] = ["entity" => $menuGrimoire, "abstract" => $html];
+		}
+
+		$pagination->setCustomParameters(['align' => 'center']);
 
 		return $this->render('witchcraft/Witchcraft/index.html.twig', [
-			'surThemeGrimoires' => $surThemeGrimoire,
-			'menuGrimoire' => $menuGrimoire
+			'menuGrimoire' => $datas,
+			"pagination" => $pagination
 		]);
     }    
 	
@@ -376,5 +398,15 @@ class WitchcraftController extends AbstractController
 		$sameTopics = $em->getRepository(Grimoire::class)->getSameTopics($entity);
 
 		return $this->render("witchcraft/Witchcraft/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
+	}
+
+	public function theme(EntityManagerInterface $em, $id) {
+		$menuGrimoire = $em->getRepository(SurThemeGrimoire::class)->find($id);
+		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->findBy(["parentTheme" => $menuGrimoire]);
+
+		return $this->render('witchcraft/Witchcraft/theme.html.twig', [
+			'surThemeGrimoires' => $surThemeGrimoires,
+			'menuGrimoire' => $menuGrimoire
+		]);
 	}
 }

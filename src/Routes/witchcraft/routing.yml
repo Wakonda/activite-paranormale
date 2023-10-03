@@ -1,6 +1,8 @@
 Witchcraft_Index:
-    path:  /grimoire
+    path:  /grimoire/{page}
     controller: App\Controller\WitchcraftController::indexAction
+    defaults:
+        page: 1
 
 Witchcraft_TabGrimoire:
     path:  /grimoire/tab/{surtheme}/{id}/{theme}
@@ -12,6 +14,12 @@ Witchcraft_TabGrimoire:
 Witchcraft_TabGrimoireDatatables:
     path: /tabgrimoiredatatables/{themeId}
     controller: App\Controller\WitchcraftController::tabGrimoireDatatablesAction
+
+Witchcraft_Theme:
+    path: /grimoire/theme/{id}
+    controller: App\Controller\WitchcraftController::theme
+    requirements:
+       id: \d+
 
 Witchcraft_ReadGrimoire:
     path:  /grimoire/read/{surtheme}/{id}/{title_slug}

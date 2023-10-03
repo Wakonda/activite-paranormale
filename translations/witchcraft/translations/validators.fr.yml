@@ -36,6 +36,7 @@ witchcraft:
         Witchcraft: "Sorcellerie"
         MagicPrayer: "Magie - Prière"
         MoonPhase: "Phase de la lune le %date%"
+        Read: "Lire"
     tabGrimoire:
         Title: "Titre"
         Source: "Source"

@@ -13,7 +13,6 @@ class TwitterAPI
 
 	public function sendTweet(string $message, string $locale, $image = false)
 	{
-		dd($locale);
 		$this->setLanguage($locale);
 
 		$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->OAUTH_TOKEN, $this->OAUTH_TOKEN_SECRET);

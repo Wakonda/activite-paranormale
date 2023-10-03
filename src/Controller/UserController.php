@@ -41,26 +41,13 @@ class UserController extends AbstractController
 	private $tokenTtl = 86400;
     private $tokenStorage;
 
-	public function __construct(UserPasswordHasherInterface $encoderFactory, TokenStorageInterface $tokenStorage) {//dd($encoderFactory);
+	public function __construct(UserPasswordHasherInterface $encoderFactory, TokenStorageInterface $tokenStorage) {
 		$this->encoderFactory = $encoderFactory;
         $this->tokenStorage = $tokenStorage;
 	}
 
-    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
+    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
     {
-		$user = $em->getRepository(User::class)->find(16);
-
-				$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-				$email = (new Email())
-					->from($_ENV["MAILER_USER"])
-					->to($user->getEmail())
-					->subject($translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle'))
-					->html($this->renderView('user/Registration/email.html.twig', ['user' => $user, 'confirmationUrl' => $url]));
-
-				$mailer->send($email);
-		die("ooo");
-		
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
 
