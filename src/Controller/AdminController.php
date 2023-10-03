@@ -808,10 +808,11 @@ class AdminController extends AbstractController
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());
 		$res = $twitterAPI->sendTweet($requestParams->get($socialNetwork."_area")." ".$currentURL, $locale, $image);
 
-		if(property_exists($res, "status")) {
-			$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$res->status."; ".$res->detail.")");
+		if(property_exists($res, "status") or property_exists($res, "reason")) {
+			$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
+			$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
 		}
-		else
+		elseif(property_exists($res, "data"))
 			$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 	}
 
