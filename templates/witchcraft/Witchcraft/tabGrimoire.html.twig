@@ -39,7 +39,7 @@
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
-{% block APBlog_body %}{{ dump(fob) }}
+{% block APBlog_body %}
 	<p class="image">{{ fob.photo|imgsize(550, fob.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<hr>
 	{{ fob.text|raw }}
