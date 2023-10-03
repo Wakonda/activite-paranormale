@@ -7,12 +7,8 @@ apuser_update:
     controller: App\Controller\UserController::updateAction
 
 apadminuser:
-    path:  /admin/member/{page}
-    controller: App\Controller\AdminUserController::indexAction
-    defaults:
-        page: 1
-    requirements:
-        page: \d+
+    path:  /admin/member
+    controller: App\Controller\AdminUserController::index
 
 apadminuser_show:
     path:  /admin/member/{id}/show
@@ -35,6 +31,12 @@ User_Admin_IndexDatatables:
 User_Admin_Activate:
     path:  /admin/member/activate/{id}/{state}
     controller: App\Controller\AdminUserController::activateAction
+    requirements:
+        _method: get
+
+User_Admin_Remove:
+    path:  /admin/member/remove/{id}
+    controller: App\Controller\AdminUserController::remove
     requirements:
         _method: get
 

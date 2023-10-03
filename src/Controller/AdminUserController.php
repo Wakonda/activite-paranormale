@@ -33,7 +33,7 @@ class AdminUserController extends AdminGenericController
 	{
 	}
 	
-    public function indexAction($page)
+    public function index()
     {
 		$twig = 'user/AdminUser/index.html.twig';
 		return $this->indexGenericAction($twig);
@@ -226,12 +226,22 @@ class AdminUserController extends AdminGenericController
 	public function activateAction(EntityManagerInterface $em, $id, $state)
 	{
 		$user = $em->getRepository(User::class)->find($id);
-		
+
 		$user->setEnabled($state);
 
 		$em->persist($user);
 		$em->flush();
 
 		return $this->redirect($this->generateUrl("apadminuser_show", ['id' => $user->getId()]));
+	}
+	
+	public function remove(EntityManagerInterface $em, $id)
+	{
+		$user = $em->getRepository(User::class)->find($id);
+
+		$em->remove($user);
+		$em->flush();
+
+		return $this->redirect($this->generateUrl("apadminuser"));
 	}
 }

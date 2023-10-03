@@ -56,8 +56,9 @@
 
 {% block data_bottom %}
 	{% if entity.enabled %}
-		<a href='{{ path("User_Admin_Activate", { "id" : entity.id, "state" : 0 }) }}' class="btn btn-danger">{{ "user.admin.Desactivate"|trans([], "validators") }}</a>
+		<a href='{{ path("User_Admin_Activate", { id: entity.id, state: 0 }) }}' class="btn btn-danger">{{ "user.admin.Desactivate"|trans([], "validators") }}</a>
 	{% else %}
-		<a href='{{ path("User_Admin_Activate", { "id" : entity.id, "state" : 1 }) }}' class="btn btn-success">{{ "user.admin.Activate"|trans([], "validators") }}</a>
+		<a href='{{ path("User_Admin_Activate", { id: entity.id, state: 1 }) }}' class="btn btn-success">{{ "user.admin.Activate"|trans([], "validators") }}</a>
+		<a href='{{ path("User_Admin_Remove", { id: entity.id }) }}' class="btn btn-danger" onClick="if(!confirm('{{ "admin.show.ReallyWantRemoveDatas"|trans([], 'validators') }}')) return false;"><i class="fas fa-times" aria-hidden="true"></i> {{ "admin.general.Delete"|trans([], "validators") }}</a>
 	{% endif %}
 {% endblock %}
