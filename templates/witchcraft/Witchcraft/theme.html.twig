@@ -1,0 +1,25 @@
+{% extends "content_layout.html.twig" %}
+
+{% block magie %}
+	{{ parent() }}
+{% endblock %}
+
+{% block title %}{{ menuGrimoire.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="mt-1" alt="Skull"/></span>{{ menuGrimoire.title }}</h2>{% endblock h2_title %}
+{% block APBlog_body %}
+		<p class="image">{{ menuGrimoire.photo|imgsize(550, menuGrimoire.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		<hr>
+		{{ menuGrimoire.text|raw }}
+		<ul class="fa-ul">
+		{% for surThemeGrimoire in surThemeGrimoires %}
+				<li>
+					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+					<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': menuGrimoire.title, 'id': surThemeGrimoire.id, 'theme' : surThemeGrimoire.title })}}">{{ surThemeGrimoire.title }}</a>
+					[{{ render(controller("App\\Controller\\WitchcraftController::countRitualAction", {'id': surThemeGrimoire.id })) }}]
+				</li>
+		{% endfor %}
+		</ul>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
