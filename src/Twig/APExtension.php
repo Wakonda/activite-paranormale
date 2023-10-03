@@ -860,11 +860,13 @@
 			
 			$locale = $entity->getLanguage()->getAbbreviation();
 
-			switch($entity->getRealClass()) {
-				case "WitchcraftTool":
-				case "Grimoire":
-					$locale = "magic_".$locale;
-				break;
+			if(method_exists($entity, "getRealClass")) {
+				switch($entity->getRealClass()) {
+					case "WitchcraftTool":
+					case "Grimoire":
+						$locale = "magic_".$locale;
+					break;
+				}
 			}
 
 			return in_array($locale, $api->getLanguages());
@@ -910,11 +912,13 @@
 
 			$locale = $entity->getLanguage()->getAbbreviation();
 
-			switch($entity->getRealClass()) {
-				case "WitchcraftTool":
-				case "Grimoire":
-					$locale = "magic_".$locale;
-				break;
+			if(method_exists($entity, "getRealClass")) {
+				switch($entity->getRealClass()) {
+					case "WitchcraftTool":
+					case "Grimoire":
+						$locale = "magic_".$locale;
+					break;
+				}
 			}
 
 			return in_array($locale, $api->getLanguages());
