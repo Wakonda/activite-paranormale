@@ -32,7 +32,7 @@
 <div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "movie.admin.Country"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.trailer, "movie.admin.Trailer"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.trailer) }}{{ form_widget(form.trailer, { 'attr': {'class': 'form-control'} }) }}</div>
@@ -47,7 +47,7 @@
 <div class="form-table-cell">{{ form_errors(form.releaseYear) }}{{ form_widget(form.releaseYear, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "movie.admin.Genre"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.movieBiographies, "biographies.admin.Biographies"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -109,7 +109,7 @@
 				{{ form_widget(form.boxOffice, { 'attr': {'class': 'form-control'}}) }}
 			</div>
 			<div class="col-md-6">
-				{{ form_widget(form.boxOfficeUnit, { 'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.boxOfficeUnit, { 'attr': {'class': 'form-select'}}) }}
 			</div>
 		</div>
 	</div>
@@ -124,7 +124,7 @@
 				{{ form_widget(form.cost, { 'attr': {'class': 'form-control'}}) }}
 			</div>
 			<div class="col-md-6">
-				{{ form_widget(form.costUnit, { 'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.costUnit, { 'attr': {'class': 'form-select'}}) }}
 			</div>
 		</div>
 	</div>

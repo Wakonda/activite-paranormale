@@ -27,7 +27,7 @@
 <div class="form-table-cell">{{ form_errors(form.nationality) }}{{ form_widget(form.nationality, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.kind, "biography.admin.Kind"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.kind) }}{{ form_widget(form.kind, { 'attr': {'class': 'form-control'}}) }}</div>
+<div class="form-table-cell">{{ form_errors(form.kind) }}{{ form_widget(form.kind, { 'attr': {'class': 'form-select'}}) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "biography.admin.Source"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
@@ -57,7 +57,7 @@
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.occupations, "biography.admin.Occupations"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.occupations) }}{{ form_widget(form.occupations, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.occupations) }}{{ form_widget(form.occupations, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <script>
 	document.getElementById("wikidata").addEventListener("click", (e) => {

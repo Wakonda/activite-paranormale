@@ -32,10 +32,10 @@
 {{ macro_admin.wikidata_html_generic(form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "televisionSerie.admin.Country"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "televisionSerie.admin.Genre"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>

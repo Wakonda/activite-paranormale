@@ -25,7 +25,7 @@
 
 {% if form.category is defined %}
 	<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "store.admin.Category"|trans([], "validators")) }}</div>
-	<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}</div>
+	<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-select'} }) }}</div>
 {% endif %}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "store.admin.Title"|trans([], "validators")) }}</div>
@@ -64,7 +64,7 @@
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.admin.Platform"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head urlContainer">{{ form_label(form.url, "store.admin.Url"|trans([], "validators")) }}</div>
 <div class="form-table-cell urlContainer">{{ form_errors(form.url) }}{{ form_widget(form.url, { 'attr': {'class': 'form-control'} }) }}</div>
@@ -81,7 +81,7 @@
 				{{ form_widget(form.price, { 'attr': {'class': 'form-control'}}) }}
 			</div>
 			<div class="col-md-6">
-				{{ form_widget(form.currencyPrice, { 'attr': {'class': 'form-control'}}) }}
+				{{ form_widget(form.currencyPrice, { 'attr': {'class': 'form-select'}}) }}
 			</div>
 		</div>
 	</div>
