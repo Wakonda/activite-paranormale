@@ -108,13 +108,13 @@
 		});
 	{% elseif form.album is defined %}
 		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
-	
+
 		$('#{{ form.album.vars.id }}').on('select2:select', function (e) {
 			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
 		});
 	{% elseif form.televisionSerie is defined %}
 		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
-	
+
 		$('#{{ form.televisionSerie.vars.id }}').on('select2:select', function (e) {
 			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
 		});
@@ -124,7 +124,7 @@
 		});
 	{% elseif form.movie is defined %}
 		document.getElementById("{{ form.platform.vars.id }}").value = "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}";
-	
+
 		$('#{{ form.movie.vars.id }}').on('select2:select', function (e) {
 			document.getElementById("{{ form.title.vars.id }}").value = e.params.data.text;
 		});

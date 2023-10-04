@@ -61,13 +61,13 @@
 			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "artist.search.Country"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-select'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.genre, "artist.search.Genre"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.genre) }}{{ form_widget(form.genre, {'attr':{'class' : 'form-select'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.bandStartingWith, "artist.search.BandStartingWith"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.bandStartingWith) }}{{ form_widget(form.bandStartingWith, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.bandStartingWith) }}{{ form_widget(form.bandStartingWith, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
 		<button type="submit" class="btn submitcomment float-end">{{ "artist.search.Validate"|trans([], "validators") }}</button>

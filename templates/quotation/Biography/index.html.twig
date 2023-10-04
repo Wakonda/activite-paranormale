@@ -61,10 +61,10 @@
 			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "biography.search.Nationality"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-select'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.occupation, "biography.search.Occupation"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.occupation) }}{{ form_widget(form.occupation, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.occupation) }}{{ form_widget(form.occupation, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
 		<button type="submit" class="btn submitcomment float-end">{{ "biography.search.Validate"|trans([], "validators") }}</button>

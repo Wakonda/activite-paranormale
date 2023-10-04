@@ -64,7 +64,7 @@
 			{% else %}
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.isAnonymous, "news.new.IsAnonymous"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">
-					{{ form_errors(form.isAnonymous) }}{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-control'}}) }}
+					{{ form_errors(form.isAnonymous) }}{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-select'}}) }}
 					<div id="anonymously_message"></div>
 				</div>
 			{% endif %}
