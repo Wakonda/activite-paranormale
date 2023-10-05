@@ -144,6 +144,10 @@ a:not(.nav-link):active, a:not(.nav-link):hover
 	text-decoration: underline;
 }
 
+a#main_title {
+	text-decoration: none;
+}
+
 footer
 {
 	background: black;

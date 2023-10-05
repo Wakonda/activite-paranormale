@@ -90,7 +90,7 @@
 {% if form.characteristic is defined %}
 	{% for characteristic in form.characteristic.children %}
 		<div class="form-table-cell form-table-cell-head">{{ form_label(characteristic) }}</div>
-		<div class="form-table-cell">{{ form_errors(characteristic) }}{{ form_widget(characteristic, { 'attr': {'class': 'form-control'} }) }}</div>
+		<div class="form-table-cell">{{ form_errors(characteristic) }}{{ form_widget(characteristic, { 'attr': {'class': 'form-select'} }) }}</div>
 	{% endfor %}
 {% endif %}
 
