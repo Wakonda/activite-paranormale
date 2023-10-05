@@ -29,15 +29,17 @@ class BiographySearchType extends AbstractType
 		$occupationChoice = [];
 		
 		foreach($entities as $entity) {
-			if(is_subclass_of($entity, "App\Entity\EntityLinkBiography") or $entity == "App\Entity\EntityLinkBiography") {
+			if(in_array(\App\Entity\Interfaces\BiographyInterface::class, class_implements($entity))) {
 				foreach($entity::getOccupations() as $occupation)
 					$occupationChoice[$this->translator->trans("biography.search.".(new \ReflectionClass($entity))->getShortName(), [], 'validators')][$occupation] = $this->translator->trans("biography.occupation.".ucfirst($occupation), [], 'validators');
+
+				asort($occupationChoice[$this->translator->trans("biography.search.".(new \ReflectionClass($entity))->getShortName(), [], 'validators')]);
 			}
 		}
-		
+
 		$occupationByCanonicalName = array_flip(array_reduce($occupationChoice, 'array_merge', []));
 		$occupationChoiceDatas = [];
-		
+
 		foreach(array_merge(...array_values($occupationChoice)) as $search)
 		{
 			$found = array_filter($occupationChoice,function($v, $k) use ($search) {
@@ -46,6 +48,8 @@ class BiographySearchType extends AbstractType
 
 			$occupationChoiceDatas[implode(" / ", array_keys($found))][$search] = $occupationByCanonicalName[$search];
 		}
+
+		ksort($occupationChoiceDatas);
 
 		$language = $options['locale'];
 		$builder->setMethod('GET');
@@ -60,7 +64,6 @@ class BiographySearchType extends AbstractType
 					}])
 			->add('occupation', ChoiceType::class, ['required' => false, 'choices' => $occupationChoiceDatas, 'translation_domain' => 'validators'])
 		;
-// dd($occupationChoiceDatas);
     }
     public function getBlockPrefix()
     {

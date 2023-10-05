@@ -55,9 +55,20 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		}
 
 		if(!empty($occupation = $datas["occupation"])) {
-			$qb->join(EntityLinkBiography::class, "elb", \Doctrine\ORM\Query\Expr\Join::WITH, "elb.biography = c.id")
-			   ->andWhere('elb.occupation = :occupation')
-			   ->setParameter('occupation', $occupation);
+			if($occupation == \App\Entity\Book::AUTHOR_OCCUPATION) {
+				$subquery = $this->_em->createQueryBuilder()
+					->select('bi.id')
+					->from(\App\Entity\Book::class, 'bo')
+					->innerjoin("bo.authors",'bi')
+					->getDQL();
+
+				$qb->andWhere($qb->expr()->in('c.id', $subquery));
+			}
+			else {
+				$qb->join(EntityLinkBiography::class, "elb", \Doctrine\ORM\Query\Expr\Join::WITH, "elb.biography = c.id")
+				   ->andWhere('elb.occupation = :occupation')
+				   ->setParameter('occupation', $occupation);
+			}
 		}
 		if(!empty($country = $datas["country"])) {
 			$qb->join("c.nationality", "co")
@@ -71,7 +82,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('c.title LIKE :search')
+			$qb->andWhere('c.t itle LIKE :search')
 			   ->setParameter('search', $search);
 		}
 		if($count)

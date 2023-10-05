@@ -85,9 +85,12 @@ class BiographyAdminType extends AbstractType
 		$occupationChoice = [];
 		
 		foreach($entities as $entity) {
-			if(is_subclass_of($entity, "App\Entity\EntityLinkBiography") or $entity == "App\Entity\EntityLinkBiography")
+			if(in_array(\App\Entity\Interfaces\BiographyInterface::class, class_implements($entity))) {
 				foreach($entity::getOccupations() as $occupation)
 					$occupationChoice[$this->translator->trans("biography.search.".(new \ReflectionClass($entity))->getShortName(), [], 'validators')][$occupation] = $this->translator->trans("biography.occupation.".ucfirst($occupation), [], 'validators');
+
+				asort($occupationChoice[$this->translator->trans("biography.search.".(new \ReflectionClass($entity))->getShortName(), [], 'validators')]);
+			}
 		}
 
 		$occupationByCanonicalName = array_flip(array_reduce($occupationChoice, 'array_merge', []));
@@ -104,12 +107,14 @@ class BiographyAdminType extends AbstractType
 
 		$occupationArray = [];
 		$occupationAttributeArray = [];
-		
+
 		$roles = $this->entityManager->getRepository(\App\Entity\EntityLinkBiography::class)->findBy(["biography"=> $builder->getData()]);
 		
 		foreach($roles as $role)
 			if(get_class($roles[0]) != \App\Entity\EntityLinkBiography::class)
 				$occupationAttributeArray[$this->translator->trans("biography.occupation.".ucfirst($role->getOccupation()), [], 'validators')] = ["data-readonly" => 1];
+
+		ksort($occupationChoiceDatas);
 
 		$builder->add('occupations', ChoiceType::class, ['required' => false, 'choices' => $occupationChoiceDatas, 'translation_domain' => 'validators', "multiple" => true, "mapped" => false, 'choice_attr' =>  $occupationAttributeArray]);
 

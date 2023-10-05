@@ -22,7 +22,7 @@ use App\Service\APPurifierHTML;
 	"music_biography" = "App\Entity\MusicBiography",
   })
  */
-class EntityLinkBiography
+class EntityLinkBiography implements Interfaces\BiographyInterface
 {
 	const UFOLOGIST_OCCUPATION = "ufologist";
 	const THEOLOGIAN_OCCUPATION = "theologian";

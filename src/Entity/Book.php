@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\BookRepository")
  */
-class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
+class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  Interfaces\BiographyInterface
 {
     /**
      * @var integer $id
@@ -141,6 +141,14 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
 	public function __construct()
 	{
 		parent::__construct();
+	}
+	
+	const AUTHOR_OCCUPATION = "author";
+
+	public static function getOccupations(): Array {
+		return [
+			self::AUTHOR_OCCUPATION
+		];
 	}
 
 	public function getShowRoute()
