@@ -9,11 +9,11 @@
 	{{ form_start(form, {'action': path('ap_storemobile_index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal clearfix', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "store.search.Category"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.search.Platform"|trans([], "validators")) }}</div>
-			<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, {'attr':{'class' : 'form-control'}}) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
 		<button type="submit" class="btn submitcomment float-end mt-3">{{ "store.search.Validate"|trans([], "validators") }}</button>

@@ -5,7 +5,7 @@
 <div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "usefullink.admin.Category"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head linkContainer">{{ form_label(form.links, "usefullink.admin.Link"|trans([], "validators")) }}</div>
 <div class="form-table-cell linkContainer">{{ form_errors(form.links) }}{{ form_widget(form.links, { 'attr': {'class': 'form-control'} }) }}</div>

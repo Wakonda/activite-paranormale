@@ -119,7 +119,7 @@
 		
 		<h3>{{ "document.abstract.Share"|trans([], "validators") }}</h3>
 		<div id="success_copy"><span></span></div>
-		<textarea id="embedded_document" class="generation bg-light text-white-50 form-control" readonly cols="65" rows="3"><iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe></textarea>
+		<textarea id="embedded_document" class="generation bg-light form-control" readonly cols="65" rows="3"><iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe></textarea>
 		
 		<div class="mt-2 mb-2">
 			<span>{{ "document.abstract.DocumentSize"|trans([], "validators") }} </span>

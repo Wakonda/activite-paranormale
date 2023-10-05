@@ -59,7 +59,7 @@
 				{{ form_label(form.isAnonymous, "witchcraft.new.IsAnonymous"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 				<div class="col-sm-10">
 					{{ form_errors(form.isAnonymous) }}
-					{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-control'}}) }}
+					{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-select'}}) }}
 					<div id="anonymously_message"></div>
 				</div>
 			</div>
@@ -83,14 +83,14 @@
 			{{ form_label(form.country, "testimony.new.Country"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.country) }}
-				{{ form_widget(form.country, {'attr':{'class' : 'form-control'}}) }}
+				{{ form_widget(form.country, {'attr':{'class' : 'form-select'}}) }}
 			</div>
 		</div>
 		<div class="mb-3 row">
 			{{ form_label(form.location_selector, "testimony.new.Location"|trans([], "validators"), {'label_attr': {'class': 'col-sm-2 col-form-label'}}) }}
 			<div class="col-sm-10">
 				{{ form_errors(form.location_selector) }}
-				{{ form_widget(form.location_selector, {'attr':{'class' : 'form-control'}}) }}
+				{{ form_widget(form.location_selector, {'attr':{'class' : 'form-select'}}) }}
 			</div>
 		</div>
 		
