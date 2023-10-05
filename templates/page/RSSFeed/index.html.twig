@@ -20,72 +20,89 @@
 			return this;
 		};
 
-		$(function()
-		{
-			var startUrlParameter = "";
-			var theme = new Array();
-			var themeString = "theme=news";
-			var languageString = "&language={{ app.request.locale }}";
-			var lengthString = "&length=30";
-			
-			$("textarea#page_generaterssfeed").html("{{ url('Page_GenerateRSSFeed') }}?"+startUrlParameter+themeString+languageString+lengthString);
+	document.addEventListener('DOMContentLoaded', function() {
+		var startUrlParameter = "";
+		var theme = [];
+		var themeString = "theme=news";
+		var languageString = "&language={{ app.request.locale }}";
+		var lengthString = "&length=30";
+		var pageGeneraterssfeed = document.querySelector('textarea#page_generaterssfeed');
 
-			$("select.theme").change(function()
-			{
-				themeString = "theme="+$(this).val();
-				startUrlParameter = "?";
-			});
-			
-			var language = new Array("{{ app.request.locale }}");
-			$('input.language').click(function()
-			{
-				if($(this).is(':checked'))
-					language.push($(this).attr('id'));
-				else
-					language.remove($(this).attr('id'));
-				languageString = "&language="+language.join();
-				startUrlParameter = "?";
-			});
-			
-			$('input.numberLength').keyup(function(event)
-			{
-				if(isInt(event.key) || event.keyCode == 8 || event.keyCode == 46)
-				{
-					lengthString = "&length="+$(this).val();
-					startUrlParameter = "?";
-				}
-				else
-					return false;
-			});
-			
-			$('input.numberLength').change(function(event)
-			{
-				lengthString = "&length="+$(this).val();
-				startUrlParameter = "?";
-			});
+		pageGeneraterssfeed.innerHTML = "{{ url('Page_GenerateRSSFeed') }}?" + startUrlParameter + themeString + languageString + lengthString;
 
-			$('input, select').bind('click keyup change', function()
-			{
-				if(startUrlParameter != "")
-				{
-					$("textarea#page_generaterssfeed").html("{{ url('Page_GenerateRSSFeed', {'_format': 'rss'}) }}"+startUrlParameter+themeString+languageString+lengthString);
-				}
-			});
-			
-			var clipboard = new Clipboard('.clip_button');
-
-			clipboard.on('success', function(e) {
-				$("#success_copy").addClass("success alert alert-success text-center");
-				$("#success_copy span").text("{{ 'rssFeed.read.CodeCopiedWithSuccess'|trans([], 'validators') }}");
-				setTimeout(fade_out, 5000);
-			});
-
-			var fade_out = function() {
-				$("#success_copy").removeClass("success alert alert-success text-center");
-				$("#success_copy span").empty();
-			}
+		var selectTheme = document.querySelector('select.theme');
+		selectTheme.addEventListener('change', function() {
+			themeString = "theme=" + selectTheme.value;
+			startUrlParameter = "?";
 		});
-		
+
+		var language = new Array("{{ app.request.locale }}");
+		var languageInputs = document.querySelectorAll('input.language');
+		languageInputs.forEach(function(input) {
+			input.addEventListener('click', function() {
+				if (input.checked) {
+					language.push(input.id);
+				} else {
+					var index = language.indexOf(input.id);
+					if (index !== -1) {
+						language.splice(index, 1);
+					}
+				}
+				languageString = "&language=" + language.join();
+				startUrlParameter = "?";
+			});
+		});
+
+		var numberLengthInputs = document.querySelectorAll('input.numberLength');
+		numberLengthInputs.forEach(function(input) {
+			input.addEventListener('keyup', function(event) {
+				if (isInt(event.key) || event.keyCode === 8 || event.keyCode === 46) {
+					lengthString = "&length=" + input.value;
+					startUrlParameter = "?";
+				} else {
+					return false;
+				}
+			});
+
+			input.addEventListener('change', function() {
+				lengthString = "&length=" + input.value;
+				startUrlParameter = "?";
+			});
+		});
+
+		var inputsAndSelects = document.querySelectorAll('input, select');
+		inputsAndSelects.forEach(function(input) {
+			input.addEventListener('click', updatePageGeneraterssfeed);
+			input.addEventListener('keyup', updatePageGeneraterssfeed);
+			input.addEventListener('change', updatePageGeneraterssfeed);
+		});
+
+		function updatePageGeneraterssfeed() {
+			if (startUrlParameter !== "") {
+				pageGeneraterssfeed.innerHTML = "{{ url('Page_GenerateRSSFeed', {'_format': 'rss'}) }}" + startUrlParameter + themeString + languageString + lengthString;
+			}
+		}
+
+		var clipboard = new Clipboard('.clip_button');
+
+		clipboard.on('success', function(e) {
+			var successCopy = document.querySelector("#success_copy");
+			successCopy.classList.add("success", "alert", "alert-success", "text-center");
+			successCopy.querySelector("span").textContent = "{{ 'rssFeed.read.CodeCopiedWithSuccess'|trans([], 'validators') }}";
+			setTimeout(fadeOut, 5000);
+		});
+
+		function fadeOut() {
+			var successCopy = document.querySelector("#success_copy");
+			successCopy.classList.remove("success", "alert", "alert-success", "text-center");
+			successCopy.querySelector("span").textContent = "";
+		}
+
+		function isInt(value) {
+			return !isNaN(value) && parseInt(Number(value)) == value && !isNaN(parseInt(value, 10));
+		}
+	});
+
 	function isInt(value) {
 		return !isNaN(value) && (function(x) { return (x | 0) === x; })(parseFloat(value))
 	}
