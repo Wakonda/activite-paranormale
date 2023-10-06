@@ -1,7 +1,7 @@
 <div class="text-center mb-3">
 	{% if app.session.get('v') == 'v3' %}
-		<a href="{{ path('Index_Index', { v: 'v2' }) }}" class="btn btn-info text-white"><i class="fas fa-dice-two"></i><span class="ms-2">{{ "version.title.ReturnToVersion"|trans([], "validators") }} 2</span></a>
+		<a href="{{ path('Index_Index', { v: 'v2' }) }}" class="btn btn-info"><i class="fas fa-dice-two"></i><span class="ms-2">{{ "version.title.ReturnToVersion"|trans([], "validators") }} 2</span></a>
 	{% else %}
-		<a href="{{ path('Index_Index', { v: 'v3' }) }}" class="btn btn-info text-white"><i class="fas fa-dice-three"></i><span class="ms-2">{{ "version.title.ActivateVersion"|trans([], "validators") }} 3<span class="ms-2 badge bg-danger">beta</span></span></a>
+		<a href="{{ path('Index_Index', { v: 'v3' }) }}" class="btn btn-info"><i class="fas fa-dice-three"></i><span class="ms-2">{{ "version.title.ActivateVersion"|trans([], "validators") }} 3<span class="ms-2 badge bg-danger">beta</span></span></a>
 	{% endif %}
 </div>
