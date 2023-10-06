@@ -101,13 +101,13 @@ p {
 	width:100%!important;
 }
 	
-a:link, a:visited {
+a:not(.btn):link, a:not(.btn):visited {
     color: #b9c322;
     text-decoration: none;
     font-weight: normal;
 }
 
-a:active, a:hover { color: #FFCC00; text-decoration: underline; }
+a:not(.btn):active, a:not(.btn):hover { color: #FFCC00; text-decoration: underline; }
 
 nav a:hover { text-decoration: none; }
 
