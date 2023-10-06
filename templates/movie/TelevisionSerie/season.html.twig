@@ -18,8 +18,8 @@
 	<div id="accordion">
 		{% for entity in entities %}
 			<h3 class="cursor-pointer{{ first.id != entity.id ? ' collapsed' : '' }}" data-bs-toggle="collapse" data-bs-target="#collapse{{ entity.episodeNumber }}" aria-expanded="{{ first.id != entity.id ? 'false' : 'true' }}" aria-controls="collapse{{ entity.episodeNumber }}">
+				<button onClick="javascript:window.location.href='{{ path('TelevisionSerie_Episode', {id: entity.id, title_slug: entity.urlSlug }) }}'" class="badge bg-info"><i class="fas fa-info fa-fw"></i></button>
 				{{ "televisionSerie.read.Episode"|trans([], "validators") }} {{ entity.episodeNumber }} - {{ entity.title }}
-				<button onClick="javascript:window.location.href='{{ path('TelevisionSerie_Episode', {id: entity.id, title_slug: entity.urlSlug }) }}'" class="badge bg-info float-end"><i class="fas fa-info fa-fw"></i></button>
 			</h3>
 			<div id="collapse{{ entity.episodeNumber }}" class="collapse{% if first.id == entity.id %} show{% endif %}" aria-labelledby="heading{{ entity.episodeNumber }}" data-parent="#accordion">
 				<table class="table">
@@ -28,7 +28,7 @@
 						{% if biographyDatas is not empty %}
 						<tr>
 							{% for occupation, biographies in biographyDatas %}
-								<td class="td_form_table theme_title_td">{{ (("televisionSerie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
+								<td class="td_form_table">{{ (("televisionSerie.read."~(occupation)|ucfirst)~"By")|trans([], "validators") }}</td>
 								<td class="tdGene">
 									{% set persons = [] %}
 									{% for biography in biographies %}
@@ -40,14 +40,14 @@
 						</tr>
 						{% endif %}
 						{% if entity.duration is not empty %}
-							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Duration"|trans([], "validators") }}</td><td>{{ entity.duration }} {{ "televisionSerie.read.Minute"|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</td></tr>
+							<tr><td class="td_form_table">{{ "televisionSerie.read.Duration"|trans([], "validators") }}</td><td>{{ entity.duration }} {{ "televisionSerie.read.Minute"|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</td></tr>
 						{% endif %}
 						{% if entity.releaseDate is not empty %}
-							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.ReleaseDate"|trans([], "validators") }}</td><td>{{ entity.releaseDate|dodate(false, app.request.locale) }}</td></tr>
+							<tr><td class="td_form_table">{{ "televisionSerie.read.ReleaseDate"|trans([], "validators") }}</td><td>{{ entity.releaseDate|dodate(false, app.request.locale) }}</td></tr>
 						{% endif %}
 						{% set sources = source_document(entity.source, entity.language) %}
 						{% if sources is not empty %}
-							<tr><td class="td_form_table theme_title_td">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ sources|raw }}</td></tr>
+							<tr><td class="td_form_table">{{ "televisionSerie.read.Sources"|trans([], "validators") }}</td><td>{{ sources|raw }}</td></tr>
 						{% endif %}
 					</tbody>
 				</table>

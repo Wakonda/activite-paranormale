@@ -17,8 +17,8 @@
 			{% for T in theme %}
 				{% if T.parentTheme.title == ST.title %}
 					<tr>
-						<td class="td_form_table theme_title_td">{{ T.title }}</td>
-						<td class="tdGene theme_read_td"><a href="{{ path('Theme_Show', {'id' : T.id, 'theme' : T.title })}}" >{{ "theme.index.Read"|trans([], "validators") }}</a></td>
+						<td class="td_form_table w-75">{{ T.title }}</td>
+						<td class="tdGene"><a href="{{ path('Theme_Show', {'id' : T.id, 'theme' : T.title })}}" >{{ "theme.index.Read"|trans([], "validators") }}</a></td>
 					</tr>
 				{% endif %}
 			{% endfor %}

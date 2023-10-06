@@ -54,8 +54,8 @@
 				<tbody>
 					{% for data in pagination.items %}
 						<tr>
-							<td class="td_form_table theme_title_td"><a href="{{ path ('UsefulLink_Read', {id: data.id}) }}">{{ data.title }}</a></td>
-							<td class="tdGene theme_read_td">{% if data.tags is not empty %}<i class="fas fa-tags"></i> {% for tag in json_decode(data.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}/#tutorial">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}</td>
+							<td class="td_form_table"><a href="{{ path ('UsefulLink_Read', {id: data.id}) }}">{{ data.title }}</a></td>
+							<td class="tdGene">{% if data.tags is not empty %}<i class="fas fa-tags"></i> {% for tag in json_decode(data.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}/#tutorial">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}</td>
 						</tr>
 						{% if loop.last != false %}
 							<hr>
