@@ -4,41 +4,43 @@
 		<title>{{ entity.title }}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
-		<link rel="stylesheet" href="{{ asset('extended/css/bootstrap/bootstrap/css/bootstrap.min.css') }}" type="text/css" media="screen" />
+
+	    {% block stylesheets %}
+            {{ encore_entry_link_tags('app_v3') }}
+        {% endblock %}
+
 		<link rel="stylesheet" href="{{ asset('extended/css/style_display_pdf.css') }}" type="text/css" media="screen" />
-		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/fontawesome.min.css') }}" type="text/css" media="screen" />
-		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/brands.min.css') }}" type="text/css" media="screen" />
-		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/regular.min.css') }}" type="text/css" media="screen" />
-		<link rel="stylesheet" href="{{ asset('extended/css/font-awesome/css/solid.min.css') }}" type="text/css" media="screen" />
-		<script src="{{ asset('extended/js/jquery.js') }}"></script>
-		<script src="{{ asset('extended/css/bootstrap/bootstrap/js/bootstrap.min.js') }}"></script>
-	
+
+		{{ encore_entry_script_tags('app_v3') }}
+
 		{% if is_mobile() or is_tablet() %}
 			<script src="{{ asset('extended/js/pdf.js') }}"></script>
 		{% endif %}
-	
+
 		{% if entity.text is not empty %}
 			<meta name="description" content="{{ entity.text|striptags }}">
 		{% endif %}
 	</head>
-	<body>
+	<body class="pt-0">
 		<nav class="navbar navbar-expand-lg navbar-light bg-light" id="header">
-			<a class="navbar-brand" href="#"><img src="{{ asset('extended/photo/devil.png') }}" width="40" alt="Devil"/></a>
-			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-				<span class="navbar-toggler-icon"></span>
-			</button>
-			<div class="collapse navbar-collapse" id="navbarNav">
-				<ul class="navbar-nav">
-					<li class="nav-item">
-						<a href="{{ path('Index_Index') }}" class="nav-link"><i class="fas fa-home" aria-hidden="true"></i> {{ "document.read.Home"|trans([], "validators") }}</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{ path('DocumentBundle_DownloadDocument', {'id' : entity.id}) }}" class="nav-link"><i class="fas fa-download" aria-hidden="true"></i> {{ "document.read.Download"|trans([], "validators") }}</a>
-					</li>
-					<li class="nav-item">
-						<a href="{{ path('DocumentBundle_AbstractDocument', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() }) }}" class="nav-link"><i class="far fa-hand-point-left" aria-hidden="true"></i> {{ "document.read.Back"|trans([], "validators") }}</a>
-					</li>
-				</ul>
+			<div class="container-fluid">
+				<a class="navbar-brand" href="#"><img src="{{ asset('extended/photo/devil.png') }}" width="40" alt="Devil"/></a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarNav">
+					<ul class="navbar-nav">
+						<li class="nav-item">
+							<a href="{{ path('Index_Index') }}" class="nav-link text-dark"><i class="fas fa-home" aria-hidden="true"></i> {{ "document.read.Home"|trans([], "validators") }}</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('DocumentBundle_DownloadDocument', {'id' : entity.id}) }}" class="nav-link text-dark"><i class="fas fa-download" aria-hidden="true"></i> {{ "document.read.Download"|trans([], "validators") }}</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('DocumentBundle_AbstractDocument', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() }) }}" class="nav-link text-dark"><i class="far fa-hand-point-left" aria-hidden="true"></i> {{ "document.read.Back"|trans([], "validators") }}</a>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</nav>
 
@@ -61,19 +63,22 @@
 			</div>
 
 			<div id="pdf-canvas-container" style="max-width: 85%; overflow: auto" class="m-auto d-block bg-dark">
-				<canvas id="pdf-canvas" class="m-auto d-block"></canvas>
+				<canvas id="pdf-canvas" class="m-auto d-block w-auto"></canvas>
 			</div>
 		{% else %}
 			<iframe src="{{ asset(entity.getAssetImagePath()) }}{{ entity.pdfDoc }}" width="100%" height="100%" scrolling="no" marginheight="0" marginwidth="0" frameborder="0"></iframe>
 		{% endif %}
 
-		<div id="footer" class="pt-1 mt-2">
-			<span class="mt-2 text-light ms-3"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</span>
-			<div class="float-end me-3">
-				<i class="fas fa-tags text-danger"></i> {{ getTagsByEntityForDisplayDocument(entity) }}
-			</div>
-		</div>
-		
+		<footer class="py-1 my-1">
+			{% set tags = getTagsByEntityForDisplayDocument(entity) %}
+			{% if tags is not empty %}
+				<div class="border-bottom mx-3 pb-2">
+					<i class="fas fa-tags text-danger"></i> {{ tags|raw }}
+				</div>
+			{% endif %}
+			<p class="text-center text-light pt-2"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</p>
+		</footer>
+
 		<script>
 			{% if is_mobile() or is_tablet() %}
 				function resizeIframe()

@@ -13,6 +13,16 @@ div#footer
 {
 	background-color: black;
 }
+
+nav.navbar a {
+	text-decoration: none !important;
+	color: #3c3d3d !important;
+}
+
+nav.navbar a:hover, nav.navbar a:active {
+	color: black !important;
+}
+
 span.icon
 {
 	float: left;
@@ -32,5 +42,3 @@ span.icon a:hover {
 p {
 	margin: 0 0 0px !important;
 }
-
-#footer { height: 39px; }
