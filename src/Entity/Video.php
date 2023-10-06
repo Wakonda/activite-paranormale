@@ -92,8 +92,8 @@ class Video extends MappedSuperclassBase
 		
 		$width = $iframeNode->item(0)->getAttribute("width");
 		$height = $iframeNode->item(0)->getAttribute("height");
-		
-		if(!empty($width) and !empty($height))
+
+		if(is_numeric($width) and is_numeric($height) and !empty($width) and !empty($height))
 			$height_max = round(($width_max * $height) / $width);
 
 		$iframeNode->item(0)->setAttribute("height", $height_max);

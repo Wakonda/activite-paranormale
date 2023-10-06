@@ -63,7 +63,12 @@
 	{% endif %}
 	<div class="row media-container m-0 mt-3">
 		<div class="col-sm-4 mt-7 mb-7">
-			{{ entity.photo|imgsizeMobile(entity.getAssetImagePath())|raw }}
+			{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
+			{% if thumbnail is not empty and entity.photo is empty %}
+				<img src="{{ thumbnail }}" alt="Thumbnail video" class="img-fluid" />
+			{% else %}
+				{{ entity.photo|imgsizeMobile(entity.getAssetImagePath())|raw }}
+			{% endif %}
 		</div>
 		<div class="col-sm-8 mt-7">
 			<h4 class="media-heading"><a href="{{ path('ap_videomobile_read', { 'id' : entity.id }) }}">{{ entity.title }}</a></h4>

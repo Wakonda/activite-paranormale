@@ -124,7 +124,8 @@
 				new TwigFunction('getimagesize', array($this, 'getimagesize')),
 				new TwigFunction('advertising', array($this, 'advertising')),
 				new TwigFunction('quick_edit', array($this, 'quickEdit'), array('is_safe' => array('html'))),
-				new TwigFunction('get_env', array($this, 'getEnv'))
+				new TwigFunction('get_env', array($this, 'getEnv')),
+				new TwigFunction('thumbnail_video', [$this, 'getThumbnailFromVideo']),
 			);
 		}
 
@@ -1008,6 +1009,66 @@
 		
 		public function advertising($maxWidth, $maxHeight) {
 			return $this->em->getRepository("App\Entity\Advertising")->getOneRandomAdsByWidthAndHeight($maxWidth, $maxHeight);
+		}
+
+		public function getThumbnailFromVideo($code) {
+			$pattern = '/<[^>]*>/';
+
+			if (preg_match($pattern, $code)) {
+				$doc = new \DOMDocument();
+				$doc->loadHTML($code);
+
+				$srcAttribute = $doc->getElementsByTagName('iframe')->item(0)->getAttribute('src');
+
+				// Check if the src attribute contains "youtube.com"
+				if (strpos($srcAttribute, 'youtube.com') !== false) {
+					$pattern = '/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/';
+					if (preg_match($pattern, $code, $matches)) {
+						$videoId = $matches[1];
+						
+						return "https://img.youtube.com/vi/{$videoId}/maxresdefault.jpg";
+					} else
+						return null;
+				} elseif (strpos($srcAttribute, 'dailymotion.com') !== false) {
+					$dom = new \DOMDocument();
+					$dom->loadHTML($code);
+					$iframe = $dom->getElementsByTagName('iframe')->item(0);
+
+					if ($iframe) {
+						$src = $iframe->getAttribute('src');
+						$src = parse_url($src, PHP_URL_PATH);
+						$videoId = substr($src, strrpos($src, '/') + 1);
+
+						return "https://www.dailymotion.com/thumbnail/video/{$videoId}";
+					}
+				} elseif(strpos($srcAttribute, 'rutube.ru') !== false) {
+					$pattern = '/src="https:\/\/rutube\.ru\/play\/embed\/([^"]+)"/';
+					if (preg_match($pattern, $code, $matches)) {
+						$videoId = $matches[1];
+
+						$curl = curl_init();
+						curl_setopt($curl, CURLOPT_URL,"https://rutube.ru/api/video/{$videoId}/thumbnail");
+						curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+						curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); 
+						curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+						curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+
+						$json = curl_exec($curl);
+						$httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+						curl_close($curl);
+
+						if($httpCode == 200) {
+							$json = json_decode($json);
+							return $json->url;
+						}
+					}
+				} else {
+					return null;
+				}
+			}
+			
+			return null;
 		}
 
 		public function getEnv(string $varname): string
