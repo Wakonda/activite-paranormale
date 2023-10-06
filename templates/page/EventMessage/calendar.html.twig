@@ -16,6 +16,17 @@
 	<script src="{{ asset('extended/js/fullcalendar/packages/bootstrap/main.js') }}"></script>
 
 	<style>
+	</style>
+
+	<style>
+		@media (max-width: 455px) {
+			button.fc-today-button, .fc-yearButton-button {
+				display: grid;
+				margin-left: 0 !important;
+				margin-top: 5px;
+			}
+		}
+
 		.fc-button-primary {
 			background-color: #000;
 			color: rgb(187, 196, 45);
