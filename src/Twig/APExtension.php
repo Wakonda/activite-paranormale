@@ -1020,7 +1020,6 @@
 
 				$srcAttribute = $doc->getElementsByTagName('iframe')->item(0)->getAttribute('src');
 
-				// Check if the src attribute contains "youtube.com"
 				if (strpos($srcAttribute, 'youtube.com') !== false) {
 					$pattern = '/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/';
 					if (preg_match($pattern, $code, $matches)) {

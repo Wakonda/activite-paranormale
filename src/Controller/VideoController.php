@@ -18,6 +18,7 @@ use App\Entity\Language;
 use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
+use App\Twig\APExtension;
 
 class VideoController extends AbstractController
 {
@@ -54,8 +55,9 @@ class VideoController extends AbstractController
 		]);	
 	}
 
-	public function tabVideoDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
+	public function tabVideoDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, APExtension $apExtension, $themeId)
 	{
+		// dd($request->query->all());
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->all('search')["value"];
@@ -63,16 +65,13 @@ class VideoController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
-		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
-		
+
         $entities = $em->getRepository(Video::class)->getTabVideo($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Video::class)->getTabVideo($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
@@ -84,9 +83,17 @@ class VideoController extends AbstractController
 
 		foreach($entities as $entity)
 		{
-			$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
+			$thumbnail = $apExtension->getThumbnailFromVideo($entity->getEmbeddedCode());
+			$src = null;
+			
+			if(!empty($thumbnail) and empty($entity->getPhoto())) {
+				$src = $thumbnail;
+			} else {
+				$photo = $imgSize->adaptImageSize(150, $entity->getAssetImagePath().$entity->getPhoto());
+				$src = $request->getBasePath().'/'.$photo[2];
+			}
 			$row = [];
-			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';			
+			$row[] = '<img src="'.$src.'" alt="" style="max-width: 150px">';			
 			$row[] = '<a href="'.$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 
