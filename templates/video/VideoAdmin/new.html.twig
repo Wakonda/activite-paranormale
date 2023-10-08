@@ -13,18 +13,25 @@
 		{
 			{{ macro_video.updateListForm(form) }}
 
-			$("#{{ form.mediaVideo.vars.id }}").change(function(){
-				$("#{{ form.mediaVideo_selector.vars.id }}").val("");
-			});
-			
-			$("#{{ form.platform.vars.id }}").change(function(){
-				if($(this).val() == "AP")
-					$("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star").remove();
-				else
-					$("label[for='{{ form.embeddedCode.vars.id }}']").after('<span class="required_star"> * </span>');
+			document.getElementById("{{ form.mediaVideo.vars.id }}").addEventListener("change", function () {
+				document.getElementById("{{ form.mediaVideo_selector.vars.id }}").value = "";
 			});
 
-			$("#{{ form.platform.vars.id }}").change();
+			document.getElementById("{{ form.platform.vars.id }}").addEventListener("change", function () {
+				if (this.value === "AP") {
+					var requiredStar = document.querySelector("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star");
+					if (requiredStar)
+						requiredStar.remove();
+				} else {
+					var requiredStar = document.querySelector("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star");
+					if (requiredStar)
+						requiredStar.remove();
+
+					document.querySelector("label[for='{{ form.embeddedCode.vars.id }}']").insertAdjacentHTML("afterend", '<span class="required_star"> * </span>');
+				}
+			});
+
+			document.getElementById("{{ form.platform.vars.id }}").dispatchEvent(new Event("change"));
 		});
 	</script>
 
