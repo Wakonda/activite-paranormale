@@ -26,11 +26,8 @@
 		{
 			$newLarg = 0.0;
 			$newLong = 0.0;
-			
-			$fct = new FunctionsLibrary();
 
-
-			if(!is_file($file) or empty($file) or (!$fct->isUrl($file) and !file_exists($file))) {
+			if(!is_file($file) or empty($file) or (!FunctionsLibrary::isUrl($file) and !file_exists($file))) {
 				$locale = $this->translator->getLocale();
 				$file = "extended/photo/file_no_exist_".$locale.".png";
 			}
