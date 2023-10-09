@@ -1239,8 +1239,8 @@ class AdminController extends AbstractController
 		$urlHost = parse_url($url, PHP_URL_HOST);
 
 		$res = [];
-		
-		if(str_contains($urlHost, "wikipedia") or str_contains($urlHost, "wikidata")) {
+
+		if(str_contains($urlHost, "wikipedia") or str_contains($urlHost, "wikidata") or str_contains($urlHost, "wikimedia")) {
 			$urlArray = explode(":", $url);
 			$filename = $urlArray[count($urlArray) - 1];
 			$res = $wikidata->getImageInfos($filename);
