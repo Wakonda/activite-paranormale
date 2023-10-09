@@ -52,6 +52,15 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  I
      */
 	protected $authors;
 
+	/**
+	 * @ORM\OneToMany(targetEntity="App\Entity\BookEditionBiography", mappedBy="book", cascade={"persist"})
+     * @ORM\JoinTable(name="book_edition_biography",
+     *      joinColumns={@ORM\JoinColumn(name="book_id", referencedColumnName="id", onDelete="cascade")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_id", referencedColumnName="id", onDelete="cascade")}     
+     *      )
+	 */
+	protected $biographies;
+
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\Biography", cascade={"persist"})
      * @ORM\JoinTable(name="book_fictional_character_biography",
@@ -515,4 +524,24 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  I
     {
         return $this->introduction;
     }
+
+	public function addBiography($biography)
+	{
+		$this->biographies[] = $biography;
+	}
+
+    public function setBiographies($biographies)
+    {
+        $this->biographies = $biographies;
+    }
+
+	public function removeBiography(Biography $biography)
+	{
+		$this->biographies->removeElement(biography);
+	}
+
+	public function getBiographies()
+	{
+		return $this->biographies;
+	}
 }

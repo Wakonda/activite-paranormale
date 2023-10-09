@@ -89,6 +89,27 @@ class BookAdminType extends AbstractType
 				"required" => true,
 				'constraints' => [new NotBlank()]
 			])
+		    ->add('biographies', Select2EntityType::class, [
+				'multiple' => true,
+				'remote_route' => 'Biography_Admin_Autocomplete',
+				'class' => 'App\Entity\Biography',
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'allow_add' => [
+					'enabled' => true,
+					'new_tag_text' => ' (+)',
+					'new_tag_prefix' => '__',
+					'tag_separators' => '[","]'
+				],
+				'cache' => false,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'language' => $language,
+				"required" => true,
+				'constraints' => [new NotBlank()]
+			])
 		    ->add('fictionalCharacters', Select2EntityType::class, [
 				'multiple' => true,
 				'remote_route' => 'Biography_Admin_Autocomplete',

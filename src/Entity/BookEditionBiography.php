@@ -26,6 +26,12 @@ class BookEditionBiography extends EntityLinkBiography
 	 */
 	private $bookEdition;
 
+	/**
+	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="biographies")
+	 * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
+	 */
+	private $book;
+
 	public static function getOccupations(): Array {
 		return [
 			self::PREFACE_OCCUPATION,
@@ -33,23 +39,23 @@ class BookEditionBiography extends EntityLinkBiography
 		];
 	}
 
-    /**
-     * Set bookEdition
-     *
-     * @param string $bookEdition
-     */
     public function setBookEdition($bookEdition)
     {
         $this->bookEdition = $bookEdition;
     }
 
-    /**
-     * Get bookEdition
-     *
-     * @return string 
-     */
     public function getBookEdition()
     {
         return $this->bookEdition;
+    }
+
+    public function setBook($book)
+    {
+        $this->book = $book;
+    }
+
+    public function getBook()
+    {
+        return $this->book;
     }
 }

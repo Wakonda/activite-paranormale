@@ -37,7 +37,6 @@ class BookEditionAdminType extends AbstractType
 			->add('isbn13', TextType::class, array('required' => false, 'constraints' => array(new Isbn("isbn13"))))
 			->add('numberPage', IntegerType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('publicationDate', DatePartialType::class, ['required' => true, 'constraints' => [new NotBlank()]])
-            ->add('biographies', CollectionType::class, ["required" => false])
             ->add('wholeBook', FileType::class, array('data_class' => null, 'required' => false))
             ->add('format', ChoiceType::class, array('choices' => array('bookEdition.admin.Paperback' => 'paperback', 'bookEdition.admin.Hardcover' => 'hardcover', 'bookEdition.admin.Audiobook' => 'audiobook', 'bookEdition.admin.Ebook' => 'ebook'), 'expanded' => false, 'multiple' => false, 'required' =>true, 'constraints' => array(new NotBlank()), 'translation_domain' => 'validators'))
 			->add('publisher', EntityType::class, array('class'=>'App\Entity\Publisher',
