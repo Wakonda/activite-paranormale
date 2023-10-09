@@ -83,6 +83,7 @@
 				document.getElementById("{{ form.deathDate.day.vars.id }}").value = data.deathDate.day;
 				document.getElementById("{{ form.deathDate.month.vars.id }}").value = data.deathDate.month;
 				document.getElementById("{{ form.deathDate.year.vars.id }}").value = data.deathDate.year;
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 				document.getElementById("{{ form.nationality.vars.id }}").value = data.nationality.country.id;

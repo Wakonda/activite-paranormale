@@ -103,6 +103,7 @@
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
 				document.getElementById("{{ form.website.vars.id }}").value = data.links;
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);

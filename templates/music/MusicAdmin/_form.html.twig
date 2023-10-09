@@ -169,6 +169,7 @@
 					document.getElementById("{{ form.embeddedCode.vars.id }}").value = data.embeddedCode;
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);

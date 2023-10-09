@@ -15,22 +15,19 @@
 			$this->em = $em;
 		}
 
-		public function isUrl($string)
+		public static function isUrl($url)
 		{
 			$regex = "((https?|ftp)\:\/\/)?"; // SCHEME 
 			$regex .= "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"; // User and Pass 
 			$regex .= "([a-z0-9-.]*)\.([a-z]{2,3})"; // Host or IP 
 			$regex .= "(\:[0-9]{2,5})?"; // Port 
 			$regex .= "(\/([a-zA-Z,0-9+\$_-]\.?)+)*\/?"; // Path 
-			$regex .= "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"; // GET Query 
+			$regex .= "([\p{L}\d._-]+(:\d+)?)?"; // GET Query 
 			$regex .= "(#[a-z_.-][a-z0-9+\$_.-]*)?"; // Anchor 
 
-			if(preg_match("/^$regex$/", $string))
-				return true;
-		   
-			return false;
+			return preg_match("/^$regex$/u", $url) === 1;
 		}
-		
+
 		public function sourceString($sourceJSON, string $locale, Array $classes = []): ?String {
 			$datas = json_decode($sourceJSON, true);
 

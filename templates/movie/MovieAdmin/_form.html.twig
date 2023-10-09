@@ -162,6 +162,7 @@
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 
 				document.getElementById("{{ form.releaseYear.year.vars.id }}").value = data.publicationDate.year;
 				document.getElementById("{{ form.releaseYear.day.vars.id }}").value = data.publicationDate.day;

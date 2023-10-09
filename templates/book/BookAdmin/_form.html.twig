@@ -80,6 +80,7 @@
 				let data = JSON.parse(xmlHttp.responseText);
 
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 				document.getElementById("url_{{ form.introduction.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.introduction.vars.id }}").dispatchEvent(new Event("change"));
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;

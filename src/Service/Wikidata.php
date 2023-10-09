@@ -17,11 +17,13 @@
 			$this->em = $em;
 		}
 		
-		public function getTitleAndUrl(string $code, string $language): array
+		public function getTitleAndUrl(string &$code, string $language): array
 		{
 			$res = [];
 			$languageWiki = $language."wiki";
 
+			$code = $this->getCodeFromURL($code);
+// dd($code);
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 			$datas = json_decode($content);
@@ -46,6 +48,7 @@
 
 			$res["title"] = ucfirst($title);
 			$res["url"] = $url;
+			$res["code"] = $code;
 			
 			return $res;
 		}
@@ -53,6 +56,7 @@
 		public function getBiographyDatas(string $code, string $language): array
 		{
 			$res = $this->getTitleAndUrl($code, $language);
+
 			$languageWiki = $language."wiki";
 
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}");
@@ -310,10 +314,8 @@
 
 			$datas = json_decode($content);
 
-			$res["title"] = $datas->entities->$code->labels->$language->value;
 
-			if(property_exists($datas->entities->$code->sitelinks, $languageWiki))
-				$res["url"] = $this->getUrl($datas, $code, $languageWiki);
+			$res = $this->getTitleAndUrl($code, $language);
 
 			$res = array_merge($res, $this->getMusicByIdSong($code, $language));
 
@@ -1049,5 +1051,19 @@
 			$wikidataId = $data['query']['pages'][$pageId]['pageprops']['wikibase_item'];//dd($wikidataId, $pageId);
 			
 			return $wikidataId;
+		}
+
+		private function getCodeFromURL($url) {
+			if(!FunctionsLibrary::isUrl($url))
+				return $url;
+
+			$locale = explode(".", parse_url($url ,PHP_URL_HOST))[0];
+
+			$title = urlencode(basename(parse_url($url, PHP_URL_PATH)));
+
+			$res = file_get_contents("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title");
+			$res = json_decode($res, true);
+
+			return $res["query"]["pages"][array_key_first($res["query"]["pages"])]["pageprops"]["wikibase_item"];
 		}
 	}

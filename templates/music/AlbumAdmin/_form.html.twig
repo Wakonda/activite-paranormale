@@ -62,6 +62,7 @@
 				document.getElementById("{{ form.releaseYear.day.vars.id }}").value = data.publicationDate.day;
 				document.getElementById("{{ form.releaseYear.month.vars.id }}").value = data.publicationDate.month;
 				
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 				document.getElementById("{{ form.tracklist.vars.id }}").value = JSON.stringify(data.tracklist);
 
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)

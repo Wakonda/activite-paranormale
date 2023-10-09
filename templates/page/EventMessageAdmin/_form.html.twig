@@ -91,6 +91,7 @@
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 				
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 				document.getElementById("url_{{ form.abstractText.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.abstractText.vars.id }}").dispatchEvent(new Event("change"));
 				

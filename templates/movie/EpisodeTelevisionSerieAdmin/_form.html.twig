@@ -116,6 +116,7 @@
 						
 					document.getElementById("url_{{ form.synopsis.vars.id }}").value = data.url;
 					document.getElementById("url_{{ form.synopsis.vars.id }}").dispatchEvent(new Event("change"));
+					document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 						
 					if(typeof data.releaseDate !== "undefined")
 						document.getElementById("{{ form.releaseDate.vars.id }}").value = data.releaseDate.year + "-" + data.releaseDate.month.toString().padStart(2, "0") + "-" + data.releaseDate.day.toString().padStart(2, "0");
