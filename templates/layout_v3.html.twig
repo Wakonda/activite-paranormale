@@ -32,25 +32,7 @@
 		
 		<style>
 		/* Styles de base pour la classe .nav */
-.ttest {
-  /* Style de base que vous souhaitez appliquer à toutes les tailles d'écran */
-  /* Par exemple, une largeur de 14rem pour les écrans de moins de 1200px */
-  width: 15rem;
-}
 
-/* Media query pour les écrans supérieurs ou égaux à 1400px */
-@media screen and (min-width: 1400px) {
-  .ttest {
-    width: 20rem;
-  }
-}
-
-/* Media query pour les écrans entre 1200px et 1400px (inclus) */
-@media screen and (min-width: 1200px) and (max-width: 1399px) {
-  .ttest {
-    width: 17rem;
-  }
-}
 </style>
 	</head>
 
@@ -58,8 +40,8 @@
 		<!-- Navigation -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 			<div class="container">
-				<div class="ttest">{{ render(controller('App\\Controller\\PageController::displayLogoAction')) }}
-				<a class="navbar-brand fw-bold me-0 me-sm-2" href="{{ path('Index_Index') }}">
+				<div class="navbar-brand-container">{{ render(controller('App\\Controller\\PageController::displayLogoAction')) }}
+				<a class="navbar-brand fw-bold me-0 me-sm-2 d-block mt-1" href="{{ path('Index_Index') }}">
 				Activité-Paranormale</a></div>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 				<span class="navbar-toggler-icon"></span>

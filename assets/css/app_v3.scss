@@ -601,6 +601,22 @@ a.tags_display {
 a.navbar-brand:hover, a.navbar-brand:focus {
 	text-shadow: 0 0 7px #ccd718 !important;
 	color: #ccd718 !important;
+	text-decoration: none !important;
+}
+.navbar-brand-container {
+  width: 15rem;
+}
+
+@media screen and (min-width: 1400px) {
+  .navbar-brand-container {
+    width: 20rem;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1399px) {
+  .navbar-brand-container {
+    width: 17rem;
+  }
 }
 /********** MODAL ***********/
 .black_modal .modal-content {
