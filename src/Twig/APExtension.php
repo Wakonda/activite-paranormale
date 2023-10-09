@@ -1018,7 +1018,12 @@
 				$doc = new \DOMDocument();
 				$doc->loadHTML($code);
 
-				$srcAttribute = $doc->getElementsByTagName('iframe')->item(0)->getAttribute('src');
+				$iframe = $doc->getElementsByTagName('iframe')->item(0);
+
+				if(empty($iframe))
+					return null;
+
+				$srcAttribute = $iframe->getAttribute('src');
 
 				if (strpos($srcAttribute, 'youtube.com') !== false) {
 					$pattern = '/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/';
