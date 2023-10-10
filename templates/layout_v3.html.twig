@@ -68,9 +68,9 @@
 							{% endif %}
 							<a class="nav-link dropdown-toggle fw-bold px-3" id="dropdownFlag" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ asset('extended/photo/language/'~imgFlag) }}" alt="fr" class="rounded" width="30"/></a>
 							<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownFlag" id="dropdownFlagItems">
-								<a class="dropdown-item" href="{{ path('Index_SelectLanguage', {'lang':'fr'})}}"><img src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" alt="fr" class="rounded" width="30"/></a>
-								<a class="dropdown-item" href="{{ path('Index_SelectLanguage', {'lang':'en'})}}"><img src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" alt="en" class="rounded" width="30"/></a>
-								<a class="dropdown-item" href="{{ path('Index_SelectLanguage', {'lang':'es'})}}"><img src="{{ asset('extended/photo/language/spanishFlagMobile.png') }}" alt="es" class="rounded" width="30"/></a>
+								<a class="dropdown-item" href="{{ path('Index_SelectLanguage', {'lang':'fr'})}}"><img src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" alt="fr" class="rounded" width="30" loading="lazy"/></a>
+								<a class="dropdown-item" href="{{ path('Index_SelectLanguage', {'lang':'en'})}}"><img src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" alt="en" class="rounded" width="30" loading="lazy"/></a>
+								<a class="dropdown-item" href="{{ path('Index_SelectLanguage', {'lang':'es'})}}"><img src="{{ asset('extended/photo/language/spanishFlagMobile.png') }}" alt="es" class="rounded" width="30" loading="lazy"/></a>
 							</div>
 						</li>
 					</ul>
@@ -231,7 +231,7 @@
 							{% endif %}
 							<div id="quotation_right_menu" class="news_section mt-3">
 								<h3>{{ "index.leftMenu.Quotations"|trans([], "validators") }}</h3>
-								<img class="image_wrapper img-fluid mx-auto d-block" src="{{ asset('extended/photo/quotation-random.webp') }}" alt="Random quotation" width="200" />
+								<img class="image_wrapper img-fluid mx-auto d-block" src="{{ asset('extended/photo/quotation-random.webp') }}" alt="Random quotation" width="200" loading="lazy"/>
 								{{ render(controller('App\\Controller\\QuotationController::randomQuote')) }}
 							</div>
 							<div id="feedrss_right_menu" class="news_section mt-3">
