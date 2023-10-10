@@ -93,10 +93,10 @@
 		{% if entity.archive == false %}
 			{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
 			
-			{% set dateTo = entity.dateTo is not empty ? entity.dateTo|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) ~ " - " : "" %}
-			{{ macro_index.twitter_form(entity, false, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale)) ~ " - " ~ dateTo) }}
+			{% set dateTo = entity.dateTo is not empty ? entity.dayTo|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation) ~ " - " : "" %}
+			{{ macro_index.twitter_form(entity, false, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation)) ~ " - " ~ dateTo) }}
 			{{ macro_index.facebook_form(entity, (entity.abstractText|raw)|striptags) }}
-			{{ macro_index.mastodon_form(entity, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale)) ~ " - " ~ dateTo) }}
+			{{ macro_index.mastodon_form(entity, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation)) ~ " - " ~ dateTo) }}
 			{{ macro_index.diaspora_form(entity, (entity.abstractText|raw)|striptags) }}
 		{% endif %}
 	{% endif %}
