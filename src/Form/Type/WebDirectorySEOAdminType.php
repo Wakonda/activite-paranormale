@@ -9,6 +9,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class WebDirectorySEOAdminType extends AbstractType
@@ -16,14 +17,16 @@ class WebDirectorySEOAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('returnLink', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('returnLink', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('link', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('text', TextareaType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(EntityRepository $er) {
 					return $er->createQueryBuilder('u')
 							->orderBy('u.title', 'ASC');
@@ -39,8 +42,8 @@ class WebDirectorySEOAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\WebDirectorySEO'
-		));
+		]);
 	}
 }

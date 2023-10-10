@@ -83,7 +83,7 @@ class BiographyAdminType extends AbstractType
 
 		$entities = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 		$occupationChoice = [];
-		
+
 		foreach($entities as $entity) {
 			if(in_array(\App\Entity\Interfaces\BiographyInterface::class, class_implements($entity))) {
 				foreach($entity::getOccupations() as $occupation)

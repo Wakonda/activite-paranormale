@@ -36,10 +36,20 @@ class WebDirectorySEO
      */
     private $title;
 
+    /**
+     * @ORM\Column(name="text", type="text")
+     */
+    private $text;
+
    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
      */
     private $language;
+
+    /**
+     * @ORM\Column(name="link", type="string", length=255)
+     */
+    private $link;
 
     /**
      * Get id
@@ -99,5 +109,25 @@ class WebDirectorySEO
     public function setLanguage(Language $language)
     {
         $this->language = $language;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function setLink($link)
+    {
+        $this->link = $link;
+    }
+
+    public function getLink()
+    {
+        return $this->link;
     }
 }

@@ -17,6 +17,12 @@
 	<div class="form-table-cell form-table-cell-head">{{ "directorySEO.admin.Title"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.title }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "directorySEO.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "directorySEO.admin.Link"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.link }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "directorySEO.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
 {% endblock %}

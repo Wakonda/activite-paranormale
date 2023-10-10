@@ -1,8 +1,10 @@
 WebDirectorySEO_Index:
-    path:  /directory/seo/{page}
-    controller: App\Controller\WebDirectorySEOController::indexAction
-    defaults:
-        page: 1
+    path:  /directory/seo
+    controller: App\Controller\WebDirectorySEOController::index
+
+WebDirectorySEO_Show:
+    path:  /directory/seo/{id}
+    controller: App\Controller\WebDirectorySEOController::show
 
 # Administration
 WebDirectorySEO_Admin:
