@@ -1,10 +1,14 @@
 directorySEO:
     admin:
-        ReturnLink: "Link"
+        ReturnLink: "Return link"
         Title: "Title"
+        Text: "Text"
+        Link: "Link"
         Language: "Language"
     index:
         DirectorySEO: "Directory SEO"
-        ReturnLink: "Link"
+        ReturnLink: "Return link"
         Title: "Title"
+        Text: "Description"
+        Link: "Link"
         Language: "Language"
