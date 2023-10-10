@@ -67,7 +67,8 @@ class BookRepository extends MappedSuperclassBaseRepository
 		   ->innerjoin("b.language", "l")
 		   ->andWhere("l.abbreviation = :abbreviation")
 		   ->setParameter("abbreviation", $entity->getLanguage()->getAbbreviation())
-		   ->innerJoin('b.authors', 'aths')
+		   ->innerJoin('b.biographies', 'db')
+		   ->innerJoin('db.biography', 'aths')
 		   ->andWhere("aths.id IN (:authorIds)")
 		   ->setParameter("authorIds", $authorIds);
 
@@ -138,13 +139,14 @@ class BookRepository extends MappedSuperclassBaseRepository
 	public function getBooksByBiographyInternationalName($internationalName)
 	{
 		$qb = $this->createQueryBuilder("d");
-		
-		$qb->leftjoin('d.authors', 'b')
+
+		$qb->leftjoin('d.biographies', 'db')
+		   ->leftjoin('db.biography', 'b')
 		   ->leftjoin('d.fictionalCharacters', 'f')
 		   ->where('b.internationalName = :internationalName')
 		   ->orWhere('f.internationalName = :internationalName')
 		   ->setParameter('internationalName', $internationalName);
-
+;
 		return $qb->getQuery()->getResult();
 	}
 

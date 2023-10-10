@@ -20,15 +20,16 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Field\SourceEditType;
 use App\Entity\TagWord;
+use App\Entity\BookEditionBiography;
 use App\Form\EventListener\InternationalNameFieldListener;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BookAdminType extends AbstractType
 {
-    public $translator;
-
-    public function __construct(TranslatorInterface $translator)
-    {
-        $this->translator = $translator;
+    public function __construct(
+        private EntityManagerInterface $em,
+        private TranslatorInterface $translator
+    ) {
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options)
@@ -68,28 +69,7 @@ class BookAdminType extends AbstractType
 			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('wikidata', TextType::class, ['required' => false])
-		    ->add('authors', Select2EntityType::class, [
-				'multiple' => true,
-				'remote_route' => 'Biography_Admin_Autocomplete',
-				'class' => 'App\Entity\Biography',
-				'page_limit' => 10,
-				'primary_key' => 'id',
-				'text_property' => 'title',
-				'allow_clear' => true,
-				'delay' => 250,
-				'allow_add' => [
-					'enabled' => true,
-					'new_tag_text' => ' (+)',
-					'new_tag_prefix' => '__',
-					'tag_separators' => '[","]'
-				],
-				'cache' => false,
-				'req_params' => ['locale' => 'parent.children[language]'],
-				'language' => $language,
-				"required" => true,
-				'constraints' => [new NotBlank()]
-			])
-		    ->add('biographies', Select2EntityType::class, [
+			->add('biographies', Select2EntityType::class, [
 				'multiple' => true,
 				'remote_route' => 'Biography_Admin_Autocomplete',
 				'class' => 'App\Entity\Biography',
@@ -163,6 +143,45 @@ class BookAdminType extends AbstractType
 			])
 		;
 		
+        $builder->get('biographies')
+            ->addModelTransformer(new \Symfony\Component\Form\CallbackTransformer(
+                function ($bookEditionBiographies) {
+					$datas = [];
+
+					foreach($bookEditionBiographies as $bookEditionBiography)
+						$datas[] = $bookEditionBiography->getBiography();
+
+                    return $datas;
+                },
+                function ($biographies) use ($builder) {
+					$datas = [];
+
+					foreach($biographies as $biography) {
+						$entity = $this->em->getRepository(BookEditionBiography::class)->findOneBy(["book" => $builder->getData(), "biography" => $biography]);
+
+						if(empty($entity)) {
+							$entity = new BookEditionBiography();
+							$entity->setBook($builder->getData());
+							$entity->setBiography($biography);
+							$entity->setOccupation(\App\Entity\BookEditionBiography::AUTHOR_OCCUPATION);
+						}
+
+						$datas[] = $entity;
+					}
+
+					$datasCollection = new \Doctrine\Common\Collections\ArrayCollection($datas);
+					$currentBiographies = $this->em->getRepository(BookEditionBiography::class)->findBy(["book" => $builder->getData()]);
+					
+					foreach($currentBiographies as $currentBiography) {
+						if(!$datasCollection->contains($currentBiography))
+							$this->em->remove($currentBiography);
+					}
+
+					return $datas;
+                }
+            ))
+        ;
+		
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
 
@@ -173,9 +192,9 @@ class BookAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Book',
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

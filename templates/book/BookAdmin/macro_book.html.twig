@@ -9,7 +9,7 @@
 			data: { "id" : $(this).val() },
 			success: function(data)
 			{
-				$("#{{ form.authors.vars.id }}").empty().trigger("change");
+				$("#{{ form.biographies.vars.id }}").empty().trigger("change");
 				$("#{{ form.fictionalCharacters.vars.id }}").empty().trigger("change");
 				$("#{{ form.tags.vars.id }}").empty().trigger("change");
 				

@@ -38,6 +38,8 @@ class OccupationBiographyTransformer implements DataTransformerInterface
      */
     public function reverseTransform($values)
     {
+		$res = [];
+
 		foreach($values as $value) {
 			$entity = $this->entityManager->getRepository(EntityLinkBiography::class)->findOneBy(["biography" => $this->biography->getId(), "occupation" => $value]);
 			

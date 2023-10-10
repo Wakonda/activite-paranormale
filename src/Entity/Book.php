@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\BookRepository")
  */
-class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  Interfaces\BiographyInterface
+class Book extends MappedSuperclassBase implements Interfaces\StoreInterface
 {
     /**
      * @var integer $id
@@ -150,14 +150,6 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  I
 	public function __construct()
 	{
 		parent::__construct();
-	}
-	
-	const AUTHOR_OCCUPATION = "author";
-
-	public static function getOccupations(): Array {
-		return [
-			self::AUTHOR_OCCUPATION
-		];
 	}
 
 	public function getShowRoute()
@@ -371,7 +363,12 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  I
      */
 	public function getAuthors()
 	{
-		return $this->authors;
+		$datas = [];
+
+		foreach($this->biographies as $biography)
+			$datas[] = $biography->getBiography();
+
+		return $datas;
 	}
 
 	public function addFictionalCharacter(Biography $biography)
@@ -535,9 +532,9 @@ class Book extends MappedSuperclassBase implements Interfaces\StoreInterface,  I
         $this->biographies = $biographies;
     }
 
-	public function removeBiography(Biography $biography)
+	public function removeBiography($biography)
 	{
-		$this->biographies->removeElement(biography);
+		$this->biographies->removeElement($biography);
 	}
 
 	public function getBiographies()

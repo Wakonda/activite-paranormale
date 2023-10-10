@@ -17,7 +17,8 @@ class BookEditionBiographyRepository extends EntityRepository
 		$qb = $this->createQueryBuilder("mb");
 		
 		$qb->where("mb.biography = :biography")
-		   ->setParameter("biography", $biography);
+		   ->setParameter("biography", $biography)
+		   ->andWhere("mb.bookEdition IS NOT NULL");
 		   
 		return $qb->getQuery()->getResult();
 	}

@@ -431,77 +431,63 @@ abstract class AdminGenericController extends AbstractController
 		}
 	}
 	
-	protected function saveNewBiographies(EntityManagerInterface $em, &$entityBindded, $form, string $field, bool $isFormChild = true)
+	protected function saveNewBiographies(EntityManagerInterface $em, &$entityBindded, $form, string $field)
 	{
-		if(!$isFormChild) {
-			foreach ($form->getData()->getAuthors() as $newBiography)
-			{
-				if(empty($newBiography->getId())) {
-					$generator = new \Ausi\SlugGenerator\SlugGenerator;
-					$newBiography->setInternationalName($generator->generate($newBiography->getTitle()).uniqid());
-					$newBiography->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
-					$newBiography->setKind(Biography::PERSON);
+		foreach ($form->get($field) as $formChild)
+		{
+			$internationalName = $formChild->get('internationalName')->getData();
+			$wikidata = $formChild->get('wikidata')->getData();
+			$newBiography = $formChild->getData();
 
-					$em->persist($newBiography);
-				}
-			}
-		} else {
-			foreach ($form->get($field) as $formChild)
-			{
-				$internationalName = $formChild->get('internationalName')->getData();
-				$wikidata = $formChild->get('wikidata')->getData();
-				$newBiography = $formChild->getData();
+			if($internationalName == "+") {
+				$generator = new \Ausi\SlugGenerator\SlugGenerator;
+				$newBiography->getBiography()->setInternationalName($generator->generate($newBiography->getBiography()->getTitle()).uniqid());
+				$newBiography->getBiography()->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
+				$newBiography->getBiography()->setKind(Biography::PERSON);
+				$newBiography->getBiography()->setWikidata($wikidata);
 
-				if($internationalName == "+") {
-					$generator = new \Ausi\SlugGenerator\SlugGenerator;
-					$newBiography->getBiography()->setInternationalName($generator->generate($newBiography->getBiography()->getTitle()).uniqid());
-					$newBiography->getBiography()->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
-					$newBiography->getBiography()->setKind(Biography::PERSON);
-					$newBiography->getBiography()->setWikidata($wikidata);
+				$em->persist($newBiography->getBiography());
+			} else {
+				$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName, "language" => $entityBindded->getLanguage()]);
 
-					$em->persist($newBiography->getBiography());
-				} else {
-					$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName, "language" => $entityBindded->getLanguage()]);
+				if(empty($biography)) {
+					$b = new Biography();
+					$b->setInternationalName($internationalName);
+					$b->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
+					$b->setKind(Biography::PERSON);
+					$b->setWikidata($wikidata);
+					$b->setTitle($newBiography->getBiography()->getTitle());
+					$b->setBirthDate($newBiography->getBiography()->getBirthDate());
+					$b->setDeathDate($newBiography->getBiography()->getDeathDate());
+					$b->setLinks($newBiography->getBiography()->getLinks());
+					
+					$country = null;
 
-					if(empty($biography)) {
-						$b = new Biography();
-						$b->setInternationalName($internationalName);
-						$b->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));
-						$b->setKind(Biography::PERSON);
-						$b->setWikidata($wikidata);
-						$b->setTitle($newBiography->getBiography()->getTitle());
-						$b->setBirthDate($newBiography->getBiography()->getBirthDate());
-						$b->setDeathDate($newBiography->getBiography()->getDeathDate());
-						$b->setLinks($newBiography->getBiography()->getLinks());
-						
-						$country = null;
-
-						if(!empty($n = $newBiography->getBiography()->getNationality())) {
-							$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $n->getInternationalName(), "language" => $entityBindded->getLanguage()]);
-							$b->setNationality($country);
-						}
-
-						if(!empty($ci = $newBiography->getBiography()->getIllustration())) {
-							$illustration = new FileManagement();
-							$illustration->setTitleFile($ci->getTitleFile());
-							$illustration->setRealNameFile($ci->getRealNameFile());
-							$illustration->setCaption($ci->getCaption());
-							$illustration->setLicense($ci->getLicense());
-							$illustration->setAuthor($ci->getAuthor());
-							$illustration->setUrlSource($ci->getUrlSource());
-							$illustration->setExtensionFile(pathinfo($ci->getRealNameFile(), PATHINFO_EXTENSION));
-
-							$b->setIllustration($illustration);
-
-							$em->persist($ci);
-						}
-						$em->persist($b);
-						
-						$newBiography->setBiography($b);
-					} else {
-						$newBiography->setBiography($biography);
-						$em->persist($newBiography->getBiography());
+					if(!empty($n = $newBiography->getBiography()->getNationality())) {
+						$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $n->getInternationalName(), "language" => $entityBindded->getLanguage()]);
+						$b->setNationality($country);
 					}
+
+					if(!empty($ci = $newBiography->getBiography()->getIllustration())) {
+						$illustration = new FileManagement();
+						$illustration->setTitleFile($ci->getTitleFile());
+						$illustration->setRealNameFile($ci->getRealNameFile());
+						$illustration->setCaption($ci->getCaption());
+						$illustration->setLicense($ci->getLicense());
+						$illustration->setAuthor($ci->getAuthor());
+						$illustration->setUrlSource($ci->getUrlSource());
+						$illustration->setExtensionFile(pathinfo($ci->getRealNameFile(), PATHINFO_EXTENSION));
+
+						$b->setIllustration($illustration);
+
+						$em->persist($ci);
+					}
+					$em->persist($b);
+					
+					$newBiography->setBiography($b);
+				} else {
+					$newBiography->setBiography($biography);
+					$em->persist($newBiography->getBiography());
 				}
 			}
 		}

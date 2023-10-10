@@ -47,7 +47,7 @@ class BookAdminController extends AdminGenericController
 		if($searchForDoublons > 0)
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
-		foreach ($form->get('authors') as $formChild)
+		foreach ($form->get('biographies') as $formChild)
 			if(empty($formChild->get('internationalName')->getData()))
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
@@ -56,7 +56,6 @@ class BookAdminController extends AdminGenericController
 				$formChild->get('biography')->addError(new FormError($translator->trans('biography.admin.YouMustValidateThisBiography', [], 'validators')));
 
 		if($form->isValid()) {
-			$this->saveNewBiographies($em, $entityBindded, $form, "authors", false);
 			$this->saveNewBiographies($em, $entityBindded, $form, "fictionalCharacters", false);
 		}
 	}
@@ -249,17 +248,22 @@ class BookAdminController extends AdminGenericController
 
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		
-		foreach($entityToCopy->getAuthors() as $mbToCopy) {
-			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getInternationalName(), "language" => $language]);
-			
+		foreach($entityToCopy->getBiographies() as $mbToCopy) {
+			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getBiography()->getInternationalName(), "language" => $language]);
+
 			if(empty($biography))
 				continue;
-			
-			$entity->addAuthor($biography);
-			$mbArray->add($biography);
+
+			$mb = new \App\Entity\BookEditionBiography();
+
+			$mb->setOccupation($mbToCopy->getOccupation());
+			$mb->setBook($entity);
+			$mb->setBiography($biography);
+
+			$mbArray->add($mb);
 		}
 		
-		$entity->setAuthors($mbArray);
+		$entity->setBiographies($mbArray);
 
 		$mbArray = new \Doctrine\Common\Collections\ArrayCollection();
 		

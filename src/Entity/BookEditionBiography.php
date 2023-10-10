@@ -19,6 +19,7 @@ class BookEditionBiography extends EntityLinkBiography
 {
 	const PREFACE_OCCUPATION = "preface";
 	const TRANSLATOR_OCCUPATION = "translator";
+	const AUTHOR_OCCUPATION = "author";
 
 	/**
 	 * @ORM\ManyToOne(targetEntity="BookEdition", inversedBy="biographies")
@@ -35,7 +36,8 @@ class BookEditionBiography extends EntityLinkBiography
 	public static function getOccupations(): Array {
 		return [
 			self::PREFACE_OCCUPATION,
-			self::TRANSLATOR_OCCUPATION
+			self::TRANSLATOR_OCCUPATION,
+			self::AUTHOR_OCCUPATION
 		];
 	}
 
