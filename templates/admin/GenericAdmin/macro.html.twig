@@ -149,6 +149,7 @@
 				document.getElementById("{{ titleFieldId }}").value = data.title;
 				document.getElementById("url_{{ textFieldId }}").value = data.url;
 				document.getElementById("url_{{ textFieldId }}").dispatchEvent(new Event("change"));
+				document.getElementById('wikidata').previousElementSibling.value = data.code;
 
 				{% if illustrationForm is not empty %}
 					if(document.getElementById("{{ illustrationForm.photo_selector.vars.id }}").value == "") {
