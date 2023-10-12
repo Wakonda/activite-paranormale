@@ -5,16 +5,16 @@
 {% block meta_description %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endblock %}
 
 {% block header_plus %}
-	<script src="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.js') }}"></script>
+	<script src="{{ asset('extended/js/ImageRotateZooming/ImageRotateZoomingVanilla.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			$("#img_zoomed").ImageRotateZooming({
-				"rotate": true,
-				"zoom": true
+			ImageRotateZooming(document.querySelector('#img_zoomed'), {
+				zoom: true,
+				rotate: true
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/ImageRotateZooming/ImageRotateZooming.min.css') }}" type="text/css" media="screen" />
 {% endblock %}
 
 {% block meta_plus %}
