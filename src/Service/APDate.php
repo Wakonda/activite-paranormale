@@ -136,7 +136,7 @@
 			else if($language == "es")
 			{
 				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-				$dateString = ((!empty($day)) ? ltrim($day, "0")." de " : "").$monthSpain[$month-1].(!empty($year) ?? " de ".$year);
+				$dateString = ((!empty($day)) ? ltrim($day, "0")." de " : "").$monthSpain[$month-1].(!empty($year) ? " de ".$year : "");
 			}
 			else
 			{
