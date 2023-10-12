@@ -62,7 +62,6 @@
 				new TwigFilter('linkfollow', array($this, 'linkFollowFilter')),
 				new TwigFilter('is_image', array($this, 'isImageFilter')),
 				new TwigFilter('get_real_class', array($this, 'getRealClassFilter')),
-				new TwigFilter('strip_tags', array($this, 'stripTagsFilter')),
 				new TwigFilter('first', array($this, 'firstFilter')),
 				new TwigFilter('urlencode', array($this, 'urlEncodeFilter')),
 				new TwigFilter('HTMLPurifier', array($this, 'HTMLPurifierFilter')),
@@ -162,11 +161,6 @@
 			return in_array(strtolower($extension), ["png", "gif", "jpg", "jpeg", "bmp", "webp"]);
 		}
 
-		public function stripTagsFilter($text)
-		{
-			return strip_tags($text);
-		}
-		
 		public function urlcleanFilter($urlclean)
 		{
 			return (new \App\Service\FunctionsLibrary())->cleanUrl($urlclean);

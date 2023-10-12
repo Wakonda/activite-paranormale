@@ -2,6 +2,14 @@
 
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/folder.png') }}" width="25" class="mt-1" alt="Folder"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block meta_description %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endblock %}
+
+{% block meta_plus %}
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ entity.title }}" />
+	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+{% endblock %}
+
 {% block header_plus %}
 	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
 	<script>
@@ -69,7 +77,7 @@
 	<hr />
 	<div class="tabs">
 		<h3>{{ "document.abstract.Abstract"|trans([], "validators") }}</h3>
-		{% if entity.text|strip_tags is not empty %}
+		{% if entity.text|striptags is not empty %}
 			{{ entity.text|raw }}
 		{% else %}
 			<div class="alert alert-danger"><i>{{ "document.abstract.NoAbstract"|trans([], "validators") }}</i></div>
