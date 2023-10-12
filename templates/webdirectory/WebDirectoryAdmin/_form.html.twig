@@ -3,18 +3,16 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "directory.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
+{{ macro_admin.wikidata_html_generic(form) }}
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.link, "directory.admin.Link"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.link) }}{{ form_widget(form.link, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.logo, "directory.admin.Logo"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
-	{{ form_errors(form.logo) }}{{ form_widget(form.logo) }}
-	<br>
-	{{ form_widget(form.photo_selector) }}
-</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "directory.admin.Logo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.websiteLanguage, "directory.admin.WebsiteLanguage"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.websiteLanguage) }}{{ form_widget(form.websiteLanguage, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">{{ form_errors(form.websiteLanguage) }}{{ form_widget(form.websiteLanguage, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "directory.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
@@ -64,8 +62,6 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkVimeo, "Vimeo") }}</div>
 <div class="form-table-cell">{{ form_errors(form.socialNetworkVimeo) }}{{ form_widget(form.socialNetworkVimeo, { 'attr': {'class': 'form-control'} }) }}</div>
 
-{{ macro_admin.wikidata_html_generic(form) }}
-
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "directory.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
 
@@ -111,8 +107,14 @@
 				document.getElementById("{{ form.socialNetworkGithub.vars.id }}").value = data.socialNetwork.github;
 				document.getElementById("{{ form.socialNetworkInstagram.vars.id }}").value = data.socialNetwork.instagram;
 
-				if(document.getElementById("{{ form.photo_selector.vars.id }}").value == "") {
-					document.getElementById("{{ form.photo_selector.vars.id }}").value = data.image.url;
+				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
+					document.getElementById("{{ form.illustration.license.vars.id }}").value = data.image.license;
+					document.getElementById("{{ form.illustration.author.vars.id }}").value = data.image.user;
+					document.getElementById("{{ form.illustration.urlSource.vars.id }}").value = data.image.url;
+
+					if(data.image.description != null)
+						tinymce.get("{{ form.illustration.caption.vars.id }}").setContent(data.image.description);
 				}
 					
 				document.querySelector('#wikidata .fa-arrows-rotate').classList.remove("fa-spin");

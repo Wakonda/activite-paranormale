@@ -33,8 +33,7 @@ class WebDirectoryAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('link', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
-            ->add('logo', FileType::class, ['data_class' => null, 'required' => true])
-			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox', 'data' => $builder->getData()->getLogo()])
+			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'WebDirectory_Admin_ShowImageSelectorColorbox'])
             ->add('language', EntityType::class, [
 				'class'=> Language::class,
 				'choice_label' => function ($choice, $key, $value) {

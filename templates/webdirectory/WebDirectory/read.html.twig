@@ -3,7 +3,7 @@
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/partner_read.png') }}" width="25" class="mt-1" alt="Alien partner"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 {% block APBlog_body %}
-	<p class="image">{{ entity.logo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 	
 	{% set infos = [] %}
 	

@@ -133,7 +133,7 @@
 				return null;
 
 			$adminRoute = ((new \ReflectionClass($entity))->getShortName())."_Admin_Edit";
-			
+
 			$url = null;
 
 			try {

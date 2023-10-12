@@ -28,7 +28,7 @@ class WebDirectoryController extends AbstractController
 	public function readAction(EntityManagerInterface $em, $id, $title)
 	{
 		$entity = $em->getRepository(WebDirectory::class)->find($id);
-		
+
 		return $this->render('webdirectory/WebDirectory/read.html.twig', [
 			'entity' => $entity
 		]);
@@ -62,8 +62,9 @@ class WebDirectoryController extends AbstractController
 
 		foreach($entities as $entity)
 		{
-			$logo = $imgSize->adaptImageSize(200, $entity->getAssetImagePath().$entity->getLogo());
 			$row = [];
+	
+			$logo = $imgSize->adaptImageSize(200, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
 			$row[] = '<img src="'.$request->getBasePath().'/'.$logo[2].'" alt="" style="width: '.$logo[0].'">';
 			
 			$readUrl = $this->generateUrl("WebDirectory_Read", array("id" => $entity->getId(), "title" => $entity->getTitle()));

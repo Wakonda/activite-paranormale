@@ -23,7 +23,7 @@
 			$languageWiki = $language."wiki";
 
 			$code = $this->getCodeFromURL($code);
-// dd($code);
+
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 			$datas = json_decode($content);
@@ -561,12 +561,15 @@
 		{
 			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-			
+	
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
 			$datas = json_decode($content);
-			
+
 			$res["image"] = $this->getImage($datas, $code, "P154");
+
+			if(empty($res["image"]["url"]))
+				$res["image"] = $this->getImage($datas, $code, "P18");
 
 			$res["socialNetwork"] = ["twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
 

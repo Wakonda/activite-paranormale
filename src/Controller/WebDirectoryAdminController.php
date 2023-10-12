@@ -33,11 +33,11 @@ class WebDirectoryAdminController extends AdminGenericController
 	protected $showRoute = "WebDirectory_Admin_Show";
 	protected $formName = 'ap_webdirectory_webdirectoryadmintype';
 
-	protected $illustrations = [["field" => "logo", 'selectorFile' => 'photo_selector']];
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
+		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 
 		// Check for Doublons
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);

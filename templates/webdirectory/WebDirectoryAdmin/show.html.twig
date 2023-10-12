@@ -18,7 +18,13 @@
 	<div class="form-table-cell"><a href="{{ entity.link }}" alt="{{ entity.title }}" target="_blank">{{ entity.link }}</a></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Logo"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.logo|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+	<div class="form-table-cell">
+		{% if entity.illustration is not empty %}
+			{{ entity.illustration.titleFile|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"}, {}, true)|raw }}
+			{% import "filemanagement/FileManagementAdmin/macro.html.twig" as macro_filemanagement %}
+			{{ macro_filemanagement.license_picture_admin(entity.illustration) }}
+		{% endif %}
+	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.WebsiteLanguage"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.websiteLanguage.getAssetImagePath()) }}{{ entity.websiteLanguage.logo }}" alt="" width="20" height="13" /></div>

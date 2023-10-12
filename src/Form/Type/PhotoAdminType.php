@@ -55,8 +55,7 @@ class PhotoAdminType extends AbstractType
 					'required' => true,
 					'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
 			))
-			->add('illustration', IllustrationType::class, array('required' => true, 'base_path' => 'Photo_Admin_ShowImageSelectorColorbox'))
-
+			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'Photo_Admin_ShowImageSelectorColorbox'])
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,
 				'allow_add' => [

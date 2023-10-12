@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class WebDirectory
 {
+	use \App\Entity\GenericEntityTrait;
+
     /**
      * @var integer $id
      *
@@ -42,6 +44,12 @@ class WebDirectory
      * @ORM\Column(type="string", length=255, nullable=true, nullable=true)
      */
     private $logo;
+
+    /**
+     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
+     */
+    private $illustration;
 
    /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
@@ -105,6 +113,11 @@ class WebDirectory
      * @ORM\ManyToOne(targetEntity="App\Entity\State")
      */
     protected $state;
+
+	public function __clone()
+	{
+		$this->illustration = clone $this->illustration;
+	}
 
     /**
      * Get id
@@ -412,5 +425,15 @@ class WebDirectory
     public function setState(State $state)
     {
         $this->state = $state;
+    }
+
+    public function setIllustration($illustration)
+    {
+        $this->illustration = $illustration;
+    }
+
+    public function getIllustration()
+    {
+        return $this->illustration;
     }
 }
