@@ -169,6 +169,9 @@
 			foreach($xpath->query('//table[contains(attribute::class, "navbox")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
+			foreach($xpath->query('//div[contains(attribute::class, "navbox")]') as $e ) {
+				$e->parentNode->removeChild($e);
+			}
 			foreach($xpath->query('//table[contains(attribute::class, "vertical-navbox")]') as $e ) {
 				$e->parentNode->removeChild($e);
 			}
