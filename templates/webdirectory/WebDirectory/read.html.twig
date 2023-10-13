@@ -58,6 +58,32 @@
 		{% endif %}
 	</table>
 	<br>
+	<h3>{{ 'directory.read.Archive'|trans([], 'validators') }}</h3>
+	<p>{{ 'directory.read.AccessPastVersion'|trans([], 'validators') }}</p>
+	
+	<table class="table">
+		<tr>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/wayback-machine.png" alt="Wayback Machine Logo" width="250" /></td>
+			<td class="tdGene">Wayback Machine</td>
+			<td class="tdGene"><a href="https://web.archive.org/web/{{ "now"|date("YmdHis") }}/{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
+		</tr>
+		<tr>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/archive-vn.jpg" alt="Archive.vn Logo" width="250" /></td>
+			<td class="tdGene">archive.today</td>
+			<td class="tdGene"><a href="https://archive.vn/{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
+		</tr>
+		<tr>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/time-travel.png" alt="Time Travel Logo" width="250" /></td>
+			<td class="tdGene">Time Travel</td>
+			<td class="tdGene"><a href="http://timetravel.mementoweb.org/list/{{ "now"|date("YmdHis") }}/{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
+		</tr>
+		<tr>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/google.png" alt="Google Logo" width="250" /></td>
+			<td class="tdGene">Webcache</td>
+			<td class="tdGene"><a href="http://webcache.googleusercontent.com/search?q=cache:{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
+		</tr>
+	</table>
+	<br>
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

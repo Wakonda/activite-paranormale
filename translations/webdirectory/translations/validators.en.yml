@@ -24,6 +24,8 @@ directory:
         FoundedYear: "Founded:"
         DefunctYear: "Defunct:"
         Sources: "Sources"
+        Archive: "Archive"
+        AccessPastVersion: "Access past versions of the website and track its history and evolution."
     admin:
         Title: "Title"
         Link: "Link"

@@ -9,7 +9,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  * App\Entity\WebDirectory
  *
  * @ORM\Table(name="webdirectory")
- * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\WebDirectoryRepository")
  */
 class WebDirectory
@@ -40,7 +39,6 @@ class WebDirectory
     private $link;
 
     /**
-	 * @Assert\File(maxSize="6000000")
      * @ORM\Column(type="string", length=255, nullable=true, nullable=true)
      */
     private $logo;
@@ -206,45 +204,6 @@ class WebDirectory
     public function getTmpUploadRootDir() {
         // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
-    }
-
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
-    public function uploadLogo() {
-        // the file property can be empty if the field is not required
-        if (null === $this->logo) {
-            return;
-        }
-
-		if(is_object($this->logo))
-		{
-			$NameFile = basename($this->logo->getClientOriginalName());
-			$reverseNF = strrev($NameFile);
-			$explodeNF = explode(".", $reverseNF, 2);
-			$NNFile = strrev($explodeNF[1]);
-			$ExtFile = strrev($explodeNF[0]);
-			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
-			if(!$this->id){
-				$this->logo->move($this->getTmpUploadRootDir(), $NewNameFile);
-			}else{
-				if (is_object($this->logo))
-					$this->logo->move($this->getUploadRootDir(), $NewNameFile);
-			}
-			if (is_object($this->logo))
-				$this->setLogo($NewNameFile);
-		} elseif(filter_var($this->logo, FILTER_VALIDATE_URL)) {
-			$parser = new \App\Service\APParseHTML();
-			$html = $parser->getContentURL($this->logo);
-			$pi = pathinfo($this->logo);
-			$extension = $res = pathinfo(parse_url($this->logo, PHP_URL_PATH), PATHINFO_EXTENSION);
-			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
-			$filename = uniqid()."_".$filename;
-
-			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
-			$this->setLogo($filename);
-		}
     }
 
     public function getLanguage()
