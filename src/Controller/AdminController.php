@@ -351,7 +351,7 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getBackCover()) ? "<b>".$translator->trans('bookEdition.admin.BackCover', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getBook()->getText()) ? "<b>".$translator->trans('book.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
-					$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getBook()->getBook()->getAuthors()->getValues()))."<br>";
+					$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getBook()->getBook()->getAuthors()))."<br>";
 					$text .= (!empty($d = $entity->getBook()->getIsbn10()) ? "<b>ISBN 10 : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getIsbn13()) ? "<b>ISBN 13 : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getNumberPage()) ? "<b>".$translator->trans('bookEdition.admin.NumberPage', [], 'validators', $language)." : </b>".$d."<br>" : "");
