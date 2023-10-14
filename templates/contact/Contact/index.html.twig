@@ -12,23 +12,7 @@
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_js(form.messageContact.vars.id) }}
 
-	<script>
-		$(document).ready(function()
-		{
-			$("img#reload_captcha").click(function()
-			{
-				$.ajax({
-					type: "GET",
-					url: "{{ path('Captcha_Reload') }}",
-					cache: false,
-					success: function(data)
-					{
-						$("img#captcha").attr("src", "data:image/png;base64," + data.new_captcha);
-					}
-				});
-			});
-		});
-	</script>
+	{% include 'index/Captcha/captcha_js.html.twig' with {field: form.captcha} %}
 {% endblock %}
 
 {% block APBlog_body %}
@@ -56,18 +40,9 @@
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.messageContact, "contact.index.Message"|trans([], "validators")) }}</div>
 				<div class="form-table-cell">{{ form_errors(form.messageContact) }}{{ form_widget(form.messageContact) }}</div>
 			</div>
-			<br />
-			<div class="form-table form-table-4cols form-table-collapse">
-					<div class="form-table-cell form-table-cell-head">
-						{{ form_label(form.captcha, "captcha.form.RecopyCaptcha"|trans([], "validators")) }}
-					</div>
+			<br>
+			{% include 'index/Captcha/captcha_form.html.twig' with {field: form.captcha} %}
 
-					<div class="form-table-cell">
-						{{ form_errors(form.captcha) }}{{ form_widget(form.captcha, {'attr':{'class' : 'form-control'}}) }}
-						<br><br>
-						<p class="text-center"><img src="data:image/png;base64,{{ captcha() }}" alt="" class="align-middle" id="captcha" /><img src="{{ asset('extended/photo/reload_captcha.png') }}" alt="Reload captcha" width="50" class="align-middle cursor-pointer mt-3" id="reload_captcha"/></p>
-					</div>
-			</div>
 			{{ form_rest(form) }}
 			<div class="text-end mt-3">
 				<button type="submit" class="submitcomment btn">{{ "contact.index.Send"|trans([], "validators") }}</button>

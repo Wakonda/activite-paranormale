@@ -1,0 +1,33 @@
+{{ form_start(form, {'action': path('Video_Notify', { 'id' : entity.id }), 'name':'notifyVideo', 'attr': {'id': 'notifyVideoForm'}}) }}
+	{% include 'index/Captcha/captcha_form.html.twig' with {field: form.captcha} %}
+	<hr>
+	<input type="submit" name="yes" class='confirmation_delete_video me-auto btn btn-success text-white' value='{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}'>
+	<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>		
+{{ form_end(form) }}
+
+{% include 'index/Captcha/captcha_js.html.twig' with {field: form.captcha} %}
+
+<script>
+	var form = document.getElementById("notifyVideoForm");
+
+	form.addEventListener("submit", function(event) {
+		event.preventDefault();
+		var xhr = new XMLHttpRequest();
+	
+		var form = document.getElementById("notifyVideoForm");
+		var formData = new FormData(form);
+
+		xhr.open('POST', '{{ path('Video_Notify', {id: entity.id}) }}', true);
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4) {
+				if(xhr.status === 200) {
+					bootstrap.Modal.getInstance(document.getElementById("checkVideo")).hide();
+					alert("{{ 'video.read.RequestSent'|trans([], 'validators') }}");
+				}
+				document.getElementById("modal-notify-container").innerHTML = "";
+				document.querySelector("#modal-notify-container").appendChild(document.createRange().createContextualFragment(xhr.responseText));
+			}
+		};
+		xhr.send(formData);
+	});
+</script>

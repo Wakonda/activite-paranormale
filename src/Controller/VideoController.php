@@ -124,45 +124,69 @@ class VideoController extends AbstractController
 			$em->persist($entity);
 			$em->flush();
 		}
-		
+
+		$params = new \stdClass();
+		$params->captcha = null;
+
+        $form = $this->createFormBuilder($params)
+            ->add('captcha',\Symfony\Component\Form\Extension\Core\Type\TextType::class, array('required' => true, 'constraints' => array(new \Symfony\Component\Validator\Constraints\NotBlank())))
+            ->getForm();
+
 		return $this->render('video/Video/readVideo.html.twig', [
 			'previousAndNextEntities' => $previousAndNextEntities,
-			'entity' => $entity
+			'entity' => $entity,
+			'form' => $form->createView()
 		]);
 	}
 	
 	public function notifyDeletedVideoAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $id)
 	{
 		$video = $em->getRepository(Video::class)->find($id);
-	
-		$entity  = new Contact();
-		$entity->setDateContact(new \DateTime("now"));
-		$entity->setStateContact(0);
-
-		$entity->setPseudoContact($this->getClientIp($request));
-		$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
-		$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
-		$entity->setSubjectContact("Suppression d'une vidéo");
-
-		$email = (new Email())
-			->from($_ENV["MAILER_CONTACT"])
-			->to($_ENV["MAILER_CONTACT"])
-			->subject("Suppression d'une vidéo")
-			->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
-
-		$mailer->send($email);
-
-		$em->persist($entity);
-		$em->flush();
 		
-        $this->addFlash(
-            'notice',
-			$translator->trans('video.read.RequestSent', [], 'validators', $request->getLocale())
-        );
-		
-		return $this->redirect($this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()]));
+		$params = new \stdClass();
+		$params->captcha = null;
+
+        $form = $this->createFormBuilder($params)
+            ->add('captcha',\Symfony\Component\Form\Extension\Core\Type\TextType::class, array('required' => true, 'constraints' => array(new \Symfony\Component\Validator\Constraints\NotBlank())))
+            ->getForm();
+		$form->handleRequest($request);
+
+        $response = new Response();
+        $response->setStatusCode(400);
+
+		if($form->get("captcha")->getData() != $request->getSession()->get("captcha_word"))
+			$form->get('captcha')->addError(new \Symfony\Component\Form\FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
+
+		if($form->isValid() and $form->isSubmitted()) {
+			$entity  = new Contact();
+			$entity->setDateContact(new \DateTime("now"));
+			$entity->setStateContact(0);
+			$entity->setPseudoContact($this->getClientIp($request));
+			$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
+			$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
+			$entity->setSubjectContact("Suppression d'une vidéo");
+
+			$email = (new Email())
+				->from($_ENV["MAILER_CONTACT"])
+				->to($_ENV["MAILER_CONTACT"])
+				->subject("Suppression d'une vidéo")
+				->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+
+			$mailer->send($email);
+
+			$em->persist($entity);
+			$em->flush();
+			$response->setStatusCode(200);
+		}
+
+		$response->setContent($this->render('video/Video/_notify_video.html.twig', [
+			'entity' => $video,
+			'form' => $form->createView()
+		])->getContent());
+
+		return $response;
 	}
-	
+
 	public function countVideoAction(EntityManagerInterface $em, $lang)
 	{
 		$nbrTabVideo = $em->getRepository(Video::class)->nbrVideo($lang);

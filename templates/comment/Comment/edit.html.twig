@@ -85,7 +85,7 @@
 				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 				{
 					document.getElementById('comment_refresh').innerHTML = "";
-				document.getElementById("comment_refresh").appendChild(document.createRange().createContextualFragment(xmlHttp.responseText));
+					document.getElementById("comment_refresh").appendChild(document.createRange().createContextualFragment(xmlHttp.responseText));
 					tinymce.remove("#{{ commentType.messageComment.vars.id }}")
 					loadTinyMCE{{ commentType.messageComment.vars.id }}("#{{ commentType.messageComment.vars.id }}")
 

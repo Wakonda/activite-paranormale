@@ -84,6 +84,7 @@
 			{% endif %}
 		});
 	</script>
+
 {% endblock %}
 
 {% block meta_plus %}
@@ -92,6 +93,7 @@
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	
 	<div class="modal fade black_modal" tabindex="-1" role="dialog" id="checkVideo">
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -101,20 +103,13 @@
 		  <div class="modal-body">
 			<p class='image'><img src='{{ asset("extended/photo/video/delete/video-delete.jpg") }}' alt='Deleted video' class="mx-auto d-block w-100"/></p><p class='fw-bold colored_delete_video text-center'>{{ "video.read.ConfirmationVideoNotAvailable"|trans([], "validators") }}</p>
 		  </div>
-		  <div class="modal-footer">
-			<a href='{{ path('Video_Notify', { 'id' : entity.id }) }}' alt='' rel='nofollow' class='confirmation_delete_video me-auto btn btn-success text-white'>{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}</a>
-			<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>
+		  <div class="modal-footer" id="modal-notify-container">
+			{% include 'video/Video/_notify_video.html.twig' with { 'entity': entity } %}
 		  </div>
 		</div>
 	  </div>
 	</div>
 
-	{% for flashMessage in app.session.flashbag.get('notice') %}
-		<div class="alert alert-success text-center">
-			{{ flashMessage }}
-		</div>
-	{% endfor %}
-	
 	{% if entity.isAvailable == true %}
 		<div class="text-center">
 			{% if entity.mediaVideo is not empty %}

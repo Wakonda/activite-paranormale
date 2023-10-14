@@ -129,7 +129,7 @@
 		}
 
 		public function quickEdit($entity) {
-			if(empty($entity))
+			if(empty($entity) or empty($entity->getId()))
 				return null;
 
 			$adminRoute = ((new \ReflectionClass($entity))->getShortName())."_Admin_Edit";
