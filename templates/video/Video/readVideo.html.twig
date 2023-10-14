@@ -126,6 +126,7 @@
 		<p class="text-center"><img src="{{ asset('extended/photo/video-not-available.png') }}" width="550" /></p>
 		<div class="alert alert-danger text-center"><i class="fas fa-video-slash"></i> {{ "video.read.VideoNotLongerAvailable"|trans([], "validators") }}</div>
 	{% endif %}
+
 	<div>
 		<p id="media_duration" class="mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.duration|string_duration)|default('-') }}</p>
 		<hr>

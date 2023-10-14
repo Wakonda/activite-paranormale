@@ -11,8 +11,6 @@
 
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_js(form.messageContact.vars.id) }}
-
-	{% include 'index/Captcha/captcha_js.html.twig' with {field: form.captcha} %}
 {% endblock %}
 
 {% block APBlog_body %}
@@ -42,6 +40,7 @@
 			</div>
 			<br>
 			{% include 'index/Captcha/captcha_form.html.twig' with {field: form.captcha} %}
+			{% include 'index/Captcha/captcha_js.html.twig' with {field: form.captcha} %}
 
 			{{ form_rest(form) }}
 			<div class="text-end mt-3">
