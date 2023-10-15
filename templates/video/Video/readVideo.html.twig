@@ -89,6 +89,11 @@
 
 {% block meta_plus %}
 	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />
+
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ entity.title }}" />
+	{% if entity.photo is not empty %}<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />{% endif %}
+	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
 {% endblock %}
 
 {% block APBlog_body %}
