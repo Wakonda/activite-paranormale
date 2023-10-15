@@ -166,7 +166,7 @@ class CartographyController extends AbstractController
 			$row["longitud"] = $entity->getCoordYMap();
 			$row["id"] = $entity->getId();
 			$row["infoWindow"] = $this->render("cartography/Cartography/_infowindow.html.twig", ["entity" => $entity])->getContent();
-			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'; height:'.$photo[1].'">';
+			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].'">';
 			$row[] = "<a href='#title_cartography_maps' id='{$entity->getId()}' class='location_coordinates' data-latitud='{$entity->getCoordXMap()}' data-longitud='{$entity->getCoordYMap()}'>{$entity->getTitle()}</a>";
 			$row[] = $entity->getTheme()->getTitle();
 			$row[] = number_format($entity->getCoordXMap(), 2);
