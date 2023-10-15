@@ -179,7 +179,11 @@ class Store
 	public function isSpreadShopPlatform(): bool {
 		return $this->platform == self::SPREADSHOP_PLATFORM;
 	}
-	
+
+	public function getTitleSlug() {
+		return $this->title;
+	}
+
     /**
 	 * @Groups("api_read")
      */

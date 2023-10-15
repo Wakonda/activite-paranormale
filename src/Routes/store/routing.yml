@@ -7,10 +7,10 @@ Store_Index:
         page: \d+
 
 Store_Show:
-    path: /store/{id}/{title}
+    path: /store/{id}/{title_slug}
     controller: App\Controller\StoreController::showAction
     defaults:
-        title: null
+        title_slug: null
     requirements:
         id: \d+
 
