@@ -591,7 +591,7 @@ fieldset legend {
 }
 a.tags_display {
     background-color: #d3dd3c;
-    color: black;
+    color: black !important;
     border: solid 1px #d3dd3c;
     padding: 5px;
     border-radius: 15px;
@@ -625,7 +625,6 @@ a.navbar-brand:hover, a.navbar-brand:focus {
     box-shadow: 0 0 30px #d7e13d;
 }
 .black_modal .modal-body i {
-    font-size: 2rem;
     color: #d7e13d;
 }
 
