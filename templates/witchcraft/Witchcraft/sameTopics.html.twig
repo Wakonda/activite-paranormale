@@ -17,7 +17,7 @@
 							<p class="card-text mb-0 text-center"><b>{{ "comment.index.Comments"|trans([], "validators") }}:</b> {{ entity|count_comments_by_article }}</p>
 							<p class="card-text text-center"><b>{{ "vote.index.AverageScore"|trans([], "validators") }}</b> {{ entity|average_rating_by_news }}</p>
 							<hr>
-							<p class="card-text text-center"><a href="{{ path('News_ReadNews_New', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}">{{ "news.index.PlusDInformations"|trans([], "validators") }}</a></p>
+							<p class="card-text text-center"><a href="{{ path('Witchcraft_ReadGrimoire', {'surtheme' : entity.surTheme.title, 'id' : entity.id, 'title_slug' : entity.title})}}">{{ "news.index.PlusDInformations"|trans([], "validators") }}</a></p>
 						</div>
 					</div>
 				</div>
