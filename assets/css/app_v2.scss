@@ -610,24 +610,10 @@ table .longType
 }
 
 /************* Vote ***************/
-#resultVote
-{
-	color: #4e4e4e;
-}
-
 #rate
 {
 	border: 1px grey solid;
-	color: yellow;
 	background-color: #aeaeae;
-	display: inline-block;
-	padding: 0.375rem 0.75rem;
-	line-height: 1.5;
-	border-radius: 0.25rem;
-}
-#rate:hover
-{
-	text-decoration: none;
 }
 
 /************* SUDOSLIDER *************/
