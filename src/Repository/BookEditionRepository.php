@@ -32,7 +32,7 @@ class BookEditionRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, Int $bookId, bool $count = false)
 	{
-		$aColumns = array( 'p.title', 'u.isbn10', 'u.isbn13', 'u.id');
+		$aColumns = ['p.title', 'u.isbn10', 'u.isbn13', 'u.id'];
 
 		$qb = $this->createQueryBuilder('u');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0])
@@ -54,11 +54,14 @@ class BookEditionRepository extends EntityRepository
 		
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = array('u.isbn10', 'u.isbn13', 'p.title', 'u.id');
+			$aSearchColumns = ['u.isbn10', 'u.isbn13', 'p.title', 'u.id'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]))
 				{
+					if(empty($searchByColumns[$i]["value"]))
+						continue;
+
 					$search = "%".$searchByColumns[$i]["value"]."%";
 					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
