@@ -4,6 +4,7 @@ canvas {
 	margin : auto;
 	position: relative;
 	cursor: move !important;
+	width: 100% !important;
 }
 
 span.degree {
