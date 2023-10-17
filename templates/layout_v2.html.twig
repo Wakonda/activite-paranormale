@@ -22,7 +22,7 @@
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.tarteaucitron_js() }}
 
-        <script type="text/javascript">
+        <script>
 			tarteaucitron.user.gtagUa = 'G-F5KWDJ9VW2';
 			tarteaucitron.user.gtagMore = function () { };
 			(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
@@ -321,7 +321,7 @@
 							<li><a href="{{ path('Contact_Index') }}">{{ "index.footerMenu.Contact"|trans([], "validators") }}</a></li>
 							<li class="last_menu"><a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" title="{{ "index.footerMenu.MobileView"|trans([], "validators") }}">{{ "index.footerMenu.MobileView"|trans([], "validators") }}</a></li>
 						</ul>
-						Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }} <a href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a> | <a href="{{ path('Page_About') }}" title="About">{{ "index.footerMenu.About"|trans([], "validators") }}</a> | <a href="{{ path('WebDirectorySEO_Index') }}" alt="SEO">S.E.O.</a> | <a href="{{ path('ap_tags_index') }}" title="Tag">{{ "index.footerMenu.Tag"|trans([], "validators") }}</a> | <a href="https://wakonda.guru" target="_parent">Wakonda.Guru</a> by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
+						Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }} <a href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a> | <a href="{{ path('Page_About') }}" title="About">{{ "index.footerMenu.About"|trans([], "validators") }}</a> | <a href="{{ path('WebDirectorySEO_Index') }}" title="SEO">S.E.O.</a> | <a href="{{ path('ap_tags_index') }}" title="Tag">{{ "index.footerMenu.Tag"|trans([], "validators") }}</a> | <a href="https://wakonda.guru" target="_parent">Wakonda.Guru</a> by <a href="http://www.templatemo.com" target="_parent">Free CSS Templates</a>
 					</div>
 				</div>
 			</div>
