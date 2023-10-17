@@ -98,7 +98,7 @@
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
-	
+
 	<div class="modal fade black_modal" tabindex="-1" role="dialog" id="checkVideo">
 	  <div class="modal-dialog" role="document">
 		<div class="modal-content">
@@ -123,7 +123,7 @@
 				</video>
 			{% else %}
 				<div class="embed-responsive embed-responsive-16by9">
-					{{ entity.embeddedCode|raw }}
+					{{ loader_video(entity) }}
 				</div>
 			{% endif %}
 		</div>

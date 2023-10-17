@@ -109,6 +109,10 @@ a:not(.btn):link, a:not(.btn):visited {
 
 a:not(.btn):active, a:not(.btn):hover { color: #FFCC00; text-decoration: underline; }
 
+.select_language_language {
+    border: 3px solid #d7e13d;
+}
+
 nav a:hover { text-decoration: none; }
 
 a, button, #rate, .rating-container .star:hover, .social_network_to_select, input[type="image"], input[type="button"], input[type="submit"], .degree, .cursor-pointer, .carousel-indicators li:hover

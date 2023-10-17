@@ -29,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\TagWord;
+use App\Entity\Video;
 
 class VideoAdminType extends AbstractType
 {
@@ -39,14 +40,14 @@ class VideoAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('platform', ChoiceType::class, array(
 				'choices'   => array(
-					'AP' => 'AP',
-					'Dailymotion' => 'Dailymotion',
-					'Facebook' => 'Facebook',
-					'Instagram' => 'Instagram',
-					'Rutube' => 'Rutube',
-					'Twitter' => 'Twitter',
-					'Youtube' => 'Youtube',
-					'Other' => 'Other'
+					Video::LOCALE_PLATFORM => Video::LOCALE_PLATFORM,
+					Video::DAILYMOTION_PLATFORM => Video::DAILYMOTION_PLATFORM,
+					Video::FACEBOOK_PLATFORM => Video::FACEBOOK_PLATFORM,
+					Video::INSTAGRAM_PLATFORM => Video::INSTAGRAM_PLATFORM,
+					Video::RUTUBE_PLATFORM => Video::RUTUBE_PLATFORM,
+					Video::TWITTER_PLATFORM => Video::TWITTER_PLATFORM,
+					Video::YOUTUBE_PLATFORM => Video::YOUTUBE_PLATFORM,
+					Video::OTHER_PLATFORM => Video::OTHER_PLATFORM
 				),
 				'multiple'  => false,
 				'expanded'  => false,

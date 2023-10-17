@@ -18,7 +18,6 @@ use App\Entity\Language;
 use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
-use App\Twig\APExtension;
 
 class VideoController extends AbstractController
 {
@@ -55,9 +54,8 @@ class VideoController extends AbstractController
 		]);	
 	}
 
-	public function tabVideoDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, APExtension $apExtension, $themeId)
+	public function tabVideoDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
-		// dd($request->query->all());
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->all('search')["value"];
@@ -83,7 +81,7 @@ class VideoController extends AbstractController
 
 		foreach($entities as $entity)
 		{
-			$thumbnail = $apExtension->getThumbnailFromVideo($entity->getEmbeddedCode());
+			$thumbnail = $entity->getThumbnailVideo();
 			$src = null;
 			
 			if(!empty($thumbnail) and empty($entity->getPhoto())) {

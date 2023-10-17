@@ -8,12 +8,8 @@
 				<video class="w-100" controls="controls" id="video_embedded">
 					<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
 				</video>
-			{% elseif entity.platform == "Twitter" %}
-				{{ entity.embeddedCode|raw }}
 			{% else %}
-				<div class="embed-responsive embed-responsive-16by9">
-					{{ entity.embeddedCode|raw }}
-				</div>
+				{{ loader_video(entity) }}
 			{% endif %}
 		</div>
 	</div>

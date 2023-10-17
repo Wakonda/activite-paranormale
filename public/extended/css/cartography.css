@@ -23,3 +23,7 @@ a.link_map
 {
 	font-family: 'Times New Roman', Arial, serial;
 }
+
+.leaflet-control-zoom a {
+	color: black !important;
+}
