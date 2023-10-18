@@ -71,7 +71,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere('c.t itle LIKE :search')
+			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
 		if($count)
