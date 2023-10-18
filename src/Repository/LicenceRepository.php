@@ -117,7 +117,7 @@ class LicenceRepository extends EntityRepository
 			$qb->groupBy('c.logo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{

@@ -36,7 +36,16 @@
 					e.addEventListener("click", (event) => {
 						let id = window.parent.document.querySelector(".modal.show").dataset.fieldId;
 						window.parent.document.querySelector("#" + id + ".existing_photo_colorbox").value = event.target.getAttribute("title");
+						
+						if(window.parent.document.querySelector("#" + id + "_infos " + ".existing_photo_url_colorbox") !== null) {
+							window.parent.document.querySelector("#" + id + "_infos " + ".existing_photo_license_colorbox").value = event.target.dataset.license;
+							window.parent.document.querySelector("#" + id + "_infos " + ".existing_photo_author_colorbox").value = event.target.dataset.author;
+							window.parent.document.querySelector("#" + id + "_infos " + ".existing_photo_url_colorbox").value = event.target.dataset.url;
+							tinymce.get(document.querySelector("#" + id + "_caption_container " + ".existing_photo_caption_colorbox").getAttribute("id")).setContent(event.target.dataset.caption);
+						}
+
 						bootstrap.Modal.getInstance(document.getElementById("selectFileModal_" + id)).hide();
+						console.log(event.target.dataset)
 					});
 				});
 

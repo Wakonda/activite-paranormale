@@ -2,7 +2,7 @@
 	{% for entity in entities %}
 		<div class="show_image_colorbox_item">
 			<figcaption>
-				<img src="{{ asset(entity.path~entity.photo) }}" width="150" height="150" class="pointer" title="{{ entity.photo }}">
+				<img src="{{ asset(entity.path~entity.photo) }}" width="150" height="150" class="pointer" title="{{ entity.photo }}" {% if entity.caption is defined %}data-caption="{{ entity.caption|e }}" {% endif %}{% if entity.license is defined %}data-license="{{ entity.license|e }}" {% endif %}{% if entity.author is defined %}data-author="{{ entity.author|e }}" {% endif %}{% if entity.urlSource is defined %}data-url="{{ entity.urlSource|e }}{% endif %}">
 			</figcaption>
 		</div>
 	{% endfor %}

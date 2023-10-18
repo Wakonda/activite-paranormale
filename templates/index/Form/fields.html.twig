@@ -138,25 +138,27 @@
 	{{ form_widget(form.titleFile, {'attr':{'class': 'form-control'}}) }}
 	{{ form_widget(form.photo_selector) }}
 
-	<div class="d-flex mt-3">
+	<div class="d-flex mt-3" id="{{ form.photo_selector.vars.id }}_infos">
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="basic-addon1"><i class="fas fa-balance-scale-right"></i></span>
-			{{ form_widget(form.license, {'attr':{'class': 'form-control'}}) }}
+			{{ form_widget(form.license, {'attr':{'class': 'form-control existing_photo_license_colorbox'}}) }}
 		</div>
 
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="basic-addon1"><i class="fas fa-user-tie"></i></span>
-			{{ form_widget(form.author, {'attr':{'class': 'form-control'}}) }}
+			{{ form_widget(form.author, {'attr':{'class': 'form-control existing_photo_author_colorbox'}}) }}
 		</div>
 
 		<div class="input-group mb-3">
 			<span class="input-group-text" id="basic-addon1"><i class="fas fa-link"></i></span>
-			{{ form_widget(form.urlSource, {'attr':{'class': 'form-control'}}) }}
+			{{ form_widget(form.urlSource, {'attr':{'class': 'form-control existing_photo_url_colorbox'}}) }}
 		</div>
 	</div>
 
+	<div id="{{ form.photo_selector.vars.id }}_caption_container">
 	{{ form_label(form.caption, "file.admin.Caption"|trans([], "validators")) }}
-	{{ form_widget(form.caption, {'attr':{'class': 'form-control'}}) }}
+	{{ form_widget(form.caption, {'attr':{'class': 'form-control existing_photo_caption_colorbox'}}) }}
+	</div>
 	
 	<script>
 		document.getElementById("{{ form.urlSource.vars.id }}").addEventListener('paste', (event) => {

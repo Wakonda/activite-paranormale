@@ -141,38 +141,6 @@ class TagWordRepository extends EntityRepository
 
 	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
 	{
-		$qb = $this->createQueryBuilder('c');
-		$qb->orderBy('c.title', 'ASC')
-		   ->join("c.illustration", "i")
-		   ->where("i.realNameFile IS NOT NULL");
-
-		if(!empty($sSearch))
-		{
-			$search = "%".$sSearch."%";
-
-			$qb->andWhere("i.titleFile LIKE :search")
-			   ->setParameter('search', $search);
-		}
-		if($count)
-		{
-			$qb->select("COUNT(DISTINCT i.realNameFile)");
-			return $qb->getQuery()->getSingleScalarResult();
-		}
-		else
-			$qb->groupBy('i.realNameFile')->orderBy("c.id", "DESC")->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
-
-		$entities = $qb->getQuery()->getResult();
-		$res = [];
-		
-		foreach($entities as $entity)
-		{
-			$photo = new \StdClass();
-			$photo->photo = $entity->getIllustration()->getRealNameFile();
-			$photo->path = $entity->getAssetImagePath();
-			
-			$res[] = $photo;
-		}
-		
-		return $res;
+		return $this->getFileSelectorColorboxIllustrationAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count);
 	}
 }
