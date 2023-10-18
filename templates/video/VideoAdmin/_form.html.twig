@@ -19,6 +19,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "video.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.embeddedCode, "video.admin.EmbeddedCode"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.embeddedCode) }}{{ form_widget(form.embeddedCode, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "video.admin.Hosting"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
 	{{ form_errors(form.platform) }}{{ form_widget(form.platform, { 'attr': {'class': 'form-select'} }) }}
@@ -98,11 +101,47 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "video.admin.State"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.embeddedCode, "video.admin.EmbeddedCode"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.embeddedCode) }}{{ form_widget(form.embeddedCode, { 'attr': {'class': 'form-control'} }) }}</div>
-
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.available, "video.admin.Available"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.available) }}{{ form_widget(form.available) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		var textarea = document.getElementById('{{ form.embeddedCode.vars.id }}');
+
+		textarea.addEventListener('paste', function(event) {
+			document.getElementById("{{ form.platform.vars.id }}").value = getPlatformFromEmbeddedCode(event.clipboardData.getData('text'));
+			console.log('Pasted into the textarea:', getPlatformFromEmbeddedCode(event.clipboardData.getData('text')));
+		});
+	});
+
+	function getPlatformFromEmbeddedCode(embeddedCode) {
+		var pattern = /<[^>]*>/;
+		
+		if (pattern.test(embeddedCode)) {
+			var parser = new DOMParser();
+			var doc = parser.parseFromString(embeddedCode, 'text/html');
+			var iframe = doc.querySelector('iframe');
+
+			if (!iframe) {
+				return null;
+			}
+
+			var srcAttribute = iframe.getAttribute('src').toLowerCase();
+
+			if (srcAttribute.includes('youtube.com')) {
+				return 'Youtube';
+			} else if (srcAttribute.includes('dailymotion.com')) {
+				return 'Dailymotion';
+			} else if (srcAttribute.includes('rutube.ru')) {
+				return 'Rutube';
+			} else {
+				return null;
+			}
+		}
+		
+		return null;
+	}
+</script>
