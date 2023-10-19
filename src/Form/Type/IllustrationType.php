@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormInterface;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Validator\Constraints\Url;
 
 class IllustrationType extends AbstractType
 {
@@ -23,7 +24,7 @@ class IllustrationType extends AbstractType
             ->add('titleFile', FileType::class, ['data_class' => null, 'required' => true])
             ->add('license', TextType::class, ['required' => true])
             ->add('author', TextType::class, ['required' => true])
-            ->add('urlSource', TextType::class, ['required' => true])
+            ->add('urlSource', TextType::class, ['required' => true, "constraints" => [new Url()]])
             ->add('caption', TextareaType::class, ['required' => true])
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => $options["base_path"]])
 		;
@@ -55,7 +56,6 @@ class IllustrationType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\FileManagement',
-			'validation_groups' => 'new_validation',
 			'base_path' => null
 		]);
 	}
