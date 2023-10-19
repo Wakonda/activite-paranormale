@@ -399,7 +399,11 @@
 			
 			if($pub == "google")
 			{
-				$ads = $this->advertising(728, 90);
+				if((new \Mobile_Detect)->isMobile())
+					$ads = $this->advertising(300, 250);
+				else
+					$ads = $this->advertising(728, 90);
+
 				$display .= '
 				<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="6790583340" data-ad-format="auto" data-full-width-responsive="true">'.
 				$ads->getText().

@@ -53,7 +53,8 @@ class AdvertisingRepository extends EntityRepository
 	public function getOneRandomAdsByWidthAndHeight(int $maxWidth, int $maxHeight) {
 		$qb = $this->createQueryBuilder("a");
 
-		$qb->select("COUNT(a.id) AS countRow")->where("a.width <= :maxWidth")
+		$qb->select("COUNT(a.id) AS countRow")
+		   ->where("a.width <= :maxWidth")
 		   ->andWhere("a.height <= :maxHeight")
 		   ->setParameter("maxWidth", $maxWidth)
 		   ->setParameter("maxHeight", $maxHeight);
