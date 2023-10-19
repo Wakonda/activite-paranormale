@@ -34,7 +34,7 @@ class ContactController extends AbstractController
 		$entity->setStateContact(0);
         $form->handleRequest($request);
 
-		$params = $request->request->get($form->getName());
+		$params = $request->request->all($form->getName());
 		$session = $request->getSession();
 
 		if($params["captcha"] != $session->get("captcha_word"))
