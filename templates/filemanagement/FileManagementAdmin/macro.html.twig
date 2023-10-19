@@ -11,8 +11,8 @@
 
 	{% if entity.urlSource is not empty %}
 		{% set parseUrl = parse_url(entity.urlSource) %}
-		
-		{% if "host" in parseUrl %}
+
+		{% if parseUrl.host is defined %}
 			{% set infos = infos|merge(['<a href="'~ entity.urlSource ~'">' ~ parse_url(entity.urlSource)["host"] ~ '</a>']) %}
 		{% endif %}
 	{% endif %}
