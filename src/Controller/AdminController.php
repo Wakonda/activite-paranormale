@@ -1247,6 +1247,9 @@ class AdminController extends AbstractController
 		} elseif(str_contains($urlHost, "pixabay")) {
 			$pixabay = new \App\Service\Pixabay();
 			$res = $pixabay->getImageInfos($url);
+		} elseif(str_contains($urlHost, "flickr")) {
+			$flickr = new \App\Service\Flickr();
+			$res = $flickr->getImageInfos($url);
 		}
 
 		return new JsonResponse($res);

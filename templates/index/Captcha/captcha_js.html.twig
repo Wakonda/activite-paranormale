@@ -1,0 +1,26 @@
+<script>
+	  var reloadCaptcha = document.getElementById("reload_captcha");
+	  var captchaImage = document.getElementById("captcha");
+
+	  if (reloadCaptcha && captchaImage) {
+		reloadCaptcha.addEventListener("click", function() {
+		  var xhr = new XMLHttpRequest();
+		  xhr.open("GET", "{{ path('Captcha_Reload') }}", true);
+		  
+		  document.querySelector("#reload_captcha").classList.add("fa-spin");
+
+		  xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+			  var data = JSON.parse(xhr.responseText);
+			  if (data.new_captcha) {
+				captchaImage.src = "data:image/png;base64," + data.new_captcha;
+			  }
+
+			  document.querySelector('#reload_captcha').classList.remove("fa-spin");
+			}
+		  };
+
+		  xhr.send();
+		});
+	  }
+</script>
