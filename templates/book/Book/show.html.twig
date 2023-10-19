@@ -75,17 +75,37 @@
 		{% endfor %}
 		</ul>
 	{% endif %}
-
+<style>
+.accordion {
+	border-color: #bbc42d;
+}
+.accordion-item {
+	border-color: #bbc42d;
+    border-bottom: 1px solid black;
+}
+button.accordion-button, .accordion-button:not(.collapsed) {
+    background-color: #bbc42d;
+	box-shadow: none;
+	color: black;
+	width: 100%;
+    text-align: left;
+}
+.accordion-collapse, .accordion-item {
+	background-color: black;
+}
+</style>
 	{% if entity.bookEditions is not empty %}
 	<h3>{{ "book.read.BookEditions"|trans([], "validators") }}</h3>	
 	<div class="accordion" id="accordionBookEdition">
 		{% for bookEdition in entity.bookEditions %}
-			<div class="card border-0 mb-1">
-				<div class="card-header text-start" id="heading_{{ bookEdition.id }}">
-					<h5><button class="btn btn-block collapsed py-0" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ bookEdition.id }}" aria-expanded="false" aria-controls="collapse_{{ bookEdition.id }}"><i class="fas fa-space-shuttle"></i> {{ bookEdition.publisher.title }}</button></h5>
-				</div>
+			<div class="accordion-item">
+				<h4 class="accordion-header" id="heading_{{ bookEdition.id }}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ bookEdition.id }}" aria-expanded="false" aria-controls="collapse_{{ bookEdition.id }}">
+					<i class="fas fa-space-shuttle"></i> {{ bookEdition.publisher.title }}
+					</button>
+				</h4>
 				
-				<div id="collapse_{{ bookEdition.id }}" class="collapse" aria-labelledby="heading_{{ bookEdition.id }}" data-parent="#accordionBookEdition">
+				<div id="collapse_{{ bookEdition.id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ bookEdition.id }}" data-bs-parent="#accordionBookEdition">
 					<table class="table">
 						<tbody>
 							{% if bookEdition.subtitle is not empty %}

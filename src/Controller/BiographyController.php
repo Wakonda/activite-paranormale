@@ -35,7 +35,7 @@ class BiographyController extends AbstractController
 		$bookEditions = $em->getRepository(BookEditionBiography::class)->getBookEditionByBiography($entity);
 		$quotationsByAuthor = $em->getRepository(Quotation::class)->findBy(['authorQuotation' => $entity]);
 
-		return $this->render('quotation/Quotation/biography.html.twig', [
+		return $this->render('quotation/Biography/read.html.twig', [
 			'entity' => $entity,
 			'quotationsByAuthor' => $quotationsByAuthor,
 			'documents' => $documents,

@@ -2094,18 +2094,41 @@ figcaption {
 .d-inline-block {
   display: inline-block !important;
 }
-
-#accordionBookEdition .card-header {
+button {
+	font-family: "Times New Roman", Arial, Helvetica, sans-serif;
+}
+#accordionBookEdition h4 {
     text-align: center;
     background-color: #bbc42d;
     text-align: left;
     border-radius: 0.25rem;
 }
-
-button {
-	font-family: "Times New Roman", Arial, Helvetica, sans-serif;
+#accordionBookEdition.accordion {
+	border-color: #bbc42d;
 }
-
+#accordionBookEdition .accordion-item {
+	border-color: #bbc42d;
+    border-bottom: 1px solid black;
+}
+#accordionBookEdition button.accordion-button, #accordionBookEdition .accordion-button:not(.collapsed) {
+    background-color: #bbc42d;
+	box-shadow: none;
+	color: black;
+	width: 100%;
+    text-align: left;
+}
+#accordionBookEdition .accordion-collapse, .accordion-item {
+	background-color: black;
+}
+#accordionBookEdition .accordion-button:after, .accordion-button.collapsed:after {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    content: "\f078";
+	float: right;
+}
+#accordionBookEdition .accordion-button.collapsed:after {
+    content: "\f054";
+}
 #accordionBookEdition button {
     background-color: transparent;
     border: 1px solid transparent;

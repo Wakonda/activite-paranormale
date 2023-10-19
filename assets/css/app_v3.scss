@@ -511,6 +511,23 @@ p#media_duration {
 .ui-accordion.ui-widget {
 	font-size: initial;
 }
+#accordionBookEdition.accordion {
+	border-color: #bbc42d;
+}
+#accordionBookEdition .accordion-item {
+	border-color: #bbc42d;
+    border-bottom: 1px solid black;
+}
+#accordionBookEdition button.accordion-button, #accordionBookEdition .accordion-button:not(.collapsed) {
+    background-color: #bbc42d;
+	box-shadow: none;
+	color: black;
+	width: 100%;
+    text-align: left;
+}
+#accordionBookEdition .accordion-collapse, .accordion-item {
+	background-color: black;
+}
 /********** FOOTER ***********/
 .footer {
 	background: rgb(187, 196, 45);
