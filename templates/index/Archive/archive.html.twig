@@ -25,7 +25,7 @@
 			</tr>
 			{% for data in datas %}
 				<tr>
-					<td class="td_form_table"><a href="{{ path(data.path, {className: data.className, language: currentLanguage.abbreviation}) }}" >{{ data.canonicalName }}</a></td>
+					<td class="td_form_table w-75"><a href="{{ path(data.path, {className: data.className, language: currentLanguage.abbreviation}) }}" >{{ data.canonicalName }}</a></td>
 					<td class="tdGene"><span class="badge bg-info">{{ data.count }}</span></td>
 				</tr>
 			{% endfor %}

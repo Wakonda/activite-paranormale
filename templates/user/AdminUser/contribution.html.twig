@@ -6,27 +6,27 @@
 		<h3>{{ "user.showProfile.Participation"|trans([], "validators") }}</h3>
 		<table class="table">
 			<tr>
-				<td class="td_form_table">{{ "user.contributionUser.TotalArticles"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75">{{ "user.contributionUser.TotalArticles"|trans([], "validators") }}</td>
 				<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\News'), entityName: "user.contributionUser.Articles"|trans([], "validators"), title: "user.contributionUser.Published"|trans([], "validators") }) }}">{{ contributionsArray['news'] }}</a></td>
 			</tr>
 			<tr>
-				<td class="td_form_table">{{ "user.contributionUser.TotalTestimonies"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75">{{ "user.contributionUser.TotalTestimonies"|trans([], "validators") }}</td>
 				<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\Testimony'), entityName: "user.contributionUser.Testimonies"|trans([], "validators"), title: "user.contributionUser.Published"|trans([], "validators")}) }}">{{ contributionsArray['testimony'] }}</a></td>
 			</tr>
 			<tr>
-				<td class="td_form_table">{{ "user.contributionUser.TotalEvents"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75">{{ "user.contributionUser.TotalEvents"|trans([], "validators") }}</td>
 				<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\EventMessage'), entityName: "user.contributionUser.Events"|trans([], "validators"), title: "user.contributionUser.Published"|trans([], "validators")}) }}">{{ contributionsArray['event'] }}</a></td>
 			</tr>
 			<tr>
-				<td class="td_form_table">{{ "user.contributionUser.TotalWitchcrafts"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75">{{ "user.contributionUser.TotalWitchcrafts"|trans([], "validators") }}</td>
 				<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\Grimoire'), entityName: "user.contributionUser.Witchcrafts"|trans([], "validators"), title: "user.contributionUser.Published"|trans([], "validators")}) }}">{{ contributionsArray['witchcraft'] }}</a></td>
 			</tr>
 			<tr>
-				<td class="td_form_table">{{ "user.contributionUser.TotalComments"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75">{{ "user.contributionUser.TotalComments"|trans([], "validators") }}</td>
 				<td><a href="{{ path('APUserBunble_contributionusercomments', {'id' : user.id}) }}">{{ contributionsArray['comment'] }}</a></td>
 			</tr>
 			<tr>
-				<td class="td_form_table bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 				<td><span class="badge bg-danger">{{ contributionsArray['total'] }}</span></td>
 			</tr>
 		</table>
@@ -35,23 +35,23 @@
 			<h3>{{ "user.showProfile.WorkInProgress"|trans([], "validators") }}</h3>
 			<table class="table">
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalArticles"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalArticles"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\News'), 'displayState' : 0, entityName: "user.contributionUser.Articles"|trans([], "validators"), title: "user.contributionUser.WorkInProgress"|trans([], "validators")}) }}">{{ contributionsInProgressArray['news'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalTestimonies"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalTestimonies"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\Testimony'), 'displayState' : 0, entityName: "user.contributionUser.Testimonies"|trans([], "validators"), title: "user.contributionUser.WorkInProgress"|trans([], "validators")}) }}">{{ contributionsInProgressArray['testimony'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalEvents"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalEvents"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\EventMessage'), 'displayState' : 0, entityName: "user.contributionUser.Events"|trans([], "validators"), title: "user.contributionUser.WorkInProgress"|trans([], "validators")}) }}">{{ contributionsInProgressArray['event'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalWitchcrafts"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalWitchcrafts"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\Grimoire'), 'displayState' : 0, entityName: "user.contributionUser.Witchcrafts"|trans([], "validators"), title: "user.contributionUser.WorkInProgress"|trans([], "validators")}) }}">{{ contributionsInProgressArray['witchcraft'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 					<td><span class="badge bg-danger">{{ contributionsInProgressArray['total'] }}</span></td>
 				</tr>
 			</table>
@@ -60,23 +60,23 @@
 			<h3>{{ "user.showProfile.Unpublished"|trans([], "validators") }}</h3>
 			<table class="table">
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalArticles"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalArticles"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\News'), 'displayState' : -1, entityName: "user.contributionUser.Articles"|trans([], "validators"), title: "user.contributionUser.Unpublished"|trans([], "validators")}) }}">{{ contributionsUnpublishedArray['news'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalTestimonies"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalTestimonies"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\Testimony'), 'displayState' : -1, entityName: "user.contributionUser.Testimonies"|trans([], "validators"), title: "user.contributionUser.Unpublished"|trans([], "validators")}) }}">{{ contributionsUnpublishedArray['testimony'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalEvents"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalEvents"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\EventMessage'), 'displayState' : -1, entityName: "user.contributionUser.Events"|trans([], "validators"), title: "user.contributionUser.Unpublished"|trans([], "validators")}) }}">{{ contributionsUnpublishedArray['event'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table">{{ "user.contributionUser.TotalWitchcrafts"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75">{{ "user.contributionUser.TotalWitchcrafts"|trans([], "validators") }}</td>
 					<td><a href="{{ path('APUserBunble_contributionuser', {'id' : user.id, 'bundleClassName' : base64_encode('App\\Entity\\Grimoire'), 'displayState' : -1, entityName: "user.contributionUser.Witchcrafts"|trans([], "validators"), title: "user.contributionUser.Unpublished"|trans([], "validators")}) }}">{{ contributionsUnpublishedArray['witchcraft'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 					<td><span class="badge bg-danger">{{ contributionsUnpublishedArray['total'] }}</span></td>
 				</tr>
 			</table>

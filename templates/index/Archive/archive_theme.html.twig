@@ -22,7 +22,7 @@
 			</tr>
 			{% for theme in themes %}
 				{% if theme.parentTheme == ST.id %}
-					<tr><td class="td_form_table"><a href="{{ path('Archive_Tab', {'id' : theme.id, 'theme' : theme.title, className: className })}}" >{{ theme.title }}</a></td>
+					<tr><td class="td_form_table w-75"><a href="{{ path('Archive_Tab', {'id' : theme.id, 'theme' : theme.title, className: className })}}" >{{ theme.title }}</a></td>
 					<td class="tdGene"><span class="badge bg-info">{{ theme.count }}</span></td></tr>
 				{% endif %}
 			{% endfor %}

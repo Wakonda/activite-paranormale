@@ -27,7 +27,7 @@
 				</tr>
 				{% for T in theme %}
 					{% if T.parentTheme == ST %}
-						<tr><td class="td_form_table"><a href="{{ path('Testimony_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
+						<tr><td class="td_form_table w-75"><a href="{{ path('Testimony_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
 						<td class="tdGene"><span class="badge bg-info">{{ render(controller("App\\Controller\\TestimonyController::countThemeLangTestimonyAction", { 'theme':T.title, 'lang':app.request.locale })) }}</span></td></tr>
 					{% endif %}
 				{% endfor %}

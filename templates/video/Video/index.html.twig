@@ -26,7 +26,7 @@
 				{% if T.parentTheme == ST %}
 					{% for i in 0..nbrTheme1 %}
 						{% if T.title == tabThemeNbr[i][0] %}
-							<tr><td class="td_form_table"><a href="{{ path('Video_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ tabThemeNbr[i][0] }}</a></td><td class="tdGene"><span class="badge bg-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
+							<tr><td class="td_form_table w-75"><a href="{{ path('Video_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ tabThemeNbr[i][0] }}</a></td><td class="tdGene"><span class="badge bg-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
 						{% endif %}
 					{% endfor %}
 				{% endif %}
