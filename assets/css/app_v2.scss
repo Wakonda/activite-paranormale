@@ -25,7 +25,7 @@ body {
 	cursor: url(images_v2/greenNormalPoint.cur), auto;
 }
 
-a:link, a:visited { color: #B9C322; text-decoration: none; font-weight: normal; } 
+a:link, a:visited { color: #B9C322; text-decoration: none; } 
 a:active, a:hover { color: #FFCC00; text-decoration: underline; }
 
 p { 
@@ -636,11 +636,6 @@ ol.controls li a:focus, .prevBtn a:focus, .nextBtn a:focus{outline:none;}
 .disabled
 {
 	color: grey;
-}
-
-.invisible
-{
-	display: none;
 }
 
 .text-start {
@@ -1861,32 +1856,6 @@ ul ol {
   border-radius: 0.2rem;
 }
 /********** MODAL ***********/
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 1040;
-  width: 100vw;
-  height: 100vh;
-  background-color: #000;
-}
-
-.modal-backdrop.fade {
-  opacity: 0;
-}
-
-.modal-backdrop.show {
-  opacity: 0.5;
-}
-.modal-open {
-  overflow: hidden;
-}
-
-.modal-open .modal {
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
 .modal {
   position: fixed;
   top: 0;

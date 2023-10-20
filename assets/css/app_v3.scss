@@ -101,13 +101,12 @@ p {
 	width:100%!important;
 }
 	
-a:not(.btn):link, a:not(.btn):visited {
+a:not(.btn):not(.alert-link):link, a:not(.btn):not(.alert-link):visited {
     color: #b9c322;
     text-decoration: none;
-    font-weight: normal;
 }
 
-a:not(.btn):active, a:not(.btn):hover { color: #FFCC00; text-decoration: underline; }
+a:not(.btn):not(.alert-link):active, a:not(.btn):not(.alert-link):hover { color: #FFCC00; text-decoration: underline; }
 
 .select_language_language {
     border: 3px solid #d7e13d;

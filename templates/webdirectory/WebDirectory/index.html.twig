@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<div class="alert alert-info">{{ ("directory.index.Promote"|trans({'%start_link%': '<b><a href="'~path('WebDirectory_User_New')~'">', '%end_link%': '</a></b>'}, "validators"))|raw }}</div>
+	<div class="alert alert-info">{{ ("directory.index.Promote"|trans({'%start_link%': '<b><u><a href="'~path('WebDirectory_User_New')~'" class="alert-link">', '%end_link%': '</a></u></b>'}, "validators"))|raw }}</div>
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}webdirectory.jpg" width="550" alt="Woman Zombie" /></p>
 	<br>
 	<hr class="hr2">
