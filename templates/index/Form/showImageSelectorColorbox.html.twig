@@ -24,6 +24,7 @@
 </div>
 
 <script>
+var delayTimer;
 	function load_content(page_params, search_params)
 	{
 		let xmlHttp = new XMLHttpRequest();
@@ -57,7 +58,12 @@
 				});
 
 				document.getElementById("search_keyword_file_colorbox"). addEventListener("keyup", (e) => {
-					load_content(1, e.target.value);
+					
+					clearTimeout(delayTimer);
+					
+					delayTimer = setTimeout(function() {
+						load_content(1, e.target.value);
+					}, 500);
 				});
 			}
 		};

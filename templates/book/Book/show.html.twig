@@ -2,12 +2,12 @@
 
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/book-read.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
-{% block meta_description %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endblock %}
+{% block meta_description %}{% if entity.introduction is not empty %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% else %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endif %}{% endblock %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary" />
 	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:description" content="{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<meta property="og:description" content="{% if entity.introduction is not empty %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% else %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endif %}" />
 {% endblock %}
 
 {% block APBlog_body %}
@@ -76,23 +76,7 @@
 		</ul>
 	{% endif %}
 <style>
-.accordion {
-	border-color: #bbc42d;
-}
-.accordion-item {
-	border-color: #bbc42d;
-    border-bottom: 1px solid black;
-}
-button.accordion-button, .accordion-button:not(.collapsed) {
-    background-color: #bbc42d;
-	box-shadow: none;
-	color: black;
-	width: 100%;
-    text-align: left;
-}
-.accordion-collapse, .accordion-item {
-	background-color: black;
-}
+
 </style>
 	{% if entity.bookEditions is not empty %}
 	<h3>{{ "book.read.BookEditions"|trans([], "validators") }}</h3>	
