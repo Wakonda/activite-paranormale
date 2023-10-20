@@ -51,7 +51,7 @@ nav.navbar {
 	background-color: black !important;
 }
 .navbar-dark .navbar-nav a.nav-link.active {
-	color: white;
+	color: white !important;
 }
 
 .global-container {
@@ -77,7 +77,7 @@ p {
 }
 
 .navbar-dark .navbar-nav a.nav-link {
-	color: black;
+	color: black !important;
 }
 
 .navbar-dark .navbar-nav li.nav-item.active, .navbar-dark .navbar-nav li.nav-item:hover {
