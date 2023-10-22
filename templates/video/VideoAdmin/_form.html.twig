@@ -119,24 +119,16 @@
 
 	function getPlatformFromEmbeddedCode(embeddedCode) {
 		var pattern = /<[^>]*>/;
-		
+console.log(typeof embeddedCode, embeddedCode.includes("twitter.com"));
 		if (pattern.test(embeddedCode)) {
-			var parser = new DOMParser();
-			var doc = parser.parseFromString(embeddedCode, 'text/html');
-			var iframe = doc.querySelector('iframe');
-
-			if (!iframe) {
-				return null;
-			}
-
-			var srcAttribute = iframe.getAttribute('src').toLowerCase();
-
-			if (srcAttribute.includes('youtube.com')) {
+			if (embeddedCode.includes('youtube.com')) {
 				return 'Youtube';
-			} else if (srcAttribute.includes('dailymotion.com')) {
+			} else if (embeddedCode.includes('dailymotion.com')) {
 				return 'Dailymotion';
-			} else if (srcAttribute.includes('rutube.ru')) {
+			} else if (embeddedCode.includes('rutube.ru')) {
 				return 'Rutube';
+			} else if (embeddedCode.includes("twitter.com") || embeddedCode.includes("x.com")) {
+				return "Twitter";
 			} else {
 				return null;
 			}
