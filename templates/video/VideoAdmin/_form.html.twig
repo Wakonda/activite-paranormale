@@ -119,7 +119,7 @@
 
 	function getPlatformFromEmbeddedCode(embeddedCode) {
 		var pattern = /<[^>]*>/;
-console.log(typeof embeddedCode, embeddedCode.includes("twitter.com"));
+
 		if (pattern.test(embeddedCode)) {
 			if (embeddedCode.includes('youtube.com')) {
 				return 'Youtube';

@@ -1014,7 +1014,7 @@
 			$thumbnail = $entity->getThumbnailVideo();
 			$url = $entity->getURLByCode();
 			$platform = $entity->getPlatformByCode();
-			
+// dd($platform);
 			$id = "video-".$entity->getId();
 
 			$color = match($platform) {
@@ -1045,11 +1045,25 @@
 				
 				$script = !empty($script) ? "<script>$script</script>" : "";
 				
-				return "<iframe class=\"video\" id=\"$id\"srcdoc=\"<style>*{text-decoration:none !important}body,.full{width:100%;height:100%;margin:0;position:absolute;display:flex;justify-content:center;object-fit:cover;align-items:center}.play{background-color:{$color};color:#fff;border-radius:.6rem;padding-right:1.5rem;height:fit-content;padding-left:1.5rem;padding-bottom:.5rem;padding-top:.5rem;z-index:100;font-size:2rem}.play:before{content:'\\25BA'}</style>
+				return "<iframe class=\"video\" id=\"$id\" srcdoc=\"<style>*{text-decoration:none !important}body,.full{width:100%;height:100%;margin:0;position:absolute;display:flex;justify-content:center;object-fit:cover;align-items:center}.play{background-color:{$color};color:#fff;border-radius:.6rem;padding-right:1.5rem;height:fit-content;padding-left:1.5rem;padding-bottom:.5rem;padding-top:.5rem;z-index:100;font-size:2rem}.play:before{content:'\\25BA'}</style>
 				<a href='{$url}' class='full'><img src='{$thumbnail}' class='full'><div class='play'></div></a>\"
 				width=\"560\" height=\"315\"
 				allow=\"autoplay\"
 				frameborder=\"0\"></iframe>".$script;
+			}
+
+			if($platform == "twitter") {
+				$file = "/extended/photo/twitter-video.jpg";
+
+				return "<img src='/extended/photo/twitter-video.svg' id='tweet-img' class='cursor-pointer' style='width: 100%' title='".$this->translator->trans("video.read.WatchTheVideo", [], "validators")."'><div id='tweet-container'></div>
+						<script>
+							var tweet = '<blockquote class=\"twitter-tweet tw-align-center\"><p lang=\"en\" dir=\"ltr\">The UFO is following rockets and changed his direction, in Gaza 10.10.23 <a href=\"https://twitter.com/hashtag/UFO?src=hash&amp;ref_src=twsrc%5Etfw\">#UFO</a> <a href=\"https://twitter.com/hashtag/UAP?src=hash&amp;ref_src=twsrc%5Etfw\">#UAP</a> <a href=\"https://twitter.com/hashtag/UFOX?src=hash&amp;ref_src=twsrc%5Etfw\">#UFOX</a> <a href=\"https://twitter.com/hashtag/uapX?src=hash&amp;ref_src=twsrc%5Etfw\">#uapX</a> <a href=\"https://twitter.com/hashtag/UFOtwitter?src=hash&amp;ref_src=twsrc%5Etfw\">#UFOtwitter</a> <a href=\"https://twitter.com/hashtag/UAPtwitter?src=hash&amp;ref_src=twsrc%5Etfw\">#UAPtwitter</a> <a href=\"https://twitter.com/hashtag/UAPs?src=hash&amp;ref_src=twsrc%5Etfw\">#UAPs</a><a href=\"https://twitter.com/hashtag/Gaza?src=hash&amp;ref_src=twsrc%5Etfw\">#Gaza</a> <a href=\"https://twitter.com/hashtag/GazaUnderAttack?src=hash&amp;ref_src=twsrc%5Etfw\">#GazaUnderAttack</a> <a href=\"https://twitter.com/hashtag/ufotwitter?src=hash&amp;ref_src=twsrc%5Etfw\">#ufotwitter</a> <a href=\"https://twitter.com/hashtag/UFOSightings?src=hash&amp;ref_src=twsrc%5Etfw\">#UFOSightings</a> <a href=\"https://twitter.com/hashtag/Israel?src=hash&amp;ref_src=twsrc%5Etfw\">#Israel</a> <a href=\"https://t.co/DymqNlEbag\">pic.twitter.com/DymqNlEbag</a></p>&mdash; World War 3 (@Worldwar_3_) <a href=\"https://twitter.com/Worldwar_3_/status/1713199456131137955?ref_src=twsrc%5Etfw\">October 14, 2023</a><script async src=\"https://platform.twitter.com/widgets.js\" charset=\"utf-8\"><\/script><\/blockquote>';
+							
+							document.getElementById(\"tweet-img\").addEventListener(\"click\", (e) => {
+								document.getElementById(\"tweet-img\").style.display = \"none\";
+								document.querySelector(\"#tweet-container\").appendChild(document.createRange().createContextualFragment(tweet));
+							});
+						</script>";
 			}
 			
 			return $entity->getEmbeddedCode();
