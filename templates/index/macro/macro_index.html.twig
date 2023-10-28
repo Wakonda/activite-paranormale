@@ -251,7 +251,10 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						{% set tagsArray = tags|split(", ") %}
+						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
+
+						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -264,32 +267,42 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro facebook_form_js() %}
+{% macro generic_tags(textarea, tags) %}
 	<script>
-		var datas = document.getElementById("facebook_area").innerHTML.split(" ");
+		var datas = document.getElementById("{{ textarea }}").innerHTML.split(" ");
+		var tags = JSON.parse(document.getElementById("{{ textarea }}").dataset.tags);
 
-		document.querySelectorAll("div#tags_facebook a").forEach((e) => {
+		for (var j = 0; j < tags.length; j++) {
 			for(var i = 0; i < datas.length; i++) {
-				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
+				if(typeof tags[j] !== "undefined" && tags[j].toLowerCase() == datas[i].toLowerCase()) {
 					datas[i] = "#" + datas[i];
+					let start = tags.indexOf(datas[i]);
+					tags = tags.splice(start - 1, 1);
+				}
 			}
-		});
+		}
+		
+		tags = tags.map((x) => "#" + x);
 
-		document.getElementById("facebook_area").innerHTML = datas.join(" ");
+		document.getElementById("{{ textarea }}").innerHTML = datas.join(" ") + " " + tags.join(" ");
 
-		document.querySelectorAll("div#tags_facebook a").forEach(e => {
+		document.querySelectorAll("div#{{ tags }} a").forEach(e => {
 			e.addEventListener('click', (e2) => {
 				e2.preventDefault();
 
 				let textToInsert = "#" + e2.srcElement.dataset.tag;
-				let position = document.getElementById("facebook_area").selectionStart;
-				let textareaContent = document.getElementById('facebook_area').value;
+				let position = document.getElementById("{{ textarea }}").selectionStart;
+				let textareaContent = document.getElementById('{{ textarea }}').value;
 				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
 
-				document.getElementById('facebook_area').value = output;
+				document.getElementById('{{ textarea }}').value = output;
 			});
 		});
 	</script>
+{% endmacro %}
+
+{% macro facebook_form_js() %}
+	{{ _self.generic_tags("facebook_area", "tags_facebook") }}
 {% endmacro %}
 
 {% macro diaspora_form(entity, text = null) %}
@@ -317,7 +330,10 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="diaspora_area" name="diaspora_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						{% set tagsArray = tags|split(", ") %}
+						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
+						
+						<textarea id="diaspora_area" name="diaspora_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="diaspora_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -331,31 +347,7 @@
 {% endmacro %}
 
 {% macro diaspora_form_js() %}
-	<script>
-		var datas = document.getElementById("diaspora_area").innerHTML.split(" ");
-
-		document.querySelectorAll("div#tags_diaspora a").forEach((e) => {
-			for(var i = 0; i < datas.length; i++) {
-				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
-					datas[i] = "#" + datas[i];
-			}
-		});
-
-		document.getElementById("diaspora_area").innerHTML = datas.join(" ");
-
-		document.querySelectorAll("div#tags_diaspora a").forEach(e => {
-			e.addEventListener('click', (e2) => {
-				e2.preventDefault();
-
-				let textToInsert = "#" + e2.srcElement.dataset.tag;
-				let position = document.getElementById("diaspora_area").selectionStart;
-				let textareaContent = document.getElementById('diaspora_area').value;
-				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-
-				document.getElementById('diaspora_area').value = output;
-			});
-		});
-	</script>
+	{{ _self.generic_tags("diaspora_area", "tags_diaspora") }}
 {% endmacro %}
 
 {% macro vk_form(entity, text = null) %}
@@ -383,7 +375,10 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="vk_area" name="vk_area" rows="3" cols="70" class="form-control">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						{% set tagsArray = tags|split(", ") %}
+						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
+
+						<textarea id="vk_area" name="vk_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="vk_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -397,31 +392,7 @@
 {% endmacro %}
 
 {% macro vk_form_js() %}
-	<script>
-		var datas = document.getElementById("vk_area").innerHTML.split(" ");
-
-		document.querySelectorAll("div#tags_vk a").forEach((e) => {
-			for(var i = 0; i < datas.length; i++) {
-				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
-					datas[i] = "#" + datas[i];
-			}
-		});
-
-		document.getElementById("vk_area").innerHTML = datas.join(" ");
-
-		document.querySelectorAll("div#tags_vk a").forEach(e => {
-			e.addEventListener('click', (e2) => {
-				e2.preventDefault();
-
-				let textToInsert = "#" + e2.srcElement.dataset.tag;
-				let position = document.getElementById("vk_area").selectionStart;
-				let textareaContent = document.getElementById('vk_area').value;
-				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-
-				document.getElementById('vk_area').value = output;
-			});
-		});
-	</script>
+	{{ _self.generic_tags("vk_area", "tags_vk") }}
 {% endmacro %}
 
 {% macro instagram_form(entity) %}
@@ -515,7 +486,10 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						{% set tagsArray = tags|split(", ") %}
+						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
+
+						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -533,31 +507,8 @@
 {% endmacro %}
 
 {% macro mastodon_form_js() %}
+	{{ _self.generic_tags("mastodon_area", "tags_mastodon") }}
 	<script>
-		var datas = document.getElementById("mastodon_area").innerHTML.split(" ");
-
-		document.querySelectorAll("div#tags_mastodon a").forEach((e) => {
-			for(var i = 0; i < datas.length; i++) {
-				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
-					datas[i] = "#" + datas[i];
-			}
-		});
-		
-		document.getElementById("mastodon_area").innerHTML = datas.join(" ");
-
-		document.querySelectorAll("div#tags_mastodon a").forEach(e => {
-			e.addEventListener('click', (e2) => {
-				e2.preventDefault();
-
-				let textToInsert = "#" + e2.srcElement.dataset.tag;
-				let position = document.getElementById("mastodon_area").selectionStart;
-				let textareaContent = document.getElementById('mastodon_area').value;
-				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-
-				document.getElementById('mastodon_area').value = output;
-			});
-		});
-
 		document.getElementById("form_mastodon").addEventListener("submit", (e) => {
 			e.preventDefault();
 
@@ -600,7 +551,10 @@
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
-						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
+						{% set tagsArray = tags|split(", ") %}
+						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
+
+						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -618,17 +572,8 @@
 {% endmacro %}
 
 {% macro twitter_form_js() %}
+	{{ _self.generic_tags("twitter_area", "tags_twitter") }}
 	<script>
-		var datas = document.getElementById("twitter_area").innerHTML.split(" ");
-
-		document.querySelectorAll("div#tags_twitter a").forEach((e) => {
-			for(var i = 0; i < datas.length; i++) {
-				if(e.innerHTML.toLowerCase() == datas[i].toLowerCase())
-					datas[i] = "#" + datas[i];
-			}
-		});
-
-		document.getElementById("twitter_area").innerHTML = datas.join(" ");
 
 		var limit = 280;
 
@@ -654,13 +599,6 @@
 		document.querySelectorAll("div#tags_twitter a").forEach(e => {
 			e.addEventListener('click', (e2) => {
 				e2.preventDefault();
-			
-				let textToInsert = "#" + e2.srcElement.dataset.tag;
-				let position = document.getElementById("twitter_area").selectionStart;
-				let textareaContent = document.getElementById('twitter_area').value;
-				let output = [textareaContent.slice(0, position), textToInsert, textareaContent.slice(position)].join('');
-
-				document.getElementById('twitter_area').value = output;
 				document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
 			});
 		});
