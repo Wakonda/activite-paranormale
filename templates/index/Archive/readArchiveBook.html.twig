@@ -4,6 +4,7 @@
 	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 {% endif %}
 <br>
+{{ dump(entity) }}
 <table class="table">
 	<tbody>
 		<tr>
@@ -22,55 +23,144 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="td_form_table">{{ "book.read.PublishedOn"|trans([], "validators") }}</td>
-			<td class="tdGene">{{ entity.publicationDate|dodate(false, app.request.locale) }}</td>
-		</tr>
-
-		{% if entity.price is not empty %}
-		<tr>
-			<td class="td_form_table">{{ "book.read.Price"|trans([], "validators") }}</td>
-			<td class="tdGene">
-			<span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></span>
-			</td>
-		</tr>
-		{% endif %}
-
-		<tr>
 			<td class="td_form_table">{{ "book.read.Theme"|trans([], "validators") }}</td>
 			<td class="tdGene"><a href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></td>
 		</tr>
+		
+		{% if entity.genre is not empty %}
+			<tr>
+				<td class="td_form_table">{{ "book.read.Genre"|trans([], "validators") }}</td>
+				<td class="tdGene"><a href="{{ path('ByGenreBook_Index', { idGenre: entity.genre.id, titleGenre: entity.genre.title }) }}">{{ entity.genre.title }}</a></td>
+			</tr>
+		{% endif %}
 	</tbody>
 </table>
-<br>
-<h3>{{ "book.read.Description"|trans([], "validators") }}</h3>
-<div class="book_description">
-	{{ entity.text|raw }}
-</div>
-<h3>{{ "book.read.Details"|trans([], "validators") }}</h3>
-<table class="table">
-	<tbody>
-		<tr>
-			<td class="td_form_table">{{ "book.read.NumberPage"|trans([], "validators") }}</td>
-			<td class="tdGene">{{ entity.numberPage }}</td>
-		</tr>
-		<tr>
-			<td class="td_form_table">ISBN-10</td>
-			<td class="tdGene">{{ entity.isbn10 }}</td>
-		</tr>
-		<tr>
-			<td class="td_form_table">ISBN-13</td>
-			<td class="tdGene">{{ entity.isbn13 }}</td>
-		</tr>
-		<tr>
-			<td class="td_form_table">{{ "book.read.Format"|trans([], "validators") }}</td>
-			<td class="tdGene">{{ ("book.generic."~(entity.format|capitalize))|trans([], "validators") }}</td>
-		</tr>
-		<tr>
-			<td class="td_form_table">{{ "book.read.Publisher"|trans([], "validators") }}</td>
-			<td class="tdGene"><a href="{{ path('ByPublisherBook_Index', {'idPublisher': entity.publisher.id, 'titlePublisher': entity.publisher.title}) }}">{{ entity.publisher.photo|imgsize(200, entity.publisher.getAssetImagePath())|raw }}</a></td>
-		</tr>
-	</tbody>
-</table>
+
+{% if entity.introduction is not empty %}
+	<br>
+	<h3>{{ "book.read.Introduction"|trans([], "validators") }}</h3>
+	{{ entity.introduction|raw }}
+{% endif %}
+
+{% if entity.text is not empty %}
+	<br>
+	<h3>{{ "book.read.Description"|trans([], "validators") }}</h3>
+	<div class="book_description">
+		{{ entity.text|raw }}
+	</div>
+{% endif %}
+
+{% if entity.fictionalCharacters is not empty %}
+	<h3>{{ "book.read.Characters"|trans([], "validators") }}</h3>
+	
+	<ul>
+	{% for author in entity.fictionalCharacters %}
+		<li><a href="{{ path('Biography_Show', {id: author.id, title: author.title}) }}">{{ author.title }}</a></li>
+	{% endfor %}
+	</ul>
+{% endif %}
+
+{% if entity.bookEditions is not empty %}
+	<h3>{{ "book.read.BookEditions"|trans([], "validators") }}</h3>	
+	<div class="accordion" id="accordionBookEdition">
+		{% for bookEdition in entity.bookEditions %}
+			<div class="accordion-item">
+				<h4 class="accordion-header" id="heading_{{ bookEdition.id }}">
+					<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_{{ bookEdition.id }}" aria-expanded="false" aria-controls="collapse_{{ bookEdition.id }}">
+					<i class="fas fa-space-shuttle"></i> {{ bookEdition.publisher.title }}
+					</button>
+				</h4>
+				
+				<div id="collapse_{{ bookEdition.id }}" class="accordion-collapse collapse" aria-labelledby="heading_{{ bookEdition.id }}" data-bs-parent="#accordionBookEdition">
+					<table class="table">
+						<tbody>
+							{% if bookEdition.subtitle is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Subtitle"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ bookEdition.subtitle }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.illustration is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Photo"|trans([], "validators") }}</td>
+								<td class="tdGene"><p class="image">{{ bookEdition.photoIllustrationFilename|imgsize(550, bookEdition.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, bookEdition.photoIllustrationCaption)|raw }}</p></td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.isbn10 is not empty %}
+							<tr>
+								<td class="td_form_table">ISBN-10</td>
+								<td class="tdGene">{{ bookEdition.isbn10 }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.isbn13 is not empty %}
+							<tr>
+								<td class="td_form_table">ISBN-13</td>
+								<td class="tdGene">{{ bookEdition.isbn13 }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.numberPage is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.NumberPage"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ bookEdition.numberPage }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.publicationDate is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.PublishedOn"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ entity.publicationDate|dodate(false, app.request.locale) }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.format is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Format"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ ("bookEdition.generic."~(bookEdition.format|capitalize))|trans([], "validators") }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.publisher is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.Publisher"|trans([], "validators") }}</td>
+								<td class="tdGene">
+									{% set img = bookEdition.publisher.photo|imgsize(200, bookEdition.publisher.getAssetImagePath(), true, null, null, false) %}
+									<a href="{{ path('ByPublisherBook_Index', {'idPublisher': bookEdition.publisher.id, 'titlePublisher': bookEdition.publisher.title}) }}">{% if img is not empty %}{{ img|raw }}{% else %}{{ bookEdition.publisher.title }}{% endif %}</a>
+								</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.backCover is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.BackCover"|trans([], "validators") }}</td>
+								<td class="tdGene">{{ bookEdition.backCover|raw }}</td>
+							</tr>
+							{% endif %}
+							{% if bookEdition.wholeBook is not empty %}
+							<tr>
+								<td class="td_form_table">{{ "bookEdition.read.WholeBook"|trans([], "validators") }}</td>
+								<td class="tdGene">
+									<form action="{{ path('BookEdition_Save', {id: bookEdition.id, title_slug: entity.urlSlug}) }}">
+										<input class="submitcomment btn" type="submit" name="Search" value="{{ "generality.pdf.SavePrint"|trans([], "validators") }}" title="Search"> 
+									</form>
+								</td>
+							</tr>
+							{% endif %}
+							
+							{% for occupation, biographies in book_edition_biographies_by_occupation(bookEdition) %}
+								<tr>
+									<td class="td_form_table">{{ (("bookEdition.read."~(occupation)|ucfirst))|trans([], "validators") }}</td>
+									<td class="tdGene">
+										{% set persons = [] %}
+										{% for biography in biographies %}
+											{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+										{% endfor %}
+										{{ (persons|join(", "))|raw }}
+									</td>
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+{% endif %}
 <br>
 <hr class="hr2">
 <p>
