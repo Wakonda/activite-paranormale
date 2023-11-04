@@ -1,8 +1,11 @@
+div.leaflet-popup-content-wrapper {
+	background-color: black;
+}
 div.infowindow {
 	height:250px;
 	width:300px;
 	overflow-y:auto;
-	color: black;
+	color: #aaa;
 	text-align: justify;
 	font-family: 'Times New Roman', Arial, serial;
 }
@@ -26,4 +29,11 @@ a.link_map
 
 .leaflet-control-zoom a {
 	color: black !important;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+	background-color: black !important;
+}
+.leaflet-popup-close-button {
+	color: red !important;
 }
