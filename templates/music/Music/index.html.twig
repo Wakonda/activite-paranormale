@@ -11,8 +11,7 @@
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', function () {
 			oTable = $('table.music_datatables').DataTable( {
 				"language": {
 					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"

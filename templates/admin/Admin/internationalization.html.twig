@@ -41,8 +41,7 @@
 		window.location.href = "{{ route }}?fromId={{ entity.id }}&locale=" + document.querySelector("#{{ form.language.vars.id }}").value;
 	});
 
-	$(function ()
-	{
+	document.addEventListener('DOMContentLoaded', function () {
 		$('.doc_datatables').DataTable( {
 			"language": {
 				"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"

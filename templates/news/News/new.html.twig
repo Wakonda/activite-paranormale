@@ -9,7 +9,7 @@
 	{{ macro_index.tinymce_js(form.text.vars.id) }}
 	
 	<script>
-		$(function() {
+		document.addEventListener('DOMContentLoaded', function () {
 			{% if form.isAnonymous is defined %}
 				function publishAnonymously(value)
 				{

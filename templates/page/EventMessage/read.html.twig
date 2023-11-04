@@ -24,7 +24,7 @@
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
 	<script>
-		$(function() {
+		document.addEventListener('DOMContentLoaded', function () {
 			var map = L.map('map-canvas').setView([{{ entity.latitude }}, {{ entity.longitude }}], 15);
 
 			L.marker([{{ entity.latitude }}, {{ entity.longitude }}]).addTo(map);

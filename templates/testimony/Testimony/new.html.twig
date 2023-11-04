@@ -10,7 +10,7 @@
 	{{ macro_index.select2_autocomplete() }}
 	
 	<script>
-		$(function() {
+		document.addEventListener('DOMContentLoaded', function () {
 			document.getElementById('help_licence_link').addEventListener("click", (e) => {
 				new bootstrap.Modal(document.getElementById('showColorboxLicencesModal')).show();
 				e.preventDefault();

@@ -24,7 +24,6 @@
 			{% if base_path is not null %}
 				document.querySelector("div#{{ form.vars.id }}_container .select_files_colorbox").addEventListener('click', (e) => {
 					e.preventDefault();
-					
 					document.querySelector('#selectFileModal_{{ form.vars.id }} .modal-body').innerHTML = "";
 
 					fetch("{{ path(base_path) }}")

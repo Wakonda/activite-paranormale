@@ -526,8 +526,7 @@
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', function () {
 			$('table.index_admin').DataTable({
 				"searching": false,
 				"info": false,

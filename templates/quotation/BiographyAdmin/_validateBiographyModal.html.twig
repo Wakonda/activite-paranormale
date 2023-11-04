@@ -174,7 +174,7 @@
 		return idArray[idArray.length - 1];
 	}
 
-	$(function() {
+	document.addEventListener('DOMContentLoaded', function () {
 		document.querySelector('.add-another-collection-widget').addEventListener("click", (e) => {
 			addNewBiography(e.currentTarget.getAttribute('data-list-selector'));
 		});

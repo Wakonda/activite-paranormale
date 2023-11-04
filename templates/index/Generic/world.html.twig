@@ -11,8 +11,7 @@
 	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', function () {
 			var lengthTd = $(".index_world thead th").length - 1;
 
 			oTable = $('table.index_world').DataTable( {

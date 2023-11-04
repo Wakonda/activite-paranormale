@@ -11,8 +11,7 @@
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 
 	<script>
-		$(function ()
-		{
+		document.addEventListener('DOMContentLoaded', function () {
 			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
 		});
 	</script>

@@ -29,7 +29,7 @@
 	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
 
 	<script>
-		$(function() {
+		document.addEventListener('DOMContentLoaded', function () {
 			var markersArray = new Array();
 			var map = L.map('map-canvas').setView([43.009198, -97.106824], 15);
 
