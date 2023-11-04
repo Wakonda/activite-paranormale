@@ -176,20 +176,20 @@ class Video extends MappedSuperclassBase
 
 			$iframe = $doc->getElementsByTagName('iframe')->item(0);
 
-			if(empty($iframe))
-				return null;
+			if(!empty($iframe)) {
+				$srcAttribute = $iframe->getAttribute('src');
 
-			$srcAttribute = $iframe->getAttribute('src');
-
-			if (strpos($srcAttribute, 'youtube.com') !== false) {
-				return strtolower(self::YOUTUBE_PLATFORM);
-			} elseif (strpos($srcAttribute, 'dailymotion.com') !== false) {
-				return strtolower(self::DAILYMOTION_PLATFORM);
-			} elseif(strpos($srcAttribute, 'rutube.ru') !== false) {
-				return strtolower(self::RUTUBE_PLATFORM);
-			} else {
-				return null;
+				if (strpos($srcAttribute, 'youtube.com') !== false) {
+					return strtolower(self::YOUTUBE_PLATFORM);
+				} elseif (strpos($srcAttribute, 'dailymotion.com') !== false) {
+					return strtolower(self::DAILYMOTION_PLATFORM);
+				} elseif(strpos($srcAttribute, 'rutube.ru') !== false) {
+					return strtolower(self::RUTUBE_PLATFORM);
+				}
 			}
+
+			if (str_contains($code, "twitter"))
+				return strtolower(self::TWITTER_PLATFORM);
 		}
 
 		return $platform;

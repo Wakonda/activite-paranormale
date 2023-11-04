@@ -310,7 +310,7 @@ abstract class AdminGenericController extends AbstractController
 			$fieldName = $illustration["field"];
 			$getter = "get".ucfirst($illustration["field"]);
 			$setter = "set".ucfirst($illustration["field"]);
-			
+
 			if(empty($entity->$getter()))
 				return;
 				
@@ -328,6 +328,8 @@ abstract class AdminGenericController extends AbstractController
 					$pi = pathinfo($existingFile);
 					$filename = preg_replace($regex, "-", urldecode($pi["filename"])).".".$pi["extension"];
 					$filename = uniqid()."_".$filename;
+
+					list($filename, $content) = APImgSize::convertToWebP($html, $filename);
 					
 					file_put_contents($entity->getTmpUploadRootDir().$filename, $html);
 
@@ -354,19 +356,28 @@ abstract class AdminGenericController extends AbstractController
 			$NNFile = preg_replace($regex, "-", strrev($explodeFilename[1]));
 			$ExtFile = strrev($explodeFilename[0]);
 			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
-			
+
 			$entity->$getter()->setExtensionFile(pathinfo($NewNameFile, PATHINFO_EXTENSION));
 			$entity->$getter()->setKindFile(FileManagement::FILE_KIND);
 			$entity->$getter()->setRealNameFile($NewNameFile);
-			
+
 			if(!$entity->$getter()->getId()){
-				$entity->$getter()->getTitleFile()->move($entity->getTmpUploadRootDir(), $NewNameFile);
-			}else{
-				if (is_object($entity->$getter()->getTitleFile()))
+				list($filename, $content) = APImgSize::convertToWebP($entity->$getter()->getTitleFile(), $NewNameFile);
+
+				file_put_contents($entity->getTmpUploadRootDir().$filename, $content);
+				
+				$entity->$getter()->setExtensionFile(pathinfo($filename, PATHINFO_EXTENSION));
+				$entity->$getter()->setKindFile(FileManagement::FILE_KIND);
+				$entity->$getter()->setRealNameFile($filename);
+				$NewNameFile = $filename;
+			} else {dd('ppp2');
+				if (is_object($entity->$getter()->getTitleFile())) {
 					$entity->$getter()->getTitleFile()->move($entity->getUploadRootDir(), $NewNameFile);
+				}
 			}
-			if (is_object($entity->$getter()->getTitleFile()))
+			if (is_object($entity->$getter()->getTitleFile())) {
 				$entity->$getter()->setTitleFile($NewNameFile);
+			}
 		}
 	}
 	

@@ -53,3 +53,4 @@ video:
         CopyToClipboard: "Copy to clipboard"
         CodeCopiedWithSuccess: "The code has been copied successfully"
         RequestSent: "Your request has been sent!"
+        WatchTheVideo: "Watch the video"
