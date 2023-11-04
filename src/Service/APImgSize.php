@@ -55,4 +55,48 @@
 
 			return [$newLarg, $newLong, $file];
 		}
+		
+		public static function convertToWebP($uploadedFile, $filename) {
+			if(is_object($uploadedFile) and get_class($uploadedFile) === "Symfony\Component\HttpFoundation\File\UploadedFile") {
+				$img = $uploadedFile->getPathname();
+				$finfo = finfo_open(FILEINFO_MIME_TYPE);
+				$mime_type = finfo_file($finfo, $img);
+				$size = $uploadedFile->getSize();
+				$content = file_get_contents($uploadedFile->getPathname());
+			} else {
+				$finfo = new \finfo(FILEINFO_MIME_TYPE);
+				$mime_type = $finfo->buffer($uploadedFile);
+				$img = $content = $uploadedFile;
+				$size = strlen($uploadedFile);
+				$imagecreate = "imagecreatefromstring";
+			}
+
+			if ($mime_type === 'image/png' || $mime_type === 'image/jpeg') {
+				if(empty($imagecreate)) {
+					switch($mime_type) {
+						case 'image/jpeg':
+							$extension = 'jpg';
+							$imagecreate = "imagecreatefromjpeg";
+							break;
+						case 'image/png':
+							$extension = 'png';
+							$imagecreate = "imagecreatefrompng";
+							break;
+					}
+				}
+				
+				$sourceImage = $imagecreate($img);
+
+				ob_start();
+				imagewebp($sourceImage, null);
+				$webpImage = ob_get_clean();
+
+				if($size > strlen($webpImage)) {
+					$newFilename = preg_replace('/\..+$/', '.webp', $filename);
+					return [$newFilename, $webpImage];
+				}
+			}
+
+			return [$filename, $content];
+		}
 	}
