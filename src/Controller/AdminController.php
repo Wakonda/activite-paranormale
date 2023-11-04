@@ -1178,9 +1178,19 @@ class AdminController extends AbstractController
 
 		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
 
-		$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
+		$url = $requestParams->get("instagram_url");
 
-		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area"), $entity->getLanguage()->getAbbreviation()));
+		switch($entity->getRealClass())
+		{
+			case "Store":
+				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getPhoto();
+				break;
+			default:
+				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
+				break;
+		}
+
+		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area")." ".$url, $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
 

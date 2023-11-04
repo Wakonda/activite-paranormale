@@ -19,6 +19,9 @@
 		
 		public function getTitleAndUrl(string &$code, string $language): array
 		{
+			if(empty($code))
+				return [];
+	
 			$res = [];
 			$languageWiki = $language."wiki";
 
@@ -27,6 +30,9 @@
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter=${languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
 
 			$datas = json_decode($content);
+
+			if(property_exists($datas, "error"))
+				return [];
 			
 			$title = null;
 			$url = null;

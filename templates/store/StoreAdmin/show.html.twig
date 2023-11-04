@@ -93,4 +93,17 @@
 	{{ macro_index.facebook_form(entity) }}
 	{{ macro_index.mastodon_form(entity) }}
 	{{ macro_index.diaspora_form(entity) }}
+	
+	{% if entity.photo is not empty %}
+		{{ macro_index.instagram_form(entity) }}
+	{% endif %}
+{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.twitter_form_js() }}
+	{{ macro_index.facebook_form_js() }}
+	{{ macro_index.mastodon_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
+	{{ macro_index.instagram_form_js() }}
 {% endblock %}
