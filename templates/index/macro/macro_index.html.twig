@@ -272,7 +272,8 @@
 	<script>
 		var datas = document.getElementById("{{ textarea }}").innerHTML.split(" ");
 		var tags = JSON.parse(document.getElementById("{{ textarea }}").dataset.tags);
-
+		tags = tags.filter((element) => element !== '' && element !== null && element !== undefined);
+console.log(tags)
 		for (var j = 0; j < tags.length; j++) {
 			for(var i = 0; i < datas.length; i++) {
 				if(typeof tags[j] !== "undefined" && tags[j].toLowerCase() == datas[i].toLowerCase()) {
@@ -283,8 +284,8 @@
 			}
 		}
 		
-		tags = tags.map((x) => "#" + x);
-
+		tags = tags.map((x) => "#" + x.replace(/-/g, ''));
+console.log(tags)
 		document.getElementById("{{ textarea }}").innerHTML = datas.join(" ") + " " + tags.join(" ");
 
 		document.querySelectorAll("div#{{ tags }} a.tag").forEach(e => {
