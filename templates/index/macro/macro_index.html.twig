@@ -242,12 +242,13 @@
 				<div class="card-body">
 					<form action="{{ path('Admin_Facebook', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<div id="tags_facebook">
-							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+							{{ _self.emoji_form("facebook_area") }}
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -286,7 +287,7 @@
 
 		document.getElementById("{{ textarea }}").innerHTML = datas.join(" ") + " " + tags.join(" ");
 
-		document.querySelectorAll("div#{{ tags }} a").forEach(e => {
+		document.querySelectorAll("div#{{ tags }} a.tag").forEach(e => {
 			e.addEventListener('click', (e2) => {
 				e2.preventDefault();
 
@@ -321,12 +322,13 @@
 				<div class="card-body">
 					<form action="{{ path('Admin_Diaspora', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<div id="tags_diaspora">
-							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+							{{ _self.emoji_form("diaspora_area") }}
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -366,12 +368,13 @@
 				<div class="card-body">
 					<form action="{{ path('Admin_VK', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<div id="tags_vk">
-							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+							{{ _self.emoji_form("vk_area") }}
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -411,12 +414,13 @@
 				<div class="card-body">
 					<form action="{{ path('Admin_Instagram', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<div id="tags_instagram">
-							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+							{{ _self.emoji_form("instagram_area") }}
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -477,12 +481,13 @@
 				<div class="card-body">
 					<form id="form_mastodon" action="{{ path('Admin_Mastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
 						<div id="tags_mastodon">
-							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+							{{ _self.emoji_form("mastodon_area") }}
 						</div>
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -542,13 +547,15 @@
 						{% endif %}
 
 						<div id="tags_twitter">
-							<a href="#" class="btn btn-outline-secondary" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary" data-tag="weird">Weird</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+							{{ _self.emoji_form("twitter_area") }}
 						</div>
+
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
@@ -993,5 +1000,31 @@
 	});
 	
 	(tarteaucitron.job = tarteaucitron.job || []).push('adsense');
+	</script>
+{% endmacro %}
+
+{% macro emoji_form(textareaId) %}
+	<div class="dropdown emoji-container d-inline">
+		<button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu_{{ textareaId }}" data-bs-toggle="dropdown" aria-expanded="false">
+			{{ "admin.emoji.Emoji"|trans([], "validators") }}
+		</button>
+		<ul class="dropdown-menu px-2" aria-labelledby="dropdownMenu_{{ textareaId }}" id="dropdownMenuList_{{ textareaId }}">
+			<li><b>{{ "admin.emoji.Smiley"|trans([], "validators") }}</b><br><a class="dropdown-item" href="#">🤥</a><a class="dropdown-item" href="#">😵</a><a class="dropdown-item" href="#">😱</a><a class="dropdown-item" href="#">🤐</a><a class="dropdown-item" href="#">🤢</a><a class="dropdown-item" href="#">🤮</a><a class="dropdown-item" href="#">😇</a><a class="dropdown-item" href="#">😈</a><a class="dropdown-item" href="#">👿</a><a class="dropdown-item" href="#">🤡</a><a class="dropdown-item" href="#">👹</a><a class="dropdown-item" href="#">👺</a><a class="dropdown-item" href="#">💀</a><a class="dropdown-item" href="#">☠</a><a class="dropdown-item" href="#">👻</a><a class="dropdown-item" href="#">👽</a><a class="dropdown-item" href="#">👾</a><a class="dropdown-item" href="#">🤖</a></li>
+			<li><b>{{ "admin.emoji.Character"|trans([], "validators") }}</b><br><a class="dropdown-item" href="#">👩‍🚀</a><a class="dropdown-item" href="#">👨‍🚀</a><a class="dropdown-item" href="#">🤶</a><a class="dropdown-item" href="#">🎅</a><a class="dropdown-item" href="#">🧙‍♀️</a><a class="dropdown-item" href="#">🧙‍♂️</a><a class="dropdown-item" href="#">🧝‍♀️</a><a class="dropdown-item" href="#">🧝‍♂️</a><a class="dropdown-item" href="#">🧛‍♀️</a><a class="dropdown-item" href="#">🧛‍♂️</a><a class="dropdown-item" href="#">🧟‍♀️</a><a class="dropdown-item" href="#">🧟‍♂️</a><a class="dropdown-item" href="#">🧞‍♀️</a><a class="dropdown-item" href="#">🧞‍♂️</a><a class="dropdown-item" href="#">🧜‍♀️</a><a class="dropdown-item" href="#">🧜‍♂️</a><a class="dropdown-item" href="#">🧚‍♀️</a><a class="dropdown-item" href="#">🧚‍♂️</a><a class="dropdown-item" href="#">👼</a><a class="dropdown-item" href="#">🛸</a></li>
+			<li><b>{{ "admin.emoji.Body"|trans([], "validators") }}</b><br><a class="dropdown-item" href="#">🖖</a><a class="dropdown-item" href="#">🤘</a><a class="dropdown-item" href="#">🙏</a></li>
+			<li><b>{{ "admin.emoji.Symbol"|trans([], "validators") }}</b><br><a class="dropdown-item" href="#">☮️</a><a class="dropdown-item" href="#">✝️</a><a class="dropdown-item" href="#">☪️</a><a class="dropdown-item" href="#">🕉</a><a class="dropdown-item" href="#">☸️</a><a class="dropdown-item" href="#">✡️</a><a class="dropdown-item" href="#">🔯</a><a class="dropdown-item" href="#">🕎</a><a class="dropdown-item" href="#">☯️</a><a class="dropdown-item" href="#">☦️</a><a class="dropdown-item" href="#">🛐</a><a class="dropdown-item" href="#">⛎</a><a class="dropdown-item" href="#">♈️</a><a class="dropdown-item" href="#">♉️</a><a class="dropdown-item" href="#">♊️</a><a class="dropdown-item" href="#">♋️</a><a class="dropdown-item" href="#">♌️</a><a class="dropdown-item" href="#">♍️</a><a class="dropdown-item" href="#">♎️</a><a class="dropdown-item" href="#">♏️</a><a class="dropdown-item" href="#">♐️</a><a class="dropdown-item" href="#">♑️</a><a class="dropdown-item" href="#">♒️</a><a class="dropdown-item" href="#">♓️</a><a class="dropdown-item" href="#">🆔</a><a class="dropdown-item" href="#">⚛️</a><a class="dropdown-item" href="#">🉑</a><a class="dropdown-item" href="#">☢️</a><a class="dropdown-item" href="#">☣️</a></li>
+			<li><b>{{ "admin.emoji.Flag"|trans([], "validators") }}</b><br><a class="dropdown-item" href="#">&#127482;&#127480;</a><a class="dropdown-item" href="#">&#127468;&#127463;</a><a class="dropdown-item" href="#">&#127464;&#127462;</a><a class="dropdown-item" href="#">&#127467;&#127479;</a><a class="dropdown-item" href="#">&#127465;&#127466;</a><a class="dropdown-item" href="#">&#127466;&#127479;</a><a class="dropdown-item" href="#">&#127470;&#127481;</a><a class="dropdown-item" href="#">&#127471;&#127472;</a><a class="dropdown-item" href="#">&#127464;&#127475;</a><a class="dropdown-item" href="#">&#127468;&#127469;</a></li>
+		</ul>
+	</div>
+
+	<script>
+		document.querySelectorAll('#dropdownMenuList_{{ textareaId }} .dropdown-item').forEach(el => el.addEventListener('click', event => {
+			event.preventDefault();
+			var textarea = document.getElementById("{{ textareaId }}");
+			var text = textarea.value;
+			var position = textarea.selectionStart;
+			text = text.slice(0, position) + event.target.innerHTML + text.slice(position);
+			document.getElementById("{{ textareaId }}").value = text;
+		}));
 	</script>
 {% endmacro %}

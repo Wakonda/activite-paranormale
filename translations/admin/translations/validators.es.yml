@@ -173,6 +173,13 @@ admin:
         Failed: "Error al enviar a Daily Truth"
     wikipedia:
         Header: "Encabezado"
+    emoji:
+        Emoji: "Emoji"
+        Smiley: "Smiley"
+        Character: "Personaje"
+        Body: "Cuerpo"
+        Symbol: "Símbolo"
+        Flag: "Bandera"
     date:
         Day: "Día"
         Month: "Mes"
