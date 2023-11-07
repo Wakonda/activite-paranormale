@@ -10,10 +10,13 @@
 				return !!document.createElementNS && !!document.createElementNS('http://www.w3.org/2000/svg', "svg").createSVGRect;
 			}
 			
-			if($("p.image object").length == 1 && !isSVGSupported())
-			{
-				$("p.image object").remove();
-				$("p.image").append("<img src='{{ asset("extended/photo/file_no_exist.png") }}' alt='' />");
+			var imageObjects = document.querySelectorAll("p.image object");
+			if (imageObjects.length === 1 && !isSVGSupported()) {
+				imageObjects[0].remove();
+				var imageElement = document.createElement("img");
+				imageElement.setAttribute("src", "{{ asset('extended/photo/file_no_exist.png') }}");
+				imageElement.setAttribute("alt", "");
+				document.querySelector("p.image").appendChild(imageElement);
 			}
 		});
 	</script>
