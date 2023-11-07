@@ -207,9 +207,11 @@ class BiographyAdminController extends AdminGenericController
 
 			$entity->setIllustration($illustration);
 		}
+		
+		$roles = $em->getRepository(\App\Entity\EntityLinkBiography::class)->getOccupationsByBiography($entityToCopy->getId());
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation(), "default_roles" => $roles]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)

@@ -12,6 +12,7 @@ class OccupationBiographyTransformer implements DataTransformerInterface
 {
     private $entityManager;
     public $biography;
+    public $defaultRoles;
 
     public function __construct(EntityManagerInterface $entityManager)
     {
@@ -26,6 +27,9 @@ class OccupationBiographyTransformer implements DataTransformerInterface
      */
     public function transform($entity)
     {
+		if(!empty($this->defaultRoles))
+			return $this->defaultRoles;
+
 		return $this->entityManager->getRepository(EntityLinkBiography::class)->getOccupationsByBiography($this->biography->getId());
     }
 
