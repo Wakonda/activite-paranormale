@@ -148,8 +148,9 @@ class BookAdminType extends AbstractType
                 function ($bookEditionBiographies) {
 					$datas = [];
 
-					foreach($bookEditionBiographies as $bookEditionBiography)
-						$datas[] = $bookEditionBiography->getBiography();
+					if(!empty($bookEditionBiographies))
+						foreach($bookEditionBiographies as $bookEditionBiography)
+							$datas[] = $bookEditionBiography->getBiography();
 
                     return $datas;
                 },

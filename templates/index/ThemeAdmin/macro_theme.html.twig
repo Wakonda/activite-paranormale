@@ -1,29 +1,35 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.language.vars.id }}").change(function()
-	{
-		$.ajax({
-			type: "POST",
-			url: "{{ path('Theme_Admin_ReloadListsByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				var parentTheme = data.parentTheme;
-				$("#{{ form.parentTheme.vars.id }} option").remove();
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('Theme_Admin_ReloadListsByLanguage') }}", true);
+		
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var parentThemeSelect = document.getElementById("{{ form.parentTheme.vars.id }}");
+				parentThemeSelect.innerHTML = "";
 				
-				$("#{{ form.parentTheme.vars.id }}").append('<option value=""></option>');
+				var option = document.createElement('option');
+				option.value = '';
+				parentThemeSelect.appendChild(option);
 				
-				$.each(parentTheme, function(index, element)
-				{
-					$("#{{ form.parentTheme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				data.parentTheme.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					parentThemeSelect.appendChild(option);
 				});
 				
 				{% if form.vars.value.parentTheme.id is defined %}
-					$("#{{ form.parentTheme.vars.id }}").val("{{ form.vars.value.parentTheme.id }}");
+					parentThemeSelect.value = "{{ form.vars.value.parentTheme.id }}";
 				{% endif %}
 			}
-		});
+		};
+
+		var formData = new FormData();
+		formData.append("id", this.value);
+
+		xhr.send(formData);
 	});
-	
-	$("#{{ form.language.vars.id }}").change();
-	
 {% endmacro %}

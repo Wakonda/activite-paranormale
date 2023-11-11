@@ -5,7 +5,7 @@
 
 		var xhr = new XMLHttpRequest();
 		xhr.open("POST", "{{ path('News_Admin_ReloadThemeByLanguage') }}", true);
-		
+
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === 4 && xhr.status === 200) {
 				var data = JSON.parse(xhr.responseText);

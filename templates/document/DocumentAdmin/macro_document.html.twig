@@ -1,41 +1,62 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.vars['id'] }}_language").change(function()
-	{
-		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", function() {
+		var currentStateSelect = document.getElementById("{{ form.state.vars.id }}");
+		var currentState = currentStateSelect.options[currentStateSelect.selectedIndex].dataset.intl;
 
-		$.ajax({
-			type: "POST",
-			url: "{{ path('Document_Admin_ReloadDocumentFamilyByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				$("#{{ form.tags.vars.id }}").empty().trigger("change");
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('Document_Admin_ReloadDocumentFamilyByLanguage') }}", true);
+		
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
 
-				var documentFamily = data.documentFamily;
-				$("#{{form.vars['id'] }}_documentFamily option").remove();
-				$.each(documentFamily, function(index, element)
-				{
-					$("#{{form.vars['id'] }}_documentFamily").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+				document.getElementById("{{ form.tags.vars.id }}").innerHTML = '';
+				document.getElementById("{{ form.tags.vars.id }}").dispatchEvent(new Event('change'));
+
+				var documentFamilySelect = document.getElementById("{{ form.documentFamily.vars.id }}");
+				documentFamilySelect.innerHTML = "";
+				data.documentFamily.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					documentFamilySelect.appendChild(option);
 				});
-				var theme = data.theme;
-				$("#{{form.vars['id'] }}_theme option").remove();
-				$.each(theme, function(index, element)
-				{
-					$("#{{form.vars['id'] }}_theme").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+
+				var themeSelect = document.getElementById("{{ form.theme.vars.id }}");
+				themeSelect.innerHTML = "";
+				data.theme.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					themeSelect.appendChild(option);
 				});
-				var licence = data.licence;
-				$("#{{form.vars['id'] }}_licence option").remove();
-				$.each(licence, function(index, element)
-				{
-					$("#{{form.vars['id'] }}_licence").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+
+				currentStateSelect.innerHTML = "";
+				data.state.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.dataset.intl = element.intl;
+					option.text = element.title;
+					if (currentState === element.intl) {
+						option.selected = true;
+					}
+					currentStateSelect.appendChild(option);
 				});
-				var state = data.state;
-				$("#{{form.vars['id'] }}_state option").remove();
-				$.each(state, function(index, element)
-				{
-					$("#{{form.vars['id'] }}_state").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+
+				var licenceSelect = document.getElementById("{{ form.licence.vars.id }}");
+				licenceSelect.innerHTML = "";
+				data.licence.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					licenceSelect.appendChild(option);
 				});
 			}
-		});
+		};
+
+		var formData = new FormData();
+		formData.append("id", this.value);
+
+		xhr.send(formData);
 	});
 {% endmacro %}
