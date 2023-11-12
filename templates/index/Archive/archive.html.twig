@@ -10,6 +10,7 @@
 
 	{% if is_granted('ROLE_ARCHIVIST') == false %}
 		{{ ("index.archive.Unauthorized"|trans({"%urlAccount%": path("Registration_Register"), "%urlContact%": path("Contact_Index")}, "validators"))|raw }}
+		<br>
 	{% else %}
 		{{ "index.archive.DocArchive"|trans([], "validators") }}<span class="badge bg-danger">{{ total }}</span>
 		<hr>
