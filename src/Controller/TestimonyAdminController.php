@@ -6,12 +6,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Testimony;
 use App\Entity\State;
 use App\Entity\TestimonyTags;
 use App\Entity\TestimonyFileManagement;
+use App\Entity\Region;
+use App\Entity\Language;
+use App\Entity\Licence;
+use App\Entity\Theme;
 use App\Form\Type\TestimonyAdminType;
 use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
@@ -144,10 +149,7 @@ class TestimonyAdminController extends AdminGenericController
 			$output['data'][] = $row;
 		}
 
-		$response = new Response(json_encode($output));
-		$response->headers->set('Content-Type', 'application/json');
-
-		return $response;
+		return new JsonResponse($output);
 	}
 	
 	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
@@ -187,5 +189,58 @@ class TestimonyAdminController extends AdminGenericController
 		$em->flush();
 
 		return new Response();
+	}
+
+	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
+	{
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = [];
+
+		if(!empty($language))
+		{
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
+
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+
+			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
+			$countries = $em->getRepository(Region::class)->getCountryByLanguage($language->getAbbreviation())->getQuery()->getResult();
+		}
+		else
+		{
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
+			$states = $em->getRepository(State::class)->findAll();
+			$licences = $em->getRepository(Licence::class)->findAll();
+			$countries = $em->getRepository(Region::class)->findAll();
+		}
+
+		$themeArray = [];
+		$stateArray = [];
+		$licenceArray = [];
+		$countryArray = [];
+		
+		foreach($themes as $theme)
+			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
+
+		$translateArray['theme'] = $themeArray;
+
+		foreach($states as $state)
+			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName()];
+
+		$translateArray['state'] = $stateArray;
+
+		foreach($licences as $licence)
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
+
+		$translateArray['licence'] = $licenceArray;
+
+		foreach($countries as $country)
+			$countryArray[] = ["id" => $country->getInternationalName(), "title" => $country->getTitle()];
+
+		$translateArray['country'] = $countryArray;
+
+		return new JsonResponse($translateArray);
 	}
 }

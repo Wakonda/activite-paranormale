@@ -52,3 +52,7 @@ Testimony_Admin_Archive:
 Testimony_Admin_DeleteMultiple:
     path:  /delete_multiple
     controller: App\Controller\TestimonyAdminController::deleteMultiple
+
+Testimony_Admin_ReloadListsByLanguage:
+    path:  /reloadlistsbylanguage
+    controller: App\Controller\TestimonyAdminController::reloadListsByLanguage

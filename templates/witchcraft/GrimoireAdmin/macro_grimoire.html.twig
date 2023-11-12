@@ -1,29 +1,39 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.vars['id'] }}_language").change(function()
-	{
-		$.ajax({
-			type: "POST",
-			url: "{{ path('Grimoire_Admin_ReloadListsByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				var grimoire = data.grimoire;
-				
-				$("#{{form.vars['id'] }}_surTheme optgroup").remove();
-				$("#{{form.vars['id'] }}_surTheme option").remove();
-				
-				$.each(grimoire, function(index, element)
-				{
-				
-					var optGroup = $('<optgroup label="' + index + '"></optgroup>');
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", (e) => {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('Grimoire_Admin_ReloadListsByLanguage') }}", true);
 
-					for(var i = 0; i < element.length; i++) {
-						optGroup.append('<option value="'+ element[i].id +'">'+ element[i].title +'</option>');
+		xhr.onreadystatechange = () => {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+				
+				var grimoire = data.grimoire;
+
+				var surThemeSelect = document.getElementById('{{form.vars['id'] }}_surTheme');
+				surThemeSelect.innerHTML = '';
+
+				for (var key in grimoire) {
+					if (grimoire.hasOwnProperty(key)) {
+						var optGroup = document.createElement('optgroup');
+						optGroup.label = key;
+
+						for (var i = 0; i < grimoire[key].length; i++) {
+							var option = document.createElement('option');
+							option.value = grimoire[key][i].id;
+							option.text = grimoire[key][i].title;
+							optGroup.appendChild(option);
+						}
+
+						surThemeSelect.appendChild(optGroup);
 					}
-					
-					$("#{{form.vars['id'] }}_surTheme").append(optGroup);
-				});
+				}
+
 			}
-		});
+		};
+
+		var formData = new FormData();
+		formData.append("id", e.target.value);
+
+		xhr.send(formData);
 	});
 {% endmacro %}

@@ -16,10 +16,7 @@
 	{% import "testimony/TestimonyAdmin/macro_testimony.html.twig" as macro_testimony %}
 	
 	<script>
-		$(function()
-		{
-			{{ macro_testimony.updateListForm(form) }}
-		});
+		{{ macro_testimony.updateListForm(form) }}
 	</script>
 	
 	{{ macro_testimony.location_selector(form) }}

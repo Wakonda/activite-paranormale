@@ -191,7 +191,8 @@ class GrimoireAdminController extends AdminGenericController
 
 		foreach($grimoires as $grimoire)
 		{
-			$grimoireArray[$grimoire->getParentTheme()->getTitle()][] = ["id" => $grimoire->getId(), "title" => $grimoire->getTitle()];
+			if(!empty($grimoire->getParentTheme()))
+				$grimoireArray[$grimoire->getParentTheme()->getTitle()][] = ["id" => $grimoire->getId(), "title" => $grimoire->getTitle()];
 		}
 		$translateArray['grimoire'] = $grimoireArray;
 

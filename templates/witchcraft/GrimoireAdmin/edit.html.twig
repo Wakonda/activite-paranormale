@@ -11,10 +11,7 @@
 {% block js_specific %}
 	{% import "witchcraft/GrimoireAdmin/macro_grimoire.html.twig" as macro_grimoire %}
 	<script>
-		$(function()
-		{
-			{{ macro_grimoire.updateListForm(form) }}
-		});
+		{{ macro_grimoire.updateListForm(form) }}
 	</script>
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
