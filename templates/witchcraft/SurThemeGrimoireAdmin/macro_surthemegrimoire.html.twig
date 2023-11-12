@@ -1,25 +1,35 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.language.vars.id }}").change(function()
-	{
-		$.ajax({
-			type: "POST",
-			url: "{{ path('SurThemeGrimoire_Admin_ReloadListsByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				var parentTheme = data.parentTheme;
-				$("#{{ form.parentTheme.vars.id }} option").remove();
-				$.each(parentTheme, function(index, element)
-				{
-					$("#{{ form.parentTheme.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", (e) => {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('SurThemeGrimoire_Admin_ReloadListsByLanguage') }}", true);
+
+		xhr.onreadystatechange = () => {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var parentTheme = document.getElementById("{{ form.parentTheme.vars.id }}");
+				parentTheme.innerHTML = "";
+
+				var emptyOption = document.createElement("option");
+				emptyOption.value = "";
+				parentTheme.appendChild(emptyOption);
+
+				data.parentTheme.forEach((element) => {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					parentTheme.appendChild(option);
 				});
-				
+
 				{% if form.vars.value.parentTheme.id is defined %}
-					$("#{{ form.parentTheme.vars.id }}").val("{{ form.vars.value.parentTheme.id }}");
+					document.getElementById("#{{ form.parentTheme.vars.id }}").value = "{{ form.vars.value.parentTheme.id }}";
 				{% endif %}
 			}
-		});
+		};
+
+		var formData = new FormData();
+		formData.append("id", e.target.value);
+
+		xhr.send(formData);
 	});
-	
-	$("#{{ form.language.vars.id }}").change();
 {% endmacro %}

@@ -3,17 +3,13 @@
 {% block h2_title %}{{ "admin.index.WitchcraftTool"|trans([], "validators") }}{% endblock %}
 
 {% block index_admin_route %}{{ path('WitchcraftTool_Admin_Index') }}{% endblock %}
-
 {% block create_admin_route %}{{ path('WitchcraftTool_Admin_Create') }}{% endblock %}
 
 {% block js_specific %}
 	{% import "witchcraft/WitchcraftToolAdmin/macro_witchcraft_tool.html.twig" as macro_witchcraft_tool %}
 
 	<script>
-		$(function()
-		{
-			{{ macro_witchcraft_tool.updateListForm(form) }}
-		});
+		{{ macro_witchcraft_tool.updateListForm(form) }}
 	</script>
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}

@@ -109,8 +109,8 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getAssetImagePath().$entity->getPhoto().'" alt="" width="100px">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
 			$row[] = "
-			 <a href='".$this->generateUrl('SurThemeGrimoire_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
-			 <a href='".$this->generateUrl('SurThemeGrimoire_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('SurThemeGrimoire_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
+			 <a href='".$this->generateUrl('SurThemeGrimoire_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
 			";
 
 			$output['data'][] = $row;
@@ -132,17 +132,16 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$menuGrimoireArray = [];
 
 		foreach($menuGrimoires as $menuGrimoire)
-		{
-			$menuGrimoireArray[] = array("id" => $menuGrimoire->getId(), "title" => $menuGrimoire->getTitle());
-		}
-		$translateArray['menuGrimoire'] = $menuGrimoireArray;
+			$menuGrimoireArray[] = ["id" => $menuGrimoire["id"], "title" => $menuGrimoire["title"]];
+
+		$translateArray['parentTheme'] = $menuGrimoireArray;
 
 		return new JsonResponse($translateArray);
 	}
 
 	protected function defaultValueForMappedSuperclassBase(Request $request, EntityManagerInterface $em, $entity)
 	{
-		$language = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		$entity->setLanguage($language);
 	}
 	

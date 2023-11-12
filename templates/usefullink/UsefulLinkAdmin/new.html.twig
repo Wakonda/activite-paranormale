@@ -15,10 +15,7 @@
 	{{ macro_usefullink.tagify("#" ~ form.tags.vars.id) }}
 	
 	<script>
-		$(function()
-		{
-			{{ macro_usefullink.updateListForm(form) }}
-		});
+		{{ macro_usefullink.updateListForm(form) }}
 	</script>
 {% endblock %}
 

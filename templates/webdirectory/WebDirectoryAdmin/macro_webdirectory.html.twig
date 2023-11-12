@@ -1,37 +1,45 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.language.vars.id }}").change(function()
-	{
-		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", function() {
+		var currentStateSelect = document.getElementById("{{ form.state.vars.id }}");
+		var currentState = currentStateSelect.options[currentStateSelect.selectedIndex].dataset.intl;
 
-		$.ajax({
-			type: "POST",
-			url: "{{ path('WebDirectory_Admin_ReloadListsByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				var licence = data.licence;
-				$("#{{ form.licence.vars.id }} option").remove();
-				
-				$("#{{ form.licence.vars.id }}").append('<option value=""></option>');
-				
-				$.each(licence, function(index, element)
-				{
-					$("#{{ form.licence.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('WebDirectory_Admin_ReloadListsByLanguage') }}", true);
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				currentStateSelect.innerHTML = "";
+				data.state.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.dataset.intl = element.intl;
+					option.text = element.title;
+					if (currentState === element.intl) {
+						option.selected = true;
+					}
+					currentStateSelect.appendChild(option);
+				});
+
+				var licenceSelect = document.getElementById("{{ form.licence.vars.id }}");
+				licenceSelect.innerHTML = "";
+				data.licence.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					licenceSelect.appendChild(option);
 				});
 				
 				{% if form.vars.value.licence.id is defined %}
-					$("#{{ form.licence.vars.id }}").val("{{ form.vars.value.licence.id }}");
+					document.getElementById("#{{ form.licence.vars.id }}").value = "{{ form.vars.value.licence.id }}";
 				{% endif %}
-				var state = data.state;
-
-				$("#{{form.vars['id'] }}_state option").remove();
-				$.each(state, function(index, element)
-				{
-					$("#{{form.vars['id'] }}_state").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
-				});
 			}
-		});
+		};
+
+		var formData = new FormData();
+		formData.append("id", this.value);
+
+		xhr.send(formData);
 	});
-	
-	$("#{{ form.language.vars.id }}").change();
 {% endmacro %}

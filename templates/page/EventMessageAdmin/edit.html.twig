@@ -9,12 +9,17 @@
 {% block update_admin_route %}{{ path('EventMessage_Admin_Update', { 'id': entity.id }) }}{% endblock %}
 
 {% block js_specific %}
+	{% import "page/EventMessageAdmin/macro_event_message.html.twig" as macro_event_message %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_admin_js(form.abstractText.vars.id, path('EventMessage_Admin_WYSIWYG_UploadFile')) }}
 	{{ macro_index.tinymce_admin_js(form.text.vars.id, path('EventMessage_Admin_WYSIWYG_UploadFile')) }}
 	{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
 	{{ macro_index.select2_autocomplete() }}
+
+	<script>
+		{{ macro_event_message.updateListForm(form) }}
+	</script>
 {% endblock %}
 
 {% block tbody_admin_table %}

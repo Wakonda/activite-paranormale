@@ -11,30 +11,27 @@
 	{% import "video/VideoAdmin/macro_video.html.twig" as macro_video %}
 	
 	<script>
-		$(function()
-		{
-			{{ macro_video.updateListForm(form) }}
+		{{ macro_video.updateListForm(form) }}
 
-			document.getElementById("{{ form.mediaVideo.vars.id }}").addEventListener("change", function () {
-				document.getElementById("{{ form.mediaVideo_selector.vars.id }}").value = "";
-			});
-
-			document.getElementById("{{ form.platform.vars.id }}").addEventListener("change", function () {
-				if (this.value === "AP") {
-					var requiredStar = document.querySelector("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star");
-					if (requiredStar)
-						requiredStar.remove();
-				} else {
-					var requiredStar = document.querySelector("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star");
-					if (requiredStar)
-						requiredStar.remove();
-
-					document.querySelector("label[for='{{ form.embeddedCode.vars.id }}']").insertAdjacentHTML("afterend", '<span class="required_star"> * </span>');
-				}
-			});
-
-			document.getElementById("{{ form.platform.vars.id }}").dispatchEvent(new Event("change"));
+		document.getElementById("{{ form.mediaVideo.vars.id }}").addEventListener("change", function () {
+			document.getElementById("{{ form.mediaVideo_selector.vars.id }}").value = "";
 		});
+
+		document.getElementById("{{ form.platform.vars.id }}").addEventListener("change", function () {
+			if (this.value === "AP") {
+				var requiredStar = document.querySelector("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star");
+				if (requiredStar)
+					requiredStar.remove();
+			} else {
+				var requiredStar = document.querySelector("label[for='{{ form.embeddedCode.vars.id }}'] + span.required_star");
+				if (requiredStar)
+					requiredStar.remove();
+
+				document.querySelector("label[for='{{ form.embeddedCode.vars.id }}']").insertAdjacentHTML("afterend", '<span class="required_star"> * </span>');
+			}
+		});
+
+		document.getElementById("{{ form.platform.vars.id }}").dispatchEvent(new Event("change"));
 	</script>
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}

@@ -1,36 +1,55 @@
 {% macro updateListForm(form) %}
-	$("#{{ form.vars['id'] }}_language").change(function()
-	{
-		var currentState = $("#{{form.vars['id'] }}_state").find('option:selected').data('intl');
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", (e) => {
+		var currentStateSelect = document.getElementById("{{ form.state.vars.id }}");
+		var currentState = currentStateSelect.options[currentStateSelect.selectedIndex].dataset.intl;
 
-		$.ajax({
-			type: "POST",
-			url: "{{ path('News_Admin_ReloadThemeByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				var state = data.state;
-				$("#{{form.vars['id'] }}_state option").remove();
-				$.each(state, function(index, element)
-				{
-					$("#{{form.vars['id'] }}_state").append('<option value="'+ element.id +'" data-intl="'+ element.intl +'"' + (currentState == element.intl ? "selected" : "") + '>'+ element.title +'</option>');
+		var xhrState = new XMLHttpRequest();
+		xhrState.open("POST", "{{ path('News_Admin_ReloadThemeByLanguage') }}", true);
+
+		xhrState.onreadystatechange = () => {
+			if (xhrState.readyState === 4 && xhrState.status === 200) {
+				var data = JSON.parse(xhrState.responseText);
+
+				currentStateSelect.innerHTML = "";
+				data.state.forEach((element) => {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.dataset.intl = element.intl;
+					option.text = element.title;
+					if (currentState === element.intl) {
+						option.selected = true;
+					}
+					currentStateSelect.appendChild(option);
 				});
 			}
-		});
-		
-		$.ajax({
-			type: "POST",
-			url: "{{ path('WitchcraftTool_Admin_ReloadListsByLanguage') }}",
-			data: { "id" : $(this).val() },
-			success: function(data)
-			{
-				var theme = data.theme;
-				$("#{{ form.witchcraftThemeTool.vars.id }} option").remove();
-				$.each(theme, function(index, element)
-				{
-					$("#{{ form.witchcraftThemeTool.vars.id }}").append('<option value="'+ element.id +'">'+ element.title +'</option>');
+		};
+
+		var formDataState = new FormData();
+		formDataState.append("id", e.target.value);
+
+		xhrState.send(formDataState);
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('WitchcraftTool_Admin_ReloadListsByLanguage') }}", true);
+
+		xhr.onreadystatechange = () => {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var themeSelect = document.getElementById("{{ form.witchcraftThemeTool.vars.id }}");
+				themeSelect.innerHTML = "";
+				data.theme.forEach((element) => {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					themeSelect.appendChild(option);
 				});
 			}
-		});
+		};
+
+		var formData = new FormData();
+		formData.append("id", e.target.value);
+
+		xhr.send(formData);
 	});
 {% endmacro %}
