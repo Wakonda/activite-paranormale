@@ -29,23 +29,25 @@ class TestimonyRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getSingleScalarResult();	
 	}
 
-	public function getAllTestimonyByThemeAndLanguage($language, $count = false)
+	public function getAllTestimonyByThemeAndLanguage($language)
 	{
-		$qb = $this->createQueryBuilder('o');
-		
-		$qb->innerjoin('o.state', 's')
-		 ->innerjoin('o.language', 'l')
-		 ->where('l.abbreviation = :language')
-		 ->setParameter('language', $language)
-		 ->andWhere('s.displayState = 1')
-		   ->andWhere("o.archive = false")
-		 ->orderBy('o.publicationDate', 'DESC');
+		$qb = $this->_em->createQueryBuilder();
 
-		if($count)
-		{
-			$qb->select("count(o)");
-			return $qb->getQuery()->getSingleScalarResult();
-		}
+		$qb->select("SUM(if( s.displayState = 1 AND o.archive = false, 1, 0)) AS total")
+		   ->addSelect("t.title")
+		   ->addSelect("t.id")
+		   ->addSelect("pt.title AS parentTheme")
+		   ->from("\App\Entity\Theme", "t")
+		   ->leftjoin(\App\Entity\Testimony::class, "o", \Doctrine\ORM\Query\Expr\Join::WITH, "o.theme = t.id")
+		   ->leftjoin("o.state", "s")
+		   ->leftjoin('t.language', 'l')
+		   ->leftjoin('t.parentTheme', 'pt')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("t.parentTheme IS NOT NULL")
+		   ->groupby("t.title")
+		   ->orderBy("t.title");
+
 		return $qb->getQuery()->getResult();
 	}
 	

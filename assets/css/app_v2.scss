@@ -2159,11 +2159,13 @@ button {
 .search-result-box.card-box.mt-4 {
     margin-top: 1.5rem !important;
 }
-
-.sf-minitoolbar {
-	background-color: white !important;
+.number_theme {
+    color: white;
+    background: darkred;
+    border-radius: 1rem;
+    font-size: 11px;
+    padding: 0.2em 0.4em;
 }
-
 ins.adsbygoogle p {
     display: none !important;
 }
@@ -2173,4 +2175,8 @@ ins.adsbygoogle[data-ad-status="unfilled"] p {
 ins.adsbygoogle[data-ad-status="unfilled"] {
     height: auto !important;
     width: auto !important;
+}
+
+.sf-minitoolbar {
+	background-color: white !important;
 }

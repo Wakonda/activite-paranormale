@@ -31,20 +31,19 @@ class TestimonyController extends AbstractController
 
     public function indexAction(Request $request, EntityManagerInterface $em)
     {
-		$entity = new Testimony();
 		$locale = $request->getLocale();
-		
-		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
-		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
 		$entities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($locale);
-		$countEntities = $em->getRepository(Testimony::class)->getAllTestimonyByThemeAndLanguage($locale, true);
+		$countEntities = array_sum(array_column($entities, "total"));
+
+		$datas = [];
+		
+		foreach($entities as $entity)
+			$datas[$entity["parentTheme"]][] = $entity;
 
 		return $this->render('testimony/Testimony/index.html.twig', [
-			'entity' => $entity,
-			'parentTheme' => $parentTheme,
-			'countEntities' => $countEntities,
-			'theme' => $theme
+			'datas' => $datas,
+			'countEntities' => $countEntities
 		]);
     }
 	
