@@ -25,24 +25,6 @@ class CreepyStoryRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
-	
-	public function nbrByTheme($lang, $theme)
-	{
-		$qb = $this->createQueryBuilder('o');
-		$qb->select("count(o)")
-			->join('o.language', 'c')
-			->join('o.theme', 't')
-			->where('c.abbreviation = :lang')
-			->setParameter('lang', $lang)
-			->andWhere('t.title = :theme')
-			->join('o.state', 's')
-			->setParameter('theme', $theme)
-			->andWhere("o.archive = false");
-
-		return $qb->getQuery()->getSingleScalarResult();	
-	}
-
-
 
 	public function getAllCreepyStoryByThemeAndLanguage($language)
 	{

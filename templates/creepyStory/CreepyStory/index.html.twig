@@ -17,8 +17,8 @@
 				<br>
 				<table class="table table-bordered">
 				<tr class="trGene">
-					<th class="label_form">{{ "testimony.index.Theme"|trans([], "validators") }}</th>
-					<th class="label_form">{{ "testimony.index.Number"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "creepyStory.index.Theme"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "creepyStory.index.Number"|trans([], "validators") }}</th>
 				</tr>
 				{% for T in data %}
 					<tr><td class="td_form_table w-75"><a href="{{ path('CreepyStory_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
@@ -28,8 +28,6 @@
 			</div>
 		{% endfor %}
 	</div>
-	
-	
 	<br>
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}

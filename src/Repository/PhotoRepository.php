@@ -25,23 +25,29 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
-
-	public function nbrPictureByTheme($lang, $theme)
-	{
-		$qb = $this->createQueryBuilder('o');
-		$qb->select("count(o)")
-			->join('o.language', 'c')
-			->join('o.theme', 't')
-			->where('c.abbreviation = :lang')
-			->setParameter('lang', $lang)
-			->andWhere('t.title = :theme')
-			->join('o.state', 's')
-			->setParameter('theme', $theme)
-			->andWhere("o.archive = false");
-
-		return $qb->getQuery()->getSingleScalarResult();	
-	}
 	
+	public function getAllPhotoByThemeAndLanguage($language)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select("SUM(if( s.displayState = 1 AND o.archive = false, 1, 0)) AS total")
+		   ->addSelect("t.title")
+		   ->addSelect("t.id")
+		   ->addSelect("pt.title AS parentTheme")
+		   ->from("\App\Entity\Theme", "t")
+		   ->leftjoin(\App\Entity\Photo::class, "o", \Doctrine\ORM\Query\Expr\Join::WITH, "o.theme = t.id")
+		   ->leftjoin("o.state", "s")
+		   ->leftjoin('t.language', 'l')
+		   ->leftjoin('t.parentTheme', 'pt')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("t.parentTheme IS NOT NULL")
+		   ->groupby("t.title")
+		   ->orderBy("t.title");
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function getTabPicture($themeId, $lang, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
 		$qb = $this->createQueryBuilder('o');

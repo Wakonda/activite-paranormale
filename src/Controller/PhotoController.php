@@ -21,25 +21,17 @@ class PhotoController extends AbstractController
     {
 		$locale = $request->getLocale();
 
-		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
-		$theme = $em->getRepository(Theme::class)->getTheme($locale);
-
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
+		$entities = $em->getRepository(Photo::class)->getAllPhotoByThemeAndLanguage($locale);
 		$nbrPicture = $em->getRepository(Photo::class)->nbrPicture($locale);
 
-		for($i = 0; $i < $nbrTheme; $i++)
-		{
-			$nbrPictureByTheme[$i] = $em->getRepository(Photo::class)->nbrPictureByTheme($locale, $theme[$i]->getTitle());
-			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
-			$tabThemeNbr[$i][1] = $nbrPictureByTheme[$i];
-		}
+		$datas = [];
+
+		foreach($entities as $entity)
+			$datas[$entity["parentTheme"]][] = $entity;
 
 		return $this->render('photo/Photo/index.html.twig', [
-			'parentTheme' => $parentTheme,
-			'nbrPicture' => $nbrPicture,
-			'tabThemeNbr' => $tabThemeNbr,
-			'nbrTheme' => $nbrTheme,
-			'theme' => $theme
+			'datas' => $datas,
+			'nbrPicture' => $nbrPicture
 		]);
     }
 	
