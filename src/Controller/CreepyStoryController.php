@@ -20,26 +20,18 @@ class CreepyStoryController extends AbstractController
     public function indexAction(Request $request, EntityManagerInterface $em)
     {
 		$locale = $request->getLocale();
-		
-		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
-		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
+		$entities = $em->getRepository(CreepyStory::class)->getAllCreepyStoryByThemeAndLanguage($locale);
 		$nbr = $em->getRepository(CreepyStory::class)->countCreepyStory($locale);
 
-		for($i = 0; $i < $nbrTheme; $i++)
-		{
-			$nbrPictureByTheme[$i] = $em->getRepository(CreepyStory::class)->nbrByTheme($locale, $theme[$i]->getTitle());
-			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
-			$tabThemeNbr[$i][1] = $nbrPictureByTheme[$i];
-		}
+		$datas = [];
+
+		foreach($entities as $entity)
+			$datas[$entity["parentTheme"]][] = $entity;
 
 		return $this->render('creepyStory/CreepyStory/index.html.twig', [
-			'parentTheme' => $parentTheme,
-			'nbr' => $nbr,
-			'tabThemeNbr' => $tabThemeNbr,
-			'nbrTheme' => $nbrTheme,
-			'theme' => $theme
+			'datas' => $datas,
+			'nbr' => $nbr
 		]);
     }
 	

@@ -26,7 +26,7 @@
 				</tr>
 				{% for T in data %}
 					<tr><td class="td_form_table w-75"><a href="{{ path('Testimony_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
-					<td class="tdGene"><span class="badge bg-info">{{ render(controller("App\\Controller\\TestimonyController::countThemeLangTestimonyAction", { 'theme':T.title, 'lang':app.request.locale })) }}</span></td></tr>
+					<td class="tdGene"><span class="badge bg-info">{{ T.total }}</span></td></tr>
 				{% endfor %}
 				</table>
 			</div>

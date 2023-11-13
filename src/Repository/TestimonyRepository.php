@@ -12,23 +12,6 @@ use Doctrine\ORM\EntityRepository;
  */
 class TestimonyRepository extends MappedSuperclassBaseRepository
 {
-	public function nbrTestimonyByTheme($language, $theme)
-	{
-		$qb = $this->createQueryBuilder('o');
-		$qb->select("count(o)")
-			->join('o.theme', 't')
-			->join('o.language', 'l')
-			->where('l.abbreviation = :language')
-			->setParameter('language', $language)
-			->andWhere('t.title = :theme')
-			->setParameter('theme', $theme)
-			->join('o.state', 's')
-			->andWhere('s.displayState = 1')
-		    ->andWhere("o.archive = false");
-
-		return $qb->getQuery()->getSingleScalarResult();	
-	}
-
 	public function getAllTestimonyByThemeAndLanguage($language)
 	{
 		$qb = $this->_em->createQueryBuilder();

@@ -37,7 +37,7 @@ class TestimonyController extends AbstractController
 		$countEntities = array_sum(array_column($entities, "total"));
 
 		$datas = [];
-		
+
 		foreach($entities as $entity)
 			$datas[$entity["parentTheme"]][] = $entity;
 
@@ -237,12 +237,6 @@ class TestimonyController extends AbstractController
 	}
 	
 	/* FONCTION DE COMPTAGE */
-	public function countThemeLangTestimonyAction(EntityManagerInterface $em, $theme, $lang)
-	{
-		$nbrTestimonyByTheme = $em->getRepository(Testimony::class)->nbrTestimonyByTheme($lang, $theme);
-		return new Response($nbrTestimonyByTheme);
-	}
-	
 	public function countAllTestimoniesAction(Request $request, EntityManagerInterface $em)
 	{
 		$nbrOfAllTestimonies = $em->getRepository(Testimony::class)->countAllTestimoniesForLeftMenu($request->getLocale());
