@@ -24,25 +24,18 @@ class VideoController extends AbstractController
     public function indexAction(Request $request, EntityManagerInterface $em)
     {
 		$locale = $request->getLocale();
-		
-		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
-		$theme = $em->getRepository(Theme::class)->getTheme($locale);
 
-		$nbrTheme = $em->getRepository(Theme::class)->nbrTheme($locale);
-		$nbrVideo = $em->getRepository(Video::class)->nbrVideo($locale);
+		$entities = $em->getRepository(Video::class)->getAllVideoByThemeAndLanguage($locale);
+		$nbr = $em->getRepository(Video::class)->nbrVideo($locale);
 
-		for($i = 0; $i < $nbrTheme; $i++)
-		{
-			$nbrArchiveParTheme[$i] = $em->getRepository(Video::class)->nbrArchiveParTheme($locale, $theme[$i]->getTitle());
-			$tabThemeNbr[$i][0] = $theme[$i]->getTitle();
-			$tabThemeNbr[$i][1] = $nbrArchiveParTheme[$i];
-		}
+		$datas = [];
+
+		foreach($entities as $entity)
+			$datas[$entity["parentTheme"]][] = $entity;
+
 		return $this->render('video/Video/index.html.twig', [
-			'parentTheme' => $parentTheme,
-			'nbrVideo' => $nbrVideo,
-			'tabThemeNbr' => $tabThemeNbr,
-			'nbrTheme' => $nbrTheme,
-			'theme' => $theme
+			"datas" => $datas,
+			'nbr' => $nbr
 		]);
     }
 	

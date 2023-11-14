@@ -6,32 +6,25 @@
 {% endblock %}
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/video.jpg') }}" height="550" alt="Mermaid" /></p>
-	<p>{{ "video.index.NbrTotalVideo"|trans([], "validators") }}<span class="badge bg-danger">{{ nbrVideo }}</span></p>
+	<p>{{ "video.index.NbrTotalVideo"|trans([], "validators") }}<span class="badge bg-danger">{{ nbr }}</span></p>
 	<hr>
 
-	{% set nbrTheme1 = nbrTheme - 1 %}
-	
 	{% set i = 0 %}
 	<div id="accordion">
-		{% for ST in parentTheme %}
-			<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-bs-target="#collapse_{{ ST.internationalName }}" aria-expanded="false" aria-controls="collapse_{{ ST.internationalName }}">{{ ST.title }}</h3>
-			<div id="collapse_{{ ST.internationalName }}" class="collapse" data-parent="#accordion">
-			<br />
-			<table class="table table-bordered">
-			<tr class="trGene">
-				<th>{{ "video.index.Theme"|trans([], "validators") }}</th>
-				<th>{{ "video.index.Number"|trans([], "validators") }}</th>
-			</tr>
-			{% for T in theme %}
-				{% if T.parentTheme == ST %}
-					{% for i in 0..nbrTheme1 %}
-						{% if T.title == tabThemeNbr[i][0] %}
-							<tr><td class="td_form_table w-75"><a href="{{ path('Video_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ tabThemeNbr[i][0] }}</a></td><td class="tdGene"><span class="badge bg-info">{{ tabThemeNbr[i][1] }}</span></td></tr>
-						{% endif %}
-					{% endfor %}
-				{% endif %}
-			{% endfor %}
-			</table>
+		{% for key, data in datas %}
+			<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-bs-target="#collapse_{{ slug(key) }}" aria-expanded="false" aria-controls="collapse_{{ slug(key) }}">{{ key }} <span class="number_theme">{{ (data|column("total"))|reduce((carry, v) => carry + v) }}</span></h3>
+			<div id="collapse_{{ slug(key) }}" class="collapse" data-parent="#accordion">
+				<br>
+				<table class="table table-bordered">
+				<tr class="trGene">
+					<th class="label_form">{{ "video.index.Theme"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "video.index.Number"|trans([], "validators") }}</th>
+				</tr>
+				{% for T in data %}
+					<tr><td class="td_form_table w-75"><a href="{{ path('Video_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
+					<td class="tdGene"><span class="badge bg-info">{{ T.total }}</span></td></tr>
+				{% endfor %}
+				</table>
 			</div>
 		{% endfor %}
 	</div>

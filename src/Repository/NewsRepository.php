@@ -95,24 +95,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery();
 	}
-	
-	public function nbrArchiveParTheme($lang, $theme)
-	{
-		$qb = $this->createQueryBuilder('o');
-		$qb->select("count(o)")
-			->join('o.language', 'l')
-			->join('o.theme', 't')
-			->join('o.state', 's')
-			->where('s.displayState = 1')
-			->andWhere('l.abbreviation = :lang')
-			->setParameter('lang', $lang)
-			->andWhere('t.title = :theme')
-			->setParameter('theme', $theme)
-			->andWhere('o.archive = true');
 
-		return $qb->getQuery()->getSingleScalarResult();	
-	}
-	
 	public function countEntreeArchive($theme, $lang)
 	{
 		$qb = $this->createQueryBuilder('c');
