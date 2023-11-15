@@ -66,6 +66,29 @@ class GrimoireRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getAllArchivesByThemeAndLanguage($classname, $language)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select("SUM(if(s.displayState = true AND o.archive = true, 1, 0)) AS total")
+		   ->addSelect("t.title")
+		   ->addSelect("t.id")
+		   ->addSelect("pt.title AS parentTheme")
+		   ->from("\App\Entity\SurThemeGrimoire", "t")
+		   ->leftjoin($classname, "o", \Doctrine\ORM\Query\Expr\Join::WITH, "o.surTheme = t.id")
+		   ->leftjoin("o.state", "s")
+		   ->leftjoin('t.language', 'l')
+		   ->leftjoin('t.parentTheme', 'pt')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("t.parentTheme IS NOT NULL")
+		   ->groupby("t.id")
+		   ->orderBy("pt.title")
+		   ->addOrderBy("t.title");
+
+		return $qb->getQuery()->getResult();
+	}
 	
 	public function findByDisplayState($id)
 	{
@@ -265,7 +288,7 @@ class GrimoireRepository extends EntityRepository
 		   ->andWhere('o.archive = false')
 		   ->andWhere('s.displayState = 1')
 		   ->setParameter('locale', $locale);
-		
+
 		$max = max($qb->getQuery()->getSingleScalarResult() - 1, 0);
 		$offset = rand(0, $max);
 
@@ -302,30 +325,9 @@ class GrimoireRepository extends EntityRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	public function countArchivedByTheme($locale): Array {
-		$qb = $this->createQueryBuilder('c');
-
-		$qb->select('count(c) AS count')
-		   ->addSelect('t.title')
-		   ->addSelect('st.id AS surTheme')
-		   ->addSelect('t.id AS id')
-			->join('c.language', 'l')
-		   ->join('c.surTheme', 't')
-		   ->join('c.state', 's')
-		   ->join('t.parentTheme', 'st')
-		   ->andWhere('s.displayState = true')
-		   ->andWhere('l.abbreviation = :locale')
-		   ->andWhere('c.archive = true')
-		   ->setParameter('locale', $locale)
-		   ->groupBy('t.title');
-
-		return $qb->getQuery()->getResult();
-	}
-	
 	public function getTabArchive($themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
 		$qb = $this->createQueryBuilder('o');
-
 		$aColumns = ['o.title', 'o.publicationDate'];
 
 		$qb->join('o.language', 'l')
@@ -340,14 +342,12 @@ class GrimoireRepository extends EntityRepository
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 		
-		if(!empty($sSearch))
-		{
+		if(!empty($sSearch)) {
 			$search = "%".$sSearch."%";
 			$qb->andWhere('o.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
-		if($count)
-		{
+		if($count) {
 			$qb->select("count(o)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}
@@ -359,7 +359,7 @@ class GrimoireRepository extends EntityRepository
 
 	public function getGrimoireBySocialNetworkIdentifiers($key, $id) {
 		$qb = $this->createQueryBuilder("g");
-		
+
 		$qb->where("JSON_EXTRACT(g.socialNetworkIdentifiers, '$.${key}.id') = :id")
 		   ->setParameter("id", $id)
 		   ->setMaxResults(1);
@@ -370,7 +370,6 @@ class GrimoireRepository extends EntityRepository
 	public function getDatatablesForWorldIndex($language, $theme, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
 		$qb = $this->createQueryBuilder('c');
-
 		$aColumns = ['l.abbreviation', 'il.titleFile', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
@@ -383,8 +382,7 @@ class GrimoireRepository extends EntityRepository
 		    $qb->andWhere('c.surTheme = :themeId')
 		       ->setParameter("themeId", $theme);
 
-		if($language == "all")
-		{
+		if($language == "all") {
 			$currentLanguages = $this->currentLanguages();
 			$whereIn = [];
 			for($i = 0; $i < count($currentLanguages); $i++)
@@ -404,14 +402,12 @@ class GrimoireRepository extends EntityRepository
 		if(!empty($sortDirColumn))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 		
-		if(!empty($sSearch))
-		{
+		if(!empty($sSearch)) {
 			$search = "%".$sSearch."%";
 			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
-		if($count)
-		{
+		if($count) {
 			$qb->select("count(c)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}

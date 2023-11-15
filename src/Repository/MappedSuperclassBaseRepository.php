@@ -52,23 +52,25 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
-	
-	public function countArchivedByTheme($locale): Array {
-		$qb = $this->createQueryBuilder('c');
 
-		$qb->select('count(c) AS count')
-		   ->addSelect('t.title')
-		   ->addSelect('st.id AS parentTheme')
-		   ->addSelect('t.id AS id')
-		   ->join('c.language', 'l')
-		   ->join('c.theme', 't')
-		   ->join('c.state', 's')
-		   ->join('t.parentTheme', 'st')
-		   ->andWhere('s.displayState = true')
-		   ->andWhere('l.abbreviation = :locale')
-		   ->andWhere('c.archive = true')
-		   ->setParameter('locale', $locale)
-		   ->groupBy('t.title');
+	public function getAllArchivesByThemeAndLanguage($classname, $language)
+	{
+		$qb = $this->_em->createQueryBuilder();
+
+		$qb->select("SUM(if( s.displayState = true AND o.archive = true, 1, 0)) AS total")
+		   ->addSelect("t.title")
+		   ->addSelect("t.id")
+		   ->addSelect("pt.title AS parentTheme")
+		   ->from("\App\Entity\Theme", "t")
+		   ->leftjoin($classname, "o", \Doctrine\ORM\Query\Expr\Join::WITH, "o.theme = t.id")
+		   ->leftjoin("o.state", "s")
+		   ->leftjoin('t.language', 'l')
+		   ->leftjoin('t.parentTheme', 'pt')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("t.parentTheme IS NOT NULL")
+		   ->groupby("t.title")
+		   ->orderBy("t.title");
 
 		return $qb->getQuery()->getResult();
 	}

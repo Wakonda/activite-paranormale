@@ -67,25 +67,22 @@ class ArchiveController extends AbstractController
 			return $this->redirect($this->generateUrl("Archive_Index"));
 
 		$className = base64_decode($className);
-		
 		$locale = empty($language) ? $request->getLocale() : $language;
+		$entities = $em->getRepository($className)->getAllArchivesByThemeAndLanguage($className , $locale);
 
-		$parentTheme = $em->getRepository(Theme::class)->getThemeParent($locale);
-		$countTheme = $em->getRepository($className)->countArchivedByTheme($locale);
-		$themes = $em->getRepository(Theme::class)->getTheme($locale);
+		$datas = [];
 
-		foreach($themes as $theme)
-			if(array_search($theme->getTitle(), array_column($countTheme, 'title')) === false)
-				$countTheme[] = ["count" => 0, "title" => $theme->getTitle(), "parentTheme" => $theme->getParentTheme()->getId(), "id" => $theme->getId()];
+		foreach($entities as $entity)
+			$datas[$entity["parentTheme"]][] = $entity;
 
-		usort($countTheme, function($a, $b) {
-			return $a['title'] <=> $b['title'];
-		});
+		$total = 0;
+
+		foreach($datas as $data)
+			$total += array_sum(array_column($data, "total"));
 
 		return $this->render('index/Archive/archive_theme.html.twig', [
-			'parentTheme' => $parentTheme,
-			'nbrArchive' => array_sum(array_column($countTheme, "count")),
-			'themes' => $countTheme,
+			'datas' => $datas,
+			'nbrArchive' => $total,
 			'className' => base64_encode($className),
 			'title' => $translator->trans("index.className.".(new \ReflectionClass(new $className()))->getShortName(), [], 'validators')
 		]);
@@ -99,23 +96,22 @@ class ArchiveController extends AbstractController
 		$className = base64_decode($className);
 		
 		$locale = empty($language) ? $request->getLocale() : $language;
+		
+		$entities = $em->getRepository($className)->getAllArchivesByThemeAndLanguage($className, $locale);
 
-		$menuGrimoire = $em->getRepository(\App\Entity\SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale())->getQuery()->getResult();
-		$surThemeGrimoires = $em->getRepository(\App\Entity\SurThemeGrimoire::class)->getSurThemeByLanguage($request->getLocale());
-		$countTheme = $em->getRepository($className)->countArchivedByTheme($locale);
+		$datas = [];
 
-		foreach($surThemeGrimoires as $surThemeGrimoire)
-			if(array_search($surThemeGrimoire->getTitle(), array_column($countTheme, 'title')) === false)
-				$countTheme[] = ["count" => 0, "title" => $surThemeGrimoire->getTitle(), "surTheme" => $surThemeGrimoire->getParentTheme()->getId(), "id" => $surThemeGrimoire->getId()];
+		foreach($entities as $entity)
+			$datas[$entity["parentTheme"]][] = $entity;
 
-		usort($countTheme, function($a, $b) {
-			return $a['title'] <=> $b['title'];
-		});
+		$total = 0;
+
+		foreach($datas as $data)
+			$total += array_sum(array_column($data, "total"));
 
 		return $this->render('index/Archive/archive_witchcraft.html.twig', [
-			'menuGrimoire' => $menuGrimoire,
-			'nbrArchive' => array_sum(array_column($countTheme, "count")),
-			'themes' => $countTheme,
+			"datas" => $datas,
+			'nbrArchive' => $total,
 			'className' => base64_encode($className),
 			'title' => $translator->trans("index.className.Grimoire", [], 'validators')
 		]);
