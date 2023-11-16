@@ -210,6 +210,9 @@ table.dataTable tr.even td.sorting_1 {
 div#dropdownFlagItems {
 	min-width: auto;
 }
+.navbar-dark .navbar-nav a.nav-link:hover {
+	text-decoration: none !important;
+}
 
 /********** DATATABLES ***********/
 table.dataTable tr.even {
