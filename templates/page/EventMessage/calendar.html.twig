@@ -16,9 +16,6 @@
 	<script src="{{ asset('extended/js/fullcalendar/packages/bootstrap/main.js') }}"></script>
 
 	<style>
-	</style>
-
-	<style>
 		@media (max-width: 455px) {
 			button.fc-today-button, .fc-yearButton-button {
 				display: grid;
@@ -130,7 +127,7 @@
 				datesRender: function( info  ) {
 					var date = new Date(info.view.calendar.getDate());
 
-					var monthName = new Intl.DateTimeFormat("fr", { month: "long" }).format;
+					var monthName = new Intl.DateTimeFormat("{{ app.request.locale }}", { month: "long" }).format;
 					var longName = monthName(date); // "July"
 
 					document.querySelector(".fc-monthButton-button").innerHTML = longName;
@@ -162,6 +159,6 @@
 	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/calendar-event-index.jpg') }}" alt="Gothic girl fire" /></p>
 	<hr>
 	<div id='calendar'></div>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
