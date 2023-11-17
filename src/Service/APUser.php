@@ -22,12 +22,12 @@
 		{
 			$repository = $this->em->getRepository(User::class);
 		
-			$contributionsArray = array(
+			$contributionsArray = [
 				"news" => $repository->getUsersContribution($user, News::class, 0, 0, 0, 0, 0, true, $displayState),
 				"testimony" => $repository->getUsersContribution($user, Testimony::class, 0, 0, 0, 0, 0, true, $displayState),
 				"event" => $repository->getUsersContribution($user, EventMessage::class, 0, 0, 0, 0, 0, true, $displayState),
 				"witchcraft" => $repository->getUsersContribution($user, Grimoire::class, 0, 0, 0, 0, 0, true, $displayState)
-			);
+			];
 			
 			if($displayState == 1)
 				$contributionsArray["comment"] = $repository->getUsersCommentContribution($user, null, "", 0, 0, 0, 0, true);
