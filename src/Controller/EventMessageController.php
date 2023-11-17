@@ -654,7 +654,7 @@ class EventMessageController extends AbstractController
 				"endDate" => (empty($endArray["year"]) and empty($endArray["month"]) and empty($endArray["day"])) ? null : $endArray
 			];
 		}
-
+// dd($currentDate);
 		return $this->render("page/EventMessage/yearMonthEvent.html.twig", [
 			"res" => $res,
 			"currentDate" => $currentDate
