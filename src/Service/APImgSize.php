@@ -19,7 +19,6 @@
 				$attributeBag = new \Symfony\Component\HttpFoundation\Session\Attribute\AttributeBag ();
 				$locale = $_SESSION[$attributeBag->getStorageKey()]["_locale"];
 			}
-
 		}
 
 		public function adaptImageSize($width, $file, $unit = "px")

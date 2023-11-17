@@ -12,10 +12,10 @@
 
 		public function HTMLPurifier($string)
 		{
-			$config = array(
+			$config = [
 			   'show-body-only' => true,
 			   'new-inline-tags' => 'video,source'
-		    );
+		    ];
 
 			$tidy = new \tidy();
 			$tidy->parseString($string, $config, 'utf8');
