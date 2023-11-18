@@ -35,3 +35,11 @@ Publisher_Admin_IndexDatatables:
     controller: App\Controller\PublisherAdminController::indexDatatablesAction
     requirements:
         _method: get
+
+Publisher_Admin_ShowImageSelectorColorbox:
+    path:  /showImageSelectorColorbox
+    controller: App\Controller\PublisherAdminController::showImageSelectorColorbox
+
+Publisher_Admin_LoadImageSelectorColorbox:
+    path:  /loadImageSelectorColorbox
+    controller: App\Controller\PublisherAdminController::loadImageSelectorColorbox

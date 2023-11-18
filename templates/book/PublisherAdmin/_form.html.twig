@@ -1,12 +1,8 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "publisher.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.photo, "publisher.admin.Photo"|trans([], "validators")) }}</div>
-<div class="form-table-cell">
-	{{ form_errors(form.photo) }}{{ form_widget(form.photo) }}
-	<br>
-	{{ form_widget(form.photo_selector) }}
-</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "publisher.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.website, "publisher.admin.Website"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.website) }}{{ form_widget(form.website, {'attr': {'class':'form-control'}}) }}</div>

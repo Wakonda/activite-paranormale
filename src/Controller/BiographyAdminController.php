@@ -239,7 +239,7 @@ class BiographyAdminController extends AdminGenericController
 
 		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGenericAction($em, $id);
@@ -249,7 +249,7 @@ class BiographyAdminController extends AdminGenericController
 	{
 		return $this->showImageSelectorColorboxGenericAction('Biography_Admin_LoadImageSelectorColorbox');
 	}
-	
+
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);

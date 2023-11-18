@@ -9,19 +9,16 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Form\FormError;
-
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class PublisherAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('photo', FileType::class, array('data_class' => null, 'required' => false))
+            ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('website', TextType::class, array('data_class' => null, 'required' => false, 'constraints' => [new Url()]))
-			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPhoto()])
+			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Publisher_Admin_ShowImageSelectorColorbox'])
 		;
     }
 
@@ -32,8 +29,8 @@ class PublisherAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Publisher'
-		));
+		]);
 	}
 }

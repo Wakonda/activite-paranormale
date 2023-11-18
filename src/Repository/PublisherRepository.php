@@ -65,4 +65,9 @@ class PublisherRepository extends MappedSuperclassBaseRepository
 		
 		return $qb->getQuery()->getSingleScalarResult();
 	}
+
+	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
+	{
+		return $this->getFileSelectorColorboxIllustrationAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count);
+	}
 }

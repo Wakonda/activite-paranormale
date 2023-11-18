@@ -143,7 +143,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 
 		return null;
 	}
-	
+
 	public function __clone()
 	{
 		if($this->illustration)

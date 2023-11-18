@@ -27,7 +27,8 @@ class PublisherAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Publisher_Admin_Index"; 
 	protected $showRoute = "Publisher_Admin_Show";
-	protected $illustrations = [["field" => "photo", 'selectorFile' => 'photo_selector']];
+
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
@@ -112,5 +113,15 @@ class PublisherAdminController extends AdminGenericController
 		}
 
 		return new JsonResponse($output);
+	}
+
+	public function showImageSelectorColorbox()
+	{
+		return $this->showImageSelectorColorboxGenericAction('Publisher_Admin_LoadImageSelectorColorbox');
+	}
+	
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
+	{
+		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
 }

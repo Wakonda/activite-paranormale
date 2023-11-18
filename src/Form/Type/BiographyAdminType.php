@@ -117,7 +117,7 @@ class BiographyAdminType extends AbstractType
 		ksort($occupationChoiceDatas);
 
 		$builder->add('occupations', ChoiceType::class, ['required' => false, 'choices' => $occupationChoiceDatas, 'translation_domain' => 'validators', "multiple" => true, "mapped" => false, 'choice_attr' =>  $occupationAttributeArray]);
-// dd($options["default_roles"]);
+
 		$this->occupationBiographyTransformer->biography = $builder->getData();
 		$this->occupationBiographyTransformer->defaultRoles = $options["default_roles"];
 		$builder->get('occupations')->addModelTransformer($this->occupationBiographyTransformer);

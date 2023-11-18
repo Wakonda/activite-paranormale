@@ -85,7 +85,7 @@ witchcraftTool:
         Validate: "Validate"
         Read: "Read"
         NoMatchingRecordsFound: "No matching records found"
-        MoreDetails: "Plus de détails"
+        MoreDetails: "More détails"
     read:
         Theme: "Category"
         Description: "Description"
