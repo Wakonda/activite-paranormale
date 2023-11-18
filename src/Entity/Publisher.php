@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
+use App\Service\APPurifierHTML;
 
 /**
  * App\Entity\Publisher
@@ -52,6 +53,19 @@ class Publisher
      * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
      */
     private $illustration;
+
+    /**
+     * @var text $text
+     *
+     * @ORM\Column(name="text", type="text", nullable=true)
+	 * @Groups("api_read")
+     */
+    private $text;
+
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
+     */
+    private $language;
 
     /**
      * Get id
@@ -106,6 +120,12 @@ class Publisher
 	{
 		if($this->illustration)
 			$this->illustration = clone $this->illustration;
+	}
+
+	protected function purifier($text)
+	{
+		$purifier = new APPurifierHTML();
+		return $purifier->purifier($text);
 	}
 
     /**
@@ -166,5 +186,25 @@ class Publisher
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $this->purifier($text);
+    }
+
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    public function setLanguage($language)
+    {
+        $this->language = $language;
+    }
+
+    public function getLanguage()
+    {
+        return $this->language;
     }
 }

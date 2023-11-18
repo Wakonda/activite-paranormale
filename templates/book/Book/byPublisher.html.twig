@@ -5,6 +5,9 @@
 
 {% block APBlog_body %}
 	<p class="image">{{ publisher.photoIllustrationFilename|imgsize(550, publisher.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, publisher.photoIllustrationCaption)|raw }}</p>
+	
+	{{ publisher.text|raw }}
+	
 	<hr class="hr2">
 	
 	{% if publisher.website is not empty %}

@@ -99,6 +99,8 @@ publisher:
         Title: "Title"
         Photo: "Photo"
         Website: "Website"
+        Text: "Text"
+        Language: "Language"
 biographies:
     admin:
         Translator: "Translator"

@@ -33,7 +33,7 @@ book:
         Validate: "Valider"
         Read: "Lire"
         NoMatchingRecordsFound: "Aucun élément à afficher"
-        Genre: "Genre littéraire"
+        LiteraryGenre: "Genre littéraire"
         Fiction: "Fiction"
         Nonfiction: "Non-fiction"
     read:
@@ -99,6 +99,8 @@ publisher:
         Title: "Titre"
         Photo: "Photo"
         Website: "Site Internet"
+        Text: "Texte"
+        Language: "Langue"
 biographies:
     admin:
         Translator: "Traducteur"

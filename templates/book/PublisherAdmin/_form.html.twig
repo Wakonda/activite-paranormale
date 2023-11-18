@@ -6,3 +6,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.website, "publisher.admin.Website"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.website) }}{{ form_widget(form.website, {'attr': {'class':'form-control'}}) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "publisher.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "publisher.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
