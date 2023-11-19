@@ -44,28 +44,30 @@
 					<a href="{{ path('UsefulLink_Index') }}/#tutorial" class="btn btn-danger text-white"><i class="fa-solid fa-trash"></i> {{ "usefullink.index.ShowAll"|trans([], "validators") }}</a>
 				</div>
 			{% endif %}
-			<table class="table table-bordered">
-				<thead>
-					<tr class="trGene">
-						<th class="label_form">{{ "usefullink.index.Title"|trans([], "validators") }}</th>
-						<th class="label_form">{{ "usefullink.index.Tags"|trans([], "validators") }}</th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for data in pagination.items %}
-						<tr>
-							<td class="td_form_table w-75"><a href="{{ path ('UsefulLink_Read', {id: data.id}) }}">{{ data.title }}</a></td>
-							<td class="tdGene">{% if data.tags is not empty %}<i class="fas fa-tags"></i> {% for tag in json_decode(data.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}/#tutorial">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}</td>
+			
+			{% if pagination.items is not empty %}
+				<table class="table table-bordered">
+					<thead>
+						<tr class="trGene">
+							<th class="label_form">{{ "usefullink.index.Title"|trans([], "validators") }}</th>
+							<th class="label_form">{{ "usefullink.index.Tags"|trans([], "validators") }}</th>
 						</tr>
-						{% if loop.last != false %}
-							<hr>
-						{% endif %}
-					{% else %}
-						<div class="alert alert-danger fst-italic text-center">{{ "usefullink.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
-						<br>
-					{% endfor %}
-				</tbody>
-			</table>
+					</thead>
+					<tbody>
+						{% for data in pagination.items %}
+							<tr>
+								<td class="td_form_table w-75"><a href="{{ path ('UsefulLink_Read', {id: data.id}) }}">{{ data.title }}</a></td>
+								<td class="tdGene">{% if data.tags is not empty %}<i class="fas fa-tags"></i> {% for tag in json_decode(data.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}/#tutorial">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}</td>
+							</tr>
+							{% if loop.last != false %}
+								<hr>
+							{% endif %}
+						{% endfor %}
+					</tbody>
+				</table>
+			{% else %}
+				<div class="alert alert-danger fst-italic text-center">{{ "usefullink.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+			{% endif %}
 			
 			<div class="mt-3 justify-content-center">
 				{{ knp_pagination_render(pagination) }}

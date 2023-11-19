@@ -36,20 +36,9 @@
 		}
 
 		// Filters
-		public function dateMobileFilter($date, $locale)
+		public function dateMobileFilter($dateTime, $locale)
 		{
-			switch($locale)
-			{
-				case "es":
-				case "fr":
-					$dateStr = $date->format("d/m/Y");
-					break;
-				case "en":
-					$dateStr = $date->format("Y-m-d");
-					break;
-			}
-
-			return $dateStr;
+			return (new \App\Service\APDate())->shortDate($dateTime, $locale);
 		}
 
 		public function linkFollowMobileFilter($titleMenu, $currentRoute, $onlyActions = [])

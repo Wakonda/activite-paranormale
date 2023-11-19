@@ -2,7 +2,7 @@
 	<div class="d-flex align-items-center" style="flex-grow: 1;">
 		<ul id="marquee1" class="marquee w-100">
 			{% for SN in sliderNews %}
-				<li class="infoDefile"><i class="fas fa-calendar-alt"></i> {{ SN.publicationDate|date('d/m/Y') }} <i class="fas fa-chevron-right"></i> <a href="{{ path('News_ReadNews_New', {'id':SN.id, 'title_slug':SN.getUrlSlug() } ) }}" title="{{ SN.title }}">{{ SN.title }}</a></li>
+				<li class="infoDefile"><i class="fas fa-calendar-alt"></i> {{ SN.publicationDate|short_date(app.request.locale) }} <i class="fas fa-chevron-right"></i> <a href="{{ path('News_ReadNews_New', {'id':SN.id, 'title_slug':SN.getUrlSlug() } ) }}" title="{{ SN.title }}">{{ SN.title }}</a></li>
 			{% endfor %}
 		</ul>
 	</div>

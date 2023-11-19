@@ -58,6 +58,7 @@
 				new TwigFilter('doPartialDate', array($this, 'doPartialDateFilter')),
 				new TwigFilter('doPartialDateTime', array($this, 'doPartialDateTimeFilter')),
 				new TwigFilter('doYearMonthDayDate', array($this, 'doYearMonthDayDateFilter')),
+				new TwigFilter('short_date', array($this, 'shortDateFilter')),
 				new TwigFilter('advertisement', array($this, 'advertisementFilter')),
 				new TwigFilter('linkfollow', array($this, 'linkFollowFilter')),
 				new TwigFilter('is_image', array($this, 'isImageFilter')),
@@ -375,6 +376,11 @@
 			}
 			else
 				return '-';
+		}
+		
+		public function shortDateFilter($dateTime, $locale)
+		{
+			return (new \App\Service\APDate())->shortDate($dateTime, $locale);
 		}
 		
 		public function doPartialDateFilter(?string $partialDate, $language)

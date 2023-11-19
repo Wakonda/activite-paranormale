@@ -43,7 +43,7 @@ class BookEditionAdminType extends AbstractType
 				'choice_label'=>'title',
 				'required' => true,
 				'constraints' => array(new NotBlank()),
-				'query_builder' => function(\App\Repository\PublisherRepository $repository) { return $repository->createQueryBuilder("p")->orderBy("p.title", "ASC");}))
+				'query_builder' => function(\App\Repository\PublisherRepository $repository) use ($language) { return $repository->createQueryBuilder("p")->join("p.language", "l")->where("l.abbreviation = :language")->setParameter("language", $language)->orderBy("p.title", "ASC");}))
 			->add('biographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => BiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => BookEditionBiography::class, "role_field" => false, "language" => $language, "query_parameters" => ["locale" => $language]]))
 			->add('file_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getWholeBook()])
 		;

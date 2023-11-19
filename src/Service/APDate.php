@@ -145,4 +145,14 @@
 
 			return $dateString;
 		}
+		
+		public function shortDate($dateTime, $locale, $numberDigitYear = 4) {
+			$formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
+			$patern = $formatter->getPattern();
+			$format = (preg_match('/\b(yy)\b/', $patern) and $numberDigitYear == 4) ? preg_replace('/\b(yy)\b/', 'yyyy', $patern) : $patern;
+
+			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE, null, null, $format);
+
+			return $fmt->format($dateTime);
+		}
 	}
