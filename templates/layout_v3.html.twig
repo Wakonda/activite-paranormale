@@ -32,7 +32,6 @@
 	</head>
 
 	<body>
-		<!-- Navigation -->
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 			<div class="container">
 				<div class="navbar-brand-container">{{ render(controller('App\\Controller\\PageController::displayLogoAction')) }}
@@ -78,7 +77,6 @@
 			</div>
 		</nav>
 
-		<!-- Page Content -->
 		<div class="container global-container pb-3">
 			<div class="row mt-2">
 				<div class="col-lg-3 my-4 order-2 order-lg-1">
@@ -143,7 +141,7 @@
 									<li class="menuRightLI"><a href="{{ path('EventMessage_New') }}" title="Event">{{ "index.leftMenu.AddEvent"|trans([], "validators") }}</a></li>
 									<li class="menuRightLI"><a href="{{ path('Witchcraft_New') }}" title="Testimony">{{ "index.leftMenu.AddRitual"|trans([], "validators") }}</a></li>
 									<li class="menuRightLI"><a href="{{ path('Testimony_New') }}" title="Testimony">{{ "index.leftMenu.Testify"|trans([], "validators") }}</a></li>
-										<li class="menuRightLI"><a href="{{ path('WebDirectory_User_New') }}" title="Offer link">{{ "index.leftMenu.OfferLink"|trans([], "validators") }}</a></li>
+									<li class="menuRightLI"><a href="{{ path('WebDirectory_User_New') }}" title="Offer link">{{ "index.leftMenu.OfferLink"|trans([], "validators") }}</a></li>
 								</ul>
 							</div>
 							<div id="publicity_right_menu" class="news_section">
@@ -249,9 +247,7 @@
 									src="https://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88" /></a>
 
 									<a href="https://jigsaw.w3.org/css-validator/validator?uri={{ app.request.uri }}">
-									<img style="border:0;width:88px;height:31px"
-									src="https://jigsaw.w3.org/css-validator/images/vcss"
-									alt="Valid CSS!" />
+									<img style="border:0;width:88px;height:31px" src="https://jigsaw.w3.org/css-validator/images/vcss" alt="Valid CSS!" />
 									</a>
 								</p>
 							</div>
@@ -307,9 +303,7 @@
 						</div>
 					</div>
 				</div>
-				<!-- /.col-lg-3 -->
 
-				<!-- <div class="col-lg-9 order-1 order-lg-2"> -->
 				<div class="col-lg-9 main-container order-1 order-lg-2 pb-3">
 					<div {% block main_card_properties %}{% endblock %} class="card mt-4">
 						<div class="card-header h-100">
@@ -325,18 +319,12 @@
 							{% endblock %}
 						</div>
 					</div>
-					<!-- /.card -->
 					{% block sub_content %}
 					{% endblock %}
-					<!-- /.card -->
 				</div>
-				<!-- /.col-lg-9 -->
 			</div>
 		</div>
-		<!-- /.container -->
 
-		<!-- Footer -->
-		<!-- Footer Links -->
 		<div class="footer container text-center py-2">
 			<div class="text-center">
 				{% if app.request.locale == "fr" %}
@@ -362,9 +350,7 @@
 				<span class="p-2"><a class="fw-bold" href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></span>
 			</div>
 		</div>
-		<!-- Footer Links -->
 
-		<!-- Copyright -->
 		<div class="footer container footer-copyright text-center py-2">
 			<span class="fw-bold">Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }}</span> <a class="fw-bold" href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a>
 		</div>

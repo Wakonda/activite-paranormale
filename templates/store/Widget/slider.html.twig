@@ -2,7 +2,6 @@
 <h3>{{ "store.index.Store"|trans([], "validators") }}</h3>
 
 <div id="carousel-store-index" class="carousel-pagination carousel slide" data-interval="false">
-	<!-- Indicators -->
 	<ol class="carousel-indicators carousel-indicators-numbers pagination">
 	{% set i = 0 %}
 	{% set j = 1 %}
@@ -13,7 +12,6 @@
 	{% endfor %}
 	</ol> 
 
-	<!-- Wrapper for slides -->
 	<div class="carousel-inner" role="listbox">
 		{% set i = 0 %}
 		{% for entity in entities %}
