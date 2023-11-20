@@ -583,12 +583,12 @@ class EventMessageController extends AbstractController
 				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			}
 		}
-// dd();
+
 		return $this->render("page/EventMessage/widget.html.twig", [
 			"res" => $res,
 			"currentEvent" => $currentEvent,
 			"currentDate" => $apDate->doDate($request->getLocale(), new \DateTime(), true),
-			"illustration" => $photos[array_rand(array_filter($photos))]
+			"illustration" => !empty($photos) ? $photos[array_rand(array_filter($photos))] : null
 		]);
 	}
 
