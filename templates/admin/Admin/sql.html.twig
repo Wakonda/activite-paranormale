@@ -94,10 +94,10 @@
 					  <span class="fs-4">SQLExplorer</span>
 					</a>
 					<hr>
-					<div class="list-group list-group-flush border-bottom scrollarea">
+					<div class="list-group list-group-flush border-bottom scrollarea" style="display: grid">
 						{% for table in tables %}
-							<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: table }) }}" class="list-group-item list-group-item-action py-3 lh-tight {{ app.request.query.get('table') == table ? "active" : "" }}" aria-current="page">
-							<i class="fa-solid fa-caret-right"></i> {{ table }}
+							<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: table }) }}" class="w-100 list-group-item list-group-item-action py-3 lh-tight {{ app.request.query.get('table') == table ? 'active' : '' }} d-flex align-items-end" aria-current="page">
+								<i class="fa-solid fa-caret-right me-2"></i> {{ table }}
 							</a>
 						{% endfor %}
 					</div>
@@ -231,7 +231,7 @@
 												{% if app.request.query.get('sortBy') == column %}
 													{% set sortDir = (app.request.query.get('sortDir') == 'DESC') ? 'ASC' : 'DESC' %}
 												{% endif %}
-												<th><a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: app.request.query.get('table'), sortBy: column, sortDir: sortDir }) }}">{{ column }}</a>{% if column == app.request.query.get("sortBy") %}{% if app.request.query.get("sortDir") == "ASC" %}<i class="fa-solid fa-sort-up float-end"></i>{% else %}<i class="fa-solid fa-sort-down float-end">{% endif %}{% endif %}</i></th>
+												<th {% if column == app.request.query.get("sortBy") %}class="d-flex"{% endif %}><a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: app.request.query.get('table'), sortBy: column, sortDir: sortDir }) }}">{{ column }}</a>{% if column == app.request.query.get("sortBy") %}{% if app.request.query.get("sortDir") == "ASC" %}<i class="fa-solid fa-sort-up ms-2"></i>{% else %}<i class="fa-solid fa-sort-down ms-2">{% endif %}{% endif %}</i></th>
 											{% endfor %}
 										</tr>
 										{% for item in pagination.items %}
