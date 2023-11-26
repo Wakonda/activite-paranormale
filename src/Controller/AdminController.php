@@ -1351,15 +1351,13 @@ class AdminController extends AbstractController
 					from information_schema.columns isc
 					where isc.table_schema = DATABASE()
 					and isc.table_name = '$table'");
-	   
+
 			foreach($columnDatas as $columnData)
 				$columns[$columnData["COLUMN_NAME"]] = ["foreign_key" => $columnData["foreign_key"], "data_type" => $columnData["DATA_TYPE"], "primary_key" => $columnData["COLUMN_KEY"] == "PRI"];
 
 			if($action == "edit" and $request->isMethod('post')) {
 				$updateData = $request->request->all();
-
 				unset($updateData["save_form"]);
-
 				$primaryKeys = json_decode($request->query->get("primary_keys"), true);
 
 				if(isset($updateData["delete_form"])) {
@@ -1367,7 +1365,7 @@ class AdminController extends AbstractController
 
 					try {
 						$result = $conn->delete($table, $primaryKeys);
-						
+
 						$error = null;
 						$success = "Item has been deleted";
 
@@ -1415,14 +1413,18 @@ class AdminController extends AbstractController
 
 			if(!empty($table)) {
 				$page = $request->query->get("page");
-
+				
+				$sortBy = $request->query->get("sortBy", null);
+				$sortDir = $request->query->get("sortDir", "ASC");
+				$orderBy = !empty($sortBy) ? " ORDER BY ".$sortBy." ".$sortDir : "";
+// dd($request->query->all());
 				$pagination = $paginator->paginate(
-					"SELECT * FROM ".$request->query->get("table").($request->query->has("id") ? " WHERE id = ".$request->query->get("id") : ""),
+					"SELECT * FROM ".$request->query->get("table").($request->query->has("id") ? " WHERE id = ".$request->query->get("id") : "").$orderBy,
 					($request->query->has("page")) ? $page : 1,
 					$num_results_on_page,
 					$conn
 				);
-				
+
 				$pagination->setCustomParameters(['align' => 'center']);
 			}
 
@@ -1434,7 +1436,8 @@ class AdminController extends AbstractController
 				$datas = null;
 
 				foreach($sqls as $sql) {
-					if(empty(trim($sql)))
+					$sql = trim($sql);
+					if(empty($sql))
 						continue;
 
 					$success = null;
@@ -1451,7 +1454,7 @@ class AdminController extends AbstractController
 					}
 				}
 			}
-			
+
 			return $this->render('admin/Admin/sql.html.twig', ["res" => $res, "tables" => $tables]);
 		}
 
@@ -1459,15 +1462,6 @@ class AdminController extends AbstractController
     }
 	
 	private function isSelectQuery($sql) {
-		$pattern = '/\bSELECT\b/i';
-
-		if (preg_match($pattern, $sql)) {
-			$subQueryPattern = '/\bSELECT\b.*\bFROM\b/i';
-			if (!preg_match($subQueryPattern, $sql)) {
-				return true;
-			}
-		}
-
-		return false;
+		return str_starts_with(strtolower($sql), "select ");
 	}
 }

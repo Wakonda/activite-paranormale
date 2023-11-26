@@ -85,184 +85,181 @@
 			.lh-tight { line-height: 1.25; }
 		</style>
 	</head>
-
 	<body>
-	<main>
-	<div class="d-flex w-100">
-		<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 15%;">
-			<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
-			  <img src="{{ asset('extended/photo/sqlexplorer/sqlexplorer.png') }}" class="bi me-2" width="40"><use xlink:href="#bootstrap"></use></svg>
-			  <span class="fs-4">SQLExplorer</span>
-			</a>
-			<hr>
-			<div class="list-group list-group-flush border-bottom scrollarea">
-				{% for table in tables %}
-					<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: table }) }}" class="list-group-item list-group-item-action py-3 lh-tight {{ app.request.query.get('table') == table ? "active" : "" }}" aria-current="page">
-					<i class="fa-solid fa-caret-right"></i> {{ table }}
+		<main>
+			<div class="d-flex w-100">
+				<div class="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark" style="width: 15%;">
+					<a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+					  <img src="{{ asset('extended/photo/sqlexplorer/sqlexplorer.png') }}" class="bi me-2" width="40">
+					  <span class="fs-4">SQLExplorer</span>
 					</a>
-				{% endfor %}
-			</div>
-		</div>
-
-		<div  class="d-flex flex-column flex-shrink-0 p-3 pe-0" style="width: 85%">
-		<div class="scrollarea pe-3">
-	<h2 class="float-start">{{ (app.request.query.all()|join(" > "))|upper }}</h2>
-	<div class="clearfix">
-	{% if app.request.query.get("mode") == "query" %}
-		<a href="{{ path('Admin_SQLExplorer') }}" class="btn btn-info float-end"><i class="fa-solid fa-database"></i> Browse database</a><br>
-	{% else %}
-		<a href="{{ path('Admin_SQLExplorer', { mode: 'query' }) }}" class="btn btn-info float-end"><i class="fa-solid fa-terminal"></i> Query</a>
-	{% endif %}
-	</div>
-	<hr>
-
-	{% for flashMessage in app.session.flashbag.get('success') %}
-		<div class="alert alert-success text-center">
-			{{ flashMessage|raw }}
-		</div>
-	{% endfor %}
-	{% for flashMessage in app.session.flashbag.get('error') %}
-		{% if flashMessage is not empty %}
-			<div class="alert alert-danger text-center">
-				{{ flashMessage|raw }}
-			</div>
-		{% endif %}
-	{% endfor %}
-
-	{% if app.request.query.get("mode") == "query" %}
-		<form action="{{ path('Admin_SQLExplorer', { mode: 'query' }) }}" method="post">
-			<textarea name="sql_area" class="form-control" rows="8">{% if app.request.request.has("sql_area") %}{{ app.request.request.get("sql_area") }}{% endif %}</textarea>
-			<br>
-			<button type="submit" class="btn btn-success"><i class="fa-solid fa-atom"></i> Execute</button>
-		</form>
-
-		{% for r in res %}
-			{% if r.error is not defined %}
-				<b>{{ r.query }}</b>
-				{% if r.success is defined and r.success is not empty %}<div class="alert alert-success">{{ r.success }}</div>{% endif %}
-				<table class="table table-striped table-bordered">
-					<tr>
-						{% for column in r.columns %}
-							<th>{{ column }}</th>
+					<hr>
+					<div class="list-group list-group-flush border-bottom scrollarea">
+						{% for table in tables %}
+							<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: table }) }}" class="list-group-item list-group-item-action py-3 lh-tight {{ app.request.query.get('table') == table ? "active" : "" }}" aria-current="page">
+							<i class="fa-solid fa-caret-right"></i> {{ table }}
+							</a>
 						{% endfor %}
-					</tr>
-						{% for datas in r.datas %}
-					<tr>
-						{% for data in datas %}
-							<td>{{ data[:200] }}</td>
-						{% endfor %}
-					</tr>
-						{% endfor %}
-				</table>
-				{% else  %}
-					<b>{{ r.query }}</b>
-					<div class="alert alert-danger">{{ r.error }}</div>
-				{% endif %}
-		{% endfor %}
-	{% endif %}
-	{% if app.request.query.has("mode") == false or (pagination is defined and pagination is empty) %}
-		<table class="table table-striped table-bordered">
-			<tr>
-				<th>Table</th>
-				<th>Engine</th>
-				<th>Collation</th>
-				<th>Data Length</th>
-				<th>Index Length</th>
-				<th>Data Free</th>
-				<th>Auto Increment</th>
-				<th>Rows</th>
-				<th>Comment</th>
-			</tr>
-			{% for tableInfo in tableInfos %}
-				<tr>
-					<td><a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: tableInfo.Name }) }}">{{ tableInfo.Name }}</a></td>
-					<td>{{ tableInfo.Engine }}</td>
-					<td>{{ tableInfo.Collation }}</td>
-					<td>{{ tableInfo.Data_length|number_format(2, '.', ',') }}</td>
-					<td>{{ tableInfo.Index_length|number_format(2, '.', ',') }}</td>
-					<td>{{ tableInfo.Data_free }}</td>
-					<td>{{ tableInfo.Auto_increment }}</td>
-					<td>~ {{ tableInfo.Rows }}</td>
-					<td>{{ tableInfo.Comment }}</td>
-				</tr>
-			{% endfor %}
-		</table>
-	{% endif %}
-	{% if app.request.query.get("mode") == "table" %}
-		{% if tables is defined %}
-			{% if app.request.query.get("action") == "edit" and datas is not empty %}
-				<form method="post" name="form_edit" action="{{ path('Admin_SQLExplorer') }}?{{ app.request.query.all()|url_encode }}">
-					<table class="table table-striped table-bordered">
-					{% for key, field in datas %}
-						<tr>
-							<th style="width: 1px; white-space: nowrap">{{ key }}</th>
-							<th><input type="checkbox" name="null_data[{{ key }}][]" id="null_data_{{ key }}"> <label for="null_data_{{ key }}">NULL</label></input></th>
-							<td>
-								{% if columns[key].data_type == "int" %} 
-									<input type="number" name="{{ key }}" value="{{ field }}" class="form-control" />
-								{% elseif columns[key].data_type == "longtext" %}
-									<textarea name="{{ key }}" class="form-control" rows="4">{{ field }}</textarea>
-								{% else %}
-									<input type="text" name="{{ key }}" value="{{ field }}" class="form-control"/>
-								{% endif %}
-							</td>
-						</tr>
-					{% endfor %}
-					</table>
-					<button type="submit" name="delete_form" class="btn btn-danger" onclick="return confirm('Are you sure?');"><i class="fa-regular fa-trash-can"></i> Delete</button>
-					<button type="submit" name="save_form" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i> Save</button>
-				</form>
-			{% endif %}
-		{% endif %}
+					</div>
+				</div>
 
-		{% if pagination is defined %}
-			{% if pagination is not empty %}
-				{% set primaryKeys = [] %}
-				{% for key, column in columns %}
-					{% if column.primary_key == true %}
-						{% set primaryKeys = primaryKeys|merge([key]) %}
-					{% endif %}
-				{% endfor %}
+				<div  class="d-flex flex-column flex-shrink-0 p-3 pe-0" style="width: 85%">
+					<div class="scrollarea pe-3">
+						<h2 class="float-start">{{ (app.request.query.all()|join(" > "))|upper }}</h2>
+						<div class="clearfix">
+							{% if app.request.query.get("mode") == "query" %}
+								<a href="{{ path('Admin_SQLExplorer') }}" class="btn btn-info float-end"><i class="fa-solid fa-database"></i> Browse database</a><br>
+							{% else %}
+								<a href="{{ path('Admin_SQLExplorer', { mode: 'query' }) }}" class="btn btn-info float-end"><i class="fa-solid fa-terminal"></i> Query</a>
+							{% endif %}
+						</div>
+						<hr>
 
-				<table class="table table-striped table-bordered">
-					<tr>
-						<th>Modify</th>
-						{% for column, fk in columns %}
-							<th>{{ column }}</th>
+						{% for flashMessage in app.session.flashbag.get('success') %}
+							<div class="alert alert-success text-center">
+								<i class="fa-regular fa-thumbs-up"></i> {{ flashMessage|raw }}
+							</div>
 						{% endfor %}
-					</tr>
-					{% for item in pagination.items %}
-						{% set primaryKeys = [] %}
-						{% for key, column in columns %}
-							{% if column.primary_key == true %}
-								{% set primaryKeys = primaryKeys|merge({(key):  item[key]}) %}
+						{% for flashMessage in app.session.flashbag.get('error') %}
+							{% if flashMessage is not empty %}
+								<div class="alert alert-danger text-center">
+									<i class="fa-solid fa-skull-crossbones"></i> {{ flashMessage|raw }}
+								</div>
 							{% endif %}
 						{% endfor %}
 
-						<tr><td><a href="{{ path('Admin_SQLExplorer', { mode: 'table', action: 'edit', table: app.request.query.get('table'), primary_keys: primaryKeys|json_encode()}) }}">Edit</a>
-						</td>
-							{% for key, value in item %}
-								<td>{% if columns[key].foreign_key is not empty %}<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: columns[key].foreign_key, id: value }) }}">{{ value }}</a>{% else %}{{ value[:200] }}{% endif %}</td>
+						{% if app.request.query.get("mode") == "query" %}
+							<form action="{{ path('Admin_SQLExplorer', { mode: 'query' }) }}" method="post">
+								<textarea name="sql_area" class="form-control" rows="8">{% if app.request.request.has("sql_area") %}{{ app.request.request.get("sql_area") }}{% endif %}</textarea>
+								<br>
+								<button type="submit" class="btn btn-success"><i class="fa-solid fa-atom"></i> Execute</button>
+							</form>
+
+							{% for r in res %}
+								{% if r.error is not defined %}
+									<div class="alert alert-info"><b><i class="fa-solid fa-circle-info"></i> {{ r.query }}</b></div>
+									{% if r.success is defined and r.success is not empty %}<div class="alert alert-success"><i class="fa-regular fa-thumbs-up"></i> {{ r.success }}</div>{% endif %}
+									<table class="table table-striped table-bordered">
+										<tr>
+											{% for column in r.columns %}
+												<th>{{ column }}</th>
+											{% endfor %}
+										</tr>
+											{% for datas in r.datas %}
+												<tr>
+													{% for data in datas %}
+														<td>{{ data[:200] }}</td>
+													{% endfor %}
+												</tr>
+											{% endfor %}
+									</table>
+									{% else  %}
+										<div class="alert alert-info"><b><i class="fa-solid fa-circle-info"></i> {{ r.query }}</b></div>
+										<div class="alert alert-danger"><i class="fa-solid fa-skull-crossbones"></i> {{ r.error }}</div>
+									{% endif %}
 							{% endfor %}
-						</tr>
-					{% endfor %}
-				</table>
-				{{ knp_pagination_render(pagination) }}
-			{% else %}
-				<div class="alert alert-success">No rows.</div>
-			{% endif %}
-		{% endif %}
-	{% endif %}
-		</div>
-		</div>
-		</div>
+						{% endif %}
+						{% if app.request.query.has("mode") == false or (pagination is defined and pagination is empty) %}
+							<table class="table table-striped table-bordered">
+								<tr>
+									<th>Table</th>
+									<th>Engine</th>
+									<th>Collation</th>
+									<th>Data Length</th>
+									<th>Index Length</th>
+									<th>Data Free</th>
+									<th>Auto Increment</th>
+									<th>Rows</th>
+									<th>Comment</th>
+								</tr>
+								{% for tableInfo in tableInfos %}
+									<tr>
+										<td><a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: tableInfo.Name }) }}">{{ tableInfo.Name }}</a></td>
+										<td>{{ tableInfo.Engine }}</td>
+										<td>{{ tableInfo.Collation }}</td>
+										<td>{{ tableInfo.Data_length|number_format(2, '.', ',') }}</td>
+										<td>{{ tableInfo.Index_length|number_format(2, '.', ',') }}</td>
+										<td>{{ tableInfo.Data_free }}</td>
+										<td>{{ tableInfo.Auto_increment }}</td>
+										<td>~ {{ tableInfo.Rows }}</td>
+										<td>{{ tableInfo.Comment }}</td>
+									</tr>
+								{% endfor %}
+							</table>
+						{% endif %}
+						{% if app.request.query.get("mode") == "table" %}
+							{% if tables is defined %}
+								{% if app.request.query.get("action") == "edit" and datas is not empty %}
+									<form method="post" name="form_edit" action="{{ path('Admin_SQLExplorer') }}?{{ app.request.query.all()|url_encode }}">
+										<table class="table table-striped table-bordered">
+										{% for key, field in datas %}
+											<tr>
+												<th style="width: 1px; white-space: nowrap">{{ key }}</th>
+												<th><input type="checkbox" name="null_data[{{ key }}][]" id="null_data_{{ key }}"> <label for="null_data_{{ key }}">NULL</label></input></th>
+												<td>
+													{% if columns[key].data_type == "int" %} 
+														<input type="number" name="{{ key }}" value="{{ field }}" class="form-control" />
+													{% elseif columns[key].data_type == "longtext" %}
+														<textarea name="{{ key }}" class="form-control" rows="4">{{ field }}</textarea>
+													{% else %}
+														<input type="text" name="{{ key }}" value="{{ field }}" class="form-control"/>
+													{% endif %}
+												</td>
+											</tr>
+										{% endfor %}
+										</table>
+										<button type="submit" name="delete_form" class="btn btn-danger" onclick="return confirm('Are you sure?');"><i class="fa-regular fa-trash-can"></i> Delete</button>
+										<button type="submit" name="save_form" class="btn btn-success"><i class="fa-regular fa-floppy-disk"></i> Save</button>
+									</form>
+								{% endif %}
+							{% endif %}
 
+							{% if pagination is defined %}
+								{% if pagination is not empty %}
+									{% set primaryKeys = [] %}
+									{% for key, column in columns %}
+										{% if column.primary_key == true %}
+											{% set primaryKeys = primaryKeys|merge([key]) %}
+										{% endif %}
+									{% endfor %}
 
+									<table class="table table-striped table-bordered">
+										<tr>
+											<th>Modify</th>
+											{% for column, fk in columns %}
+												{% set sortDir = 'ASC' %}
+												{% if app.request.query.get('sortBy') == column %}
+													{% set sortDir = (app.request.query.get('sortDir') == 'DESC') ? 'ASC' : 'DESC' %}
+												{% endif %}
+												<th><a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: app.request.query.get('table'), sortBy: column, sortDir: sortDir }) }}">{{ column }}</a>{% if column == app.request.query.get("sortBy") %}{% if app.request.query.get("sortDir") == "ASC" %}<i class="fa-solid fa-sort-up float-end"></i>{% else %}<i class="fa-solid fa-sort-down float-end">{% endif %}{% endif %}</i></th>
+											{% endfor %}
+										</tr>
+										{% for item in pagination.items %}
+											{% set primaryKeys = [] %}
+											{% for key, column in columns %}
+												{% if column.primary_key == true %}
+													{% set primaryKeys = primaryKeys|merge({(key):  item[key]}) %}
+												{% endif %}
+											{% endfor %}
 
+											<tr><td><a href="{{ path('Admin_SQLExplorer', { mode: 'table', action: 'edit', table: app.request.query.get('table'), primary_keys: primaryKeys|json_encode()}) }}">Edit</a>
+											</td>
+												{% for key, value in item %}
+													<td>{% if columns[key].foreign_key is not empty %}<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: columns[key].foreign_key, id: value }) }}">{{ value }}</a>{% else %}{{ value[:200] }}{% endif %}</td>
+												{% endfor %}
+											</tr>
+										{% endfor %}
+									</table>
+									{{ knp_pagination_render(pagination) }}
+								{% else %}
+									<div class="alert alert-success"><i class="fa-regular fa-thumbs-up"></i> No rows.</div>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+					</div>
+				</div>
+			</div>
 		</main>
 		<script src="https://getbootstrap.com/docs/5.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-		<script>
-
-		</script>
 	</body>
 </html>
