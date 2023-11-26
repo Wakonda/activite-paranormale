@@ -29,6 +29,7 @@ use App\Service\Diaspora;
 use App\Service\VK;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
+use App\Service\PaginatorNativeSQL;
 
 class AdminController extends AbstractController
 {
@@ -1324,11 +1325,149 @@ class AdminController extends AbstractController
 		$xml->save('sitemaps/sitemap_'.$filename.'.xml');
 	}
 
-    public function adminer()
+    public function sqlExplorer(Request $request, EntityManagerInterface $em, PaginatorNativeSQL $paginator)
     {
-		ob_start();
-		include __DIR__.'/../Library/adminer/adminer-ap.php';
+		$conn = $em->getConnection();
 
-		return new Response(ob_get_clean());
+		$mode = $request->query->get("mode", null);
+		$action = $request->query->get("action", "show");
+		$session = $request->getSession();
+		$tables = array_map(function($e) { return array_values($e)[0];}, $conn->fetchAllAssociative("SHOW TABLES"));
+
+		if($mode == "table") {
+			$table = $request->query->get("table");
+			$num_results_on_page = 15;
+			$columns = [];
+			$pagination = [];
+
+			$columnDatas = $conn->fetchAllAssociative("select COLUMN_NAME , DATA_TYPE, COLUMN_KEY,
+				(select isk.REFERENCED_TABLE_NAME
+					from
+						information_schema.key_column_usage isk
+					where
+						isk.referenced_table_name is not null
+						and isk.table_schema = DATABASE()
+						and isk.TABLE_NAME = '$table' AND isk.COLUMN_NAME = isc.COLUMN_NAME) AS foreign_key
+					from information_schema.columns isc
+					where isc.table_schema = DATABASE()
+					and isc.table_name = '$table'");
+	   
+			foreach($columnDatas as $columnData)
+				$columns[$columnData["COLUMN_NAME"]] = ["foreign_key" => $columnData["foreign_key"], "data_type" => $columnData["DATA_TYPE"], "primary_key" => $columnData["COLUMN_KEY"] == "PRI"];
+
+			if($action == "edit" and $request->isMethod('post')) {
+				$updateData = $request->request->all();
+
+				unset($updateData["save_form"]);
+
+				$primaryKeys = json_decode($request->query->get("primary_keys"), true);
+
+				if(isset($updateData["delete_form"])) {
+					unset($updateData["delete_form"]);
+
+					try {
+						$result = $conn->delete($table, $primaryKeys);
+						
+						$error = null;
+						$success = "Item has been deleted";
+
+						if($result == 0) {
+							$session->getFlashBag()->add('error', "An error occurs");
+							$success = null;
+						} else
+							$session->getFlashBag()->add('success', $success);
+						return $this->redirect($this->generateUrl('Admin_SQLExplorer', ["mode" => "table", "table" => $table]));
+					} catch(\Exception $e) {
+						return $this->render('admin/Admin/sql.html.twig', ["tables" => $tables, "columns" => $columns, "datas" => $updateData, "error" => $e->getMessage()]);
+					}
+				}
+
+				try {
+					$nullDatas = $updateData["null_data"];
+					unset($updateData["null_data"]);
+
+					foreach($updateData as $key => $ud) {
+						if((isset($nullDatas[$key]) and $nullDatas[$key][0] == "on") or empty($updateData[$key]))
+							$updateData[$key] = null;
+					}
+
+					$result = $conn->update($table, $updateData, $primaryKeys);
+					$session->getFlashBag()->add('success', "Item has been updated.");
+					return $this->redirect($this->generateUrl('Admin_SQLExplorer', ["mode" => "table", "table" => $table]));
+				} catch(\Exception $e) {
+					$session->getFlashBag()->add('error', $e->getMessage());
+					return $this->render('admin/Admin/sql.html.twig', ["tables" => $tables, "columns" => $columns, "datas" => $updateData, "error" => $e->getMessage()]);
+				}
+			}
+
+			if($action == "edit") {
+				$params = [];
+				foreach(json_decode($request->query->get("primary_keys"), true) as $key => $value)
+					$params[] = $key." = ".$value;
+
+				$updateData = $conn->fetchAssociative("SELECT * FROM ".$request->query->get("table")." WHERE ".implode(" AND ", $params));
+				$error = null;
+				if(empty($updateData))
+					$error = "No rows.";
+					$session->getFlashBag()->add('error', $error);
+					return $this->render('admin/Admin/sql.html.twig', ["tables" => $tables, "columns" => $columns, "datas" => $updateData, "error" => $error]);
+			}
+
+			if(!empty($table)) {
+				$page = $request->query->get("page");
+
+				$pagination = $paginator->paginate(
+					"SELECT * FROM ".$request->query->get("table").($request->query->has("id") ? " WHERE id = ".$request->query->get("id") : ""),
+					($request->query->has("page")) ? $page : 1,
+					$num_results_on_page,
+					$conn
+				);
+				
+				$pagination->setCustomParameters(['align' => 'center']);
+			}
+
+			return $this->render('admin/Admin/sql.html.twig', ["tables" => $tables, "columns" => $columns, "pagination" => $pagination]);
+		} elseif($mode == "query") {
+			$res = [];
+			if($request->request->has("sql_area")) {
+				$sqls = array_filter(explode(";", $request->request->get("sql_area")));
+				$datas = null;
+
+				foreach($sqls as $sql) {
+					if(empty(trim($sql)))
+						continue;
+
+					$success = null;
+
+					try {
+						if($this->isSelectQuery($sql))
+							$datas = $conn->fetchAllAssociative($sql);
+						else 
+							$success = "Query executed OK, ".$conn->executeQuery($sql)->rowCount()." rows affected.";
+
+						$res[] = ["datas" => $datas, "columns" => !empty($datas) ? array_keys($datas[0]) : null, "query" => $sql, "success" => $success];
+					} catch(\Exception $e) {
+						$res[] = ["datas" => null, "columns" => null, "query" => $sql, "error" => $e->getMessage()];
+					}
+				}
+			}
+			
+			return $this->render('admin/Admin/sql.html.twig', ["res" => $res, "tables" => $tables]);
+		}
+
+        return $this->render('admin/Admin/sql.html.twig', ["tables" => $tables, "tableInfos" => $conn->fetchAllAssociative("SHOW TABLE STATUS")]);
     }
+	
+	private function isSelectQuery($sql) {
+		$pattern = '/\bSELECT\b/i';
+
+		if (preg_match($pattern, $sql)) {
+			$subQueryPattern = '/\bSELECT\b.*\bFROM\b/i';
+			if (!preg_match($subQueryPattern, $sql)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 }

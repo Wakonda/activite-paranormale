@@ -46,7 +46,7 @@ class SearchController extends AbstractController
 			$num_results_on_page,
 			$conn
 		);
-		
+
 		$pagination->setCustomParameters(['align' => 'center']);
 		$pagination->setParam('type', 'text');
 		$pagination->setParam('keyword', $keyword);
