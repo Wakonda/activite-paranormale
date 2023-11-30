@@ -348,34 +348,25 @@
 
 				$dateArray = array_values(array_filter(explode("-", $date->format('Y-m-d'))));
 
-				$year = ltrim($dateArray[0], "0");
+				$year = str_pad($dateArray[0], 4, "0", STR_PAD_LEFT);
 	
 				if ($date->format('Y-m-d')[0] == "-")
 					$year = "-".ltrim($dateArray[0], "0");
 
-				if($language == "fr")
-				{
-					$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-					$dateString = ltrim($dateArray[2], "0")." ".$monthFrench[$dateArray[1]-1]." ".$year;
-				}
-				else if($language == "es")
-				{
-					$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-					$dateString = ltrim($dateArray[2], "0")." de ".$monthSpain[$dateArray[1]-1]." de ".$year;
-				}
-				else
-				{
-					$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-					$dateString = ltrim($dateArray[2], "0")."th ".$monthEnglish[$dateArray[1]-1]." ".$year;
-				}
-				
+				$fmt = new \IntlDateFormatter($language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN);
+
+				if ($date->format('Y-m-d')[0] == "-")
+					$fmt->setPattern(str_replace("y", "-y", $fmt->getPattern()));
+
+				$dateString = $fmt->format($date);
+
 				if($time)
 					$dateString = $dateString.' - '.$date->format('H:i');
 
 				return $dateString;
 			}
-			else
-				return '-';
+
+			return '-';
 		}
 		
 		public function shortDateFilter($dateTime, $locale)
