@@ -3,38 +3,26 @@
 	
 	class APDate
 	{
-	   /**
-		* @param string $Langue
-		* @param string $date
-		*/
-		public function doDate($language, $date, $excludeYear = false)
+		public function doDate($language, $datetime, $excludeYear = false)
 		{
-			if($date != null)
+			if($datetime != null)
 			{
-				$date = date_format($date, "Y-m-d");
+				$date = date_format($datetime, "Y-m-d");
 				if($date != "0000-00-00")
 				{
-					$d = explode("-", $date);
-					$year = $excludeYear ? "" : $d[0];
-
 					if($language == "fr")
-					{
-						$MoisFr = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-						$dateF = $d[2]." ".$MoisFr[$d[1]-1].(!empty($year) ? " ".$d[0] : "");
-					}
+						$pattern = "d MMMM".(!$excludeYear ? " y" : "");
 					else if($language == "es")
-					{
-						$MoisSp = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-						$dateF = $d[2]." de ".$MoisSp[$d[1]-1].(!empty($year) ? " de ".$d[0] : "");
-					}
+						$pattern = "d 'de' MMMM".(!$excludeYear ? " 'de' y" : "");
 					else
-					{
-						$MoisEn = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-						$dateF = $d[2]."th ".$MoisEn[$d[1]-1].(!empty($year) ? " ".$d[0] : "");
-					}
-					return $dateF;
+						$pattern = "MMMM d".(!$excludeYear ? ", y" : "");
+
+					$fmt = new \IntlDateFormatter($language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
+
+					return $fmt->format($datetime);
 				}
 			}
+
 			return "-";
 		}
 		

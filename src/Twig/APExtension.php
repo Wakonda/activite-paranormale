@@ -346,13 +346,6 @@
 				if(is_string($date))
 					$date = new \DateTime($date);
 
-				$dateArray = array_values(array_filter(explode("-", $date->format('Y-m-d'))));
-
-				$year = str_pad($dateArray[0], 4, "0", STR_PAD_LEFT);
-	
-				if ($date->format('Y-m-d')[0] == "-")
-					$year = "-".ltrim($dateArray[0], "0");
-
 				$fmt = new \IntlDateFormatter($language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN);
 
 				if ($date->format('Y-m-d')[0] == "-")
