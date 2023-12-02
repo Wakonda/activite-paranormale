@@ -51,37 +51,39 @@
 			
 			return "-";
 		}
-		
+
 		public function doPartialDate(?string $partialDate, $language)
 		{
-			$dateArray = explode("-", $partialDate);
+			$bc = false;
+			if(str_starts_with($partialDate, "-"))
+				$bc = true;
 			
+			if($language == "fr")
+				$era = $bc ? " av. J.-C." : "";
+			else if($language == "es")
+				$era = $bc ? " a. C." : "";
+			else
+				$era = $bc ? "BC" : "";
+
+			$partialDate = trim($partialDate, "-");
+			$dateArray = explode("-", $partialDate);
+
 			if(empty($dateArray))
 				return null;
 			
 			if(count($dateArray) == 1)
-				return $dateArray[0];
-			
-			$year = $dateArray[0];	
-			$month = $dateArray[1];
+				return $dateArray[0].$era;
 
 			if($language == "fr")
-			{
-				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? intval($dateArray[2])." " : "").$monthFrench[$dateArray[1]-1]." ".$dateArray[0];
-			}
+				$pattern = ((isset($dateArray[2]) and !empty($dateArray[2])) ? "d " : "")."MMMM y";
 			else if($language == "es")
-			{
-				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]." de " : "").$monthSpain[$dateArray[1]-1]." de ".$dateArray[0];
-			}
+				$pattern = ((isset($dateArray[2]) and !empty($dateArray[2])) ? "d 'de' " : "")."MMMM 'de' y";
 			else
-			{
-				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-				$dateString = ((isset($dateArray[2]) and !empty($dateArray[2])) ? $dateArray[2]."th " : "").$monthEnglish[$dateArray[1]-1]." ".$dateArray[0];
-			}
+				$pattern = "MMMM".((isset($dateArray[2]) and !empty($dateArray[2])) ? " d," : "")." -y";
 
-			return $dateString;
+			$fmt = new \IntlDateFormatter($language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
+
+			return ucfirst($fmt->format(new \DateTime($partialDate))).$era;
 		}
 		
 		public function doPartialDateTime(?string $partialDateTime, $language)
