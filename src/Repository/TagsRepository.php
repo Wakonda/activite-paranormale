@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use App\Entity\Tags;
 
 /**
  * TagsRepository
@@ -23,8 +24,7 @@ class TagsRepository extends EntityRepository
 		   ->setParameter('locale', $locale)
 		   ->setParameter('id', $id);
 
-		if($count)
-		{
+		if($count) {
 			$qb->select('COUNT(t)');
 			return $qb->getQuery()->getSingleScalarResult();
 		}
@@ -42,15 +42,27 @@ class TagsRepository extends EntityRepository
 		   ->andWhere('l.abbreviation = :locale')
 		   ->setParameter('locale', $locale)
 		   ->setParameter('id', $tagWord->getId());
-		
+
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$qb->andWhere("tw.title LIKE :search")
+			$parentEntityMetadata = $this->_em->getClassMetadata(Tags::class);
+			$subClasses = $parentEntityMetadata->subClasses;
+
+			$where = [];
+			foreach($subClasses as $key => $subClass) {
+				$qb->leftjoin($subClass, "cl$key", \Doctrine\ORM\Query\Expr\Join::WITH, "cl$key.id = t.id");
+				$qb->leftjoin("cl$key.entity", "clEntity$key", \Doctrine\ORM\Query\Expr\Join::WITH, "clEntity$key = t.idClass");
+				$where[] = "clEntity$key.title LIKE :search";
+			}
+
+			$where[] = "tw.title LIKE :search";
+
+			$qb->andWhere(implode(" OR ", $where))
 			   ->setParameter('search', $search);
 		}
-		if($count)
-		{
+
+		if($count) {
 			$qb->select("count(t)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}
