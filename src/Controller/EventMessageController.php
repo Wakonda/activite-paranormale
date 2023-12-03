@@ -584,6 +584,11 @@ class EventMessageController extends AbstractController
 			}
 		}
 
+		foreach($photos as $key => $photo) {
+			if(empty($photo["illustration"]) or !file_exists($photo["path"].$photo["illustration"]->getRealNameFile()))
+				unset($photos[$key]);
+		}
+
 		return $this->render("page/EventMessage/widget.html.twig", [
 			"res" => $res,
 			"currentEvent" => $currentEvent,
