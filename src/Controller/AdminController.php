@@ -1417,7 +1417,7 @@ class AdminController extends AbstractController
 				$sortBy = $request->query->get("sortBy", null);
 				$sortDir = $request->query->get("sortDir", "ASC");
 				$orderBy = !empty($sortBy) ? " ORDER BY ".$sortBy." ".$sortDir : "";
-// dd($request->query->all());
+
 				$pagination = $paginator->paginate(
 					"SELECT * FROM ".$request->query->get("table").($request->query->has("id") ? " WHERE id = ".$request->query->get("id") : "").$orderBy,
 					($request->query->has("page")) ? $page : 1,

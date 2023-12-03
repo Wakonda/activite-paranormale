@@ -1,6 +1,6 @@
 <?php
 	namespace App\Service;
-	
+
 	class APDate
 	{
 		public function doDate($language, $datetime, $excludeYear = false)
@@ -25,11 +25,11 @@
 
 			return "-";
 		}
-		
+
 		public function doDateTime($language, $datetime)
 		{
 			$dateString = utf8_decode($this->doDate($language, $datetime));
-			
+
 			if($dateString != "-")
 			{
 				$timeString = $datetime->format("H:i:s");
@@ -45,19 +45,18 @@
 						$dateTimeString = $dateString." a las ".$datetime->format("H:i:s");
 						break;
 				}
-				
+
 				return utf8_encode($dateTimeString);
 			}
-			
+
 			return "-";
 		}
 
-		public function doPartialDate(?string $partialDate, $language)
-		{
+		private function getEra($date, $language) {
 			$bc = false;
-			if(str_starts_with($partialDate, "-"))
+			if(str_starts_with($date, "-"))
 				$bc = true;
-			
+
 			if($language == "fr")
 				$era = $bc ? " av. J.-C." : "";
 			else if($language == "es")
@@ -65,12 +64,18 @@
 			else
 				$era = $bc ? "BC" : "";
 
+			return $era;
+		}
+
+		public function doPartialDate(?string $partialDate, $language)
+		{
+			$era = $this->getEra($partialDate, $language);
 			$partialDate = trim($partialDate, "-");
 			$dateArray = explode("-", $partialDate);
 
 			if(empty($dateArray))
 				return null;
-			
+
 			if(count($dateArray) == 1)
 				return $dateArray[0].$era;
 
@@ -79,7 +84,7 @@
 			else if($language == "es")
 				$pattern = ((isset($dateArray[2]) and !empty($dateArray[2])) ? "d 'de' " : "")."MMMM 'de' y";
 			else
-				$pattern = "MMMM".((isset($dateArray[2]) and !empty($dateArray[2])) ? " d," : "")." -y";
+				$pattern = "MMMM".((isset($dateArray[2]) and !empty($dateArray[2])) ? " d," : "")." y";
 
 			$fmt = new \IntlDateFormatter($language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
 
@@ -111,31 +116,32 @@
 		public function doYearMonthDayDate($day, $month, $year, $language) {
 			if(empty($day) and empty($month) and empty($year))
 				return null;
-			
+
 			if(!empty($day) and empty($month) and !empty($year))
 				return null;
 
 			if(empty($day) and empty($month) and !empty($year))
 				return $year;
-		
-			if($language == "fr") {
-				$monthFrench = array('janvier', 'février', 'mars', 'avril', 'mai', 'juin', 'juillet', 'août', 'septembre', 'octobre', 'novembre', 'décembre');
-				$dateString = ltrim($day, "0")." ".$monthFrench[$month-1]." ".$year;
-			}
-			else if($language == "es") {
-				$monthSpain = array('Enero', 'Frebero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre');
-				$dateString = ((!empty($day)) ? ltrim($day, "0")." de " : "").$monthSpain[$month-1].(!empty($year) ? " de ".$year : "");
-			}
-			else {
-				$dt = new \DateTime(trim("$year-$month-$day", "-"));
 
-				$monthEnglish = array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-				$dateString = ((!empty($day)) ? $dt->format("jS")." " : "").$monthEnglish[$month-1]." ".$year;
-			}
+			$era = (!empty($year)) ? $this->getEra($year, $language) : null;
+			$year = ltrim($year, "-");
 
-			return $dateString;
+			$months = array_map(
+				function($i) use ($language) { 
+					return (new \IntlDateFormatter($language, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, 'MMMM'))->format(mktime(0, 0, 0, $i, 1, 1970));
+				}, range(1, 12)
+			);	
+
+			if($language == "fr")
+				$dateString = ltrim($day, "0")." ".$months[$month-1].(!empty($year) ? " ".$year : "");
+			else if($language == "es")
+				$dateString = ((!empty($day)) ? ltrim($day, "0")." de " : "").$months[$month-1].(!empty($year) ? " de ".$year : "");
+			else
+				$dateString = $months[$month-1].((!empty($day)) ? $day : "").(!empty($year) ? ", ".$year : "");
+
+			return trim($dateString).$era;
 		}
-		
+
 		public function shortDate($dateTime, $locale, $numberDigitYear = 4) {
 			$formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
 			$patern = $formatter->getPattern();

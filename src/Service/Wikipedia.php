@@ -200,7 +200,7 @@
 			
 			$htmlArray = [];
 			
-			foreach($xpath->query('//div[@class="mw-parser-output"]/*') as $e ) {
+			foreach($xpath->query('//div[contains(attribute::class, "mw-parser-output")]') as $e ) {
 				$htmlArray[] = $dom->saveHTML($e);
 			}
 
