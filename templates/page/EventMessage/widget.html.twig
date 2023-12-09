@@ -49,7 +49,7 @@
 							<ul>
 								{% for year, d in da %}
 									{% for event in d %}
-										<li>{% if year is not empty %}<b>{{ year }}</b> - {% endif %}<a href="{{ event.url }}">{{ event.title }}</a>{% if event.id == illustration.id %} (photo){% endif %}</li>
+										<li>{% if year is not empty %}<b>{{ year }}</b> - {% endif %}<a href="{{ event.url }}">{{ event.title }}</a>{% if illustration is not empty and event.id == illustration.id %} (photo){% endif %}</li>
 									{% endfor %}
 								{% endfor %}
 							</ul>
