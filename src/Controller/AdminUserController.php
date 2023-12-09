@@ -105,14 +105,11 @@ class AdminUserController extends AdminGenericController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
 		$user = $em->getRepository(User::class)->find($id);
@@ -185,14 +182,11 @@ class AdminUserController extends AdminGenericController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
 		$user = $em->getRepository(User::class)->find($id);

@@ -52,16 +52,13 @@ class CreepyStoryController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
-		for($i = 0; $i < intval($request->query->get('iSortingCols')); $i++)
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
-		
+
         $entities = $em->getRepository(CreepyStory::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(CreepyStory::class)->getTab($themeId, $language, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
@@ -110,12 +107,12 @@ class CreepyStoryController extends AbstractController
 	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
-		
+
 		if(empty($entity))
 			throw $this->createNotFoundException("The Creepy Story does not exist");
 
 		$content = $this->render("creepyStory/CreepyStory/pdfVersion.html.twig", ["entity" => $entity]);
-		
+
 		return $html2pdf->generatePdf($content->getContent());
 	}
 
@@ -132,7 +129,7 @@ class CreepyStoryController extends AbstractController
 	{
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 		$sameTopics = $em->getRepository(CreepyStory::class)->getSameTopics($entity);
-		
+
 		return $this->render("creepyStory/CreepyStory/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
 

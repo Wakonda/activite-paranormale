@@ -309,16 +309,13 @@ class VideoController extends AbstractController
 
 		$sortByColumn = [];
 		$sortDirColumn = [];
-			
-		for($i=0 ; $i<intval($request->query->get('iSortingCols')); $i++)
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
 		{
-			if ($request->query->get('bSortable_'.intval($request->query->get('iSortCol_'.$i))) == "true" )
-			{
-				$sortByColumn[] = $request->query->get('iSortCol_'.$i);
-				$sortDirColumn[] = $request->query->get('sSortDir_'.$i);
-			}
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
 		}
-		
+
         $entities = $em->getRepository(Video::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
 		$iTotal = $em->getRepository(Video::class)->getDatatablesForWorldIndex($language, $themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
 
@@ -349,7 +346,7 @@ class VideoController extends AbstractController
 	{
 		$entity = $em->getRepository(Video::class)->find($id);
 		$sameTopics = $em->getRepository(Video::class)->getSameTopics($entity);
-		
+
 		return $this->render("video/Video/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
 }

@@ -137,7 +137,7 @@ class AdminUserRepository extends EntityRepository
 			->setParameter('author', $user);
 		
 		$classNameObject = new $classNameQuery();
-		$mainEntity = (method_exists($classNameObject, "getMainEntityClassName")) ?? $classNameObject->getMainEntityClassName();
+		$mainEntity = (method_exists($classNameObject, "getMainEntityClassName")) ? $classNameObject->getMainEntityClassName() : null;
 
 		if(!empty($className) and method_exists($mainEntity, "getArchive"))
 			$qb->join("c.entity", "e")
