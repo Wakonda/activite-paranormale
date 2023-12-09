@@ -27,10 +27,10 @@ class DocumentAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-            ->add('pdfDoc', FileType::class, array('data_class' => null, 'required' => true))
-            ->add('pseudoUsed', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
+            ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('pdfDoc', FileType::class, ['data_class' => null, 'required' => true])
+            ->add('pseudoUsed', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
@@ -40,29 +40,28 @@ class DocumentAdminType extends AbstractType
 					return $er->createQueryBuilder('u')
 							  ->orderBy('u.title', 'ASC');
 				},
-				'constraints' => array(new NotBlank()
-			)))
-            ->add('documentFamily', EntityType::class, array('class'=>'App\Entity\DocumentFamily', 
+				'constraints' => [new NotBlank()]
+			])
+            ->add('documentFamily', EntityType::class, ['class'=>'App\Entity\DocumentFamily', 
 					'choice_label'=>'title',
 					'required' => true,
 					'query_builder' => function(\App\Repository\DocumentFamilyRepository $repository) use ($language)
 					{
 						return $repository->getDocumentFamilyByLanguage($language);
 					},
-					'constraints' => array(new NotBlank()
-			)))
-			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => [new NotBlank()]))
-			->add('authorDocumentBiographies', EntityType::class, array('class' => 'App\Entity\Biography', 'choice_label' => 'title', 'multiple' => true, 'expanded' => false, 'query_builder' => function(\App\Repository\BiographyRepository $repository) use ($language) { return $repository->getBiographyByLanguage($language);}, 'constraints' => array(new NotBlank())))
+					'constraints' => [new NotBlank()]
+			])
+			->add('publicationDate', DateType::class, ['required' => true, 'widget' => 'single_text', 'constraints' => [new NotBlank()]])
 			->add('releaseDateOfDocument', DatePartialType::class, ['required' => false])
-			->add('text', TextareaType::class, array('required' => false))
-			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
+			->add('text', TextareaType::class, ['required' => false])
+			->add('licence', EntityType::class, ['class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 
 					'required' => true,
 					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
-			))
+			])
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
-			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
+			->add('state', EntityType::class, ['class'=>'App\Entity\State', 
 					'choice_label'=>'title',
 					'required' => true,
 					'constraints' => [new NotBlank()],
@@ -70,7 +69,7 @@ class DocumentAdminType extends AbstractType
 						return ['data-intl' => $val->getInternationalName()];
 					},
 					'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
-			))
+			])
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,
 				'allow_add' => [
@@ -94,7 +93,21 @@ class DocumentAdminType extends AbstractType
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => null, 'data' => $builder->getData()->getPdfDoc()])
-		;
+			->add('authorDocumentBiographies', Select2EntityType::class, [
+				'multiple' => true,
+				'remote_route' => 'Biography_Admin_Autocomplete',
+				'class' => 'App\Entity\Biography',
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'language' => $language,
+				"required" => true,
+				'constraints' => [new NotBlank()]
+			]);
     }
 
     public function getBlockPrefix()
@@ -104,9 +117,9 @@ class DocumentAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Document',
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

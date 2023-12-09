@@ -17,11 +17,11 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "document.admin.PublicationDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.authorDocumentBiographies, "document.admin.AuthorDocumentBiographies"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.authorDocumentBiographies) }}{{ form_widget(form.authorDocumentBiographies, { 'attr': {'class': 'select2_list', 'data-live-search' : 'true', 'data-width': '100%'} }) }}</div>
-
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "document.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.authorDocumentBiographies, "document.admin.AuthorDocumentBiographies"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.authorDocumentBiographies) }}{{ form_widget(form.authorDocumentBiographies, { 'attr': {'class': 'select2_list', 'data-live-search' : 'true', 'data-width': '100%'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.documentFamily, "document.admin.Category"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.documentFamily) }}{{ form_widget(form.documentFamily, { 'attr': {'class': 'form-select'} }) }}</div>
