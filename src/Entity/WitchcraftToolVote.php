@@ -13,9 +13,9 @@ class WitchcraftToolVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\WitchcraftTool")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="witchcraftTool_id", nullable=false)
 	*/
-    private $witchcraftTool;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
@@ -27,23 +27,11 @@ class WitchcraftToolVote extends Vote
 		return 'WitchcraftToolVote';
 	}
 
-    /**
-     * Set witchcraftTool
-     *
-     * @param App\Entity\WitchcraftTool $witchcraftTool
-     */
-    public function setWitchcraftTool(WitchcraftTool $witchcraftTool)
-    {
-        $this->witchcraftTool = $witchcraftTool;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get witchcraftTool
-     *
-     * @return App\Entity\WitchcraftTool
-     */
-    public function getWitchcraftTool()
-    {
-        return $this->witchcraftTool;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

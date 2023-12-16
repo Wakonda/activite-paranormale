@@ -74,9 +74,6 @@ class TagsController extends AbstractController
 		$sSearch = $request->query->all('search')["value"];
 
 		$locale = $request->getLocale();
-		
-
-
 
 		$tagWord = $em->getRepository(TagWord::class)->find($id);
         $entities = $em->getRepository(Tags::class)->getDatatablesForSearchTagsAdmin($tagWord, $locale, $iDisplayStart, $iDisplayLength, $sSearch);

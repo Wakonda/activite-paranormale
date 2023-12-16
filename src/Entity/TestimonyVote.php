@@ -13,9 +13,9 @@ class TestimonyVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\Testimony")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="testimony_id", nullable=false)
 	*/
-    private $testimony;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
@@ -27,23 +27,11 @@ class TestimonyVote extends Vote
 		return 'TestimonyVote';
 	}
 
-    /**
-     * Set testimony
-     *
-     * @param App\Entity\Testimony $testimony
-     */
-    public function setTestimony(Testimony $testimony)
-    {
-        $this->testimony = $testimony;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get testimony
-     *
-     * @return App\Entity\Testimony 
-     */
-    public function getTestimony()
-    {
-        return $this->testimony;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

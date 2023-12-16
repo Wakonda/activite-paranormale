@@ -27,23 +27,11 @@ class TelevisionSerieVote extends Vote
 		return 'TelevisionSerieVote';
 	}
 
-    /**
-     * Set TelevisionSerie
-     *
-     * @param  App\Entity\Movies\TelevisionSerie  $entity
-     */
-    public function setEntity(?TelevisionSerie $entity)
-    {
+    public function setEntity(?TelevisionSerie $entity) {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Movies\TelevisionSerie
-     */
-    public function getEntity()
-    {
+    public function getEntity() {
         return $this->entity;
     }
 }

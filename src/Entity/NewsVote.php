@@ -13,8 +13,9 @@ class NewsVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\News")
+	* @ORM\JoinColumn(name="news_id")
 	*/
-    private $news;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
@@ -26,23 +27,11 @@ class NewsVote extends Vote
 		return 'NewsVote';
 	}
 
-    /**
-     * Set news
-     *
-     * @param  App\Entity\News  $news
-     */
-    public function setNews(News $news)
-    {
-        $this->news = $news;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get news
-     *
-     * @return App\Entity\News 
-     */
-    public function getNews()
-    {
-        return $this->news;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

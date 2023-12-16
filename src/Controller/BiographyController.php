@@ -53,8 +53,7 @@ class BiographyController extends AbstractController
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
-		{
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++) {
 			$sortByColumn[] = $order[$i]['column'];
 			$sortDirColumn[] = $order[$i]['dir'];
 		}

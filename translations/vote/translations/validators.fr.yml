@@ -6,3 +6,9 @@ vote:
         AverageScore: "Note moyenne :"
     index:
         AverageScore: "Note moyenne :"
+        Section: "Rubrique"
+        Title: "Titre"
+        Value: "Note"
+        Vote: "Vote"
+        NumberOf: "Nombre de votes :"
+        TotalVotes: "Nombre de votes"

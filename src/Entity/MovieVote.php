@@ -27,23 +27,11 @@ class MovieVote extends Vote
 		return 'MovieVote';
 	}
 
-    /**
-     * Set movie
-     *
-     * @param  App\Entity\Movies\Movie  $movie
-     */
-    public function setEntity(Movie $entity)
-    {
+    public function setEntity(Movie $entity) {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Movies\Movie
-     */
-    public function getEntity()
-    {
+    public function getEntity() {
         return $this->entity;
     }
 }

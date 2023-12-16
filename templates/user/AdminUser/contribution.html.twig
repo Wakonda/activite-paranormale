@@ -26,6 +26,10 @@
 				<td><a href="{{ path('APUserBunble_contributionusercomments', {'id' : user.id}) }}">{{ contributionsArray['comment'] }}</a></td>
 			</tr>
 			<tr>
+				<td class="td_form_table w-75">{{ "vote.index.TotalVotes"|trans([], "validators") }}</td>
+				<td><a href="{{ path('Vote_ListVoteBtUser', {'authorId' : user.id}) }}">{{ contributionsArray['vote'] }}</a></td>
+			</tr>
+			<tr>
 				<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 				<td><span class="badge bg-danger">{{ contributionsArray['total'] }}</span></td>
 			</tr>

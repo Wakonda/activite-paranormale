@@ -13,9 +13,9 @@ class GrimoireVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\Grimoire")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="grimoire_id", nullable=false)
 	*/
-    private $grimoire;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
@@ -27,23 +27,11 @@ class GrimoireVote extends Vote
 		return 'GrimoireVote';
 	}
 
-    /**
-     * Set grimoire
-     *
-     * @param App\Entity\Grimoire $grimoire
-     */
-    public function setGrimoire(Grimoire $grimoire)
-    {
-        $this->grimoire = $grimoire;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get grimoire
-     *
-     * @return App\Entity\Grimoire 
-     */
-    public function getGrimoire()
-    {
-        return $this->grimoire;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

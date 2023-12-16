@@ -13,37 +13,25 @@ class EventMessageVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="eventMessage_id", nullable=false)
 	*/
-    private $eventMessage;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
 		return EventMessage::class;
 	}
-	
+
 	public function getClassName()
 	{
 		return 'EventMessageVote';
 	}
 
-    /**
-     * Set eventMessage
-     *
-     * @param App\Entity\EventMessage $eventMessage
-     */
-    public function setEventMessage(EventMessage $eventMessage)
-    {
-        $this->eventMessage = $eventMessage;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get eventMessage
-     *
-     * @return App\Entity\EventMessage
-     */
-    public function getEventMessage()
-    {
-        return $this->eventMessage;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

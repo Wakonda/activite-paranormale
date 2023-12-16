@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Vote;
 use App\Entity\NewsVote;
@@ -28,55 +29,48 @@ class VoteController extends AbstractController
 		{
 			case "News":
 				$entity = new NewsVote();
-				$entity->setNews($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = NewsVote::class;
 				break;
 			case "Video":
 				$entity = new VideoVote();
-				$entity->setVideo($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = VideoVote::class;
 				break;
 			case "Photo":
 				$entity = new PhotoVote();
-				$entity->setPhoto($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = PhotoVote::class;
 				break;
 			case "Grimoire":
 				$entity = new GrimoireVote();
-				$entity->setGrimoire($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = GrimoireVote::class;
 				break;
 			case "Testimony":
 				$entity = new TestimonyVote();
-				$entity->setTestimony($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = TestimonyVote::class;
 				break;
 			case "Book":
 				$entity = new BookVote();
-				$entity->setBook($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = BookVote::class;
 				break;
 			case "WitchcraftTool":
 				$entity = new WitchcraftToolVote();
-				$entity->setWitchcraftTool($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = WitchcraftToolVote::class;
 				break;
 			case "EventMessage":
 				$entity = new EventMessageVote();
-				$entity->setEventMessage($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = EventMessageVote::class;
 				break;
 			case "Movie":
 				$entity = new MovieVote();
-				$entity->setEntity($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = MovieVote::class;
 				break;
 			case "TelevisionSerie":
 				$entity = new TelevisionSerieVote();
-				$entity->setEntity($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 				$className = TelevisionSerieVote::class;
 				break;
 		}
+
+		$entity->setEntity($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
+
 		return [$entity, $className];
 	}
 
@@ -115,7 +109,8 @@ class VoteController extends AbstractController
 		{
 			$entity->setClassNameVote($classNameVote);
 			$entity->setIdClassVote($idClassName);
-		
+			$entity->setAuthor($this->getUser());
+
 			$em->persist($entity);
 			$em->flush();
 		}
@@ -125,4 +120,51 @@ class VoteController extends AbstractController
 
 		return new JsonResponse(['averageVote' => round($averageVote, 1), 'countVoteByClassName' => $countVoteByClassName]);
     }
+
+	public function listVoteByUser($authorId) {
+		return $this->render("vote/Vote/index_user.html.twig");
+	}
+
+	public function listVoteByUserDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $authorId) {
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		// dd($request->query->all());
+		$sSearch = !empty($search = $request->query->all('search')) ? $search["value"] : [];
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+			
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++) {
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
+		}
+
+        $entities = $em->getRepository(Vote::class)->getDatatablesForIndex($authorId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
+		$iTotal = $em->getRepository(Vote::class)->getDatatablesForIndex($authorId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$color = match(intval(floor($entity->getValueVote()))) {
+				1 => "danger",
+				2 => "warning",
+				3 => "info",
+				4 => "primary",
+				5 => "success"
+			};
+			$row = [];
+			$row[] = ((method_exists($entity->getEntity(), "getArchive") and $entity->getEntity()->getArchive()) ? '<i class="fas fa-key text-warning"></i>' : '').$translator->trans('index.className.'.$entity->getEntity()->getRealClass(), [], 'validators');
+			$row[] = '<a href="'.$this->generateUrl($entity->getEntity()->getShowRoute(), ["title" => $entity->getEntity()->getTitle(), "id" => $entity->getEntity()->getId()]).'">'.$entity->getEntity()->getTitle()."</a>";
+			$row[] = "<i class='fa-solid fa-star text-$color'></i> ".$entity->getValueVote();
+
+			$output['data'][] = $row;
+		}
+
+		return new JsonResponse($output);
+	}
 }

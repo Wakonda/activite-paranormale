@@ -5,3 +5,11 @@ Vote_Index:
 Vote_Edit:
     path:  /vote/edit/{idClassName}/{className}
     controller: App\Controller\VoteController::editAction
+
+Vote_ListVoteBtUser:
+    path:  /vote/list/user/{authorId}
+    controller: App\Controller\VoteController::listVoteByUser
+
+Vote_ListVoteByUserDatatables:
+    path:  /listVoteByUserDatatables/{authorId}
+    controller: App\Controller\VoteController::listVoteByUserDatatables

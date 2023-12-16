@@ -13,37 +13,25 @@ class PhotoVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\Photo")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="photo_id", nullable=false)
 	*/
-    private $photo;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
 		return Photo::class;
 	}
-	
+
 	public function getClassName()
 	{
 		return 'PhotoVote';
 	}
 
-    /**
-     * Set photo
-     *
-     * @param App\Entity\Photo $photo
-     */
-    public function setPhoto(Photo $photo)
-    {
-        $this->photo = $photo;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get photo
-     *
-     * @return App\Entity\Photo
-     */
-    public function getPhoto()
-    {
-        return $this->photo;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

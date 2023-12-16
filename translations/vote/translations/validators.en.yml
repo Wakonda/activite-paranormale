@@ -6,3 +6,9 @@ vote:
         AverageScore: "Average score:"
     index:
         AverageScore: "Average score:"
+        Section: "Section"
+        Title: "Title"
+        Value: "Value"
+        Vote: "Vote"
+        NumberOf: "Number of votes:"
+        TotalVotes: "Number of votes"

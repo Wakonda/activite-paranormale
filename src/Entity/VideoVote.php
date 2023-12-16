@@ -13,37 +13,23 @@ class VideoVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\Video")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="video_id", nullable=false)
 	*/
-    private $video;
+    private $entity;
 
-	public function getMainEntityClassName()
-	{
+	public function getMainEntityClassName() {
 		return Video::class;
 	}
 	
-	public function getClassName()
-	{
+	public function getClassName() {
 		return 'VideoVote';
 	}
 
-    /**
-     * Set video
-     *
-     * @param App\Entity\Video $video
-     */
-    public function setVideo(Video $video)
-    {
-        $this->video = $video;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get video
-     *
-     * @return App\Entity\Video 
-     */
-    public function getVideo()
-    {
-        return $this->video;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }

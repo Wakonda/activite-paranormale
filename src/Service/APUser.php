@@ -8,6 +8,7 @@
 	use App\Entity\Testimony;
 	use App\Entity\EventMessage;
 	use App\Entity\Grimoire;
+	use App\Entity\Vote;
 
 	class APUser
 	{
@@ -31,6 +32,8 @@
 			
 			if($displayState == 1)
 				$contributionsArray["comment"] = $repository->getUsersCommentContribution($user, null, "", 0, 0, 0, 0, true);
+
+			$contributionsArray["vote"] = $this->em->getRepository(Vote::class)->getDatatablesForIndex($user, 0, 0, null, null, null, true);
 
 			$contributionsArray['total'] = array_sum($contributionsArray);
 			

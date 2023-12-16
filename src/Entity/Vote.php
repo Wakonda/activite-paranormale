@@ -59,15 +59,14 @@ class Vote
 	 private $valueVote;
 
     /**
-     * Get id
-     *
-     * @return integer 
+	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
+    private $author;
+
     public function getId()
     {
         return $this->id;
     }
-
 
 	/**
      * Set idClassVote
@@ -127,5 +126,15 @@ class Vote
     public function getValueVote()
     {
         return $this->valueVote;
+    }
+
+    public function setAuthor($author)
+    {
+        $this->author = $author;
+    }
+
+    public function getAuthor()
+    {
+        return $this->author;
     }
 }

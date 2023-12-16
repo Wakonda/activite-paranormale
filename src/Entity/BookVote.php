@@ -13,37 +13,25 @@ class BookVote extends Vote
 {
    /**
     * @ORM\ManyToOne(targetEntity="App\Entity\Book")
-	* @ORM\JoinColumn(nullable=false)
+	* @ORM\JoinColumn(name="book_id", nullable=false)
 	*/
-    private $book;
+    private $entity;
 
 	public function getMainEntityClassName()
 	{
 		return Book::class;
 	}
-	
+
 	public function getClassName()
 	{
 		return 'BookVote';
 	}
 
-    /**
-     * Set book
-     *
-     * @param App\Entity\Book $book
-     */
-    public function setBook(Book $book)
-    {
-        $this->book = $book;
-    }
+	public function getEntity() {
+		return $this->entity;
+	}
 
-    /**
-     * Get book
-     *
-     * @return App\Entity\Book
-     */
-    public function getBook()
-    {
-        return $this->book;
+    public function setEntity(News $entity) {
+        $this->entity = $entity;
     }
 }
