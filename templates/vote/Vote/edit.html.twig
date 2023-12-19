@@ -5,8 +5,8 @@
 <script src="{{ asset('extended/js/bootstrap-star-rating/js/theme.min.js') }}"></script>
 
 <div class="star_rate mt-2">
-	{{ form_start(form, {'attr': {'class' : 'star_rating', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
-		<div class="row alert alert-dark g-0">
+	{{ form_start(form, {'attr': {'class' : 'star_rating d-flex', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
+		<div class="row alert alert-dark g-0 w-100">
 			<div class="col-sm mt-1">
 			{{ form_widget(form.valueVote) }}
 			</div>
@@ -27,6 +27,7 @@
 				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</a>
 			</div>
 		</div>
+		<div class="alert alert-dark g-0 p-3"><a href="#" class="btn btn-danger" id="post_favorite"><i class="{% if favoriteEntity is not empty and favoriteEntity.favorite == true %}fa-solid{% else %}fa-regular{% endif %} fa-heart" id="favorite_icon"></i> </a></div>
 	{{ form_end(form) }}
 </div>
 
@@ -65,6 +66,37 @@
 			xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 			xmlHttp.overrideMimeType("application/json");
 			xmlHttp.send(formData);
+		});
+
+		document.getElementById("post_favorite").addEventListener("click", (e) => {
+			e.preventDefault();
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "{{ path('Vote_PostFavorite', { 'idClassName' : idClassName, 'className': className }) }}", true);
+
+			document.querySelector("#favorite_icon").classList.remove("fa-solid", "fa-regular", "fa-heart");
+			document.querySelector("#favorite_icon").classList.add("fa-solid", "fa-arrows-rotate", "fa-spin");
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var data = JSON.parse(xhr.responseText);
+					var icon = document.getElementById("favorite_icon");
+					
+					document.querySelector("#favorite_icon").classList.remove("fa-arrows-rotate", "fa-spin");
+					document.querySelector("#favorite_icon").classList.add("fa-heart");
+					
+					if(data.favorite == true) {
+					icon.classList.remove("fa-regular");
+					icon.classList.add("fa-solid");
+					} else {
+					icon.classList.remove("fa-solid");
+					icon.classList.add("fa-regular");
+					}
+					console.log(data)
+				}
+			};
+
+			xhr.send();
 		});
 	});
 </script>

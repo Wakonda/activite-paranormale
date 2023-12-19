@@ -85,6 +85,7 @@ class VoteController extends AbstractController
 
 		$form = $this->createForm(VoteType::class, $entity, ["averageVote" => $averageVote]);
 		$countVoteByClassName = $em->getRepository($classNameVote)->countVoteByClassName($classNameVote, $idClassName);
+		$favorite = $em->getRepository(Vote::class)->findOneBy(["author" => $this->getUser(), "idClassVote" => $idClassName, "classNameVote" => $className]);
 
         return $this->render('vote/Vote/index.html.twig', [
 			'className' => $className,
@@ -92,6 +93,7 @@ class VoteController extends AbstractController
 			'countVoteByClassName' => $countVoteByClassName,
 			'averageVote' => $averageVote,
 			'form' => $form->createView(),
+			'favoriteEntity' => $favorite
 		]);
     }
 	
@@ -107,7 +109,7 @@ class VoteController extends AbstractController
 
 		if($request->isXmlHttpRequest())
 		{
-			$entity->setClassNameVote($classNameVote);
+			$entity->setClassNameVote($className);
 			$entity->setIdClassVote($idClassName);
 			$entity->setAuthor($this->getUser());
 
@@ -128,7 +130,6 @@ class VoteController extends AbstractController
 	public function listVoteByUserDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $authorId) {
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
-		// dd($request->query->all());
 		$sSearch = !empty($search = $request->query->all('search')) ? $search["value"] : [];
 
 		$sortByColumn = [];
@@ -164,6 +165,73 @@ class VoteController extends AbstractController
 
 			$output['data'][] = $row;
 		}
+
+		return new JsonResponse($output);
+	}
+
+	public function listFavoriteByUser($authorId) {
+		if(!empty($user = $this->getUser()) and $user->getId() != $authorId)
+			throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException('You have not access to this section.');
+
+		return $this->render("vote/Vote/index_favorite_user.html.twig");
+	}
+
+	public function listFavoriteByUserDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $authorId) {
+		if(!empty($user = $this->getUser()) and $user->getId() != $authorId)
+			throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException('You have not access to this section.');
+
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = !empty($search = $request->query->all('search')) ? $search["value"] : [];
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+			
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++) {
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
+		}
+
+        $entities = $em->getRepository(Vote::class)->getDatatablesFavoriteForIndex($authorId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch);
+		$iTotal = $em->getRepository(Vote::class)->getDatatablesFavoriteForIndex($authorId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true);
+
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$row = [];
+			$row[] = ((method_exists($entity->getEntity(), "getArchive") and $entity->getEntity()->getArchive()) ? '<i class="fas fa-key text-warning"></i>' : '').$translator->trans('index.className.'.$entity->getEntity()->getRealClass(), [], 'validators');
+			$row[] = '<a href="'.$this->generateUrl($entity->getEntity()->getShowRoute(), ["title" => $entity->getEntity()->getTitle(), "id" => $entity->getEntity()->getId()]).'">'.$entity->getEntity()->getTitle()."</a>";
+
+			$output['data'][] = $row;
+		}
+
+		return new JsonResponse($output);
+	}
+
+	public function postFavorite(Request $request, EntityManagerInterface $em, $idClassName, $className) {
+		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
+
+		$entity = $em->getRepository(Vote::class)->findOneBy(["author" => $this->getUser(), "idClassVote" => $idClassName, "classNameVote" => $className]);
+// dd($entity, ["author" => $this->getUser(), "idClassVote" => $idClassName, "classNameVote" => $className]);
+		if(empty($entity)) {
+			$entity = new Vote();
+			$entity->setFavorite(true);
+		} else 
+			$entity->setFavorite(!$entity->getFavorite());
+
+		$entity->setClassNameVote($className);
+		$entity->setIdClassVote($idClassName);
+		$entity->setAuthor($this->getUser());
+
+		$em->persist($entity);
+		$em->flush();
+		
+		$output = ["favorite" => $entity->getFavorite()];
 
 		return new JsonResponse($output);
 	}

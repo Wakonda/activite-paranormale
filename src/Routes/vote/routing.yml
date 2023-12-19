@@ -13,3 +13,15 @@ Vote_ListVoteBtUser:
 Vote_ListVoteByUserDatatables:
     path:  /listVoteByUserDatatables/{authorId}
     controller: App\Controller\VoteController::listVoteByUserDatatables
+
+Vote_ListFavoriteBtUser:
+    path:  /favorite/list/user/{authorId}
+    controller: App\Controller\VoteController::listFavoriteByUser
+
+Vote_ListFavoriteByUserDatatables:
+    path:  /listFavoriteByUserDatatables/{authorId}
+    controller: App\Controller\VoteController::listFavoriteByUserDatatables
+
+Vote_PostFavorite:
+    path:  /favorite/post/user/{idClassName}/{className}
+    controller: App\Controller\VoteController::postFavorite

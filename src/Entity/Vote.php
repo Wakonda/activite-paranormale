@@ -63,6 +63,11 @@ class Vote
      */
     private $author;
 
+    /**
+     * @ORM\Column(name="favorite", type="boolean")
+     */
+    private $favorite;
+
     public function getId()
     {
         return $this->id;
@@ -136,5 +141,15 @@ class Vote
     public function getAuthor()
     {
         return $this->author;
+    }
+
+    public function setFavorite($favorite)
+    {
+        $this->favorite = $favorite;
+    }
+
+    public function getFavorite()
+    {
+        return $this->favorite;
     }
 }

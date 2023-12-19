@@ -19,12 +19,14 @@ class VoteRepository extends EntityRepository
 		$qb = $this->createQueryBuilder('c');
 
 		$aColumns = [null, null, 'c.valueVote'];
+		
+		$qb->where("c.favorite != true");
 
 		if(!empty($sortDirColumn) and !empty($aColumns[$sortByColumn[0]]))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($author)) {
-			$qb->where("c.author = :author")
+			$qb->andWhere("c.author = :author")
 			   ->setParameter("author", $author);
 		}
 
@@ -60,7 +62,8 @@ class VoteRepository extends EntityRepository
 		$qb ->select('avg(o.valueVote)')
 			->join('o.entity', 'a')
 			->where('a.id = :idClassVote')
-			->setParameter('idClassVote', $idClassName);
+			->setParameter('idClassVote', $idClassName)
+			->andWhere("o.favorite != true");
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
@@ -72,8 +75,49 @@ class VoteRepository extends EntityRepository
 		$qb ->select('count(c.valueVote)')
 			->join('c.entity', 'a')
 			->where('a.id = :idClassVote')
-			->setParameter('idClassVote', $idClassName);
+			->setParameter('idClassVote', $idClassName)
+			->andWhere("c.favorite != true");
 
 		return $qb->getQuery()->getSingleScalarResult();
+	}
+	public function getDatatablesFavoriteForIndex($author, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$aColumns = [null, null];
+		
+		$qb->where("c.favorite = true");
+
+		if(!empty($sortDirColumn) and !empty($aColumns[$sortByColumn[0]]))
+		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+		if(!empty($author)) {
+			$qb->andWhere("c.author = :author")
+			   ->setParameter("author", $author);
+		}
+
+		if(!empty($sSearch)) {
+			$search = "%".$sSearch."%";
+			$parentEntityMetadata = $this->_em->getClassMetadata(Vote::class);
+			$subClasses = $parentEntityMetadata->subClasses;
+
+			$where = [];
+			foreach($subClasses as $key => $subClass) {
+				$qb->leftjoin($subClass, "cl$key", \Doctrine\ORM\Query\Expr\Join::WITH, "cl$key.id = c.id");
+				$qb->leftjoin("cl$key.entity", "clEntity$key", \Doctrine\ORM\Query\Expr\Join::WITH, "clEntity$key = c.idClassVote");
+				$where[] = "clEntity$key.title LIKE :search";
+			}
+
+			$qb->andWhere(implode(" OR ", $where))
+			   ->setParameter('search', $search);
+		}
+		if($count) {
+			$qb->select("count(c)");
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
 	}
 }
