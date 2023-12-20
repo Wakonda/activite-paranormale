@@ -1,0 +1,67 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "vote.index.Favorite"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire" /></span>{{ "vote.index.Favorite"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			oTable = $('table.favorite_datatables').DataTable( {
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"searching": true,
+				"info": true,
+				"ordering": false,
+				"lengthChange": true,
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					"url": "{{ path('Vote_ListFavoriteByUserDatatables', {authorId: app.request.get('authorId') }) }}",
+					"type": "GET"
+				},
+				"preDrawCallback": function(settings) {
+					document.getElementById("count_vote").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+				},
+				"drawCallback": function(settings) {
+					document.getElementById("count_vote").innerHTML = settings.json.recordsTotal;
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/favorite.jpg') }}" alt="Angel devil on roof" width="450" /></p>
+	<hr>
+	<p>{{ "vote.index.NumberOfFavorites"|trans([], "validators") }} <span class="badge bg-danger" id="count_vote"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
+	<hr>
+	<br>
+	<table class="favorite_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form">{{ "vote.index.Section"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "vote.index.Title"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form">{{ "vote.index.Section"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "vote.index.Title"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
