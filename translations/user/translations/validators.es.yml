@@ -41,6 +41,7 @@ user:
         ResetPassword: "Restablecimiento de contraseña"
         PasswordAlreadyRequested: "Contraseña ya solicitada"
         CheckEmailAddress: "Confirmar su correo electrónico"
+        YouMustBeLoggedIn: "Usted debe estar conectado"
     register:
         Pseudo: "Pseudo"
         Email: "Email"

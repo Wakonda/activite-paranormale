@@ -41,6 +41,7 @@ user:
         ResetPassword: "Remise à zéro du mot de passe"
         PasswordAlreadyRequested: "Mot de passe déjà demandé"
         CheckEmailAddress: "Confirmer votre adresse email"
+        YouMustBeLoggedIn: "Vous devez être connecté"
     register:
         Pseudo: "Pseudo"
         Email: "Email"

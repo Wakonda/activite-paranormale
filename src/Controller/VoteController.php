@@ -214,12 +214,15 @@ class VoteController extends AbstractController
 	}
 
 	public function postFavorite(Request $request, EntityManagerInterface $em, $idClassName, $className) {
+		if(empty($this->getUser()))
+			return new JsonResponse(["error" => "You must be logged in"]);
+
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
 
-		$entity = $em->getRepository(Vote::class)->findOneBy(["author" => $this->getUser(), "idClassVote" => $idClassName, "classNameVote" => $className]);
-// dd($entity, ["author" => $this->getUser(), "idClassVote" => $idClassName, "classNameVote" => $className]);
+		$entity = $em->getRepository($classNameVote)->findOneBy(["author" => $this->getUser(), "idClassVote" => $idClassName, "classNameVote" => $className, "valueVote" => null]);
+
 		if(empty($entity)) {
-			$entity = new Vote();
+			$entity = new $classNameVote();
 			$entity->setFavorite(true);
 		} else 
 			$entity->setFavorite(!$entity->getFavorite());
@@ -227,10 +230,12 @@ class VoteController extends AbstractController
 		$entity->setClassNameVote($className);
 		$entity->setIdClassVote($idClassName);
 		$entity->setAuthor($this->getUser());
+		
+		$entity->setEntity($em->getRepository($entity->getMainEntityClassName())->find($idClassName));
 
 		$em->persist($entity);
 		$em->flush();
-		
+
 		$output = ["favorite" => $entity->getFavorite()];
 
 		return new JsonResponse($output);

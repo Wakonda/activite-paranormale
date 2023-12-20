@@ -20,7 +20,7 @@ class VoteRepository extends EntityRepository
 
 		$aColumns = [null, null, 'c.valueVote'];
 		
-		$qb->where("c.favorite != true");
+		$qb->where("c.favorite IS NULL");
 
 		if(!empty($sortDirColumn) and !empty($aColumns[$sortByColumn[0]]))
 		   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -63,7 +63,7 @@ class VoteRepository extends EntityRepository
 			->join('o.entity', 'a')
 			->where('a.id = :idClassVote')
 			->setParameter('idClassVote', $idClassName)
-			->andWhere("o.favorite != true");
+			->andWhere("o.favorite IS NULL");
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
@@ -76,7 +76,7 @@ class VoteRepository extends EntityRepository
 			->join('c.entity', 'a')
 			->where('a.id = :idClassVote')
 			->setParameter('idClassVote', $idClassName)
-			->andWhere("c.favorite != true");
+			->andWhere("c.favorite IS NULL");
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}

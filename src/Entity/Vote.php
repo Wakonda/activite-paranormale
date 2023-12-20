@@ -64,7 +64,7 @@ class Vote
     private $author;
 
     /**
-     * @ORM\Column(name="favorite", type="boolean")
+     * @ORM\Column(name="favorite", type="boolean", nullable=true)
      */
     private $favorite;
 
