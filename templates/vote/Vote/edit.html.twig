@@ -51,6 +51,10 @@
 			let formData = new FormData(form);
 			
 			var xmlHttp = new XMLHttpRequest();
+
+			let contentButton = document.getElementById("rate").innerHTML.trim();
+			document.getElementById("rate").innerHTML = '<i class="fa-solid fa-arrows-rotate fa-spin"></i>';
+
 			xmlHttp.onreadystatechange = function()
 			{
 				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
@@ -59,6 +63,7 @@
 					document.querySelector(".averageVote").innerHTML = data.averageVote;
 					document.querySelector('.countVoteByClassName').innerHTML = data.countVoteByClassName;
 					$("#{{ form.valueVote.vars.id }}").rating('update', data.averageVote);
+					document.getElementById("rate").innerHTML = contentButton;
 				}
 			}
 

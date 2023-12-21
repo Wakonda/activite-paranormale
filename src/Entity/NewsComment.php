@@ -36,7 +36,7 @@ class NewsComment extends Comment
      *
      * @param  App\Entity\News  $entity
      */
-    public function setEntity(News $entity)
+    public function setEntity($entity)
     {
         $this->entity = $entity;
     }

@@ -32,7 +32,7 @@ class NewsTags extends Tags
      *
      * @param App\Entity\News $entity
      */
-    public function setEntity(News $entity)
+    public function setEntity($entity)
     {
         $this->entity = $entity;
     }

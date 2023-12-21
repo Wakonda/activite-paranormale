@@ -31,7 +31,7 @@ class BookVote extends Vote
 		return $this->entity;
 	}
 
-    public function setEntity(News $entity) {
+    public function setEntity($entity) {
         $this->entity = $entity;
     }
 }
