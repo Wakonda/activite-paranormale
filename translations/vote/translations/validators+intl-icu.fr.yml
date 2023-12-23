@@ -1,9 +1,11 @@
 vote:
     edit:
-        Vote: "Vote"
-        Votes: "Votes"
+        Vote: >-
+            {number, plural,
+                one   {vote}
+                other {votes}
+            }
         VoteSubmit: "Votez"
-        AverageScore: "Note :"
     index:
         AverageScore: "Note :"
         Section: "Rubrique"

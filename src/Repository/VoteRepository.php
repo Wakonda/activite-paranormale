@@ -120,4 +120,19 @@ class VoteRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+	
+	public function getAverageVotesByArticle($entity)
+	{
+		$qb = $this->createQueryBuilder("v");
+		$qb->select('AVG(v.valueVote) AS ratingAverage')
+		   ->where('v.entity = :entityId')
+		   ->setParameter('entityId', $entity->getId());
+	   
+		$result = $qb->getQuery()->getSingleResult();
+
+		if(!is_array($result) or empty($result['ratingAverage']))
+			return '-';
+		
+		return round($result['ratingAverage'], 1);
+	}
 }

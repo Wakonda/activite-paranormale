@@ -72,7 +72,7 @@ class MappedSuperclassBase implements SearchEngineInterface
      * @ORM\Column(name="pseudoUsed", type="string", length=255, nullable=true)
      */
     protected $pseudoUsed;
-	
+
 	/**
      * @ORM\Column(name="slug", type="string", length=255, nullable=true)
      */

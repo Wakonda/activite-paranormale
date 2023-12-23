@@ -181,7 +181,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 			->join('o.state', 's')
 			->andWhere('s.displayState = 1')
 			->andWhere('o.archive = 0')
-			->orderBy('o.publicationDate', 'DESC')
+			->orderBy('o.id', 'DESC')
 			->setMaxResults(5);
 
 		return $qb->getQuery()->getResult();

@@ -1,9 +1,11 @@
 vote:
     edit:
-        Vote: "Voto"
-        Votes: "Votos"
+        Vote: >-
+            {number, plural,
+                one   {voto}
+                other {votos}
+            }
         VoteSubmit: "Votar"
-        AverageScore: "Nota :"
     index:
         AverageScore: "Nota :"
         Section: "Sección"

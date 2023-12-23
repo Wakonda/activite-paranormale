@@ -12,19 +12,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class MovieVoteRepository extends VoteRepository
 {
-	public function getAverageVotesByArticle($entity)
-	{
-		$qb = $this->_em->createQueryBuilder();
-		$qb->select('AVG(v.valueVote) AS ratingAverage')
-		   ->from('App\Entity\MovieVote', 'v')
-		   ->where('v.entity = :entityId')
-		   ->setParameter('entityId', $entity->getId());
-	   
-		$result = $qb->getQuery()->getSingleResult();
-
-		if(!is_array($result) or empty($result['ratingAverage']))
-			return '-';
-
-		return $result['ratingAverage'];
-	}
 }

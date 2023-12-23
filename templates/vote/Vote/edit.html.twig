@@ -13,15 +13,8 @@
 			<div class="col-sm text-end">
 				<span id="resultVote">
 					{% apply spaceless %}
-					{{ "vote.edit.AverageScore"|trans([], "validators") }} <span class="averageVote">{{ averageVote|round(1) }}</span>
-					(<span class="badge bg-danger countVoteByClassName">{{ countVoteByClassName }}</span>
-
-					{% if countVoteByClassName <= 1 %} 
-						{{ "vote.edit.Vote"|trans([], "validators") }}
-					{% else %}
-						{{ "vote.edit.Votes"|trans([], "validators") }}
-					{% endif %}
-					)
+						(<span class="badge bg-danger countVoteByClassName">{{ countVoteByClassName }}</span>
+						{{ "vote.edit.Vote"|trans({ 'number': (countVoteByClassName|default(0)) }, "validators") }})
 					{% endapply %}
 				</span>
 				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</a>
@@ -39,6 +32,7 @@
 			containerClass: 'is-star',
 			language: "{{ app.request.locale }}",
 			defaultCaption: "{rating}",
+			showClear: false,
 			starCaptions: function(val) {
 				val
 			}
@@ -60,7 +54,6 @@
 				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 				{
 					var data = JSON.parse(xmlHttp.responseText);
-					document.querySelector(".averageVote").innerHTML = data.averageVote;
 					document.querySelector('.countVoteByClassName').innerHTML = data.countVoteByClassName;
 					$("#{{ form.valueVote.vars.id }}").rating('update', data.averageVote);
 					document.getElementById("rate").innerHTML = contentButton;

@@ -91,7 +91,6 @@ class VoteController extends AbstractController
 			'className' => $className,
 			'idClassName' => $idClassName,
 			'countVoteByClassName' => $countVoteByClassName,
-			'averageVote' => $averageVote,
 			'form' => $form->createView(),
 			'favoriteEntity' => $favorite
 		]);

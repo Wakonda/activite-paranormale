@@ -1004,8 +1004,9 @@
 			$thumbnail = $entity->getThumbnailVideo();
 			$url = $entity->getURLByCode();
 			$platform = $entity->getPlatformByCode();
-// dd($platform);
+
 			$id = "video-".$entity->getId();
+			$title = htmlspecialchars($entity->getTitle());
 
 			$color = match($platform) {
 				"rutube" => "#79C334",
@@ -1035,7 +1036,7 @@
 				
 				$script = !empty($script) ? "<script>$script</script>" : "";
 				
-				return "<iframe class=\"video\" id=\"$id\" srcdoc=\"<style>*{text-decoration:none !important}body,.full{width:100%;height:100%;margin:0;position:absolute;display:flex;justify-content:center;object-fit:cover;align-items:center}.play{background-color:{$color};color:#fff;border-radius:.6rem;padding-right:1.5rem;height:fit-content;padding-left:1.5rem;padding-bottom:.5rem;padding-top:.5rem;z-index:100;font-size:2rem}.play:before{content:'\\25BA'}</style>
+				return "<iframe class=\"video\" title=\"$title\" id=\"$id\" srcdoc=\"<style>*{text-decoration:none !important}body,.full{width:100%;height:100%;margin:0;position:absolute;display:flex;justify-content:center;object-fit:cover;align-items:center}.play{background-color:{$color};color:#fff;border-radius:.6rem;padding-right:1.5rem;height:fit-content;padding-left:1.5rem;padding-bottom:.5rem;padding-top:.5rem;z-index:100;font-size:2rem}.play:before{content:'\\25BA'}</style>
 				<a href='{$url}' class='full'><img src='{$thumbnail}' class='full'><div class='play'></div></a>\"
 				width=\"560\" height=\"315\"
 				allow=\"autoplay\"
