@@ -36,7 +36,7 @@ class MigratePublisherCommand extends Command
 
 		$conn = $this->em->getConnection();
 
-		/*$sql = "SELECT id, photo FROM publisher WHERE illustration_id IS NULL AND photo IS NOT NULL";
+		$sql = "SELECT id, photo FROM publisher WHERE illustration_id IS NULL AND photo IS NOT NULL";
 		$datas = $conn->fetchAllAssociative($sql);
 
 		foreach($datas as $data)
@@ -47,9 +47,9 @@ class MigratePublisherCommand extends Command
 			$conn->exec("UPDATE publisher SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
 		}
 		
-		echo "End publisher photo";*/
+		echo "End publisher photo";
 		
-		/*$sql = "select 
+		$sql = "select 
 				p.id,
 				p.title,
 				(select group_concat(DISTINCT l.abbreviation ORDER BY l.abbreviation ASC SEPARATOR ',')
@@ -116,7 +116,7 @@ class MigratePublisherCommand extends Command
 			}
 		}
 
-		$this->em->flush();*/
+		$this->em->flush();
 		
 		$sql = "select be.id,
 				(select p2.id from publisher p2 where p2.language_id = b.language_id and p.title = p2.title) as newPublisher

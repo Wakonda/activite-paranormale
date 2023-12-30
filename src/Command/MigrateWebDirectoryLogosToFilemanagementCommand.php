@@ -36,7 +36,7 @@ class MigrateWebDirectoryLogosToFilemanagementCommand extends Command
 
 		$conn = $this->em->getConnection();
 
-		$sql = "SELECT id, logo FROM WebDirectory WHERE illustration_id IS NULL";
+		$sql = "SELECT id, logo FROM webdirectory WHERE illustration_id IS NULL";
 		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
@@ -44,7 +44,7 @@ class MigrateWebDirectoryLogosToFilemanagementCommand extends Command
 			$conn->exec("INSERT INTO `filemanagement` (`titleFile`, `realNameFile`, `extensionFile`, `kindFile`, `discr`, `caption`) VALUES ('".str_replace("'", "\'", $data['logo'])."', '".str_replace("'", "\'", $data['logo'])."', '".pathinfo(str_replace("'", "\'", $data['logo']), PATHINFO_EXTENSION)."', 'file', 'filemanagement', NULL)");
 			$fmId = $conn->fetchOne("SELECT LAST_INSERT_ID()");
 
-			$conn->exec("UPDATE WebDirectory SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
+			$conn->exec("UPDATE webdirectory SET illustration_id = ".$fmId." WHERE id = ".$data["id"]);
 		}
 		
 		die("End WebDirectory");

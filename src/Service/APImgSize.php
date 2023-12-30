@@ -87,6 +87,7 @@
 				$sourceImage = $imagecreate($img);
 
 				ob_start();
+				imagepalettetotruecolor($sourceImage);
 				imagewebp($sourceImage, null);
 				$webpImage = ob_get_clean();
 

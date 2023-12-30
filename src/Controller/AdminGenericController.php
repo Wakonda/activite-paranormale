@@ -370,7 +370,7 @@ abstract class AdminGenericController extends AbstractController
 				$entity->$getter()->setKindFile(FileManagement::FILE_KIND);
 				$entity->$getter()->setRealNameFile($filename);
 				$NewNameFile = $filename;
-			} else {dd('ppp2');
+			} else {
 				if (is_object($entity->$getter()->getTitleFile())) {
 					$entity->$getter()->getTitleFile()->move($entity->getUploadRootDir(), $NewNameFile);
 				}

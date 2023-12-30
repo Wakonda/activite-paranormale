@@ -93,7 +93,7 @@ class Instagram {
 
 		$result = json_decode($result);
 
-		return $result->instagram_business_account->id;
+		return $result->id;
 	}
 	
 	public function addMediaMessage($image_url, $caption, $locale) {
@@ -107,10 +107,6 @@ class Instagram {
 		$userId = $this->FACEBOOK_USER_INSTAGRAM_ID;
 		
 		$caption = urlencode($caption);
-		
-		$type = "image";
-		$recipient_id = 1109;
-
 		$image_url = urlencode($image_url);
 
 		$instagramURL = "https://graph.facebook.com/${apiGraphVersion}/${userId}/media?image_url=${image_url}&is_carousel_item=0&caption=${caption}&access_token=${accessToken}";
