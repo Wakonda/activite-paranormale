@@ -156,7 +156,8 @@
 	}
 
 	document.getElementById("{{ form.amazonCode.vars.id }}").addEventListener('paste', (event) => {
-		let paste = (event.clipboardData || window.clipboardData).getData('text');
+		if(document.getElementById("{{ form.platform.vars.id }}").value == "{{ constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') }}") {
+			let paste = (event.clipboardData || window.clipboardData).getData('text');
 
 			var xmlhttp = new XMLHttpRequest();
 			xmlhttp.open('GET', "{{ path('Admin_AmazonImage') }}?paste=" + encodeURIComponent(paste), true);
@@ -167,12 +168,13 @@
 						
 						if(obj.url !== null) {
 							let title = document.getElementById("{{ form.title.vars.id }}").value;
-							let img = '<img src="' + obj.url + '" width="' + obj.width + '" height="' + obj.height + '" alt="' + title + '">';
+							let img = '<img src="' + obj.url + '" width="' + obj.width + '" height="' + obj.height + '" alt="' + title.replace(/\"/g, '\\"') + '">';
 							document.getElementById("{{ form.imageEmbeddedCode.vars.id }}").value = img;
 						}
 					}
 				}
 			};
 			xmlhttp.send(null);
+		}
 	});
 </script>
