@@ -109,6 +109,10 @@ Admin_WikidataGenericLoadImage:
     path: /admin/wikidata_generic_load_image
     controller: App\Controller\AdminController::wikidataGenericLoadImageAction
 
+Admin_AmazonImage:
+    path: /admin/amazon_image
+    controller: App\Controller\AdminController::amazonImage
+
 Admin_Maintenance:
     path: /admin/maintenance/{mode}
     controller: App\Controller\AdminController::maintenanceAction

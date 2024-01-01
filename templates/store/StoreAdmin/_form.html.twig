@@ -34,6 +34,15 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "store.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.admin.Platform"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head urlContainer">{{ form_label(form.url, "store.admin.Url"|trans([], "validators")) }}</div>
+<div class="form-table-cell urlContainer">{{ form_errors(form.url) }}{{ form_widget(form.url, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head amazonCodeContainer">{{ form_label(form.amazonCode, "store.admin.AmazonCode"|trans([], "validators")) }}</div>
+<div class="form-table-cell amazonCodeContainer">{{ form_errors(form.amazonCode) }}{{ form_widget(form.amazonCode, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.imageEmbeddedCode, "store.admin.ImageEmbeddedCode"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
 	{{ form_errors(form.imageEmbeddedCode) }}
@@ -62,15 +71,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "store.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.admin.Platform"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, { 'attr': {'class': 'form-select'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head urlContainer">{{ form_label(form.url, "store.admin.Url"|trans([], "validators")) }}</div>
-<div class="form-table-cell urlContainer">{{ form_errors(form.url) }}{{ form_widget(form.url, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head amazonCodeContainer">{{ form_label(form.amazonCode, "store.admin.AmazonCode"|trans([], "validators")) }}</div>
-<div class="form-table-cell amazonCodeContainer">{{ form_errors(form.amazonCode) }}{{ form_widget(form.amazonCode, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.price, "store.admin.Price"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -154,4 +154,25 @@
 			for (const elem of urlContainer)
 				elem.style.display = "block";
 	}
+
+	document.getElementById("{{ form.amazonCode.vars.id }}").addEventListener('paste', (event) => {
+		let paste = (event.clipboardData || window.clipboardData).getData('text');
+
+			var xmlhttp = new XMLHttpRequest();
+			xmlhttp.open('GET', "{{ path('Admin_AmazonImage') }}?paste=" + encodeURIComponent(paste), true);
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == 4) {
+					if(xmlhttp.status == 200) {
+						var obj = JSON.parse(xmlhttp.responseText);
+						
+						if(obj.url !== null) {
+							let title = document.getElementById("{{ form.title.vars.id }}").value;
+							let img = '<img src="' + obj.url + '" width="' + obj.width + '" height="' + obj.height + '" alt="' + title + '">';
+							document.getElementById("{{ form.imageEmbeddedCode.vars.id }}").value = img;
+						}
+					}
+				}
+			};
+			xmlhttp.send(null);
+	});
 </script>

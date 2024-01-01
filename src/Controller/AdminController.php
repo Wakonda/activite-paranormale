@@ -27,6 +27,7 @@ use App\Service\Mastodon;
 use App\Service\Instagram;
 use App\Service\Diaspora;
 use App\Service\VK;
+use App\Service\Amazon;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
 use App\Service\PaginatorNativeSQL;
@@ -1262,8 +1263,24 @@ class AdminController extends AbstractController
 			$flickr = new \App\Service\Flickr();
 			$res = $flickr->getImageInfos($url);
 		}
-
+											   
 		return new JsonResponse($res);
+	}
+
+	public function amazonImage(Request $request, Amazon $amazon) {
+		$itemId = $request->query->get("paste");
+
+		$item = $amazon->getItem($itemId);
+		
+		if(!empty($item)) {
+			$url = $item->Images->Primary->Large->URL;
+			$width = $item->Images->Primary->Large->Width;
+			$height = $item->Images->Primary->Large->Height;
+
+			return new JsonResponse(["url" => $url, "width" => $width, "height" => $height]);
+		}
+
+		return new JsonResponse(["url" => null, "width" => null, "height" => null]);
 	}
 
 	private function getImageName(Request $request, $entity, $url = true)
