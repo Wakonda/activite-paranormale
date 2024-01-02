@@ -168,7 +168,7 @@
 						
 						if(obj.url !== null) {
 							let title = document.getElementById("{{ form.title.vars.id }}").value;
-							let img = '<img src="' + obj.url + '" width="' + obj.width + '" height="' + obj.height + '" alt="' + title.replace(/\"/g, '\\"') + '">';
+							let img = '<img src="' + obj.url + '" alt="' + title.replace(/\"/g, "'") + '">';
 							document.getElementById("{{ form.imageEmbeddedCode.vars.id }}").value = img;
 						}
 					}
