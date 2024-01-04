@@ -1192,7 +1192,7 @@ class AdminController extends AbstractController
 				break;
 		}
 
-		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area")." ".$url, $entity->getLanguage()->getAbbreviation()));
+		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
 

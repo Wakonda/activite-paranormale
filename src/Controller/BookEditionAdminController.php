@@ -97,22 +97,24 @@ class BookEditionAdminController extends AdminGenericController
     {
 		$formType = BookEditionAdminType::class;
 		$entity = new BookEdition();
+		$book = $em->getRepository(Book::class)->find($bookId);
 		
-		$entity->setBook($em->getRepository(Book::class)->find($bookId));
+		$entity->setBook($book);
 
 		$twig = 'book/BookEditionAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $book->getLanguage()->getAbbreviation()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $bookId)
     {
 		$formType = BookEditionAdminType::class;
 		$entity = new BookEdition();
-
-		$entity->setBook($em->getRepository(Book::class)->find($bookId));
+		$book = $em->getRepository(Book::class)->find($bookId);
+		
+		$entity->setBook($book);
 
 		$twig = 'book/BookEditionAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ["locale" => $book->getLanguage()->getAbbreviation()]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
@@ -121,17 +123,18 @@ class BookEditionAdminController extends AdminGenericController
 		$formType = BookEditionAdminType::class;
 
 		$twig = 'book/BookEditionAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType);
+		return $this->editGenericAction($em, $id, $twig, $formType, ["locale" => $entity->getBook()->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
+		$entity = $em->getRepository(BookEdition::class)->find($id);
 		$formType = BookEditionAdminType::class;
 		$twig = 'book/BookEditionAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ["locale" => $entity->getBook()->getLanguage()->getAbbreviation()]);
     }
-	
+
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGenericAction($em, $id);
