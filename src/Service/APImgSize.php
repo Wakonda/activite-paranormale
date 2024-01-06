@@ -67,36 +67,27 @@
 				$mime_type = $finfo->buffer($uploadedFile);
 				$img = $content = $uploadedFile;
 				$size = strlen($uploadedFile);
-				$imagecreate = "imagecreatefromstring";
 			}
 
-			if ($mime_type === 'image/png' || $mime_type === 'image/jpeg') {
-				if(empty($imagecreate)) {
-					switch($mime_type) {
-						case 'image/jpeg':
-							$extension = 'jpg';
-							$imagecreate = "imagecreatefromjpeg";
-							break;
-						case 'image/png':
-							$extension = 'png';
-							$imagecreate = "imagecreatefrompng";
-							break;
-					}
-				}
+			$sourceImage = imagecreatefromstring($content);
+
+			ob_start();
+			imagepalettetotruecolor($sourceImage);
+			imagewebp($sourceImage, null);
+			$webpImage = ob_get_clean();
+
+			if($size > strlen($webpImage)) {
+				$newFilename = preg_replace('/\..+$/', '.webp', $filename);
+				return [$newFilename, $webpImage];
+			} else {
+				$resmushId = new ResmushIt();
+				$content = $resmushId->compressFromData($content, $filename);
+				$size = strlen($content);
 				
-				$sourceImage = $imagecreate($img);
-
-				ob_start();
-				imagepalettetotruecolor($sourceImage);
-				imagewebp($sourceImage, null);
-				$webpImage = ob_get_clean();
-
-				if($size > strlen($webpImage)) {
-					$newFilename = preg_replace('/\..+$/', '.webp', $filename);
-					return [$newFilename, $webpImage];
-				}
+				return [$newFilename, $content];
 			}
 
 			return [$filename, $content];
 		}
+		
 	}
