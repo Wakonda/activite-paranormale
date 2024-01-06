@@ -101,4 +101,8 @@
 
 			return parse_url($url)["host"];
 		}
+
+		public function isApplication() {
+			return $_SERVER['HTTP_USER_AGENT'] == "activite-paranormale-application";
+		}
 	}

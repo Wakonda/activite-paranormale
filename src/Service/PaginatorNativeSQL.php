@@ -31,7 +31,7 @@ class PaginatorNativeSQL
             $total = $this->connection->executeQuery($countQuery)->fetchNumeric()[0];
         }
         $query .= ' LIMIT ' . $pagesize . ' OFFSET ' . $offset;
-		// dd($query);
+
         $list = $this->connection->executeQuery($query)->fetchAll();
         $slidingPagination = new SlidingPagination($request->query->all());
         $slidingPagination->setCurrentPageNumber($page);
@@ -48,7 +48,7 @@ class PaginatorNativeSQL
             "filterValueParameterName" => "filterValue",
             "distinct" => true
         ]);
-// dd($this->parameterBag->get("knp_paginator.template.pagination"));
+
         $slidingPagination->setCustomParameters([]);
         $slidingPagination->setTemplate($this->parameterBag->get("knp_paginator.template.pagination"));
 		

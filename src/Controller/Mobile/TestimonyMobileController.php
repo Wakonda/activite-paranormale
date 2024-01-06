@@ -18,12 +18,13 @@ use App\Entity\Language;
 use App\Entity\State;
 use App\Entity\Theme;
 use App\Entity\User;
+use App\Service\FunctionsLibrary;
 
 require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php");
 
 class TestimonyMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -36,10 +37,8 @@ class TestimonyMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		$mobileDetector = new \Mobile_Detect;
-		
-		if($mobileDetector->isMobile())
-			$pagination->setPageRange(1);
+		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);
 

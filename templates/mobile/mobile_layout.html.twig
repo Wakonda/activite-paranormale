@@ -73,21 +73,25 @@
 
 				{% block body_content %}{% endblock %}
 				
-				{% set ads = advertising(728, 90) %}
-				<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
-				<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto" data-full-width-responsive="true">
-					{% if ads is not empty %}
-						<div class="text-center">
+				{% if is_application() == false %}
+					<div class="ads-container">
+						{% set ads = advertising(728, 90) %}
+						<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
+						<ins class="adsbygoogle ads-responsive" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="8762915348" data-ad-format="auto" data-full-width-responsive="true">
+							{% if ads is not empty %}
+								<div class="text-center">
+									{{ ads.text|raw }}
+								</div>
+							{% endif %}
+						</ins>
+						<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+
+						{% if ads is not empty %}
+						<div class="d-none advertising-alternative advertising_image text-center">
 							{{ ads.text|raw }}
 						</div>
-					{% endif %}
-				</ins>
-				<script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-
-				{% if ads is not empty %}
-				<div class="d-none advertising-alternative advertising_image text-center">
-					{{ ads.text|raw }}
-				</div>
+						{% endif %}
+					</div>
 				{% endif %}
 			</div>
 		</div>
@@ -120,7 +124,7 @@
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" width="42" alt="en" /></a>
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/spanishFlagMobile.png') }}" width="42" alt="es" /></a>
       
-		<div>
+		<div class="mt-2">
 			{% if app.request.locale == "fr" %}
 				<a class="btn social-share facebook btn-sm" href="https://www.facebook.com/activiteparanormale" title="Facebook" target="_blank"><i class="fab fa-facebook-square fa-xl"></i></a>
 				<a class="btn social-share twitter btn-sm" href="https://twitter.com/ActiviteP" title="Twitter" target="_blank"><i class="fab fa-twitter-square fa-xl"></i></a>

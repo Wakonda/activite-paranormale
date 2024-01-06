@@ -16,6 +16,7 @@ use Symfony\Component\Security\Core\Security;
 use App\Form\Type\SearchEngineType;
 use App\Service\SearchEngine;
 use App\Service\PaginatorNativeSQL;
+use App\Service\FunctionsLibrary;
 
 use App\Entity\News;
 use App\Entity\Theme;
@@ -31,7 +32,7 @@ require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mob
 
 class NewsMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -44,10 +45,8 @@ class NewsMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		$mobileDetector = new \Mobile_Detect;
-
-		if($mobileDetector->isMobile())
-			$pagination->setPageRange(1);
+		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);
 		
@@ -77,8 +76,8 @@ class NewsMobileController extends AbstractController
 			'entity' => $entity
 		]);
 	}
-	
-	public function searchAction(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
+
+	public function searchAction(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator, FunctionsLibrary $functionsLibrary)
 	{
         $form = $this->createForm(SearchEngineType::class);
 		$form->handleRequest($request);
@@ -111,6 +110,9 @@ class NewsMobileController extends AbstractController
 			$conn
 		);
 
+		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+			$pagination->setPageRange(3);
+
 		$pagination->setCustomParameters(['align' => 'center']);
 		$pagination->setParam('type', 'text');
 		$pagination->setParam('keyword', $keyword);
@@ -135,9 +137,12 @@ class NewsMobileController extends AbstractController
 			$searchEngine->countDatas($keyword, $request->getLocale())
 		);
 
+		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+			$paginationImage->setPageRange(3);
+
 		$paginationImage->setCustomParameters(['align' => 'center']);
-		$pagination->setParam('type', 'image');
-		$pagination->setParam('keyword', $keyword);
+		$paginationImage->setParam('type', 'image');
+		$paginationImage->setParam('keyword', $keyword);
 
 		$totalImage = $paginationImage->getTotalItemCount();
 		$total_pages_image = ceil($totalImage / $num_results_on_page);

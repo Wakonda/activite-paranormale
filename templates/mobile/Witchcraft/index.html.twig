@@ -53,8 +53,8 @@
 
 	{% for entity in pagination.items %}
 	{% set i = i + 1 %}
-	{% if i == adLocation %}
-		<div class="media-container m-0 mt-3">
+	{% if i == adLocation and is_application() == false %}
+		<div class="media-container ads-container m-0 mt-3">
 			{% set ads = advertising(728, 90) %}
 			<h3>{{ "generality.page.Advertisement"|trans([], "validators") }}</h3>
 			<br>

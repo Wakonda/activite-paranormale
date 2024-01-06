@@ -4,6 +4,7 @@
 	use Twig\Extension\AbstractExtension;
 	use Twig\TwigFilter;
 	use Twig\TwigFunction;
+	use App\Service\FunctionsLibrary;
 
 	use Symfony\Contracts\Translation\TranslatorInterface;
 	
@@ -31,7 +32,8 @@
 		{
 			return [
 				new TwigFunction('is_mobile', [$this, 'isMobile']),
-				new TwigFunction('is_tablet', [$this, 'isTablet'])
+				new TwigFunction('is_tablet', [$this, 'isTablet']),
+				new TwigFunction('is_application', [$this, 'isApplication'])
 			];
 		}
 
@@ -89,6 +91,10 @@
 		public function isTablet()
 		{
 			return (new \Mobile_Detect)->isTablet();
+		}
+
+		public function isApplication() {
+			return (new FunctionsLibrary())->isApplication();
 		}
 		
 		public function getName()

@@ -9,10 +9,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Stores\Store;
 use App\Form\Type\StoreSearchType;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Service\FunctionsLibrary;
 
 class StoreMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
+    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page)
     {
 		$nbMessageByPage = 12;
 
@@ -33,6 +34,9 @@ class StoreMobileController extends AbstractController
 			$page, /*page number*/
 			10 /*limit per page*/
 		);
+
+		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
