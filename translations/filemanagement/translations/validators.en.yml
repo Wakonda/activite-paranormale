@@ -22,6 +22,10 @@ file:
         CaptionPhoto: "Caption - Photo"
         NotUsed: "Not used"
         MediaManagement: "Media management"
+        SortByNameDesc: "Sort by name (descending)"
+        SortByNameAsc: "Sort by name (ascending)"
+        SortBySizeDesc: "Sort by file size (descending)"
+        SortBySizeAsc: "Sort by file size (ascending)"
     read:
         OtherFiles: "Other files"
         Title: "Title"

@@ -22,6 +22,10 @@ file:
         CaptionPhoto: "Leyenda - Foto"
         NotUsed: "No utilizado"
         MediaManagement: "Gestión de medios"
+        SortByNameDesc: "Ordenar por nombre (descendente)"
+        SortByNameAsc: "Ordenar por nombre (ascendente)"
+        SortBySizeDesc: "Ordenar por tamaño de archivo (descendente)"
+        SortBySizeAsc: "Ordenar por tamaño de archivo (ascendente)"
     read:
         OtherFiles: "Otros archivos"
         Title: "Título"

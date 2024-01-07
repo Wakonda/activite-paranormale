@@ -56,14 +56,14 @@ class ResmushIt {
 
 		curl_close ($ch);
 
-		if(!empty($res))
+		if(!empty($error))
 			return $data;
 
 		$res = json_decode($result);
 
 		if(property_exists($res, "error"))
 			return $data;
-
+// dd($error, $result);
 		if($res->src_size > $res->dest_size)
 			return file_get_contents($res->dest);
 

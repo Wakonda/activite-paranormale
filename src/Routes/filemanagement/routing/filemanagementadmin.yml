@@ -9,3 +9,7 @@ FileManagement_Admin_DeleteFile:
 FileManagement_Admin_MoveFile:
     path:  /move_file/{rootFolder}
     controller: App\Controller\FileManagementAdminController::moveFileAction
+
+FileManagement_Admin_CompressFile:
+    path:  /compress_file
+    controller: App\Controller\FileManagementAdminController::compressFile

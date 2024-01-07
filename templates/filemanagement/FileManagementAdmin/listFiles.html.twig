@@ -7,21 +7,31 @@
 {% endblock %}
 
 {% block body_main %}
-	<select class="form-select selectFolder">
-		{% for listFolder in listFolders %}
-			<option value="{{ listFolder }}" {{ (listFolder == folder ? "selected" : "") }}>{{ listFolder }}</option>
-		{% endfor %}
-	</select>
-	
+	{% set folder = app.request.query.get("folder") %}
+	{% set sort = app.request.query.get("sort") %}
+
+	<div class="d-flex">
+		<select class="form-select selectFolder me-1">
+			{% for listFolder in listFolders %}
+				<option value="{{ listFolder }}" {{ (listFolder == folder ? "selected" : "") }}>{{ listFolder }}</option>
+			{% endfor %}
+		</select>
+		<select class="form-select sortFile ms-1">
+			<option value="sortByNameDesc" {{ (sort == "sortByNameDesc" ? "selected" : "") }}>{{ "file.admin.SortByNameDesc"|trans([], "validators") }}</option>
+			<option value="sortByNameAsc" {{ (sort == "sortByNameAsc" ? "selected" : "") }}>{{ "file.admin.SortByNameAsc"|trans([], "validators") }}</option>
+			<option value="sortBySizeDesc" {{ (sort == "sortBySizeDesc" ? "selected" : "") }}>{{ "file.admin.SortBySizeDesc"|trans([], "validators") }}</option>
+			<option value="sortBySizeAsc" {{ (sort == "sortBySizeAsc" ? "selected" : "") }}>{{ "file.admin.SortBySizeAsc"|trans([], "validators") }}</option>
+		</select>
+	</div>
 	<hr>
-	
 	<div class="row equal">
-		{% for selectedFile in selectedFiles %}
+		{% for key, selectedFile in selectedFiles %}
 			<div class="col-sm-4 d-flex pb-3">
 				<div class="card card-block w-100">
 					<img class="card-img-top" src="{{ selectedFile.src }}">
 					<div class="card-body">
 						<p class="fw-bold text-{{ selectedFile.rootFolder == 'public' ? 'success' : 'danger' }}">{{ selectedFile.rootFolder|upper }}</p>
+
 						{% if selectedFile.res is not empty %}
 							<ul>
 								{% for res in selectedFile.res %}
@@ -35,6 +45,7 @@
 					<div class="card-footer text-center">
 						<a href="{{ path('FileManagement_Admin_DeleteFile') }}" class="btn btn-danger {{ selectedFile.res is empty ? '' : 'disabled' }} remove-file" data-path-file="{{ selectedFile.pathFile }}" onclick="if(!confirm('{{ 'admin.show.ReallyWantRemoveDatas'|trans([], 'validators') }}')) return false;"><i class="fas fa-trash-alt fa-fw"></i></a>
 						<a href="{{ path('FileManagement_Admin_MoveFile', {rootFolder: (selectedFile.rootFolder == 'public' ? 'private' : 'public')}) }}" class="btn btn-warning move-file" data-path-file="{{ selectedFile.pathFile }}" title="{% if selectedFile.rootFolder == 'public' %}PUBLIC &#8594; PRIVATE{% else %}PRIVATE &#8594; PUBLIC{% endif %}"><i class="fas fa-retweet fa-fw"></i></a>
+						<a href="#" class="btn btn-success compress-file" data-path-file="{{ selectedFile.pathFile }}" title="Compress" data-compress-icon-id="compress_icon_{{ key }}" data-file-id="file_size_{{ key }}"><i class="fa-solid fa-compress fa-fw" id="compress_icon_{{ key }}"></i></a> <i>[<small class="text-muted" id="file_size_{{ key }}">{{ selectedFile.size }}</small>]</i>
 					</div>
 				</div>
 			</div>
@@ -45,11 +56,11 @@
 		<div class="mx-auto">
 			<nav aria-label="Page navigation example">
 				<ul class="pagination">
-					<li class="page-item {{ page == 1 ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&page=1"><i class="fas fa-angle-double-left"></i></a></li>
-					<li class="page-item {{ page == 1 ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&page={{ page - 1 }}"><i class="fas fa-angle-left"></i></a></li>
+					<li class="page-item {{ page == 1 ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&sort={{ sort }}&page=1"><i class="fas fa-angle-double-left"></i></a></li>
+					<li class="page-item {{ page == 1 ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&sort={{ sort }}&page={{ page - 1 }}"><i class="fas fa-angle-left"></i></a></li>
 					<li class="page-ite mdisabled"><span class="page-link">{{ page }}</span></li>
-					<li class="page-item {{ page == totalPages ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&page={{ page + 1 }}"><i class="fas fa-angle-right"></i></a></li>
-					<li class="page-item {{ page == totalPages ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&page={{ totalPages }}"><i class="fas fa-angle-double-right"></i></a></li>
+					<li class="page-item {{ page == totalPages ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&sort={{ sort }}&page={{ page + 1 }}"><i class="fas fa-angle-right"></i></a></li>
+					<li class="page-item {{ page == totalPages ? 'disabled' : '' }}"><a class="page-link" href="{{ path('FileManagement_Admin_ListFiles') }}?folder={{ folder }}&sort={{ sort }}&page={{ totalPages }}"><i class="fas fa-angle-double-right"></i></a></li>
 				</ul>
 			</nav>
 		</div>
@@ -62,19 +73,51 @@
 
 		$(function ()
 		{
+			sortFile = document.querySelector(".sortFile").value;
+			selectFolder = document.querySelector(".selectFolder").value;
+
 			$("select.selectFolder").change(function() {
-				window.location.href = "?page=1&folder=" + $(this).val();
+				window.location.href = "?page=1&folder=" + $(this).val() + "&sort=" + sortFile;
+			});
+
+			$("select.sortFile").change(function() {
+				window.location.href = "?page=1&folder=" + selectFolder + "&sort=" + $(this).val();
 			});
 			
 			$(".remove-file").click(function(e) {
 				e.preventDefault();
-				window.location.href = $(this).attr("href") + "?pathFile=" + $(this).data("pathFile") + "&page={{ page }}&folder={{ folder }}";
+				window.location.href = $(this).attr("href") + "?pathFile=" + $(this).data("pathFile") + "&page={{ page }}&folder=" + selectFolder + "&sort=" + sortFile;
 			});
 			
 			$(".move-file").click(function(e) {
 				e.preventDefault();
-				window.location.href = $(this).attr("href") + "?pathFile=" + $(this).data("pathFile") + "&page={{ page }}&folder={{ folder }}";
+				window.location.href = $(this).attr("href") + "?pathFile=" + $(this).data("pathFile") + "&page={{ page }}&folder=" + selectFolder + "&sort=" + sortFile;
 			});
 		});
+
+		for(const element of document.getElementsByClassName("compress-file")) {
+			element.addEventListener("click", (e) => {
+				e.preventDefault();
+
+				let xmlHttp = new XMLHttpRequest();
+
+				let fileId = e.currentTarget.dataset.fileId;
+				let compressIconId = e.currentTarget.dataset.compressIconId;
+				document.getElementById(compressIconId).classList.add("fa-spin");
+
+				xmlHttp.onreadystatechange = function() {
+					if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+						let data = JSON.parse(xmlHttp.responseText);
+
+						document.getElementById(fileId).innerHTML = data.size;
+						document.getElementById(compressIconId).classList.remove("fa-spin");
+					}
+				};
+				
+				xmlHttp.overrideMimeType("application/json");
+				xmlHttp.open("GET", "{{ path('FileManagement_Admin_CompressFile') }}?file=" + encodeURIComponent(e.currentTarget.dataset.pathFile), true);
+				xmlHttp.send();
+			});
+		}
 	</script>
 {% endblock %}

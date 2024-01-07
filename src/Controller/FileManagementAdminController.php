@@ -6,12 +6,15 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\TestimonyFileManagement;
 use App\Form\Type\FileManagementEditType;
+use App\Service\APImgSize;
+use App\Service\ResmushIt;
 
 class FileManagementAdminController extends AbstractController
 {
-	public function listFilesAction(Request $request, EntityManagerInterface $em)
+	public function listFilesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
 		$limit = 9;
 		
@@ -25,15 +28,29 @@ class FileManagementAdminController extends AbstractController
 
 		$selectedFolder = $request->query->get("folder", "news");
 		$page = $request->query->get("page", 1);
+		$sort = $request->query->get("sort", "sortByNameAsc");
 		
 		$offset = ($page - 1) * $limit;
-		
+
 		$this->getDirContents($folderPublic.DIRECTORY_SEPARATOR.$selectedFolder, $filelist);
 		$this->getDirContents($folderPrivate.DIRECTORY_SEPARATOR.$selectedFolder, $filelist);
 
-		usort($filelist, function($a, $b) {
-			return pathinfo($a, PATHINFO_BASENAME) > pathinfo($b, PATHINFO_BASENAME);
-		});
+		if($sort == "sortByNameDesc" or $sort == "sortByNameAsc") {
+			usort($filelist, function($a, $b) use ($sort) {
+				if($sort == "sortByNameDesc")
+					return pathinfo($a, PATHINFO_BASENAME) > pathinfo($b, PATHINFO_BASENAME);
+				else
+					return pathinfo($a, PATHINFO_BASENAME) < pathinfo($b, PATHINFO_BASENAME);
+			});
+		}
+		if($sort == "sortBySizeDesc" or $sort == "sortBySizeAsc") {
+			usort($filelist, function($a, $b) use ($sort) {
+				if($sort == "sortByNameDesc")
+					return filesize($a) > filesize($b);
+				else
+					return filesize($a) < filesize($b);
+			});
+		}
 
 		//get subset of file array
 		$selectedFiles = array_slice($filelist, $offset, $limit);
@@ -248,8 +265,8 @@ class FileManagementAdminController extends AbstractController
 				default:
 					break;
 			}
-
-			$datas[] = ["src" => $src, "res" => $res, "file" => $file, "pathFile" => $pathFile, "rootFolder" => $rootFolder];
+// dd($res);
+			$datas[] = ["src" => $src, "res" => $res, "file" => $file, "size" => $imgSize->getFileSize($pathFile), "pathFile" => $pathFile, "rootFolder" => $rootFolder];
 		}
 
 		return $this->render("filemanagement/FileManagementAdmin/listFiles.html.twig", [
@@ -294,6 +311,17 @@ class FileManagementAdminController extends AbstractController
 			'mainEntity' => $em->getRepository($entity->getMainEntityClassName())->find($idClassName)
         ]);
     }
+
+	public function compressFile(Request $request, ResmushIt $resmushIt, APImgSize $imgSize) {
+		$filename = $request->query->get("file");
+
+		$res = $resmushIt->compressFromData(file_get_contents($filename), basename($filename));
+
+		if(strlen(file_get_contents($filename)) > strlen($res))
+			file_put_contents($filename, $res);
+
+		return new JsonResponse(["size" => $imgSize->getFileSize($filename)]);
+	}
 
     private function getNewEntity($em, $className, $idClassName)
 	{

@@ -22,6 +22,10 @@ file:
         CaptionPhoto: "Légende - Photo"
         NotUsed: "Non utilisé"
         MediaManagement: "Gestion des médias"
+        SortByNameDesc: "Trier par nom (décroissant)"
+        SortByNameAsc: "Trier par nom (croissant)"
+        SortBySizeDesc: "Trier par taille de fichier (décroissant)"
+        SortBySizeAsc: "Trier par taille de fichier (croissant)"
     read:
         OtherFiles: "Autres fichiers"
         Title: "Titre"
