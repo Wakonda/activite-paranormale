@@ -260,32 +260,21 @@
 						</div>
 						<div class="card-body">
 							<div class="news_section text-center">
-								<script>
-									document.addEventListener("DOMContentLoaded", function() {
-									  var horoscopeIframes = document.querySelectorAll(".horoscope_iframe");
-									  horoscopeIframes.forEach(function(iframe) {
-										iframe.setAttribute("marginwidth", "0");
-										iframe.setAttribute("marginheight", "0");
-										iframe.setAttribute("frameborder", "0");
-										iframe.setAttribute("border", "0");
-									  });
-									});
-								</script>
 								{% if app.request.locale == 'fr' %}
 									<div class="mx-auto" style="width:200px;text-align:right;line-height:11px;">
 									<iframe class="horoscope_iframe" src="https://signes.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									 width="200" height="250" style="border:0; margin:0; padding:0;" title="Horoscope"></iframe>
+									 width="200" height="250" style="border:0; margin:0; padding:0;" title="Horoscope" frameborder="0" marginwidth="0" marginheight="0"></iframe>
 									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://signes.horoscope999.com/">Horoscope</a> &nbsp;</div>
 									</div>
 								{% elseif app.request.locale == 'en' %}
 									<div class="mx-auto" style="width:200px;text-align:right;line-height:11px;">
 									<iframe class="horoscope_iframe" src="https://horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horoscope"></iframe>
+									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horoscope" frameborder="0" marginwidth="0" marginheight="0"></iframe>
 									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscope999.com/">Horoscopes</a> &nbsp;</div></div>
 								{% else %}
 									<div class="mx-auto" style="width:200px;text-align:right;line-height:11px;">
 									<iframe class="horoscope_iframe" src="https://horoscopo.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horóscopo"></iframe>
+									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horóscopo" frameborder="0" marginwidth="0" marginheight="0"></iframe>
 									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscopo.horoscope999.com/">Horoscopo</a> &nbsp;</div></div>
 								{% endif %}
 							</div>

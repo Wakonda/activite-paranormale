@@ -427,6 +427,9 @@
 
 		public function linkFollowFilter($titleMenu, $currentRoute)
 		{
+			if(empty($currentRoute))
+				return "";
+
 			$explode_currentRoute = explode("_", strtolower($currentRoute));
 
 			if (isset($explode_currentRoute[0]) and $titleMenu == $explode_currentRoute[0])
