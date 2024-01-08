@@ -23,7 +23,7 @@
 			{% endfor %}
 			</ol>
 
-			<div class="carousel-inner" role="listbox">
+			<div class="carousel-inner">
 				{% set i = 0 %}
 				{% for imageEntity in entity.images %}
 					<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
@@ -34,7 +34,7 @@
 			</div>
 		</div>
 	{% endif %}
-	
+
 	{% if entity.explanation is not empty %}
 	<br>
 	<br>

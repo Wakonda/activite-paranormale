@@ -14,7 +14,7 @@
 	
 		{% if files|length > 0 %}
 			<div id="carousel-testimony" class="carousel slide" data-bs-ride="carousel">
-				<div class="carousel-inner" role="listbox">
+				<div class="carousel-inner">
 					{% set i = 0 %}
 					{% for file in files %}
 						{% if file.extensionFile|is_image %}
