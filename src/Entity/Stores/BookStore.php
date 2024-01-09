@@ -40,6 +40,6 @@ class BookStore extends Store {
 	}
 	
 	public function getLinkedEntityName() {
-		return $this->book->getRealClass();
+		return $this->book->getBook()->getRealClass();
 	}
 }

@@ -83,7 +83,7 @@ biography:
         BirthDate: "Fecha de nacimiento:"
         DeathDate: "Fecha de muerte:"
         Nationality: "Nacionalidad:"
-        Occupation: "Ocupaciónes:"
+        Occupations: "Ocupaciónes:"
         Links: "Enlaces"
         Identifiers: "Número de identificación"
     occupation:
