@@ -80,7 +80,7 @@ index:
         EditAccount: "Modificar vuestra cuenta"
         Admin: "Admin"
     className:
-        Book: "Livro"
+        Book: "Libro"
         Cartography: "Cartografía"
         Document: "Documento"
         EventMessage: "Evento"

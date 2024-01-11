@@ -99,7 +99,7 @@
 	{% if occupationArray is not empty %}
 		{% set infos = infos|merge(["<b>"~"biography.index.Occupations"|trans([], "validators")~"</b> " ~ occupationArray|join(", ")]) %}
 	{% endif %}
-	
+
 	{% if entity.kind is not empty %}
 		{% set infos = infos|merge(["<i class='fas fa-user-astronaut text-primary'></i> <b>"~("biography.form."~entity.kind)|trans([], "validators")~"</b>"]) %}
 	{% endif %}

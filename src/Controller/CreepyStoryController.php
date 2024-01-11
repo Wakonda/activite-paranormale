@@ -29,6 +29,8 @@ class CreepyStoryController extends AbstractController
 		foreach($entities as $entity)
 			$datas[$entity["parentTheme"]][] = $entity;
 
+		ksort($datas);
+
 		return $this->render('creepyStory/CreepyStory/index.html.twig', [
 			'datas' => $datas,
 			'nbr' => $nbr

@@ -45,7 +45,7 @@ book:
         CodeCopiedWithSuccess: "Le code a été copié avec succès"
         BookEditions: "Éditions"
         Sources: "Sources"
-        Genre: "Genre littéraire"
+        LiteraryGenre: "Genre littéraire"
         Introduction: "Présentation"
         Characters: "Personnages"
     byPublisher:

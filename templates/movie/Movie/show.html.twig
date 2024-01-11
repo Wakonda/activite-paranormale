@@ -53,7 +53,7 @@
 			</tr>
 			{% endif %}
 
-			{% if entity.reviewScores is not empty %}
+			{% if entity.reviewScores is not empty and json_decode(entity.reviewScores) is not empty %}
 			<tr>
 				<td class="td_form_table">{{ "movie.read.ReviewScores"|trans([], "validators") }}</td>
 				<td class="tdGene">
@@ -71,7 +71,7 @@
 
 			{% for occupation, biographies in biographyDatas %}
 				{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
-				<tr>
+				<tr>{{ dump(occupation) }}
 					<td class="td_form_table">{{ ("movie.read."~((occupation|ucfirst)~"By"))|trans([], "validators") }}</td>
 					<td class="tdGene">
 						{% set persons = [] %}
