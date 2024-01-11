@@ -103,9 +103,10 @@
 					</div>
 				</div>
 
-				<div  class="d-flex flex-column flex-shrink-0 p-3 pe-0" style="width: 85%">
+				<div class="d-flex flex-column flex-shrink-0 p-3 pe-0" style="width: 85%">
 					<div class="scrollarea pe-3">
-						<h2 class="float-start">{{ (app.request.query.all()|join(" > "))|upper }}</h2>
+						{% set title = [] %}{% for rqa in app.request.query.all() %}{% if rqa is iterable %}{% set rqa = rqa|join(', ') %}{% endif %}{% set title = title|merge([rqa]) %}{% endfor %}
+						<h2 class="float-start">{{ (title|join(" > "))|upper }}</h2>
 						<div class="clearfix">
 							{% if app.request.query.get("mode") == "query" %}
 								<a href="{{ path('Admin_SQLExplorer') }}" class="btn btn-info float-end"><i class="fa-solid fa-database"></i> Browse database</a><br>
@@ -238,14 +239,14 @@
 											{% set primaryKeys = [] %}
 											{% for key, column in columns %}
 												{% if column.primary_key == true %}
-													{% set primaryKeys = primaryKeys|merge({(key):  item[key]}) %}
+													{% set primaryKeys = primaryKeys|merge({(key): item[key]}) %}
 												{% endif %}
 											{% endfor %}
 
 											<tr><td><a href="{{ path('Admin_SQLExplorer', { mode: 'table', action: 'edit', table: app.request.query.get('table'), primary_keys: primaryKeys|json_encode()}) }}">Edit</a>
 											</td>
 												{% for key, value in item %}
-													<td>{% if columns[key].foreign_key is not empty %}<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: columns[key].foreign_key, id: value }) }}">{{ value }}</a>{% else %}{{ value[:200] }}{% endif %}</td>
+													<td>{% if columns[key].foreign_key is not empty %}<a href="{{ path('Admin_SQLExplorer', { mode: 'table', table: columns[key].foreign_key, 'where[]': 'id='~value }) }}">{{ value }}</a>{% else %}{{ value[:200] }}{% endif %}</td>
 												{% endfor %}
 											</tr>
 										{% endfor %}

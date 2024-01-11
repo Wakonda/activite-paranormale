@@ -1356,9 +1356,9 @@ class AdminController extends AbstractController
 			$num_results_on_page = 15;
 			$columns = [];
 			$pagination = [];
-
+			
 			$columnDatas = $conn->fetchAllAssociative("select COLUMN_NAME , DATA_TYPE, COLUMN_KEY,
-				(select isk.REFERENCED_TABLE_NAME
+				(select group_concat(isk.REFERENCED_TABLE_NAME, '#')
 					from
 						information_schema.key_column_usage isk
 					where
@@ -1370,7 +1370,7 @@ class AdminController extends AbstractController
 					and isc.table_name = '$table'");
 
 			foreach($columnDatas as $columnData)
-				$columns[$columnData["COLUMN_NAME"]] = ["foreign_key" => $columnData["foreign_key"], "data_type" => $columnData["DATA_TYPE"], "primary_key" => $columnData["COLUMN_KEY"] == "PRI"];
+				$columns[$columnData["COLUMN_NAME"]] = ["foreign_key" => trim($columnData["foreign_key"], "#"), "data_type" => $columnData["DATA_TYPE"], "primary_key" => $columnData["COLUMN_KEY"] == "PRI"];
 
 			if($action == "edit" and $request->isMethod('post')) {
 				$updateData = $request->request->all();
@@ -1430,13 +1430,14 @@ class AdminController extends AbstractController
 
 			if(!empty($table)) {
 				$page = $request->query->get("page");
+				$where = $request->query->has("where") ? implode(" AND ", $request->query->all("where", [])) : null;
 				
 				$sortBy = $request->query->get("sortBy", null);
 				$sortDir = $request->query->get("sortDir", "ASC");
 				$orderBy = !empty($sortBy) ? " ORDER BY ".$sortBy." ".$sortDir : "";
 
 				$pagination = $paginator->paginate(
-					"SELECT * FROM ".$request->query->get("table").($request->query->has("id") ? " WHERE id = ".$request->query->get("id") : "").$orderBy,
+					"SELECT * FROM ".$request->query->get("table").(!empty($where) ? " WHERE ".$where : "").$orderBy,
 					($request->query->has("page")) ? $page : 1,
 					$num_results_on_page,
 					$conn
