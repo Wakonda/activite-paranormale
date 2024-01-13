@@ -1,6 +1,8 @@
 Witchcraft_Index:
     path:  /grimoire/{page}
     controller: App\Controller\WitchcraftController::indexAction
+    requirements:
+        page: \d+
     defaults:
         page: 1
 

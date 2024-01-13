@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Doctrine\ORM\EntityManagerInterface;
 
 class IndexController extends AbstractController
 {
@@ -38,4 +39,17 @@ class IndexController extends AbstractController
 
 		return $this->redirect($this->generateUrl('Index_Index'));
     }
+	
+	public function world(EntityManagerInterface $em, $language, $themeId) {
+		return $this->render("index/Generic/_world.html.twig", [
+			"news" => $em->getRepository(\App\Entity\News::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+			"biography" => $em->getRepository(Biography::class)->getDatatablesForWorldIndex($language, 0, 0, null, null, null, true),
+			"book" => $em->getRepository(Book::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+			"cartography" => $em->getRepository(Cartography::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+			"eventMessage" => $em->getRepository(EventMessage::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+			"photo" => $em->getRepository(\App\Entity\Photo::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+			"video" => $em->getRepository(Video::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+			"witchcraft" => $em->getRepository(Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true)
+		]);
+	}
 }

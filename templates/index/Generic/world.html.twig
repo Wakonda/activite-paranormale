@@ -57,9 +57,25 @@
 		});
 	</script>
 
+<style>
+.container-test button {
+background-color: #d3dd3c;
+    color: #000;
+}
+</style>
+
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
-
+	
+	<div class="container-test">
+<a class="btn btn-primary position-relative rounded-pill">
+  Inbox
+  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+    99+
+    <span class="visually-hidden">unread messages</span>
+  </span>
+</a>
+	</div>
 	<ul id="tab_resources" class="nav nav-pills nav-fill">
 		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("News_World") }}';" {{ "News_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'news.index.Actualite'|trans([], 'validators') }}</span></li>
 		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Biography_World") }}';" {{ "Biography_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'biography.index.Biography'|trans([], 'validators') }}</span></li>
