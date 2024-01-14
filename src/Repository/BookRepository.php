@@ -167,15 +167,8 @@ class BookRepository extends MappedSuperclassBaseRepository
 
 		if($language == "all")
 		{
-			$currentLanguages = $this->currentLanguages();
-			$whereIn = array();
-			for($i = 0; $i < count($currentLanguages); $i++)
-			{
-				$whereIn[] = ':'.$currentLanguages[$i];
-				$qb->setParameter(':'.$currentLanguages[$i], $currentLanguages[$i]);
-			}
-
-			$qb->andWhere('l.abbreviation NOT IN ('.implode(", ", $whereIn).')');
+			$qb->andWhere('l.abbreviation NOT IN (:currentLanguages)')
+			   ->setParameter("currentLanguages", $this->currentLanguages());
 		}
 		else
 		{

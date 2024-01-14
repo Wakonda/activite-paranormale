@@ -40,16 +40,19 @@ class IndexController extends AbstractController
 		return $this->redirect($this->generateUrl('Index_Index'));
     }
 	
-	public function world(EntityManagerInterface $em, $language, $themeId) {
+	public function world(Request $request, EntityManagerInterface $em, $language, $themeId, $currentRoute) {
 		return $this->render("index/Generic/_world.html.twig", [
-			"news" => $em->getRepository(\App\Entity\News::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
-			"biography" => $em->getRepository(Biography::class)->getDatatablesForWorldIndex($language, 0, 0, null, null, null, true),
-			"book" => $em->getRepository(Book::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
-			"cartography" => $em->getRepository(Cartography::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
-			"eventMessage" => $em->getRepository(EventMessage::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
-			"photo" => $em->getRepository(\App\Entity\Photo::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
-			"video" => $em->getRepository(Video::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
-			"witchcraft" => $em->getRepository(Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true)
+			"counter" => [
+				"news" => $em->getRepository(\App\Entity\News::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+				"biography" => $em->getRepository(\App\Entity\Biography::class)->getDatatablesForWorldIndex($language, 0, 0, null, null, null, true),
+				"book" => $em->getRepository(\App\Entity\Book::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+				"cartography" => $em->getRepository(\App\Entity\Cartography::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+				"eventMessage" => $em->getRepository(\App\Entity\EventMessage::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+				"photo" => $em->getRepository(\App\Entity\Photo::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+				"video" => $em->getRepository(\App\Entity\Video::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true),
+				"witchcraft" => $em->getRepository(\App\Entity\Grimoire::class)->getDatatablesForWorldIndex($language, $themeId, 0, 0, null, null, null, true)
+			],
+			"route" => $currentRoute
 		]);
 	}
 }

@@ -288,19 +288,23 @@ table.dataTable tr.odd {
 }
 
 /********** WORLD **********/
-#tab_resources span.active {
+#tab_resources a.active {
     background-color: #d3dd3c;
     color: black;
 }
-#tab_resources span {
-    border: solid 1px #d3dd3c;
-    padding: 5px;
-    border-radius: 15px;
+#tab_resources a {
+	border: solid 1px #d3dd3c;
+	color: #aaa;
 }
-#tab_resources li span:not(.active):hover {
+#tab_resources a:not(.active):hover {
 	background-color: rgba(185, 195, 34, 0.35) !important;
 	cursor: url(images_v2/greenPointer.cur), auto;
 }
+div#tab_resources a:not(:first-child):not(:last-child) {
+	margin-left: 0.4rem;
+	margin-right: 0.4rem;
+}
+div#tab_resources a { margin-bottom: 1rem }
 /********** PAGINATION *********/
 .pagination .page-item a, .pagination .page-item span.current_page, .pagination .page-item span.browse {
 	border: solid 1px #B9C322 !important;

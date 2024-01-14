@@ -57,35 +57,10 @@
 		});
 	</script>
 
-<style>
-.container-test button {
-background-color: #d3dd3c;
-    color: #000;
-}
-</style>
-
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
-	
-	<div class="container-test">
-<a class="btn btn-primary position-relative rounded-pill">
-  Inbox
-  <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-    99+
-    <span class="visually-hidden">unread messages</span>
-  </span>
-</a>
-	</div>
-	<ul id="tab_resources" class="nav nav-pills nav-fill">
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("News_World") }}';" {{ "News_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'news.index.Actualite'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Biography_World") }}';" {{ "Biography_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'biography.index.Biography'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Book_World") }}';" {{ "Book_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'book.index.Book'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Cartography_World") }}';" {{ "Cartography_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'cartography.index.Cartography'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("EventMessage_World") }}';" {{ "EventMessage_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'eventMessage.index.Event'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Photo_World") }}';" {{ "Photo_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'photo.index.Photo'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Video_World") }}';"  {{ "Video_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'video.index.Video'|trans([], 'validators') }}</span></li>
-		<li class="nav-item mb-3"><span onclick="location.href = '{{ path("Witchcraft_World") }}';"  {{ "Witchcraft_World" == app.request.attributes.get('_route') ? 'class="active"' : "" }}>{{ 'witchcraft.index.Witchcraft'|trans([], 'validators') }}</span></li>
-	</ul>
+
+	{{ render(controller('App\\Controller\\IndexController::world', {language: app.request.attributes.get('language'), themeId: app.request.get("themeId"), currentRoute: app.request.attributes.get('_route') })) }}
 	<br>
 	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/world-news.jpg') }}" width="550" alt="Apocalypse world" /></p>
 	<hr>
@@ -110,7 +85,7 @@ background-color: #d3dd3c;
 						</optgroup>
 					{% endfor %}
 				</select>
-				<button id="selectTheme" type="submit" class="btn btn-primary"><i class="far fa-eye" aria-hidden="true"></i>{% if is_mobile() == false %} {{ 'news.index.ViewAll'|trans([], 'validators') }}{% endif %}</button> 
+				<a id="selectTheme" href="{{ path('News_World') }}" class="btn btn-primary"><i class="far fa-eye" aria-hidden="true"></i>{% if is_mobile() == false %} {{ 'news.index.ViewAll'|trans([], 'validators') }}{% endif %}</a> 
 			</div>
 		</form>
 		<hr>

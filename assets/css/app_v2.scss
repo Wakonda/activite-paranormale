@@ -710,22 +710,27 @@ span.previous_next_disable_left, span.previous_next_disable_right {
 	padding-top: 30px;
 }
 
-#tab_resources span {
+#tab_resources a {
 	border: solid 1px #d3dd3c;
 	padding: 5px;
 	border-radius: 15px;
 	background-color: black;
 	color: #aaaaaa;
 }
-
-#tab_resources span.active {
-	background-color: #d3dd3c;
+#tab_resources a:hover {
+	background-color: rgba(185, 195, 34, 0.35);
+	cursor: url(images_v2/greenPointer.cur), auto;
+	text-decoration: none;
+}
+#tab_resources a.active {
+	background-color: #d3dd3c !important;
 	color: black;
 }
-
-#tab_resources span:hover {
-	cursor: url(images_v2/greenPointer.cur), auto;
+div#tab_resources a:not(:first-child):not(:last-child) {
+	margin-left: 0.4rem;
+	margin-right: 0.4rem;
 }
+div#tab_resources a { margin-bottom: 1rem }
 
 /********** VIDEO *********/
 .confirmation_delete_video {
@@ -1488,6 +1493,27 @@ h2 span img {
 .bg-primary {
   color: #fff;
   background-color: #007bff;
+}
+.position-relative {
+  position: relative;
+}
+.position-absolute {
+  position: absolute;
+}
+.flex-wrap {
+  flex-wrap: wrap !important;
+}
+.start-100 {
+  left: 100% !important;
+}
+.top-0 {
+  top: 0 !important;
+}
+.rounded-pill {
+  border-radius: 50rem !important;
+}
+.translate-middle {
+  transform: translate(-50%, -50%) !important;
 }
 /********** CAROUSEL ***********/
 .carousel {
