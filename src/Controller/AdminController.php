@@ -800,11 +800,13 @@ class AdminController extends AbstractController
 
 		$locale = $entity->getLanguage()->getAbbreviation();
 
-		switch($entity->getRealClass()) {
-			case "WitchcraftTool":
-			case "Grimoire":
-				$locale = "magic_".$entity->getLanguage()->getAbbreviation();
-			break;
+		if(method_exists($entity, "getRealClass")) {
+			switch($entity->getRealClass()) {
+				case "WitchcraftTool":
+				case "Grimoire":
+					$locale = "magic_".$entity->getLanguage()->getAbbreviation();
+				break;
+			}
 		}
 
 		$twitterAPI->setLanguage($entity->getLanguage()->getAbbreviation());

@@ -283,8 +283,13 @@
 				}
 			}
 		}
-		
+
 		tags = tags.map((x) => "#" + x.replace(/-/g, ''));
+		
+		tags.forEach((e) => {
+			if(datas.join(" ").toLowerCase().includes(e.toLowerCase()))
+				tags.splice(tags.indexOf(e), 1);
+		});
 
 		document.getElementById("{{ textarea }}").innerHTML = datas.join(" ") + " " + tags.join(" ");
 
