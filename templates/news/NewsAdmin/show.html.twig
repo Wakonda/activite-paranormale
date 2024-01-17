@@ -88,11 +88,11 @@
 				{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
 			{% endif %}
 			{{ macro_index.twitter_form(entity) }}
-			{{ macro_index.facebook_form(entity, (entity.abstractText|raw)|striptags) }}
-			{{ macro_index.vk_form(entity, (entity.abstractText|raw)|striptags) }}
+			{{ macro_index.facebook_form(entity, entity.abstractText) }}
+			{{ macro_index.vk_form(entity, entity.abstractText) }}
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.shopify_form(entity, "news") }}
-			{{ macro_index.diaspora_form(entity, (entity.abstractText|raw)|striptags) }}
+			{{ macro_index.diaspora_form(entity, entity.abstractText) }}
 		{% else %}
 			{{ macro_index.thedailytruth_form(entity) }}
 		{% endif %}

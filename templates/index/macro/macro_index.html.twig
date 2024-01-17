@@ -255,7 +255,7 @@
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
 
-						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}</textarea>
+						<textarea id="facebook_area" name="facebook_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -269,7 +269,7 @@
 {% endmacro %}
 
 {% macro generic_tags(textarea, tags) %}
-	<script>
+	{#<script>
 		var datas = document.getElementById("{{ textarea }}").innerHTML.split(" ");
 		var tags = JSON.parse(document.getElementById("{{ textarea }}").dataset.tags);
 		tags = tags.filter((element) => element !== '' && element !== null && element !== undefined);
@@ -305,7 +305,7 @@
 				document.getElementById('{{ textarea }}').value = output;
 			});
 		});
-	</script>
+	</script>#}
 {% endmacro %}
 
 {% macro facebook_form_js() %}
@@ -341,7 +341,7 @@
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
 						
-						<textarea id="diaspora_area" name="diaspora_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}</textarea>
+						<textarea id="diaspora_area" name="diaspora_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="diaspora_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -387,7 +387,7 @@
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
 
-						<textarea id="vk_area" name="vk_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ text }}{% else %}{{ entity.title }}{% endif %}</textarea>
+						<textarea id="vk_area" name="vk_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="vk_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>

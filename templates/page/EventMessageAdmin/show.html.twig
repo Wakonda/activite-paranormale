@@ -95,9 +95,9 @@
 			
 			{% set dateTo = entity.dateTo is not empty ? entity.dayTo|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation) ~ " - " : "" %}
 			{{ macro_index.twitter_form(entity, false, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation)) ~ " - " ~ dateTo) }}
-			{{ macro_index.facebook_form(entity, (entity.abstractText|raw)|striptags) }}
+			{{ macro_index.facebook_form(entity, entity.abstractText) }}
 			{{ macro_index.mastodon_form(entity, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation)) ~ " - " ~ dateTo) }}
-			{{ macro_index.diaspora_form(entity, (entity.abstractText|raw)|striptags) }}
+			{{ macro_index.diaspora_form(entity, entity.abstractText) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}

@@ -78,7 +78,8 @@
 			{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
 			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.mastodon_form(entity) }}
-			{{ macro_index.diaspora_form(entity, (entity.text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags) }}
+			{{ macro_index.facebook_form(entity, entity.text) }}
+			{{ macro_index.diaspora_form(entity, entity.text) }}
 			{{ macro_index.instagram_form(entity) }}
 		{% endif %}
 	{% endif %}
