@@ -10,8 +10,9 @@
 		$(function()
 		{
 			document.getElementById("confirm_colorbox").addEventListener("click", (e) => {
-				new bootstrap.Modal(document.getElementById('checkVideo')).show();
 				e.preventDefault();
+				new bootstrap.Modal(document.getElementById('checkVideo')).show();
+				
 			});
 
 			// Video embedded
@@ -84,7 +85,6 @@
 			{% endif %}
 		});
 	</script>
-
 {% endblock %}
 
 {% block meta_plus %}
@@ -157,8 +157,8 @@
 		{% endif %}
 	</div>
 	<br>
-	<div>
-		<p><i class="fas fa-info-circle text-danger"></i> {{ "video.read.VideoNotAvailable"|trans([], "validators") }} <a href="{# path('Video_Notify', { 'id' : entity.id }) #}" alt="" rel="nofollow" id="confirm_colorbox">{{ "video.read.NotifyUs"|trans([], "validators") }}</a>
+	<div class="alert alert-danger">
+		<i class="fas fa-info-circle text-danger"></i> {{ "video.read.VideoNotAvailable"|trans([], "validators") }} <a href="" class="btn btn-danger" alt="" rel="nofollow" id="confirm_colorbox">{{ "video.read.NotifyUs"|trans([], "validators") }}</a>
 	</div>
 	<br>
 	<hr class="hr2">

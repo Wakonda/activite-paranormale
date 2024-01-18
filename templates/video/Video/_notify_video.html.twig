@@ -2,7 +2,7 @@
 	{% include 'index/Captcha/captcha_form.html.twig' with {field: form.captcha} %}
 	<hr>
 	<input type="submit" name="yes" class='confirmation_delete_video me-auto btn btn-success text-white' value='{{ "video.read.ConfirmationVideoNotAvailableYes"|trans([], "validators") }}'>
-	<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>		
+	<a href='' alt='' rel='nofollow' class='cancel_delete_video btn btn-danger text-white float-end' data-bs-dismiss="modal">{{ "video.read.ConfirmationVideoNotAvailableNo"|trans([], "validators") }}</a>		
 {{ form_end(form) }}
 
 {% include 'index/Captcha/captcha_js.html.twig' with {field: form.captcha} %}
