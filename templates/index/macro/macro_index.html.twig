@@ -269,7 +269,7 @@
 {% endmacro %}
 
 {% macro generic_tags(textarea, tags) %}
-	{#<script>
+	<script>
 		var datas = document.getElementById("{{ textarea }}").innerHTML.split(" ");
 		var tags = JSON.parse(document.getElementById("{{ textarea }}").dataset.tags);
 		tags = tags.filter((element) => element !== '' && element !== null && element !== undefined);
@@ -305,7 +305,7 @@
 				document.getElementById('{{ textarea }}').value = output;
 			});
 		});
-	</script>#}
+	</script>
 {% endmacro %}
 
 {% macro facebook_form_js() %}
