@@ -18,9 +18,9 @@
 			window.location = "{{ path('Testimony_Postcreate', {'id':entity.id}) }}";
 		});
 
-		$("div#tab_resources span").click(function()
+		$("div#tab_resources a").click(function()
 		{
-			$("div#tab_resources span").removeClass("active");
+			$("div#tab_resources a").removeClass("active");
 			$(this).addClass("active");
 			
 			$("div#tab_content > div").hide();
@@ -32,7 +32,8 @@
 
 {% block APBlog_body %}
 	<div id="tab_resources">
-		<span data-id="add_file_section" class="active">{{ "testimony.addFile.AddAFile"|trans([], "validators") }}</span> <span id="add_drawing_section_button" data-id="add_drawing_section">{{ "testimony.addFile.Draw"|trans([], "validators") }}</span>
+		<a data-id="add_file_section" class="btn active">{{ "testimony.addFile.AddAFile"|trans([], "validators") }}</a>
+		<a id="add_drawing_section_button" data-id="add_drawing_section" class="btn float-end">{{ "testimony.addFile.Draw"|trans([], "validators") }}</a>
 	</div>
 	<div id="tab_content">
 		<div id="add_file_section">

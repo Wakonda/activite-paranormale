@@ -75,7 +75,7 @@ class TestimonyController extends AbstractController
 		
 		$user = $security->getUser();
 		
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$authorizationChecker->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or $session->get("testimony") != $entity->getId())
+		if($entity->getState()->isStateDisplayed() or (!empty($user) and !empty($entity->getAuthor()) and !$authorizationChecker->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or $session->get("testimony") != $entity->getId())
 			throw new \Exception("You are not authorized to edit this document.");
 
 		return $this->render('testimony/Testimony/addFile.html.twig', array('entity' => $entity));
