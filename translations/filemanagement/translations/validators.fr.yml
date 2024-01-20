@@ -26,6 +26,7 @@ file:
         SortByNameAsc: "Trier par nom (croissant)"
         SortBySizeDesc: "Trier par taille de fichier (décroissant)"
         SortBySizeAsc: "Trier par taille de fichier (croissant)"
+        Other: "Autre"
     read:
         OtherFiles: "Autres fichiers"
         Title: "Titre"

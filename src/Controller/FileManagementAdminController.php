@@ -14,10 +14,12 @@ use App\Service\ResmushIt;
 
 class FileManagementAdminController extends AbstractController
 {
+	private $mimeTypes = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/webp', "video/webm"];
+	
 	public function listFilesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
 		$limit = 9;
-		
+
 		$basePath = $this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR;
 		$photoPath = DIRECTORY_SEPARATOR."extended".DIRECTORY_SEPARATOR."photo";
 
@@ -29,11 +31,14 @@ class FileManagementAdminController extends AbstractController
 		$selectedFolder = $request->query->get("folder", "news");
 		$page = $request->query->get("page", 1);
 		$sort = $request->query->get("sort", "sortByNameAsc");
+		$mimeType = $request->query->get("mime", null);
 		
 		$offset = ($page - 1) * $limit;
 
-		$this->getDirContents($folderPublic.DIRECTORY_SEPARATOR.$selectedFolder, $filelist);
-		$this->getDirContents($folderPrivate.DIRECTORY_SEPARATOR.$selectedFolder, $filelist);
+		$this->getDirContents($folderPublic.DIRECTORY_SEPARATOR.$selectedFolder, $filelist, $mimeType);
+		$this->getDirContents($folderPrivate.DIRECTORY_SEPARATOR.$selectedFolder, $filelist, $mimeType);
+		// die;
+		$filelist = empty($filelist) ? [] : $filelist;
 
 		if($sort == "sortByNameDesc" or $sort == "sortByNameAsc") {
 			usort($filelist, function($a, $b) use ($sort) {
@@ -66,13 +71,21 @@ class FileManagementAdminController extends AbstractController
 
 			if(is_dir($pathFile))
 				continue;
-			
+
 			$contentFile = file_get_contents($pathFile);
 			$finfo = finfo_open();
 			$mime_type = finfo_buffer($finfo, $contentFile, FILEINFO_MIME_TYPE);
 			finfo_close($finfo);
 			
-			$src = "data:".$mime_type.";base64," . base64_encode($contentFile);
+			$type = match($mime_type) {
+				'image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/webp', "image/bmp" => "image",
+				"video/webm", "video/x-msvideo", "video/mpeg", "video/ogg" => "video",
+				"audio/webm", "audio/x-wav", "audio/ogg", "audio/aac" => "audio",
+				"application/pdf" => "file",
+				default => "other"
+			};
+
+			$src = $type == "other" ? $contentFile : "data:".$mime_type.";base64," . base64_encode($contentFile);
 			$res = [];
 
 			switch($selectedFolder) {
@@ -88,6 +101,13 @@ class FileManagementAdminController extends AbstractController
 						SELECT n.id, n.title, \"Banner_Admin_Show\" as route
 						FROM banner n
 						WHERE n.image = '".$file."';");
+				break;
+				case "advertising":
+					$regex = "\[\/\"\']{1}".$file."[\'\"]{1}";
+					$res = $conn->fetchAllAssociative("
+						SELECT n.id, n.title, \"Advertising_Admin_Show\" as route
+						FROM advertising n
+						WHERE n.text REGEXP '".$regex."';");
 				break;
 				case "movie\genreaudiovisual":
 					$res = $conn->fetchAllAssociative("
@@ -265,8 +285,8 @@ class FileManagementAdminController extends AbstractController
 				default:
 					break;
 			}
-// dd($res);
-			$datas[] = ["src" => $src, "res" => $res, "file" => $file, "size" => $imgSize->getFileSize($pathFile), "pathFile" => $pathFile, "rootFolder" => $rootFolder];
+
+			$datas[] = ["src" => $src, "res" => $res, "file" => $file, "size" => $imgSize->getFileSize($pathFile), "pathFile" => $pathFile, "rootFolder" => $rootFolder, "type" => $type];
 		}
 
 		return $this->render("filemanagement/FileManagementAdmin/listFiles.html.twig", [
@@ -275,7 +295,8 @@ class FileManagementAdminController extends AbstractController
 			"listFolders" => $listFolders,
 			"totalPages" => $totalPages,
 			"folder" => $selectedFolder,
-			"page" => $page
+			"page" => $page,
+			"mimeTypes" => $this->mimeTypes
 		]); 
 	}
 	
@@ -338,6 +359,7 @@ class FileManagementAdminController extends AbstractController
 	
 	private function listFolders($base_dir, $bd){
       $directories = [];
+
       foreach(scandir($base_dir) as $file) {
             if($file == '.' || $file == '..') continue;
 			
@@ -348,10 +370,11 @@ class FileManagementAdminController extends AbstractController
                 $directories = array_merge($directories, $this->listFolders($dir, $bd));
             }
       }
+
       return $directories;
 	}
 
-	private function getDirContents($dir, &$results = []) {
+	private function getDirContents($dir, &$results = [], $mimeType = null) {
 		if (!is_dir($dir))
 			return [];
 
@@ -360,7 +383,15 @@ class FileManagementAdminController extends AbstractController
 		foreach ($files as $key => $value) {
 			$path = realpath($dir . DIRECTORY_SEPARATOR . $value);
 			if (!is_dir($path)) {
-				$results[] = $path;
+				if(empty($mimeType))
+					$results[] = $path;
+				else {
+					$finfo = finfo_open(FILEINFO_MIME_TYPE);
+					$mime = finfo_file($finfo, $path);
+
+					if(($mime == $mimeType and $mimeType != "other") or ($mimeType == "other" and !in_array($mime, $this->mimeTypes)))
+						$results[] = $path;
+				}
 			} else if ($value != "." && $value != "..") {
 				$this->getDirContents($path, $results);
 				$results[] = $path;

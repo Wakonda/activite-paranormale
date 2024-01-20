@@ -26,6 +26,7 @@ file:
         SortByNameAsc: "Ordenar por nombre (ascendente)"
         SortBySizeDesc: "Ordenar por tamaño de archivo (descendente)"
         SortBySizeAsc: "Ordenar por tamaño de archivo (ascendente)"
+        Other: "Otro"
     read:
         OtherFiles: "Otros archivos"
         Title: "Título"

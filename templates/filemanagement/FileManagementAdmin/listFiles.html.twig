@@ -9,6 +9,7 @@
 {% block body_main %}
 	{% set folder = app.request.query.get("folder") %}
 	{% set sort = app.request.query.get("sort") %}
+	{% set mime = app.request.query.get("mime") %}
 
 	<div class="d-flex">
 		<select class="form-select selectFolder me-1">
@@ -16,11 +17,18 @@
 				<option value="{{ listFolder }}" {{ (listFolder == folder ? "selected" : "") }}>{{ listFolder }}</option>
 			{% endfor %}
 		</select>
-		<select class="form-select sortFile ms-1">
+		<select class="form-select sortFile ms-1 me-1">
 			<option value="sortByNameDesc" {{ (sort == "sortByNameDesc" ? "selected" : "") }}>{{ "file.admin.SortByNameDesc"|trans([], "validators") }}</option>
 			<option value="sortByNameAsc" {{ (sort == "sortByNameAsc" ? "selected" : "") }}>{{ "file.admin.SortByNameAsc"|trans([], "validators") }}</option>
 			<option value="sortBySizeDesc" {{ (sort == "sortBySizeDesc" ? "selected" : "") }}>{{ "file.admin.SortBySizeDesc"|trans([], "validators") }}</option>
 			<option value="sortBySizeAsc" {{ (sort == "sortBySizeAsc" ? "selected" : "") }}>{{ "file.admin.SortBySizeAsc"|trans([], "validators") }}</option>
+		</select>
+		<select class="form-select mimeFile ms-1">
+			<option value="" {{ mime is empty ? "selected" : "" }}></option>
+			<option value="other" {{ mime == "other" ? "selected" : "" }}>{{ "file.admin.Other"|trans([], "validators") }}</option>
+			{% for mimeType in mimeTypes %}
+				<option value="{{ mimeType }}" {{ mime == mimeType ? "selected" : "" }}>{{ mimeType|upper }}</option>
+			{% endfor %}
 		</select>
 	</div>
 	<hr>
@@ -28,7 +36,22 @@
 		{% for key, selectedFile in selectedFiles %}
 			<div class="col-sm-4 d-flex pb-3">
 				<div class="card card-block w-100">
-					<img class="card-img-top" src="{{ selectedFile.src }}">
+					<h6 class="text-center"><b>{{ selectedFile.file }}</b></h6>
+					{% if selectedFile.type == "video" %}
+						<video controls> 
+							<source type="video/mp4" src="{{ selectedFile.src }}"> 
+						</video>
+					{% elseif selectedFile.type == "audio" %}
+						<audio controls="controls" autobuffer="autobuffer" autoplay="autoplay">
+							<source src="{{ selectedFile.src }}" />
+						</audio>
+					{% elseif selectedFile.type == "file" %}
+						<iframe src="{{ selectedFile.src }}" height="100%" width="100%"></iframe>
+					{% elseif selectedFile.type == "image" %}
+						<img class="card-img-top" src="{{ selectedFile.src }}">
+					{% else %}
+						<textarea rows="10">{{ selectedFile.src }}</textarea>
+					{% endif %}
 					<div class="card-body">
 						<p class="fw-bold text-{{ selectedFile.rootFolder == 'public' ? 'success' : 'danger' }}">{{ selectedFile.rootFolder|upper }}</p>
 
@@ -74,14 +97,19 @@
 		$(function ()
 		{
 			sortFile = document.querySelector(".sortFile").value;
+			mimeFile = document.querySelector(".mimeFile").value;
 			selectFolder = document.querySelector(".selectFolder").value;
 
 			$("select.selectFolder").change(function() {
-				window.location.href = "?page=1&folder=" + $(this).val() + "&sort=" + sortFile;
+				window.location.href = "?page=1&folder=" + $(this).val() + "&sort=" + sortFile + "&mime=" + mimeFile;
 			});
 
 			$("select.sortFile").change(function() {
-				window.location.href = "?page=1&folder=" + selectFolder + "&sort=" + $(this).val();
+				window.location.href = "?page=1&folder=" + selectFolder + "&sort=" + $(this).val() + "&mime=" + mimeFile;
+			});
+
+			$("select.mimeFile").change(function() {
+				window.location.href = "?page=1&folder=" + selectFolder + "&sort=" + sortFile + "&mime=" + $(this).val();
 			});
 			
 			$(".remove-file").click(function(e) {
