@@ -38,3 +38,5 @@ directory:
         Licence: "Licencia"
         Sources: "Fuentes"
         State: "Estado"
+        Validate: "Validar"
+        Refuse: "Rechazar"
