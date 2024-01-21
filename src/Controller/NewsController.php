@@ -257,6 +257,7 @@ class NewsController extends AbstractController
     public function editAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
 		$user = $this->getUser();
+		$entity = $em->getRepository(News::class)->find($id);
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");

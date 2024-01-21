@@ -31,7 +31,7 @@
 	<div>{{ entity.text|raw }}</div>
 	<br />
 	<hr class="hr2"/>
-	<p><i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></span> - <i class="fas fa-calendar-alt"></i> <span>{{ entity.publicationDate|dodate(false, app.request.locale) }}</span> - <i class="fas fa-user"></i> <span>{{ entity.pseudoUsed }}</span> - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a></p>
+	<p>{% if entity.theme is not empty %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></span> - {% endif %}<i class="fas fa-calendar-alt"></i> <span>{{ entity.publicationDate|dodate(false, app.request.locale) }}</span> - <i class="fas fa-user"></i> <span>{{ entity.pseudoUsed }}</span>{% if entity.licence is not empty %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}</p>
 	{{ getTagsByEntityForDisplay(entity) }}
 {% endblock %}
 

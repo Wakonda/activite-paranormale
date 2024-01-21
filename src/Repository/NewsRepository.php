@@ -338,7 +338,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		$qb = $this->createQueryBuilder('c');
 		$qb
 		   ->join('c.language', 'l')
-		   ->join('c.theme', 't')
+		   ->leftjoin('c.theme', 't')
 		   ->join('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
@@ -359,9 +359,9 @@ class NewsRepository extends MappedSuperclassBaseRepository
 			$aSearchColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id'];//dd($aSearchColumns, $searchByColumns);
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
-				if(!empty($searchByColumns[$i]))
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
 				{
-					$search = "%".$searchByColumns[$i]["value"]."%";
+					$search = "%".$value."%";
 					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}

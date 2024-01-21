@@ -57,7 +57,8 @@ class News extends MappedSuperclassBase implements Interfaces\PhotoIllustrationI
 	
 	public function __clone()
 	{
-		$this->illustration = clone $this->illustration;
+		if(!empty($this->illustration))
+			$this->illustration = clone $this->illustration;
 	}
 
 	public function getPdfVersionRoute()

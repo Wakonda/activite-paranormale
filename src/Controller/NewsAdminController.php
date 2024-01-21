@@ -136,7 +136,7 @@ class NewsAdminController extends AdminGenericController
 			$row[] =  $entity->getTitle();
 			$row[] =  $date->doDate($request->getLocale(), $entity->getPublicationDate());
 			$row[] =  $entity->getPseudoUsed();
-			$row[] =  $entity->getTheme()->getTitle();
+			$row[] =  !empty($theme = $entity->getTheme()) ? $theme->getTitle() : "";
 			
 			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
 			$row[] =  $state->getTitle();
@@ -219,7 +219,7 @@ class NewsAdminController extends AdminGenericController
 	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
-		
+
 		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
 
 		$entity = $em->getRepository(News::class)->find($id);
@@ -230,7 +230,7 @@ class NewsAdminController extends AdminGenericController
 			if(empty($entity->getTheme()))
 				return $this->redirect($this->generateUrl('News_Admin_Edit', ['id' => $id]));
 		}
-		
+
 		$em->persist($entity);
 		$em->flush();
 

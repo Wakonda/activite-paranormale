@@ -131,7 +131,9 @@ class MappedSuperclassBase implements SearchEngineInterface
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+		if(!empty($title))
+			$this->title = htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8');
+
 		$this->setSlug();
     }
 
