@@ -123,9 +123,9 @@ class TestimonyRepository extends MappedSuperclassBaseRepository
 			$aSearchColumns = ['c.id', 'c.title', 'c.pseudoUsed', 's.internationalName', 'c.writingDate'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
-				if(!empty($searchByColumns[$i]))
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
 				{
-					$search = "%".$searchByColumns[$i]["value"]."%";
+					$search = "%".$value."%";
 					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}

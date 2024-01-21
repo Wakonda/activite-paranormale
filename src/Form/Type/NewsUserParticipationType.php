@@ -49,7 +49,7 @@ class NewsUserParticipationType extends AbstractType
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn')
 			))
-			->add('illustration', FileType::class, array('data_class' => null, 'required' => false))
+			->add('illustration', FileType::class, ['data_class' => null, 'required' => false])
 			;
 			
 		if(!empty($securityUser) and $securityUser->isGranted('IS_AUTHENTICATED_FULLY'))
@@ -94,7 +94,7 @@ class NewsUserParticipationType extends AbstractType
 			{
 				$formatArray = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
-				if(!in_array($data->getIllustration()->getClientMimeType(), $formatArray))
+				if(!in_array($data->getIllustration()->getMimeType(), $formatArray))
 					$form->get('illustration')->addError(new FormError('news.error.FileFormat'));
 
 				if($data->getIllustration()->getSize() > $data->getIllustration()->getMaxFilesize())

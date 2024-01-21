@@ -117,6 +117,19 @@ class WebDirectoryController extends AbstractController
 		$entity->setLanguage($language);
 
         if ($form->isValid()) {
+			if(is_object($ci = $entity->getIllustration()))
+			{
+				$titleFile = uniqid()."_".$ci->getClientOriginalName();
+				$illustration = new \App\Entity\FileManagement();
+				$illustration->setTitleFile($titleFile);
+				$illustration->setRealNameFile($titleFile);
+				$illustration->setExtensionFile(pathinfo($ci->getClientOriginalName(), PATHINFO_EXTENSION));
+				
+				$ci->move($entity->getTmpUploadRootDir(), $titleFile);
+				
+				$entity->setIllustration($illustration);
+			}
+
 			$em->persist($entity);
 			$em->flush();
 

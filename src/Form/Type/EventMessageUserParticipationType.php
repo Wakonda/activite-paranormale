@@ -68,17 +68,17 @@ class EventMessageUserParticipationType extends AbstractType
 			$data = $event->getData();
 			$form = $event->getForm();
 
-			if(is_object($data->getPhoto()))
+			if(is_object($data->getIllustration()))
 			{
 				$formatArray = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
-				if(!in_array($data->getPhoto()->getClientMimeType(), $formatArray))
-					$form->get('photo')->addError(new FormError('eventMessage.error.FileFormat'));
+				if(!in_array($data->getIllustration()->getMimeType(), $formatArray))
+					$form->get('illustration')->addError(new FormError('eventMessage.error.FileFormat'));
 
-				if($data->getPhoto()->getSize() > $data->getPhoto()->getMaxFilesize())
-					$form->get('photo')->addError(new FormError('eventMessage.error.FileSizeError'));
+				if($data->getIllustration()->getSize() > $data->getIllustration()->getMaxFilesize())
+					$form->get('illustration')->addError(new FormError('eventMessage.error.FileSizeError'));
 			}
-			
+
 			if (!empty($dateFrom = $form->get('dateFrom')->getNormData())) {
 				$data->setDayFrom($dateFrom->format("d"));
 				$data->setMonthFrom($dateFrom->format("m"));

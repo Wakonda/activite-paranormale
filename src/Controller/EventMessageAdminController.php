@@ -145,8 +145,6 @@ class EventMessageAdminController extends AdminGenericController
 		$entity = $em->getRepository($this->className)->find($id);
 		
 		$entity->setState($state);
-		$em->persist($entity);
-		$em->flush();
 
 		$formType = EventMessageAdminType::class;
 

@@ -18,6 +18,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\Form\FormError;
 use App\Form\Field\DatePartialType;
 use App\Form\Field\SourceEditType;
 use App\Form\Type\FileSelectorType;
@@ -32,7 +33,8 @@ class WebDirectoryUserParticipationType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('link', TextType::class, ['required' => true, 'constraints' => [new NotBlank(), new Url()]])
-            ->add('logo', FileType::class, ['data_class' => null, 'required' => true])
+            // ->add('logo', FileType::class, ['data_class' => null, 'required' => false])
+			->add('illustration', FileType::class, ['data_class' => null, 'required' => false])
 			->add('websiteLanguage', EntityType::class, [
 				'class'=> Language::class,
 				'choice_label'=>'title',
@@ -124,6 +126,23 @@ class WebDirectoryUserParticipationType extends AbstractType
 			->add('socialNetworkVimeo', TextType::class, ['label' => 'Vimeo', 'required' => false, 'mapped' => false, 'attr' => ['data-name' => 'Vimeo', 'class' => 'social_network_select'], 'data' => $socialNetworkVimeoDefault, 'constraints' => [new Url()]])
 			->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmitData'])
 		;
+
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event)
+		{
+			$data = $event->getData();
+			$form = $event->getForm();
+
+			if(is_object($data->getLogo()))
+			{
+				$formatArray = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
+
+				if(!in_array($data->getLogo()->getMimeType(), $formatArray))
+					$form->get('logo')->addError(new FormError('news.error.FileFormat'));
+
+				if($data->getLogo()->getSize() > $data->getLogo()->getMaxFilesize())
+					$form->get('logo')->addError(new FormError('news.error.FileSizeError'));
+			}
+		});
 
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }

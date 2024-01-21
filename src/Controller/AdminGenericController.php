@@ -255,7 +255,7 @@ abstract class AdminGenericController extends AbstractController
 
 		$mimeTypeAvailable = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/webp'];
 		
-		if(in_array($file->getClientMimeType(), $mimeTypeAvailable))
+		if(in_array($file->getMimeType(), $mimeTypeAvailable))
 		{
 			$newNameFile = uniqid().'-'.$file->getClientOriginalName();
 			$file->move($entity->getAssetImagePath(), $newNameFile);

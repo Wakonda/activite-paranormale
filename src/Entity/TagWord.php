@@ -79,7 +79,7 @@ class TagWord
 	
 	public function __clone()
 	{
-		if($this->illustration)
+		if(!empty($this->illustration))
 			$this->illustration = clone $this->illustration;
 	}
 

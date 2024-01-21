@@ -57,12 +57,9 @@ class BookEditionRepository extends EntityRepository
 			$aSearchColumns = ['u.isbn10', 'u.isbn13', 'p.title', 'u.id'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
-				if(!empty($searchByColumns[$i]))
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
 				{
-					if(empty($searchByColumns[$i]["value"]))
-						continue;
-
-					$search = "%".$searchByColumns[$i]["value"]."%";
+					$search = "%".$value."%";
 					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
 					   ->setParameter("searchByColumn".$i, $search);
 				}

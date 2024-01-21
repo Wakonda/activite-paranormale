@@ -112,7 +112,6 @@ class GrimoireRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		// dd($searchByColumns);
 		$aColumns = ['c.id', 'c.title', 'st.title', 's.title', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
@@ -138,7 +137,7 @@ class GrimoireRepository extends EntityRepository
 			$aSearchColumns = ['c.id', 'c.title', 'st.internationalName', 's.internationalName', 'l.abbreviation'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
-				if(!empty($searchByColumns[$i]))
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
 				{
 					$search = "%".$searchByColumns[$i]["value"]."%";
 					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
