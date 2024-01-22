@@ -87,6 +87,7 @@
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 				document.getElementById("{{ form.nationality.vars.id }}").value = data.nationality.country.id;
+				document.getElementById("{{ form.socialNetworkWebsite.vars.id }}").value = data.socialNetwork.link;
 				document.getElementById("{{ form.socialNetworkTwitter.vars.id }}").value = data.socialNetwork.twitter;
 				document.getElementById("{{ form.socialNetworkFacebook.vars.id }}").value = data.socialNetwork.facebook;
 				document.getElementById("{{ form.socialNetworkYoutube.vars.id }}").value = data.socialNetwork.youtube;
