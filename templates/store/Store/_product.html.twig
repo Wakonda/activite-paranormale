@@ -45,7 +45,7 @@
 				<hr>
 			</div>
 			<div class="card-footer text-center">
-				<a class="btn read" href="{{ path('Store_Show', {'id': entity.id, 'title_slug': entity.title}) }}">
+				<a class="btn read" href="{{ path('Store_Show', {'id': entity.id, 'slug': entity.slug}) }}">
 					<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
 					<b class="align-middle">{{ "store.search.Read"|trans([], "validators") }}</b>
 				</a>

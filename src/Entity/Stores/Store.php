@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Filter\OrSearchFilter;
+use Ausi\SlugGenerator\SlugGenerator;
 
 use App\Entity\Language;
 
@@ -135,6 +136,11 @@ class Store
      * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
      */
     private $socialNetworkIdentifiers;
+
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
 	
 	public function getShowRoute(): string {
 		return "Store_Show";
@@ -523,5 +529,16 @@ class Store
 			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
 			$this->setPhoto($filename);
 		}
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = (new SlugGenerator)->generate($this->title);
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }
