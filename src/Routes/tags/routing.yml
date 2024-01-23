@@ -7,8 +7,8 @@ ap_tags_ListDatatables:
     controller: App\Controller\TagsController::listDatatables
 
 ap_tags_search:
-    path:  /searchtags/{id}/{title}
-    controller: App\Controller\TagsController::searchAction
+    path:  /searchtags/{id}/{slug}
+    controller: App\Controller\TagsController::search
 
 ap_tags_searchdatatables:
     path:  /searchtagsdatatables/{id}/{title}

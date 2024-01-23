@@ -50,7 +50,7 @@ class TagsController extends AbstractController
 			$img = $imgSize->adaptImageSize(250, $img);
 
 			$row = [];
-			$row[] = '<a href="'.$this->generateUrl("ap_tags_search", ['id' => $entity->getId(), 'title' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl("ap_tags_search", ['id' => $entity->getId(), 'slug' => $entity->getSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';
 
 			$output['data'][] = $row;
@@ -59,7 +59,7 @@ class TagsController extends AbstractController
 		return new JsonResponse($output);
 	}
 
-    public function searchAction(Request $request, EntityManagerInterface $em, $id, $title)
+    public function search(Request $request, EntityManagerInterface $em, $id, $slug)
     {
 		$entity = $em->getRepository(TagWord::class)->find($id);
 		$countEntities = $em->getRepository(Tags::class)->getEntitiesByTags($id, $request->getLocale(), true);

@@ -71,6 +71,11 @@ class TagWord
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
 	
 	public function __toString()
 	{
@@ -108,6 +113,7 @@ class TagWord
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     /**
@@ -257,5 +263,16 @@ class TagWord
     public function getWikidata()
     {
         return $this->wikidata;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = (new SlugGenerator)->generate($this->title);
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

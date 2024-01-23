@@ -658,7 +658,7 @@
 				foreach($tags as $tag)
 				{
 					if(!empty(trim($tag->getTagWord()->getTitle())))
-						$tagsArray[] = '<a href="'.$this->router->generate('ap_tags_search', array('id' => $tag->getTagWord()->getId(), 'title' => $tag->getTagWord()->getTitle())).'" class="tags_display">'.$tag->getTagWord()->getTitle().'</a>';
+						$tagsArray[] = '<a href="'.$this->router->generate('ap_tags_search', ['id' => $tag->getTagWord()->getId(), 'slug' => $tag->getTagWord()->getSlug()]).'" class="tags_display">'.$tag->getTagWord()->getTitle().'</a>';
 				}
 				
 				if(empty($tagsArray))

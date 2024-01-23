@@ -216,6 +216,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     /**

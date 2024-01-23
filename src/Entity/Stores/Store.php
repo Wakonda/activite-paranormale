@@ -248,6 +248,7 @@ class Store
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     /**
