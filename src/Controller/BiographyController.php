@@ -79,7 +79,7 @@ class BiographyController extends AbstractController
 			$img = $imgSize->adaptImageSize(250, $img);
 
 			$row = [];
-			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'title' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'slug' => $entity->getSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';
 
 			$output['data'][] = $row;
@@ -138,7 +138,7 @@ class BiographyController extends AbstractController
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20" height="13">';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" style="width: '.$photo[0].';">';
-			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'title' => $entity->getTitle()]).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'slug' => $entity->getSlug()]).'" >'.$entity->getTitle().'</a>';
 
 			$output['data'][] = $row;
 		}

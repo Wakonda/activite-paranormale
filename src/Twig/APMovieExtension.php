@@ -48,7 +48,7 @@
 			$data = [];
 			
 			foreach($entity->getMovieBiographies() as $bm)
-				$data[$bm->getOccupation()][] = ["title" => $bm->getBiography()->getTitle(), "id" => $bm->getBiography()->getId(), "role" => $bm->getRole()];
+				$data[$bm->getOccupation()][] = ["title" => $bm->getBiography()->getTitle(), "slug" => $bm->getBiography()->getSlug(), "id" => $bm->getBiography()->getId(), "role" => $bm->getRole()];
 
 			return $data;
 		}
@@ -58,7 +58,7 @@
 			$data = [];
 			
 			foreach($entity->getTelevisionSerieBiographies() as $bm)
-				$data[$bm->getOccupation()][] = ["title" => $bm->getBiography()->getTitle(), "id" => $bm->getBiography()->getId(), "role" => $bm->getRole()];
+				$data[$bm->getOccupation()][] = ["title" => $bm->getBiography()->getTitle(), "slug" => $bm->getBiography()->getSlug(), "id" => $bm->getBiography()->getId(), "role" => $bm->getRole()];
 
 			return $data;
 		}
@@ -68,7 +68,7 @@
 			$data = [];
 			
 			foreach($entity->getEpisodeTelevisionSerieBiographies() as $bm)
-				$data[$bm->getOccupation()][] = ["title" => $bm->getBiography()->getTitle(), "id" => $bm->getBiography()->getId(), "role" => $bm->getRole()];
+				$data[$bm->getOccupation()][] = ["title" => $bm->getBiography()->getTitle(), "slug" => $bm->getBiography()->getSlug(), "id" => $bm->getBiography()->getId(), "role" => $bm->getRole()];
 
 			return $data;
 		}

@@ -67,7 +67,7 @@
 							{% set authorsArray = [] %}
 							{% for author in entity.authors %}
 								{% set correctBio = biography_correct_language(author) %}
-								{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+								{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'slug': correctBio.slug})~"'>"~author.title~"</a>"]) %}
 							{% endfor %}
 						</p>
 						<p class="card-text mb-0 text-center my-3">{% if entity.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>

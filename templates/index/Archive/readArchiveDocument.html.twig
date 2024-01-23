@@ -20,7 +20,7 @@
 			{% for authorDocumentBiography in entity.authorDocumentBiographies %}
 				{% set correctBio = biography_correct_language(authorDocumentBiography) %}
 				{% if correctBio is not null %}
-					<p><a href="{{ path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title}) }}" alt="">{{ correctBio.title }}</a></p>
+					<p><a href="{{ path('Biography_Show', {'id':correctBio.id, 'slug': correctBio.slug}) }}" alt="">{{ correctBio.title }}</a></p>
 				{% else %}
 					<p>{{ authorDocumentBiography.title }}</p>
 				{% endif %}

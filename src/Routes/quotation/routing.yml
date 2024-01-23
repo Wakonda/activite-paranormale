@@ -59,10 +59,10 @@ Biography_Index:
     controller: App\Controller\BiographyController::indexAction
 
 Biography_Show:
-    path: /biography/{id}/{title}
+    path: /biography/{id}/{slug}
     controller: App\Controller\BiographyController::readAction
     defaults:
-        title: null
+        slug: null
     requirements:
         id: \d+
 

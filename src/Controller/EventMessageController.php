@@ -487,12 +487,12 @@ class EventMessageController extends AbstractController
 			if($yearEvent != $year) {
 				$res[$type][$centuryText][(new \DateTime($entity->$get()))->format("Y")][] = [
 					"title" => $entity->getTitle(),
-					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "slug" => $entity->getSlug() ])
 				];
 			} else {
 				$currentEvent[$type][] = [
 					"title" => $entity->getTitle(),
-					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "slug" => $entity->getSlug() ])
 				];
 			}
 		}
@@ -566,7 +566,7 @@ class EventMessageController extends AbstractController
 				$res[$type][$centuryText][(new \DateTime($entity->$get()))->format("Y")][] = [
 					"id" => $entity->getId(), 
 					"title" => $entity->getTitle(),
-					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "slug" => $entity->getSlug() ])
 				];
 
 				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
@@ -574,7 +574,7 @@ class EventMessageController extends AbstractController
 				$currentEvent[$type][] = [
 					"id" => $entity->getId(), 
 					"title" => $entity->getTitle(),
-					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ])
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "slug" => $entity->getSlug() ])
 				];
 
 				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
@@ -651,7 +651,7 @@ class EventMessageController extends AbstractController
 
 			$res[$type][] = [
 				"title" => $entity->getTitle(),
-				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle() ]),
+				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "slug" => $entity->getSlug() ]),
 				"startDate" => (empty($startArray["year"]) and empty($startArray["month"]) and empty($startArray["day"])) ? null : $startArray,
 				"endDate" => (empty($endArray["year"]) and empty($endArray["month"]) and empty($endArray["day"])) ? null : $endArray
 			];
@@ -718,7 +718,7 @@ class EventMessageController extends AbstractController
 
 			$res[$type][] = [
 				"title" => $entity->getTitle(),
-				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title" => $entity->getTitle()]),
+				"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "slug" => $entity->getSlug()]),
 				"startDate" => (empty($startArray["year"]) and empty($startArray["month"]) and empty($startArray["day"])) ? null : $startArray,
 				"endDate" => (empty($endArray["year"]) and empty($endArray["month"]) and empty($endArray["day"])) ? null : $endArray
 			];

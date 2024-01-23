@@ -80,7 +80,7 @@
 							{% if correctBio is null %}
 								{% set correctBio = author %}
 							{% endif %}
-							{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {'id':correctBio.id, 'title': correctBio.title})~"'>"~author.title~"</a>"]) %}
+							{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {id: correctBio.id, slug: correctBio.slug})~"'>"~author.title~"</a>"]) %}
 						{% endfor %}
 						{{ (authorsArray|join(", "))|raw }}
 					</td>
@@ -171,7 +171,7 @@
 						<td class="tdGene">
 							{% set persons = [] %}
 							{% for biography in biographies %}
-								{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+								{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, slug: biography.slug }) ~ '">' ~ biography.title ~ '</a>']) %}
 							{% endfor %}
 							{{ (persons|join(", "))|raw }}
 						</td>
@@ -198,7 +198,7 @@
 					{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
 						{% for biography in biographies %}
 							<tr>
-								<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+								<td><a href="{{ path('Biography_Show', {id: biography.id, slug: biography.slug}) }}">{{ biography.title }}</a></td>
 								<td>{{ biography.role }}</td>
 							</tr>
 						{% endfor %}
@@ -270,7 +270,7 @@
 						<td class="tdGene">
 							{% set persons = [] %}
 							{% for biography in biographies %}
-								{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+								{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, slug: biography.slug }) ~ '">' ~ biography.title ~ '</a>']) %}
 							{% endfor %}
 							{{ (persons|join(", "))|raw }}
 						</td>
@@ -294,7 +294,7 @@
 					{% if occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
 						{% for biography in biographies %}
 							<tr>
-								<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+								<td><a href="{{ path('Biography_Show', {id: biography.id, slug: biography.slug}) }}">{{ biography.title }}</a></td>
 								<td>{{ biography.role }}</td>
 							</tr>
 						{% endfor %}

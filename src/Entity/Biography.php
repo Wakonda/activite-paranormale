@@ -6,6 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\APPurifierHTML;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * App\Entity\Biography
@@ -128,6 +129,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
      * @ORM\Column(name="identifiers", type="text", nullable=true)
      */
     private $identifiers;
+
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
 
 	public function __toString()
 	{
@@ -468,5 +474,16 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     public function getIdentifiers()
     {
         return $this->identifiers;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = (new SlugGenerator)->generate($this->title);
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

@@ -10,7 +10,7 @@
 		</div>
 	</div>
 
-	<span id="author_quotation"><a href="{{ path('Biography_Show', { 'id' : entity.authorQuotation.id, 'title': entity.authorQuotation.title }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></span>
+	<span id="author_quotation"><a href="{{ path('Biography_Show', { 'id' : entity.authorQuotation.id, 'slug': entity.authorQuotation.slug }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></span>
 
 	{% if entity.images is not empty %}
 		<div id="carousel-quote-read" class="carousel-pagination carousel slide mt-3" data-interval="false">

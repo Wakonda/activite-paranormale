@@ -32,7 +32,7 @@
 						{% if correctBio is null %}
 							{% set correctBio = author %}
 						{% endif %}
-						{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {id: correctBio.id, title: correctBio.title})~"'>"~author.title~"</a>"]) %}
+						{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {id: correctBio.id, slug: correctBio.slug})~"'>"~author.title~"</a>"]) %}
 					{% endfor %}
 					{{ (authorsArray|join(", "))|raw }}
 				</td>
@@ -71,7 +71,7 @@
 		
 		<ul>
 		{% for author in entity.fictionalCharacters %}
-			<li><a href="{{ path('Biography_Show', {id: author.id, title: author.title}) }}">{{ author.title }}</a></li>
+			<li><a href="{{ path('Biography_Show', {id: author.id, slug: author.slug}) }}">{{ author.title }}</a></li>
 		{% endfor %}
 		</ul>
 	{% endif %}
@@ -164,7 +164,7 @@
 									<td class="tdGene">
 										{% set persons = [] %}
 										{% for biography in biographies %}
-											{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+											{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, slug: biography.slug }) ~ '">' ~ biography.title ~ '</a>']) %}
 										{% endfor %}
 										{{ (persons|join(", "))|raw }}
 									</td>

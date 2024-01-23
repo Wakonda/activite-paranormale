@@ -66,7 +66,7 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
-			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
 
 			$output['data'][] = $row;
 		}
@@ -149,7 +149,7 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = "<a href='".$this->generateUrl("Poem_Read", ["id" => $entity->getId()])."'>".$entity->getTitle()."</a>";
-			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title' => $entity->getAuthorQuotation()->getTitle()])."'>".$entity->getAuthorQuotation()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
 
 			$output['data'][] = $row;
 		}

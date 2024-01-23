@@ -71,12 +71,12 @@
 
 			{% for occupation, biographies in biographyDatas %}
 				{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}
-				<tr>{{ dump(occupation) }}
+				<tr>
 					<td class="td_form_table">{{ ("movie.read."~((occupation|ucfirst)~"By"))|trans([], "validators") }}</td>
 					<td class="tdGene">
 						{% set persons = [] %}
 						{% for biography in biographies %}
-							{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a>']) %}
+							{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, slug: biography.slug }) ~ '">' ~ biography.title ~ '</a>']) %}
 						{% endfor %}
 						{{ (persons|join(", "))|raw }}
 					</td>
@@ -115,7 +115,7 @@
 		<tbody>
 			{% for biography in actors %}
 				<tr>
-					<td><a href="{{ path('Biography_Show', {id: biography.id, title: biography.title}) }}">{{ biography.title }}</a></td>
+					<td><a href="{{ path('Biography_Show', {id: biography.id, slug: biography.slug}) }}">{{ biography.title }}</a></td>
 					<td>{{ biography.role }}</td>
 				</tr>
 			{% endfor %}

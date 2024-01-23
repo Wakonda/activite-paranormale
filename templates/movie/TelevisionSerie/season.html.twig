@@ -32,7 +32,7 @@
 								<td class="tdGene">
 									{% set persons = [] %}
 									{% for biography in biographies %}
-										{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, title: biography.title }) ~ '">' ~ biography.title ~ '</a> ' ~ (occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') ? ' [<i>' ~ biography.role ~ '</i>]' : '')]) %}
+										{% set persons = persons|merge(['<a href="' ~ path('Biography_Show', { id: biography.id, slug: biography.slug }) ~ '">' ~ biography.title ~ '</a> ' ~ (occupation == constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') ? ' [<i>' ~ biography.role ~ '</i>]' : '')]) %}
 									{% endfor %}
 									{{ (persons|join(", "))|raw }}
 								</td>

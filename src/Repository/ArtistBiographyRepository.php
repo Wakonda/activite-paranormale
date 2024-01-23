@@ -30,7 +30,7 @@ class ArtistBiographyRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder("mb");
 		
-		$qb->select("b.id AS biographyId, b.title AS biographyTitle, IFNULL(mb.role, b.title) AS stageName, a.id AS artistId")
+		$qb->select("b.id AS biographyId, b.title AS biographyTitle, b.slug AS biographySlug, IFNULL(mb.role, b.title) AS stageName, a.id AS artistId")
 		   ->addSelect("GROUP_CONCAT(DISTINCT mb.occupation SEPARATOR '#') AS occupations")
 		   ->addSelect("GROUP_CONCAT(mb.startYear, ' - ', IFNULL(mb.endYear, '') ORDER BY mb.startYear SEPARATOR '#') AS years")
 		   ->addSelect("IF(MAX(IFNULL(mb.endYear,'9999')) = '9999', '', mb.endYear) AS lastYear")
