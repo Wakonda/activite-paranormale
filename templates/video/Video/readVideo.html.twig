@@ -5,82 +5,81 @@
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
-	
 	<script>
-		$(function()
-		{
+		document.addEventListener('DOMContentLoaded', function() {
 			document.getElementById("confirm_colorbox").addEventListener("click", (e) => {
 				e.preventDefault();
 				new bootstrap.Modal(document.getElementById('checkVideo')).show();
-				
 			});
 
-			// Video embedded
 			{% if entity.mediaVideo is not empty %}
 				var videoTagRef = document.getElementById("video_embedded");
-				var iframe = $($("#embedded_document").val());
-				
-				var default_width = iframe.attr("width");
-				var default_height = iframe.attr("height");
+				var iframe = document.createElement('div');
+				iframe.innerHTML = document.querySelector('#embedded_document').value;
+				iframe = iframe.firstChild;
 
-				if(videoTagRef != null)
-				{
-					videoTagRef.addEventListener('loadedmetadata', function(e){
-						iframe.attr('width', videoTagRef.videoWidth);
-						iframe.attr('height', videoTagRef.videoHeight);
-						
-						$("#embedded_document").val(iframe[0].outerHTML);
+				var default_width = iframe.getAttribute("width");
+				var default_height = iframe.getAttribute("height");
+
+				if(videoTagRef != null) {
+					function getVideoDimensionsOf(url) {
+						return new Promise(resolve => {
+							const video = document.getElementById("video_embedded");
+
+							video.addEventListener( "loadedmetadata", function () {
+								const height = this.videoHeight;
+								const width = this.videoWidth;
+								resolve({height, width});
+							}, false);
+
+							video.src = url;
+						});
+					}
+					getVideoDimensionsOf("{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}") .then((value) => {
+						iframe.setAttribute('width', value.width);
+						iframe.setAttribute('height', value.height);
+						document.getElementById("embedded_document").value = iframe.outerHTML;
+						document.getElementById("custom_height").value = value.height;
+						document.getElementById("custom_width").value = value.width;
 					});
 				}
 
 				var clipboard = new Clipboard('.clip_button');
 
 				clipboard.on('success', function(e) {
-					$("#success_copy").addClass("success");
-					$("#success_copy span").html("<div class='alert alert-success text-center'>{{ 'video.read.CodeCopiedWithSuccess'|trans([], 'validators') }}</div>");
+					document.getElementById("success_copy").classList.add("success");
+					document.querySelector("#success_copy span").innerHTML = "<div class='alert alert-success text-center'>{{ 'video.read.CodeCopiedWithSuccess'|trans([], 'validators') }}</div>";
 					setTimeout(fade_out, 5000);
 				});
-				
-				$("input.size_embedded").keyup(function(event)
-				{
+
+				document.querySelector("input.size_embedded").addEventListener("keyup", (e) => {
 					var new_width;
 					var new_height;
 
-					if(isInt($(this).val()))
-					{
-						if($(this).attr("id") == "custom_width")
-						{
-							new_width = $(this).val();
+					if(isInt(event.target.value)) {
+						if(event.target.getAttribute("id") == "custom_width") {
+							new_width = event.target.value;
 							new_height = Math.ceil((default_height * new_width) / default_width);
-		
-							$("input#custom_height").val(new_height);
-						}
-						else if($(this).attr("id") == "custom_height")
-						{
-							new_height = $(this).val();
+							document.getElementById("custom_height").value = new_height;
+						} else if(event.target.getAttribute("id") == "custom_height") {
+							new_height = event.target.value;
 							new_width = Math.ceil((default_width * new_height) / default_height);
-							
-							$("input#custom_width").val(new_width);
+							docuement.getElementById("custom_width").value = new_width;
 						}
 
-						iframe.attr('width', new_width); 
-						iframe.attr('height', new_height); 
-					
-						$("#embedded_document").val(iframe[0].outerHTML);
+						iframe.setAttribute('width', new_width); 
+						iframe.setAttribute('height', new_height); 
+						document.getElementById("embedded_document").value = iframe.outerHTML;
 					}
 				});
-				
-				function isInt(data)
-				{
-					if (data == parseInt(data, 10))
-						return true;
-					else
-						return false;
+
+				function isInt(data) {
+					return data == parseInt(data, 10);
 				}
 
 				var fade_out = function() {
-					$("#success_copy").removeClass("success");
-					$("#success_copy span").empty();
+					document.getElementById("success_copy").classList.remove("success");
+					document.querySelector("#success_copy span").innerHTML = "";
 				}
 			{% endif %}
 		});
@@ -118,7 +117,7 @@
 	{% if entity.isAvailable == true %}
 		<div class="text-center">
 			{% if entity.mediaVideo is not empty %}
-				<video class="w-100" controls="controls" id="video_embedded">
+				<video class="w-100" controls id="video_embedded">
 					<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
 				</video>
 			{% else %}
