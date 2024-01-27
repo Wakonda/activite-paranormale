@@ -31,8 +31,10 @@ Witchcraft_ReadGrimoire:
        title_slug: .+
 
 Witchcraft_ReadGrimoire_Simple:
-    path:  /grimoire/read_simple/{id}
-    controller: App\Controller\WitchcraftController::readGrimoireSimpleAction
+    path:  /grimoire/read_simple/{id}/{title_slug}
+    controller: App\Controller\WitchcraftController::readGrimoireSimple
+    defaults:
+        title_slug: null
 
 Witchcraft_CountRitual:
     path:  /grimoire/count/{id}

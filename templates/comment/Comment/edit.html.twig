@@ -5,7 +5,7 @@
 
 <div id="comment_refresh">
 	{% form_theme commentType 'index/CSS/form_div_layout.html.twig' %}
-	{{ form_start(commentType, {'action': path('APCommentBundle_create', { 'idClassName' : idClassName, 'className': className }), 'attr':{'class' : 'form-horizontal', 'id': commentType.vars.id, novalidate: 'novalidate'}}) }}
+	{{ form_start(commentType, {'action': path('APCommentBundle_create', { idClassName: idClassName, className: className }), 'attr':{'class' : 'form-horizontal', 'id': commentType.vars.id, novalidate: 'novalidate'}}) }}
 		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 			{{ "comment.edit.LoggedAs"|trans([], "validators") }}<strong>{{ app.user.username }}</strong>
 		{% endif %}
@@ -99,7 +99,7 @@
 				}
 			}
 
-			xmlHttp.open("post", "{{ path('APCommentBundle_create', { 'idClassName' : idClassName, 'className': className }) }}"); 
+			xmlHttp.open("post", "{{ path('APCommentBundle_create', { idClassName: idClassName, className: className }) }}"); 
 			xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
 			xmlHttp.send(formData);
 		}

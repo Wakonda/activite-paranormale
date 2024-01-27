@@ -129,7 +129,7 @@ class WitchcraftController extends AbstractController
 		]);
     }
 	
-	public function readGrimoireSimpleAction(Request $request, EntityManagerInterface $em, $id)
+	public function readGrimoireSimple(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
 		$entity = $em->getRepository(Grimoire::class)->findByDisplayState($id);
 

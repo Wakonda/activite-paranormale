@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * App\Entity\Grimoire
@@ -115,6 +116,11 @@ class Grimoire
      */
     private $socialNetworkIdentifiers;
 
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
+
 	public function __construct()
 	{
 		$this->writingDate = new \DateTime();
@@ -129,7 +135,7 @@ class Grimoire
 	}
 
 	public function getUrlSlug() {
-		return $this->title;
+		return $this->slug;
 	}
 
     public function getPhotoIllustrationCaption(): ?Array
@@ -194,6 +200,7 @@ class Grimoire
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     /**
@@ -473,5 +480,16 @@ class Grimoire
     public function getSocialNetworkIdentifiers()
     {
         return $this->socialNetworkIdentifiers;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = (new SlugGenerator)->generate($this->title);
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

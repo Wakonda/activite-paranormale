@@ -52,6 +52,12 @@ class MigrateSlugifyCommand extends Command
 			$conn->exec("UPDATE tagword SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
+		$entities = $this->em->getRepository("\App\Entity\Grimoire")->findAll();
+		
+		foreach($entities as $entity) {
+			$conn->exec("UPDATE grimoire SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
+
         return 0;
     }
 }
