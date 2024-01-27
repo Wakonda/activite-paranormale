@@ -22,7 +22,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 			->setParameter('lang', $lang)
 			->andWhere('s.displayState = 1')
 			->andWhere('o.archive = false')
-			->orderBy('o.publicationDate', 'DESC');
+			->orderBy('o.id', 'DESC');
 		
 		if(!empty($theme))
 		{

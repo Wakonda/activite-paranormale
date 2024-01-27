@@ -114,10 +114,11 @@ class MappedSuperclassBaseRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder('o');
 		
-		$qb->select("o.id, o.slug")
+		$qb->select("o.id, o.slug, o.publicationDate")
 		   ->join('o.state', 's')
 		   ->where("o.archive = 0")
-		   ->andWhere('s.displayState = 1');
+		   ->andWhere('s.displayState = 1')
+		   ->orderBy("o.id", "ASC");
 		
 		return $qb->getQuery()->getResult();
 	}

@@ -1316,8 +1316,8 @@ class AdminController extends AbstractController
 
 		if(!file_exists("sitemaps"))
 			mkdir("sitemaps", 0777, true);
-		$urls = array_map(function($e) { return $this->generateUrl((new \App\Entity\News())->getShowRoute(), ["id" => $e["id"], "title_slug" => $e["slug"]], UrlGeneratorInterface::ABSOLUTE_URL); }, $urls);
-		
+		$urls = array_map(function($e) { $e["url"] = $this->generateUrl((new \App\Entity\News())->getShowRoute(), ["id" => $e["id"], "title_slug" => $e["slug"]], UrlGeneratorInterface::ABSOLUTE_URL); return $e; }, $urls);
+// dd($urls);
 		$this->generateSitemapFile($urls, "news");
 		
 		return $this->redirectToRoute("Admin_Maintenance");
@@ -1337,7 +1337,10 @@ class AdminController extends AbstractController
 			$urlElement = $xml->createElement('url');
 			$urlset->appendChild($urlElement);
 
-			$loc = $xml->createElement('loc', htmlspecialchars($url));
+			$loc = $xml->createElement('loc', htmlspecialchars($url["url"]));
+			$urlElement->appendChild($loc);
+
+			$lastmod = $xml->createElement("lastmod", $url["publicationDate"]->format("Y-m-d"));
 			$urlElement->appendChild($loc);
 		}
 
