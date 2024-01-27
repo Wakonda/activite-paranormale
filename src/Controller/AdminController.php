@@ -1341,7 +1341,7 @@ class AdminController extends AbstractController
 			$urlElement->appendChild($loc);
 
 			$lastmod = $xml->createElement("lastmod", $url["publicationDate"]->format("Y-m-d"));
-			$urlElement->appendChild($loc);
+			$urlElement->appendChild($lastmod);
 		}
 
 		$xml->save('sitemaps/sitemap_'.$filename.'.xml');
