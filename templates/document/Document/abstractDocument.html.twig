@@ -7,66 +7,55 @@
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary" />
 	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<!-- <meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" /> -->
 {% endblock %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
 	<script>
-		$(function() {
-			// Document embedded
-			var iframe = $($("#embedded_document").val());
+		document.addEventListener('DOMContentLoaded', function() {
+			var iframe = document.createElement('div');
+			iframe.innerHTML = document.querySelector('#embedded_document').value;
+			iframe = iframe.firstChild;
 			var clipboard = new Clipboard('.clip_button');
 			
 			clipboard.on('success', function(e) {
-				$("#success_copy").addClass("success");
-				$("#success_copy span").text("{{ 'document.abstract.CodeCopiedWithSuccess'|trans([], 'validators') }}");
+				document.getElementById("success_copy").classList.add("success");
+				document.querySelector("#success_copy span").innerHTML = "<div class='alert alert-success text-center'>{{ 'document.abstract.CodeCopiedWithSuccess'|trans([], 'validators') }}</div>";
 				setTimeout(fade_out, 5000);
 			});
 
-			var default_width = iframe.attr("width");
-			var default_height = iframe.attr("height");
+			var default_width = iframe.getAttribute("width");
+			var default_height = iframe.getAttribute("height");
 
-			$("input.size_embedded").keyup(function()
-			{
+			document.querySelector("input.size_embedded").addEventListener("keyup", (e) => {
 				var new_width;
 				var new_height;
 
-				if(isInt($(this).val()))
-				{
-					if($(this).attr("id") == "custom_width")
-					{
-						new_width = $(this).val();
+				if(isInt(event.target.value)) {
+					if(event.target.getAttribute("id") == "custom_width") {
+						new_width = event.target.value;
 						new_height = Math.ceil((default_height * new_width) / default_width);
-	
-						$("input#custom_height").val(new_height);
-					}
-					else if($(this).attr("id") == "custom_height")
-					{
-						new_height = $(this).val();
+						document.getElementById("custom_height").value = new_height;
+					} else if(event.target.getAttribute("id") == "custom_height") {
+						new_height = event.target.value;
 						new_width = Math.ceil((default_width * new_height) / default_height);
-						
-						$("input#custom_width").val(new_width);
+						docuement.getElementById("custom_width").value = new_width;
 					}
 
-					iframe.attr('width', new_width); 
-					iframe.attr('height', new_height); 
-				
-					$("#embedded_document").val(iframe[0].outerHTML);
+					iframe.setAttribute('width', new_width); 
+					iframe.setAttribute('height', new_height); 
+					document.getElementById("embedded_document").value = iframe.outerHTML;
 				}
 			});
-			
-			function isInt(data)
-			{
-				if (data == parseInt(data, 10))
-					return true;
-				else
-					return false;
+
+			function isInt(data) {
+				return data == parseInt(data, 10);
 			}
 
 			var fade_out = function() {
-				$("#success_copy").removeClass("success");
-				$("#success_copy span").empty();
+				document.getElementById("success_copy").classList.remove("success");
+				document.querySelector("#success_copy span").innerHTML = "";
 			}
 		});
 	</script>
@@ -132,9 +121,9 @@
 		<div class="mt-2 mb-2">
 			<span>{{ "document.abstract.DocumentSize"|trans([], "validators") }} </span>
 			<div class="input-group">
-				<input type="integer" id="custom_width" class="size_embedded form-control">
+				<input type="integer" id="custom_width" class="size_embedded form-control" value="550">
 				<span class="input-group-text"><i class="fas fa-times"></i></span>
-				<input type="integer" id="custom_height" class="size_embedded form-control">
+				<input type="integer" id="custom_height" class="size_embedded form-control" value="309">
 			</div>
 		</div>
 		
