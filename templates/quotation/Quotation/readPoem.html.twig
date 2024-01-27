@@ -8,7 +8,7 @@
 	<hr>
 	{{ entity.textQuotation|nl2br }}
 	<hr>
-	<div id="author_quotation"><a href="{{ path('Biography_Show', { 'id' : entity.authorQuotation.id, 'slug': entity.authorQuotation.slug }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></div>
+	<div id="author_quotation"><a href="{{ path('Biography_Show', { id: entity.authorQuotation.id, title_slug: entity.authorQuotation.slug }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></div>
 	<hr>
 
 	{% if entity.images is not empty %}

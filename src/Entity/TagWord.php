@@ -95,6 +95,14 @@ class TagWord
 		return preg_replace("/[^a-zA-Z0-9_]/", "", $normalized);
 	}
 
+	public function getShowRoute() {
+		return "ap_tags_search";
+	}
+
+	public function getUrlSlug() {
+		return $this->slug;
+	}
+
     /**
      * Get id
      *

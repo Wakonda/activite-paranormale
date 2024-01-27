@@ -84,9 +84,24 @@
 		{% endif %}
 	</div>
 	
-	<a href="{{ path('Biography_Show', { 'id' : entity.id, 'slug' : entity.slug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+	<a href="{{ path('Biography_Show', { id: entity.id, title_slug: entity.slug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}
 
 {% block data_bottom %}
 	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Biography_Admin_Internationalization", "showRoute": "Biography_Admin_Show", "editRoute": "Biography_Admin_Edit"})) }}
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+
+	{{ macro_index.twitter_form(entity) }}
+	{{ macro_index.mastodon_form(entity) }}
+	{{ macro_index.diaspora_form(entity) }}
+	{{ macro_index.facebook_form(entity) }}
+{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.twitter_form_js() }}
+	{{ macro_index.facebook_form_js() }}
+	{{ macro_index.mastodon_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
 {% endblock %}

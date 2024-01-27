@@ -69,7 +69,7 @@ class DocumentController extends AbstractController
 			foreach($entity->getAuthorDocumentBiographies() as $authorDocumentBiography) {
 				$correctBio = $em->getRepository(Biography::class)->getBiographyInCorrectLanguage($authorDocumentBiography, $request->getLocale());
 				if (!empty($correctBio))
-					$row[] = '<p><a href="'.$this->generateUrl('Biography_Show', ['id' => $correctBio->getId(), 'slug' => $correctBio->getSlug()]).'" alt="">'.$correctBio->getTitle().'</a></p>';
+					$row[] = '<p><a href="'.$this->generateUrl('Biography_Show', ['id' => $correctBio->getId(), 'title_slug' => $correctBio->getSlug()]).'" alt="">'.$correctBio->getTitle().'</a></p>';
 				else
 					$row[] = '<p>'.$authorDocumentBiography->getTitle().'</p>';
 			}

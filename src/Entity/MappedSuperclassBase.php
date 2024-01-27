@@ -108,15 +108,13 @@ class MappedSuperclassBase implements SearchEngineInterface
 
 	public function authorToString()
 	{
-		if($this->isAnonymous == 1)
-		{
+		if($this->isAnonymous == 1) {
 			if($this->pseudoUsed != "")
 				return $this->pseudoUsed;
 
 			return "Anonymous";
 		}
-		else
-		{
+		else {
 			if($this->author == null)
 				return $this->pseudoUsed;
 			else

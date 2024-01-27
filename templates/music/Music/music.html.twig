@@ -52,7 +52,7 @@
 				<tbody>
 					{% for member in members %}
 						<tr>
-							<td><a href="{{ path('Biography_Show', {id: member.biographyId, slug: member.biographySlug}) }}" title="{{ member.biographyTitle }}">{{ member.stageName }}</a>{% if  member.biographyTitle != member.stageName %} (<i>{{ member.biographyTitle }}</i>) {% endif %}</td>
+							<td><a href="{{ path('Biography_Show', {id: member.biographyId, title_slug: member.biographySlug}) }}" title="{{ member.biographyTitle }}">{{ member.stageName }}</a>{% if  member.biographyTitle != member.stageName %} (<i>{{ member.biographyTitle }}</i>) {% endif %}</td>
 							<td>
 							{% set occupationArray = [] %}
 							{% for occupation in member.occupations %}

@@ -3,7 +3,7 @@
 	<br>
 	
 	{% if entity.isQuotationFamily() %}
-		(<a class="fw-bold" href="{{ path('Biography_Show', {'id': entity.authorQuotation.id, 'slug': entity.authorQuotation.slug} ) }}" title="{{ entity.authorQuotation }}">{{entity.authorQuotation}}</a>)
+		(<a class="fw-bold" href="{{ path('Biography_Show', {id: entity.authorQuotation.id, title_slug: entity.authorQuotation.slug} ) }}" title="{{ entity.authorQuotation }}">{{entity.authorQuotation}}</a>)
 	{% else %}
 		(<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" /> <a href="{{ path('Proverb_Country_Show', { 'id' : entity.country.id, 'title': entity.country.title }) }}" alt="{{ entity.country.title }}" class="fw-bold">{{ entity.country.title }}</a>)
 	{% endif %}

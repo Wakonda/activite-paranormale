@@ -139,6 +139,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	{
 		return $this->title;
 	}
+
 	/**
 	 * @Groups("api_read")
 	 */
@@ -152,8 +153,17 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 
 	public function __clone()
 	{
-		if($this->illustration)
+		if(!empty($this->illustration))
 			$this->illustration = clone $this->illustration;
+	}
+
+	public function getShowRoute()
+	{
+		return "Biography_Show";
+	}
+
+	public function getUrlSlug() {
+		return $this->slug;
 	}
 
 	public function getBirthDateToArray() {
