@@ -6,26 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="Wakonda">
-	
+
 	{% block meta_plus %}{% endblock %}
 
     <title>{% block title %}Activité-Paranormale{% endblock %}</title>
-	
+
 	{% block stylesheets %}
 		{{ encore_entry_link_tags('app_mobile') }}
 	{% endblock %}
 	
 	{% block header_mobile_plus %}{% endblock %}
-	
-	{% import "index/macro/macro_index.html.twig" as macro_index %}
-	{{ macro_index.tarteaucitron_js() }}
-
-	<script>
-		tarteaucitron.user.gtagUa = 'G-F5KWDJ9VW2';
-		tarteaucitron.user.gtagMore = function () { };
-		(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
-	</script>
-
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
   </head>
 
@@ -47,7 +37,6 @@
             <li class="nav-item"><a class="nav-link {{ 'search'|linkFollowMobile(currentRoute) }}" href="{{ path('ap_newsmobile_search') }}">{{ "mobile.main.Search"|trans([], "validators") }}</a></li>
 			<li class="nav-item dropdown">
 				<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" id="navbarDropdownMenuLink" aria-expanded="false">{{ "mobile.main.Contribute"|trans([], "validators") }} <span class="caret"></span></a>
-				
 				<div class="dropdown-menu">
 					<a class="dropdown-item" href="{{ path('ap_witchcraftmobile_new') }}"><i class="fas fa-angle-right"></i> {{ "witchcraft.new.AddRitual"|trans([], "validators") }}</a>
 					<a class="dropdown-item" href="{{ path('ap_testimonymobile_new') }}"><i class="fas fa-angle-right"></i> {{ "mobile.testimony.Testify"|trans([], "validators") }}</a>
@@ -58,7 +47,6 @@
         </div>
       </div>
     </nav>
-
     <div class="container theme-showcase" role="main">
 		<div class="card">
 			<div class="card-header">
@@ -67,12 +55,12 @@
 			<div class="card-body">
 				{% for flash_message in app.session.flashBag.get('success') %}
 				<div class="alert alert-success">
-				{{ flash_message }}
+					{{ flash_message }}
 				</div>
 				{% endfor %}
 
 				{% block body_content %}{% endblock %}
-				
+
 				{% if is_application() == false %}
 					<div class="ads-container">
 						{% set ads = advertising(728, 90) %}
@@ -123,7 +111,7 @@
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" width="42" alt="fr" /></a>
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" width="42" alt="en" /></a>
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/spanishFlagMobile.png') }}" width="42" alt="es" /></a>
-      
+
 		<div class="mt-2">
 			{% if app.request.locale == "fr" %}
 				<a class="btn social-share facebook btn-sm" href="https://www.facebook.com/activiteparanormale" title="Facebook" target="_blank"><i class="fab fa-facebook-square fa-xl"></i></a>

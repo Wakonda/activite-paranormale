@@ -18,15 +18,6 @@
 
 		{{ encore_entry_script_tags('app_v3') }}
 
-		{% import "index/macro/macro_index.html.twig" as macro_index %}
-		{{ macro_index.tarteaucitron_js() }}
-
-        <script>
-			tarteaucitron.user.gtagUa = 'G-F5KWDJ9VW2';
-			tarteaucitron.user.gtagMore = function () { };
-			(tarteaucitron.job = tarteaucitron.job || []).push('gtag');
-        </script>
-
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
 	</head>
@@ -353,7 +344,7 @@
 			  } catch (e) {
 				adBlockEnabled = true
 			  } finally {
-				if(document.cookie.includes("tarteaucitron=!adsense=true") && adBlockEnabled == false) {
+				if(adBlockEnabled == false) {
 					for (let element of document.getElementsByClassName("advertising-alternative"))
 						element.classList.add("d-none");
 					for (let element of document.getElementsByClassName("adsbygoogle"))

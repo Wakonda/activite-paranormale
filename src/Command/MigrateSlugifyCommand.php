@@ -37,7 +37,7 @@ class MigrateSlugifyCommand extends Command
 		$entities = $this->em->getRepository("\App\Entity\Stores\Store")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE store SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE Store SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
 		$entities = $this->em->getRepository("\App\Entity\Biography")->findAll();

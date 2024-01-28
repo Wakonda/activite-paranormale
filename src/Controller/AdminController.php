@@ -1340,7 +1340,7 @@ class AdminController extends AbstractController
 			$loc = $xml->createElement('loc', htmlspecialchars($url["url"]));
 			$urlElement->appendChild($loc);
 
-			$lastmod = $xml->createElement("lastmod", $url["publicationDate"]->format("Y-m-d"));
+			$lastmod = $xml->createElement("lastmod", $url["writingDate"]->format("Y-m-d"));
 			$urlElement->appendChild($lastmod);
 		}
 

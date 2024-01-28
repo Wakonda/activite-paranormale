@@ -64,6 +64,18 @@ class Contact
 	 */
 	private $stateContact;
 
+    /**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
+	 * @ORM\JoinColumn(name="sender_id", referencedColumnName="id", nullable=true)
+     */
+    protected $sender;
+
+    /**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
+	 * @ORM\JoinColumn(name="recipient_id", referencedColumnName="id", nullable=true)
+     */
+    protected $recipient;
+
 	public function __construct()
 	{
 		$this->dateContact = new \DateTime();
@@ -197,5 +209,25 @@ class Contact
     public function getStateContact()
     {
         return $this->stateContact;
+    }
+
+    public function setSender(User $sender)
+    {
+        $this->sender = $sender;
+    }
+
+    public function getSender()
+    {
+        return $this->sender;
+    }
+
+    public function setRecipient(User $recipient)
+    {
+        $this->recipient = $recipient;
+    }
+
+    public function getRecipient()
+    {
+        return $this->recipient;
     }
 }
