@@ -354,7 +354,7 @@
 				$dateString = $fmt->format($date);
 
 				if($time)
-					$dateString = $dateString.' - '.$date->format('H:i');
+					$dateString = (new \App\Service\APDate())->doDateTime($language, $date); //$dateString.' - '.$date->format('H:i');
 
 				return $dateString;
 			}

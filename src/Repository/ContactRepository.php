@@ -50,4 +50,81 @@ class ContactRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getDatatablesPrivateMessage($type, $user, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
+	{
+/*
+
+select stateContact
+from contact
+where id in (
+select MAX(id)
+from contact
+where initialmessage_id = 4490
+group by initialmessage_id
+order by MAX(id) desc)
+
+*/
+		$subSubQb = $this->createQueryBuilder("c3");
+		$subSubQb->select("MAX(c3.id)")
+		         ->where("c3.initialMessage = c.initialMessage")
+				 ->andWhere("c3.recipient = :user")
+				 ->groupBy("c3.initialMessage")
+				 ->orderBy("c3.id", "desc");
+		
+		$subQb = $this->createQueryBuilder("c2");
+		$subQb->select("c2.stateContact")
+			  ->where("c2.id IN (".$subSubQb->getDQL().")");
+
+		$qb = $this->createQueryBuilder('c');
+
+		$aColumns = ['c.subjectContact', null, "c.dateContact"];
+
+		if($type == "inbox")
+			$qb->where("c.recipient = :user");
+		else
+			$qb->where("c.sender = :user");
+
+		$qb->setParameter("user", $user);
+		$qb->groupBy("c.initialMessage");
+
+		if($count) {
+			$qb->select("count(c)");
+			// dd($user->getId(), $qb->getQuery()->getResult());
+			return $qb->getQuery()->getSingleScalarResult();
+		}
+		else 
+		{
+			$qb->addSelect("(".$subQb->getDQL().") AS reading");
+			$qb->addSelect("MAX(c.dateContact) AS dateContact");
+
+			if(!empty($sortDirColumn))
+			   $qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+
+			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+		}
+// dd($qb->getQuery()->getResult());
+		return $qb->getQuery()->getResult();
+	}
+
+	public function countUnreadMessage($user) {
+		$qb = $this->createQueryBuilder('c');
+
+		$qb->select("COUNT(c)")
+		   ->where("c.recipient = :user")
+		   ->setParameter("user", $user)
+		   ->andWhere("c.stateContact = 0 OR c.stateContact IS NULL");
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
+
+	public function getPrivateMessageById($initialMessage) {
+		$qb = $this->createQueryBuilder("c");
+		
+		$qb->where("c.initialMessage = :initialMessageId")
+		   ->setParameter("initialMessageId", $initialMessage->getId())
+		   ->orderBy("c.dateContact", "desc");
+		
+		return $qb->getQuery()->getResult();
+	}
 }

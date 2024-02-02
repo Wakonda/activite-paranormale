@@ -6,6 +6,24 @@ Contact_Send:
     path:  /contact/send
     controller: App\Controller\ContactController::sendAction
 
+Contact_SendPrivateMessage:
+    path:  /contact/sendPrivateMessage/{userId}/{initialMessageId}
+    controller: App\Controller\ContactController::sendPrivateMessage
+    defaults:
+        initialMessage: null
+
+Contact_IndexPrivateMessage:
+    path:  /contact/indexPrivateMessage
+    controller: App\Controller\ContactController::indexPrivateMessage
+
+Contact_PrivateMessageDatatables:
+    path: /contact/privateMessageDatatables/{type}
+    controller: App\Controller\ContactController::privateMessageDatatables
+
+Contact_ReadPrivateMessage:
+    path:  /contact/readPrivateMessage/{messageId}/{initialMessageId}
+    controller: App\Controller\ContactController::readPrivateMessage
+
 # Administration
 Contact_Admin:
     resource: "routing/contactadmin.yml"

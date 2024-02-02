@@ -28,7 +28,7 @@
 
 		public function doDateTime($language, $datetime)
 		{
-			$dateString = utf8_decode($this->doDate($language, $datetime));
+			$dateString = $this->doDate($language, $datetime);
 
 			if($dateString != "-")
 			{
@@ -46,7 +46,7 @@
 						break;
 				}
 
-				return utf8_encode($dateTimeString);
+				return $dateTimeString;
 			}
 
 			return "-";

@@ -1,0 +1,30 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ initialMessage.subjectContact }}{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>{{ initialMessage.subjectContact }}</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}private-message-user-read.jpg" alt="Ghost" /></p>
+	<br>
+	<hr class="hr2">
+
+	{% for entity in entities %}
+		{% set color = entity.recipient.id == app.user.id ? "orangered" : "dodgerblue" %}
+		<fieldset class="border border-success p-2" style="border-color: {{ color }} !important">
+			<legend class="scheduler-border"><i class="fa-solid fa-user-tie" style="color: {{ color }}"></i> {{ entity.sender.username }} - <i class="fa-solid fa-calendar-week" style="color: {{ color }}"></i> {{ entity.dateContact|dodate(true, app.request.locale) }}</legend>
+			{{ entity.messageContact|raw }}
+		</fieldset>
+		<br>
+	{% endfor %}
+
+	{% set recipient = app.user.id == initialMessage.sender.id ? initialMessage.recipient : initialMessage.sender %}
+
+	<a href="{{ path('Contact_SendPrivateMessage', {userId: recipient.id, initialMessageId: initialMessage.id}) }}" class="btn btn-primary float-end"><i class="fa-solid fa-reply"></i> Répondre</a>
+
+	<br>
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

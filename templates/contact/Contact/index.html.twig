@@ -16,8 +16,8 @@
 {% block APBlog_body %}
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}contact.jpg" alt="Fairy" /></p>
-	<br />
-	<hr class="hr2"/>
+	<br>
+	<hr class="hr2">
 		{{ form_start(form, {'action': path('Contact_Send'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 			<div class="form-table form-table-4cols form-table-collapse">
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoContact, "contact.index.Name"|trans([], "validators")) }}</div>

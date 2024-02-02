@@ -1,0 +1,101 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}Mes messages privés{% endblock %}
+
+{% block header_plus %}
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', () => {
+			oTable = $('table#inbox_datatables').DataTable( {
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"searching": true,
+				"info": true,
+				"ordering": true,
+				"lengthChange": true,
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"order": [[ 0, "asc" ]],
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					"url": "{{ path('Contact_PrivateMessageDatatables', {type: 'inbox'}) }}",
+					"type": "GET"
+				}
+			});
+		});
+
+		document.addEventListener('DOMContentLoaded', () => {
+			oTable = $('table#outbox_datatables').DataTable( {
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+				},
+				"searching": true,
+				"info": true,
+				"ordering": true,
+				"lengthChange": true,
+				"pagingType": "full_numbers",
+				"pageLength": {{ total_line_display }},
+				"order": [[ 0, "asc" ]],
+				"processing": true,
+				"serverSide": true,
+				"ajax": {
+					"url": "{{ path('Contact_PrivateMessageDatatables', {type: 'outbox'}) }}",
+					"type": "GET"
+				}
+			});
+		});
+	</script>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>Mes messages privés</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}private-message-user.jpg" alt="Skeleton reading book" /></p>
+	<br>
+	<hr class="hr2">
+	<div class="search-result-box card-box mt-4">
+		<ul class="nav nav-tabs tabs-bordered" role="tablist">
+			<li class="nav-item"><a class="nav-link active btn btn-success me-2" id="inbox-tab" data-bs-toggle="tab" href="#inbox" role="tab" aria-controls="inbox" aria-selected="true"><i class="fa-solid fa-inbox"></i> Inbox <span class="badge bg-primary ms-1">{{ unreadMessage }}</span></a></li>
+			<li class="nav-item"><a class="nav-link btn btn-danger" id="outbox-tab" data-bs-toggle="tab" href="#outbox" role="tab" aria-controls="outbox" aria-selected="outbox"><i class="fa-solid fa-right-from-bracket"></i> Outbox</a></li>
+		</ul>
+		<hr>
+		<div class="tab-content">
+			<div class="tab-pane fade show active" id="inbox" role="tabpanel" aria-labelledby="inbox-tab">
+				<table id="inbox_datatables" style="width: 100%" class="table table-bordered">
+					<thead>
+						<th class="label_form">Sujet</th>
+						<th class="label_form">Auteur</th>
+						<th class="label_form">Date</th>
+						<th class="label_form">Lire</th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+
+			<div class="tab-pane fade" id="outbox" role="tabpanel" aria-labelledby="outbox-tab">
+				<table id="outbox_datatables" style="width: 100%" class="table table-bordered">
+					<thead>
+						<th class="label_form">Sujet</th>
+						<th class="label_form">Destinataire</th>
+						<th class="label_form">Date</th>
+						<th class="label_form">Lire</th>
+					</thead>
+					<tbody>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<br>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

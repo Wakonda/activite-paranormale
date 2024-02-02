@@ -25,14 +25,14 @@ class Contact
     /**
      * @var string $pseudoContact
      *
-     * @ORM\Column(name="pseudoContact", type="string", length=255)
+     * @ORM\Column(name="pseudoContact", type="string", length=255, nullable=true)
      */
     private $pseudoContact;
 
     /**
      * @var string $emailContact
      *
-     * @ORM\Column(name="emailContact", type="string", length=255)
+     * @ORM\Column(name="emailContact", type="string", length=255, nullable=true)
      */
     private $emailContact;
 
@@ -76,9 +76,18 @@ class Contact
      */
     protected $recipient;
 
+    /**
+	 * @ORM\ManyToOne(targetEntity="App\Entity\Contact")
+     */
+    protected $initialMessage;
+
 	public function __construct()
 	{
 		$this->dateContact = new \DateTime();
+	}
+
+	public function getSenderString() {
+		return !empty($sender) ? $sender->getUsername() : $this->pseudoContact;
 	}
 
     /**
@@ -229,5 +238,15 @@ class Contact
     public function getRecipient()
     {
         return $this->recipient;
+    }
+
+    public function setInitialMessage($initialMessage)
+    {
+        $this->initialMessage = $initialMessage;
+    }
+
+    public function getInitialMessage()
+    {
+        return $this->initialMessage;
     }
 }
