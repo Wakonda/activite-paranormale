@@ -5,6 +5,8 @@
 				{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
 			{% elseif entity.imageEmbeddedCode is not empty %}
 				{% include 'store/Store/_store_embedded_image.html.twig' with { id: entity.id, title: entity.title, embeddedCode: entity.imageEmbeddedCode } %}
+			{% else %}
+				<img src="{{ path('Store_GenerateEmbeddedCode', {id: entity.id}) }}" class="w-100"/>
 			{% endif %}
 		</div>
 

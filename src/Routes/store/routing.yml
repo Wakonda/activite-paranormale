@@ -18,6 +18,10 @@ Store_Random:
     path: /store/random
     controller: App\Controller\StoreController::randomAction
 
+Store_GenerateEmbeddedCode:
+    path: /store/generate_embedded_code/{id}
+    controller: App\Controller\StoreController::generateEmbeddedCode
+
 # Administration
 Store_Admin:
     resource: "routing/storeadmin.yml"

@@ -177,14 +177,15 @@ class StoreAdminType extends AbstractType
 		if(!empty($fields))
 			$builder->add('characteristic', StoreEditType::class, ['required' => false, "fields" => $fields]);
 
-		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event)
+		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($options)
 		{
 			$data = $event->getData();
 			$form = $event->getForm();
 			$notBlank = new NotBlank();
 
 			if(empty($form->get("photo_selector")->getData()) and empty($form->get("photo")->getData()) and empty($form->get("imageEmbeddedCode")->getData()))
-				$form->get('imageEmbeddedCode')->addError(new FormError($notBlank->message));
+				if($data->getPlatform() != Store::AMAZON_PLATFORM)
+					$form->get('imageEmbeddedCode')->addError(new FormError($notBlank->message));
 			
 			if($data->getPlatform() == Store::AMAZON_PLATFORM and empty($data->getAmazonCode()))
 				$form->get('amazonCode')->addError(new FormError($notBlank->message));

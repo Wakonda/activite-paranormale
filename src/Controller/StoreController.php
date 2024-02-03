@@ -7,10 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 use App\Entity\Stores\Store;
 use App\Form\Type\StoreSearchType;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Service\PHPImage;
 
 class StoreController extends AbstractController
 {
@@ -63,6 +65,7 @@ class StoreController extends AbstractController
 		$locale = $request->query->get("locale", $request->getLocale());
 
 		$entity = $em->getRepository(Store::class)->getRandom($locale, $category);
+		$entity = $em->getRepository(Store::class)->find(90);
 
 		if(empty($entity))
 			return new Response();
@@ -71,6 +74,10 @@ class StoreController extends AbstractController
 
 		if(empty($entity->getimageEmbeddedCode()))
 			$media = "<img src='".$request->getUriForPath('/extended/photo/store/'.$entity->getPhoto())."'>";
+		
+		if(empty($entity->getimageEmbeddedCode()) and empty($entity->getPhoto())) {
+			$media = "<img src='".$this->generateUrl("Store_GenerateEmbeddedCode", ['id' => $entity->getId()], UrlGeneratorInterface::ABSOLUTE_URL)."'>";
+		}
 
 		$text = "<div style='text-align: center'>".$media."</div>";
 		$text .= "<br>";
@@ -83,4 +90,36 @@ class StoreController extends AbstractController
 	
         return new Response($text);
     }
+
+	public function generateEmbeddedCode(Request $request, EntityManagerInterface $em, PHPImage $image, $id) {
+		$entity = $em->getRepository(Store::class)->find($id);
+
+		$textColor = [255, 255, 255];
+		$strokeColor = [255, 255, 255];
+
+		$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'Edmundsbury_Serif.ttf';
+
+		$bg = $request->getUriForPath('/extended/photo/store/bookcover.png');
+		$image->setDimensionsFromImage($bg);
+		$image->draw($bg);
+		$image->setAlignHorizontal('center');
+		$image->setAlignVertical('center');
+		$image->setFont($font);
+		$image->setTextColor($textColor);
+		$image->setStrokeWidth(1);
+		$image->setStrokeColor($strokeColor);
+		$gutterY = 60;
+		$gutterX = 100;
+		$fontSizeAuthor = 30;
+
+		$image->textBox($entity->getTitle(), [
+			'width' => $image->getWidth() - $gutterX * 2,
+			'height' => $image->getHeight() - $gutterY * 2,
+			'fontSize' => 45,
+			'x' => 70,
+			'y' => $gutterY
+		]);
+
+		return new \Symfony\Component\HttpFoundation\StreamedResponse(fn () => imagepng($image->getResource()), 200, ['Content-Type' => 'image/png']);
+	}
 }
