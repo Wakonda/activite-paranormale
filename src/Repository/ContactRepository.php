@@ -53,18 +53,6 @@ class ContactRepository extends EntityRepository
 
 	public function getDatatablesPrivateMessage($type, $user, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
-/*
-
-select stateContact
-from contact
-where id in (
-select MAX(id)
-from contact
-where initialmessage_id = 4490
-group by initialmessage_id
-order by MAX(id) desc)
-
-*/
 		$subSubQb = $this->createQueryBuilder("c3");
 		$subSubQb->select("MAX(c3.id)")
 		         ->where("c3.initialMessage = c.initialMessage")
@@ -77,21 +65,27 @@ order by MAX(id) desc)
 			  ->where("c2.id IN (".$subSubQb->getDQL().")");
 
 		$qb = $this->createQueryBuilder('c');
+		
+		if(!empty($sSearch))
+		{
+			$search = "%".$sSearch."%";
+			$qb->andWhere('c.subjectContact LIKE :search')
+			   ->setParameter('search', $search);
+		}
 
 		$aColumns = ['c.subjectContact', null, "c.dateContact"];
 
 		if($type == "inbox")
-			$qb->where("c.recipient = :user");
+			$qb->andWhere("c.recipient = :user");
 		else
-			$qb->where("c.sender = :user");
+			$qb->andWhere("c.sender = :user");
 
 		$qb->setParameter("user", $user);
 		$qb->groupBy("c.initialMessage");
 
 		if($count) {
-			$qb->select("count(c)");
-			// dd($user->getId(), $qb->getQuery()->getResult());
-			return $qb->getQuery()->getSingleScalarResult();
+			$qb->select("count(c) AS quantity");
+			return count($qb->getQuery()->getScalarResult());
 		}
 		else 
 		{
@@ -103,7 +97,7 @@ order by MAX(id) desc)
 
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 		}
-// dd($qb->getQuery()->getResult());
+
 		return $qb->getQuery()->getResult();
 	}
 

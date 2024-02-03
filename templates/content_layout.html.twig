@@ -11,6 +11,17 @@
 {% block content %}
 	{{ parent() }}
 	<div class="content">
+		{% for flashMessage in app.session.flashbag.get('success') %}
+		<div class="alert alert-success text-center">
+			{{ flashMessage|raw }}
+		</div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+		<div class="alert alert-danger text-center">
+			{{ flashMessage|raw }}
+		</div>
+		{% endfor %}
+	
 		{% block APBlog_body %}
 		{% endblock %}
 	</div>
@@ -25,6 +36,17 @@
 {% block content %}
 	{{ parent() }}
 	<div class="content">
+		{% for flashMessage in app.session.flashbag.get('success') %}
+		<div class="alert alert-success text-center">
+			{{ flashMessage|raw }}
+		</div>
+		{% endfor %}
+		{% for flashMessage in app.session.flashbag.get('error') %}
+		<div class="alert alert-danger text-center">
+			{{ flashMessage|raw }}
+		</div>
+		{% endfor %}
+
 		{% block APBlog_body %}
 		{% endblock %}
 	</div>

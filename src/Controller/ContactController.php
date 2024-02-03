@@ -70,7 +70,7 @@ class ContactController extends AbstractController
 	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $userId, $initialMessageId = null) {
         $entity = new Contact();
 		$recipient = $em->getRepository(User::class)->find($userId);
-		
+//dd($this->getUser());
 		$initialMessageEntity = null;
 		
 		if(!empty($initialMessageId)) {
@@ -82,9 +82,14 @@ class ContactController extends AbstractController
 
 		if ($request->isMethod('POST')) {
 			$form->handleRequest($request);
-			
-			if ($form->isSubmitted() && $form->isValid()) {
+
 				$session = $request->getSession();
+
+$params = $request->request->all($form->getName());
+		if($params["captcha"] != $session->get("captcha_word"))
+			$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
+
+			if ($form->isSubmitted() && $form->isValid()) {
 
 				if(!empty($user = $this->getUser()))
 					$entity->setSender($user);
@@ -95,8 +100,11 @@ class ContactController extends AbstractController
 				$em->flush();
 				
 				$session->getFlashBag()->add('success', $translator->trans('admin.blogger.DeleteSuccess', [], 'validators'));
+				// dd($this->generateUrl("apadminuser_show", ["id" => $userId]));
+				if(!empty($this->getUser()))
+					return $this->redirect($this->generateUrl("Contact_IndexPrivateMessage"));
 				
-				return $this->redirect($this->generateUrl("Contact_IndexPrivateMessage"));
+				return $this->redirect($this->generateUrl("APUserBunble_otherprofile", ["id" => $userId]));
 			}
 		}
 
@@ -109,12 +117,14 @@ class ContactController extends AbstractController
 	}
 
 	public function indexPrivateMessage(EntityManagerInterface $em) {
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		$unreadMessage = $em->getRepository(Contact::class)->countUnreadMessage($this->getUser());
 
 		return $this->render("contact/Contact/indexPrivateMessage.html.twig", ["unreadMessage" => $unreadMessage]);
 	}
 
 	public function readPrivateMessage(EntityManagerInterface $em, $messageId, $initialMessageId) {
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		$initialMessage = $em->getRepository(Contact::class)->find($initialMessageId);
 		$entities = $em->getRepository(Contact::class)->findBy(["initialMessage" => $initialMessageId, "recipient" => $this->getUser()], ["dateContact" => "desc"]);
 
@@ -130,6 +140,7 @@ class ContactController extends AbstractController
 
 	public function privateMessageDatatables(Request $request, EntityManagerInterface $em, APDate $date, $type)
 	{
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
 		$sSearch = $request->query->all('search')["value"];

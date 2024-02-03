@@ -1,6 +1,6 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "contact.index.ContactUs"|trans([], "validators") }}{% endblock %}
+{% block title %}Message à {{ recipient.username }}{% endblock %}
 
 {% block h2_title %}
 	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>Message à {{ recipient.username }}</h2>

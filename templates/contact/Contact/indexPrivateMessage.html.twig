@@ -19,9 +19,15 @@
 				"lengthChange": true,
 				"pagingType": "full_numbers",
 				"pageLength": {{ total_line_display }},
-				"order": [[ 0, "asc" ]],
+				"order": [[ 2, "desc" ]],
 				"processing": true,
 				"serverSide": true,
+				"columns": [
+					null,
+					{ "orderable": false },
+					null,
+					{ "orderable": false }
+				],
 				"ajax": {
 					"url": "{{ path('Contact_PrivateMessageDatatables', {type: 'inbox'}) }}",
 					"type": "GET"
@@ -40,9 +46,15 @@
 				"lengthChange": true,
 				"pagingType": "full_numbers",
 				"pageLength": {{ total_line_display }},
-				"order": [[ 0, "asc" ]],
+				"order": [[ 2, "desc" ]],
 				"processing": true,
 				"serverSide": true,
+				"columns": [
+					null,
+					{ "orderable": false },
+					null,
+					{ "orderable": false }
+				],
 				"ajax": {
 					"url": "{{ path('Contact_PrivateMessageDatatables', {type: 'outbox'}) }}",
 					"type": "GET"

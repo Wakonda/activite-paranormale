@@ -14,27 +14,25 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class ContactPrivateMessageType extends AbstractType
 {
-private $token;
+	private $token;
 
-public function __construct(TokenStorageInterface $token)
-{
-   $this->token = $token;
-}
+	public function __construct(TokenStorageInterface $token)
+	{
+	   $this->token = $token;
+	}
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$sender = $this->token->getToken()->getUser();
-
-		if(empty($sender)) {
+		if(empty($this->token->getToken()) or empty($this->token->getToken()->getUser())) {
 			$builder
-				->add('pseudoContact', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-				->add('emailContact', TextType::class, array('required' => true, 'constraints' => array(new NotBlank(), new Email())))
-				->add('captcha', TextType::class, array('required' => true, 'constraints' => [new NotBlank()], 'mapped' => false));
+				->add('pseudoContact', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+				->add('emailContact', TextType::class, ['required' => true, 'constraints' => [new NotBlank(), new Email()]])
+				->add('captcha', TextType::class, ['required' => true, 'constraints' => [new NotBlank()], 'mapped' => false]);
         }
-// dd($options["initialMessage"]);
+
 		$builder
-			->add('subjectContact', TextType::class, array('required' => true, 'constraints' => [new NotBlank()], "attr" => ["readonly" => !empty($options["initialMessage"])]))
-            ->add('messageContact', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+			->add('subjectContact', TextType::class, ['required' => true, 'constraints' => [new NotBlank()], "attr" => ["readonly" => !empty($options["initialMessage"])]])
+            ->add('messageContact', TextareaType::class, ['required' => true, 'constraints' => [new NotBlank()]])
 		;
     }
 
@@ -45,9 +43,9 @@ public function __construct(TokenStorageInterface $token)
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Contact',
 			"initialMessage" => null
-		));
+		]);
 	}
 }

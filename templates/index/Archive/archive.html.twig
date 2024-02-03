@@ -7,7 +7,6 @@
 {% block APBlog_body %}
 	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/archive_index.jpg') }}" width="550" alt="Strange dream" /></p>
 	<hr>
-
 	{% if is_granted('ROLE_ARCHIVIST') == false %}
 		{{ ("index.archive.Unauthorized"|trans({"%urlAccount%": path("Registration_Register"), "%urlContact%": path("Contact_Index")}, "validators"))|raw }}
 		<br>
