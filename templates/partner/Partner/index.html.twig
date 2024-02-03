@@ -13,9 +13,9 @@
 		<h3>{{ partner.title }}</h3>
 		<p class="image">
 		{% if partner.isActive == false %}
-			{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class' : 'inactive mx-auto d-block img-fluid' })|raw }}
+			{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class' : 'inactive mx-auto d-block img-fluid bg-light p-2' })|raw }}
 		{% else %}
-			<a href="{{ partner.link }}" target="_blank" >{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</a>
+			<a href="{{ partner.link }}" target="_blank" >{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class': 'mx-auto d-block img-fluid bg-light p-2'})|raw }}</a>
 		{% endif %}
 		</p>
 		{% if partner.isActive == false %}

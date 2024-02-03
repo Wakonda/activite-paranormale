@@ -99,8 +99,8 @@ $params = $request->request->all($form->getName());
 				$em->persist($entity);
 				$em->flush();
 				
-				$session->getFlashBag()->add('success', $translator->trans('admin.blogger.DeleteSuccess', [], 'validators'));
-				// dd($this->generateUrl("apadminuser_show", ["id" => $userId]));
+				$session->getFlashBag()->add('success', $translator->trans('privateMessage.send.Success', [], 'validators'));
+
 				if(!empty($this->getUser()))
 					return $this->redirect($this->generateUrl("Contact_IndexPrivateMessage"));
 				

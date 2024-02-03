@@ -1,6 +1,6 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}Mes messages privés{% endblock %}
+{% block title %}{{ "privateMessage.index.MyPrivateMessages"|trans([], "validators") }}{% endblock %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
@@ -67,7 +67,7 @@
 {% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>Mes messages privés</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>{{ "privateMessage.index.MyPrivateMessages"|trans([], "validators") }}</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}
@@ -84,10 +84,10 @@
 			<div class="tab-pane fade show active" id="inbox" role="tabpanel" aria-labelledby="inbox-tab">
 				<table id="inbox_datatables" style="width: 100%" class="table table-bordered">
 					<thead>
-						<th class="label_form">Sujet</th>
-						<th class="label_form">Auteur</th>
-						<th class="label_form">Date</th>
-						<th class="label_form">Lire</th>
+						<th class="label_form">{{ "privateMessage.index.Subject"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "privateMessage.index.Author"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "privateMessage.index.Date"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "privateMessage.index.Read"|trans([], "validators") }}</th>
 					</thead>
 					<tbody>
 					</tbody>
@@ -97,10 +97,10 @@
 			<div class="tab-pane fade" id="outbox" role="tabpanel" aria-labelledby="outbox-tab">
 				<table id="outbox_datatables" style="width: 100%" class="table table-bordered">
 					<thead>
-						<th class="label_form">Sujet</th>
-						<th class="label_form">Destinataire</th>
-						<th class="label_form">Date</th>
-						<th class="label_form">Lire</th>
+						<th class="label_form">{{ "privateMessage.index.Subject"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "privateMessage.index.Recipient"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "privateMessage.index.Date"|trans([], "validators") }}</th>
+						<th class="label_form">{{ "privateMessage.index.Read"|trans([], "validators") }}</th>
 					</thead>
 					<tbody>
 					</tbody>

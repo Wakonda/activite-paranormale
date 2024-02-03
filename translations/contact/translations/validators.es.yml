@@ -23,3 +23,19 @@ contact:
         Read: "¿Leyendo?"
         Subject: "Tema"
         Date: "Fecha"
+privateMessage:
+    index:
+        MyPrivateMessages: "Mis mensajes privados"
+        SendPrivateMessage: "Enviar un mensaje privado"
+        Inbox: "Bandeja de entrada"
+        Outbox: "Bandeja de salida"
+        Subject: "Tema"
+        Author: "Autor"
+        Recipient: "Destinatario"
+        Date: "Fecha"
+        Read: "Leer"
+    read:
+        Reply: "Responder"
+    send:
+        MessageTo: "Mensaje a"
+        Success: "Mensaje enviado con éxito"

@@ -23,3 +23,19 @@ contact:
         Read: "Read?"
         Subject: "Subject"
         Date: "Date"
+privateMessage:
+    index:
+        MyPrivateMessages: "My private messages"
+        SendPrivateMessage: "Send a private message"
+        Inbox: "Inbox"
+        Outbox: "Outbox"
+        Subject: "Subject"
+        Author: "Author"
+        Recipient: "Recipient"
+        Date: "Date"
+        Read: "Read"
+    read:
+        Reply: "Reply"
+    send:
+        MessageTo: "Message to"
+        Success: "Message sent successfully"

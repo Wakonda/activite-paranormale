@@ -87,7 +87,7 @@ class Contact
 	}
 
 	public function getSenderString() {
-		return !empty($sender) ? $sender->getUsername() : $this->pseudoContact;
+		return !empty($this->sender) ? $this->sender->getUsername() : $this->pseudoContact;
 	}
 
     /**

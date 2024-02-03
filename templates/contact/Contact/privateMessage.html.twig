@@ -1,9 +1,9 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}Message à {{ recipient.username }}{% endblock %}
+{% block title %}{{ "privateMessage.send.MessageTo"|trans([], "validators") }} {{ recipient.username }}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>Message à {{ recipient.username }}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>{{ "privateMessage.send.MessageTo"|trans([], "validators") }} {{ recipient.username }}</h2>
 {% endblock h2_title %}
 
 {% block header_plus %}

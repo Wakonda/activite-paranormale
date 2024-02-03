@@ -208,7 +208,6 @@ class UserController extends AbstractController
         $username = $request->query->get('username');
 
         if (empty($username)) {
-            // the user does not come from the sendEmail action
             return new RedirectResponse($this->generateUrl('Resetting_Request'));
         }
 

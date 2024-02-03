@@ -23,3 +23,19 @@ contact:
         Read: "Lu ?"
         Subject: "Sujet"
         Date: "Date"
+privateMessage:
+    index:
+        MyPrivateMessages: "Mes messages privés"
+        SendPrivateMessage: "Envoyer un message privé"
+        Inbox: "Boîte de réception"
+        Outbox: "Boîte d'envoi"
+        Subject: "Sujet"
+        Author: "Auteur"
+        Recipient: "Destinataire"
+        Date: "Date"
+        Read: "Lire"
+    read:
+        Reply: "Répondre"
+    send:
+        MessageTo: "Message à"
+        Success: "Message envoyé à succès"
