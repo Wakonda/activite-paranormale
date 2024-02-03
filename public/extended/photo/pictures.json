@@ -958,5 +958,23 @@
 		"filename": "vote-user.jpg",
 		"author": "<a href='https://pixabay.com/users/thedigitalartist-202249/'>TheDigitalArtist</a>",
 		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixabay.com/illustrations/ai-generated-woman-hell-devil-red-8230486/",
+		"filename": "private-message.png",
+		"author": "<a href='https://pixabay.com/users/rickhaim-27773065/'>RickHaim</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixabay.com/illustrations/ai-generated-ghost-library-reading-8536476/",
+		"filename": "private-message-user.jpg",
+		"author": "<a href='https://pixabay.com/users/k-e-coverdesign-1727682/'>K-E-Coverdesign</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
+	},
+	{
+		"url": "https://pixabay.com/illustrations/ai-generated-ghost-witch-8369713/",
+		"filename": "private-message-user-read.jpg",
+		"author": "<a href='https://pixabay.com/users/k-e-coverdesign-1727682/'>K-E-Coverdesign</a>",
+		"license": "<a href='https://pixabay.com/de/service/license/'>Pixabay License</a>"
 	}
 ]
