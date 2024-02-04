@@ -84,9 +84,10 @@
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		
 		{% if entity.archive == false %}
-			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
+			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.mastodon_form(entity) }}
+			{{ macro_index.diaspora_form(entity, entity.text) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}
@@ -95,4 +96,5 @@
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.twitter_form_js() }}
 	{{ macro_index.mastodon_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
 {% endblock %}
