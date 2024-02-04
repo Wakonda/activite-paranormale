@@ -121,7 +121,13 @@ class Video extends MappedSuperclassBase
 			if (preg_match($pattern, $code, $matches)) {
 				$videoId = $matches[1];
 				
-				return "https://img.youtube.com/vi/{$videoId}/maxresdefault.jpg";
+				foreach(["maxresdefault", "hqdefault", "mqdefault", "sddefault"] as $format) {
+					$url = "https://img.youtube.com/vi/{$videoId}/$format.jpg";
+					if(substr(get_headers($url, 1)[0], 9, 3) != "404")
+						return $url;
+				}
+
+				return null;
 			} else
 				return null;
 		} elseif ($platform == strtolower(self::DAILYMOTION_PLATFORM)) {
