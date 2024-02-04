@@ -37,6 +37,11 @@ class Contact
     private $emailContact;
 
     /**
+     * @ORM\Column(name="phoneNumber", type="string", length=255, nullable=true)
+     */
+    private $phoneNumber;
+
+    /**
      * @var string $subjectContact
      *
      * @ORM\Column(name="subjectContact", type="string", length=255)
@@ -248,5 +253,15 @@ class Contact
     public function getInitialMessage()
     {
         return $this->initialMessage;
+    }
+
+    public function setPhoneNumber($phoneNumber)
+    {
+        $this->phoneNumber = $phoneNumber;
+    }
+
+    public function getPhoneNumber()
+    {
+        return $this->phoneNumber;
     }
 }
