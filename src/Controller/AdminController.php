@@ -354,7 +354,7 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getBook()->getText()) ? "<b>".$translator->trans('book.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					
 					if(empty($entity->getImageEmbeddedCode()))
-						$text .= '<div class="text-center"><img src="'.$this->generateUrl('Store_GenerateEmbeddedCode', ["id" => $entity->getId()]).'" style="width: 75%"/></div><br><br>';
+						$text .= '<div class="text-center"><img src="'.$this->generateUrl('Store_GenerateEmbeddedCode', ["id" => $entity->getId()], UrlGeneratorInterface::ABSOLUTE_URL).'" style="width: 75%"/></div><br><br>';
 					else
 						$text .= $entity->getImageEmbeddedCode()."<br><br>";
 					$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getBook()->getBook()->getAuthors()))."<br>";
