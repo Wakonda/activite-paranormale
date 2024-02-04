@@ -276,7 +276,12 @@ class AdminController extends AbstractController
 
 					$imgProperty = $entity->getPhoto();
 					$img = $entity->getAssetImagePath().$imgProperty;
-					$text = $entity->getText()."<br>".$video;
+				
+					if(empty($imgProperty))
+						$text = $video."<br>".$entity->getText();
+					else
+						$text = $entity->getText()."<br>".$video;
+
 					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
