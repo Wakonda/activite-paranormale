@@ -395,6 +395,7 @@
 					$ads = $this->advertising(728, 90);
 
 				$display .= '
+				<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1951906303386196" crossorigin="anonymous"></script>
 				<ins class="adsbygoogle" style="display:block;" data-ad-client="ca-pub-1951906303386196" data-ad-slot="6790583340" data-ad-format="auto" data-full-width-responsive="true">'.
 				$ads->getText().
 				'</ins>
@@ -403,21 +404,6 @@
 				if(!empty($ads)) {
 					$display .= '<div class="d-none advertising-alternative advertising_image text-center">'.$ads->getText().'</div>';
 				}
-			}
-			elseif($pub == "amazon")
-			{
-				$display .= '
-				<script><!--
-				amazon_ad_tag="activiparano-21"; 
-				amazon_ad_width="468"; 
-				amazon_ad_height="60"; 
-				amazon_color_background="EFEFCC"; 
-				amazon_color_border="AFBF08"; 
-				amazon_color_logo="FFFFFF"; 
-				amazon_color_link="A43907"; 
-				amazon_ad_logo="hide"; 
-				amazon_ad_title="Activité-Paranormale"; //--></script>
-				<script src="http://www.assoc-amazon.fr/s/asw.js"></script>';		
 			}
 			
 			$display .= "</div>";

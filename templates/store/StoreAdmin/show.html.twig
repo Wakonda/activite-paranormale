@@ -48,7 +48,7 @@
 
 	{% if entity.isBookCategory() and entity.book is not empty %}
 		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
-		<div class="form-table-cell"><a href="{{ path('BookEdition_Admin_Show', {id: entity.book.id}) }}"><i>{{ entity.book.book.title }}</i></a> - {{ entity.book.isbn13 }}</div>
+		<div class="form-table-cell"><a href="{{ path('BookEdition_Admin_Show', {id: entity.book.id}) }}"><i>{{ entity.book.book.title }}</i></a> - {{ entity.book.isbn13 }}{{ dump(entity.book) }}</div>
 	{% endif %}
 
 	{% if entity.isAlbumCategory() and entity.album is not empty %}
