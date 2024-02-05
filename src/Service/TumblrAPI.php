@@ -47,11 +47,11 @@
 				$token = $data['oauth_token'];
 				$secret = $data['oauth_token_secret'];
 
-				$client = new \Tumblr\API\Client($_ENV["TUMBLR_CONSUMER_KEY"], $_ENV["TUMBLR_CONSUMER_SECRET"], $token, $secret);//dd($client, $_ENV["TUMBLR_CONSUMER_KEY"], $_ENV["TUMBLR_CONSUMER_SECRET"], $token, $secret);
+				$client = new \Tumblr\API\Client($_ENV["TUMBLR_CONSUMER_KEY"], $_ENV["TUMBLR_CONSUMER_SECRET"], $token, $secret);
 				$info = $client->getUserInfo();
 
 				$postData = array('title' => $title, 'body' => $body);
-				
+
 				if(!empty($tags))
 					$postData["tags"] = $tags;
 

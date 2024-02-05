@@ -40,7 +40,7 @@ class UsefulLinkRepository extends EntityRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-// dd($filter);
+
 		if(!empty($filter)) {
 			if(isset($filter["category_filter"]) and !empty($value = $filter["category_filter"])) {
 				$qb->andWhere("c.category = :valueCategory")

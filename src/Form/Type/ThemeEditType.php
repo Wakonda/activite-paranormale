@@ -42,8 +42,7 @@ class ThemeEditType extends AbstractType
 			'choice_label' => function (Options $options) {
 				return function ($category) use ($options) {
 					$entities = $this->entityManager->getRepository(Theme::class)->getByLanguageForList($options["locale"], $this->locale);
-					
-					// dd($entities, $category);
+
 					$datas = [];
 					foreach($entities as $entity)
 						$datas[$entity["internationalName"]] = $entity["title"];

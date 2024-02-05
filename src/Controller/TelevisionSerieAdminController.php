@@ -99,7 +99,7 @@ class TelevisionSerieAdminController extends AdminGenericController
 							$episode->setDuration($value["duration"]["amount"]);
 						}
 					}
-					// dd($value);
+
 					if(!empty($value["date"]))
 						$episode->setReleaseDate(new \DateTime(implode("-", $value["date"])));
 					$episode->setSeason($season);

@@ -1060,7 +1060,7 @@
 			if(!isset($data['query']['pages'][$pageId]['pageprops']['wikibase_item']))
 				return null;
 			
-			$wikidataId = $data['query']['pages'][$pageId]['pageprops']['wikibase_item'];//dd($wikidataId, $pageId);
+			$wikidataId = $data['query']['pages'][$pageId]['pageprops']['wikibase_item'];
 			
 			return $wikidataId;
 		}

@@ -9,7 +9,7 @@
 		public function __construct() {
 			$this->url = $_ENV["MUSE_URL"];
 		}
-		
+
 		public function getOauth2Token(): ?string
 		{
 			$username = $_ENV["MUSE_USERNAME"];
@@ -37,11 +37,11 @@
 
 			return json_decode($result)->token;
 		}
-		
+
 		public function addPost($data, $token, $family)
 		{
 			$ch = curl_init();
-			
+
 			$url = $this->url."api/${family}";
 
 			if(isset($data["identifier"]) and !empty($idt = $data["identifier"])) {
@@ -59,14 +59,14 @@
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);
-// dd($json_response, $errors);
+
 			return json_decode($json_response);
 		}
-		
+
 		public function addImage($identifier, $image, $token, $family)
 		{
 			$urlPart = "quote";
-			
+
 			if($family == "proverbs")
 				$urlPart = "proverb";
 
@@ -98,14 +98,13 @@
 			$json_response = curl_exec($ch);
 			$errors = curl_error($ch);
 			curl_close($ch);
-dd($json_response, $errors);
+
 			return json_decode($json_response);
 		}
 
 		public function getImages($identifier, $token, $family) {
 			$ch = curl_init();
-			
-			
+
 			$url = $this->url."api/${family}/${identifier}/images";
 
 			curl_setopt($ch, CURLOPT_URL, $url);
@@ -129,7 +128,7 @@ dd($json_response, $errors);
 
 			return $res;
 		}
-		
+
 		public function getLocaleAvailable(): array {
 			return ["fr", "en"];
 		}

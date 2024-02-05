@@ -80,8 +80,7 @@ class MigratePublisherCommand extends Command
 					$this->em->persist($publisher);
 				} else {
 					
-					foreach($languageArray as $key => $la) {///dd($languageEntities[$la]);
-					// dd($key, array_key_first($datas));
+					foreach($languageArray as $key => $la) {
 						if($key === array_key_first($datas)) {
 							$publisher = $this->em->getRepository(Publisher::class)->find($data["id"]);
 							$publisher->setLanguage($languageEntities[$la]);

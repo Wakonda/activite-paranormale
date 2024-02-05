@@ -122,7 +122,7 @@ class MigrateImportDataFromWikipediaCommand extends Command
 
 			if(!empty($current))
 				$artist->setInternationalName($current[0]->getInternationalName());
-			// dd($artist->getInternationalName());
+
 			$sourceArray = [[
 				"author" => null,
 				"url" => $data["url"],

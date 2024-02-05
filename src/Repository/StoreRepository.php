@@ -226,7 +226,7 @@ class StoreRepository extends EntityRepository
 			$qb->andWhere("b.platform = :platform")
 			   ->setParameter("platform", $c);
 		}
-// dd($datas);
+
 		$qb->setFirstResult($offset)
 		   ->setMaxResults($nbMessageByPage);
 

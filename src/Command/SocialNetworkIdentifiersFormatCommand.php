@@ -85,8 +85,7 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 		}
 
         $output->writeln("End Cartography migration");
-		dd("p");
-		
+
 		$datas = $this->em->getRepository(WebDirectory::class)->findAll();
 		
 		foreach($datas as $data) {

@@ -103,7 +103,6 @@ class MigrateImportWakondaGuruCommand extends Command
 		
 		/*if (($handle = fopen(__DIR__.DIRECTORY_SEPARATOR."wakondaguru_usefullink.csv", "r")) !== FALSE) {
 			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-				// dd($data);
 				$entity = $this->em->getRepository(UsefulLink::class)->findOneBy(["internationalName" => $data[8]]);
 
 				if(empty($entity))
@@ -159,7 +158,6 @@ class MigrateImportWakondaGuruCommand extends Command
 		
 		if (($handle = fopen(__DIR__.DIRECTORY_SEPARATOR."wakondaguru_tool.csv", "r")) !== FALSE) {
 			while (($data = fgetcsv($handle, 1000, ";")) !== FALSE) {
-				// dd($data);
 				$entity = $this->em->getRepository(UsefulLink::class)->findOneBy(["internationalName" => $data[8]]);
 
 				if(empty($entity))

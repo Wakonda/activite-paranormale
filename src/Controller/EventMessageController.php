@@ -104,7 +104,6 @@ class EventMessageController extends AbstractController
 		foreach($entities as $entity)
 		{
 			if(empty($entity->getDateToString())) {
-				// dd($entity->getDateFromString());
 				$dt = new \DateTime($entity->getDateFromString());
 				if($this->checkDateBetween($dt, $startDate, $endDate)) {
 					$eventDates[$entity->getYearFrom()][] = $dt->format("m-d");

@@ -211,7 +211,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
             unset($data[4], $data[7], $data[8]);
             $data = array_values($data);
         }
-// dd($data);
+
         list(
             $this->password,
             $this->salt,

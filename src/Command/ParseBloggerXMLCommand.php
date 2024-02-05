@@ -59,7 +59,7 @@ class ParseBloggerXMLCommand extends Command
 				$idsArray = explode("-", $entry->getElementsByTagName("id")->item(0)->nodeValue);
 				
 				$entity = $this->em->getRepository(Grimoire::class)->getGrimoireBySocialNetworkIdentifiers("Blogger", end($idsArray));
-				// dd($entity);
+
 				if(empty($entity))
 					$entity = new Grimoire();
 				

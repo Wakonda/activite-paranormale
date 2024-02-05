@@ -353,10 +353,10 @@ class NewsRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-		
+
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id'];//dd($aSearchColumns, $searchByColumns);
+			$aSearchColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.pseudoUsed', 't.internationalName', 's.internationalName', 'l.id', 'c.id'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
@@ -367,7 +367,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 				}
 			}
 		}
-		
+
 		if($count)
 		{
 			$qb->select("count(c)");
