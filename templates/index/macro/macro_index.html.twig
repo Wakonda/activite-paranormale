@@ -471,7 +471,7 @@
 	</script>
 {% endmacro %}
 
-{% macro mastodon_form(entity, textBefore = "") %}
+{% macro mastodon_form(entity, textBefore = "", textAfter = "") %}
 	{% if isMastodonAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentMastodon">
 		<div class="card sub_block">
@@ -500,7 +500,7 @@
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
 
-						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}</textarea>
+						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if textAfter is not empty %}{{ textAfter }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
@@ -531,7 +531,7 @@
 	</script>
 {% endmacro %}
 
-{% macro twitter_form(entity, addPhoto = false, textBefore = "") %}
+{% macro twitter_form(entity, addPhoto = false, textBefore = "", textAfter = "") %}
 	{% if isTwitterAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentTwitter">
 		<div class="card sub_block">
@@ -567,7 +567,7 @@
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
 
-						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}</textarea>
+						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if textAfter is not empty %}{{ textAfter }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>

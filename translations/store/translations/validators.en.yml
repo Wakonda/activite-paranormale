@@ -45,6 +45,7 @@ store:
         Product: "Product"
         MoreBooksOn: "More books on"
         Photo: "Photo"
+        By: "by"
     characteristic:
         VinylDisc: "Vinyl disc"
         Cd: "CD"

@@ -43,7 +43,7 @@ class StoreController extends AbstractController
 		return $this->render('store/Store/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 
-	public function showAction(EntityManagerInterface $em, $id, $slug)
+	public function showAction(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Store::class)->find($id);
 

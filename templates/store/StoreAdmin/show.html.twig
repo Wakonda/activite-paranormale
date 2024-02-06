@@ -48,7 +48,7 @@
 
 	{% if entity.isBookCategory() and entity.book is not empty %}
 		<div class="form-table-cell form-table-cell-head">{{ ("store.admin."~entity.category|ucfirst)|trans([], "validators") }}</div>
-		<div class="form-table-cell"><a href="{{ path('BookEdition_Admin_Show', {id: entity.book.id}) }}"><i>{{ entity.book.book.title }}</i></a> - {{ entity.book.isbn13 }}{{ dump(entity.book) }}</div>
+		<div class="form-table-cell"><a href="{{ path('BookEdition_Admin_Show', {id: entity.book.id}) }}"><i>{{ entity.book.book.title }}</i></a> - {{ entity.book.isbn13 }}</div>
 	{% endif %}
 
 	{% if entity.isAlbumCategory() and entity.album is not empty %}
@@ -87,13 +87,37 @@
 	{% if entity.category == constant('App\\Entity\\Stores\\Store::WITCHCRAFT_TOOL_CATEGORY') %}
 		{% set blog = "magic" %}
 	{% endif %}
-	
+
 	{{ macro_index.blogger_multi_form(entity, blog) }}
-	{{ macro_index.twitter_form(entity) }}
-	{{ macro_index.facebook_form(entity) }}
-	{{ macro_index.mastodon_form(entity) }}
-	{{ macro_index.diaspora_form(entity) }}
 	
+	{% set textAfter = "" %}
+	{% set text = "" %}
+	
+	{% if entity.isBookCategory() and entity.book is not empty %}
+		{% set text = entity.book.book.title %}
+
+		{% if entity.book.subtitle is not empty %}
+			{% set textAfter = ": "~entity.book.subtitle %}
+		{% endif %}
+		
+		{% set biographyArray = [] %}
+		
+		{% for biography in entity.book.book.biographies %}
+			{% set biographyArray = biographyArray|merge([biography.biography.title]) %}
+		{% endfor %}
+
+		{% if biographyArray is not empty %}
+			{% set textAfter = textAfter ~ ", " ~ ("store.admin.By"|trans([], "validators")) ~ " " ~ biographyArray|join(", ") %}
+		{% endif %}
+		
+		{% set text = text ~ textAfter %}
+	{% endif %}
+
+	{{ macro_index.twitter_form(entity, false, "", textAfter) }}
+	{{ macro_index.mastodon_form(entity, "", textAfter) }}
+	{{ macro_index.facebook_form(entity, text) }}
+	{{ macro_index.diaspora_form(entity, text) }}
+
 	{% if entity.photo is not empty %}
 		{{ macro_index.instagram_form(entity) }}
 	{% endif %}

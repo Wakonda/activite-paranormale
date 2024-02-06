@@ -187,7 +187,7 @@ class Store
 	}
 
 	public function getTitleSlug() {
-		return $this->title;
+		return $this->slug;
 	}
 
     /**
@@ -227,7 +227,7 @@ class Store
 	}
 
 	public function getUrlSlug() {
-		return $this->title;
+		return $this->slug;
 	}
 
     /**
