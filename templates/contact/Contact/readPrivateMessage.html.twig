@@ -20,7 +20,10 @@
 			{% if entity.sender is empty %}
 				<hr>
 				<ul class="fa-ul">
-					<li><span class="fa-li"><i class="fa-solid fa-at"></i></span>{{ entity.emailContact }}</li>
+					<li><span class="fa-li"><i class="fa-solid fa-at"></i></span><a href="mailto:{{ entity.emailContact }}">{{ entity.emailContact }}</a></li>
+					{% if entity.phoneNumber is not empty %}
+						<li><span class="fa-li"><i class="fa-solid fa-blender-phone"></i></span><a href="tel:{{ entity.phoneNumber }}">{{ entity.phoneNumber }}</a></li>
+					{% endif %}
 				</ul>
 			{% endif %}
 		</fieldset>

@@ -11,10 +11,18 @@
 	<div class="form-table-cell">{{ entity.id }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "contact.admin.Pseudo"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.pseudoContact }}</div>
+	<div class="form-table-cell">{{ entity.senderString }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "contact.admin.Email"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.emailContact }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "contact.admin.PhoneNumber"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.phoneNumber }}</div>
+	
+	{% if entity.isPrivateMessage() %}
+		<div class="form-table-cell form-table-cell-head">{{ "contact.admin.Recipient"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.recipient.username }}</div>
+	{% endif %}
 
 	<div class="form-table-cell form-table-cell-head">{{ "contact.admin.Subject"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.subjectContact }}</div>

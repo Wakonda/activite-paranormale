@@ -11,6 +11,7 @@ use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\TelType;
 
 class ContactPrivateMessageType extends AbstractType
 {
@@ -27,6 +28,7 @@ class ContactPrivateMessageType extends AbstractType
 			$builder
 				->add('pseudoContact', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
 				->add('emailContact', TextType::class, ['required' => true, 'constraints' => [new NotBlank(), new Email()]])
+				->add('phoneNumber', TelType::class, ['required' => false])
 				->add('captcha', TextType::class, ['required' => true, 'constraints' => [new NotBlank()], 'mapped' => false]);
         }
 

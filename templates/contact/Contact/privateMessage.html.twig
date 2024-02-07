@@ -32,6 +32,12 @@
 						{{ form_errors(form.emailContact) }}
 						{{ form_widget(form.emailContact, {'attr':{'class' : 'form-control'}}) }}
 					</div>
+
+					<div class="form-table-cell form-table-cell-head">{{ form_label(form.phoneNumber, "privateMessage.index.PhoneNumber"|trans([], "validators")) }}</div>
+					<div class="form-table-cell">
+						{{ form_errors(form.phoneNumber) }}
+						{{ form_widget(form.phoneNumber, {'attr':{'class' : 'form-control'}}) }}
+					</div>
 				{% endif %}
 
 				<div class="form-table-cell form-table-cell-head">{{ form_label(form.subjectContact, "contact.index.Subject"|trans([], "validators")) }}</div>

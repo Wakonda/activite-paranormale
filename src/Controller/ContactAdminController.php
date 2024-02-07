@@ -56,9 +56,11 @@ class ContactAdminController extends AdminGenericController
         if (!$entity)
             throw $this->createNotFoundException('Unable to find Contact entity.');
 
-		$entity->setStateContact(1);
-		$em->persist($entity);
-		$em->flush();
+		if(!$entity->isPrivateMessage()) {
+			$entity->setStateContact(1);
+			$em->persist($entity);
+			$em->flush();
+		}
 
         $deleteForm = $this->createDeleteForm($id);
 
@@ -73,91 +75,6 @@ class ContactAdminController extends AdminGenericController
 		$countNonRead = $em->getRepository($this->className)->count(['stateContact' => '0']);
 		return new Response($countNonRead);
 	 }
-
-    public function newAction(Request $request, EntityManagerInterface $em)
-    {
-        $entity = new Contact();
-        $form = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
-
-        return $this->render('contact/ContactAdmin/new.html.twig', [
-            'entity' => $entity,
-            'form' => $form->createView()
-        ]);
-    }
-
-    /**
-     * Creates a new Contact entity.
-     *
-     */
-    public function createAction(Request $request, EntityManagerInterface $em)
-    {
-        $entity = new Contact();
-        $form = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
-        $form->handleRequest($request);
-
-        if ($form->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('Contact_Admin_Show', ['id' => $entity->getId()]));
-        }
-
-        return $this->render('contact/ContactAdmin/new.html.twig', [
-            'entity' => $entity,
-            'form'   => $form->createView()
-        ]);
-    }
-
-    /**
-     * Displays a form to edit an existing Contact entity.
-     *
-     */
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
-    {
-        $entity = $em->getRepository($this->className)->find($id);
-
-        if (!$entity)
-            throw $this->createNotFoundException('Unable to find Contact entity.');
-
-        $editForm = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        return $this->render('contact/ContactAdmin/edit.html.twig', [
-            'entity' => $entity,
-            'form' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ]);
-    }
-
-    /**
-     * Edits an existing Contact entity.
-     *
-     */
-    public function updateAction(Request $request, EntityManagerInterface $em, $id)
-    {
-        $entity = $em->getRepository($this->className)->find($id);
-
-        if (!$entity)
-            throw $this->createNotFoundException('Unable to find Contact entity.');
-
-        $editForm   = $this->createForm(new ContactAdminType($request->getLocale()), $entity);
-        $deleteForm = $this->createDeleteForm($id);
-
-        $editForm->handleRequest($request);
-
-        if ($editForm->isValid()) {
-            $em->persist($entity);
-            $em->flush();
-
-            return $this->redirect($this->generateUrl('contact_edit', ['id' => $id]));
-        }
-
-        return $this->render('contact/ContactAdmin/edit.html.twig', [
-            'entity' => $entity,
-            'edit' => $editForm->createView(),
-            'delete_form' => $deleteForm->createView(),
-        ]);
-    }
 
     /**
      * Deletes a Contact entity.

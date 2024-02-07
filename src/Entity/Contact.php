@@ -95,6 +95,10 @@ class Contact
 		return !empty($this->sender) ? $this->sender->getUsername() : $this->pseudoContact;
 	}
 
+	public function isPrivateMessage() {
+		return !empty($this->getSenderString()) and !empty($this->recipient);
+	}
+
     /**
      * Get id
      *

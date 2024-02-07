@@ -9,7 +9,7 @@
 
 {% block new_entry %}
 	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Index') }}" title="Index"><i class="fas fa-home" aria-hidden="true"></i> Index</a></li>
-	<li class="nav-item"><a class="nav-link" href="{% block new_admin_route %}{% endblock %}" title="Create"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}</a></li>
+	{% if block("new_admin_route") is not empty %}<li class="nav-item"><a class="nav-link" href="{% block new_admin_route %}{% endblock %}" title="Create"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}</a></li>{% endif %}
 {% endblock %}
 
 {% block body_main %}

@@ -81,9 +81,7 @@
 				{% endif %}
 			{% endif %}
 
-			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: user.id}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "privateMessage.index.SendPrivateMessage"|trans([], "validators") }}</a></div>
-			{% endif %}
+			<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: user.id}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "privateMessage.index.SendPrivateMessage"|trans([], "validators") }}</a></div>
 		</div>
 	{% endblock fos_user_content %}
 {% endblock %}
