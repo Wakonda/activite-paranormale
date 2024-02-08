@@ -14,7 +14,7 @@
 <script src="{{ asset('extended/js/wPaint-master/plugins/file/wPaint.menu.main.file.min.js') }}"></script>
 
 <script>
-	$(function() {
+	$(function () {
 		$('.doc_datatables_drawing').DataTable({
 			"language": {
 				"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
@@ -33,15 +33,19 @@
 			},
 			"bAutoWidth": false
 		});
-		
-		$(".displayInColorboxDrawing").click(function(event)
-		{
-			$('#displayDrawing p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
-			$('#displayDrawing .modal-title').html($(this).data("title"));
-			new bootstrap.Modal(document.getElementById('displayDrawing')).show();
-			event.preventDefault();
+
+		document.querySelectorAll('.displayInColorboxDrawing').forEach(function(element) {
+			element.addEventListener('click', function(e) {
+				e.preventDefault();
+
+				document.querySelector('#displayDrawing p.image').innerHTML = '<img src="' + e.target.getAttribute("id") + '" style="width: 100%">';
+				document.querySelector('#displayDrawing .modal-title').innerHTML = e.target.dataset.title;
+
+				var modal = new bootstrap.Modal(document.getElementById('displayDrawing'));
+				modal.show();
+			});
 		});
-	
+
 		$('#wPaint').wPaint({
 			path: "{{ asset('extended/js/wPaint-master/') }}",
 			menuOrientation: 'horizontal',
@@ -51,16 +55,14 @@
 			strokeStyle: '#000000'
 		});
 
-		function saveImg(image)
-		{
+		function saveImg(image) {
 			var _this = this;
 
 			$.ajax({
 				type: 'POST',
 				url: '{{ path("FileManagement_SaveImagePaint", { "idClassName" : idClassName, "className" : className }) }}',
 				data: {image: image},
-				success: function (data)
-				{
+				success: function (data) {
 					$('#drawing_management_control').html(data);
 					$("#add_drawing_section").show();
 				}
@@ -76,7 +78,7 @@
 			$("div#add_drawing_section").hide();
 	});
 </script>
-<div class="modal fade" tabindex="-1" role="dialog" id="displayDrawing">
+<div class="modal black_modal fade" tabindex="-1" role="dialog" id="displayDrawing">
   <div class="modal-dialog" role="document">
 	<div class="modal-content">
 	  <div class="modal-header">

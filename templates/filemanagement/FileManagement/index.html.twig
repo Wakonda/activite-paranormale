@@ -4,9 +4,8 @@
 <script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 
 <script>
-	$(function ()
-	{
-		$('.doc_datatables').DataTable( {
+	document.addEventListener('DOMContentLoaded', function () {
+		$('.doc_datatables').DataTable({
 			"language": {
 				"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
 			},
@@ -24,20 +23,31 @@
 			},
 			"bAutoWidth": false
 		});
-		
-		$(".displayInColorbox").click(function()
-		{
-			$('#displayPicture p.image').html('<img src="'+$(this).attr("id")+'" width="100%">');
-			$('#displayPicture .modal-title').html($(this).data("title"));
-			new bootstrap.Modal(document.getElementById('displayPicture')).show();
-			event.preventDefault();
+
+		document.querySelectorAll('.displayInColorbox').forEach(function(element) {
+			element.addEventListener('click', function(e) {
+				e.preventDefault();
+
+				let regex = new RegExp('[^.]+$');
+				extension = e.target.getAttribute("id").match(regex);
+
+				if(["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp"].includes(extension[0]))
+					document.querySelector('#displayPicture p.image').innerHTML = '<img src="' + e.target.getAttribute("id") + '" style="width: 100%">';
+				else if (extension[0] == "pdf")
+					document.querySelector('#displayPicture p.image').innerHTML = '<iframe src="' + e.target.getAttribute("id") + '" width="100%"></iframe>';
+
+				document.querySelector('#displayPicture .modal-title').innerHTML = e.target.dataset.title;
+
+				var modal = new bootstrap.Modal(document.getElementById('displayPicture'));
+				modal.show();
+			});
 		});
 	});
 </script>
 <link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 <link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 
-<div class="modal fade" tabindex="-1" role="dialog" id="displayPicture">
+<div class="modal black_modal fade" tabindex="-1" role="dialog" id="displayPicture">
   <div class="modal-dialog" role="document">
 	<div class="modal-content">
 	  <div class="modal-header">
