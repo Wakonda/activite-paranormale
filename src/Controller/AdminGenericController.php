@@ -446,11 +446,11 @@ abstract class AdminGenericController extends AbstractController
 	{
 		foreach ($form->get($field) as $formChild)
 		{
-			$internationalName = $formChild->get('internationalName')->getData();
-			$wikidata = $formChild->get('wikidata')->getData();
 			$newBiography = $formChild->getData();
+			$internationalName = !empty($newBiography) ? $newBiography->getBiography()->getInternationalName() : $formChild->get('internationalName')->getData();
+			$wikidata = $formChild->get('wikidata')->getData();
 
-			if($internationalName == "+") {
+			if($internationalName == "+") {dd("ooo");
 				$generator = new \Ausi\SlugGenerator\SlugGenerator;
 				$newBiography->getBiography()->setInternationalName($generator->generate($newBiography->getBiography()->getTitle()).uniqid());
 				$newBiography->getBiography()->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));

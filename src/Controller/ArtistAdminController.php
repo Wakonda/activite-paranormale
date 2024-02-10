@@ -57,7 +57,7 @@ class ArtistAdminController extends AdminGenericController
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$originalBiographies = new ArrayCollection($em->getRepository(ArtistBiography::class)->findBy(["artist" => $entityBindded->getId()]));
-		
+
 		foreach($originalBiographies as $originalBiography)
 		{
 			if(false === $entityBindded->getArtistBiographies()->contains($originalBiography))

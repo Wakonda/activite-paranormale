@@ -25,7 +25,7 @@ class ArtistBiographiesAdminType extends AbstractType
 		
 		foreach($dataClass::getOccupations() as $occupation)
 			$occupationArray["biographies.admin.".ucfirst($occupation)] = $occupation;
-			
+
         $builder
 		    ->add('biography', Select2EntityType::class, [
 				'multiple' => false,

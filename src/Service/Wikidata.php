@@ -513,15 +513,44 @@
 						if(property_exists($member->qualifiers, "P582") and property_exists($member->qualifiers->P582[0], "datavalue"))
 							$end = $member->qualifiers->P582[0]->datavalue->value->time;
 					}
+				//die("ooo");
+					$codeMember = $member->mainsnak->datavalue->value->id;
+					$contentMember = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$codeMember}&sitefilter=${languageWiki}");
+					$datasMember = json_decode($contentMember);
+					$rolesArray = [];
+					$occupations = \App\Entity\MusicBiography::getOccupations();
+					
+					foreach($datasMember->entities->{$codeMember}->claims->P106 as $roleProperties)
+						$rolesArray[] = $this->getPropertyValue($roleProperties->mainsnak->datavalue->value->id, "en");
+					
+					$role = null;
+					
+					foreach($occupations as $occupation) {
+						foreach($rolesArray as $roleArray) {
+							$roleArray = $this->roleWikidataTranslation($roleArray);
+							if(str_contains($roleArray, $occupation))
+								$role = $occupation;
+						}
+					}
 
 					if(isset($personArray["member"][$member->mainsnak->datavalue->value->id]))
-						$personArray["member"][$member->mainsnak->datavalue->value->id] = ["title" => $personArray["member"][$member->mainsnak->datavalue->value->id]["title"], "objects" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["objects"], "start" => $start, "end" => $end];
+						$personArray["member"][$member->mainsnak->datavalue->value->id] = ["title" => $personArray["member"][$member->mainsnak->datavalue->value->id]["title"], "objects" =>$personArray["member"][$member->mainsnak->datavalue->value->id]["objects"], "start" => $start, "end" => $end, "occupation" => $role];
 				}
 			}
 
 			$res["person"] = $personArray;
 			
 			return $res;
+		}
+
+		private function roleWikidataTranslation($role) {
+			$datas = [
+				"singer" => \App\Entity\MusicBiography::VOCAL_OCCUPATION,
+				"heavy metal singer" => \App\Entity\MusicBiography::VOCAL_OCCUPATION,
+				"singer-songwriter" => \App\Entity\MusicBiography::VOCAL_OCCUPATION,
+			];
+			
+			return isset($datas[$role]) ? $datas[$role] : $role;
 		}
 		
 		public function getEventDatas(string $code, string $language): array
