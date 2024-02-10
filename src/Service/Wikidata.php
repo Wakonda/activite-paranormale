@@ -498,7 +498,7 @@
 			}
 
 			$personArray = [];
-			
+
 			$this->getIdsByProperty("P527", $datas, $code, "member", $language, $personArray);
 
 			if(property_exists($datas->entities->$code->claims, "P527"))
@@ -513,7 +513,7 @@
 						if(property_exists($member->qualifiers, "P582") and property_exists($member->qualifiers->P582[0], "datavalue"))
 							$end = $member->qualifiers->P582[0]->datavalue->value->time;
 					}
-				//die("ooo");
+
 					$codeMember = $member->mainsnak->datavalue->value->id;
 					$contentMember = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$codeMember}&sitefilter=${languageWiki}");
 					$datasMember = json_decode($contentMember);
