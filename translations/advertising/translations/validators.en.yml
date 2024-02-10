@@ -5,3 +5,4 @@ advertising:
         Width: "Width"
         Height: "Height"
         Language: "Language"
+        Active: "Enable"

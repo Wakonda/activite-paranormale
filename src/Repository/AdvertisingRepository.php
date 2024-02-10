@@ -56,6 +56,7 @@ class AdvertisingRepository extends EntityRepository
 		$qb->select("COUNT(a.id) AS countRow")
 		   ->where("a.width <= :maxWidth")
 		   ->andWhere("a.height <= :maxHeight")
+		   ->andWhere("a.active = true")
 		   ->setParameter("maxWidth", $maxWidth)
 		   ->setParameter("maxHeight", $maxHeight);
 
@@ -66,6 +67,7 @@ class AdvertisingRepository extends EntityRepository
 		
 		$qb->where("a.width <= :maxWidth")
 		   ->andWhere("a.height <= :maxHeight")
+		   ->andWhere("a.active = true")
 		   ->setParameter("maxWidth", $maxWidth)
 		   ->setParameter("maxHeight", $maxHeight)
 		   ->setFirstResult($offset)

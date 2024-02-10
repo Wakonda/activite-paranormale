@@ -5,3 +5,4 @@ advertising:
         Width: "Ancho"
         Height: "Altura"
         Language: "Idioma"
+        Active: "Habilitar"

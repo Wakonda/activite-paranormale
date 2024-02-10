@@ -12,3 +12,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "advertising.admin.Language"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.active, "advertising.admin.Active"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.active) }}{{ form_widget(form.active) }}</div>

@@ -25,4 +25,13 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "advertising.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "advertising.admin.Active"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.active %}
+			<span class="text-success"><i class="fas fa-check" aria-hidden="true"></i></span>
+		{% else %}
+			<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>
+		{% endif %}
+	</div>
 {% endblock %}

@@ -44,6 +44,15 @@ class Advertising
      */
     protected $height;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    protected $active;
+
+	public function __construct() {
+		$this->active = true;
+	}
+
 	public function getAssetImagePath()
 	{
 		return "extended/photo/advertising/";
@@ -107,5 +116,15 @@ class Advertising
     public function setHeight($height)
     {
         $this->height = $height;
+    }
+	
+    public function getActive()
+    {
+        return $this->active;
+    }
+
+    public function setActive($active)
+    {
+        $this->active = $active;
     }
 }

@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Doctrine\ORM\EntityRepository;
@@ -41,7 +42,8 @@ class AdvertisingAdminType extends AbstractType
 								  ->orderBy('u.title', 'ASC');
 					},
 					'constraints' => [new NotBlank()]
-			]);
+			])
+            ->add('active', CheckboxType::class, ["required" => false]);
     }
 
 	/**
