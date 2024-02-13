@@ -1,0 +1,17 @@
+classifiedAds:
+    new:
+        NewClassifiedAds: "Publicar un anuncio"
+        Title: "Título"
+        Text: "Descripción"
+        Category: "Categoría"
+        Price: "Precio"
+        DisplayEmail: "Mostrar correo electrónico en la página del listado"
+        GeneralInformation: "Información general"
+        ListingLocation: "Listado de Ubicación"
+        Validation: "Validación"
+        ThankForYourParticipation: "¡Gracias por su participación!"
+        ThankForYourParticipationText: "Su anuncio clasificado nos ha sido enviado. Se publicará en nuestro sitio web tan pronto como un moderador lo haya validado."
+        FileSizeLimit: "Tamaño máximo"
+        AcceptedFormat: "Formatos aceptados"
+        Photo: "Foto"
+        Validate: "Validar"

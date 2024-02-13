@@ -1,0 +1,17 @@
+classifiedAds:
+    new:
+        NewClassifiedAds: "Publish a listing"
+        Title: "Title"
+        Text: "Description"
+        Category: "Catégory"
+        Price: "Price"
+        DisplayEmail: "Show e-mail on the listing page"
+        GeneralInformation: "General information"
+        ListingLocation: "Listing location"
+        Validation: "Validation"
+        ThankForYourParticipation: "Thank you for your participation!"
+        ThankForYourParticipationText: "Your classified ad has been sent to us. It will be published on our website as soon as a moderator has validated it."
+        FileSizeLimit: "File size limit"
+        AcceptedFormat: "Accepted format"
+        Photo: "Photo"
+        Validate: "Validate"

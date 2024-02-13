@@ -61,6 +61,12 @@ class SavingCommonData
 			$searchEngine = new \App\Service\SearchEngine();
 			$searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR.$_ENV["SEARCH_SQLITE_PATH"], null);
 
+			if(method_exists($args->getObject(), "getState") and !$args->getObject()->getState()->getDisplayState())
+				return;
+
+			if(empty($args->getObject()->getLanguage()))
+				return;
+
 			$data = [
 				"id" => $args->getObject()->getId(),
 				"language" => $args->getObject()->getLanguage()->getAbbreviation(),

@@ -122,11 +122,6 @@ class MappedSuperclassBase implements SearchEngineInterface
 		}
 	}
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
 		if(!empty($title))
@@ -135,11 +130,6 @@ class MappedSuperclassBase implements SearchEngineInterface
 		$this->setSlug();
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
@@ -173,21 +163,11 @@ class MappedSuperclassBase implements SearchEngineInterface
 		return !empty($this->slug) ? $this->slug : $this->title;
 	}
 
-    /**
-     * Set text
-     *
-     * @param text $text
-     */
     public function setText($text)
     {
 		$this->text = $text;
     }
 
-    /**
-     * Get text
-     *
-     * @return text 
-     */
     public function getText()
     {
         return $this->text;
@@ -233,181 +213,91 @@ class MappedSuperclassBase implements SearchEngineInterface
         $this->theme = $theme;
     }
 
-    /**
-     * Set writingDate
-     *
-     * @param datetime $writingDate
-     */
     public function setWritingDate($writingDate)
     {
         $this->writingDate = $writingDate;
     }
 
-    /**
-     * Get writingDate
-     *
-     * @return datetime
-     */
     public function getWritingDate()
     {
         return $this->writingDate;
     }
 
-    /**
-     * Set publicationDate
-     *
-     * @param date $publicationDate
-     */
     public function setPublicationDate($publicationDate)
     {
         $this->publicationDate = $publicationDate;
     }
 
-    /**
-     * Get publicationDate
-     *
-     * @return date
-     */
     public function getPublicationDate()
     {
         return $this->publicationDate;
     }
 
-    /**
-     * Set author
-     *
-     * @param App\Entity\User $author
-     */
     public function setAuthor(User $author)
     {
         $this->author = $author;
     }
 
-    /**
-     * Get author
-     *
-     * @return App\Entity\User 
-     */
     public function getAuthor()
     {
         return $this->author;
     }
 
-    /**
-     * Set isAnonymous
-     *
-     * @param string $isAnonymous
-     */
     public function setIsAnonymous($isAnonymous)
     {
         $this->isAnonymous = $isAnonymous;
     }
 
-    /**
-     * Get isAnonymous
-     *
-     * @return string 
-     */
     public function getIsAnonymous()
     {
         return $this->isAnonymous;
     }
 
-    /**
-     * Set pseudoUsed
-     *
-     * @param string $pseudoUsed
-     */
     public function setPseudoUsed($pseudoUsed)
     {
         $this->pseudoUsed = $pseudoUsed;
     }
 
-    /**
-     * Get pseudoUsed
-     *
-     * @return string 
-     */
     public function getPseudoUsed()
     {
         return $this->pseudoUsed;
     }
 
-    /**
-     * Set history
-     *
-     * @param Hstory $history
-     */
     public function setHistory($history)
     {
         $this->history = $history;
     }
 
-    /**
-     * Get history
-     *
-     * @return History 
-     */
     public function getHistory()
     {
         return $this->history;
     }
 
-    /**
-     * Set archive
-     *
-     * @param boolean $archive
-     */
     public function setArchive($archive)
     {
         $this->archive = $archive;
     }
 
-    /**
-     * Get archive
-     *
-     * @return boolean 
-     */
     public function getArchive()
     {
         return $this->archive;
     }
 
-    /**
-     * Set source
-     *
-     * @param string $source
-     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
-    /**
-     * Get source
-     *
-     * @return string 
-     */
     public function getSource()
     {
         return $this->source;
     }
 
-    /**
-     * Set socialNetworkIdentifiers
-     *
-     * @param string $socialNetworkIdentifiers
-     */
     public function setSocialNetworkIdentifiers($socialNetworkIdentifiers)
     {
         $this->socialNetworkIdentifiers = $socialNetworkIdentifiers;
     }
 
-    /**
-     * Get socialNetworkIdentifiers
-     *
-     * @return string 
-     */
     public function getSocialNetworkIdentifiers()
     {
         return $this->socialNetworkIdentifiers;

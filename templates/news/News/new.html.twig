@@ -33,7 +33,7 @@
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-news.jpg" alt="Ange" width="550" /></p>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ form_start(form, {'action': (entity.id is empty ? path('News_Create') : path('News_Update', { 'id': entity.id })), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "news.new.Title"|trans([], "validators") ) }}</div>

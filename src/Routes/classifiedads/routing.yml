@@ -1,0 +1,20 @@
+ClassifiedAds_Index:
+    path:  /classifiedads
+    controller: App\Controller\ClassifiedAdsController::index
+
+ClassifiedAds_New:
+    path:  /classifiedads/new
+    controller: App\Controller\ClassifiedAdsController::newAction
+
+ClassifiedAds_Create:
+    path:  /classifiedads/create
+    controller: App\Controller\ClassifiedAdsController::create
+
+ClassifiedAds_Validate:
+    path:  /classifiedads/validate
+    controller: App\Controller\ClassifiedAdsController::validate
+
+# Administration
+# Testimony_Admin:
+    # resource: "routing/testimonyadmin.yml"
+    # prefix:   /admin/testimony

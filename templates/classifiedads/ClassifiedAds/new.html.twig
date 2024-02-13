@@ -1,0 +1,124 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "classifiedAds.new.NewClassifiedAds"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "classifiedAds.new.NewClassifiedAds"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
+<script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.umd.js"></script>
+<link  rel="stylesheet"  href="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.css"/>
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_js(form.text.vars.id) }}
+{% endblock %}
+
+{% block APBlog_body %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}classifiedads-new.jpg" alt="Green ghost" width="550" /></p>
+	<br>
+	<hr class="hr2">
+
+	<h3>{{ "classifiedAds.new.GeneralInformation"|trans([], "validators") }}</h3>
+	{{ form_start(form, {'action': path('ClassifiedAds_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "classifiedAds.new.Title"|trans([], "validators") ) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, {'attr':{'class' : 'form-control'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "classifiedAds.new.Text"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "classifiedAds.new.Category"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-select'}}) }}</div>
+			
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "classifiedAds.new.Photo"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}
+				<div>
+					<span class="fw-bold">{{ "classifiedAds.new.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
+					<br>
+					<span class="fw-bold">{{ "classifiedAds.new.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
+				</div>
+			</div>
+			
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.currencyPrice, "classifiedAds.new.Price"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.price) }}{{ form_widget(form.price) }}{{ form_widget(form.currencyPrice) }}</div>
+		</div>
+		<br>
+		<h3>{{ "classifiedAds.new.ListingLocation"|trans([], "validators") }}</h3>
+		<div id="map" style="width:100%; height:400px"></div>
+		<br>
+		{{ form_label(form.displayEmail, "classifiedAds.new.DisplayEmail"|trans([], "validators")) }}{{ form_errors(form.displayEmail) }}{{ form_widget(form.displayEmail) }}
+		{{ form_rest(form) }}
+		{{ form_errors(form) }}
+		<br>
+		<br>
+		<div class="text-end">
+			<button type="submit" class="submitcomment btn">{{ "classifiedAds.new.Validate"|trans([], "validators") }}</button>
+		</div>
+	{{ form_end(form) }}
+
+	<script>
+		const map = L.map('map').setView([43.009198, -97.106824], 15);
+
+		L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+		const provider = new GeoSearch.OpenStreetMapProvider({
+		  params: {
+			addressdetails: 1
+		  },
+		});
+		const search = new GeoSearch.GeoSearchControl({
+			style: 'bar',
+			provider: provider,
+			searchLabel: "Entrer l'adresse"
+		});
+
+		function searchEventHandler(result) {
+		  console.log(result.location.raw);
+		  
+				let address = result.location.raw.address;
+				
+				address.value = result.location.raw.display_name;
+				address.lon = result.location.raw.lon;
+				address.lat = result.location.raw.lat;
+		  
+
+		  document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address)
+		  clearMap()
+
+		  var latlngs = [
+			[result.location.bounds[0][0],result.location.bounds[1][1]],
+			[result.location.bounds[1][0],result.location.bounds[1][1]],
+			[result.location.bounds[1][0],result.location.bounds[0][1]],
+			[result.location.bounds[0][0],result.location.bounds[0][1]]
+		  ];
+		  
+		  console.log(latlngs)
+		  
+		  var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+		}
+
+		map.on('geosearch/showlocation', searchEventHandler);
+		map.addControl(search);
+
+		function clearMap() {
+			for(i in map._layers) {
+				if(map._layers[i]._path != undefined) {
+					try {
+						map.removeLayer(map._layers[i]);
+					}
+					catch(e) {
+						console.log("problem with " + e + map._layers[i]);
+					}
+				}
+			}
+		}
+	</script>
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

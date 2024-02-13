@@ -1,0 +1,17 @@
+classifiedAds:
+    new:
+        NewClassifiedAds: "Publier une annonce"
+        Title: "Titre"
+        Text: "Description"
+        Category: "Catégorie"
+        Price: "Prix"
+        DisplayEmail: "Afficher mon adresse e-mail sur l'annonce"
+        GeneralInformation: "Information générale"
+        ListingLocation: "Adresse de l'annonce"
+        Validation: "Confirmation"
+        ThankForYourParticipation: "Merci pour votre participation !"
+        ThankForYourParticipationText: "Votre petite annonce nous a bien été transmise. Elle sera publiée sur notre site Internet dès qu'un modérateur l'aura validé."
+        FileSizeLimit: "Taille maximum"
+        AcceptedFormat: "Formats acceptés"
+        Photo: "Photo"
+        Validate: "Valider"

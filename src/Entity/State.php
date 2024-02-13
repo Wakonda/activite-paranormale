@@ -45,9 +45,7 @@ class State
     private $internationalName;
 	
     /**
-     * @var string $displayState
-     *
-     * @ORM\Column(name="displayState", type="string", length=255)
+     * @ORM\Column(name="displayState", type="boolean")
      */
     private $displayState;
 
