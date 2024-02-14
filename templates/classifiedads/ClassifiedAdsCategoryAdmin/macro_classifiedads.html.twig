@@ -1,0 +1,27 @@
+{% macro updateListForm(form) %}
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", function() {
+
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('ClassifiedAdsCategory_Admin_ReloadListsByLanguage') }}", true);
+		
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var parentCategorySelect = document.getElementById("{{ form.parentCategory.vars.id }}");
+				parentCategorySelect.innerHTML = "";
+				data.parentCategory.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					parentCategorySelect.appendChild(option);
+				});
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("id", this.value);
+
+		xhr.send(formData);
+	});
+{% endmacro %}

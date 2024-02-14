@@ -15,6 +15,6 @@ ClassifiedAds_Validate:
     controller: App\Controller\ClassifiedAdsController::validate
 
 # Administration
-# Testimony_Admin:
-    # resource: "routing/testimonyadmin.yml"
-    # prefix:   /admin/testimony
+ClassifiedAdsCategory_Admin:
+    resource: "routing/classifiedadscategoryadmin.yml"
+    prefix:   /admin/classifiedadscategory

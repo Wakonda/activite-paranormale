@@ -1,0 +1,18 @@
+{% extends "admin/GenericAdmin/new.html.twig" %}
+
+{% block h2_title %}{{ "classifiedAdsCategory.admin.ClassifiedAdsCategory"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('ClassifiedAdsCategory_Admin_Index') }}{% endblock %}
+{% block create_admin_route %}{{ path('ClassifiedAdsCategory_Admin_Create') }}{% endblock %}
+
+{% block js_specific %}
+	{% import "classifiedAds/ClassifiedAdsCategoryAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
+
+	<script>
+		{{ macro_classifiedads.updateListForm(form) }}
+	</script>
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'classifiedAds/ClassifiedAdsCategoryAdmin/_form.html.twig' %}
+{% endblock %}

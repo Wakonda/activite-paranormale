@@ -15,3 +15,11 @@ classifiedAds:
         AcceptedFormat: "Formats acceptés"
         Photo: "Photo"
         Validate: "Valider"
+    admin:
+        ClassifiedAds: "Petites annonces"
+classifiedAdsCategory:
+    admin:
+        Title: "Titre"
+        ParentCategory: "Famille"
+        Language: "Langage"
+        ClassifiedAdsCategory: "Petites annonces - Catégorie"

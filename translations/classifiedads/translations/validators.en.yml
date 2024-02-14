@@ -15,3 +15,11 @@ classifiedAds:
         AcceptedFormat: "Accepted format"
         Photo: "Photo"
         Validate: "Validate"
+    admin:
+        ClassifiedAds: "Classified ads"
+classifiedAdsCategory:
+    admin:
+        Title: "Title"
+        ParentCategory: "Family"
+        Language: "Language"
+        ClassifiedAdsCategory: "Classified ads - Category"

@@ -396,6 +396,39 @@
 				</div>
 			</div>
 		</div>
+
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseClassifiedAds">
+					<i class="fa-solid fa-user-ninja text-danger"></i> {{ "classifiedAds.admin.ClassifiedAds"|trans([], "validators") }}
+					</a>
+				</h5>
+			</div>
+			<div id="collapseClassifiedAds" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('ClassifiedAdsCategory_Admin_Index') }}">{{ "classifiedAdsCategory.admin.ClassifiedAdsCategory"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('ClassifiedAdsCategory_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<!-- <tr> -->
+								<!-- <td><a href="{{ path('Music_Admin_Index') }}">{{ "admin.index.Music"|trans([], "validators") }}</a></td> -->
+								<!-- <td><a href="{{ path('Music_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td> -->
+							<!-- </tr> -->
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		
 		<div class="card mb-2">
 			<div class="card-header">
 				<h5 class="panel-title">

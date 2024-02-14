@@ -6,7 +6,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Table(name="classified_ads_category")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\ClassifiedAdsCategoryRepository")
  */
 class ClassifiedAdsCategory
 {
