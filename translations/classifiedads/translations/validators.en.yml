@@ -28,7 +28,7 @@ classifiedAds:
         NeverPay: "Never pay with Western Union, Moneygram or other anonymous payment services"
         DontBuy: "Don't buy or sell outside of your country. Don't accept cashier cheques from outside your country"
         Transaction: "This site is never involved in any transaction, and does not handle payments, shipping, guarantee transactions, provide escrow services, or offer 'buyer protection' or 'seller certification'"
-        Contact publisher: "Contact publisher"
+        ContactPublisher: "Contact publisher"
         MarkAs: "Mark as..."
         MarkAsSpam: "Mark as spam"
         MarkAsMisclassified: "Mark as misclassified"
@@ -38,6 +38,8 @@ classifiedAds:
         PublicationDate: "Published date:"
         Address: "Location:"
         Description: "Description"
+        Email: "Email:"
+        MarkAsSuccess: "Thank you for helping us improve!"
 classifiedAdsCategory:
     admin:
         Title: "Title"

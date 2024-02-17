@@ -14,8 +14,8 @@
 		<p><b>{{ "classifiedAds.read.PublicationDate"|trans([], "validators") }}</b> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
 		<p><b>{{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
 	</div>
-	{% if entity.photo is not empty %}
-		{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
+	{% if entity.illustration is not empty %}
+		{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" })|raw }}
 	{% endif %}
 	<br>
 	
@@ -23,18 +23,17 @@
 		<div class="text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></div>
 		<br>
 	{% endif %}
-
-	<br>
 	
 	{% if entity.text is not empty %}
-		<h3>{{ "classifiedAds.read.Description"|trans([], "validators") }}</h3>
+		<h3><i class="fa-solid fa-highlighter"></i> {{ "classifiedAds.read.Description"|trans([], "validators") }}</h3>
 		{{ entity.text|raw }}
 	{% endif %}
 	
 	<br>
 	
 	<div class="alert alert-warning">
-		{{ "classifiedAds.read.UsefulInformation"|trans([], "validators") }}
+		<h4><i class="fa-solid fa-circle-info"></i> {{ "classifiedAds.read.UsefulInformation"|trans([], "validators") }}</h4>
+		<br>
 		<ul>
 			<li>{{ "classifiedAds.read.AvoidScams"|trans([], "validators") }}</li>
 			<li>{{ "classifiedAds.read.NeverPay"|trans([], "validators") }}</li>
@@ -44,9 +43,17 @@
 	</div>
 	
 	<br>
+	<h3><i class="fa-solid fa-at"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</h3>
+	{% if entity.displayEmail %}
+		<p><b>{{ "classifiedAds.read.Email"|trans([], "validators") }}</b> <a href="mailto:{{ entity.author.email }}">{{ entity.author.email }}</a></p>
+	{% endif %}
+	<br>
+	<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: entity.author.id}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
+	<br>
 	
-	<h3>{{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</h3>
-	<select name="markAs">
+	<div>
+	<h3><i class="fa-solid fa-eye"></i> {{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</h3>
+	<select name="markAs form-select" id="markAs">
 		<option>{{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</option>
 		<option value="spam">{{ "classifiedAds.read.MarkAsSpam"|trans([], "validators") }}</option>
 		<option value="badcat">{{ "classifiedAds.read.MarkAsMisclassified"|trans([], "validators") }}</option>
@@ -54,10 +61,13 @@
 		<option value="expired">{{ "classifiedAds.read.MarkAsExpired"|trans([], "validators") }}</option>
 		<option value="offensive">{{ "classifiedAds.read.MarkAsOffensive"|trans([], "validators") }}</option>
 	</select>
+	</div>
+	
+	<br>
 
 	<hr class="hr2">
 	<p>
-		<span><i class="fas fa-dragon"></i> <a href="{{ path('Store_Index', {category: entity.category.title}) }}">{{ entity.category.title }}</a></span>
+		<span><i class="fa-solid fa-tag"></i> <a href="{{ path('Store_Index', {category: entity.category.title}) }}">{{ entity.category.title }}</a></span>
 	</p>
 	<hr class="hr2">
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
@@ -67,7 +77,7 @@
 	
 	<script>
 		document.getElementById("markAs").addEventListener("change", (e) => {
-			alert(e.target.value)
+			window.location.href = "{{ path('ClassifiedAds_MarkAs', {id: entity.id}) }}?mark_as=" + e.target.value;
 		});
 	</script>
 {% endblock %}

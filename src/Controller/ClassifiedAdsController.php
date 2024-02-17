@@ -41,7 +41,19 @@ class ClassifiedAdsController extends AbstractController
 		
 		return $this->render("classifiedads/ClassifiedAds/read.html.twig", ["entity" => $entity]);
 	}
-	
+
+	public function markAs(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id) {
+		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
+
+		$entity->setMarkAs($request->query->get("mark_as"));
+		$em->persist($entity);
+		$em->flush();
+		
+		$this->addFlash('success', $translator->trans('classifiedAds.read.MarkAsSuccess', [], 'validators'));
+		
+		return $this->redirect($this->generateUrl("ClassifiedAds_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()]));
+	}
+
 	// USER PARTICIPATION
     public function newAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
@@ -62,10 +74,13 @@ class ClassifiedAdsController extends AbstractController
         $form->handleRequest($request);
 
 		if ($form->isValid()) {
-		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
-		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
+			$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
+			
+			$entity->setAuthor($this->getUser());
 
-		$entity->setState($state);
+			$entity->setState($state);
+			$entity->setLanguage($language);
 
 			if(is_object($ci = $entity->getIllustration())) {
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();

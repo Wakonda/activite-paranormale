@@ -51,6 +51,11 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
      */
     private $illustration;
 
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $markAs;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -171,5 +176,15 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
     public function getIllustration()
     {
         return $this->illustration;
+    }
+
+    public function setMarkAs($markAs)
+    {
+        $this->markAs = $markAs;
+    }
+
+    public function getMarkAs()
+    {
+        return $this->markAs;
     }
 }

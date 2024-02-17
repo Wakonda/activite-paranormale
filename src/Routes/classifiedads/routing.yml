@@ -13,6 +13,14 @@ ClassifiedAds_New:
 ClassifiedAds_Read:
     path:  /classifiedads/read/{id}/{title_slug}
     controller: App\Controller\ClassifiedAdsController::read
+    requirements:
+        id: \d+
+
+ClassifiedAds_MarkAs:
+    path:  /classifiedads/markas/{id}
+    controller: App\Controller\ClassifiedAdsController::markAs
+    requirements:
+        id: \d+
 
 ClassifiedAds_Create:
     path:  /classifiedads/create

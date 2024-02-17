@@ -43,6 +43,9 @@ class HistoryListener
 			$username = $this->tokenStorage->getToken()->getUser()->getUsername();
 		else
 			$username = $entity->authorToString();
+		
+		if(empty($username))
+			return;
 
 		$changeSetArray = $uow->getEntityChangeSet($entity);
 		
@@ -118,26 +121,6 @@ class HistoryListener
 	
     public function postPersist(LifecycleEventArgs $args)
     {
-        /*$entity = $args->getEntity();
-		
-		if(!method_exists($entity, "getHistory"))
-			return;
-		
-		if(empty($entity->getHistory())) {
-			$history = new History();
-			$historyDetail = new HistoryDetail();
-
-			$historyDetail->setModificationDateTime($entity->getWritingDate());
-			$historyDetail->setIpAddress($this->getClientIp($this->requestStack->getCurrentRequest()));
-			$historyDetail->setUser($entity->authorToString());
-			
-			$history->addHistoryDetail($historyDetail);
-			
-			$args->getEntityManager()->persist($history);
-			$args->getEntityManager()->persist($historyDetail);
-			 
-			$args->getEntityManager()->flush();
-		}*/
     }
 	
 	private function formatHistory($text) {
