@@ -1,0 +1,58 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}
+	{{ "classifiedAds.index.ClassifiedAds"|trans([], "validators") }}
+{% endblock %}
+
+{% block h2_title %}
+	<h2>
+		<span class="float-start"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "classifiedAds.index.ClassifiedAds"|trans([], "validators") }}
+	</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/classifiedads-index.png') }}" width="550" alt="Heavy Metal" /></p>
+	<p>{{ "classifiedAds.index.Nbr"|trans([], "validators") }}<span class="badge bg-danger">{{ pagination.totalItemCount }}</span></p>
+	<hr>
+	
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row g-0">
+				<div class="col-md-4 align-self-center text-center">
+					{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body p-2 ps-3">
+						<h5 class="card-title text-center">{{ entity.title }}</h5>
+						<hr>
+						<p class="card-text mb-0 text-center"><i class="fa-solid fa-tag"></i> {{ entity.category.title }}</p>
+						<p class="card-text mb-0 text-center"><i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
+						<p class="card-text mb-0 text-center"><i class="fa-solid fa-location-dot"></i> {{ entity.locationArray|join(", ") }}</p>
+						{% if entity.price is not empty %}
+							<p class="card-text text-center mt-2"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></p>
+						{% endif %}
+						<hr>
+					</div>
+					<div class="card-footer text-center pt-0">
+						<a class="btn read" href="{{ path('ClassifiedAds_Read', {id: entity.id, title_slug: entity.urlSlug}) }}">
+							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
+							<b class="align-middle">{{ "classifiedAds.index.Read"|trans([], "validators") }}</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger fst-italic text-center">{{ "classifiedAds.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

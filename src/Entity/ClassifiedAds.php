@@ -76,6 +76,38 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
+	public function getLocationArray()
+	{
+		if(empty($this->location))
+			return [];
+		
+		$res = [];
+		$location = json_decode($this->location);
+		
+		if(property_exists($location, "village"))
+			$res["city"] = $location->village;
+		
+		if(property_exists($location, "town"))
+			$res["city"] = $location->town;
+		
+		if(property_exists($location, "city"))
+			$res["city"] = $location->city;
+		
+		if(property_exists($location, "postcode"))
+			$res["postalCode"] = $location->postcode;
+		
+		if(property_exists($location, "county"))
+			$res["county"] = $location->county;
+		
+		if(property_exists($location, "country"))
+			$res["state"] = $location->state;
+		
+		if(property_exists($location, "country"))
+			$res["country"] = $location->country;
+
+		return $res;
+	}
+
     public function getId()
     {
         return $this->id;

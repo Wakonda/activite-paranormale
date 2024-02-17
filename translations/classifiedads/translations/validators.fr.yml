@@ -15,6 +15,27 @@ classifiedAds:
         AcceptedFormat: "Formats acceptés"
         Photo: "Photo"
         Validate: "Valider"
+    index:
+        ClassifiedAds: "Petites annonces"
+        Read: "Lire"
+        Nbr: "Nombre de petites annonces :"
+        NoMatchingRecordsFound: "Aucun élément à afficher"
+    read:
+        UsefulInformation: "Informations utiles"
+        AvoidScams: "Evitez les arnaques en fonctionnant localement ou en payant via Paypal"
+        NeverPay: "Ne payez jamais par Western Union, Moneygram et autres services de paiement anonymes"
+        DontBuy: "N'achetez ou ne vendez pas en dehors de votre pays. N'acceptez pas les chèques de banques provenant d'un autre pays que le votre."
+        Transaction: "Ce site n'est jamais impliqué dans aucune transaction, et ne contribue en aucun paiement, livraison, garantie, transaction, fraude, ou n'offre aucune 'protection à l'acheteur' ou 'certification de vendeur'"
+        Contact publisher: "Contacter le vendeur"
+        MarkAs: "Signaler cette annonce"
+        MarkAsSpam: "Signaler cette annonce comme étant un spam"
+        MarkAsMisclassified: "Signaler cette annonce comme êtant mal classée"
+        MarkAsDuplicated: "Signaler cette annonce comme étant dupliquée"
+        MarkAsExpired: "Signaler cette annonce comme étant expirée"
+        MarkAsOffensive: "Signaler cette annonce comme étant offensante"
+        PublicationDate: "Date de publication :"
+        Address: "Adresse :"
+        Description: "Description"
     admin:
         ClassifiedAds: "Petites annonces"
 classifiedAdsCategory:

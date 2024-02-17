@@ -1,0 +1,73 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block meta_plus %}
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ entity.title }}" />
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+{% endblock %}
+
+{% block APBlog_body %}
+	<div class="alert alert-info">
+		<p><b>{{ "classifiedAds.read.PublicationDate"|trans([], "validators") }}</b> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
+		<p><b>{{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
+	</div>
+	{% if entity.photo is not empty %}
+		{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
+	{% endif %}
+	<br>
+	
+	{% if entity.price is not empty %}
+		<div class="text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></div>
+		<br>
+	{% endif %}
+
+	<br>
+	
+	{% if entity.text is not empty %}
+		<h3>{{ "classifiedAds.read.Description"|trans([], "validators") }}</h3>
+		{{ entity.text|raw }}
+	{% endif %}
+	
+	<br>
+	
+	<div class="alert alert-warning">
+		{{ "classifiedAds.read.UsefulInformation"|trans([], "validators") }}
+		<ul>
+			<li>{{ "classifiedAds.read.AvoidScams"|trans([], "validators") }}</li>
+			<li>{{ "classifiedAds.read.NeverPay"|trans([], "validators") }}</li>
+			<li>{{ "classifiedAds.read.DontBuy"|trans([], "validators") }}</li>
+			<li>{{ "classifiedAds.read.Transaction"|trans([], "validators") }}</li>
+		</ul>
+	</div>
+	
+	<br>
+	
+	<h3>{{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</h3>
+	<select name="markAs">
+		<option>{{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</option>
+		<option value="spam">{{ "classifiedAds.read.MarkAsSpam"|trans([], "validators") }}</option>
+		<option value="badcat">{{ "classifiedAds.read.MarkAsMisclassified"|trans([], "validators") }}</option>
+		<option value="repeated">{{ "classifiedAds.read.MarkAsDuplicated"|trans([], "validators") }}</option>
+		<option value="expired">{{ "classifiedAds.read.MarkAsExpired"|trans([], "validators") }}</option>
+		<option value="offensive">{{ "classifiedAds.read.MarkAsOffensive"|trans([], "validators") }}</option>
+	</select>
+
+	<hr class="hr2">
+	<p>
+		<span><i class="fas fa-dragon"></i> <a href="{{ path('Store_Index', {category: entity.category.title}) }}">{{ entity.category.title }}</a></span>
+	</p>
+	<hr class="hr2">
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+	
+	<script>
+		document.getElementById("markAs").addEventListener("change", (e) => {
+			alert(e.target.value)
+		});
+	</script>
+{% endblock %}

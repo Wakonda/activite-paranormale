@@ -1,10 +1,18 @@
 ClassifiedAds_Index:
-    path:  /classifiedads
+    path:  /classifiedads/{page}
     controller: App\Controller\ClassifiedAdsController::index
+    defaults:
+        page: 1
+    requirements:
+        page: \d+
 
 ClassifiedAds_New:
     path:  /classifiedads/new
     controller: App\Controller\ClassifiedAdsController::newAction
+
+ClassifiedAds_Read:
+    path:  /classifiedads/read/{id}/{title_slug}
+    controller: App\Controller\ClassifiedAdsController::read
 
 ClassifiedAds_Create:
     path:  /classifiedads/create

@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Knp\Component\Pager\PaginatorInterface;
 
 use App\Entity\ClassifiedAds;
 use App\Entity\Language;
@@ -20,9 +21,26 @@ use App\Form\Type\ClassifiedAdsType;
 
 class ClassifiedAdsController extends AbstractController
 {
-    public function index(Request $request, EntityManagerInterface $em)
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
+		$query = $em->getRepository(ClassifiedAds::class)->getClassifiedAds($request->getLocale());
+
+		$pagination = $paginator->paginate(
+			$query, /* query NOT result */
+			$page, /*page number*/
+			12 /*limit per page*/
+		);
+
+		$pagination->setCustomParameters(['align' => 'center']);
+
+		return $this->render('classifiedads/ClassifiedAds/index.html.twig', ['pagination' => $pagination]);
     }
+
+	public function read(EntityManagerInterface $em, $id, $title_slug) {
+		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
+		
+		return $this->render("classifiedads/ClassifiedAds/read.html.twig", ["entity" => $entity]);
+	}
 	
 	// USER PARTICIPATION
     public function newAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
@@ -42,13 +60,13 @@ class ClassifiedAdsController extends AbstractController
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);
 
         $form->handleRequest($request);
-// dd($form);
+
 		if ($form->isValid()) {
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
 
 		$entity->setState($state);
-// dd($entity->getIllustration());
+
 			if(is_object($ci = $entity->getIllustration())) {
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();
 				$illustration = new FileManagement();
