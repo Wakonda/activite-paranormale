@@ -23,7 +23,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 	"witchcraft_tool_vote" = "WitchcraftToolVote",
 	"event_message_vote" = "EventMessageVote",
 	"movie_vote" = "MovieVote",
-	"televisionserie_vote" = "TelevisionSerieVote"
+	"televisionserie_vote" = "TelevisionSerieVote",
+	"classifiedads_vote" = "ClassifiedAdsVote"
   })
  */
 class Vote

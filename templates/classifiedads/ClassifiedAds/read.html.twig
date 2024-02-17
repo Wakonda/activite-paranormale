@@ -11,8 +11,8 @@
 
 {% block APBlog_body %}
 	<div class="alert alert-info">
-		<p><b>{{ "classifiedAds.read.PublicationDate"|trans([], "validators") }}</b> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
-		<p><b>{{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
+		<p><b><i class="fa-solid fa-calendar-days"></i> {{ "classifiedAds.read.PublicationDate"|trans([], "validators") }}</b> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
+		<p><b><i class="fa-solid fa-location-dot"></i> {{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
 	</div>
 	{% if entity.illustration is not empty %}
 		{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" })|raw }}
@@ -71,6 +71,8 @@
 	</p>
 	<hr class="hr2">
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
+
+	{{ render(controller("App\\Controller\\VoteController::indexAction", { 'idClassName' : entity.id, 'className': 'ClassifiedAds' })) }}
 
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}

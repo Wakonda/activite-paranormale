@@ -20,6 +20,7 @@ use App\Entity\EventMessageVote;
 use App\Entity\MovieVote;
 use App\Entity\TelevisionSerieVote;
 use App\Form\Type\VoteType;
+use App\Entity\ClassifiedAdsVote;
 
 class VoteController extends AbstractController
 {
@@ -66,6 +67,10 @@ class VoteController extends AbstractController
 			case "TelevisionSerie":
 				$entity = new TelevisionSerieVote();
 				$className = TelevisionSerieVote::class;
+				break;
+			case "ClassifiedAds":
+				$entity = new ClassifiedAdsVote();
+				$className = ClassifiedAdsVote::class;
 				break;
 		}
 

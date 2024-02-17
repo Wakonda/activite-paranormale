@@ -37,13 +37,13 @@
 				val
 			}
 		});
-		
+
 		document.getElementById("{{ form.vars.id }}").addEventListener("submit", (e) => {
 			e.preventDefault();
-			
+
 			let form = document.querySelector('#{{ form.vars.id }}');
 			let formData = new FormData(form);
-			
+
 			var xmlHttp = new XMLHttpRequest();
 
 			let contentButton = document.getElementById("rate").innerHTML.trim();
