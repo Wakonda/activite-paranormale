@@ -32,7 +32,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 	protected $showRoute = "ClassifiedAds_Admin_Show";
 	protected $formName = 'ap_classifiedads_admintype';
 
-	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
+	protected $illustrations = [["field" => "illustration", "selectorFile" => null]];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
@@ -120,7 +120,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 
 			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
 			$row[] =  $state->getTitle();
-			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
+			$row[] = !empty($entity->getLanguage()) ? '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">' : null;
 			$row[] = "
 			 <a href='".$this->generateUrl('ClassifiedAds_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
 			 <a href='".$this->generateUrl('ClassifiedAds_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
@@ -131,6 +131,13 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		$response = new Response(json_encode($output));
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
+	}
+
+	/* FONCTION DE COMPTAGE */
+	public function countByState(EntityManagerInterface $em, $state)
+	{
+		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
+		return new Response($countByStateAdmin);
 	}
 
 	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
@@ -185,7 +192,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 
 		if($state->getInternationalName() == "Validate") {
 			if(empty($entity->getTheme()))
-				return $this->redirect($this->generateUrl('News_Admin_Edit', ['id' => $id]));
+				return $this->redirect($this->generateUrl('ClassifiedAds_Admin_Edit', ['id' => $id]));
 		}
 
 		$em->persist($entity);
@@ -196,7 +203,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		else
 			$this->addFlash('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
 
-		return $this->redirect($this->generateUrl('News_Admin_Show', ['id' => $id]));
+		return $this->redirect($this->generateUrl('ClassifiedAds_Admin_Show', ['id' => $id]));
 	}
 
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)

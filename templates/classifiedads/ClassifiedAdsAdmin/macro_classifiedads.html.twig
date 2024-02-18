@@ -39,3 +39,55 @@
 		xhr.send(formData);
 	});
 {% endmacro %}
+
+{% macro map(id) %}
+	const map = L.map('map').setView([43.009198, -97.106824], 15);
+
+	L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+	const provider = new GeoSearch.OpenStreetMapProvider({
+		params: {
+			addressdetails: 1
+		}
+	});
+	const search = new GeoSearch.GeoSearchControl({
+		style: 'bar',
+		provider: provider,
+		searchLabel: "{{ ('classifiedAds.index.EnterAddress'|trans([], 'validators'))|escape('js') }}"
+	});
+
+	function searchEventHandler(result) {
+		let address = result.location.raw.address;
+		
+		address.value = result.location.raw.display_name;
+		address.lon = result.location.raw.lon;
+		address.lat = result.location.raw.lat;
+
+		document.getElementById("{{ id }}").value = JSON.stringify(address)
+		clearMap()
+
+		var latlngs = [
+			[result.location.bounds[0][0],result.location.bounds[1][1]],
+			[result.location.bounds[1][0],result.location.bounds[1][1]],
+			[result.location.bounds[1][0],result.location.bounds[0][1]],
+			[result.location.bounds[0][0],result.location.bounds[0][1]]
+		];
+
+		var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+	}
+
+	map.on('geosearch/showlocation', searchEventHandler);
+	map.addControl(search);
+
+	function clearMap() {
+		for(i in map._layers) {
+			if(map._layers[i]._path != undefined) {
+				try {
+					map.removeLayer(map._layers[i]);
+				}
+				catch(e) {
+					console.log("problem with " + e + map._layers[i]);
+				}
+			}
+		}
+	}
+{% endmacro %}

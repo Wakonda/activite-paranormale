@@ -36,9 +36,9 @@ class ClassifiedAdsRepository extends EntityRepository
 
 		$qb = $this->createQueryBuilder('c');
 		$qb
-		   ->join('c.language', 'l')
+		   ->leftjoin('c.language', 'l')
 		   ->leftjoin('c.category', 't')
-		   ->join('c.state', 's')
+		   ->leftjoin('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
@@ -55,7 +55,7 @@ class ClassifiedAdsRepository extends EntityRepository
 
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = ['c.id', 'c.title', 't.title', 'c.publicationDate', 's.title', 'l.title', 'c.id'];
+			$aSearchColumns = ['c.id', 'c.title', 't.title', 'c.publicationDate', 's.internationalName', 'l.title', 'c.id'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
@@ -76,5 +76,16 @@ class ClassifiedAdsRepository extends EntityRepository
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		return $qb->getQuery()->getResult();
+	}
+
+	public function countByStateAdmin($state)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("count(c)")
+		->innerjoin('c.state', 's')
+		->where('s.internationalName = :state')
+		->setParameter('state', $state);
+
+		return $qb->getQuery()->getSingleScalarResult();
 	}
 }

@@ -488,6 +488,13 @@
 								</td>
 							</tr>
 							<tr>
+								<td>{{ "admin.moderation.ClassifiedAdsToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('ClassifiedAds_Admin_Index', {'state': 'Waiting', 'display' : 0}) }}" alt="" >{{ render(controller('App\\Controller\\ClassifiedAdsAdminController::countByState', {'state':'Waiting'})) }}</a>]
+									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('ClassifiedAds_Admin_Index', {'state': 'Warned', 'display' : 0}) }}" alt="" >{{ render(controller('App\\Controller\\ClassifiedAdsAdminController::countByState', {'state':'Warned'})) }}</a>]
+								</td>
+							</tr>
+							<tr>
 								<td>{{ "file.admin.MediaManagement"|trans([], "validators") }}</td>
 								<td><a href="{{ path('FileManagement_Admin_ListFiles') }}" alt="">{{ "admin.general.Display"|trans([], "validators") }}</a></td>
 							</tr>

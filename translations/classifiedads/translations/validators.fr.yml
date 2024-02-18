@@ -20,6 +20,7 @@ classifiedAds:
         Read: "Lire"
         Nbr: "Nombre de petites annonces :"
         NoMatchingRecordsFound: "Aucun élément à afficher"
+        EnterAddress: "Entrer l'adresse"
     read:
         UsefulInformation: "Informations utiles"
         AvoidScams: "Evitez les arnaques en fonctionnant localement ou en payant via Paypal"
@@ -40,7 +41,7 @@ classifiedAds:
         MarkAsSuccess: "Merci de nous aider à nous améliorer !"
     admin:
         ClassifiedAds: "Petites annonces"
-        Title: "Title"
+        Title: "Titre"
         Text: "Description"
         Category: "Catégorie"
         Price: "Prix"
@@ -49,7 +50,7 @@ classifiedAds:
         Language: "Langue"
         DisplayEmail: "Email affiché"
         MarkAs: "Signalement"
-        Location: "Adresse"
+        Address: "Adresse"
         WritingDate: "Date de rédaction"
         PublicationDate: "Date de publication"
         State: "Etat"

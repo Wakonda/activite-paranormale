@@ -33,7 +33,7 @@
 	<div class="form-table-cell">{{ entity.authorToString }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.Language"|trans([], "validators") }}</div>
-	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
+	<div class="form-table-cell">{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" />{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.Category"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.category is not empty ? entity.category.title : "" }}</div>
@@ -48,9 +48,9 @@
 	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.MarkAs"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ ("classifiedAds.admin." ~ (entity.markAs|capitalize))|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.markAs is not empty %}{{ ("classifiedAds.admin." ~ (entity.markAs|capitalize))|trans([], "validators") }}{% endif %}</div>
 
-	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.Location"|trans([], "validators") }}</div>
+	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.Address"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.locationArray|join(", ") }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.WritingDate"|trans([], "validators") }}</div>
@@ -66,8 +66,6 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "News_Admin_Internationalization", "showRoute": "News_Admin_Show", "editRoute": "News_Admin_Edit"})) }}
-	
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 

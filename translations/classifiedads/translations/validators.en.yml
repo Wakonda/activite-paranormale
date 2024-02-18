@@ -15,13 +15,12 @@ classifiedAds:
         AcceptedFormat: "Accepted format"
         Photo: "Photo"
         Validate: "Validate"
-    admin:
-        ClassifiedAds: "Classified ads"
     index:
         ClassifiedAds: "Classified ads"
         Read: "Read"
         Nbr: "Number of classified ads:"
         NoMatchingRecordsFound: "No matching records found"
+        EnterAddress: "Enter address"
     read:
         UsefulInformation: "Useful information"
         AvoidScams: "Avoid scams by acting locally or paying with PayPal"
@@ -40,6 +39,26 @@ classifiedAds:
         Description: "Description"
         Email: "Email:"
         MarkAsSuccess: "Thank you for helping us improve!"
+    admin:
+        ClassifiedAds: "Classified ads"
+        Title: "Title"
+        Text: "Description"
+        Category: "Category"
+        Price: "Price"
+        Photo: "Photo"
+        Author: "Author"
+        Language: "Language"
+        DisplayEmail: "Email displayed"
+        MarkAs: "Reporting"
+        Address: "Location"
+        WritingDate: "Writing date"
+        PublicationDate: "Publication date"
+        State: "State"
+        Spam: "Spam"
+        Badcat: "Misclassified"
+        Repeated: "Repeated"
+        Expired: "Expired"
+        Offensive: "Offensive"
 classifiedAdsCategory:
     admin:
         Title: "Title"

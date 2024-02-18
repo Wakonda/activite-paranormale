@@ -60,13 +60,13 @@
 
 					$url = null;
 					
-					if(empty($currentFile) and !$form->get($fieldName)->get($illustration['selectorFile'])->getConfig()->getRequired())
+					if(empty($currentFile) and !empty($illustration['selectorFile']) and !$form->get($fieldName)->get($illustration['selectorFile'])->getConfig()->getRequired())
 						continue;
 					
-					if(isset($illustration['selectorFile']) and ($fileUrl = $form->get($fieldName)->get($illustration['selectorFile'])->getData()) != null)
+					if(isset($illustration['selectorFile']) and !empty($illustration['selectorFile']) and ($fileUrl = $form->get($fieldName)->get($illustration['selectorFile'])->getData()) != null)
 						$url = $fileUrl;
 
-					if($form->get($illustration["field"])->isRequired() and empty($currentFile->getTitleFile()) and empty($entityBindded->$getFieldName()->getTitleFile()) and empty($url))
+					if($form->get($illustration["field"])->isRequired() and !empty($currentFile) and empty($currentFile->getTitleFile()) and empty($entityBindded->$getFieldName()->getTitleFile()) and empty($url))
 					{
 						$form->get($fieldName)->get("titleFile")->addError(new FormError($this->translator->trans('admin.error.NotBlank', array(), 'validators')));
 					}
@@ -76,7 +76,7 @@
 						$form->get($fieldName)->get("titleFile")->addError(new FormError($this->translator->trans('admin.error.NotBlank', array(), 'validators')));
 					}
 
-					if(!empty($entityBindded->$getFieldName()))
+					if(!empty($entityBindded->$getFieldName()) and method_exists($entityBindded->$getFieldName(), "getLicense"))
 					{
 						if((!empty($entityBindded->$getFieldName()->getLicense()) or !empty($entityBindded->$getFieldName()->getAuthor()) or !empty($entityBindded->$getFieldName()->getUrlSource()) or !empty($entityBindded->$getFieldName()->getCaption())) and (empty($currentFile) or empty($currentFile->getTitleFile())) and empty($entityBindded->$getFieldName()->getTitleFile()) and empty($url))
 						{

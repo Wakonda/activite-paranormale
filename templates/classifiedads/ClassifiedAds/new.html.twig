@@ -9,8 +9,8 @@
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
-	<script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.umd.js"></script>
-	<link  rel="stylesheet"  href="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.css"/>
+	<script src="{{ asset('extended/js/geosearch/geosearch.umd.js') }}"></script>
+	<link  rel="stylesheet"  href="{{ asset('extended/js/geosearch/geosearch.min.css') }}"/>
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
@@ -63,55 +63,8 @@
 	{{ form_end(form) }}
 
 	<script>
-		const map = L.map('map').setView([43.009198, -97.106824], 15);
-
-		L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-		const provider = new GeoSearch.OpenStreetMapProvider({
-			params: {
-				addressdetails: 1
-			}
-		});
-		const search = new GeoSearch.GeoSearchControl({
-			style: 'bar',
-			provider: provider,
-			searchLabel: "Entrer l'adresse"
-		});
-
-		function searchEventHandler(result) {
-			let address = result.location.raw.address;
-			
-			address.value = result.location.raw.display_name;
-			address.lon = result.location.raw.lon;
-			address.lat = result.location.raw.lat;
-
-			document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address)
-			clearMap()
-
-			var latlngs = [
-				[result.location.bounds[0][0],result.location.bounds[1][1]],
-				[result.location.bounds[1][0],result.location.bounds[1][1]],
-				[result.location.bounds[1][0],result.location.bounds[0][1]],
-				[result.location.bounds[0][0],result.location.bounds[0][1]]
-			];
-
-			var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
-		}
-
-		map.on('geosearch/showlocation', searchEventHandler);
-		map.addControl(search);
-
-		function clearMap() {
-			for(i in map._layers) {
-				if(map._layers[i]._path != undefined) {
-					try {
-						map.removeLayer(map._layers[i]);
-					}
-					catch(e) {
-						console.log("problem with " + e + map._layers[i]);
-					}
-				}
-			}
-		}
+		{% import "classifiedAds/ClassifiedAdsAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
+		{{ macro_classifiedads.map(form.location.vars.id) }}
 	</script>
 
 	<hr class="hr2">
