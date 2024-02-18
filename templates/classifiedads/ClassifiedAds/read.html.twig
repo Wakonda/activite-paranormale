@@ -7,6 +7,30 @@
 	<meta name="twitter:card" content="summary" />
 	<meta property="og:title" content="{{ entity.title }}" />
 	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+
+	{% if entity.location is not empty %}
+		{% set locationDatas = json_decode(entity.location) %}
+		<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+		<link href='{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}' rel='stylesheet' />
+		<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+		<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+		<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
+		<script>
+			document.addEventListener('DOMContentLoaded', (event) => {
+				var map = L.map('map-canvas').setView([{{ locationDatas.lat }}, {{ locationDatas.lon }}], 15);
+				var markersArray = new Array();
+
+				L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+				}).addTo(map);
+
+				map.addControl(new L.Control.Fullscreen());
+				var marker = L.marker([{{ locationDatas.lat }}, {{ locationDatas.lon }}]).addTo(map);
+				map.setView(marker.getLatLng(), 12);
+			});
+		</script>
+	{% endif %}
 {% endblock %}
 
 {% block APBlog_body %}
@@ -50,6 +74,14 @@
 	<br>
 	<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: entity.author.id}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
 	<br>
+
+	{% if entity.location is not empty %}
+		<div>
+			<h3><i class="fa-solid fa-map-location-dot"></i> {{ "classifiedAds.new.ListingLocation"|trans([], "validators") }}</h3>
+			<div id="map-canvas" style="width:100%; height:400px"></div>
+		</div>
+		<br>
+	{% endif %}
 	
 	<div>
 	<h3><i class="fa-solid fa-eye"></i> {{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</h3>
