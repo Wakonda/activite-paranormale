@@ -36,6 +36,24 @@ class ClassifiedAdsCategoryRepository extends MappedSuperclassBaseRepository
 		return $qb;
 	}
 
+	public function getClassifiedAdsCategoriesByLanguage($language)
+	{
+		$qb = $this->createQueryBuilder('s');
+		
+		if(!empty($language)) {
+			$qb
+			   ->join('s.language', 'l')
+			   ->where('l.abbreviation = :language')
+			   ->setParameter('language', $language);
+		}
+		
+		$qb
+		   ->andWhere("s.parentCategory IS NOT NULL")
+		   ->orderBy('s.title');
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
 		$aColumns = ['c.id', 'c.title', 's.title', 'l.title', 'c.id'];

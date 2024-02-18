@@ -1,0 +1,96 @@
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "classifiedAds.admin.Title"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "classifiedAds.admin.Text"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.price, "classifiedAds.admin.Price"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.price) }}
+	<div class="form-group-inline">
+		<div class="row">
+			<div class="col-md-6">
+				{{ form_widget(form.price, { 'attr': {'class': 'form-control'}}) }}
+			</div>
+			<div class="col-md-6">
+				{{ form_widget(form.currencyPrice, { 'attr': {'class': 'form-select'}}) }}
+			</div>
+		</div>
+	</div>
+</div>
+{{ dump(entity) }}
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "classifiedAds.admin.Photo"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.displayEmail, "classifiedAds.admin.DisplayEmail"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.displayEmail) }}{{ form_widget(form.displayEmail) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "classifiedAds.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "classifiedAds.admin.Category"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.markAs, "classifiedAds.admin.MarkAs"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.markAs) }}{{ form_widget(form.markAs, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.location, "classifiedAds.admin.Location"|trans([], "validators")) }}</div>
+<div class="form-table-cell">
+	<div id="map" style="width:100%; height:400px"></div>
+	{{ entity.locationArray|join(", ") }}
+</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "classifiedAds.admin.State"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<script>
+	const map = L.map('map').setView([43.009198, -97.106824], 15);
+
+	L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+	const provider = new GeoSearch.OpenStreetMapProvider({
+		params: {
+			addressdetails: 1
+		}
+	});
+	const search = new GeoSearch.GeoSearchControl({
+		style: 'bar',
+		provider: provider,
+		searchLabel: "Entrer l'adresse"
+	});
+
+	function searchEventHandler(result) {
+		let address = result.location.raw.address;
+		
+		address.value = result.location.raw.display_name;
+		address.lon = result.location.raw.lon;
+		address.lat = result.location.raw.lat;
+
+		document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address)
+		clearMap()
+
+		var latlngs = [
+			[result.location.bounds[0][0],result.location.bounds[1][1]],
+			[result.location.bounds[1][0],result.location.bounds[1][1]],
+			[result.location.bounds[1][0],result.location.bounds[0][1]],
+			[result.location.bounds[0][0],result.location.bounds[0][1]]
+		];
+
+		var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+	}
+
+	map.on('geosearch/showlocation', searchEventHandler);
+	map.addControl(search);
+
+	function clearMap() {
+		for(i in map._layers) {
+			if(map._layers[i]._path != undefined) {
+				try {
+					map.removeLayer(map._layers[i]);
+				}
+				catch(e) {
+					console.log("problem with " + e + map._layers[i]);
+				}
+			}
+		}
+	}
+</script>

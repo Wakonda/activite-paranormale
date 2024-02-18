@@ -94,6 +94,7 @@ index:
         Grimoire: "Sorcellerie"
         WitchcraftTool: "Outils de sorcellerie"
         CreepyStory: "Histoire effrayante"
+        ClassifiedAds: "Petite annonce"
     archive:
         Archive: "Archive"
         DocArchive: "Nombre total de documents archivés : "

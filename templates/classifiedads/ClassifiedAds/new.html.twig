@@ -9,8 +9,8 @@
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
-<script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.umd.js"></script>
-<link  rel="stylesheet"  href="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.css"/>
+	<script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.umd.js"></script>
+	<link  rel="stylesheet"  href="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.css"/>
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
@@ -67,9 +67,9 @@
 
 		L.tileLayer('//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 		const provider = new GeoSearch.OpenStreetMapProvider({
-		  params: {
-			addressdetails: 1
-		  },
+			params: {
+				addressdetails: 1
+			}
 		});
 		const search = new GeoSearch.GeoSearchControl({
 			style: 'bar',
@@ -78,28 +78,23 @@
 		});
 
 		function searchEventHandler(result) {
-		  console.log(result.location.raw);
-		  
-				let address = result.location.raw.address;
-				
-				address.value = result.location.raw.display_name;
-				address.lon = result.location.raw.lon;
-				address.lat = result.location.raw.lat;
-		  
+			let address = result.location.raw.address;
+			
+			address.value = result.location.raw.display_name;
+			address.lon = result.location.raw.lon;
+			address.lat = result.location.raw.lat;
 
-		  document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address)
-		  clearMap()
+			document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address)
+			clearMap()
 
-		  var latlngs = [
-			[result.location.bounds[0][0],result.location.bounds[1][1]],
-			[result.location.bounds[1][0],result.location.bounds[1][1]],
-			[result.location.bounds[1][0],result.location.bounds[0][1]],
-			[result.location.bounds[0][0],result.location.bounds[0][1]]
-		  ];
-		  
-		  console.log(latlngs)
-		  
-		  var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
+			var latlngs = [
+				[result.location.bounds[0][0],result.location.bounds[1][1]],
+				[result.location.bounds[1][0],result.location.bounds[1][1]],
+				[result.location.bounds[1][0],result.location.bounds[0][1]],
+				[result.location.bounds[0][0],result.location.bounds[0][1]]
+			];
+
+			var polygon = L.polygon(latlngs, {color: 'red'}).addTo(map);
 		}
 
 		map.on('geosearch/showlocation', searchEventHandler);

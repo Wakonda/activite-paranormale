@@ -1,0 +1,34 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.ClassifiedAds"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('ClassifiedAds_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('ClassifiedAds_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('ClassifiedAds_Admin_Index') }}{% endblock %}
+{% block update_admin_route %}{{ path('ClassifiedAds_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block style_edit %}
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
+	<script src="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.umd.js"></script>
+	<link  rel="stylesheet"  href="https://unpkg.com/leaflet-geosearch@3.3.2/dist/geosearch.css"/>
+{% endblock %}
+
+{% block js_specific %}
+	{% import "classifiedAds/ClassifiedAdsAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
+
+	<script>
+		{{ macro_classifiedads.updateListForm(form) }}
+	</script>
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'classifiedAds/ClassifiedAdsAdmin/_form.html.twig' %}
+{% endblock %}

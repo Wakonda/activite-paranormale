@@ -13,6 +13,8 @@ ClassifiedAds_New:
 ClassifiedAds_Read:
     path:  /classifiedads/read/{id}/{title_slug}
     controller: App\Controller\ClassifiedAdsController::read
+    defaults:
+        title_slug: null
     requirements:
         id: \d+
 
@@ -34,3 +36,7 @@ ClassifiedAds_Validate:
 ClassifiedAdsCategory_Admin:
     resource: "routing/classifiedadscategoryadmin.yml"
     prefix:   /admin/classifiedadscategory
+
+ClassifiedAds_Admin:
+    resource: "routing/classifiedadsadmin.yml"
+    prefix:   /admin/classifiedads
