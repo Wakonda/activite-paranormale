@@ -17,17 +17,18 @@ use App\Entity\ClassifiedAds;
 use App\Entity\Language;
 use App\Entity\State;
 use App\Entity\FileManagement;
+use App\Entity\ClassifiedAdsCategory;
 use App\Form\Type\ClassifiedAdsType;
 use App\Form\Type\ClassifiedAdsSearchType;
 
 class ClassifiedAdsController extends AbstractController
 {
-    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idCategory)
     {
 		$datas = [];
 
-		if(!empty($idTheme))
-			$datas["theme"] = $em->getRepository(Theme::class)->find($idTheme);
+		if(!empty($idCategory))
+			$datas["category"] = $em->getRepository(ClassifiedAdsCategory::class)->find($idCategory);
 
 		$form = $this->createForm(ClassifiedAdsSearchType::class, $datas, ["locale" => $request->getLocale()]);
 		$form->handleRequest($request);

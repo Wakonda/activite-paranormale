@@ -1,8 +1,9 @@
 ClassifiedAds_Index:
-    path:  /classifiedads/{page}
+    path:  /classifiedads/{page}/{idCategory}
     controller: App\Controller\ClassifiedAdsController::index
     defaults:
         page: 1
+        idCategory: null
     requirements:
         page: \d+
 

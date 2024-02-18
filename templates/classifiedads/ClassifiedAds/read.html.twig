@@ -67,7 +67,7 @@
 
 	<hr class="hr2">
 	<p>
-		<span><i class="fa-solid fa-tag"></i> <a href="{{ path('Store_Index', {category: entity.category.title}) }}">{{ entity.category.title }}</a></span>
+		<span><i class="fa-solid fa-tag"></i> <a href="{{ path('ClassifiedAds_Index', {idCategory: entity.category.id}) }}">{{ entity.category.title }}</a></span>
 	</p>
 	<hr class="hr2">
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
