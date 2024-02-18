@@ -12,8 +12,28 @@
 
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/classifiedads-index.png') }}" width="550" alt="Heavy Metal" /></p>
-	<p>{{ "classifiedAds.index.Nbr"|trans([], "validators") }}<span class="badge bg-danger">{{ pagination.totalItemCount }}</span></p>
+	<p>{{ "classifiedAds.index.Nbr"|trans([], "validators") }} <span class="badge bg-danger">{{ pagination.totalItemCount }}</span></p>
 	<hr>
+	
+	<h3>{{ "classifiedAds.search.SearchSort"|trans([], "validators") }}</h3>
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('ClassifiedAds_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "classifiedAds.search.Country"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-select'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "classifiedAds.search.Category"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-select'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.keywords, "classifiedAds.search.Keywords"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.keywords) }}{{ form_widget(form.keywords, {'attr':{'class' : 'form-control'}}) }}</div>
+		</div>
+		{{ form_rest(form) }}
+		<button type="submit" class="btn submitcomment float-end mt-3">{{ "classifiedAds.search.Validate"|trans([], "validators") }}</button>
+	{{ form_end(form) }}
+	<br>
+	<br>
+	<br>
 	
 	{% for entity in pagination.items %}
 		<div class="card mb-3">

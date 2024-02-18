@@ -18,12 +18,24 @@ use App\Entity\Language;
 use App\Entity\State;
 use App\Entity\FileManagement;
 use App\Form\Type\ClassifiedAdsType;
+use App\Form\Type\ClassifiedAdsSearchType;
 
 class ClassifiedAdsController extends AbstractController
 {
     public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
-		$query = $em->getRepository(ClassifiedAds::class)->getClassifiedAds($request->getLocale());
+		$datas = [];
+
+		if(!empty($idTheme))
+			$datas["theme"] = $em->getRepository(Theme::class)->find($idTheme);
+
+		$form = $this->createForm(ClassifiedAdsSearchType::class, $datas, ["locale" => $request->getLocale()]);
+		$form->handleRequest($request);
+
+		if ($form->isSubmitted() && $form->isValid())
+			$datas = $form->getData();
+
+		$query = $em->getRepository(ClassifiedAds::class)->getClassifiedAds($datas, $request->getLocale());
 
 		$pagination = $paginator->paginate(
 			$query, /* query NOT result */
@@ -33,7 +45,7 @@ class ClassifiedAdsController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
-		return $this->render('classifiedads/ClassifiedAds/index.html.twig', ['pagination' => $pagination]);
+		return $this->render('classifiedads/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView()]);
     }
 
 	public function read(EntityManagerInterface $em, $id, $title_slug) {

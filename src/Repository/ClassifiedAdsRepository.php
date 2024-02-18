@@ -9,13 +9,30 @@ use Doctrine\ORM\EntityRepository;
  */
 class ClassifiedAdsRepository extends EntityRepository
 {
-	public function getClassifiedAds($locale)
+	public function getClassifiedAds($datas, $locale)
 	{
 		$qb = $this->createQueryBuilder("b");
 		$qb->innerjoin("b.language", "l")
+		   ->join("b.state", "s")
 		   ->where("l.abbreviation = :abbreviation")
 		   ->setParameter("abbreviation", $locale)
-		   ->andWhere("b.archive = false");
+		   ->andWhere("b.archive = false")
+		   ->andWhere("s.displayState = true");
+
+		if(isset($datas["keywords"])) {
+			$qb->andWhere("(b.title LIKE :keyword OR b.text LIKE :keyword OR b.location LIKE :keyword)")
+			   ->setParameter("keyword", "%".$datas["keywords"]."%");
+		}
+
+		if(isset($datas["country"]) and !empty($country = $datas["country"])) {
+			$qb->andWhere("JSON_EXTRACT(b.location, '$.country_code') = :country")
+			   ->setParameter("country", $country->getInternationalName());
+		}
+
+		if(isset($datas["category"]) and !empty($category = $datas["category"])) {//dd("zzzz");
+			$qb->andWhere("b.category = :category")
+			   ->setParameter("category", $category);
+		}
 
 		$qb->orderBy('b.writingDate', 'DESC');
 

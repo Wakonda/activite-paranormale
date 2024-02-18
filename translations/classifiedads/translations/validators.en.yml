@@ -39,6 +39,12 @@ classifiedAds:
         Description: "Description"
         Email: "Email:"
         MarkAsSuccess: "Thank you for helping us improve!"
+    search:
+        SearchSort: "Search"
+        Country: "Country"
+        Category: "Category"
+        Keywords: "Keywords"
+        Validate: "Search"
     admin:
         ClassifiedAds: "Classified ads"
         Title: "Title"

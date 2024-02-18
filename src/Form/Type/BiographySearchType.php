@@ -55,7 +55,7 @@ class BiographySearchType extends AbstractType
 		$builder->setMethod('GET');
         $builder
             ->add('title', TextType::class, ['required' => false])
-            ->add('country', EntityType::class, ['label' => 'Thème', 
+            ->add('country', EntityType::class, [
 					'class'=>'App\Entity\Region',
 					'choice_label'=>'title',
 					'required' => false,

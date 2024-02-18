@@ -39,6 +39,12 @@ classifiedAds:
         Description: "Description"
         Email: "Adresse email :"
         MarkAsSuccess: "Merci de nous aider à nous améliorer !"
+    search:
+        SearchSort: "Rechercher"
+        Country: "Pays"
+        Category: "Catégorie"
+        Keywords: "Mots-clés"
+        Validate: "Rechercher"
     admin:
         ClassifiedAds: "Petites annonces"
         Title: "Titre"
