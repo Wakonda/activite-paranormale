@@ -137,7 +137,7 @@
 			else if($language == "es")
 				$dateString = ((!empty($day)) ? ltrim($day, "0")." de " : "").$months[$month-1].(!empty($year) ? " de ".$year : "");
 			else
-				$dateString = $months[$month-1].((!empty($day)) ? $day : "").(!empty($year) ? ", ".$year : "");
+				$dateString = $months[$month-1].((!empty($day)) ? " ".ltrim($day, "0") : "").(!empty($year) ? ", ".$year : "");
 
 			return trim($dateString).$era;
 		}

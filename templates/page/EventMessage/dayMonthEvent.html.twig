@@ -30,7 +30,7 @@
 			{% endfor %}
 		</ul>
 	{% else %}
-		<div class="alert alert-info">{{ "eventMessage.dayMonth.NoEventToday"|trans([], "validators") }}</div>
+		<div class="alert alert-info"><i class="fa-solid fa-triangle-exclamation"></i> {{ "eventMessage.dayMonth.NoEventToday"|trans([], "validators") }}</div>
 	{% endfor %}
 	
 	<hr>
@@ -55,7 +55,7 @@
 			</ul>
 		{% endfor %}
 	{% else %}
-		<div class="alert alert-info">{{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
+		<div class="alert alert-info"><i class="fa-solid fa-triangle-exclamation"></i> {{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
 	{% endfor %}
 
 	<hr class="hr2"/>
