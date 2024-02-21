@@ -495,7 +495,7 @@ class EventMessageController extends AbstractController
 				];
 			}
 		}
-// dd($res, $currentEvent, $currentDate);
+
 		return $this->render("page/EventMessage/dayMonthEvent.html.twig", [
 			"res" => $res,
 			"currentEvent" => $currentEvent,
