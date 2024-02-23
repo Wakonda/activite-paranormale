@@ -123,4 +123,25 @@ class ClassifiedAdsController extends AbstractController
     {
 		return $this->render('classifiedads/ClassifiedAds/validate.html.twig');
     }
+
+    public function state(Request $request, EntityManagerInterface $em, $id, $state)
+    {
+		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
+		
+		if($entity->getAuthor()->getId() != $this->getUser()->getId())
+			throw new AccessDeniedHttpException();
+		
+		if($state == 1) {
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $entity->getLanguage(), "internationalName" => State::$waiting]);
+			$entity->setState($state);
+		} else {
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $entity->getLanguage(), "internationalName" => State::$draft]);
+			$entity->setState($state);
+		}
+
+		$em->persist($entity);
+		$em->flush();
+		
+		return $this->redirect($this->generateUrl("ClassifiedAds_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()]));
+    }
 }

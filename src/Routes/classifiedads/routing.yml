@@ -33,6 +33,10 @@ ClassifiedAds_Validate:
     path:  /classifiedads/validate
     controller: App\Controller\ClassifiedAdsController::validate
 
+ClassifiedAds_State:
+    path:  /classifiedads/state/{id}/{state}
+    controller: App\Controller\ClassifiedAdsController::state
+
 # Administration
 ClassifiedAdsCategory_Admin:
     resource: "routing/classifiedadscategoryadmin.yml"

@@ -115,9 +115,6 @@ class UserController extends AbstractController
         ]);
 	}
 
-    /**
-     * Request reset user password: show form.
-     */
     public function requestAction()
     {
         return $this->render('user/Resetting/request.html.twig');
@@ -234,7 +231,7 @@ class UserController extends AbstractController
 			$user->setPassword($this->encoderFactory->hashPassword($user, $form->get("password")->getData(), $salt));
             $em->persist($user);
             $em->flush();
-			
+
 			return $this->redirect($this->generateUrl('Profile_Show'));
         }
 

@@ -8,6 +8,7 @@
 	use App\Entity\Testimony;
 	use App\Entity\EventMessage;
 	use App\Entity\Grimoire;
+	use App\Entity\ClassifiedAds;
 	use App\Entity\Vote;
 
 	class APUser
@@ -27,7 +28,8 @@
 				"news" => $repository->getUsersContribution($user, News::class, 0, 0, 0, 0, 0, true, $displayState),
 				"testimony" => $repository->getUsersContribution($user, Testimony::class, 0, 0, 0, 0, 0, true, $displayState),
 				"event" => $repository->getUsersContribution($user, EventMessage::class, 0, 0, 0, 0, 0, true, $displayState),
-				"witchcraft" => $repository->getUsersContribution($user, Grimoire::class, 0, 0, 0, 0, 0, true, $displayState)
+				"witchcraft" => $repository->getUsersContribution($user, Grimoire::class, 0, 0, 0, 0, 0, true, $displayState),
+				"classifiedAds" => $repository->getUsersContribution($user, ClassifiedAds::class, 0, 0, 0, 0, 0, true, $displayState)
 			];
 			
 			if($displayState == 1)

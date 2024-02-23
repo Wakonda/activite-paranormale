@@ -34,6 +34,16 @@
 {% endblock %}
 
 {% block APBlog_body %}
+	{% if app.user is not empty and app.user.id == entity.author.id %}
+		{% if entity.state.isStateDisplayed() %}
+			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 0 }) }}" class="btn btn-danger">Retirer mon annonce</a></p>
+		{% elseif entity.state.isWaiting() %}
+			<div class="alert alert-warning">Votre petite annonce est en attente de validation</div>
+		{% else %}
+			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 1 }) }}" class="btn btn-success">Publier mon annonce</a></p>
+		{% endif %}
+	{% endif %}
+
 	<div class="alert alert-info">
 		<p><b><i class="fa-solid fa-calendar-days"></i> {{ "classifiedAds.read.PublicationDate"|trans([], "validators") }}</b> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
 		<p><b><i class="fa-solid fa-location-dot"></i> {{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
