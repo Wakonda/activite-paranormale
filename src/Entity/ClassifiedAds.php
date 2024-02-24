@@ -71,6 +71,11 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
 	{
 		return "ClassifiedAds_Read";
 	}
+	
+	public function getWaitingRoute()
+	{
+		return "ClassifiedAds_Read";
+	}
 
 	public function getAssetImagePath(): String
 	{
