@@ -15,6 +15,7 @@ classifiedAds:
         AcceptedFormat: "Formatos aceptados"
         Photo: "Foto"
         Validate: "Validar"
+        YouMustBeLogged: "Debes iniciar sesión para publicar un anuncio clasificado"
     index:
         ClassifiedAds: "Anuncios"
         Read: "Leer"

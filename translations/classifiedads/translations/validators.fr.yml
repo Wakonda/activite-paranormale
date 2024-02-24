@@ -15,6 +15,7 @@ classifiedAds:
         AcceptedFormat: "Formats acceptés"
         Photo: "Photo"
         Validate: "Valider"
+        YouMustBeLogged: "Vous devez être connecté pour publier une petite annonce"
     index:
         ClassifiedAds: "Petites annonces"
         Read: "Lire"

@@ -61,15 +61,20 @@ class ClassifiedAdsController extends AbstractController
 		$entity->setMarkAs($request->query->get("mark_as"));
 		$em->persist($entity);
 		$em->flush();
-		
+
 		$this->addFlash('success', $translator->trans('classifiedAds.read.MarkAsSuccess', [], 'validators'));
 		
 		return $this->redirect($this->generateUrl("ClassifiedAds_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()]));
 	}
 
 	// USER PARTICIPATION
-    public function newAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+    public function newAction(Request $request, EntityManagerInterface $em, Security $security, TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
     {
+		if(empty($this->getUser())) {
+			$this->addFlash('error', $translator->trans('classifiedAds.new.YouMustBeLogged', [], 'validators'));
+			return $this->redirect($this->generateUrl("Security_Login"));
+		}
+
         $entity = new ClassifiedAds();
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);
 

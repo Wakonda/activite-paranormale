@@ -15,6 +15,7 @@ classifiedAds:
         AcceptedFormat: "Accepted format"
         Photo: "Photo"
         Validate: "Validate"
+        YouMustBeLogged: "You must be logged in to post a classified ad"
     index:
         ClassifiedAds: "Classified ads"
         Read: "Read"
