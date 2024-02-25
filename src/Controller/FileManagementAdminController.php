@@ -282,6 +282,13 @@ class FileManagementAdminController extends AbstractController
 						FROM grimoire n
 						WHERE n.photo = '".$file."';");
 				break;
+				case "classifiedads":
+					$res = $conn->fetchAllAssociative("
+						SELECT n.id, n.title, \"ClassifiedAds_Admin_Show\" as route
+						FROM classified_ads n
+						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
+						WHERE fm.realNameFile = '".$file."';");
+				break;
 				default:
 					break;
 			}
