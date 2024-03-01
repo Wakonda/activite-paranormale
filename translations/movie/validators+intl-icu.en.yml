@@ -37,7 +37,7 @@ movie:
         Country: "Country"
         Actor: "Actor"
         ProducerBy: "Produced by"
-        ScreenWriterBy: "Screenplay by"
+        ScreenwriterBy: "Screenplay by"
         DirectorBy: "Directed by"
         CostumeDesignerBy: "Costume"
         ExecutiveProducerBy: "Executive production"

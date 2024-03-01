@@ -1151,16 +1151,17 @@ class AdminController extends AbstractController
 
 		$accessToken = null;
 		$redirectUri = $this->generateUrl("Admin_VK", ["id" => $id, "path" => $path, "routeToRedirect" => $routeToRedirect], UrlGeneratorInterface::ABSOLUTE_URL);
-		
-		if($request->query->has("code")) {
+
+		/*if($request->query->has("code")) {
 			$accessToken = $vk->getAccessToken($redirectUri, $request->query->get("code"))->access_token;
 		} else {
 			$session->set("vk_area", $request->request->get("vk_area"));
 			$session->set("vk_url", $request->request->get("vk_url"));
 			$vk->getCode($redirectUri);
 		}
-
-		if(!empty($accessToken)) {
+		*/
+$vk->getCode($redirectUri);
+		//if(!empty($accessToken)) {
 			$requestParams = $request->request;
 			$path = urldecode($path);
 
@@ -1169,13 +1170,13 @@ class AdminController extends AbstractController
 
 			$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-			$res = $vk->postMessage($session->get("vk_area"), $currentURL, $entity->getLanguage()->getAbbreviation());
+			$res = $vk->postMessage($session->get("vk_area"), $currentURL);
 
 			$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.vk.Failed', [], 'validators'). "(".$res->error->error_msg.")"] : ['state' => 'success', 'message' => $translator->trans('admin.vk.Success', [], 'validators')];
 
 			$this->addFlash($message["state"], $message["message"], [], 'validators');
-		} else
-			$this->addFlash('error', $translator->trans('admin.vk.Failed', [], 'validators'), [], 'validators');
+		//} else
+		//	$this->addFlash('error', $translator->trans('admin.vk.Failed', [], 'validators'), [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
