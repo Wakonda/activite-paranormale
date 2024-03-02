@@ -93,6 +93,7 @@
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.shopify_form(entity, "news") }}
 			{{ macro_index.diaspora_form(entity, entity.abstractText) }}
+			{{ macro_index.bluesky_form(entity) }}
 		{% else %}
 			{{ macro_index.thedailytruth_form(entity) }}
 		{% endif %}
@@ -111,4 +112,5 @@
 	{{ macro_index.vk_form_js() }}
 	{{ macro_index.mastodon_form_js() }}
 	{{ macro_index.diaspora_form_js() }}
+	{{ macro_index.bluesky_form_js() }}
 {% endblock %}

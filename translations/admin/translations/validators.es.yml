@@ -148,6 +148,9 @@ admin:
     mastodon:
         Success: "Mensaje enviado con éxito a Mastodon"
         Failed: "Error al enviar el mensaje a Mastodon"
+    bluesky:
+        Success: "Mensaje enviado con éxito a Bluesky"
+        Failed: "Error al enviar el mensaje a Bluesky"
     facebook:
         Success: "Mensaje enviado a Facebook con éxito"
         Failed: "Error al enviar a Facebook"

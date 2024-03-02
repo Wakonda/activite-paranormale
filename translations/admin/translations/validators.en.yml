@@ -149,6 +149,9 @@ admin:
     mastodon:
         Success: "Message successfully sent to Mastodon"
         Failed: "Failed to send message to Mastodon"
+    bluesky:
+        Success: "Message successfully sent to Bluesky"
+        Failed: "Failed to send message to Bluesky"
     facebook:
         Success: "Message sent to Facebook successfully"
         Failed: "Failed to send to Facebook"

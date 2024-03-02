@@ -8,7 +8,7 @@ class Bluesky {
 	private $FEED_URL = "https://bsky.social/xrpc/app.bsky.feed.getAuthorFeed";
 	private $POST_FEED_URL = "https://bsky.social/xrpc/com.atproto.repo.createRecord";
 	private $HANDLE = null;
-	private $APP_PASSWORD = null;
+	private $PASSWORD = null;
 
 	private function getIdentifier() {
 		$handleOpt = [
@@ -31,7 +31,7 @@ class Bluesky {
 			'http' => [
 				'method' => 'POST',
 				'header' => "Content-Type: application/json\r\n",
-				'content' => json_encode(["identifier" => $identifier, "password" => $this>APP_PASSWORD])
+				'content' => json_encode(["identifier" => $identifier, "password" => $this->PASSWORD])
 			]
 		];
 
@@ -57,15 +57,29 @@ class Bluesky {
 		 ];
 
 		$postOpt = [
-			'http' => [
-				'method' => 'POST',
-				'header' => "Authorization: Bearer " . $token . "\r\n" .
-							"Content-Type: application/json\r\n",
-				'content' => json_encode($postData)
+			CURLOPT_URL => $this->POST_FEED_URL,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => json_encode($postData),
+			CURLOPT_HTTPHEADER => [
+				"Authorization: Bearer " . $token,
+				"Content-Type: application/json"
 			]
 		];
 
-		return json_decode(file_get_contents(POST_FEED_URL, false, stream_context_create($postOpt)));
+		$curl = curl_init();
+		curl_setopt_array($curl, $postOpt);
+
+		if($_ENV["APP_ENV"] == "dev") {
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+		}
+
+		$response = curl_exec($curl);
+		curl_close($curl);
+
+		return json_decode($response);
 	}
 
 	public function setLanguage($language)
@@ -73,17 +87,22 @@ class Bluesky {
 		switch($language)
 		{
 			case "en":
-				$this->HANDLE = $_ENV["BLUESKY_EN_CONSUMER_KEY"];
-				$this->APP_PASSWORD = $_ENV["BLUESKY_EN_CONSUMER_SECRET"];
+				$this->HANDLE = $_ENV["BLUESKY_EN_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_EN_PASSWORD"];
 				break;
 			case "es":
-				$this->HANDLE = $_ENV["BLUESKY_ES_CONSUMER_KEY"];
-				$this->APP_PASSWORD = $_ENV["BLUESKY_ES_CONSUMER_SECRET"];
+				$this->HANDLE = $_ENV["BLUESKY_ES_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_ES_PASSWORD"];
 				break;
 			case "fr":
-				$this->HANDLE = $_ENV["BLUESKY_FR_CONSUMER_KEY"];
-				$this->APP_PASSWORD = $_ENV["BLUESKY_FR_CONSUMER_SECRET"];
+				$this->HANDLE = $_ENV["BLUESKY_FR_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_FR_PASSWORD"];
 				break;
 		}
+	}
+
+	public function getLanguages()
+	{
+		return ["en", "es", "fr"];
 	}
 }

@@ -13,8 +13,8 @@
 		private $accessToken = null;
 
 		public function __construct() {
-			$this->ownerId = $_ENV["VK_FR_OWNER_ID"];
-			$this->clientId = $_ENV["VK_FR_CLIENT_ID"];
+			$this->ownerId = $_ENV["VK_OWNER_ID"];
+			$this->clientId = $_ENV["VK_CLIENT_ID"];
 			$this->clientSecret = $_ENV["VK_CLIENT_SECRET"];
 			$this->version = $_ENV["VK_VERSION"];
 			$this->accessToken = $_ENV["VK_ACCESS_TOKEN"];

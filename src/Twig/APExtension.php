@@ -103,6 +103,7 @@
 				new TwigFunction('img_size_html2pdf', array($this, 'getImageSizeHTML2PDF')),
 				new TwigFunction('entities_other_languages', array($this, 'getEntitiesOtherLanguages')),
 				new TwigFunction('isTwitterAvailable', array($this, 'isTwitterAvailable')),
+				new TwigFunction('isBlueskyAvailable', array($this, 'isBlueskyAvailable')),
 				new TwigFunction('isBloggerAvailable', array($this, 'isBloggerAvailable')),
 				new TwigFunction('isFacebookAvailable', array($this, 'isFacebookAvailable')),
 				new TwigFunction('isVKAvailable', array($this, 'isVKAvailable')),
@@ -847,6 +848,15 @@
 					break;
 				}
 			}
+
+			return in_array($locale, $api->getLanguages());
+		}
+
+		public function isBlueskyAvailable($entity): bool
+		{
+			$api = new \App\Service\Bluesky();
+			
+			$locale = $entity->getLanguage()->getAbbreviation();
 
 			return in_array($locale, $api->getLanguages());
 		}

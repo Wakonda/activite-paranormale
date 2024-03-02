@@ -27,6 +27,7 @@ use App\Service\Mastodon;
 use App\Service\Instagram;
 use App\Service\Diaspora;
 use App\Service\VK;
+use App\Service\Bluesky;
 use App\Service\Amazon;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
@@ -829,6 +830,34 @@ class AdminController extends AbstractController
 			$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 	}
 
+	// Bluesky
+	public function bluesky(Request $request, EntityManagerInterface $em, Bluesky $bluesky, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	{
+		$this->sendBluesky($request, $em, $id, $path, $router, $bluesky, $translator);
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
+	}
+
+	private function sendBluesky(Request $request, EntityManagerInterface $em, $id, $path, $router, $bluesky, $translator, $socialNetwork = "bluesky") {
+		$requestParams = $request->request;
+
+		$path = urldecode($path);
+
+		$entity = $em->getRepository($path)->find($id);
+		$url = $requestParams->get($socialNetwork."_url", null);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$locale = $entity->getLanguage()->getAbbreviation();
+
+		$res = $bluesky->postMessage($requestParams->get($socialNetwork."_area")." ".$currentURL, $locale);
+
+		if(property_exists($res, "error"))
+			$this->addFlash('error', $translator->trans('admin.bluesky.Failed', [], 'validators'). " (".$res->error."; ".$res->message.")");
+		else
+			$this->addFlash('success', $translator->trans('admin.bluesky.Success', [], 'validators'));
+	}
+
 	// The Daily Truth
 	public function thedailytruthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
@@ -1160,7 +1189,7 @@ class AdminController extends AbstractController
 			$vk->getCode($redirectUri);
 		}
 		*/
-$vk->getCode($redirectUri);
+		// $vk->getCode($redirectUri);
 		//if(!empty($accessToken)) {
 			$requestParams = $request->request;
 			$path = urldecode($path);

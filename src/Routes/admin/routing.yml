@@ -85,6 +85,10 @@ Admin_TumblrPost:
     path: /admin/tumblrpost
     controller: App\Controller\AdminController::tumblrPostAction
 
+Admin_Bluesky:
+    path: /admin/bluesky/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::bluesky
+
 Admin_WikipediaSections:
     path: /admin/loadWikipediaSectionsPageAction
     controller: App\Controller\AdminController::loadWikipediaSectionsPageAction
