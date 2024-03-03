@@ -1,6 +1,6 @@
 @import "~bootstrap/scss/bootstrap";
 
-$twitter-color: #4099FF;
+$twitter-color: black;
 $facebook-color: #3b5998;
 $linkedin-color: #0e76a8;
 $whatsapp-color: #4AC959;
@@ -10,6 +10,7 @@ $weibo-color: #DF2029;
 $instagram-color: #bc2a8d;
 $diaspora-color: darkorange;
 $vk-color: #0077FF;
+$bluesky-color: #0077FF;
 
 * {
 	cursor: url(images_v2/greenNormalPoint.cur), auto;
@@ -472,7 +473,8 @@ a.social-share {
 	color: white!important;
 }
 .social-share.twitter {
-	background-color: $twitter-color;
+    background: white;
+    color: $twitter-color;
 }
 .social-share.facebook {
 	background-color: $facebook-color;
@@ -488,6 +490,9 @@ a.social-share {
 }
 .social-share.mastodon {
 	background-color: $mastodon-color;
+}
+.social-share.bluesky {
+	background-color: $bluesky-color;
 }
 .social-share.weibo {
 	background-color: $weibo-color;
