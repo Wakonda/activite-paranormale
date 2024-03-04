@@ -474,7 +474,7 @@ a.social-share {
 }
 .social-share.twitter {
     background: white;
-    color: $twitter-color;
+    color: $twitter-color !important;
 }
 .social-share.facebook {
 	background-color: $facebook-color;
@@ -506,6 +506,9 @@ a.social-share {
 }
 .social-share.vk {
 	background-color: $vk-color;
+}
+.social-share.diaspora:active, .social-share.twitter:active {
+	color: white !important;
 }
 
 #mastodonModal .modal-content {
