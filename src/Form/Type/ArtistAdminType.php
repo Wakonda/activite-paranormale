@@ -29,7 +29,7 @@ class ArtistAdminType extends AbstractType
 		$language = $options['locale'];
 		
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('genre', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('website', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Artist_Admin_ShowImageSelectorColorbox'))

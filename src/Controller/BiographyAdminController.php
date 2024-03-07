@@ -152,7 +152,7 @@ class BiographyAdminController extends AdminGenericController
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
     }
-	
+
     public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = BiographyAdminType::class;

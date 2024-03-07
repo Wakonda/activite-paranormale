@@ -20,6 +20,18 @@ use App\Service\Canonicalizer;
  
 class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 {
+    const ROLE_ADMIN = "ROLE_ADMIN";
+	const ROLE_MODERATOR = "ROLE_MODERATOR";
+	const ROLE_JOURNALIST = "ROLE_JOURNALIST";
+	const ROLE_CORRECTOR = "ROLE_CORRECTOR";
+	const ROLE_TRANSLATOR = "ROLE_TRANSLATOR";
+	const ROLE_ARCHIVIST = "ROLE_ARCHIVIST";
+    const ROLE_SIMPLE = "ROLE_SIMPLE";
+    const ROLE_TRADUCTOR = "ROLE_TRADUCTOR";
+    const ROLE_BANNED = "ROLE_BANNED";
+	const ROLE_DISABLED = "ROLE_DISABLED";
+	const ROLE_DEFAULT = "ROLE_DEFAULT";
+
 	/**
 	 * @ORM\Id
 	 * @ORM\Column(type="integer")
@@ -169,7 +181,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function addRole($role)
     {
         $role = strtoupper($role);
-        if ($role === static::ROLE_DEFAULT) {
+        if ($role === self::ROLE_DEFAULT) {
             return $this;
         }
 

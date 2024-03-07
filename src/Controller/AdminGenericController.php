@@ -291,6 +291,10 @@ abstract class AdminGenericController extends AbstractController
 	protected function getLanguageByDefault(Request $request, EntityManagerInterface $em, $formName)
 	{
 		$valueForm = $request->request->all($formName);
+		
+		if(!isset($valueForm['language']))
+			return null;
+		
 		$language = $em->getRepository(Language::class)->find($valueForm['language']);
 
 		if(empty($language))

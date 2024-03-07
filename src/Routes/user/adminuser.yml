@@ -34,6 +34,26 @@ User_Admin_Activate:
     requirements:
         _method: get
 
+User_Admin_New:
+    path:  /admin/member/new
+    controller: App\Controller\AdminUserController::newAction
+
+User_Admin_Create:
+    path:  /admin/member/create
+    controller: App\Controller\AdminUserController::createAction
+    requirements:
+        _method: post
+
+User_Admin_Edit:
+    path:  /admin/member/{id}/edit
+    controller: App\Controller\AdminUserController::editAction
+
+User_Admin_Update:
+    path:  /admin/member/{id}/update
+    controller: App\Controller\AdminUserController::updateAction
+    requirements:
+        _method: post
+
 User_Admin_Remove:
     path:  /admin/member/remove/{id}
     controller: App\Controller\AdminUserController::remove

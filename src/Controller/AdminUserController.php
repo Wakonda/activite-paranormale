@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\User;
 use App\Entity\Language;
 use App\Entity\State;
+use App\Form\Type\UserAdminType;
 use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 
@@ -23,10 +24,13 @@ class AdminUserController extends AdminGenericController
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
 	
 	protected $indexRoute = "User_Admin_Index"; 
-	protected $showRoute = "User_Admin_Show";
+	protected $showRoute = "apadminuser_show";
+	protected $formName = 'ap_user_useradmintype';
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
+				$entityBindded->setUsernameCanonical();
+				$entityBindded->setEmailCanonical();
 	}
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
@@ -77,6 +81,41 @@ class AdminUserController extends AdminGenericController
         return $this->render('user/AdminUser/show.html.twig', array(
 			'entity' => $entity
 		));
+    }
+
+    public function newAction(Request $request, EntityManagerInterface $em)
+    {
+		$formType = UserAdminType::class;
+		$entity = new User();
+
+		$twig = 'user/AdminUser/new.html.twig';
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
+    }
+	
+    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+    {
+		$formType = UserAdminType::class;
+		$entity = new User();
+
+		$twig = 'user/AdminUser/new.html.twig';
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $em, $this->formName)]);
+    }
+	
+    public function editAction(EntityManagerInterface $em, $id)
+    {
+		$entity = $em->getRepository(User::class)->find($id);
+		$formType = UserAdminType::class;
+
+		$twig = 'user/AdminUser/edit.html.twig';
+		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit']);
+    }
+	
+	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+    {
+		$formType = UserAdminType::class;
+		$twig = 'user/AdminUser/edit.html.twig';
+
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
 	public function userListingAction(EntityManagerInterface $em)
