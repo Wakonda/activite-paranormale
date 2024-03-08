@@ -176,7 +176,7 @@ class UserController extends AbstractController
 
         $user = $em->getRepository(User::class)->findUserByUsernameOrEmail($username);
 
-        if (null !== $user && !$user->isPasswordRequestNonExpired($this->retryTtl)) {
+        if (null !== $user and (!$user->isPasswordRequestNonExpired($this->retryTtl)) or empty($user->getPassword())) {
             if (null === $user->getConfirmationToken()) {
                 $user->setConfirmationToken($this->generateToken());
             }
@@ -186,7 +186,7 @@ class UserController extends AbstractController
             $em->persist($user);
             $em->flush();
 			
-			$url = $this->generateUrl('fos_user_resetting_reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
+			$url = $this->generateUrl('Resetting_Reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 			$email = (new Email())
 				->from($_ENV["MAILER_USER"])
