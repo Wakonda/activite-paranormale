@@ -37,7 +37,7 @@ class Contact
     private $emailContact;
 
     /**
-     * @ORM\Column(name="phoneNumber", type="string", length=255, nullable=true)
+     * @ORM\Column(name="phoneNumber", type="encrypt", length=255, nullable=true)
      */
     private $phoneNumber;
 
