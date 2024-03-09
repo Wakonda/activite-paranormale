@@ -61,7 +61,7 @@
 	{% endfor %}
 	{% if method_exists(entity, "getArchive") and entity.archive %}
 		<div class="alert alert-danger text-center">
-			Cette entrée a été archivée !
+			{{ "admin.general.EntryArchived"|trans([], "validators") }}
 		</div>
 	{% endif %}
 	<div class="form-table form-table-4cols form-table-collapse mb-3">

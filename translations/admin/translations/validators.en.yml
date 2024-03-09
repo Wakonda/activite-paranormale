@@ -27,6 +27,7 @@ admin:
         DeleteSelectedItems: "Delete selected items"
         SelectVisibleItems: "Select visible items"
         DeselectVisibleItems: "Deselect visible items"
+        EntryArchived: "This entry has been archived!"
     index:
         Welcome: "Welcome"
         InfoGene: "General information"
