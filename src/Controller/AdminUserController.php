@@ -67,6 +67,7 @@ class AdminUserController extends AdminGenericController
 			
 			$row[] = "
 			 <a href='".$this->generateUrl('apadminuser_show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('User_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>
 			";
 			$output['data'][] = $row;
 		}
@@ -101,7 +102,7 @@ class AdminUserController extends AdminGenericController
 		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $request->getLocale()]);
     }
 	
-    public function editAction(EntityManagerInterface $em, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(User::class)->find($id);
 		$formType = UserAdminType::class;
