@@ -35,6 +35,12 @@ class AdsActiveCommand extends Command
 		$output->writeln("Start Activate Ads");
 		
 		$conn = $this->em->getConnection();
+		
+		$conn->exec("UPDATE ap_user SET civility = 'man' WHERE civility='s:3:\"man\";'");
+		$conn->exec("UPDATE ap_user SET civility = 'woman' WHERE civility='s:5:\"woman\";'");
+		$conn->exec("UPDATE ap_user SET civility = 'other' WHERE civility='s:5:\"other\";'");
+		$conn->exec("UPDATE ap_user SET civility = null WHERE civility='N;'");
+
 		// $conn->exec("UPDATE Advertising SET active = true;");
 
 		$fr = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => "fr"]);

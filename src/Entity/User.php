@@ -101,7 +101,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 	 private $avatar;
 	 
 	/**
-	 * @ORM\Column(name="civility", type="array", length=255, nullable=true)
+	 * @ORM\Column(name="civility", type="string", length=255, nullable=true)
      */
     protected $civility;
 
