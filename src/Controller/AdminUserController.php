@@ -98,7 +98,7 @@ class AdminUserController extends AdminGenericController
 		$entity = new User();
 
 		$twig = 'user/AdminUser/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $request->getLocale()]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
@@ -107,7 +107,7 @@ class AdminUserController extends AdminGenericController
 		$formType = UserAdminType::class;
 
 		$twig = 'user/AdminUser/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit']);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -115,7 +115,7 @@ class AdminUserController extends AdminGenericController
 		$formType = UserAdminType::class;
 		$twig = 'user/AdminUser/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
     }
 	
 	public function userListingAction(EntityManagerInterface $em)

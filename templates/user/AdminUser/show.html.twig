@@ -34,10 +34,10 @@
 	<div class="form-table-cell">{% if entity.siteWeb is not empty %}<a href="{{ entity.siteWeb }}">{{ entity.siteWeb }}</a>{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Blog"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.blog }}</div>
+	<div class="form-table-cell"><a href="{{ entity.blog }}">{{ entity.blog }}</a></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Presentation"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.presentation }}</div>
+	<div class="form-table-cell">{{ entity.presentation|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "user.admin.Civility"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.civility is not empty %}{{ ("user.admin." ~ (entity.civility|ucfirst))|trans([], "validators") }}{% endif %}</div>
