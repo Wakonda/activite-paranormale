@@ -18,6 +18,8 @@ user:
         Man: "Homme"
         Woman: "Femme"
         Other: "Autre"
+        DeleteWithSuccess: "Utilisateur supprimé avec succès"
+        UnableToDelete: "Impossible de supprimer cet utilisateur"
     index:
         Login: "Connectez-vous"
         Username: "Identifiant"

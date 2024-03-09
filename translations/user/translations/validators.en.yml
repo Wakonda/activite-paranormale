@@ -18,6 +18,8 @@ user:
         Man: "Man"
         Woman: "Woman"
         Other: "Others"
+        DeleteWithSuccess: "User successfully deleted"
+        UnableToDelete: "Unable to delete this user"
     index:
         Login: "Log in"
         Username: "Username"

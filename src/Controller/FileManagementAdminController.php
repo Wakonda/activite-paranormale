@@ -37,7 +37,7 @@ class FileManagementAdminController extends AbstractController
 
 		$this->getDirContents($folderPublic.DIRECTORY_SEPARATOR.$selectedFolder, $filelist, $mimeType);
 		$this->getDirContents($folderPrivate.DIRECTORY_SEPARATOR.$selectedFolder, $filelist, $mimeType);
-		// die;
+
 		$filelist = empty($filelist) ? [] : $filelist;
 
 		if($sort == "sortByNameDesc" or $sort == "sortByNameAsc") {

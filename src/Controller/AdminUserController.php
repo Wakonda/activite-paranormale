@@ -29,8 +29,8 @@ class AdminUserController extends AdminGenericController
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-				$entityBindded->setUsernameCanonical();
-				$entityBindded->setEmailCanonical();
+		$entityBindded->setUsernameCanonical();
+		$entityBindded->setEmailCanonical();
 	}
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
@@ -48,7 +48,7 @@ class AdminUserController extends AdminGenericController
 		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
 		foreach($informationArray['entities'] as $entity)
 		{
@@ -66,7 +66,7 @@ class AdminUserController extends AdminGenericController
 			$row[] = $state;
 			
 			$row[] = "
-			 <a href='".$this->generateUrl('apadminuser_show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
+			 <a href='".$this->generateUrl('apadminuser_show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
 			";
 			$output['data'][] = $row;
 		}
@@ -78,9 +78,9 @@ class AdminUserController extends AdminGenericController
     {
         $entity = $em->getRepository(User::class)->find($id);
 		
-        return $this->render('user/AdminUser/show.html.twig', array(
+        return $this->render('user/AdminUser/show.html.twig', [
 			'entity' => $entity
-		));
+		]);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -122,16 +122,16 @@ class AdminUserController extends AdminGenericController
 	{
 		$users = $em->getRepository(User::class)->getMembersUser();
 		
-		return $this->render('user/AdminUser/userListing.html.twig', array(
+		return $this->render('user/AdminUser/userListing.html.twig', [
 			'users' => $users
-		));	
+		]);
 	}
 
 	public function contributionUserAction(EntityManagerInterface $em, $id, $bundleClassName, $displayState, $title, $entityName)
 	{
 		$user = $em->getRepository(User::class)->find($id);
 
-		return $this->render('user/AdminUser/contribution_user.html.twig', array('id' => $id, 'bundleClassName' => $bundleClassName, 'user' => $user, 'displayState' => $displayState, "title" => $title, "entityName" => $entityName));
+		return $this->render('user/AdminUser/contribution_user.html.twig', ['id' => $id, 'bundleClassName' => $bundleClassName, 'user' => $user, 'displayState' => $displayState, "title" => $title, "entityName" => $entityName]);
 	}
 	
 	public function contributionUserDatatablesAction(Request $request, EntityManagerInterface $em, APDate $date, $id, $bundleClassName, $displayState)
@@ -156,29 +156,29 @@ class AdminUserController extends AdminGenericController
         $entities = $em->getRepository(User::class)->getUsersContribution($user, base64_decode($bundleClassName), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, false, $displayState);
 		$iTotal = $em->getRepository(User::class)->getUsersContribution($user, base64_decode($bundleClassName), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, true, $displayState);
 
-		$output = array(
+		$output = [
 			"recordsTotal" => $iTotal,
 			"recordsFiltered" => $iTotal,
 			"data" => []
-		);
-		
-		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $language));
+		];
+
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $language]);
 
 		foreach($entities as $entity)
 		{
 			$row = [];
 			
 			if($entity->getState()->getDisplayState() == 1)
-				$url = $this->generateUrl($entity->getShowRoute(), array('id' => $entity->getId(), 'title' => $entity->getTitle()));
+				$url = $this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), 'title' => $entity->getTitle()]);
 			else
-				$url = $this->generateUrl($entity->getWaitingRoute(), array('id' => $entity->getId()));
+				$url = $this->generateUrl($entity->getWaitingRoute(), ['id' => $entity->getId()]);
 			
 			$title = $entity->getTitle();
 			$row[] = '<a href="'.$url.'">'.((!empty($title)) ? $title : "---").'</a>';
 			$row[] = $entity->getState()->getTitle();
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="'.$entity->getLanguage()->getAbbreviation().'">';
 
-			$state = $em->getRepository(State::class)->findOneBy(array('internationalName' => $entity->getState()->getInternationalName(), 'language' => $language));
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
 
 			if(method_exists($entity, "getPublicationDate") and $entity->getState()->getDisplayState() == 1)
 				$row[] = $date->doDate($language->getAbbreviation(), $entity->getPublicationDate());
@@ -268,12 +268,27 @@ class AdminUserController extends AdminGenericController
 		return $this->redirect($this->generateUrl("apadminuser_show", ['id' => $user->getId()]));
 	}
 	
-	public function remove(EntityManagerInterface $em, $id)
+	public function remove(EntityManagerInterface $em, TranslatorInterface $translator, $id)
 	{
-		$user = $em->getRepository(User::class)->find($id);
+		$meta = $em->getMetadataFactory()->getAllMetadata();
+		$res = [];
+		foreach ($meta as $m) {
+			$c = $m->getName();
 
-		$em->remove($user);
-		$em->flush();
+			foreach($m->getAssociationMappings() as $field => $am)
+				if($am["targetEntity"] == User::class)
+					$res[] = $em->getRepository($c)->createQueryBuilder('c')->select("COUNT(c)")->where("c.$field = :id")->setParameter("id", $id)->getQuery()->getSingleScalarResult();
+		}
+
+		if(array_sum($res) > 0) {
+			$this->addFlash('error', $translator->trans('user.admin.UnableToDelete', [], 'validators'));
+		} else {
+			$user = $em->getRepository(User::class)->find($id);
+			$em->remove($user);
+			$em->flush();
+			
+			$this->addFlash('success', $translator->trans('user.admin.DeleteWithSuccess', [], 'validators'));
+		}
 
 		return $this->redirect($this->generateUrl("apadminuser"));
 	}
