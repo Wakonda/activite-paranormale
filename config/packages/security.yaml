@@ -24,6 +24,7 @@ security:
             security: false
         main:
             pattern:    ^/
+            user_checker: App\Security\UserChecker
             http_basic: ~
             entry_point: form_login
             provider: our_db_provider
