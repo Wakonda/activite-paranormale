@@ -37,7 +37,7 @@ class AdsActiveCommand extends Command
 		$conn = $this->em->getConnection();
 		
 		$conn->exec("UPDATE contact SET phoneNumber = TO_BASE64(AES_ENCRYPT(phoneNumber, '".$_ENV["DB_DECRYPT_KEY"]."')) WHERE phoneNumber IS NOT NULL");
-		die("kkk");
+
 		$conn->exec("UPDATE ap_user SET civility = 'man' WHERE civility='s:3:\"man\";'");
 		$conn->exec("UPDATE ap_user SET civility = 'woman' WHERE civility='s:5:\"woman\";'");
 		$conn->exec("UPDATE ap_user SET civility = 'other' WHERE civility='s:5:\"other\";'");
