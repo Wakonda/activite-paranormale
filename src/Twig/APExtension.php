@@ -794,14 +794,17 @@
 				$title = str_replace((array)$replace, ' ', $title);
 			}
 
-			$clean = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
-			$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
-			$clean = strtolower(trim($clean, '-'));
-			$clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);
+			if(preg_match("/^\p{Latin}+$/", $title)) {
+				$title = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
+				$title = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $title);
+			}
 
-			return $clean;
+			$title = strtolower(trim($title, '-'));
+			$title = preg_replace("/[\/_|+ -]+/", $delimiter, $title);
+
+			return $title;
 		}
-		
+
 		public function getImageSizeHTML2PDF($url)
 		{
 			$img_size = getimagesize($url);
@@ -813,25 +816,23 @@
 				$new_height = ($max_width * $img_size[1]) / $img_size[0];
 				$new_width = $max_width;
 			}
-			
+
 			return array("width" => $new_width, "height" => $new_height);
 		}
-		
+
 		public function getimagesize($file, $path)
 		{
 			$pf = $path.$file;
-			
+
 			if(empty($file) or !file_exists($pf))
 			{
 				$file = "file_no_exist_".$this->translator->getLocale().".png";
 				$pf = "extended/photo/".$file;
 			}
-			
+
 			$svg = new \App\Service\ImageSVG($pf);
 
 			return ($svg->isSVG()) ? $svg->getSize() : getimagesize($pf);
-
-			return array("width" => $new_width, "height" => $new_height);
 		}
 
 		public function isTwitterAvailable($entity): bool
