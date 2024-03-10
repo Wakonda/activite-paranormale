@@ -785,7 +785,7 @@
 			
 			return $api->getTags($api->getOauth2Token());
 		}
-		
+
 		public function slugifyUrl($title, $replace = [], $delimiter = '-')
 		{
 			setlocale(LC_ALL, 'en_US.UTF8');
@@ -794,7 +794,7 @@
 				$title = str_replace((array)$replace, ' ', $title);
 			}
 
-			$clean = iconv('UTF-8', 'ASCII//TRANSLIT', $title);
+			$clean = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
 			$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $clean);
 			$clean = strtolower(trim($clean, '-'));
 			$clean = preg_replace("/[\/_|+ -]+/", $delimiter, $clean);

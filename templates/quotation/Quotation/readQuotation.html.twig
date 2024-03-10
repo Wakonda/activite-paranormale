@@ -49,7 +49,7 @@
 		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
 		{{ sources|raw }}
 	{% endif %}
-
+	<hr>
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.authorQuotation.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
 
 	<br>

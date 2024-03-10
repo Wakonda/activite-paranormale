@@ -1183,10 +1183,10 @@ class AdminController extends AbstractController
 
 		/*if($request->query->has("code")) {
 			$accessToken = $vk->getAccessToken($redirectUri, $request->query->get("code"))->access_token;
-		} else {
+		} else {*/
 			$session->set("vk_area", $request->request->get("vk_area"));
 			$session->set("vk_url", $request->request->get("vk_url"));
-			$vk->getCode($redirectUri);
+			/*$vk->getCode($redirectUri);
 		}
 		*/
 		// $vk->getCode($redirectUri);
@@ -1196,6 +1196,7 @@ class AdminController extends AbstractController
 
 			$entity = $em->getRepository($path)->find($id);
 			$url = $session->get("vk_url");
+			$area = 
 
 			$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 

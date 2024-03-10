@@ -66,7 +66,8 @@
 
 			$params = [
 				'owner_id' => "-".$this->ownerId,
-				'message' => $content.",".$url,
+				'message' => $content,
+				"attachments" => $url,
 				'access_token' => $this->accessToken,
 				'v' => $this->version
 			];
