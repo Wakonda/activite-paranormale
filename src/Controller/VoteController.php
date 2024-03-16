@@ -156,7 +156,7 @@ class VoteController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$color = match(intval(floor($entity->getValueVote()))) {
-				1 => "danger",
+				0, 1 => "danger",
 				2 => "warning",
 				3 => "info",
 				4 => "primary",
