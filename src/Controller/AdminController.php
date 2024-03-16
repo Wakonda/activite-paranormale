@@ -850,7 +850,7 @@ class AdminController extends AbstractController
 
 		$locale = $entity->getLanguage()->getAbbreviation();
 
-		$res = $bluesky->postMessage($requestParams->get($socialNetwork."_area")." ".$currentURL, $locale);
+		$res = $bluesky->postMessage($requestParams->get($socialNetwork."_area"), $currentURL, $locale);
 
 		if(property_exists($res, "error"))
 			$this->addFlash('error', $translator->trans('admin.bluesky.Failed', [], 'validators'). " (".$res->error."; ".$res->message.")");

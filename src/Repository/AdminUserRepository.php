@@ -130,7 +130,7 @@ class AdminUserRepository extends EntityRepository
 
 		$qb = $this->_em->createQueryBuilder();
 		
-		$classNameQuery = $className ?? 'App\Entity\Comment';
+		$classNameQuery = $className ? $className : 'App\Entity\Comment';
 		
 		$qb	->from($classNameQuery, 'c')
 			->where('c.authorComment = :author')
