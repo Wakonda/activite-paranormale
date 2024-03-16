@@ -20,8 +20,13 @@ class BiographyController extends AbstractController
 {
     public function indexAction(Request $request, EntityManagerInterface $em)
     {
+		$datas = [];
+		
+		if($request->query->has("country") and !empty($c = $request->query->get("country")))
+			$datas["country"] = $em->getRepository(\App\Entity\Region::class)->find($c);
+
 		$entities = $em->getRepository(Biography::class)->getBiographies($request->getLocale());
-		$form = $this->createForm(BiographySearchType::class, null, ["locale" => $request->getLocale()]);
+		$form = $this->createForm(BiographySearchType::class, $datas, ["locale" => $request->getLocale()]);
 		
         return $this->render('quotation/Biography/index.html.twig', ["entities" => $entities, "form" => $form->createView()]);
     }

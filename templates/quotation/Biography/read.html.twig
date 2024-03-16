@@ -88,7 +88,7 @@
 		{% set infos = infos|merge(["<b>"~"biography.index.DeathDate"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.deathDate|doPartialDate(app.request.locale) ~ "</a>"]) %}
 	{% endif %}
 	{% if entity.nationality is not empty %}
-		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20' height='13'>"~" "~entity.nationality.title]) %}
+		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20' height='13'>"~" <a href='"~path('Biography_Index')~"?country="~entity.nationality.id~"'>"~entity.nationality.title~"</a>"]) %}
 	{% endif %}
 	
 	{% set occupationArray = [] %}
