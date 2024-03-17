@@ -12,6 +12,7 @@ $instagram-color: #bc2a8d;
 $diaspora-color: darkorange;
 $vk-color: #0077FF;
 $bluesky-color: #0077FF;
+$tiktok-color: #ff0050;
 
 body {
 	padding-top: 56px;
@@ -436,6 +437,9 @@ a.social-share {
 }
 .social-share.bluesky {
 	background-color: $bluesky-color;
+}
+.social-share.tiktok {
+	background-color: $tiktok-color;
 }
 .social-share.weibo {
 	background-color: $weibo-color;
