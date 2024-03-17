@@ -790,9 +790,8 @@
 		{
 			setlocale(LC_ALL, 'en_US.UTF8');
 
-			if( !empty($replace) ) {
+			if(!empty($replace))
 				$title = str_replace((array)$replace, ' ', $title);
-			}
 
 			if(preg_match("/^\p{Latin}+$/", $title)) {
 				$title = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
@@ -801,6 +800,7 @@
 
 			$title = strtolower(trim($title, '-'));
 			$title = preg_replace("/[\/_|+ -]+/", $delimiter, $title);
+			$title = preg_replace("/[.]/", "", $title);
 
 			return $title;
 		}
