@@ -401,13 +401,9 @@ span#author_quotation {
 table#social_network {
     border-color: black;
 }
-#comment_facebook {
-    background-color: white;
-    padding: 3px;
-    border-radius: 5px;
-}
-a.social-share {
+a.social-share:hover {
 	opacity: 0.8;
+	color: initial !important;
 }
 a.social-share {
 	color: white;

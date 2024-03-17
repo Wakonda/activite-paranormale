@@ -34,7 +34,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	{% if app.user is not empty and app.user.id == entity.author.id %}
+	{% if app.user is not empty and entity.author is not empty and app.user.id == entity.author.id %}
 		{% if entity.state.isStateDisplayed() %}
 			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 0 }) }}" class="btn btn-danger">Retirer mon annonce</a></p>
 		{% elseif entity.state.isWaiting() %}
@@ -44,9 +44,11 @@
 		{% endif %}
 	{% endif %}
 
-	<div class="alert alert-info">
+	<div class="alert alert-info pb-0">
 		<p><b><i class="fa-solid fa-calendar-days"></i> {{ "classifiedAds.read.PublicationDate"|trans([], "validators") }}</b> {{ entity.publicationDate|dodate(false, app.request.locale) }}</p>
-		<p><b><i class="fa-solid fa-location-dot"></i> {{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
+		{% if entity.locationArray is not empty %}
+			<p><b><i class="fa-solid fa-location-dot"></i> {{ "classifiedAds.read.Address"|trans([], "validators") }}</b> {{ entity.locationArray|join(", ") }}</p>
+		{% endif %}
 	</div>
 	{% if entity.illustration is not empty %}
 		{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" })|raw }}
@@ -62,9 +64,9 @@
 		<h3><i class="fa-solid fa-highlighter"></i> {{ "classifiedAds.read.Description"|trans([], "validators") }}</h3>
 		{{ entity.text|raw }}
 	{% endif %}
-	
+
 	<br>
-	
+
 	<div class="alert alert-warning">
 		<h4><i class="fa-solid fa-circle-info"></i> {{ "classifiedAds.read.UsefulInformation"|trans([], "validators") }}</h4>
 		<br>
@@ -78,6 +80,7 @@
 	
 	<br>
 	<h3><i class="fa-solid fa-at"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</h3>
+	<p><b>{{ "classifiedAds.read.Username"|trans([], "validators") }}</b> {% if entity.author.enabled %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author.username }}</a>{% else %}{{ entity.author.username }}{% endif %}</p>
 	{% if entity.displayEmail %}
 		<p><b>{{ "classifiedAds.read.Email"|trans([], "validators") }}</b> <a href="mailto:{{ entity.author.email }}">{{ entity.author.email }}</a></p>
 	{% endif %}
@@ -95,7 +98,7 @@
 	
 	<div>
 	<h3><i class="fa-solid fa-eye"></i> {{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</h3>
-	<select name="markAs form-select" id="markAs">
+	<select name="markAs form-select" id="markAs" class="form-select">
 		<option>{{ "classifiedAds.read.MarkAs"|trans([], "validators") }}</option>
 		<option value="spam">{{ "classifiedAds.read.Spam"|trans([], "validators") }}</option>
 		<option value="badcat">{{ "classifiedAds.read.Badcat"|trans([], "validators") }}</option>

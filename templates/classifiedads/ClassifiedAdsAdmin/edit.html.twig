@@ -1,6 +1,6 @@
 {% extends "admin/GenericAdmin/edit.html.twig" %}
 
-{% block h2_title %}{{ "admin.index.ClassifiedAds"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}{{ "classifiedAds.index.ClassifiedAds"|trans([], "validators") }}{% endblock %}
 
 {% block delete_admin_route %}{{ path('ClassifiedAds_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
 {% block new_admin_route %}{{ path('ClassifiedAds_Admin_New') }}{% endblock %}
