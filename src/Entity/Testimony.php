@@ -67,7 +67,7 @@ class Testimony extends MappedSuperclassBase
 		if(property_exists($location, "county"))
 			$res["county"] = $location->county;
 		
-		if(property_exists($location, "country"))
+		if(property_exists($location, "state"))
 			$res["state"] = $location->state;
 		
 		if(property_exists($location, "country"))
