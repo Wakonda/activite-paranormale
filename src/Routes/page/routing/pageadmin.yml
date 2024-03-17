@@ -39,3 +39,7 @@ Page_Admin_IndexDatatables:
 Page_Admin_WYSIWYG_UploadFile:
     path: /wysiwyg_uploadfile
     controller: App\Controller\PageAdminController::WYSIWYGUploadFileAction
+
+Page_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\PageAdminController::internationalizationAction

@@ -26,6 +26,10 @@ Page_GenerateRSSFeed:
     path:  /rssfeed
     controller: App\Controller\PageController::generateRSSFeedAction
 
+Page_Cryptocurrency:
+    path:  /cryptocurrency/{title}
+    controller: App\Controller\PageController::cryptocurrency
+
 President_Archive_Index:
     path: /wordpresident/index
     controller: App\Controller\PageController::wordPresidentArchiveAction

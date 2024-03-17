@@ -95,6 +95,12 @@ class PageController extends AbstractController
 
 		return $this->render('page/Page/wordPresidentReadArchive.html.twig', ['entity' => $entity]);
 	}
+
+	public function cryptocurrency(Request $request, EntityManagerInterface $em, $title) {
+		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $title);
+
+        return $this->render('page/Page/cryptocurrency.html.twig', ['entity' => $entity]);
+	}
 	
 	// GENERIC
 	public function getPageByInternationalNameAction(Request $request, EntityManagerInterface $em, $internationalName, $isTitle = false)
