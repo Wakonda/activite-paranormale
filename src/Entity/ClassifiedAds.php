@@ -77,6 +77,10 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
 		return "ClassifiedAds_Read";
 	}
 
+    public function getUploadRootDir() {
+        return $this->getTmpUploadRootDir();
+    }
+
 	public function getAssetImagePath(): String
 	{
 		return "extended/photo/classifiedads/";

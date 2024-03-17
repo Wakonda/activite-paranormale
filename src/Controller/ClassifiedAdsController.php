@@ -46,13 +46,13 @@ class ClassifiedAdsController extends AbstractController
 
 		$pagination->setCustomParameters(['align' => 'center']);
 
-		return $this->render('classifiedads/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView()]);
+		return $this->render('classifiedAds/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView()]);
     }
 
 	public function read(EntityManagerInterface $em, $id, $title_slug) {
 		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
 		
-		return $this->render("classifiedads/ClassifiedAds/read.html.twig", ["entity" => $entity]);
+		return $this->render("classifiedAds/ClassifiedAds/read.html.twig", ["entity" => $entity]);
 	}
 
 	public function markAs(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id) {
@@ -78,7 +78,7 @@ class ClassifiedAdsController extends AbstractController
         $entity = new ClassifiedAds();
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);
 
-        return $this->render('classifiedads/ClassifiedAds/new.html.twig', [
+        return $this->render('classifiedAds/ClassifiedAds/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
         ]);
@@ -118,7 +118,7 @@ class ClassifiedAdsController extends AbstractController
 			return $this->redirect($this->generateUrl("ClassifiedAds_Validate"));
         }
 
-        return $this->render('classifiedads/ClassifiedAds/new.html.twig', [
+        return $this->render('classifiedAds/ClassifiedAds/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
         ]);
@@ -126,7 +126,7 @@ class ClassifiedAdsController extends AbstractController
 
     public function validate()
     {
-		return $this->render('classifiedads/ClassifiedAds/validate.html.twig');
+		return $this->render('classifiedAds/ClassifiedAds/validate.html.twig');
     }
 
     public function state(Request $request, EntityManagerInterface $em, $id, $state)
