@@ -212,11 +212,10 @@ class Store
 				
 				$idPartner = $resultUrl["tag"];
 			}
-
 		}
-		
+
 		$urlPartner = $_ENV["AMAZON_".strtoupper($this->language->getAbbreviation())."_URL"];
-		$idPartner = !empty($idPartner) ? $_ENV["AMAZON_".strtoupper($this->language->getAbbreviation())."_PARTNER_ID"] : $idPartner;
+		$idPartner = empty($idPartner) ? $_ENV["AMAZON_".strtoupper($this->language->getAbbreviation())."_PARTNER_ID"] : $idPartner;
 
 		return $urlPartner.$this->amazonCode."/ref=nosim?tag=".$idPartner;
 	}

@@ -26,11 +26,13 @@ class AdminUserController extends AdminGenericController
 	protected $indexRoute = "User_Admin_Index"; 
 	protected $showRoute = "apadminuser_show";
 	protected $formName = 'ap_user_useradmintype';
+	protected $illustrations = [["field" => "avatar", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
 		$entityBindded->setUsernameCanonical();
 		$entityBindded->setEmailCanonical();
+		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)

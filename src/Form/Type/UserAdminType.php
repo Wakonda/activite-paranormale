@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Url;
 
 use App\Service\Currency;
 use App\Entity\User;
@@ -51,9 +52,10 @@ class UserAdminType extends AbstractType
 			))
 			->add('birthDate', DateType::class, array('required' => false, 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'years' => range(1902, date('Y'))))
             ->add('avatar', FileType::class, array('data_class' => null, 'required' => true))
+			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'data' => $builder->getData()->getAvatar()])
             ->add('city')
-            ->add('siteWeb')
-            ->add('blog')
+			->add('blog', TextType::class, ['required' => false, 'constraints' => [new Url()]])
+			->add('siteWeb', TextType::class, ['required' => false, 'constraints' => [new Url()]])
             ->add('presentation')
 			->add('roles', ChoiceType::class, [
 				"multiple" => true,

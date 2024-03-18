@@ -32,7 +32,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 	protected $showRoute = "ClassifiedAds_Admin_Show";
 	protected $formName = 'ap_classifiedads_admintype';
 
-	protected $illustrations = [["field" => "illustration", "selectorFile" => null]];
+	protected $illustrations = [["field" => "illustration", "selectorFile" => "photo_selector"]];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{

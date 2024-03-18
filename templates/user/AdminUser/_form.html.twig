@@ -14,7 +14,11 @@
 <div class="form-table-cell">{{ form_errors(form.birthDate) }}{{ form_widget(form.birthDate, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.avatar, "user.admin.Avatar"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.avatar) }}{{ form_widget(form.avatar, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell">
+	{{ form_errors(form.avatar) }}{{ form_widget(form.avatar) }}
+	<br>
+	{{ form_widget(form.photo_selector) }}
+</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.roles, "user.admin.Role"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.roles) }}{{ form_widget(form.roles, { 'attr': {'class': 'form-select'} }) }}</div>
