@@ -213,6 +213,7 @@ div#dropdownFlagItems {
 	min-width: auto;
 }
 .navbar-dark .navbar-nav a.nav-link:hover {
+	color: white !important;
 	text-decoration: none !important;
 }
 
@@ -545,7 +546,7 @@ p#media_duration {
 }
 .footer.footer-copyright {
 	background: rgb(159, 167, 42);
-	color: #4e4e4e!important;
+	color: #424242!important;
 }
 .footer a {
     color: #000 !important;
