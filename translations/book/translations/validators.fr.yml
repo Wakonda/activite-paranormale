@@ -21,7 +21,7 @@ book:
     biography:
         Title: "Titre"
         Language: "Langue"
-        Purchase: "Acheter"
+        Read: "Lire"
     search:
         SearchSort: "Rechercher / Trier"
         Keywords: "Mots-clés"

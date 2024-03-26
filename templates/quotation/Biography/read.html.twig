@@ -168,7 +168,7 @@
 					<tr>
 						<th>{{ "book.biography.Title"|trans([], "validators") }}</th>
 						<th>{{ "book.biography.Language"|trans([], "validators") }}</th>
-						<th>{{ "book.biography.Purchase"|trans([], "validators") }}</th>
+						<th>{{ "book.biography.Read"|trans([], "validators") }}</th>
 					</tr>
 				</thead>
 				<tbody>
@@ -186,7 +186,7 @@
 							<td class='tdGene'><img src="{{ asset(book.language.getAssetImagePath()) }}{{ book.language.logo }}" alt="" width="20" height="13" /></td>
 							<td class='tdGene'>
 							<a class="btn read w-auto" href="{{ path('Book_Show', {'id': book.id, 'title_slug': book.getUrlSlug()}) }}">
-								<span><i class="fas fa-book fa-fw"></i></span>
+								<span class="me-2"><i class="fas fa-book fa-fw"></i></span><b class="align-middle">{{ "book.biography.Read"|trans([], "validators") }}</b>
 							</a>
 							</td>
 						</tr>
@@ -203,7 +203,7 @@
 					<tr>
 						<th>{{ "book.biography.Title"|trans([], "validators") }}</th>
 						<th>ISBN</th>
-						<th>{{ "book.biography.Purchase"|trans([], "validators") }}</th>
+						<th>{{ "book.biography.Read"|trans([], "validators") }}</th>
 					</tr>
 				</thead>
 				<tbody>

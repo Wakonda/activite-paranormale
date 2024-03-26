@@ -21,7 +21,7 @@ book:
     biography:
         Title: "Title"
         Language: "Language"
-        Purchase: "Purchase"
+        Read: "Read"
     search:
         SearchSort: "Search / Sort"
         Keywords: "Keywords"
