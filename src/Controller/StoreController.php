@@ -19,14 +19,18 @@ class StoreController extends AbstractController
     public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
 		$nbMessageByPage = 12;
+		$datas = [];
 
-		$form = $this->createForm(StoreSearchType::class);
+		if($request->query->has("category") and !empty($c = $request->query->get("category")))
+			$datas["category"] = $c;
+
+		$form = $this->createForm(StoreSearchType::class, $datas);
 		$form->handleRequest($request);
 		$datas = null;
 
 		if(!empty($d = $request->query->all()))
 			$datas = $d;
-		
+
 		if ($form->isSubmitted() && $form->isValid() && isset($datas[$form->getName()]))
 			$datas = $datas[$form->getName()];
 
