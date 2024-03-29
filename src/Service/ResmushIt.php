@@ -41,14 +41,14 @@ class ResmushIt {
 		$mime = $finfo->buffer($data);
 
 		$output = new \CURLStringFile($data, $filename, $mime);
-		$data = ["files" => $output];
+		$dataPost = ["files" => $output];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, 'http://api.resmush.it/');
 		curl_setopt($ch, CURLOPT_POST,1);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $dataPost);
 		$result = curl_exec($ch);
 
 		if ($error = curl_errno($ch))
