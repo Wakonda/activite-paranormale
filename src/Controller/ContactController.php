@@ -68,7 +68,7 @@ class ContactController extends AbstractController
         ]);
     }
 
-	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $userId, $initialMessageId = null, $idClassName = null, $className) {
+	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $userId, $initialMessageId = null, $idClassName = null, $className = null) {
         $entity = new Contact();
 		$recipient = $em->getRepository(User::class)->find($userId);
 
