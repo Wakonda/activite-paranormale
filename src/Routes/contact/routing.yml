@@ -7,10 +7,12 @@ Contact_Send:
     controller: App\Controller\ContactController::sendAction
 
 Contact_SendPrivateMessage:
-    path:  /contact/sendPrivateMessage/{userId}/{initialMessageId}
+    path:  /contact/sendPrivateMessage/{userId}/{initialMessageId}/{idClassName}/{className}
     controller: App\Controller\ContactController::sendPrivateMessage
     defaults:
         initialMessageId: null
+        idClassName: null
+        className: null
 
 Contact_IndexPrivateMessage:
     path:  /contact/indexPrivateMessage

@@ -18,7 +18,7 @@
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}private-message.png" alt="Red devil girl" /></p>
 	<br>
 	<hr class="hr2">
-		{{ form_start(form, {'action': path('Contact_SendPrivateMessage', {userId: recipient.id, initialMessageId: initialMessageId}), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		{{ form_start(form, {'action': path('Contact_SendPrivateMessage', {userId: recipient.id, initialMessageId: (initialMessageId is empty ? 0 : initialMessageId), className: className, idClassName: idClassName}), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 			<div class="form-table form-table-4cols form-table-collapse">
 				{% if is_granted("IS_AUTHENTICATED_FULLY") == false %}
 					<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoContact, "contact.index.Name"|trans([], "validators")) }}</div>

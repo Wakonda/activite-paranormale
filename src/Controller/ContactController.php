@@ -9,6 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Contact;
@@ -67,7 +68,7 @@ class ContactController extends AbstractController
         ]);
     }
 
-	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $userId, $initialMessageId = null) {
+	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $userId, $initialMessageId = null, $idClassName = null, $className) {
         $entity = new Contact();
 		$recipient = $em->getRepository(User::class)->find($userId);
 
@@ -82,23 +83,42 @@ class ContactController extends AbstractController
 
 		if ($request->isMethod('POST')) {
 			$form->handleRequest($request);
+			$session = $request->getSession();
 
-				$session = $request->getSession();
-
-$params = $request->request->all($form->getName());
-		if($params["captcha"] != $session->get("captcha_word"))
-			$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
+			$params = $request->request->all($form->getName());
+			if($params["captcha"] != $session->get("captcha_word"))
+				$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
 
 			if ($form->isSubmitted() && $form->isValid()) {
-
 				if(!empty($user = $this->getUser()))
 					$entity->setSender($user);
-				
+
 				$entity->setRecipient($recipient);
 				$entity->setInitialMessage(empty($initialMessageEntity) ? $entity : $initialMessageEntity);
 				$em->persist($entity);
 				$em->flush();
 				
+				$entityLinked = null;
+				$link = null;
+
+				switch($className) {
+					case 'ClassifiedAds':
+						$entityLink = $em->getRepository(\App\Entity\ClassifiedAds::class)->find($idClassName);
+						$link = $translator->trans('index.className.ClassifiedAds', [], 'validators')." - <a href='".$this->generateUrl("ClassifiedAds_Read", ["id" => $idClassName, "title_slug" => $entityLink->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$entityLink->getTitle()."</a>";
+						break;
+				}
+
+				if(!empty($link))
+					$entity->setMessageContact($entity->getMessageContact()."<br><br>".$link);
+
+				$email = (new Email())
+					->from($entity->getEmailContact())
+					->to($recipient->getEmail())
+					->subject("Activité-Paranormale - ".$entity->getSubjectContact())
+					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+
+				$mailer->send($email);
+
 				$session->getFlashBag()->add('success', $translator->trans('privateMessage.send.Success', [], 'validators'));
 
 				if(!empty($this->getUser()))
@@ -112,7 +132,9 @@ $params = $request->request->all($form->getName());
             'entity' => $entity,
             'recipient' => $recipient,
             'form' => $form->createView(),
-			'initialMessageId' => !empty($initialMessageEntity) ? $initialMessageEntity->getId() : null
+			'initialMessageId' => !empty($initialMessageEntity) ? $initialMessageEntity->getId() : null,
+			'className' => $className,
+			'idClassName' => $idClassName
         ]);
 	}
 

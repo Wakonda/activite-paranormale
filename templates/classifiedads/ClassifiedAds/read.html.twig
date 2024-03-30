@@ -85,7 +85,7 @@
 		<p><b>{{ "classifiedAds.read.Email"|trans([], "validators") }}</b> <a href="mailto:{{ entity.author.email }}">{{ entity.author.email }}</a></p>
 	{% endif %}
 	<br>
-	<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: entity.author.id}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
+	<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: entity.author.id, initialMessageId: 0, idClassName: entity.id, className: 'ClassifiedAds'}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
 	<br>
 
 	{% if entity.location is not empty %}
