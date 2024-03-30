@@ -111,13 +111,15 @@ class ContactController extends AbstractController
 				if(!empty($link))
 					$entity->setMessageContact($entity->getMessageContact()."<br><br>".$link);
 
-				$email = (new Email())
-					->from($entity->getEmailContact())
-					->to($recipient->getEmail())
-					->subject("Activité-Paranormale - ".$entity->getSubjectContact())
-					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+				if(!empty($entity->getEmailContact()) and !empty($recipient->getEmail())) {
+					$email = (new Email())
+						->from($entity->getEmailContact())
+						->to($recipient->getEmail())
+						->subject("Activité-Paranormale - ".$entity->getSubjectContact())
+						->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
 
-				$mailer->send($email);
+					$mailer->send($email);
+				}
 
 				$session->getFlashBag()->add('success', $translator->trans('privateMessage.send.Success', [], 'validators'));
 
