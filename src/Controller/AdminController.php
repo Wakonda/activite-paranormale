@@ -239,6 +239,7 @@ class AdminController extends AbstractController
 		if(in_array($method, ["POST", "PUT"])) {
 			$text = "";
 			$imgProperty = "";
+			$isExternalImage = false;
 
 			switch($entity->getRealClass())
 			{
@@ -347,6 +348,18 @@ class AdminController extends AbstractController
 					} elseif(!empty($d = $entity->getBook()->getBook()->getPhoto())) {
 						$imgProperty = $d;
 						$img = $entity->getBook()->getBook()->getAssetImagePath().$imgProperty;
+					} elseif(!empty($entity->getImageEmbeddedCode())) {
+						if(empty($img)) {
+							$dom = new \DOMDocument();
+							$dom->loadHTML($entity->getImageEmbeddedCode());
+
+							$images = $dom->getElementsByTagName('img');
+
+							foreach ($images as $image) {
+								$img = $imgProperty = $image->getAttribute('src');
+								$isExternalImage = true;
+							}
+						}
 					} else {
 						$imgProperty = $entity->getAssetImagePath()."category/".strtolower($entity->getCategory()).".jpg";
 						$img = $imgProperty;
@@ -359,10 +372,12 @@ class AdminController extends AbstractController
 					$text .= (!empty($d = $entity->getBook()->getBackCover()) ? "<b>".$translator->trans('bookEdition.admin.BackCover', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getBook()->getText()) ? "<b>".$translator->trans('book.admin.Text', [], 'validators', $language)."</b><br>".$d."<br>" : "");
 					
-					if(empty($entity->getImageEmbeddedCode()))
-						$text .= '<div class="text-center"><img src="'.$this->generateUrl('Store_GenerateEmbeddedCode', ["id" => $entity->getId()], UrlGeneratorInterface::ABSOLUTE_URL).'" style="width: 75%"/></div><br><br>';
-					else
-						$text .= $entity->getImageEmbeddedCode()."<br><br>";
+					if(!$isExternalImage) {
+						if(empty($entity->getImageEmbeddedCode()))
+							$text .= '<div class="text-center"><img src="'.$this->generateUrl('Store_GenerateEmbeddedCode', ["id" => $entity->getId()], UrlGeneratorInterface::ABSOLUTE_URL).'" style="width: 75%"/></div><br><br>';
+						else
+							$text .= $entity->getImageEmbeddedCode()."<br><br>";
+					}
 					$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getBook()->getBook()->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getBook()->getBook()->getAuthors()))."<br>";
 					$text .= (!empty($d = $entity->getBook()->getIsbn10()) ? "<b>ISBN 10 : </b>".$d."<br>" : "");
 					$text .= (!empty($d = $entity->getBook()->getIsbn13()) ? "<b>ISBN 13 : </b>".$d."<br>" : "");
@@ -516,17 +531,28 @@ class AdminController extends AbstractController
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
 			}
 
-			$img = !empty($img) ? $imgSize->adaptImageSize(550, $img) : null;
-			$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+			$baseurl = "";
+			
+			if(!$isExternalImage) {
+				$img = !empty($img) ? $imgSize->adaptImageSize(550, $img) : null;
+				$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath()."/";
+			} else {
+				$img = [
+					350,
+					'initial',
+					$img
+				];
+			}
+
 			$text = "<div style='font-size: 14pt; text-align: justify; font-family: Times New Roman;'>".$text."</div>";
 		}
 
 		switch($method) {
 			case "POST";
-				$response = $blogger->addPost($blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
+				$response = $blogger->addPost($blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl.$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "PUT";
-				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"][$blogId]["id"], $blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
+				$response = $blogger->updatePost($entity->getSocialNetworkIdentifiers()["Blogger"][$blogId]["id"], $blogName, $accessToken, $title, (!empty($imgProperty) ? "<p><img src='".$baseurl.$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>" : "").$text, $tags);
 				break;
 			case "DELETE";
 				$response = $blogger->deletePost($entity->getSocialNetworkIdentifiers()["Blogger"][$blogId]["id"], $blogName, $accessToken);
