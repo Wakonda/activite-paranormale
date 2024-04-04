@@ -72,6 +72,13 @@ class GenreAudiovisual
 	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
 	 */
 	private $wikidata;
+
+	/**
+	 * @var string $fiction
+	 *
+	 * @ORM\Column(name="fiction", type="boolean", nullable=true)
+	 */
+	private $fiction;
 	
 	public function __toString()
 	{
