@@ -69,6 +69,10 @@
 				$size = strlen($uploadedFile);
 			}
 
+			if(\App\Service\ImageSVG::isSVGByContent($content)) {
+				return [$filename, strlen($content)];
+			}
+
 			$sourceImage = imagecreatefromstring($content);
 
 			ob_start();
