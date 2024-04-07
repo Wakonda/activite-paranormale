@@ -45,7 +45,6 @@ index:
         Validation: "Validation"
         More: "Annuaire"
         Visitors: "Visiteurs"
-        Horoscope: "Horoscope"
         AddNews: "Proposer un article"
         AddRitual: "Proposer un rituel"
         AddEvent: "Proposer un événement"
@@ -230,3 +229,13 @@ error:
     exception:
         Error: "Erreur"
         Deleted: "Cette page a été supprimée"
+magicTrick:
+    index:
+        MagicTrick: "Tour de magie"
+        Telepathy: "Transmission de pensée"
+        TelepathyFirstStep: "Pensez à un nombre à deux chiffres"
+        TelepathySecondStep: "Soustrayez à ce chiffre les chiffres qui le composent (exemple : si vous avez choisi '38', la soustraction sera la suivante : '38 - 3 - 8 = 17')"
+        TelepathyThirdStep: "Trouvez le symbole correspondant dans le tableau ci-dessous"
+        TelepathyClickResult: "Cliquez-ici pour découvrir le résultat !"
+        TelepathyClickResultText: "Le symbole correspondant au chiffre que vous avez pensé est le suivant :"
+        Retry: "Réessayez"

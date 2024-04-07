@@ -45,7 +45,6 @@ index:
         Validation: "Validation"
         More: "Directory"
         Visitors: "Visitors"
-        Horoscope: "Horoscope"
         AddNews: "Suggest a news"
         AddRitual: "Suggest a ritual"
         AddEvent: "Suggest an event"
@@ -230,3 +229,13 @@ error:
     exception:
         Error: "Error"
         Deleted: "This page has been deleted"
+magicTrick:
+    index:
+        MagicTrick: "Magic trick"
+        Telepathy: "Telepathy"
+        TelepathyFirstStep: "Think of a two-digit number"
+        TelepathySecondStep: "Subtract from this number the digits that make it up (example: if you chose '38', the subtraction will be as follows: '38 - 3 - 8 = 17')"
+        TelepathyThirdStep: "Find the corresponding symbol in the table below"
+        TelepathyClickResult: "Click here to discover the result!"
+        TelepathyClickResultText: "The symbol corresponding to the number you thought of is as follows:"
+        Retry: "Try again"

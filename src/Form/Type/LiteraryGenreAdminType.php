@@ -38,8 +38,8 @@ class LiteraryGenreAdminType extends AbstractType
 				'constraints' => [new NotBlank()]
 			))
 			->add('wikidata', TextType::class, ['required' => false])
-			->add('fiction', CheckboxType::class, array('required' => true))
-            ->add('source', SourceEditType::class, array('required' => false))
+			->add('fiction', CheckboxType::class, ['required' => true])
+            ->add('source', SourceEditType::class, ['required' => false])
 			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'LiteraryGenre_Admin_ShowImageSelectorColorbox'])
 		;
     }

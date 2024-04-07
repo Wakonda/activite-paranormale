@@ -45,7 +45,6 @@ index:
         Validation: "Validación"
         More: "Directorio"
         Visitors: "Visitantes"
-        Horoscope: "Horóscopo"
         AddNews: "Sugerir una noticia"
         AddRitual: "Sugerir un ritual"
         AddEvent: "Sugerir un evento"
@@ -230,3 +229,13 @@ error:
     exception:
         Error: "Error"
         Deleted: "Esta página ha sido borrada"
+magicTrick:
+    index:
+        MagicTrick: "Truco de magia"
+        Telepathy: "Telepatía"
+        TelepathyFirstStep: "Piensa en un número de dos dígitos"
+        TelepathySecondStep: "Resta a este número los dígitos que lo componen (ejemplo: si elegiste '38', la resta quedará de la siguiente manera: '38 - 3 - 8 = 17')"
+        TelepathyThirdStep: "Encuentre el símbolo correspondiente en la siguiente tabla"
+        TelepathyClickResult: "¡Haz clic aquí para descubrir el resultado!"
+        TelepathyClickResultText: "El símbolo correspondiente al número que pensaste es el siguiente:"
+        Retry: "Intentar otra vez"

@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Form\EventListener\InternationalNameFieldListener;
 use App\Form\Field\SourceEditType;
@@ -22,10 +23,10 @@ class GenreAudiovisualAdminType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
-            ->add('text', TextareaType::class, array('required' => true, 'constraints' => [new NotBlank()]))
+            ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('text', TextareaType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener())
-			->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
+			->add('language', EntityType::class, ['class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
@@ -36,9 +37,10 @@ class GenreAudiovisualAdminType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				},
 				'constraints' => [new NotBlank()]
-			))
+			])
 			->add('wikidata', TextType::class, ['required' => false])
-            ->add('source', SourceEditType::class, array('required' => false))
+            ->add('source', SourceEditType::class, ['required' => false])
+			->add('fiction', CheckboxType::class, ['required' => true])
 			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'GenreAudiovisual_Admin_ShowImageSelectorColorbox'])
 		;
     }

@@ -107,6 +107,7 @@ genreAudiovisual:
         Photo: "Photo"
         InternationalName: "Nom international"
         Language: "Langue"
+        Fiction: "Fiction"
         Sources: "Sources"
 televisionSerie:
     index:

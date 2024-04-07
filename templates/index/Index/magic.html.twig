@@ -1,0 +1,193 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "index.application.App"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}
+	<h2>
+	<span class="float-start">
+		<img src="{{ asset('extended/photo/anger.png') }}" width="25" class="mt-1" alt="Anger ghost"/>
+	</span>{{ "magicTrick.index.MagicTrick"|trans([], "validators") }}
+	</h2>
+{% endblock h2_title %}
+
+{% block header_plus %}
+	<script>
+		window.addEventListener('DOMContentLoaded', (event) => {
+			const table = document.getElementById('magicTable');
+			const tds = table.querySelectorAll('td');
+
+			let icons = ["fa-cross", "fa-church", "fa-yin-yang", "fa-peace", "fa-dove", "fa-atom", "fa-ankh", "fa-hamsa", "fa-om", "fa-star-and-crescent"];
+			let randomIndexNine = Math.floor(Math.random() * icons.length);
+			let randomElementNine = icons[randomIndexNine];
+
+			document.getElementById("retry").addEventListener("click", (e) => {
+				e.preventDefault()
+				randomIndexNine = Math.floor(Math.random() * icons.length);
+				randomElementNine = icons[randomIndexNine];
+				constructTable(randomIndexNine, randomElementNine);
+			});
+
+			function constructTable(randomIndexNine, randomElementNine) {
+				tds.forEach((td, index) => {
+					if(td.textContent % 9 == 0) {
+						td.innerHTML = td.textContent + ' <i class="fa-solid ' + randomElementNine + '"></i>'
+					} else {
+						const randomIndex = Math.floor(Math.random() * icons.length);
+						const randomElement = icons[randomIndex];
+						td.innerHTML = td.textContent + ' <i class="fa-solid ' + randomElement + '"></i>'
+					}
+				});
+			}
+
+			constructTable(randomIndexNine, randomElementNine);
+
+			document.getElementById("magic").addEventListener("click", (e) => {
+				e.preventDefault();
+				document.getElementById("result").innerHTML = '<i class="fa-solid ' + randomElementNine + '"></i>';
+				document.getElementById("resultText").style.display = "block";
+			});
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image">{{ "magic-index.webp"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
+
+	<h3>{{ "magicTrick.index.Telepathy"|trans([], "validators") }}</h3>
+	<div>
+		<ol>
+			<li>{{ "magicTrick.index.TelepathyFirstStep"|trans([], "validators") }}</li>
+			<li>{{ "magicTrick.index.TelepathySecondStep"|trans([], "validators") }}</li>
+			<li>{{ "magicTrick.index.TelepathyThirdStep"|trans([], "validators") }}</li>
+			<li><a href="#" id="magic">{{ "magicTrick.index.TelepathyClickResult"|trans([], "validators") }}</a></li>
+			<li id="resultText" style="display:none;">{{ "magicTrick.index.TelepathyClickResultText"|trans([], "validators") }} <span id="result"></span></li>
+			<li><a href="#" id="retry">{{ "magicTrick.index.Retry"|trans([], "validators") }}</a></li>
+		</ol>
+	</div>
+
+	<table id="magicTable" class="table table-bordered">
+		<tr>
+			<td>99</td>
+			<td>98</td>
+			<td>97</td>
+			<td>96</td>
+			<td>95</td>
+			<td>94</td>
+			<td>93</td>
+			<td>92</td>
+			<td>91</td>
+			<td>90</td>
+		</tr>
+		<tr>
+			<td>89</td>
+			<td>88</td>
+			<td>87</td>
+			<td>86</td>
+			<td>85</td>
+			<td>84</td>
+			<td>83</td>
+			<td>82</td>
+			<td>81</td>
+			<td>80</td>
+		</tr>
+		<tr>
+			<td>79</td>
+			<td>78</td>
+			<td>77</td>
+			<td>76</td>
+			<td>75</td>
+			<td>74</td>
+			<td>73</td>
+			<td>72</td>
+			<td>71</td>
+			<td>70</td>
+		</tr>
+		<tr>
+			<td>69</td>
+			<td>68</td>
+			<td>67</td>
+			<td>66</td>
+			<td>65</td>
+			<td>64</td>
+			<td>63</td>
+			<td>62</td>
+			<td>61</td>
+			<td>60</td>
+		</tr>
+		<tr>
+			<td>59</td>
+			<td>58</td>
+			<td>57</td>
+			<td>56</td>
+			<td>55</td>
+			<td>54</td>
+			<td>53</td>
+			<td>52</td>
+			<td>51</td>
+			<td>50</td>
+		</tr>
+		<tr>
+			<td>49</td>
+			<td>48</td>
+			<td>47</td>
+			<td>46</td>
+			<td>45</td>
+			<td>44</td>
+			<td>43</td>
+			<td>42</td>
+			<td>41</td>
+			<td>40</td>
+		</tr>
+		<tr>
+			<td>39</td>
+			<td>38</td>
+			<td>37</td>
+			<td>36</td>
+			<td>35</td>
+			<td>34</td>
+			<td>33</td>
+			<td>32</td>
+			<td>31</td>
+			<td>30</td>
+		</tr>
+		<tr>
+			<td>29</td>
+			<td>28</td>
+			<td>27</td>
+			<td>26</td>
+			<td>25</td>
+			<td>24</td>
+			<td>23</td>
+			<td>22</td>
+			<td>21</td>
+			<td>20</td>
+		</tr>
+		<tr>
+			<td>19</td>
+			<td>18</td>
+			<td>17</td>
+			<td>16</td>
+			<td>15</td>
+			<td>14</td>
+			<td>13</td>
+			<td>12</td>
+			<td>11</td>
+			<td>10</td>
+		</tr>
+		<tr>
+			<td>9&nbsp;&nbsp;</td>
+			<td>8&nbsp;&nbsp;</td>
+			<td>7&nbsp;&nbsp;</td>
+			<td>6&nbsp;&nbsp;</td>
+			<td>5&nbsp;&nbsp;</td>
+			<td>4&nbsp;&nbsp;</td>
+			<td>3&nbsp;&nbsp;</td>
+			<td>2&nbsp;&nbsp;</td>
+			<td>1&nbsp;&nbsp;</td>
+			<td>0&nbsp;&nbsp;</td>
+		</tr>
+	</table>
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

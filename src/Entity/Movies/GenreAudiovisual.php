@@ -264,4 +264,24 @@ class GenreAudiovisual
     {
         return $this->illustration;
     }
+
+    /**
+     * Set fiction
+     *
+     * @param boolean $fiction
+     */
+    public function setFiction($fiction)
+    {
+        $this->fiction = $fiction;
+    }
+
+    /**
+     * Get fiction
+     *
+     * @return boolean
+     */
+    public function getFiction()
+    {
+        return $this->fiction;
+    }
 }

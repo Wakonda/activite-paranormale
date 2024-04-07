@@ -39,6 +39,15 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "genreAudiovisual.admin.Sources"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "genreAudiovisual.admin.Fiction"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.fiction %}
+			<span class="text-success"><i class="fas fa-check" aria-hidden="true"></i></span>
+		{% else %}
+			<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>
+		{% endif %}
+	</div>
 {% endblock %}
 
 {% block data_bottom %}

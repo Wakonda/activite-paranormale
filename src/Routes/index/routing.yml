@@ -18,6 +18,10 @@ Index_DownloadApplication:
     path: /application/download
     controller: App\Controller\IndexController::downloadApplication
 
+Index_Magic:
+    path: /magic
+    controller: App\Controller\IndexController::magic
+
 # Licence
 Licence_ShowColorbox:
     path: /showcolorbox

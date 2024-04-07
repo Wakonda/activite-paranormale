@@ -55,4 +55,8 @@ class IndexController extends AbstractController
 			"route" => $currentRoute
 		]);
 	}
+
+	public function magic() {
+		return $this->render("index/Index/magic.html.twig");
+	}
 }
