@@ -247,27 +247,14 @@
 					</div>
 					<div class="card mt-2">
 						<div class="card-header"><span class="float-start"><img src="{{ asset('extended/photo/crystal_ball.png') }}" width="25" class="mt-1 float-start" alt="Crystal ball"/></span>
-							{{ "index.leftMenu.Horoscope"|trans([], "validators") }}
+							{{ "magicTrick.index.MagicTrick"|trans([], "validators") }}
 						</div>
 						<div class="card-body">
 							<div class="news_section text-center">
-								{% if app.request.locale == 'fr' %}
-									<div class="mx-auto" style="width:200px;text-align:right;line-height:11px;">
-									<iframe class="horoscope_iframe" src="https://signes.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									 width="200" height="250" style="border:0; margin:0; padding:0;" title="Horoscope" frameborder="0" marginwidth="0" marginheight="0"></iframe>
-									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://signes.horoscope999.com/">Horoscope</a> &nbsp;</div>
-									</div>
-								{% elseif app.request.locale == 'en' %}
-									<div class="mx-auto" style="width:200px;text-align:right;line-height:11px;">
-									<iframe class="horoscope_iframe" src="https://horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horoscope" frameborder="0" marginwidth="0" marginheight="0"></iframe>
-									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscope999.com/">Horoscopes</a> &nbsp;</div></div>
-								{% else %}
-									<div class="mx-auto" style="width:200px;text-align:right;line-height:11px;">
-									<iframe class="horoscope_iframe" src="https://horoscopo.horoscope999.com/widget1_show.php?speed=2000&amp;width=200&amp;height=250&amp;sr=&amp;font=10"
-									width="200" height="250" style="border:0;margin:0;padding:0;" title="Horóscopo" frameborder="0" marginwidth="0" marginheight="0"></iframe>
-									<br><div style="font-size:10px;background-color:#363942;"><a style="font-size:10px;color:#dad7ce;text-decoration:none;" href="https://horoscopo.horoscope999.com/">Horoscopo</a> &nbsp;</div></div>
-								{% endif %}
+								<img src="{{ asset('extended/photo/magic-menu.png') }}" width="200">
+								<ul class="mt-2">
+									<li><a href="{{ path('Index_Magic') }}">{{ "magicTrick.index.Telepathy"|trans([], "validators") }}</a></li>
+								</ul>
 							</div>
 						</div>
 					</div>
