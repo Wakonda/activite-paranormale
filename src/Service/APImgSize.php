@@ -88,7 +88,7 @@
 				$content = $resmushId->compressFromData($content, $filename);
 				$size = strlen($content);
 				
-				return [$newFilename, $content];
+				return [$filename, $content];
 			}
 
 			return [$filename, $content];
