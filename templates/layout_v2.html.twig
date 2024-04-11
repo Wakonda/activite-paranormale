@@ -230,7 +230,6 @@
 								</div>
 								<div class="button_01"><a href="{{ path('WebDirectory_Index') }}">{{ "index.leftMenu.More"|trans([], "validators") }}</a></div>
 							</div>
-							<div class="bottom"></div>
 						</div>
 						<div class="side_column_box">
 							<h2><span class="float-start"><img src="{{ asset('extended/photo/crystal_ball.png') }}" width="25" class="mt-1" alt="Crystal ball"/></span>{{ "magicTrick.index.MagicTrick"|trans([], "validators") }}</h2>
@@ -240,14 +239,12 @@
 									<li><a href="{{ path('Index_Magic') }}">{{ "magicTrick.index.Telepathy"|trans([], "validators") }}</a></li>
 								</ul>
 							</div>
-							<div class="bottom"></div>
 						</div>
 						<div id="twitter_right_menu" class="side_column_box">
 							<h2><span><img src="{{ asset('extended/photo/twitter_bird.png') }}" width="25" class="mt-1" alt="Blue bird - Twitter"/></span>{{ "index.leftMenu.FollowUsOn"|trans([], "validators") }}</h2>
 							<div class="side_column_box_content">
 								{% include 'index/FollowUs/widgetMenu.html.twig' %}
 							</div>
-							<div class="bottom"></div>
 						</div>
 					</div>
 					<div id="main_column">
@@ -258,7 +255,6 @@
 								{% if is_granted('ROLE_ADMIN') %}{{ quick_edit(entity is defined ? entity : null) }}{% endif %}
 							{% endblock %}
 							<div class="cleaner"></div>
-							<div class="bottom"></div>
 						</div>
 
 						{% block sub_content %}
