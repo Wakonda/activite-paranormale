@@ -15,10 +15,12 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuotationController extends AbstractController
 {
-    public function index($family)
+    public function index(Request $request, EntityManagerInterface $em, $family)
     {
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
+		// dd($counter);
 		$family = empty($family) ? Quotation::QUOTATION_FAMILY : $family;
-        return $this->render('quotation/Quotation/index.html.twig', ["family" => $family]);
+        return $this->render('quotation/Quotation/index.html.twig', ["family" => $family, "counter" => $counter]);
     }
 
     public function listQuotation()

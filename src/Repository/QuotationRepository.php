@@ -111,7 +111,7 @@ class QuotationRepository extends EntityRepository
 	public function getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, $count = false)
 	{
 		$aColumns = ['c.textQuotation', null];
-		
+
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
 		   ->where('l.abbreviation = :language')
@@ -145,6 +145,23 @@ class QuotationRepository extends EntityRepository
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		return $qb->getQuery()->getResult();
+	}
+
+	public function countByFamily($language) {
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("c.family")
+		   ->addSelect("COUNT(c) As number")
+		   ->join('c.language', 'l')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->groupBy("c.family");
+
+		$res = [];
+		
+		foreach($qb->getQuery()->getResult() as $data)
+			$res[$data["family"]] = $data["number"];
+
+		return $res;
 	}
 
 	// ADMINISTRATION
