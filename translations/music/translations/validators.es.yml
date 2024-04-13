@@ -90,7 +90,7 @@ music:
         NbrArt: "Número total de artista: "
         Artist: "Artista"
         Genre: "Género"
-        Listen: "Escuchar"
+        Read: "Leer"
         Sources: "Fuentes"
     album:
         Title: "Título"

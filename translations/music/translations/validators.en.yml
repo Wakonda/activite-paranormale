@@ -90,7 +90,7 @@ music:
         NbrArt: "Total number of artist: "
         Artist: "Artist"
         Genre: "Genre"
-        Listen: "Listen"
+        Read: "Read"
         Sources: "Sources"
     album:
         Title: "Title"

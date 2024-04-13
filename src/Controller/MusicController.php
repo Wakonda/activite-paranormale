@@ -12,6 +12,7 @@ use App\Entity\Album;
 use App\Entity\Music;
 use App\Entity\MusicGenre;
 use App\Form\Type\ArtistSearchType;
+use App\Service\APImgSize;
 
 class MusicController extends AbstractController
 {
@@ -24,7 +25,7 @@ class MusicController extends AbstractController
 		]);
     }
 
-	public function listDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	public function listDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APImgSize $imgSize)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -56,10 +57,11 @@ class MusicController extends AbstractController
 
 		foreach($entities as $entity)
 		{
+			$logo = $imgSize->adaptImageSize(200, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
 			$row = [];
-			$row[] = $entity->getTitle();
+			$row[] = $entity->getTitle().(!empty($entity->getPhotoIllustrationFilename()) ? '<div><img src="'.$request->getBasePath().'/'.$logo[2].'" class="bg-white" alt="" style="width: '.$logo[0].'"></div>' : "");
 			$row[] = !empty($genre = $entity->getGenre()) ? $genre->getTitle() : null;
-			$row[] = '<a href="'.$this->generateUrl("Music_Album", ['id' => $entity->getId(), 'title_slug' => $entity->getTitle()]).'" >'.$translator->trans('music.index.Listen', [], 'validators').'</a>';
+			$row[] = '<a href="'.$this->generateUrl("Music_Album", ['id' => $entity->getId(), 'title_slug' => $entity->getTitle()]).'" >'.$translator->trans('music.index.Read', [], 'validators').'</a>';
 
 			$output['data'][] = $row;
 		}
