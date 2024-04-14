@@ -64,7 +64,7 @@
 	{% endif %}
 	<div class="row media-container m-0 mt-3">
 		<div class="col-sm-4 mt-7 mb-7">
-			{% set thumbnail = thumbnail_video(entity) %}
+			{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
 			{% if thumbnail is not empty and entity.photo is empty %}
 				<img src="{{ thumbnail }}" alt="Thumbnail video" class="img-fluid" />
 			{% else %}

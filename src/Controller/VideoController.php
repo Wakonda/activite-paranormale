@@ -74,7 +74,8 @@ class VideoController extends AbstractController
 
 		foreach($entities as $entity)
 		{
-			$thumbnail = $entity->getThumbnailVideo();
+			$videoService = new \App\Service\Video($entity->getEmbeddedCode());
+			$thumbnail = $videoService->getThumbnailVideo();
 			$src = null;
 			
 			if(!empty($thumbnail) and empty($entity->getPhoto())) {

@@ -30,6 +30,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\TagWord;
 use App\Entity\Video;
+use App\Service\Video as VideoService;
 
 class VideoAdminType extends AbstractType
 {
@@ -40,14 +41,14 @@ class VideoAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('platform', ChoiceType::class, array(
 				'choices'   => array(
-					Video::LOCALE_PLATFORM => Video::LOCALE_PLATFORM,
-					Video::DAILYMOTION_PLATFORM => Video::DAILYMOTION_PLATFORM,
-					Video::FACEBOOK_PLATFORM => Video::FACEBOOK_PLATFORM,
-					Video::INSTAGRAM_PLATFORM => Video::INSTAGRAM_PLATFORM,
-					Video::RUTUBE_PLATFORM => Video::RUTUBE_PLATFORM,
-					Video::TWITTER_PLATFORM => Video::TWITTER_PLATFORM,
-					Video::YOUTUBE_PLATFORM => Video::YOUTUBE_PLATFORM,
-					Video::OTHER_PLATFORM => Video::OTHER_PLATFORM
+					VideoService::LOCALE_PLATFORM => VideoService::LOCALE_PLATFORM,
+					VideoService::DAILYMOTION_PLATFORM => VideoService::DAILYMOTION_PLATFORM,
+					VideoService::FACEBOOK_PLATFORM => VideoService::FACEBOOK_PLATFORM,
+					VideoService::INSTAGRAM_PLATFORM => VideoService::INSTAGRAM_PLATFORM,
+					VideoService::RUTUBE_PLATFORM => VideoService::RUTUBE_PLATFORM,
+					VideoService::TWITTER_PLATFORM => VideoService::TWITTER_PLATFORM,
+					VideoService::YOUTUBE_PLATFORM => VideoService::YOUTUBE_PLATFORM,
+					VideoService::OTHER_PLATFORM => VideoService::OTHER_PLATFORM
 				),
 				'multiple'  => false,
 				'expanded'  => false,
@@ -199,7 +200,7 @@ class VideoAdminType extends AbstractType
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults(array(
-			'data_class' => 'App\Entity\Video',
+			'data_class' => Video::class,
 			'locale' => 'fr'
 		));
 	}

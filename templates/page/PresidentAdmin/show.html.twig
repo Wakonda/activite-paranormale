@@ -63,7 +63,10 @@
 		{{ macro_index.blogger_form(entity, "news") }}
 		{{ macro_index.twitter_form(entity) }}
 		{{ macro_index.facebook_form(entity) }}
+		{{ macro_index.vk_form(entity) }}
 		{{ macro_index.mastodon_form(entity) }}
+		{{ macro_index.diaspora_form(entity) }}
+		{{ macro_index.bluesky_form(entity) }}
 	{% endif %}
 {% endblock %}
 
@@ -71,4 +74,7 @@
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.twitter_form_js() }}
 	{{ macro_index.facebook_form_js() }}
+	{{ macro_index.vk_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
+	{{ macro_index.bluesky_form_js() }}
 {% endblock %}

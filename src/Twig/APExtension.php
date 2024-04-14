@@ -1001,9 +1001,11 @@
 		}
 
 		public function getLoaderVideo($entity) {
-			$thumbnail = $entity->getThumbnailVideo();
-			$url = $entity->getURLByCode();
-			$platform = $entity->getPlatformByCode();
+			$videoService = new \App\Service\Video($entity->getEmbeddedCode());
+
+			$thumbnail = $videoService->getThumbnailVideo();
+			$url = $videoService->getURLByCode();
+			$platform = $videoService->getPlatformByCode();
 
 			$id = "video-".$entity->getId();
 			$title = htmlspecialchars($entity->getTitle());
@@ -1060,8 +1062,9 @@
 			return $entity->getEmbeddedCode();
 		}
 
-		public function getThumbnailFromVideo($entity) {
-			return $entity->getThumbnailVideo();
+		public function getThumbnailFromVideo($embeddedcode) {
+			$videoService = new \App\Service\Video($embeddedcode);
+			return $videoService->getThumbnailVideo();
 		}
 
 		public function getEnv(string $varname): string

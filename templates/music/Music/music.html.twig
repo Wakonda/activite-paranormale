@@ -3,6 +3,16 @@
 {% block title %}{{ entity.musicPiece }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
 
+{% block meta_plus %}
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ entity.musicPiece }}" />
+
+	{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
+	{% if thumbnail is not empty %}
+		<meta property="og:image" content="{{ thumbnail }}" />
+	{% endif %}
+{% endblock %}
+
 {% block APBlog_body %}
 	{% if album is not empty %}
 		{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': album } %}
@@ -38,7 +48,7 @@
 				<a href="{{ path('Music_Download', {'id' : entity.id}) }}">{{ "music.music.DownloadFile"|trans([], "validators") }}</a>
 			</p>
 		{% endif %}
-			
+
 		{% if entity.embeddedCode is not empty %}
 			<h3>{{ "music.music.Video"|trans([], "validators") }}</h3>
 			{{ entity.embeddedCode|raw }}
