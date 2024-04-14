@@ -3,13 +3,22 @@
 {% block title %}{{ "quotation.index.Quotation"|trans([], "validators") }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Quotation"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
 
+{% block meta_plus %}
+	<meta name="twitter:card" content="summary" />
+	<meta property="og:title" content="{{ "quotation.index.Quotation"|trans([], "validators") }} - {{ entity.authorQuotation.title }}" />
+
+	{% if entity.images is not empty %}
+		{% set img = entity.images|last %}
+		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath() ~ img.image)) }}" />
+	{% endif %}
+{% endblock %}
+
 {% block APBlog_body %}
 	<div id="quotation_bubble_parent">
 		<div id="quotation_bubble" class="fst-italic">
 			&ldquo;{{ entity.textQuotation }}&rdquo;
 		</div>
 	</div>
-
 	<span id="author_quotation"><a href="{{ path('Biography_Show', { id: entity.authorQuotation.id, title_slug: entity.authorQuotation.slug }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></span>
 
 	{% if entity.images is not empty %}
