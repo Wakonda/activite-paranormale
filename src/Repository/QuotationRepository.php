@@ -65,7 +65,7 @@ class QuotationRepository extends EntityRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
-	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $family, $language, $count = false)
+	public function getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $family, $language, $datas = [], $count = false)
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -74,11 +74,24 @@ class QuotationRepository extends EntityRepository
 		   ->andWhere("c.family = :family")
 		   ->setParameter("family", $family);
 
+		if(isset($datas["keywords"]) and !empty($keywords = $datas["keywords"])) {
+			$search = "%".$keywords."%";
+			$qb->andWhere('c.title LIKE :search OR c.textQuotation LIKE :search OR c.tags LIKE :search')
+			   ->setParameter('search', $search);
+		}
+// dd($datas);
+		if(isset($datas["country"]) and !empty($country = $datas["country"])) {
+			
+			$qb->join("c.country", "co")
+			   ->andWhere('co.internationalName = :abbreviation')
+			   ->setParameter('abbreviation', $country->getInternationalName());
+		}
+
 		if($family == Quotation::QUOTATION_FAMILY or $family == Quotation::POEM_FAMILY) {
-			$aColumns = ['c.textQuotation', 'a.title'];
+			$aColumns = ['c.id', 'c.textQuotation', 'a.title'];
 			$qb->join('c.authorQuotation', 'a');
 		} elseif($family == Quotation::PROVERB_FAMILY) {
-			$aColumns = ['c.textQuotation', 'a.title'];
+			$aColumns = ['c.id', 'c.textQuotation', 'a.title'];
 			$qb->join('c.country', 'a');
 		}
 
@@ -156,7 +169,11 @@ class QuotationRepository extends EntityRepository
 		   ->setParameter('language', $language)
 		   ->groupBy("c.family");
 
-		$res = [];
+		$res = [
+			Quotation::QUOTATION_FAMILY => 0,
+			Quotation::PROVERB_FAMILY => 0,
+			Quotation::POEM_FAMILY => 0
+		];
 		
 		foreach($qb->getQuery()->getResult() as $data)
 			$res[$data["family"]] = $data["number"];

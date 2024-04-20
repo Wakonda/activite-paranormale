@@ -61,6 +61,16 @@
 	<hr>
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.authorQuotation.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
 
+	{% if entity.tags is not empty %}
+		<br>
+		{% set tags = json_decode(entity.tags)|column("value") %}
+		<fieldset class="p-2">
+			<legend class="ml-2 float-none"> Tags </legend>
+			{% for tag in tags %}
+				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+			{% endfor %}
+		</fieldset>
+	{% endif %}
 	<br>
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}

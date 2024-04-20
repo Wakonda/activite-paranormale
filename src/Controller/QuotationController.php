@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Quotation;
 use App\Entity\Biography;
 use App\Entity\Region;
+use App\Form\Type\QuotationSearchType;
 use Knp\Component\Pager\PaginatorInterface;
 
 class QuotationController extends AbstractController
@@ -22,19 +23,22 @@ class QuotationController extends AbstractController
         return $this->render('quotation/Quotation/index.html.twig', ["family" => $family, "counter" => $counter]);
     }
 
-    public function listQuotation()
+    public function listQuotation(Request $request)
     {
-        return $this->render('quotation/Quotation/listQuotation.html.twig', ["family" => Quotation::QUOTATION_FAMILY]);
+		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::QUOTATION_FAMILY]);
+        return $this->render('quotation/Quotation/listQuotation.html.twig', ["family" => Quotation::QUOTATION_FAMILY, "form" => $form->createView()]);
     }
 
-    public function listProverb()
+    public function listProverb(Request $request)
     {
-        return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY]);
+		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::PROVERB_FAMILY]);
+        return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY, "form" => $form->createView()]);
     }
 
-    public function listPoem()
+    public function listPoem(Request $request)
     {
-        return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY]);
+		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::POEM_FAMILY]);
+        return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY, "form" => $form->createView()]);
     }
 	
 	public function listQuotationDatatables(Request $request, EntityManagerInterface $em)
@@ -54,8 +58,12 @@ class QuotationController extends AbstractController
 			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language);
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, true);
+		$form = $this->createForm(QuotationSearchType::class, null, ["locale" => $request->getLocale(), "family" => Quotation::QUOTATION_FAMILY]);
+		parse_str($request->query->get($form->getName()), $datas);
+		$form->submit($datas[$form->getName()]);
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, $form->getData());
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, $form->getData(), true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -66,6 +74,7 @@ class QuotationController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$row = [];
+			$row[] = $entity->getId();
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title_slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
 
@@ -95,8 +104,12 @@ class QuotationController extends AbstractController
 			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language);
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, true);
+		$form = $this->createForm(QuotationSearchType::class, null, ["locale" => $request->getLocale(), "family" => Quotation::PROVERB_FAMILY]);
+		parse_str($request->query->get($form->getName()), $datas);
+		$form->submit($datas[$form->getName()]);
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, $form->getData());
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, $form->getData(), true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -107,6 +120,7 @@ class QuotationController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$row = [];
+			$row[] = $entity->getId();
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$flag = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20" height="13">';
 			$row[] = "$flag <a href='".$this->generateUrl('Proverb_Country_Show', ['id' => $entity->getCountry()->getId(), 'title' => $entity->getCountry()->getTitle()])."'>".$entity->getCountry()."</a>";
@@ -137,8 +151,12 @@ class QuotationController extends AbstractController
 			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language);
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, true);
+		$form = $this->createForm(QuotationSearchType::class, null, ["locale" => $request->getLocale(), "family" => Quotation::POEM_FAMILY]);
+		parse_str($request->query->get($form->getName()), $datas);
+		$form->submit($datas[$form->getName()]);
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, $form->getData());
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, $form->getData(), true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -149,6 +167,7 @@ class QuotationController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$row = [];
+			$row[] = $entity->getId();
 			$row[] = "<a href='".$this->generateUrl("Poem_Read", ["id" => $entity->getId()])."'>".$entity->getTitle()."</a>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title_slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
 

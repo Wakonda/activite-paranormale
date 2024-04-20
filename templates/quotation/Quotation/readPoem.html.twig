@@ -1,6 +1,6 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "quotation.index.Proverb"|trans([], "validators") }}{% endblock %}
+{% block title %}{{ "quotation.index.Poem"|trans([], "validators") }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Poem"|trans([], "validators") }} - {{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
@@ -44,13 +44,22 @@
 
 	{% set sources = source_document(entity.source, entity.language) %}
 	{% if sources is not empty %}
-		<br>
 		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
 		{{ sources|raw }}
 	{% endif %}
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.country.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
 
+	{% if entity.tags is not empty %}
+		<br>
+		{% set tags = json_decode(entity.tags)|column("value") %}
+		<fieldset class="p-2">
+			<legend class="ml-2 float-none"> Tags </legend>
+			{% for tag in tags %}
+				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+			{% endfor %}
+		</fieldset>
+	{% endif %}
 	<br>
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}

@@ -3,6 +3,15 @@ quotation:
         Quotation: "Quotation"
         Proverb: "Proverb"
         Poem: "Poem"
+    search:
+        SearchSort: "Search / Sort"
+        Keywords: "Keywords"
+        Country: "Country"
+        PublicationDateUp: "Publication date ↑"
+        PublicationDateDown: "Publication date ↓"
+        Sort: "Sort by"
+        Validate: "Validate"
+        TotalNumber: "Total number:"
     list:
         Author: "Author"
         Quotation: "Quotation"
@@ -12,10 +21,12 @@ quotation:
         Read: "Read"
     read:
         Explanation: "Explanation"
+        Tags: "Tags"
     admin:
         Author: "Author"
         Quotation: "Quotation"
         Proverb: "Proverb"
+        Poem: "Poem"
         Source: "Source"
         Language: "Language"
         Explanation: "Explanation"

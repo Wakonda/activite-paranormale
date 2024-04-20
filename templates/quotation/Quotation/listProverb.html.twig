@@ -1,40 +1,11 @@
-<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
-<script>
-	document.addEventListener('DOMContentLoaded', function () {
-		oTable = $('table.doc_datatables').DataTable( {
-			"language": {
-				"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-			},
-			"searching": true,
-			"info": true,
-			"lengthChange": true,
-			"order": [[ 0, "desc" ]],
-			"pagingType": "full_numbers",
-			"pageLength": {{ total_line_display }},
-			"processing": true,
-			"serverSide": true,
-			"responsive": {
-				"details": {
-					display: $.fn.dataTable.Responsive.display.childRowImmediate,
-					type: 'none',
-					target: ''
-				}
-			},
-			"ajax": "{{ path('Proverb_listDatatables') }}",
-		});
-	});
-</script>
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
-
 <p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/' ~ family ~ '.jpg') }}" alt="Angel sword" width="550" /></p>
 <hr>
+{% include 'quotation/Quotation/_search.html.twig' with { route: 'Proverb_listDatatables' } %}
+
 <table class="doc_datatables dt-responsive w-100">
 	<thead>
 		<tr>
+			<th class="label_form d-none"></th>
 			<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
 			<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
 		</tr>
@@ -44,6 +15,7 @@
 	</tbody>
 	<tfoot>
 		<tr>
+			<th class="label_form d-none"></th>
 			<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
 			<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
 		</tr>

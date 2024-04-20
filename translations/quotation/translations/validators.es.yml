@@ -3,6 +3,15 @@ quotation:
         Quotation: "Cita"
         Proverb: "Proverbio"
         Poem: "Poesía"
+    search:
+        SearchSort: "Buscar / Ordenar"
+        Keywords: "Palabras clave"
+        Country: "País"
+        PublicationDateUp: "Fecha de publicación ↑"
+        PublicationDateDown: "Fecha de publicación ↓"
+        Sort: "Ordenar por"
+        Validate: "Validar"
+        TotalNumber: "Número total:"
     list:
         Author: "Autor"
         Quotation: "Cita"
@@ -12,10 +21,12 @@ quotation:
         Read: "Leer"
     read:
         Explanation: "Explicación"
+        Tags: "Etiquetas"
     admin:
         Author: "Autor"
         Quotation: "Cita"
         Proverb: "Proverbio"
+        Poem: "Poesía"
         Source: "Fuente"
         Language: "Lengua"
         Explanation: "Explicación"

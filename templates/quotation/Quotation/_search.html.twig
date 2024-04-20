@@ -1,0 +1,96 @@
+<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		table = $('table.doc_datatables').DataTable( {
+			"language": {
+				"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
+			},
+			"searching": true,
+			"info": true,
+			"lengthChange": true,
+			"order": [[ 1, "desc" ]],
+			"pagingType": "full_numbers",
+			"pageLength": {{ total_line_display }},
+			"processing": true,
+			"serverSide": true,
+			"columnDefs": [
+				{
+					target: 0,
+					visible: false
+				}
+			],
+			"responsive": {
+				"details": {
+					display: $.fn.dataTable.Responsive.display.childRowImmediate,
+					type: 'none',
+					target: ''
+				}
+			},
+			"ajax": {
+				"url": "{{ path(route) }}",
+				"type": "GET",
+				"data": function(d) {
+					d.form = $("#{{ form.vars.id }}").serialize()
+				}
+			},
+				"preDrawCallback": function(settings) {
+					document.getElementById("count_quotation").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+				},
+				"drawCallback": function(settings) {
+					document.getElementById("count_quotation").innerHTML = settings.json.recordsTotal;
+				}
+		});
+		
+		{% if main_request().query.get("keyword") is not empty %}
+			document.getElementById("{{ form.keywords.vars.id }}").value = "{{ main_request().query.get('keyword') }}";
+			table.rows({ search: "{{ main_request().query.get('keyword') }}" }).draw();
+		{% endif %}
+
+		document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
+			e.preventDefault();
+			let valFilter = document.getElementById("{{ form.keywords.vars.id }}").value;
+			let valSort = document.getElementById("{{ form.sort.vars.id }}").value;
+			
+			if(valSort != "") {
+				sort = valSort.split("#")
+				
+				if(valFilter != "")
+					table.rows({ search: valFilter });
+
+				if(sort[0] == "id")
+					table.order([0, sort[1]]);
+			} else
+				table.rows({ search: valFilter });
+			table.draw();
+		});
+	});
+</script>
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+
+
+<p>{{ "quotation.search.TotalNumber"|trans([], "validators") }} <span class="badge bg-danger" id="count_quotation"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
+<hr>
+<h3>{{ "quotation.search.SearchSort"|trans([], "validators") }}</h3>
+{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+{{ form_start(form, {'action': path('Biography_Index'), 'method': 'POST', 'attr': {id: form.vars.id, 'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+	<div class="form-table form-table-4cols form-table-collapse">
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.keywords, "quotation.search.Keywords"|trans([], "validators")) }}</div>
+		<div class="form-table-cell">{{ form_errors(form.keywords) }}{{ form_widget(form.keywords, {'attr':{'class' : 'form-control'}}) }}</div>
+		
+		{% if form.country is defined %}
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "quotation.search.Country"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-select'}}) }}</div>
+		{% endif %}
+
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.sort, "quotation.search.Sort"|trans([], "validators")) }}</div>
+		<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-select'}}) }}</div>
+	</div>
+	{{ form_rest(form) }}
+	<button type="submit" class="btn submitcomment float-end">{{ "quotation.search.Validate"|trans([], "validators") }}</button>
+{{ form_end(form) }}
+<br>
+<hr>

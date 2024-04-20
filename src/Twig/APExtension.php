@@ -127,7 +127,8 @@
 				new TwigFunction('quick_edit', array($this, 'quickEdit'), array('is_safe' => array('html'))),
 				new TwigFunction('get_env', array($this, 'getEnv')),
 				new TwigFunction('thumbnail_video', [$this, 'getThumbnailFromVideo']),
-				new TwigFunction('loader_video', [$this, 'getLoaderVideo'], ['is_safe' => ['html']])
+				new TwigFunction('loader_video', [$this, 'getLoaderVideo'], ['is_safe' => ['html']]),
+				new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']])
 			);
 		}
 
@@ -1065,6 +1066,10 @@
 		public function getThumbnailFromVideo($embeddedcode) {
 			$videoService = new \App\Service\Video($embeddedcode);
 			return $videoService->getThumbnailVideo();
+		}
+
+		public function getMainRequest() {
+			return $this->requestStack->getMainRequest();
 		}
 
 		public function getEnv(string $varname): string

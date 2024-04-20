@@ -4,13 +4,11 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ ("quotation.index." ~ (family|ucfirst))|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
-<div id="tab_resources" class="d-flex justify-content-between flex-wrap">
-	<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') ? "active" : "" }}">{{ "quotation.index.Quotation"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></a>
-	<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') ? "active" : "" }}">{{ "quotation.index.Proverb"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></a>
-	<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::POEM_FAMILY') ? "active" : "" }}">{{ "quotation.index.Poem"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></a>
-</div>
-
-
+	<div id="tab_resources" class="d-flex justify-content-between flex-wrap">
+		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') ? "active" : "" }}">{{ "quotation.index.Quotation"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></a>
+		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') ? "active" : "" }}">{{ "quotation.index.Proverb"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></a>
+		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::POEM_FAMILY') ? "active" : "" }}">{{ "quotation.index.Poem"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></a>
+	</div>
 
 	{% if family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') %}
 		{{ render(controller('App\\Controller\\QuotationController::listQuotation')) }}

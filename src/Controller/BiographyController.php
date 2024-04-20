@@ -64,9 +64,7 @@ class BiographyController extends AbstractController
 		}
 		
 		$form = $this->createForm(BiographySearchType::class, null, ["locale" => $request->getLocale()]);
-		
 		parse_str($request->query->get($form->getName()), $datas);
-
 		$form->submit($datas[$form->getName()]);
 		
         $entities = $em->getRepository(Biography::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData());

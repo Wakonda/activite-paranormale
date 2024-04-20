@@ -33,7 +33,7 @@ book:
         Validate: "Validar"
         Read: "Leer"
         NoMatchingRecordsFound: "No se encontraron resultados"
-        LiteraryGenre: "Género literario"
+        LiteraryGenre: "Género"
         Fiction: "Ficción"
         Nonfiction: "No ficción"
     read:
