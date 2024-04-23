@@ -181,7 +181,7 @@ class VideoController extends AbstractController
 
 	public function countByLanguage(EntityManagerInterface $em, Request $request)
 	{
-		return new Response($em->getRepository(Video::class)->nbrVideo($lang));
+		return new Response($em->getRepository(Video::class)->nbrVideo($request->getLocale()));
 	}
 
 	// ENREGISTREMENT PDF

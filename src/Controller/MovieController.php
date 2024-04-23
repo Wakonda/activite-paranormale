@@ -71,8 +71,8 @@ class MovieController extends AbstractController
 	}
 
 	/* FONCTION DE COMPTAGE */
-	public function countAction(EntityManagerInterface $em, $language)
+	public function countByLanguage(EntityManagerInterface $em, Request $request)
 	{
-		return new Response($em->getRepository(Movie::class)->countMovieByLanguage($language));
+		return new Response($em->getRepository(Movie::class)->countMovieByLanguage($request->getLocale()));
 	}
 }

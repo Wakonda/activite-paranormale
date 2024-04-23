@@ -107,10 +107,10 @@
 									<h3>{{ "index.leftMenu.ArtCulture"|trans([], "validators") }}</h3>
 									<ul>
 										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}" title="All quotations">{{ "index.leftMenu.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\QuotationController::countQuotation')) }}</span></li>
-										<li><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MovieController::countAction', {'language' : app.request.locale })) }}</span></li>
-										<li><a href="{{ path('Book_Index') }}">{{ "index.leftMenu.Book"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\BookController::countAction', {'language' : app.request.locale })) }}</span></li>
-										<li><a href="{{ path('Music_Index') }}">{{ "index.leftMenu.Music"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MusicController::countMusiqueAction')) }}</span></li>
-										<li><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\TelevisionSerieController::countAction', { 'language' : app.request.locale })) }}</span></li>
+										<li><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MovieController::countByLanguage')) }}</span></li>
+										<li><a href="{{ path('Book_Index') }}">{{ "index.leftMenu.Book"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\BookController::countByLanguage')) }}</span></li>
+										<li><a href="{{ path('Music_Index') }}">{{ "index.leftMenu.Music"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MusicController::countByLanguage')) }}</span></li>
+										<li><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\TelevisionSerieController::countByLanguage')) }}</span></li>
 									</ul>
 									<h3>{{ "index.leftMenu.Participate"|trans([], "validators") }}</h3>
 									<ul>

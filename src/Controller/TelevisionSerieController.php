@@ -83,9 +83,9 @@ class TelevisionSerieController extends AbstractController
 	}
 
 	/* FONCTION DE COMPTAGE */
-	public function countAction(EntityManagerInterface $em, $language)
+	public function countByLanguage(EntityManagerInterface $em, Request $request)
 	{
-		return new Response($em->getRepository(TelevisionSerie::class)->countByLanguage($language));
+		return new Response($em->getRepository(TelevisionSerie::class)->countByLanguage($request->getLocale()));
 	}
 	
 	public function seasonAction(EntityManagerInterface $em, Int $id, String $title_slug, Int $season)
