@@ -99,10 +99,9 @@ class CreepyStoryController extends AbstractController
 		]);
 	}
 
-	public function countAction(EntityManagerInterface $em, $language)
+	public function countAction(EntityManagerInterface $em, Request $request)
 	{
-		$nbr = $em->getRepository(CreepyStory::class)->countCreepyStory($language);
-		return new Response($nbr);
+		return new Response($em->getRepository(CreepyStory::class)->countCreepyStory($request->getLocale()));
 	}
 
 	// ENREGISTREMENT PDF

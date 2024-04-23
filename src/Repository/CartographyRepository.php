@@ -41,7 +41,7 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getResult();
 	}
-	
+
 	public function nbrGMapByLang($lang)
 	{
 		$qb = $this->createQueryBuilder('c');

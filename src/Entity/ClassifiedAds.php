@@ -118,7 +118,7 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
 		
 		if(property_exists($location, "country"))
 			$res["country"] = $location->country;
-// dd($res);
+
 		return $res;
 	}
 

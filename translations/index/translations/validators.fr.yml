@@ -59,6 +59,7 @@ index:
         Development: "Développement"
         CreepyStory: "Histoire effrayante"
         GoodiesShop: "Boutique de goodies"
+        ArtCulture: "Art / Culture"
     donate:
         DonateInCryptocurrency: "Faites un don en cryptomonnaie"
         CryptocurrencyDonation: "Don en crypto"

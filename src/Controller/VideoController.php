@@ -179,10 +179,9 @@ class VideoController extends AbstractController
 		return $response;
 	}
 
-	public function countVideoAction(EntityManagerInterface $em, $lang)
+	public function countByLanguage(EntityManagerInterface $em, Request $request)
 	{
-		$nbrTabVideo = $em->getRepository(Video::class)->nbrVideo($lang);
-		return new Response($nbrTabVideo);
+		return new Response($em->getRepository(Video::class)->nbrVideo($lang));
 	}
 
 	// ENREGISTREMENT PDF

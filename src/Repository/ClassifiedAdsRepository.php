@@ -39,6 +39,20 @@ class ClassifiedAdsRepository extends EntityRepository
 		return $qb->getQuery();
 	}
 
+	public function countByLanguage($language)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("count(c)")
+		   ->join('c.language', 'l')
+		   ->join("c.state", "s")
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("c.archive = false")
+		   ->andWhere("s.displayState = true");
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
+
 	public function countAdmin()
 	{
 		$qb = $this->createQueryBuilder('c');

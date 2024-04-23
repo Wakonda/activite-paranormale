@@ -46,10 +46,9 @@ class CartographyController extends AbstractController
 		]);
     }
 	
-	public function nbrGMapByLangAction(EntityManagerInterface $em, $lang)
+	public function countByLanguage(EntityManagerInterface $em, Request $request)
 	{
-		$nbrGMapByLang = $em->getRepository(Cartography::class)->nbrGMapByLang($lang);
-		return new Response($nbrGMapByLang);
+		return new Response($em->getRepository(Cartography::class)->nbrGMapByLang($request->getLocale()));
 	}
 
 	// Cartography of the world
