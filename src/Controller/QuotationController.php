@@ -77,6 +77,7 @@ class QuotationController extends AbstractController
 			$row[] = $entity->getId();
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title_slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Quotation_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
 
 			$output['data'][] = $row;
 		}
@@ -124,7 +125,8 @@ class QuotationController extends AbstractController
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$flag = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20" height="13">';
 			$row[] = "$flag <a href='".$this->generateUrl('Proverb_Country_Show', ['id' => $entity->getCountry()->getId(), 'title' => $entity->getCountry()->getTitle()])."'>".$entity->getCountry()."</a>";
-
+			$row[] = "<a href='".$this->generateUrl('Proverb_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
+			
 			$output['data'][] = $row;
 		}
 
@@ -168,9 +170,10 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = $entity->getId();
-			$row[] = "<a href='".$this->generateUrl("Poem_Read", ["id" => $entity->getId()])."'>".$entity->getTitle()."</a>";
+			$row[] = $entity->getTitle();
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title_slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
-
+			$row[] = "<a href='".$this->generateUrl('Poem_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
+			
 			$output['data'][] = $row;
 		}
 
@@ -215,7 +218,7 @@ class QuotationController extends AbstractController
 		{
 			$row = [];
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
-			$row[] = "<a href='".$this->generateUrl('Proverb_Read', ['id' => $entity->getId()])."'>".$translator->trans("quotation.list.Read", [], 'validators')."</a>";
+			$row[] = "<a href='".$this->generateUrl('Proverb_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
 
 			$output['data'][] = $row;
 		}
