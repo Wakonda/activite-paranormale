@@ -14,18 +14,6 @@ use App\Entity\Quotation;
  */
 class QuotationRepository extends EntityRepository
 {
-	public function countCitation($lang)
-	{
-		$qb = $this->createQueryBuilder('c');
-
-		$qb->select("count(c)")
-			->join('c.language', 'l')
-			->where('l.abbreviation = :lang')
-			->setParameter('lang', $lang);
-
-		return $qb->getQuery()->getSingleScalarResult();
-	}
-	
 	public function listeCitation($lang)
 	{	
 		$qb = $this->createQueryBuilder('o');
@@ -79,7 +67,7 @@ class QuotationRepository extends EntityRepository
 			$qb->andWhere('c.title LIKE :search OR c.textQuotation LIKE :search OR c.tags LIKE :search')
 			   ->setParameter('search', $search);
 		}
-// dd($datas);
+
 		if(isset($datas["country"]) and !empty($country = $datas["country"])) {
 			
 			$qb->join("c.country", "co")

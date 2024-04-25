@@ -282,7 +282,6 @@ class QuotationController extends AbstractController
 	/* FONCTION DE COMPTAGE */
 	public function countQuotation(Request $request, EntityManagerInterface $em)
 	{
-		$nbrTotalQuotation = $em->getRepository(Quotation::class)->countCitation($request->getLocale());
-		return new Response($nbrTotalQuotation);
+		return new Response(json_encode($em->getRepository(Quotation::class)->countByFamily($request->getLocale())));
 	}
 }
