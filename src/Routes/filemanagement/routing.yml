@@ -40,6 +40,10 @@ FileManagement_Download:
     requirements:
        id: \d+
 
+FileManagement_DisplayImage:
+    path: /filemanagement/displayImage
+    controller: App\Controller\FileManagementController::displayImage
+
 # Administration
 FileManagement_Admin:
     resource: "routing/filemanagementadmin.yml"

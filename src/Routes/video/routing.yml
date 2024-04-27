@@ -53,6 +53,10 @@ Video_SelectThemeForIndexWorld:
     defaults:
         language: all
 
+Video_DisplayImage:
+    path: /video/displayThumbnail/{file}
+    controller: App\Controller\VideoController::displayThumbnail
+
 # Administration
 Video_Admin:
     resource: "routing/videoadmin.yml"

@@ -209,4 +209,23 @@ class FileManagementController extends AbstractController
 			'className' => $className
 		));
 	}
+
+	public function displayImage(Request $request)
+	{
+		$sourceImage = 'C:\wamp64\www\AP4\Symfony\public\extended\photo\cookie-icon.png';
+		$destImage = 'C:\wamp64\www\AP4\Symfony\public\extended\photo\iconeAP.jpg';
+
+		$src = imagecreatefrompng($sourceImage);
+		$dest = imagecreatefromjpeg($destImage);
+		$dest = imagecreatefromstring(file_get_contents($destImage));
+
+		imagecopy($dest, $src, (imagesx($dest)/2)-(imagesx($src)/2), (imagesy($dest)/2)-(imagesy($src)/2), 0, 0, imagesx($src), imagesy($src));
+		imagejpeg($dest, null, 75);
+		
+		$response = new Response();
+		$response->headers->set('Cache-Control', 'private');
+		$response->headers->set('Content-type', 'image/jpg');
+		$response->headers->set('Content-Disposition', 'attachment; filename="example.jpg"');
+		return $response; 
+	}
 }

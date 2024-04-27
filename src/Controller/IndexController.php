@@ -11,6 +11,8 @@ class IndexController extends AbstractController
 {
     public function indexAction(Request $request)
     {
+
+		
 		$session = $request->getSession();
 		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
 			$session->set('v', "v3");

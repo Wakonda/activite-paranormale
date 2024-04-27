@@ -349,4 +349,22 @@ class VideoController extends AbstractController
 
 		return $this->render("video/Video/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
+
+	public function displayThumbnail(Request $request, $file)
+	{
+		$sourceImage = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'photo'.DIRECTORY_SEPARATOR.'video'.DIRECTORY_SEPARATOR.'play.png';
+		$destImage = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.base64_decode($file);
+
+		$src = imagecreatefrompng($sourceImage);
+		$dest = imagecreatefromstring(file_get_contents($destImage));
+
+		imagecopy($dest, $src, (imagesx($dest)/2)-(imagesx($src)/2), (imagesy($dest)/2)-(imagesy($src)/2), 0, 0, imagesx($src), imagesy($src));
+		imagejpeg($dest, null, 75);
+		
+		$response = new Response();
+		$response->headers->set('Cache-Control', 'private');
+		$response->headers->set('Content-type', 'image/jpg');
+		$response->headers->set('Content-Disposition', 'attachment; filename="example.jpg"');
+		return $response; 
+	}
 }
