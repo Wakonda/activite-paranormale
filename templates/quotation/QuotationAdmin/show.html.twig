@@ -53,7 +53,7 @@
 		<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Tags"|trans([], "validators") }}</div>
 		<div class="form-table-cell">
 			<ul>
-			{% for data in entity.tags %}
+			{% for data in json_decode(entity.tags) %}
 				<li>{{ data.value }}</li>
 			{% endfor %}
 			</ul>
@@ -84,9 +84,9 @@
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 
 	{% set tags = "" %}
-	
+
 	{% if entity.tags is not empty %}
-		{% set tags = ((entity.tags|column("value"))|map(p => " #" ~ slug(p)))|join(" ") %}
+		{% set tags = ((json_decode(entity.tags)|column("value"))|map(p => " #" ~ slug(p)))|join(" ") %}
 	{% endif %}
 
 	{{ macro_index.twitter_form(entity, true, '"', '", ' ~ entity.authorQuotation.title ~ " " ~ tags) }}

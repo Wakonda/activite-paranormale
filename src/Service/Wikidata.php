@@ -913,6 +913,37 @@
 				];
 			}
 
+			$personArray = [];
+
+			// Réalisateur / Filmmaker / director
+			$this->getIdsByProperty("P57", $datas, $code, "director", $language, $personArray);
+
+			// Scénaristes / Writer / screenwriter
+			$this->getIdsByProperty("P58", $datas, $code, "screenwriter", $language, $personArray);
+
+			// Acteurs / Actor / cast member
+			$this->getIdsByProperty("P161", $datas, $code, "actor", $language, $personArray);
+
+			// Producteur exécutif / executive producer
+			$this->getIdsByProperty("P1431", $datas, $code, "executiveProducer", $language, $personArray);
+
+			// Directeur de la photographie / director of photography
+			$this->getIdsByProperty("P344", $datas, $code, "directorOfPhotography", $language, $personArray);
+
+			// Monteur / film editor
+			$this->getIdsByProperty("P1040", $datas, $code, "filmEditor", $language, $personArray);
+
+			// costumier / costume designer
+			$this->getIdsByProperty("P2515", $datas, $code, "costumeDesigner", $language, $personArray);
+
+			// compositeur / composer
+			$this->getIdsByProperty("P86", $datas, $code, "composer", $language, $personArray);
+
+			// producteur / producer
+			$this->getIdsByProperty("P162", $datas, $code, "producer", $language, $personArray);
+
+			$res["person"] = $personArray;
+
 			// Episodes
 			$episodeArray = [];
 			
@@ -925,56 +956,58 @@
 					$contentEpisode = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSeason}&sitefilter=${languageWiki}");
 					$dataEpisode = json_decode($contentEpisode);
 					
-					foreach($dataEpisode->entities->$idSeason->claims->P527 as $e) {
-						$idEpisode = $e->mainsnak->datavalue->value->id;
-						$contentEpisodeDetail = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idEpisode}&sitefilter=${languageWiki}");
-						$contentEpisodeDetailContent = json_decode($contentEpisodeDetail);
+					if(method_exists($dataEpisode->entities->$idSeason->claims, "P527")) {
+						foreach($dataEpisode->entities->$idSeason->claims->P527 as $e) {
+							$idEpisode = $e->mainsnak->datavalue->value->id;
+							$contentEpisodeDetail = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idEpisode}&sitefilter=${languageWiki}");
+							$contentEpisodeDetailContent = json_decode($contentEpisodeDetail);
 
-						if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->labels, $language)) {
-							$date = null;	
+							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->labels, $language)) {
+								$date = null;	
 
-							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P577")) {
-								$publicationDate = date_parse($contentEpisodeDetailContent->entities->$idEpisode->claims->P577[0]->mainsnak->datavalue->value->time);
+								if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P577")) {
+									$publicationDate = date_parse($contentEpisodeDetailContent->entities->$idEpisode->claims->P577[0]->mainsnak->datavalue->value->time);
 
-								$date = [
-									"year" => $publicationDate["year"],
-									"month" => $publicationDate["month"],
-									"day" => $publicationDate["day"]
-								];
-							}
-							
-							$identifiers = [];
-
-							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P345")) {
-								$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P345[0]->mainsnak->datavalue->value;
+									$date = [
+										"year" => $publicationDate["year"],
+										"month" => $publicationDate["month"],
+										"day" => $publicationDate["day"]
+									];
+								}
 								
-								$identifiers[] = [
-									"identifier" => Identifier::IMDB_ID,
-									"value" => $value
-								];
-							}
+								$identifiers = [];
 
-							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P1258")) {
-								$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P1258[0]->mainsnak->datavalue->value;
+								if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P345")) {
+									$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P345[0]->mainsnak->datavalue->value;
+									
+									$identifiers[] = [
+										"identifier" => Identifier::IMDB_ID,
+										"value" => $value
+									];
+								}
+
+								if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P1258")) {
+									$value = $contentEpisodeDetailContent->entities->$idEpisode->claims->P1258[0]->mainsnak->datavalue->value;
+									
+									$identifiers[] = [
+										"identifier" => Identifier::ROTTEN_TOMATOES_ID,
+										"value" => $value
+									];
+								}
 								
-								$identifiers[] = [
-									"identifier" => Identifier::ROTTEN_TOMATOES_ID,
-									"value" => $value
-								];
+								$durationArray = [];
+
+								if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P2047")) {
+									$duration = $contentEpisodeDetailContent->entities->$idEpisode->claims->P2047;
+
+									$durationArray = [
+										"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
+										"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
+									];
+								}
+
+								$episodeArray[$i][] = ["title" => $contentEpisodeDetailContent->entities->$idEpisode->labels->$language->value, "date" => $date, "wikidata" => $idEpisode, "identifiers" => $identifiers, "duration" => $durationArray];
 							}
-							
-							$durationArray = [];
-
-							if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->claims, "P2047")) {
-								$duration = $contentEpisodeDetailContent->entities->$idEpisode->claims->P2047;
-
-								$durationArray = [
-									"amount" => intval($duration[0]->mainsnak->datavalue->value->amount),
-									"unit" => $this->getUnit($duration[0]->mainsnak->datavalue->value->unit)
-								];
-							}
-
-							$episodeArray[$i][] = ["title" => $contentEpisodeDetailContent->entities->$idEpisode->labels->$language->value, "date" => $date, "wikidata" => $idEpisode, "identifiers" => $identifiers, "duration" => $durationArray];
 						}
 					}
 					$i++;

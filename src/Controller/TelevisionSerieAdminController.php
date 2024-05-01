@@ -90,7 +90,7 @@ class TelevisionSerieAdminController extends AdminGenericController
 					$episode = new EpisodeTelevisionSerie();
 					$episode->setWikidata($value["wikidata"]);
 					$episode->setTitle($value["title"]);
-					
+
 					if(isset($value["identifiers"]) and !empty($value["identifiers"]))
 						$episode->setIdentifiers(json_encode($value["identifiers"]));
 					
@@ -107,9 +107,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 					$en = $episodeNumber + 1;
 					$episode->setEpisodeNumber($en);
 					$episode->setTelevisionSerie($entityBindded);
-				
+
 					$searchForDoublons = $em->getRepository(EpisodeTelevisionSerie::class)->countForDoublons($episode);
-				
+
 					if($searchForDoublons == 0)
 						$em->persist($episode);
 				}

@@ -71,7 +71,7 @@ class Quotation
     /**
      * @var string $tags
      *
-     * @ORM\Column(name="tags", type="json", nullable=true)
+     * @ORM\Column(name="tags", type="text", nullable=true)
      */
     private $tags;
 

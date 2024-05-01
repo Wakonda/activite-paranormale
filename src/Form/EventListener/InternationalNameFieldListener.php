@@ -19,7 +19,7 @@ class InternationalNameFieldListener implements EventSubscriberInterface
     public function onPreSubmit(FormEvent $event): void
     {
 		$data = $event->getData();
-		
+
 		if(empty($data["internationalName"]) and !empty($title = $data["title"])) {
 			$generator = new \Ausi\SlugGenerator\SlugGenerator;
 			$data["internationalName"] = $generator->generate($title).uniqid();

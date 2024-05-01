@@ -259,7 +259,7 @@ abstract class AdminGenericController extends AbstractController
 		{
 			$newNameFile = uniqid().'-'.$file->getClientOriginalName();
 			$file->move($entity->getAssetImagePath(), $newNameFile);
-			
+
 			$filelink = '/'.$entity->getAssetImagePath().$newNameFile;
 			$img = $imgSize->adaptImageSize(550, $entity->getAssetImagePath().$newNameFile);
 
@@ -451,10 +451,10 @@ abstract class AdminGenericController extends AbstractController
 		foreach ($form->get($field) as $formChild)
 		{
 			$newBiography = $formChild->getData();
-			$internationalName = !empty($newBiography) ? $newBiography->getBiography()->getInternationalName() : $formChild->get('internationalName')->getData();
+			$internationalName = !empty($newBiography) ? (!empty($i = $newBiography->getBiography()->getInternationalName()) ? $i : $formChild->get('internationalName')->getData()) : $formChild->get('internationalName')->getData();
 			$wikidata = $formChild->get('wikidata')->getData();
 
-			if($internationalName == "+") {dd("ooo");
+			if($internationalName == "+") {
 				$generator = new \Ausi\SlugGenerator\SlugGenerator;
 				$newBiography->getBiography()->setInternationalName($generator->generate($newBiography->getBiography()->getTitle()).uniqid());
 				$newBiography->getBiography()->setLanguage($em->getRepository(Language::class)->find($entityBindded->getLanguage()->getId()));

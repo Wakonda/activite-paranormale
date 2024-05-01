@@ -3,6 +3,8 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "televisionSerie.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
+{{ macro_admin.wikidata_html_generic(form) }}
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "televisionSerie.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
@@ -28,8 +30,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "televisionSerie.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-select'} }) }}</div>
-
-{{ macro_admin.wikidata_html_generic(form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "televisionSerie.admin.Country"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-select'} }) }}</div>
@@ -129,6 +129,45 @@
 				document.getElementById("{{ form.country.vars.id }}").value = data.origin.country.id;
 				document.getElementById("{{ form.episode.vars.id }}").value = JSON.stringify(data.episodes);
 				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
+
+				let i = 0;
+				let wikidatas = [];
+				
+				{% for movieBiographyField in form.televisionSerieBiographies %}
+					{% if movieBiographyField.vars.value is not empty and movieBiographyField.vars.value.biography is not empty %}
+						wikidatas.push("{{ movieBiographyField.vars.value.biography.title }}_{{ movieBiographyField.vars.value.biography.wikidata }}");
+					{% endif %}
+				{% endfor %}
+
+				for(role in data.person) {
+					for(wikidata in data.person[role]) {
+						if(wikidatas.includes(data.person[role][wikidata].title + "_" + wikidata))
+							continue;
+
+						var id = addNewBiography(document.querySelector('.add-another-collection-widget').getAttribute("data-list-selector"));
+
+						document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id + "_occupation").value = role;
+
+						if(document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id + "_occupation").value == "")
+							continue;
+
+						if(document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id + "_occupation").value != "{{ constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') }}")
+							document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id + "_role").parentNode.style.display = "none";
+
+						var $newOption = $("<option selected='selected'></option>").val("__" + data.person[role][wikidata].title).text(data.person[role][wikidata].title + " (+)");
+
+						document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id).setAttribute("data-wikidata", wikidata);
+						document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id).setAttribute("data-title", data.person[role][wikidata].title);
+
+						document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id + "_wikidata").value = wikidata;
+
+						addBiographyValidationFormDisplayLink(document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id).parentNode, data.person[role][wikidata].objects.length);
+
+						$("#{{ form.televisionSerieBiographies.vars.id }}_" + id + "_biography").append($newOption).trigger('change');
+						document.getElementById("{{ form.televisionSerieBiographies.vars.id }}_" + id + "_occupation").value = role;
+						i++;
+					}
+				}
 
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);
