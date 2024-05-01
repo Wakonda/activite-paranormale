@@ -305,7 +305,7 @@ class PHPImage {
 	 * @param boolean $returnResource
 	 * @return \stdClass
 	 */
-	public function getImageInfo($file, $returnResource=true){
+	protected function getImageInfo($file, $returnResource=true){
 		if($file instanceof PHPIMage) {
 			$img = $file->img;
 			$type = $file->type;

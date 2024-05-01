@@ -359,7 +359,7 @@ class VideoController extends AbstractController
 		$dest = imagecreatefromstring(file_get_contents($destImage));
 
 		imagecopy($dest, $src, (imagesx($dest)/2)-(imagesx($src)/2), (imagesy($dest)/2)-(imagesy($src)/2), 0, 0, imagesx($src), imagesy($src));
-		imagejpeg($dest, null, 75);
+		imagejpeg($dest, null, 90);
 		
 		$response = new Response();
 		$response->headers->set('Cache-Control', 'private');

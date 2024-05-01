@@ -163,13 +163,12 @@ class QuotationAdminController extends AdminGenericController
 	public function generateImageAction(Request $request, EntityManagerInterface $em, PHPImage $image, $id)
 	{
 		$entity = $em->getRepository($this->className)->find($id);
-
         $imageGeneratorForm = $this->createForm(QuotationImageGeneratorType::class);
         $imageGeneratorForm->handleRequest($request);
-		
+
 		if ($imageGeneratorForm->isSubmitted() && $imageGeneratorForm->isValid()) {
 			$data = $imageGeneratorForm->getData();
-			
+
 			$font = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'font'.DIRECTORY_SEPARATOR.'Edmundsbury_Serif.ttf';
 
 			$textColor = [0, 0, 0];

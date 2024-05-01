@@ -71,6 +71,7 @@
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.diaspora_form(entity) }}
 			{{ macro_index.instagram_form(entity) }}
+			{{ macro_index.bluesky_form(entity) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}
@@ -81,4 +82,5 @@
 	{{ macro_index.instagram_form_js() }}
 	{{ macro_index.mastodon_form_js() }}
 	{{ macro_index.diaspora_form_js() }}
+	{{ macro_index.bluesky_form_js() }}
 {% endblock %}

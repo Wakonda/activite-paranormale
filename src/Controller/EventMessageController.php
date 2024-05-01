@@ -463,7 +463,7 @@ class EventMessageController extends AbstractController
 			} else {
 				$currentEvent[$entity->getType()][] = [
 					"title" => $entity->getTitle(),
-					"theme" => $entity->getTheme()->getTitle(),
+					"theme" => !empty($entity->getTheme()) ? $entity->getTheme()->getTitle() : null,
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
 				];
 			}
