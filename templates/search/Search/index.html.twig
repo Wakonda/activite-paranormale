@@ -80,7 +80,7 @@
 									<div class="card">
 										{{ resultImages[item.id~"_"~item.classname].photoIllustrationFilename|imgsize(null, resultImages[item.id~"_"~item.classname].getAssetImagePath(), true, { 'class': 'card-img-top img-fluid'}, {})|raw }}
 										<div class="card-body text-center">
-											<h6 class="card-title">{{ resultImages[item.id~"_"~item.classname].title }}</h6>
+											<div class="card-title">{{ resultImages[item.id~"_"~item.classname].title }}</div>
 
 											{% set size = getimagesize(resultImages[item.id~"_"~item.classname].photoIllustrationFilename, resultImages[item.id~"_"~item.classname].getAssetImagePath()) %}
 											<p class="card-text text-center"><small class="text-white-50">{{ size[0] }} <i class="fas fa-times"></i> {{ size[1] }}</small></p>
