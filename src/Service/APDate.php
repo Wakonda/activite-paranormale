@@ -122,7 +122,7 @@
 		public function shortDate($dateTime, $locale, $numberDigitYear = 4) {
 			$formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE);
 			$pattern = $formatter->getPattern();
-			$format = (preg_match('/\b(yy)\b/', $patern) and $numberDigitYear == 4) ? preg_replace('/\b(yy)\b/', 'yyyy', $pattern) : $pattern;
+			$format = (preg_match('/\b(yy)\b/', $pattern) and $numberDigitYear == 4) ? preg_replace('/\b(yy)\b/', 'yyyy', $pattern) : $pattern;
 
 			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE, null, null, $format);
 

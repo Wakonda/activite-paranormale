@@ -218,7 +218,7 @@
 									<p><img width="25" class="align-middle" src="{{ asset('extended/photo/feedrss_index.png') }}" alt="Feed RSS" /> <a href="{{ path('Page_IndexRSSFeed') }}">{{ "rssFeed.menu.SubscribeToRSSFeeds"|trans([], "validators") }}</a></p>
 								</div>
 								<div id="event_right_menu" class="news_section">
-									<h3>{{ "eventMessage.menu.Events"|trans([], "validators") }}</h3>
+									<h3>{{ "eventMessage.menu.Events"|trans([], "validators") }} - {{ ("now"|date("d"))|doYearMonthDayDate("now"|date("m"), null, app.request.locale) }}</h3>
 									<p><img width="25" class="align-middle" src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="Event" /> <a href="{{ path('EventMessage_Calendar') }}">{{ "eventMessage.menu.Calendar"|trans([], "validators") }}</a></p>
 								</div>
 								<div id="validate_right_menu" class="news_section">

@@ -25,6 +25,7 @@ div.infowindow_text
 a.link_map
 {
 	font-family: 'Times New Roman', Arial, serial;
+	color: #b9c322 !important;
 }
 
 .leaflet-control-zoom a {

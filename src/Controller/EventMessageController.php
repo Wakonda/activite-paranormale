@@ -538,7 +538,7 @@ class EventMessageController extends AbstractController
 				$currentEvent[$entity->getType()][] = [
 					"id" => $entity->getId(),
 					"title" => $entity->getTitle(),
-					"theme" => $entity->getTheme()->getTitle(),
+					"theme" => !empty($t = $entity->getTheme()) ? $t->getTitle() : null,
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];
