@@ -28,6 +28,7 @@ class Language
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
+	 * @Groups("api_read")
      */
     private $title;
 

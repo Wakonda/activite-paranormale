@@ -107,7 +107,7 @@ class VideoAdminController extends AdminGenericController
     {
 		$comments = $em->getRepository("\App\Entity\VideoComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
-		$votes = $em->getRepository("\App\Entity\VideoVote")->findBy(["video" => $id]);
+		$votes = $em->getRepository("\App\Entity\VideoVote")->findBy(["entity" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\VideoTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }

@@ -1,3 +1,4 @@
 resources:
     App\Entity\Stores\Store: ~
     App\Entity\Stores\BookStore: ~
+    App\Entity\UsefulLink: ~

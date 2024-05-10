@@ -3,10 +3,7 @@
 namespace App\Entity\Movies;
 
 use App\Entity\Movies\GenreAudiovisual;
-
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 use App\Entity\Region;
 
 /**
@@ -109,12 +106,12 @@ class EpisodeTelevisionSerie
 	{
 		return $this->televisionSerie->getLanguage();
 	}
-	
+
 	public function getTheme()
 	{
 		return $this->televisionSerie->getTheme();
 	}
-	
+
 	public function getPublicationDate()
 	{
 		return $this->televisionSerie->getPublicationDate();
@@ -124,7 +121,7 @@ class EpisodeTelevisionSerie
 	{
 		return $this->title;
 	}
-	
+
 	public function getSubTitle(): string {
 		return $this->televisionSerie->getTitle();
 	}

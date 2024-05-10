@@ -3,13 +3,24 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use App\Filter\OrSearchFilter;
+use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * App\Entity\UsefulLink
  *
  * @ORM\Table(name="usefullink")
  * @ORM\Entity(repositoryClass="App\Repository\UsefulLinkRepository")
+ * @ApiResource(normalizationContext = {"groups" = {"api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
+ * @ApiFilter(SearchFilter::class, properties = {"category" = "exact", "usefullinkTags.title" = "exact"})
+ * @ApiFilter(OrderFilter::class, properties = {"id"}, arguments = {"orderParameterName" = "order"})
+ * @ApiFilter(OrSearchFilter::class, properties={"title", "text"})
  */
 class UsefulLink
 {
@@ -27,6 +38,8 @@ class UsefulLink
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
+	 * @ApiProperty(identifier=true)
+	 * @Groups("api_read")
      */
     private $id;
 
@@ -34,6 +47,7 @@ class UsefulLink
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
+	 * @Groups("api_read")
      */
     private $title;
 
@@ -41,6 +55,7 @@ class UsefulLink
      * @var string $text
      *
      * @ORM\Column(name="text", type="text", nullable=true)
+	 * @Groups("api_read")
      */
     private $text;
 
@@ -48,6 +63,7 @@ class UsefulLink
      * @var string $links
      *
      * @ORM\Column(name="links", type="text", nullable=true)
+	 * @Groups("api_read")
      */
     private $links;
 
@@ -55,6 +71,7 @@ class UsefulLink
      * @var string $tags
      *
      * @ORM\Column(name="tags", type="json", nullable=true)
+	 * @Groups("api_read")
      */
     private $tags;
 
@@ -62,6 +79,7 @@ class UsefulLink
      * @var string $category
      *
      * @ORM\Column(name="category", type="string", length=100, nullable=true)
+	 * @Groups("api_read")
      */
     private $category;
 
@@ -72,6 +90,7 @@ class UsefulLink
 	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
+	 * @Groups("api_read")
      */
     protected $licence;
 
@@ -84,14 +103,55 @@ class UsefulLink
 
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Blog")
+	 * @Groups("api_read")
      */
 	private $website;
 
     /**
      * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
+	 * @Groups("api_read")
      */
     private $illustration;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+	 * @Groups("api_read")
+     */
+	private $createdAt = null;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+	 * @Groups("api_read")
+     */
+	private $updatedAt = null;
+
+	/**
+     * @ORM\Column(type="string", length=255, nullable=true)
+	 * @Groups("api_read")
+     */
+	private $slug;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\UsefullinkTags")
+	 * @Groups("api_read")
+     */
+    private $usefullinkTags;
+
+	/**
+	 * @Groups("api_read")
+	 */
+	public function getImgPath(): ?array
+	{
+		if(!empty($this->illustration) and file_exists($f = $this->getAssetImagePath().$this->illustration->getRealNameFile()))
+			return ["file" => $f, "author" => $this->illustration->getAuthor(), "license" => $this->illustration->getLicense(), "urlSource" => $this->illustration->getUrlSource()];
+
+		return null;
+	}
+
+	public function __construct() {
+		$this->usefullinkTags = new \Doctrine\Common\Collections\ArrayCollection();
+	}
 	
 	public function isDevelopment(): bool {
 		return self::DEVELOPMENT_FAMILY == $this->category;
@@ -142,9 +202,10 @@ class UsefulLink
      */
     public function setTitle($title)
     {
-        $this->title = $title;
-    
-        return $this;
+		if(!empty($title))
+			$this->title = htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8');
+
+		$this->setSlug();
     }
 
     /**
@@ -289,23 +350,66 @@ class UsefulLink
         return $this->website;
     }
 
-    /**
-     * Set illustration
-     *
-     * @param string $illustration
-     */
     public function setIllustration($illustration)
     {
         $this->illustration = $illustration;
     }
 
-    /**
-     * Get illustration
-     *
-     * @return string 
-     */
     public function getIllustration()
     {
         return $this->illustration;
     }
+
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    public function setUpdatedAt($updatedAt)
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getUpdatedAt()
+    {
+        return $this->updatedAt;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug)) {
+			$generator = new SlugGenerator;
+			$this->slug = $generator->generate($this->title);
+		}
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+	public function addUsefullinkTag(UsefullinkTags $usefullinkTag)
+	{
+		$this->usefullinkTags[] = $usefullinkTag;
+	}
+
+    public function setUsefullinkTags($usefullinkTags)
+    {
+        $this->usefullinkTags = $usefullinkTags;
+    }
+
+	public function removeTag(UsefullinkTags $usefullinkTag)
+	{
+		$this->usefullinkTags->removeElement($usefullinkTag);
+	}
+
+	public function getUsefullinkTags()
+	{
+		return $this->usefullinkTags;
+	}
 }

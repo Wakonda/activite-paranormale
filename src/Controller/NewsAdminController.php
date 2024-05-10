@@ -101,9 +101,9 @@ class NewsAdminController extends AdminGenericController
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$comments = $em->getRepository("\App\Entity\NewsComment")->findBy(["news" => $id]);
+		$comments = $em->getRepository("\App\Entity\NewsComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
-		$votes = $em->getRepository("\App\Entity\NewsVote")->findBy(["news" => $id]);
+		$votes = $em->getRepository("\App\Entity\NewsVote")->findBy(["entity" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository(NewsTags::class)->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }

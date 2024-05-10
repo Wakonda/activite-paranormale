@@ -167,9 +167,9 @@ class StoreAdminController extends AdminGenericController
 		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
 	
-    public function deleteAction($id)
+    public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($id);
+		return $this->deleteGenericAction($em, $id);
     }
 	
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, String $type)

@@ -3,7 +3,6 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Component\Serializer\Annotation\Groups;

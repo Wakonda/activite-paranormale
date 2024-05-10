@@ -3,9 +3,7 @@
 namespace App\Entity\Movies;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\APPurifierHTML;
-
 use App\Entity\EntityLinkBiography;
 
 /**

@@ -168,7 +168,7 @@ class Document extends MappedSuperclassBase
         $this->documentFamily = $documentFamily;
     }
 
-  /**
+   /**
     * Add authorDocumentBiographies
     *
     * @param App\Entity\Biography $authorDocumentBiographies

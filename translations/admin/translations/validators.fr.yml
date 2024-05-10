@@ -132,6 +132,7 @@ admin:
         License: "Licence"
         NoBlank: "Cette valeur ne peut pas être vide"
         NotValid: "Cette valeur n'est pas valide"
+        DeleteSuccess: "Supprimé avec succès"
     identifier:
         Id: "ID"
         Value: "Valeur"

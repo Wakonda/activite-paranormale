@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * App\Entity\Blog
@@ -11,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="blog")
  * @ORM\HasLifecycleCallbacks
  * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
+ * @ApiResource(normalizationContext = {"groups" = {"api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
  */
 class Blog
 {
@@ -32,6 +35,7 @@ class Blog
      * @var string $title
      *
      * @ORM\Column(name="title", type="string", length=255)
+	 * @Groups("api_read")
      */
     private $title;
 
@@ -45,6 +49,7 @@ class Blog
      * @var string $link
      *
      * @ORM\Column(name="link", type="string", length=255)
+	 * @Groups("api_read")
      */
     private $link;
 
@@ -59,16 +64,19 @@ class Blog
      * @var text $text
      *
      * @ORM\Column(name="text", type="text")
+	 * @Groups("api_read")
      */
     private $text;
 
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
+	 * @Groups("api_read")
      */
     private $language;
 
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Language")
+	 * @Groups("api_read")
      */
     private $languageOfBlog;
 

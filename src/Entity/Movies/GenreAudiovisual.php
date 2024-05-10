@@ -3,8 +3,6 @@
 namespace App\Entity\Movies;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 use App\Entity\Language;
 use App\Entity\FileManagement;
 

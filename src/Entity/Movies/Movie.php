@@ -6,8 +6,6 @@ use App\Entity\MappedSuperclassBase;
 use App\Entity\Movies\GenreAudiovisual;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
-
 use App\Entity\Region;
 use App\Entity\FileManagement;
 

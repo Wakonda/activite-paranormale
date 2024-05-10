@@ -114,7 +114,7 @@ class BookAdminController extends AdminGenericController
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		$votes = $em->getRepository("\App\Entity\BookVote")->findBy(["book" => $id]);
+		$votes = $em->getRepository("\App\Entity\BookVote")->findBy(["entity" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\BookTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }

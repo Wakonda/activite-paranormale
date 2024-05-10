@@ -103,7 +103,7 @@ class EventMessageAdminController extends AdminGenericController
     {
 		$comments = $em->getRepository("\App\Entity\EventMessageComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
-		$votes = $em->getRepository("\App\Entity\EventMessageVote")->findBy(["eventMessage" => $id]);
+		$votes = $em->getRepository("\App\Entity\EventMessageVote")->findBy(["entity" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 
 		return $this->deleteGenericAction($em, $id);

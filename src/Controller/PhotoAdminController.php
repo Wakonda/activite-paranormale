@@ -99,7 +99,7 @@ class PhotoAdminController extends AdminGenericController
     {
 		$comments = $em->getRepository("\App\Entity\PhotoComment")->findBy(["entity" => $id]);
 		foreach($comments as $entity) {$em->remove($entity); }
-		$votes = $em->getRepository("\App\Entity\PhotoVote")->findBy(["photo" => $id]);
+		$votes = $em->getRepository("\App\Entity\PhotoVote")->findBy(["entity" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 		$tags = $em->getRepository("\App\Entity\PhotoTags")->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }

@@ -24,7 +24,7 @@ class UsefulLinkRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $filter = null, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.category', 'c.links', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.category', 'c.links', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -89,5 +89,15 @@ class UsefulLinkRepository extends EntityRepository
 	public function getFileSelectorColorboxAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count = false)
 	{
 		return $this->getFileSelectorColorboxIllustrationAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count);
+	}
+
+	public function counterByTags() {
+		$qb = $this->createQueryBuilder('u');
+		
+		$qb->select("ut.title AS text, count(u) AS weight")
+		   ->join("u.usefullinkTags", "ut")
+		   ->groupBy("ut.title");
+		   
+		return $qb->getQuery()->getResult();
 	}
 }

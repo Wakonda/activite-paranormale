@@ -39,4 +39,8 @@ class UsefulLinkController extends AbstractController
 		
 		return $this->render("usefullink/UsefulLink/read.html.twig", ["entity" => $entity]);
 	}
+
+	public function counter(EntityManagerInterface $em) {
+		return new \Symfony\Component\HttpFoundation\JsonResponse($em->getRepository(UsefulLink::class)->counterByTags());
+	}
 }
