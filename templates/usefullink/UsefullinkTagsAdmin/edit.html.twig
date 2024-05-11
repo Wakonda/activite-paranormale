@@ -1,0 +1,15 @@
+{% extends "admin/GenericAdmin/edit.html.twig" %}
+
+{% block h2_title %}{{ "usefullinktags.admin.UsefullinkTags"|trans([], "validators") }}{% endblock %}
+
+{% block delete_admin_route %}{{ path('UsefullinkTags_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('UsefullinkTags_Admin_New') }}{% endblock %}
+{% block index_admin_route %}{{ path('UsefullinkTags_Admin_Index') }}{% endblock %}
+{% block update_admin_route %}{{ path('UsefullinkTags_Admin_Update', { 'id': entity.id }) }}{% endblock %}
+
+{% block js_specific %}
+{% endblock %}
+
+{% block tbody_admin_table %}
+	{% include 'usefullink/UsefullinkTagsAdmin/_form.html.twig' %}
+{% endblock %}

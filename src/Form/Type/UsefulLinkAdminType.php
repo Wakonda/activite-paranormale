@@ -28,14 +28,10 @@ class UsefulLinkAdminType extends AbstractType
     {
 		$language = $options['locale'];
 
-		$api = new \App\Service\WakondaGuru();
-		$tags = $api->getTags($api->getOauth2Token());
-
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => false])
             ->add('links', LinksEditType::class, ['required' => false])
-            // ->add('usefullinkTags', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $tags)]])
 			->add('usefullinkTags', Select2EntityType::class, [
 				'multiple' => true,
 				'remote_route' => 'UsefullinkTags_Admin_Autocomplete',
@@ -54,7 +50,7 @@ class UsefulLinkAdminType extends AbstractType
 				'cache' => false,
 				"required" => false
 			])
-            ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
+            ->add('language', EntityType::class, ['class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
@@ -64,7 +60,7 @@ class UsefulLinkAdminType extends AbstractType
 					return $er->createQueryBuilder('u')
 							->orderBy('u.title', 'ASC');
 				}
-			))
+			])
 			->add('licence', EntityType::class, ['class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 
 					'required' => true,
@@ -91,7 +87,7 @@ class UsefulLinkAdminType extends AbstractType
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'UsefulLink_Admin_ShowImageSelectorColorbox'));
 
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
-		
+
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($builder) {
 			$data = $event->getData();
 			$form = $event->getForm();
@@ -116,9 +112,9 @@ class UsefulLinkAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\UsefulLink',
 			'locale' => 'fr'
-		));
+		]);
 	}
 }

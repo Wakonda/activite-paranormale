@@ -29,9 +29,9 @@
 	document.getElementById("{{ form.category.vars.id }}").addEventListener("change", (e) => {
 		categoryContainer(e.target.value);
 	});
-	
+
 	categoryContainer(document.getElementById("{{ form.category.vars.id }}").value);
-	
+
 	function categoryContainer(value) {
 		document.querySelectorAll(".linkContainer").forEach(el => el.style.display = "none");
 		document.querySelectorAll(".photoContainer").forEach(el => el.style.display = "none");

@@ -16,7 +16,6 @@ usefullink:
         Website: "Website"
         Technical: "Technical information"
         Tool: "Tool"
-        Usefullink: "Useful link"
     index:
         Copy: "Copy"
         Copied: "Copied!"
@@ -28,3 +27,7 @@ usefullink:
         ShowAll: "Show all"
         Title: "Title"
         Tags: "Tags"
+usefullinktags:
+    admin:
+        UsefullinkTags: "Useful Link - Tags"
+        Title: "Title"

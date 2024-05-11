@@ -37,7 +37,7 @@ class BookAdminType extends AbstractType
 		$language = $options['locale'];
 
         $builder
-            ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('introduction', TextareaType::class, ['required' => false])
 			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Book_Admin_ShowImageSelectorColorbox'])
             ->add('text', TextareaType::class, array('required' => false))
@@ -59,14 +59,14 @@ class BookAdminType extends AbstractType
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
 				},
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'query_builder' => function(EntityRepository $er)
 					{
 						return $er->createQueryBuilder('u')
 								  ->orderBy('u.title', 'ASC');
 					},
 				))
-			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => array(new NotBlank())))
+			->add('publicationDate', DateType::class, array('required' => true, 'widget' => 'single_text', 'constraints' => [new NotBlank()]))
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('biographies', Select2EntityType::class, [
@@ -113,7 +113,7 @@ class BookAdminType extends AbstractType
 			->add('state', EntityType::class, array('class'=>'App\Entity\State', 
 				'choice_label'=>'title', 
 				'required' => true,
-				'constraints' => array(new NotBlank()),
+				'constraints' => [new NotBlank()],
 				'choice_attr' => function($val, $key, $index) {
 					return ['data-intl' => $val->getInternationalName()];
 				},
@@ -182,7 +182,7 @@ class BookAdminType extends AbstractType
                 }
             ))
         ;
-		
+
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
 

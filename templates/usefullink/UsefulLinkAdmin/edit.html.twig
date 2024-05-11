@@ -11,7 +11,7 @@
 {% block js_specific %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
-	
+
 	{% import "usefullink/UsefulLinkAdmin/macro_usefullink.html.twig" as macro_usefullink %}
 	{{ macro_usefullink.tinymce("#" ~ form.text.vars.id) }}
 

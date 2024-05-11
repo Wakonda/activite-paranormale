@@ -1,9 +1,9 @@
 usefullink:
     admin:
-        UsefulLink: "Useful Link"
+        UsefulLink: "Enlace útil"
         Title: "Título"
         Text: "Texto"
-        Link: "Link útil"
+        Link: "Enlace"
         Category: "Categoría"
         Tags: "Etiquetas"
         Development: "Desarrollo"
@@ -16,7 +16,6 @@ usefullink:
         Website: "Sitio web"
         Technical: "Información Técnica"
         Tool: "Herramienta"
-        Usefullink: "Enlace útil"
     index:
         Copy: "Copiar"
         Copied: "¡Copiado!"
@@ -28,3 +27,7 @@ usefullink:
         ShowAll: "Ver todo"
         Title: "Título"
         Tags: "Etiquetas"
+usefullinktags:
+    admin:
+        UsefullinkTags: "Enlace útil"
+        Title: "Título"

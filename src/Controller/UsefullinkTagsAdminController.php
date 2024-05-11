@@ -18,10 +18,10 @@ use App\Service\ConstraintControllerValidator;
 class UsefullinkTagsAdminController extends AdminGenericController {
 	protected $entityName = 'UsefullinkTags';
 	protected $className = UsefullinkTags::class;
-	
+
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
-	
+
 	protected $indexRoute = "UsefullinkTags_Admin_Index"; 
 	protected $showRoute = "UsefullinkTags_Admin_Show";
 	protected $formName = 'ap_quotation_UsefullinkTagsAdminType';
@@ -57,7 +57,7 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$entity = new UsefullinkTags();
 
 		$twig = 'usefullink/UsefullinkTagsAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new']);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -123,8 +123,7 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
-
-		$datas =  $em->getRepository(UsefullinkTags::class)->getAutocomplete($query);
+		$datas = $em->getRepository(UsefullinkTags::class)->getAutocomplete($query);
 
 		$results = [];
 
