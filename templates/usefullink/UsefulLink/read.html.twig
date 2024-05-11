@@ -35,7 +35,7 @@
 
 	<hr class="hr2">
 	<p>
-		{% if entity.tags is not empty %}<i class="fas fa-dragon"></i> {% for tag in json_decode(entity.tags) %}<a href="{{ path('UsefulLink_Index', {tag: tag.value}) }}/#tutorial">{{ tag.value }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}
+		{% if entity.usefullinkTags is not empty %}<i class="fas fa-dragon"></i> {% for tag in entity.usefullinkTags %}<a href="{{ path('UsefulLink_Index', {tag: tag.title}) }}/#tutorial">{{ tag.title }}</a>{% if loop.last == false %}, {% endif %}{% endfor %}{% endif %}
 
 		{% if entity.licence is not empty %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
 	</p>

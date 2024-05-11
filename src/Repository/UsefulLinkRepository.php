@@ -78,7 +78,9 @@ class UsefulLinkRepository extends EntityRepository
 
 
 		if(!empty($tag)) {
-			$qb->andWhere("JSON_CONTAINS(JSON_EXTRACT(LOWER(c.tags), '$[*].value'), LOWER('\"".$tag."\"'), '$') = true");
+			$qb->join("c.usefullinkTags", "t")
+			   ->andWhere("t.title = :tag")
+			   ->setParameter("tag", $tag);
 		}
 
 		$qb->orderBy("c.id", "desc");

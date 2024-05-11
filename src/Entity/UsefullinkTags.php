@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  * UsefullinkTags
  *
  * @ORM\Table(name="usefullink_tags")
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\UsefullinkTagsRepository")
  */
 class UsefullinkTags
 {

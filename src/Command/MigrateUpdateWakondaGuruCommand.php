@@ -199,6 +199,8 @@ class MigrateUpdateWakondaGuruCommand extends Command
 			$conn->exec("UPDATE usefullink SET id=$id WHERE id=".$data["id"]);
 			$id++;
 		}
+		
+		$conn->exec("ALTER TABLE usefullink AUTO_INCREMENT = $id;");
 
 		$datas = 'Calculer le temps d’exécution d’un script PHP#@#2015-05-25 09:38:51.549000#@#2017-07-02 21:59:08.722676#@#calculer-le-temps-d-execution-d-un-script-php
 Fonction « in_array » en JQuery#@#2015-05-25 09:45:58.878000#@#2017-07-02 21:59:08.942923#@#fonction-in_array-en-jquery

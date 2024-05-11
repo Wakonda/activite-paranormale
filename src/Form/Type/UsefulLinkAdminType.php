@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use App\Form\EventListener\InternationalNameFieldListener;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Form\Field\LinksEditType;
 use App\Entity\UsefulLink;
@@ -34,7 +35,25 @@ class UsefulLinkAdminType extends AbstractType
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => false])
             ->add('links', LinksEditType::class, ['required' => false])
-            ->add('tags', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $tags)]])
+            // ->add('usefullinkTags', TextType::class, ['required' => false, "attr" => ["data-whitelist" => implode(",", $tags)]])
+			->add('usefullinkTags', Select2EntityType::class, [
+				'multiple' => true,
+				'remote_route' => 'UsefullinkTags_Admin_Autocomplete',
+				'class' => 'App\Entity\UsefullinkTags',
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'allow_add' => [
+					'enabled' => true,
+					'new_tag_text' => ' (+)',
+					'new_tag_prefix' => '__',
+					'tag_separators' => '[","]'
+				],
+				'cache' => false,
+				"required" => false
+			])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language', 
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";
