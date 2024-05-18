@@ -17,6 +17,9 @@
 	
 	{% block header_mobile_plus %}{% endblock %}
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.analytics_gtags() }}
   </head>
 
   <body>
