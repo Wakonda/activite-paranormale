@@ -69,7 +69,6 @@ class StoreController extends AbstractController
 		$locale = $request->query->get("locale", $request->getLocale());
 
 		$entity = $em->getRepository(Store::class)->getRandom($locale, $category);
-		$entity = $em->getRepository(Store::class)->find(90);
 
 		if(empty($entity))
 			return new Response();
