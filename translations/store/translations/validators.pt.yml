@@ -1,0 +1,6 @@
+store:
+    index:
+        BuyOnAmazon: "Compre na Amazon"
+        BuyOnAliexpress: "Compre no Aliexpress"
+        BuyOnSpreadshop: "Compre na Spreadshop"
+        BuyOn: "Compre"
