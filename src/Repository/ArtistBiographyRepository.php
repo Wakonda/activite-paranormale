@@ -42,7 +42,7 @@ class ArtistBiographyRepository extends EntityRepository
 		   ->addGroupBy("b.title");
 		   
 		$datas = ["current" => [], "former" => []];   
-		
+
 		foreach($qb->getQuery()->getResult() as $res) {
 			$res["occupations"] = explode("#", $res["occupations"]);
 			

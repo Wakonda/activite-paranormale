@@ -41,17 +41,16 @@
 			$partialDate = trim($partialDate, "-");
 			$dateArray = explode("-", $partialDate);
 
-			if(empty($dateArray))
+			if(empty(array_filter($dateArray)))
 				return null;
-			
+
 			$bc = "";
 			if(str_starts_with($partialDate, "-"))
 				$bc = " G";
 
 			if(count($dateArray) == 1)
 				$skeleton = "YYYY".$bc;
-
-			if(isset($dateArray[2]) and !empty($dateArray[2]))
+			elseif(isset($dateArray[2]) and !empty($dateArray[2]))
 				$skeleton = 'YYYYMMMMd'.$bc;
 			else 
 				$skeleton = 'YYYYMMMM'.$bc;
