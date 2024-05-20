@@ -28,12 +28,9 @@ class StateAdminController extends AdminGenericController
 	
 	protected $indexRoute = "State_Admin_Index"; 
 	protected $showRoute = "State_Admin_Show";
-	protected $illustrations = [["field" => "logo"]];
 
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)
 	{
-		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
-
 		// Check for Doublons
 		$searchForDoublons = $em->getRepository($this->className)->countForDoublons($entityBindded);
 		if($searchForDoublons > 0)
