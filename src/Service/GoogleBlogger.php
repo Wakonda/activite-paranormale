@@ -19,6 +19,7 @@
 			"ActiviteParanormale" => "6843544030232757764",
 			"TheTempleOfZebuleon" => "3619394577589453859",
 			"ElGrimorioDeAstaroth" => "6143285371855196758",
+			"AtividadeParanormal" => "8199576214386227021",
 			"IronTV" => "4299576435212041218",
 			"Test" => "2865018866226462436"
 		];
@@ -35,6 +36,7 @@
 				"ActiviteParanormale" => "https://activite-paranormale.blogspot.fr/",
 				"TheTempleOfZebuleon" => "https://thetempleofzebuleon.blogspot.fr",
 				"ElGrimorioDeAstaroth" => "https://elgrimoriodeastaroth.blogspot.fr",
+				"AtividadeParanormal" => "https://paranormalactividade.blogspot.com/",
 				"IronTV" => "https://iron-tv.blogspot.com/",
 				"Test" => "https://testap7.blogspot.fr"
 			][$blogName];
@@ -204,6 +206,9 @@
 				case "news_es":
 					$res = "Amatukami";
 					break;
+				case "news_pt":
+					$res = "AtividadeParanormal";
+					break;
 				case "magic_fr":
 				case "phytotherapy_fr":
 					$res = "PrieresEtSortileges";
@@ -231,6 +236,7 @@
 				case "test_en":
 				case "test_es":
 				case "test_fr":
+				case "test_pt":
 					$res = "Test";
 					break;
 			}
@@ -241,8 +247,8 @@
 		public function getTypes()
 		{
 			if($_ENV["APP_ENV"] == "dev")
-				return ["test_en", "test_fr", "test_es"];
+				return ["test_en", "test_fr", "test_es", "test_pt"];
 
-			return ["news_en", "news_es", "news_fr", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es"];
+			return ["news_en", "news_es", "news_fr", "news_pt", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es", "test_pt"];
 		}
 	}
