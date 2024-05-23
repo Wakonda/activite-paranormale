@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use App\Form\DataTransformer\DateTimePartialTransformer;
 
@@ -31,8 +32,8 @@ class DateTimePartialType extends AbstractType
 			->add('day', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Day"], "translation_domain" => "validators"])
 			->add('month', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Month"], "translation_domain" => "validators"])
 			->add('year', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Year"], "translation_domain" => "validators"])
-			->add('hour', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Hour"], "translation_domain" => "validators"])
-			->add('minute', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Minute"], "translation_domain" => "validators"]);
+			->add('hour', TextType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Hour"], "translation_domain" => "validators"])
+			->add('minute', TextType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Minute"], "translation_domain" => "validators"]);
 	
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($options)
 		{
@@ -56,6 +57,14 @@ class DateTimePartialType extends AbstractType
 
 			if(empty($hour) and !empty($minute)) {
 				$form->get('hour')->addError(new FormError($notBlank->message));
+			}
+
+			if($hour != null and !is_numeric($hour)) {
+				$form->get('hour')->addError(new FormError("admin.error.Double"));
+			}
+
+			if($minute != null and !is_numeric($minute)) {
+				$form->get('hour')->addError(new FormError("admin.error.Double"));
 			}
 			
 			if(!empty($month) and !empty($year)) {

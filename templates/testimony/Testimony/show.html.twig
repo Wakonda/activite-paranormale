@@ -47,13 +47,12 @@
 	{% if entity.sightingDate is not empty %}
 		<p><b>{{ "testimony.read.SightingDate"|trans([], "validators") }}</b> : {{ entity.sightingDate|doPartialDateTime(app.request.locale) }}</p>
 	{% endif %}
-	
-	{% if entity.sightingDate is not empty %}
+
+	{% set addressDatas = json_decode(entity.location) %}
+	{% if addressDatas is not empty %}
 		<h3>{{ "testimony.read.Location"|trans([], "validators") }}</h3>
 		<p>{{ entity.locationArray|join(", ") }}</p>
-		
-		{% set addressDatas = json_decode(entity.location) %}
-		
+
 		{% if addressDatas.lon is defined and addressDatas.lat is defined %}
 			<div id="map-canvas" style="width:100%; height:400px"></div>
 		{% endif %}

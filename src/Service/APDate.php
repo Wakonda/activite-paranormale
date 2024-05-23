@@ -89,6 +89,14 @@
 			elseif(!empty($year) and empty($month) and empty($day))
 				$skeleton = 'YYYY';
 
+			if(count($dateTimeArray) == 2) {
+				$formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::MEDIUM);
+				return $formatter->format(new \DateTime($partialDateTime));
+			} elseif(count($dateTimeArray) == 1) {
+				$formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::MEDIUM);
+				return $formatter->format(new \DateTime($partialDateTime.":00"));
+			}
+
 			$pattern = $this->getFormat($locale, $skeleton);
 			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
 
@@ -115,7 +123,7 @@
 			$pattern = $this->getFormat($locale, $skeleton);
 			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
 
-			return ucfirst($fmt->format(new \DateTime($year."-".$month."-".$day)));
+			return $this->removeZero(ucfirst($fmt->format(new \DateTime($year."-".$month."-".$day))));
 		}
 
 		public function shortDate($dateTime, $locale, $numberDigitYear = 4) {
@@ -126,5 +134,9 @@
 			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::SHORT, \IntlDateFormatter::NONE, null, null, $format);
 
 			return $fmt->format($dateTime);
+		}
+		
+		private function removeZero(string $input): string {
+			return preg_replace('/\b0*(\d+)\b/', '$1', $input);
 		}
 	}
