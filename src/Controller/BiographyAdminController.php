@@ -362,7 +362,7 @@ class BiographyAdminController extends AdminGenericController
 	
 	public function quickAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title)
 	{
-		$wikidata = $request->query->get("wikidata");
+		$wikidataCode = $request->query->get("wikidata");
 		$internationalName = $request->query->get("internationalName");
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
@@ -371,11 +371,11 @@ class BiographyAdminController extends AdminGenericController
 
 		$entityToCopy = null;
 
-		if(!empty($internationalName) or !empty($wikidata)) {
+		if(!empty($internationalName) or !empty($wikidataCode)) {
 			if(!empty($internationalName))
 				$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $internationalName]);
 			else
-				$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["wikidata" => $wikidata]);
+				$entityToCopy = $em->getRepository(Biography::class)->findOneBy(["wikidata" => $wikidataCode]);
 
 			if(!empty($entityToCopy)) {
 				$country = null;
@@ -407,7 +407,7 @@ class BiographyAdminController extends AdminGenericController
 		
 		$entity->setTitle($title);
 		$entity->setLanguage($language);
-		$entity->setWikidata($wikidata);
+		$entity->setWikidata($wikidataCode);
 		$entity->setInternationalName($internationalName);
 		
 		$form = $this->createForm($formType, $entity, ['action' => 'new', 'locale' => $request->getLocale()]);
@@ -428,11 +428,11 @@ class BiographyAdminController extends AdminGenericController
 				return new JsonResponse(["state" => "success", "data" => $data->getContent()]);
 			} else {
 				$twig = 'quotation/BiographyAdmin/quick.html.twig';
-				$res = $this->render($twig, ['entity' => $entity, 'form' => $form->createView(), "locale" => $request->getLocale(), "title" => $title, "wikidata" => $wikidata, 'internationalName' => $internationalName]);
+				$res = $this->render($twig, ['entity' => $entity, 'form' => $form->createView(), "locale" => $request->getLocale(), "title" => $title, "wikidata" => $wikidataCode, 'internationalName' => $internationalName]);
 				return new JsonResponse(["state" => "failed", "data" => $res]);
 			}
 		}
 
-		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'internationalName' => $internationalName, 'locale' => $request->getLocale(), "title" => $title, "wikidata" => $wikidata]);
+		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'internationalName' => $internationalName, 'locale' => $request->getLocale(), "title" => $title, "wikidata" => $wikidataCode]);
 	}
 }
