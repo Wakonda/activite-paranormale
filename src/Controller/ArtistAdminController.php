@@ -202,6 +202,7 @@ class ArtistAdminController extends AdminGenericController
 		$entity->setGenre($entityToCopy->getGenre());
 		$entity->setWebsite($entityToCopy->getWebsite());
 		$entity->setWikidata($entityToCopy->getWikidata());
+		$entity->setIdentifiers($entityToCopy->getIdentifiers());
 		
 		$country = null;
 		
