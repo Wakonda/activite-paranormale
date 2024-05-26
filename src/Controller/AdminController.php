@@ -1025,7 +1025,7 @@ class AdminController extends AbstractController
 				"tags" => $tagArray,
 			];
 		} else {
-			$family = "quotes";
+			$family = $entity->isPoemFamily() ? "poems" : "quotes";
 
 			$source = !empty($s = $entity->getSource()) ? json_decode($s, true) : null;
 
@@ -1054,7 +1054,8 @@ class AdminController extends AbstractController
 			}
 
 			$data = [
-				"text" => $entity->getTextQuotation(),
+				"title" => $entity->getTitle(),
+				"text" => nl2br($entity->getTextQuotation()),
 				"identifier" => !empty($idt = $entity->getIdentifier()) ? $idt : "",
 				"language" => ["abbreviation" => $entity->getLanguage()->getAbbreviation()],
 				"biography" => [
@@ -1078,7 +1079,7 @@ class AdminController extends AbstractController
 
 		$result = $api->addPost($data, $api->getOauth2Token(), $family);
 
-		if($result->{"@type"} == "hydra:Error")
+		if($result->type == "error")
 			$this->addFlash('error', $result->{"hydra:title"});
 		else {
 			$entity->setIdentifier($result->identifier);

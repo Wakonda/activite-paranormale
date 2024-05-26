@@ -918,7 +918,7 @@
 				</div>
 			</div>
 		</div>
-		
+
 		<div class="modal fade" id="museModal" tabindex="-1" aria-labelledby="museModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
@@ -929,6 +929,7 @@
 						</button>
 					</div>
 					<div class="modal-body">
+						{% if entity.isPoemFamily == false %}
 						<form id="form" method="post" enctype="multipart/form-data">
 							<div class="mb-3">
 								<label for="url">URL</label>
@@ -941,6 +942,7 @@
 							<button type="submit" class="btn btn-success" id="loadImage"><i class="fas fa-arrows-rotate"></i> {{ "admin.general.Generate"|trans([], "validators") }}</button>
 						</form>
 						<img src="" id="img_preview" style="display: none" class="img-fluid w-100 mt-2" />
+						{% endif %}
 					</div>
 					<div class="modal-footer">
 						<form action="{{ path('Admin_Muse', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
