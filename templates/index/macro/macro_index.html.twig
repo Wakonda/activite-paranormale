@@ -876,29 +876,6 @@
 	{% endif %}
 {% endmacro %}
 
-{% macro wakondaguru_form(entity) %}
-	{% if isWakondaGuruAvailable(entity.language.abbreviation) %}
-		<div class="accordion mb-2" id="accordionParentWakondaGuru">
-			<div class="card sub_block">
-				<div class="card-header" role="tab" id="headingWakondaGuru">
-					<span class="panel-title">
-					<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseWakondaGuru" aria-expanded="false" aria-controls="collapseWakondaGuru">
-					<i class="fas fa-robot"></i> Wakonda.GURU
-					</a>
-					</span>
-				</div>
-				<div id="collapseWakondaGuru" class="collapse" aria-labelledby="headingWakondaGuru" data-parent="#accordionParentWakondaGuru">
-					<div class="card-body">
-						<form action="{{ path('Admin_WakondaGuru', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
-							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endif %}
-{% endmacro %}
-
 {% macro muse_form(entity) %}
 	{% if isMuseAvailable(entity.language.abbreviation) %}
 		<div class="accordion mb-2" id="accordionParentMuse">

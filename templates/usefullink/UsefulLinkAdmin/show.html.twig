@@ -72,10 +72,6 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{% if entity.category is not empty and constant('App\\Entity\\UsefulLink::RESOURCE_FAMILY') != entity.category %}
-		{% import "index/macro/macro_index.html.twig" as macro_index %}
-		{{ macro_index.wakondaguru_form(entity) }}
-	{% endif %}
 {% endblock %}
 
 {% block js_specific %}

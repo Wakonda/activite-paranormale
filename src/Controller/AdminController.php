@@ -929,69 +929,6 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
-	// Wakonda.GURU
-	public function wakondaGuruAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
-	{
-		$entity = $em->getRepository(urldecode($path))->find($id);
-
-		$illustration = null;
-		
-		if(!empty($img = $entity->getIllustration())) {
-			$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$img->getRealNameFile());
-
-			$illustration = [
-				"file" => base64_encode(file_get_contents($path)),
-				"infos" => json_encode(["license" => $img->getLicense(), "author" => $img->getAuthor(), "urlSource" => $img->getUrlSource()]),
-				"filename" => $img->getRealNameFile()
-			];
-		}
-
-		if($entity->isDevelopment()) {
-			$data = [
-				"title" => $entity->getTitle(),
-				"text" => $entity->getText(),
-				"illustration" => $illustration,
-				"tags" => !empty($entity->getTags()) ? implode(",", array_map(function($e) { return $e->value; }, json_decode($entity->getTags()))) : null,
-				"sources" => $entity->getLinks(),
-				"identifier" => $entity->getInternationalName(),
-				"category" => $entity->getCategory()
-			];
-		} elseif($entity->isUsefulLink()) {
-			$data = [
-				"title" => $entity->getTitle(),
-				"text" => $entity->getText(),
-				"illustration" => $illustration,
-				"url" => json_decode($entity->getLinks())[0]->url,
-				"identifier" => $entity->getInternationalName(),
-				"category" => $entity->getCategory()
-			];
-		} elseif($entity->isTool()) {
-			$data = [
-				"title" => $entity->getTitle(),
-				"text" => $entity->getText(),
-				"illustration" => $illustration,
-				"url" => json_decode($entity->getLinks())[0]->url,
-				"identifier" => $entity->getInternationalName(),
-				"category" => $entity->getCategory()
-			];
-		} elseif($entity->isTechnical()) {
-			$data = [
-				"title" => $entity->getTitle(),
-				"text" => $entity->getText(),
-				"website" => $entity->getWebsite()->getLink(),
-				"identifier" => $entity->getInternationalName(),
-				"category" => $entity->getCategory()
-			];
-		}
-
-		$api = new \App\Service\WakondaGuru();
-		$api->addPost($data, $api->getOauth2Token());
-
-		$this->addFlash('success', $translator->trans('admin.wakondaguru.Success', [], 'validators'));
-
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
-	}
-
 	// Muse
 	public function museAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{

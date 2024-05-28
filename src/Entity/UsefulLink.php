@@ -150,6 +150,7 @@ class UsefulLink
 	}
 
 	public function __construct() {
+		$this->createdAt = new \DateTime();
 		$this->usefullinkTags = new \Doctrine\Common\Collections\ArrayCollection();
 	}
 	

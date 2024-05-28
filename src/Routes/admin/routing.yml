@@ -101,10 +101,6 @@ Admin_Muse:
     path: /admin/muse/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::museAction
 
-Admin_WakondaGuru:
-    path: /admin/wakonda_guru/{id}/{path}/{routeToRedirect}
-    controller: App\Controller\AdminController::wakondaGuruAction
-
 Admin_WikidataGeneric:
     path: /admin/wikidata_generic
     controller: App\Controller\AdminController::wikidataGenericAction

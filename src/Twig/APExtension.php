@@ -110,7 +110,6 @@
 				new TwigFunction('isDiasporaAvailable', array($this, 'isDiasporaAvailable')),
 				new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
 				new TwigFunction('isTheDailyTruthAvailable', array($this, 'isTheDailyTruthAvailable')),
-				new TwigFunction('isWakondaGuruAvailable', array($this, 'isWakondaGuruAvailable')),
 				new TwigFunction('isMuseAvailable', array($this, 'isMuseAvailable')),
 				new TwigFunction('isTumblrAvailable', array($this, 'isTumblrAvailable')),
 				new TwigFunction('isPinterestAvailable', array($this, 'isPinterestAvailable')),
@@ -918,13 +917,6 @@
 		public function isTheDailyTruthAvailable($locale): bool
 		{
 			$api = new TheDailyTruth();
-			
-			return in_array($locale, $api->getLocaleAvailable());
-		}
-
-		public function isWakondaGuruAvailable($locale): bool
-		{
-			$api = new \App\Service\WakondaGuru();
 			
 			return in_array($locale, $api->getLocaleAvailable());
 		}
