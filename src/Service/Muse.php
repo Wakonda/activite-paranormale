@@ -70,7 +70,7 @@
 				"family" => $urlPart,
 				"identifier" => $identifier,
 				"image" => $image["image"],
-				"identifier" => $image["identifier"],
+				"image_identifier" => $image["identifier"],
 				"imgBase64" => $image["imgBase64"]
 			];
 

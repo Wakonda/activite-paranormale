@@ -433,6 +433,7 @@
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
 			$datas = json_decode($content);
+			$res["origin"]["country"]["id"] = null;
 
 			// country of origin
 			if(property_exists($datas->entities->$code->claims, "P495")) {
