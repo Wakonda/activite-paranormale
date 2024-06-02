@@ -29,6 +29,7 @@ use App\Service\Diaspora;
 use App\Service\VK;
 use App\Service\Bluesky;
 use App\Service\Amazon;
+use App\Service\Flickr;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
 use App\Service\PaginatorNativeSQL;
@@ -1132,6 +1133,31 @@ class AdminController extends AbstractController
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
 		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
+
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
+
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
+
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+	}
+
+	// Flickr
+	public function flickr(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Flickr $flickr, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	{
+		$requestParams = $request->request;
+
+		$path = urldecode($path);
+		
+		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+		$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
+dd($image_url);
+		$entity = $em->getRepository($path)->find($id);
+		$image = false;
+		$url = $requestParams->get("facebook_url", null);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("flickr_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
 

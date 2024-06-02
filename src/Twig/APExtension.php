@@ -106,6 +106,7 @@
 				new TwigFunction('isBlueskyAvailable', array($this, 'isBlueskyAvailable')),
 				new TwigFunction('isBloggerAvailable', array($this, 'isBloggerAvailable')),
 				new TwigFunction('isFacebookAvailable', array($this, 'isFacebookAvailable')),
+				new TwigFunction('isFlickrAvailable', array($this, 'isFlickrAvailable')),
 				new TwigFunction('isVKAvailable', array($this, 'isVKAvailable')),
 				new TwigFunction('isDiasporaAvailable', array($this, 'isDiasporaAvailable')),
 				new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
@@ -875,6 +876,12 @@
 		public function isFacebookAvailable($entity): bool
 		{
 			$api = new \App\Service\Facebook();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+		}
+
+		public function isFlickrAvailable($entity): bool
+		{
+			$api = new \App\Service\Flickr();
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 

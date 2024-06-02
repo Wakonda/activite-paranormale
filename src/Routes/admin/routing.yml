@@ -20,6 +20,10 @@ Admin_Facebook:
     path: /admin/facebook/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::facebookAction
 
+Admin_Flickr:
+    path: /admin/flickr/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::flickr
+
 Admin_VK:
     path: /admin/vk/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::vk
