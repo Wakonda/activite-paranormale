@@ -167,7 +167,7 @@ class Flickr {
 	}
 
 	// https://www.flickr.com/services/api/upload.api.html
-	public function uploadPhoto($title, $locale, $description = null, $tag = null) {
+	public function uploadPhoto($title, $photo, $locale, $description = null, $tag = null) {
 		$upload_url = 'https://up.flickr.com/services/upload/';
 
 		$nonce = md5(microtime() . mt_rand());
@@ -175,16 +175,17 @@ class Flickr {
 		$sig_method = 'HMAC-SHA1';
 		$oauth_version = "1.0";
 
-		$params = array(
+		$params = [
 			'oauth_nonce' => $nonce,
 			'oauth_timestamp' => $timestamp,
 			'oauth_consumer_key' => $this->apiKey,
 			'oauth_token' => $this->oauthToken,
 			'oauth_signature_method' => 'HMAC-SHA1',
-			'oauth_version' => '1.0',
-			'title' => $title
-		);
+			'oauth_version' => '1.0'
+		];
 
+		if(!empty($title))
+			$params["title"] = $title;
 		if(!empty($description))
 			$params["description"] = $description;
 		if(!empty($tag))
@@ -192,13 +193,13 @@ class Flickr {
 
 		ksort($params);
 
-		$base_string = 'POST&' . urlencode($upload_url) . '&' . urlencode(http_build_query($params));
+		$base_string = 'POST&' . urlencode($upload_url) . '&' . rawurlencode(http_build_query($params));
 
 		$signature_key = $this->apiSecret . '&' . $this->oauthSecret;
 		$params['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_string, $signature_key, true));
 
-		$file = new CURLFile('C:\wamp64\www\test\00004-r-pro-iy8b36a.jpg');
-		$fields = array_merge($params, array('photo' => $file));
+		$file = new \CURLFile($this->convertWebPToJPG($photo));
+		$fields = array_merge($params, ['photo' => $file]);
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, $upload_url);
@@ -208,15 +209,14 @@ class Flickr {
 		$response = curl_exec($ch);
 		curl_close($ch);
 
-		return $this->jsonResponse($response);
+		$res = @simplexml_load_string($response);
+		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
 	}
 
 	// https://www.flickr.com/services/api/auth.oauth.html
 	public function authentication() {
 		$request_token_url = 'https://www.flickr.com/services/oauth/request_token';
 		$callback_url = 'http://127.0.0.1:8080/test/flickrpost.php';
-		$api_key = "38dd98d79a954aacd3309e9d234a925c";
-		$api_secret = "f35b65c138761ec4";
 
 		if(isset($_GET["oauth_verifier"])) {
 			$nonce = md5(microtime() . mt_rand());
@@ -236,7 +236,7 @@ class Flickr {
 				'oauth_version' => '1.0'
 			);
 
-			$basestring = "oauth_consumer_key=".$api_key."&oauth_nonce=".$nonce."&oauth_signature_method=".$sig_method."&oauth_timestamp=".$timestamp."&oauth_token=".$_GET['oauth_token']."&oauth_verifier=".$_GET['oauth_verifier']."&oauth_version=".$oauth_version;
+			$basestring = "oauth_consumer_key=".$this->apiKey."&oauth_nonce=".$nonce."&oauth_signature_method=".$sig_method."&oauth_timestamp=".$timestamp."&oauth_token=".$_GET['oauth_token']."&oauth_verifier=".$_GET['oauth_verifier']."&oauth_version=".$oauth_version;
 			$base_string = 'GET&' . urlencode($access_token_url) . '&' . urlencode($basestring);
 
 			$signature_key = $this->apiSecret . '&'.$_SESSION['oauth_token_secret'];
@@ -269,9 +269,9 @@ class Flickr {
 		$sig_method = 'HMAC-SHA1';
 		$oauth_version = "1.0";
 
-		$basestring = "oauth_callback=".urlencode($callback_url)."&oauth_consumer_key=".$api_key."&oauth_nonce=".$nonce."&oauth_signature_method=".$sig_method."&oauth_timestamp=".$timestamp."&oauth_version=".$oauth_version;
+		$basestring = "oauth_callback=".urlencode($callback_url)."&oauth_consumer_key=".$this->apiKey."&oauth_nonce=".$nonce."&oauth_signature_method=".$sig_method."&oauth_timestamp=".$timestamp."&oauth_version=".$oauth_version;
 		$base_string = 'GET&' . urlencode($request_token_url) . '&' . urlencode($basestring);
-		$signature_key = $api_secret . '&';
+		$signature_key = $this->apiSecret . '&';
 
 		$oauth_signature = base64_encode(hash_hmac('sha1', $base_string, $signature_key, true));
 
@@ -318,6 +318,27 @@ class Flickr {
 				$this->FLICK_GROUP_ID = '14860407@N20';
 				break;
 		}
+	}
+
+	function convertWebPToJPG($webpImagePath) {
+		$webpImage = imagecreatefromwebp($webpImagePath);
+
+		$pathInfo = pathinfo($webpImagePath);
+
+		if ($webpImage === false) {
+			return $webpImage;
+		}
+
+		$outputImagePath = $pathInfo["dirname"].DIRECTORY_SEPARATOR.$pathInfo["filename"].".jpg";
+
+		$result = imagejpeg($webpImage, $outputImagePath, 100); // 100 is the quality
+		if ($result === false) {
+			return $webpImage;
+		}
+
+		imagedestroy($webpImage);
+		
+		return $outputImagePath;
 	}
 
 	private function jsonResponse($string) {

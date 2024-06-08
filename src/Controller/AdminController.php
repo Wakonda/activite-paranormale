@@ -1148,19 +1148,20 @@ class AdminController extends AbstractController
 
 		$path = urldecode($path);
 		
-		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
-		$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
-dd($image_url);
 		$entity = $em->getRepository($path)->find($id);
-		$image = false;
+		$photo = realpath(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
+
 		$url = $requestParams->get("facebook_url", null);
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("flickr_area"), $entity->getLanguage()->getAbbreviation()));
-
-		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
-
+		$res = $flickr->uploadPhoto($entity->getTitle(), $photo, $entity->getLanguage()->getAbbreviation());
+dump($res);
+		if(isset($res["success"]))
+			$res = $flickr->postImageGroup($entity->getLanguage()->getAbbreviation(), $res["success"]);
+dump($res);
+		$message = isset($res["success"]) ? ['state' => 'error', 'message' => $translator->trans('admin.flickr.Failed', [], 'validators'). "(".$res["success"].")"] : ['state' => 'success', 'message' => $translator->trans('admin.flickr.Success', [], 'validators')];
+die;
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
