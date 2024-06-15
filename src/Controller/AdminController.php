@@ -20,7 +20,7 @@ use App\Service\PinterestAPI;
 use App\Service\TumblrAPI;
 use App\Service\GoogleBlogger;
 use App\Service\Shopify;
-use App\Service\TheDailyTruth;
+use App\Service\Wordpress;
 use App\Service\FunctionsLibrary;
 use App\Service\Facebook;
 use App\Service\Mastodon;
@@ -888,44 +888,48 @@ class AdminController extends AbstractController
 			$this->addFlash('success', $translator->trans('admin.bluesky.Success', [], 'validators'));
 	}
 
-	// The Daily Truth
-	public function thedailytruthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
+	//Wordpress
+	public function wordpress(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$entity = $em->getRepository(urldecode($path))->find($id);
+		
+		$tags = $em->getRepository("\App\Entity\VideoTags")->findBy(["entity" => $id]);
+		$tagsArray = [];
+		
+		foreach($tags as $tag)
+			$tagsArray[] = $tag->getTagWord()->getTitle();
 
-		$illustration = [];
-
-		if(!empty($img = $entity->getIllustration())) {
-			$path = realpath($this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
-			$caption = ["license" => $img->getLicense(), "author" => $img->getAuthor(), "urlSource" => '<a href="'.$img->getUrlSource().'">'.parse_url($img->getUrlSource(), PHP_URL_HOST).'</a>'];
-
-			$illustration = [
-				"content" => base64_encode(file_get_contents($path)),
-				"name" => $entity->getIllustration()->getRealNameFile(),
-				"caption" => implode(", ", $caption)
-			];
+		$image = null;
+		$text = null;
+		
+		switch($entity->getRealClass())
+		{
+			case "Video":
+				if(!empty($entity->getPhoto()))
+					$image = $request->getSchemeAndHttpHost().'/'.$entity->getAssetImagePath().$entity->getPhoto();
+				
+				$text = $entity->getText()."<hr>".$entity->getEmbeddedCode();
+				break;
 		}
-
+// dd($data);
 		$data = [
-			"identifier" => $entity->getIdentifier(),
+			"_id" => get_class($entity)."_".$entity->getId(),
+			"image" => $image,
 			"title" => $entity->getTitle(),
-			"text" => $entity->getText(),
-			"slug" => $entity->getSlug(),
-			"source" => $entity->getSource(),
-			"tags" => json_encode($request->request->get("thedailytruth_tags")),
-			"media" => json_encode($illustration),
+			"text" => "<div>".str_replace("\r\n", " ", $text)."</div>",
+			'date' => date('Y-m-d H:i:s'),
+			'author' => $this->getUser()->getUsername(),
+			"tags" => $tagsArray,
+			"categories" => [$entity->getTheme()->getTitle()],
 		];
-
-		$api = new TheDailyTruth();
-		$result = $api->addPost($data, $api->getOauth2Token());
-
-		if(!empty($result) and property_exists($result, "identifier")) {
-			$entity->setIdentifier($result->identifier);
-			$em->persist($entity);
-			$em->flush();
-			$this->addFlash('success', $translator->trans('admin.thedailytruth.Success', [], 'validators'));
+// dd($data);
+		$api = new Wordpress();
+		$result = $api->postMessage($data);
+// dd($result);
+		if($result["status"] == "success") {
+			$this->addFlash('success', $translator->trans('admin.wordpress.Success', [], 'validators'));
 		} else
-			$this->addFlash('error', $translator->trans('admin.thedailytruth.Failed', [], 'validators')." ".$result);
+			$this->addFlash('error', $translator->trans('admin.wordpress.Failed', [], 'validators')." ".$result["message"]);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}

@@ -22,7 +22,7 @@
 	<div class="form-table-cell">{{ entity.pseudoUsed }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "document.admin.ReleaseDateOfDocument"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.releaseDateOfDocumentText|doPartialDate(app.request.locale) }}</div>
+	<div class="form-table-cell">{{ entity.releaseDateOfDocument is empty ? entity.releaseDateOfDocumentText|trans([], "validators") : entity.releaseDateOfDocument|doPartialDate(app.request.locale) }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "document.admin.PublicationDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.publicationDate|dodate(false, app.request.locale) }}</div>

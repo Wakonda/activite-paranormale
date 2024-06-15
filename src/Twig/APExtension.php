@@ -23,7 +23,6 @@
 	use App\Entity\SurThemeGrimoire;
 	use App\Service\TwitterAPI;
 	use App\Service\GoogleBlogger;
-	use App\Service\TheDailyTruth;
 	use App\Service\PinterestAPI;
 	use App\Service\TumblrAPI;
 	use App\Service\Shopify;
@@ -98,7 +97,6 @@
 				new TwigFunction('blogger_tags', array($this, 'getBloggerTags')),
 				new TwigFunction('blogger_list', array($this, 'getBloggerList')),
 				new TwigFunction('blogger_id', array($this, 'getBloggerId')),
-				new TwigFunction('thedailytruth_tags', array($this, 'getTheDailyTruthTags')),
 				new TwigFunction('slug', array($this, 'slugifyUrl')),
 				new TwigFunction('img_size_html2pdf', array($this, 'getImageSizeHTML2PDF')),
 				new TwigFunction('entities_other_languages', array($this, 'getEntitiesOtherLanguages')),
@@ -110,12 +108,12 @@
 				new TwigFunction('isVKAvailable', array($this, 'isVKAvailable')),
 				new TwigFunction('isDiasporaAvailable', array($this, 'isDiasporaAvailable')),
 				new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
-				new TwigFunction('isTheDailyTruthAvailable', array($this, 'isTheDailyTruthAvailable')),
 				new TwigFunction('isMuseAvailable', array($this, 'isMuseAvailable')),
 				new TwigFunction('isTumblrAvailable', array($this, 'isTumblrAvailable')),
 				new TwigFunction('isPinterestAvailable', array($this, 'isPinterestAvailable')),
 				new TwigFunction('isShopifyAvailable', array($this, 'isShopifyAvailable')),
 				new TwigFunction('isInstagramAvailable', array($this, 'isInstagramAvailable')),
+				new TwigFunction('isWordpressAvailable', [$this, 'isWordpressAvailable']),
 				new TwigFunction('themes_by_language', array($this, 'getThemesByLanguage')),
 				new TwigFunction('grimoire_themes_by_language', array($this, 'getSurThemesGrimoireByLanguage')),
 				new TwigFunction('allAvailableLanguages', array($this, 'getAllAvailableLanguages')),
@@ -125,7 +123,7 @@
 				new TwigFunction('getimagesize', array($this, 'getimagesize')),
 				new TwigFunction('advertising', array($this, 'advertising')),
 				new TwigFunction('quick_edit', array($this, 'quickEdit'), array('is_safe' => array('html'))),
-				new TwigFunction('get_env', array($this, 'getEnv')),
+				new TwigFunction('get_env', [$this, 'getEnv']),
 				new TwigFunction('thumbnail_video', [$this, 'getThumbnailFromVideo']),
 				new TwigFunction('loader_video', [$this, 'getLoaderVideo'], ['is_safe' => ['html']]),
 				new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']])
@@ -779,13 +777,6 @@
 			
 			return $bloggerAPI->blogId_array[$bloggerAPI->getCorrectBlog($type)];
 		}
-		
-		public function getTheDailyTruthTags()
-		{
-			$api = new TheDailyTruth();
-			
-			return $api->getTags($api->getOauth2Token());
-		}
 
 		public function slugifyUrl($title, $replace = [], $delimiter = '-')
 		{
@@ -903,6 +894,12 @@
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 
+		public function isWordpressAvailable($entity): bool
+		{
+			$api = new \App\Service\Wordpress();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+		}
+
 		public function isMastodonAvailable($entity): bool
 		{
 			$api = new \App\Service\Mastodon();
@@ -919,13 +916,6 @@
 			}
 
 			return in_array($locale, $api->getLanguages());
-		}
-
-		public function isTheDailyTruthAvailable($locale): bool
-		{
-			$api = new TheDailyTruth();
-			
-			return in_array($locale, $api->getLocaleAvailable());
 		}
 
 		public function isMuseAvailable($locale): bool

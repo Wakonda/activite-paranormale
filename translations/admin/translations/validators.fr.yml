@@ -174,9 +174,9 @@ admin:
         Success: "Article publié sur Wakonda.GURU avec succès"
     pinterest:
         Success: "Article publié sur Pinterest avec succès"
-    thedailytruth:
-        Success: "Article publié sur The Daily Truth avec succès"
-        Failed: "Echec lors de l'envoi sur The Daily Truth"
+    wordpress:
+        Success: "Article publié sur Wordpress avec succès"
+        Failed: "Echec lors de l'envoi sur Wordpress"
     wikipedia:
         Header: "En-tête"
     emoji:

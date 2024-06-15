@@ -6,9 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-
 use Symfony\Component\Validator\Constraints\NotBlank;
-
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,6 +17,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Field\DatePartialType;
 
 use App\Entity\TagWord;
+use App\Entity\Biography;
 
 class DocumentAdminType extends AbstractType
 {
@@ -104,6 +103,7 @@ class DocumentAdminType extends AbstractType
 				'delay' => 250,
 				'cache' => false,
 				'req_params' => ['locale' => 'parent.children[language]'],
+				"query_parameters" => ["kinds" => [Biography::PERSON, Biography::OTHER]],
 				'language' => $language,
 				"required" => true,
 				'constraints' => [new NotBlank()]

@@ -112,18 +112,18 @@ class BiographyAdminController extends AdminGenericController
 				$biography->setIdentifiers(json_encode($datas["identifiers"]));
 			
 			if(!empty($datas["illustration"]) and !empty($datas["illustration"]["realNameFile"]) and empty($biography->getIllustration())) {
-					$illustration = new FileManagement();
-					$illustration->setTitleFile($datas["illustration"]["titleFile"]);
-					$illustration->setRealNameFile($datas["illustration"]["realNameFile"]);
-					$illustration->setExtensionFile($datas["illustration"]["extensionFile"]);
-					$illustration->setKindFile($datas["illustration"]["kindFile"]);
-					$illustration->setCaption($datas["illustration"]["caption"]);
-					$illustration->setLicense($datas["illustration"]["license"]);
-					$illustration->setAuthor($datas["illustration"]["author"]);
-					$illustration->setUrlSource($datas["illustration"]["urlSource"]);
-					$em->persist($illustration);
-		
-					$biography->setIllustration($illustration);
+				$illustration = new FileManagement();
+				$illustration->setTitleFile($datas["illustration"]["titleFile"]);
+				$illustration->setRealNameFile($datas["illustration"]["realNameFile"]);
+				$illustration->setExtensionFile($datas["illustration"]["extensionFile"]);
+				$illustration->setKindFile($datas["illustration"]["kindFile"]);
+				$illustration->setCaption($datas["illustration"]["caption"]);
+				$illustration->setLicense($datas["illustration"]["license"]);
+				$illustration->setAuthor($datas["illustration"]["author"]);
+				$illustration->setUrlSource($datas["illustration"]["urlSource"]);
+				$em->persist($illustration);
+
+				$biography->setIllustration($illustration);
 			}
 
 			$em->persist($biography);
@@ -291,13 +291,14 @@ class BiographyAdminController extends AdminGenericController
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
+		$kinds = $request->query->all("kinds");
 
 		if(is_numeric($locale)) {
 			$language = $em->getRepository(Language::class)->find($locale);
 			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
 		}
 
-		$datas =  $em->getRepository(Biography::class)->getAutocomplete($locale, $query);
+		$datas =  $em->getRepository(Biography::class)->getAutocomplete($locale, $query, $kinds);
 
 		$results = [];
 

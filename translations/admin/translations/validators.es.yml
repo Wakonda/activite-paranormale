@@ -173,9 +173,9 @@ admin:
         Success: "Artículo publicado en Muse con éxito"
     pinterest:
         Success: "Artículo publicado en Pinterest con éxito"
-    thedailytruth:
-        Success: "Artículo publicado en The Daily Truth con éxito"
-        Failed: "Error al enviar a Daily Truth"
+    wordpress:
+        Success: "Artículo publicado en Wordpress con éxito"
+        Failed: "Error al enviar a Wordpress"
     wikipedia:
         Header: "Encabezado"
     emoji:

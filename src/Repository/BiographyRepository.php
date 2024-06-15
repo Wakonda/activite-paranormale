@@ -331,7 +331,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getResult();
 	}
 	
-	public function getAutocomplete($locale, $query)
+	public function getAutocomplete($locale, $query, $kinds = [])
 	{
 		$qb = $this->createQueryBuilder("b");
 		
@@ -362,8 +362,13 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 			   ->setParameter("query", $query);
 		}
 
-		$qb->andWhere("b.kind = :person")
-		   ->setParameter("person", Biography::PERSON);
+		if(!empty($kinds)) {
+			$qb->andWhere("b.kind IN (:kinds)")
+			   ->setParameter("kinds", $kinds);
+		} else {
+			$qb->andWhere("b.kind = :person")
+			   ->setParameter("person", Biography::PERSON);
+		}
 
 		$qb->orderBy("b.title", "ASC")
 		   ->setMaxResults(15);

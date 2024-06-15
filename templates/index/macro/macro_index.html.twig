@@ -24,7 +24,6 @@
 					</a>
 					</span>
 				</div>
-
 				<div id="collapseBlogger" class="collapse" aria-labelledby="headingBlogger"  data-parent="#accordionParentBlogger">
 					<div class="card-body">
 						<form action="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: method }) }}" method="POST">
@@ -75,7 +74,6 @@
 									{% endfor %}
 								</select>
 							</div>
-							
 							<div class="col">
 								<select multiple name="blogger_tags[]" id="blogger_tags" class="form-select" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 								</select>
@@ -237,19 +235,10 @@
 				</a>
 				</span>
 			</div>
-			
 			<div id="collapseFacebook" class="collapse" aria-labelledby="headingFacebook" data-parent="#accordionParentFacebook">
 				<div class="card-body">
 					<form action="{{ path('Admin_Facebook', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_facebook">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("facebook_area") }}
-						</div>
+						{{ _self.tags_list("facebook_area", "tags_facebook") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
@@ -286,20 +275,11 @@
 			<div id="collapseFlickr" class="collapse" aria-labelledby="headingFlickr" data-parent="#accordionParentFlickr">
 				<div class="card-body">
 					<form action="{{ path('Admin_Flickr', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_flickr">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("flickr_area") }}
-						</div>
+						{{ _self.tags_list("flickr_area", "tags_flickr") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined and entity.theme is not empty %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
-
 						<textarea id="flickr_area" name="flickr_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
@@ -315,6 +295,41 @@
 
 {% macro flickr_form_js() %}
 	{{ _self.generic_tags("flickr_area", "tags_flickr") }}
+{% endmacro %}
+
+{% macro wordpress_form(entity, text = null) %}
+	{% if isWordpressAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentFlickr">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingWordpress">
+				<span class="panel-title">
+				<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseWordpress" aria-expanded="false" aria-controls="collapseWordpress">
+				<i class="fa-brands fa-wordpress-simple"></i> Wordpress
+				</a>
+				</span>
+			</div>
+			<div id="collapseWordpress" class="collapse" aria-labelledby="headingWordpress" data-parent="#accordionParentWordpress">
+				<div class="card-body">
+					<form action="{{ path('Admin_Wordpress', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro tags_list(textarea, id) %}
+	<div id="{{ id }}">
+		<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
+		<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
+		<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
+		<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
+		<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
+		<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
+		{{ _self.emoji_form(textarea) }}
+	</div>
 {% endmacro %}
 
 {% macro generic_tags(textarea, tags) %}
@@ -334,7 +349,7 @@
 		}
 
 		tags = tags.map((x) => "#" + x.replace(/-/g, ''));
-		
+
 		tags.forEach((e) => {
 			if(datas.join(" ").toLowerCase().includes(e.toLowerCase()))
 				tags.splice(tags.indexOf(e), 1);
@@ -368,19 +383,10 @@
 				</a>
 				</span>
 			</div>
-			
 			<div id="collapseDiaspora" class="collapse" aria-labelledby="headingDiaspora" data-parent="#accordionParentDiaspora">
 				<div class="card-body">
 					<form action="{{ path('Admin_Diaspora', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_diaspora">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("diaspora_area") }}
-						</div>
+						{{ _self.tags_list("diaspora_area", "tags_diaspora") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
@@ -414,19 +420,10 @@
 				</a>
 				</span>
 			</div>
-			
 			<div id="collapseVK" class="collapse" aria-labelledby="headingVK" data-parent="#accordionParentVK">
 				<div class="card-body">
 					<form action="{{ path('Admin_VK', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_vk">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("vk_area") }}
-						</div>
+						{{ _self.tags_list("vk_area", "tags_vk") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
@@ -460,19 +457,10 @@
 				</a>
 				</span>
 			</div>
-			
 			<div id="collapseInstagram" class="collapse" aria-labelledby="headingInstagram" data-parent="#accordionParentInstagram">
 				<div class="card-body">
 					<form action="{{ path('Admin_Instagram', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_instagram">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("instagram_area") }}
-						</div>
+						{{ _self.tags_list("instagram_area", "tags_instagram") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						<textarea id="instagram_area" name="instagram_area" rows="3" cols="70" class="form-control">{{ entity.title }}{% if tags is not empty %} {% for t in tags|split(', ') %}#{{ t }}{% if loop.last == false %} {% endif %}{% endfor %}{% endif %}</textarea>
@@ -527,24 +515,14 @@
 				</a>
 				</span>
 			</div>
-			
 			<div id="collapseBluesky" class="collapse" aria-labelledby="headingBluesky" data-parent="#accordionParentBluesky">
 				<div class="card-body">
 					<form id="form_bluesky" action="{{ path('Admin_Bluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_bluesky">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("bluesky_area") }}
-						</div>
+						{{ _self.tags_list("bluesky_area", "tags_bluesky") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined and entity.theme is not empty %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
-
 						<textarea id="bluesky_area" name="bluesky_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if textAfter is not empty %}{{ textAfter }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="bluesky_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
@@ -573,30 +551,20 @@
 				</a>
 				</span>
 			</div>
-			
 			<div id="collapseMastodon" class="collapse" aria-labelledby="headingMastodon" data-parent="#accordionParentMastodon">
 				<div class="card-body">
 					<form id="form_mastodon" action="{{ path('Admin_Mastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						<div id="tags_mastodon">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("mastodon_area") }}
-						</div>
+						{{ _self.tags_list("mastodon_area", "tags_mastodon") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined and entity.theme is not empty %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
-
 						<textarea id="mastodon_area" name="mastodon_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if textAfter is not empty %}{{ textAfter }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
-						
+
 						{% if isTwitterAvailable(entity) %}
 							<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'mastodon' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 						{% endif %}
@@ -628,12 +596,11 @@
 		<div class="card sub_block">
 			<div class="card-header" role="tab" id="headingTwitter">
 				<span class="panel-title">
-				<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTwitter" aria-expanded="false" aria-controls="collapseTwitter">
-				<i class="fab fa-x-twitter" aria-hidden="true"></i> X.com
-				</a>
+					<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTwitter" aria-expanded="false" aria-controls="collapseTwitter">
+						<i class="fab fa-x-twitter" aria-hidden="true"></i> X.com
+					</a>
 				</span>
 			</div>
-			
 			<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" data-parent="#accordionParentTwitter">
 				<div class="card-body">
 					<form id="form_twitter" action="{{ path('Admin_Twitter', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
@@ -643,27 +610,17 @@
 							<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
 						{% endif %}
 
-						<div id="tags_twitter">
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ovni">OVNI</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ufo">UFO</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantôme">Fantôme</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="ghost">Ghost</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="fantasma">Fantasma</a>
-							<a href="#" class="btn btn-outline-secondary tag" data-tag="weird">Weird</a>
-							{{ _self.emoji_form("twitter_area") }}
-						</div>
-
+						{{ _self.tags_list("twitter_area", "tags_twitter") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
 						{% set tagsArray = tags|split(", ") %}
 						{% if entity.theme is defined and entity.theme is not empty %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
-
 						<textarea id="twitter_area" name="twitter_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if textBefore is not empty %}{{ textBefore }}{% endif %}{{ entity.title }}{% if textAfter is not empty %}{{ textAfter }}{% endif %}</textarea>
 						<br>
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
-						
+
 						{% if isMastodonAvailable(entity) %}
 							<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodon', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 						{% endif %}
@@ -678,7 +635,6 @@
 {% macro twitter_form_js() %}
 	{{ _self.generic_tags("twitter_area", "tags_twitter") }}
 	<script>
-
 		var limit = 280;
 
 		var twitterAreaFunction = function(e) {
@@ -696,7 +652,6 @@
 
 		document.getElementById("twitter_area").addEventListener("keydown", twitterAreaFunction);
 		document.getElementById("twitter_area").addEventListener("keyup", twitterAreaFunction);
-
 		document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
 
 		//Twitter Tags
@@ -889,38 +844,6 @@
 	</script>
 {% endmacro %}
 
-{% macro thedailytruth_form(entity) %}
-	{% if isTheDailyTruthAvailable(entity.language.abbreviation) %}
-		<div class="accordion mb-2" id="accordionParentTheDailyTruth">
-			<div class="card sub_block">
-				<div class="card-header" role="tab" id="headingTheDailyTruth">
-					<span class="panel-title">
-					<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTheDailyTruth" aria-expanded="false" aria-controls="collapseTheDailyTruth">
-					<i class="fas fa-yin-yang"></i> The Daily Truth
-					</a>
-					</span>
-				</div>
-				<div id="collapseTheDailyTruth" class="collapse" aria-labelledby="headingTheDailyTruth" data-parent="#accordionParentTheDailyTruth">
-					<div class="card-body">
-						<form action="{{ path('Admin_TheDailyTruth', {'id': entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route')}) }}" method="POST">
-							{% set tags = themes_by_language(entity.language.abbreviation) %}
-
-							<select multiple name="thedailytruth_tags[]" class="form-select select2_list" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
-								{% for tag in tags %}
-									<option value="{{ tag }}">{{ tag }}</option>
-								{% endfor %}
-							</select>
-							<br>
-							<br>
-							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
-						</form>
-					</div>
-				</div>
-			</div>
-		</div>
-	{% endif %}
-{% endmacro %}
-
 {% macro muse_form(entity) %}
 	{% if isMuseAvailable(entity.language.abbreviation) %}
 		<div class="accordion mb-2" id="accordionParentMuse">
@@ -940,7 +863,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="modal fade" id="museModal" tabindex="-1" aria-labelledby="museModalLabel" aria-hidden="true">
 			<div class="modal-dialog modal-lg">
 				<div class="modal-content">
