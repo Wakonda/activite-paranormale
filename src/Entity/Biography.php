@@ -20,6 +20,9 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	const PERSON = "Person";
 	const FICTIONAL_CHARACTER = "FictionalCharacter";
 	const OTHER = "Other";
+	
+	const MALE_GENDER="male";
+	const FEMALE_GENDER="female";
 
     /**
      * @var integer $id
@@ -133,6 +136,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
      * @ORM\Column(name="slug", type="string", length=255, nullable=true)
      */
     protected $slug;
+
+    /**
+     * @ORM\Column(name="gender", type="string", length=100)
+     */
+    private $gender;
 
 	public function __toString()
 	{
@@ -495,5 +503,15 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     public function getSlug()
     {
         return $this->slug;
+    }
+
+    public function setGender($gender)
+    {
+		$this->gender = $gender;
+    }
+
+    public function getGender()
+    {
+        return $this->gender;
     }
 }

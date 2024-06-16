@@ -26,6 +26,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.nationality, "biography.admin.Nationality"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.nationality) }}{{ form_widget(form.nationality, { 'attr': {'class': 'form-select'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.gender, "biography.admin.Gender"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.gender) }}{{ form_widget(form.gender, { 'attr': {'class': 'form-select'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.kind, "biography.admin.Kind"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.kind) }}{{ form_widget(form.kind, { 'attr': {'class': 'form-select'}}) }}</div>
 
@@ -92,6 +95,7 @@
 				document.getElementById("{{ form.socialNetworkFacebook.vars.id }}").value = data.socialNetwork.facebook;
 				document.getElementById("{{ form.socialNetworkYoutube.vars.id }}").value = data.socialNetwork.youtube;
 				document.getElementById("{{ form.socialNetworkInstagram.vars.id }}").value = data.socialNetwork.instagram;
+				document.getElementById("{{ form.gender.vars.id }}").value = data.gender;
 
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);

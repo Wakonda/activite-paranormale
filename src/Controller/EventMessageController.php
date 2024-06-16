@@ -636,7 +636,7 @@ class EventMessageController extends AbstractController
 			if(isset($startDateArray[2]))
 				$startArray["day"] = $startDateArray[2];
 
-			$endDateArray = explode("-", $entity->getDeathDate());
+			$endDateArray = !empty($d = $entity->getDeathDate()) ? explode("-", $d) : [];
 			$endArray = ["year" => null, "month" => null, "day" => null];
 
 			if(isset($endDateArray[0]))
@@ -674,7 +674,7 @@ class EventMessageController extends AbstractController
 		foreach($entities as $entity) {
 			$res[$entity->getType()][] = [
 				"title" => $entity->getTitle(),
-				"theme" => $entity->getTheme()->getTitle(),
+				"theme" => !empty($t = $entity->getTheme()) ? $t->getTitle() : null,
 				"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()]),
 				"startDate" => ["year" => $entity->getYearFrom(), "month" => $entity->getMonthFrom(), "day" => $entity->getDayFrom()],
 				"endDate" => ($entity->getDayFrom() == $entity->getDayTo()) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]

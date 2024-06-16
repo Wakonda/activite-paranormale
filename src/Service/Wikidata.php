@@ -93,6 +93,10 @@
 				$birthDate = date_parse($birthDate);
 			}
 			
+			if(property_exists($datas->entities->$code->claims, "P21")) {
+				$res["gender"] = $this->getPropertyValue($datas->entities->$code->claims->P21[0]->mainsnak->datavalue->value->id, "en");
+			}
+
 			$res["birthDate"] = [
 				"year" => (!empty($birthDate) and !empty($birthDate["year"])) ? $birthDate["year"] : null,
 				"month" => (!empty($birthDate) and !empty($birthDate["month"])) ? $birthDate["month"] : null,

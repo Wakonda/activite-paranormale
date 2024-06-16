@@ -70,6 +70,13 @@ class BiographyAdminType extends AbstractType
 					],
 					'translation_domain' => 'validators'
 			])
+			->add('gender', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => false,
+					"choices" => [
+						"biography.form.Male" => Biography::MALE_GENDER,
+						"biography.form.Female" => Biography::FEMALE_GENDER
+					],
+					'translation_domain' => 'validators'
+			])
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Biography_Admin_ShowImageSelectorColorbox'))
 			->add('birthDate', DatePartialType::class, ['required' => false])
 			->add('deathDate', DatePartialType::class, ['required' => false])

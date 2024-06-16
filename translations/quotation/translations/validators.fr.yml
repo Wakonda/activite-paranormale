@@ -75,6 +75,7 @@ biography:
         Duplicate: "Dupliquer"
         Occupations: "Activités"
         ThisItemCannotBeDeleted: "Cet élément ne peut pas être supprimé."
+        Gender: "Genre"
     index:
         Quotations: "Citations"
         NoQuotation: "Aucune citation"
@@ -150,5 +151,7 @@ biography:
         Person: "Personne"
         FictionalCharacter: "Personnage de fiction"
         Other: "Autre"
+        Male: "Homme"
+        Female: "Femme"
     world:
         WorldBiography: "Biographie"
