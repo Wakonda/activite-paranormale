@@ -183,18 +183,18 @@ class Flickr {
 			'oauth_signature_method' => 'HMAC-SHA1',
 			'oauth_version' => '1.0'
 		];
-
+// $title = "Bienvenue à Barcelone";
 		if(!empty($title))
-			$params["title"] = $title;
+			$params["title"] = (urlencode($title));
 		if(!empty($description))
-			$params["description"] = $description;
+			$params["description"] = urlencode($description);
 		if(!empty($tag))
-			$params["tag"] = $tag;
+			$params["tag"] = ($tag);
 
 		ksort($params);
-
-		$base_string = 'POST&' . urlencode($upload_url) . '&' . rawurlencode(http_build_query($params));
-
+// dd($params);
+		$base_string = 'POST&' . urlencode($upload_url) . '&' . urlencode(http_build_query($params));
+// $params["title"] = "Bienvenue+%C3%A0+Barcelone";
 		$signature_key = $this->apiSecret . '&' . $this->oauthSecret;
 		$params['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_string, $signature_key, true));
 
@@ -212,7 +212,17 @@ class Flickr {
 		$res = @simplexml_load_string($response);
 		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
 	}
+function rfc3986_encode($str)
 
+{
+
+  $str = rawurlencode($str);
+
+  $str = str_replace('%E7', '~', $str);
+
+  return $str;
+
+}
 	// https://www.flickr.com/services/api/auth.oauth.html
 	public function authentication() {
 		$request_token_url = 'https://www.flickr.com/services/oauth/request_token';
@@ -320,7 +330,7 @@ class Flickr {
 		}
 	}
 
-	function convertWebPToJPG($webpImagePath) {
+	private function convertWebPToJPG($webpImagePath) {
 		$webpImage = imagecreatefromwebp($webpImagePath);
 
 		$pathInfo = pathinfo($webpImagePath);
