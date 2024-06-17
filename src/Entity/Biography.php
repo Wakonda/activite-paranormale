@@ -215,6 +215,14 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 		return $this->kind == self::OTHER;
 	}
 	
+	public function isMale() {
+		return $this->gender == self::MALE_GENDER;
+	}
+	
+	public function isFemale() {
+		return $this->gender == self::FEMALE_GENDER;
+	}
+	
     /**
      * Get id
      *

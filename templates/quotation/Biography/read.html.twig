@@ -101,7 +101,14 @@
 	{% endif %}
 
 	{% if entity.kind is not empty %}
-		{% set infos = infos|merge(["<i class='fas fa-user-astronaut text-primary'></i> <b>"~("biography.form."~entity.kind)|trans([], "validators")~"</b>"]) %}
+		{% set gender = null %}
+		{% if entity.isMale() %}
+			{% set gender = '<i class="fa-solid fa-mars ms-2" style="color: darkturquoise"></i>' %}
+		{% else %}
+			{% set gender = '<i class="fa-solid fa-venus ms-2" style="color: hotpink"></i>' %}
+		{% endif %}
+
+		{% set infos = infos|merge(["<i class='fas fa-user-astronaut text-primary'></i> <b>"~("biography.form."~entity.kind)|trans([], "validators")~"</b>"~gender]) %}
 	{% endif %}
 	
 	{% if infos is not empty %}
