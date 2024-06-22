@@ -35,7 +35,7 @@
 							</select>
 							<br><br>
 							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
-							
+
 							{% if obj is not empty %}
 								<a href="{{ path('Admin_Blogger', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: 'DELETE' }) }}" class="btn btn-outline-danger">{{ "admin.general.Delete"|trans([], "validators") }}</a>
 							{% endif %}
@@ -263,33 +263,38 @@
 
 {% macro flickr_form(entity, text = null) %}
 	{% if isFlickrAvailable(entity) %}
-	<div class="accordion mb-2" id="accordionParentFlickr">
-		<div class="card sub_block">
-			<div class="card-header" role="tab" id="headingFlickr">
-				<span class="panel-title">
-				<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseFlickr" aria-expanded="false" aria-controls="collapseFlickr">
-				<i class="fab fa-flickr"></i> Flickr
-				</a>
-				</span>
-			</div>
-			<div id="collapseFlickr" class="collapse" aria-labelledby="headingFlickr" data-parent="#accordionParentFlickr">
-				<div class="card-body">
-					<form action="{{ path('Admin_Flickr', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-						{{ _self.tags_list("flickr_area", "tags_flickr") }}
-						<br>
-						{% set tags = get_tags(entity, false, true) %}
-						{% set tagsArray = tags|split(", ") %}
-						{% if entity.theme is defined and entity.theme is not empty %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
-						<textarea id="flickr_area" name="flickr_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
-						<br>
-						<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
-						<br>
-						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
-					</form>
+		{% set obj = null %}
+		{% if method_exists(entity, "getSocialNetworkIdentifiers") %}
+			{% if entity.socialNetworkIdentifiers["Flickr"] is defined and entity.socialNetworkIdentifiers["Flickr"][flickr_id(type)] is defined %}
+				{% set obj = entity.socialNetworkIdentifiers["Flickr"][flickr_id(type)] %}
+			{% endif %}
+		{% endif %}
+		<div class="accordion mb-2" id="accordionParentFlickr">
+			<div class="card sub_block">
+				<div class="card-header" role="tab" id="headingFlickr">
+					<span class="panel-title">
+					<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseFlickr" aria-expanded="false" aria-controls="collapseFlickr">
+					<i class="fab fa-flickr"></i> Flickr
+					</a>
+					</span>
+				</div>
+				<div id="collapseFlickr" class="collapse" aria-labelledby="headingFlickr" data-parent="#accordionParentFlickr">
+					<div class="card-body">
+						<form action="{{ path('Admin_Flickr', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+							<br>
+
+							<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
+							<br>
+							<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="flickr" type="submit" class="btn btn-outline-secondary" />
+
+							{% if obj is not empty %}
+								<a href="{{ path('Admin_Flickr', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: 'DELETE' }) }}" class="btn btn-outline-danger">{{ "admin.general.Delete"|trans([], "validators") }}</a>
+							{% endif %}
+						</form>
+					</div>
 				</div>
 			</div>
 		</div>
-	</div>
 	{% endif %}
 {% endmacro %}
 

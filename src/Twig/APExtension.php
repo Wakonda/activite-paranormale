@@ -23,6 +23,7 @@
 	use App\Entity\SurThemeGrimoire;
 	use App\Service\TwitterAPI;
 	use App\Service\GoogleBlogger;
+	use App\Service\Flickr;
 	use App\Service\PinterestAPI;
 	use App\Service\TumblrAPI;
 	use App\Service\Shopify;
@@ -97,6 +98,7 @@
 				new TwigFunction('blogger_tags', array($this, 'getBloggerTags')),
 				new TwigFunction('blogger_list', array($this, 'getBloggerList')),
 				new TwigFunction('blogger_id', array($this, 'getBloggerId')),
+				new TwigFunction('flickr_id', [$this, 'getFlickrId']),
 				new TwigFunction('slug', array($this, 'slugifyUrl')),
 				new TwigFunction('img_size_html2pdf', array($this, 'getImageSizeHTML2PDF')),
 				new TwigFunction('entities_other_languages', array($this, 'getEntitiesOtherLanguages')),
@@ -770,12 +772,19 @@
 
 			return $datas;
 		}
-		
+
 		public function getBloggerId($type)
 		{
 			$bloggerAPI = new GoogleBlogger();
-			
+
 			return $bloggerAPI->blogId_array[$bloggerAPI->getCorrectBlog($type)];
+		}
+
+		public function getFlickrId($type)
+		{
+			$flickrAPI = new Flickr();
+
+			return $flickerAPI->getParametersByLocale($type);
 		}
 
 		public function slugifyUrl($title, $replace = [], $delimiter = '-')

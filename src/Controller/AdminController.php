@@ -1150,9 +1150,47 @@ class AdminController extends AbstractController
 	{
 		$requestParams = $request->request;
 
-		$path = urldecode($path);
-		
-		$entity = $em->getRepository($path)->find($id);
+        $entitiesWithMethod = [];
+        $count = [];
+// dd($flickr->getOldestPhoto());
+
+		if($flickr->getCounts() >= 1) {
+			$photoId = $flickr->getOldestPhoto();
+			$entityNamespaces = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
+			$data = null;
+				
+			foreach ($entityNamespaces as $entityClass) {
+				if (class_exists($entityClass)) {
+					if(!empty($data))
+						continue;
+
+					$reflectionClass = new \ReflectionClass($entityClass);
+					
+					$mappedSuperclassAnnotation = (new \Doctrine\Common\Annotations\AnnotationReader())->getClassAnnotation($reflectionClass, \Doctrine\ORM\Mapping\MappedSuperclass::class);
+					if ($mappedSuperclassAnnotation !== null) {
+						continue;
+					}
+					
+					if ($reflectionClass->hasMethod("setSocialNetworkIdentifiers")) {
+						$data = $em->getRepository($entityClass)->createQueryBuilder('u')->where("u.socialNetworkIdentifiers LIKE '%Flickr%'")->andWhere("u.socialNetworkIdentifiers LIKE :photoId")->setParameter("photoId", "%".$photoId."%")->getQuery()->getOneOrNullResult();
+
+						if(!empty($data)) {
+							$flickerGroupId = $flickr->getParametersByLocale($data->getLanguage()->getAbbreviation());
+							$sni = $data->getSocialNetworkIdentifiers();
+							unset($sni["Flickr"][$flickerGroupId]);
+							$data->setSocialNetworkIdentifiers($sni);
+
+							$em->persist($data);
+							$em->flush();
+						}
+					}
+				}
+			}
+			
+			$flickr->deletePhoto($photoId);
+		}
+
+		$entity = $em->getRepository(urldecode($path))->find($id);
 		$flickerGroupId = $flickr->getParametersByLocale($entity->getLanguage()->getAbbreviation());
 
 		$photo = realpath(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
@@ -1180,7 +1218,7 @@ class AdminController extends AbstractController
 		$em->persist($entity);
 		$em->flush();
 
-		$message = isset($resUpload["success"]) ? ['state' => 'error', 'message' => $translator->trans('admin.flickr.Failed', [], 'validators'). "(".$resUpload["success"].")"] : ['state' => 'success', 'message' => $translator->trans('admin.flickr.Success', [], 'validators')];
+		$message = isset($resUpload["success"]) ? ['state' => 'success', 'message' => $translator->trans('admin.flickr.Success', [], 'validators'). (!empty($resUpload["success"]) ? " (".$resUpload["success"].")" : "")] : ['state' => 'error', 'message' => $translator->trans('admin.flickr.Failed', [], 'validators')];
 
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 

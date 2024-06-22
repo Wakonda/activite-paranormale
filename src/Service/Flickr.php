@@ -221,7 +221,7 @@ class Flickr {
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		$response = curl_exec($ch);
 		curl_close($ch);
-
+// dump($response);
 		$res = @simplexml_load_string($response);
 		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
 	}
@@ -282,6 +282,105 @@ class Flickr {
 
 		$res = @simplexml_load_string($response);
 		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
+	}
+
+	public function deletePhoto($photoId) {
+		$upload_url = 'https://api.flickr.com/services/rest';
+
+		$nonce = md5(microtime() . mt_rand());
+		$timestamp = time();
+		$sig_method = 'HMAC-SHA1';
+		$oauth_version = "1.0";
+
+		$params = [
+			'method' => "flickr.photos.delete",
+			'oauth_nonce' => $nonce,
+			'oauth_timestamp' => $timestamp,
+			'oauth_consumer_key' => $this->apiKey,
+			'oauth_token' => $this->oauthToken,
+			'oauth_signature_method' => 'HMAC-SHA1',
+			'oauth_version' => '1.0',
+			"photo_id" => $photoId
+		];
+
+        foreach ($params as $key => $value) {
+            $signatureData[rawurlencode($key)] = rawurlencode($value);
+        }
+
+		ksort($signatureData);
+
+        $signatureString = '';
+        $delimiter = '';
+
+        foreach ($signatureData as $key => $value) {
+            $signatureString .= $delimiter . $key . '=' . $value;
+            $delimiter = '&';
+        }
+	
+		$base_string = 'POST&' . rawurlencode($upload_url) . '&' . rawurlencode($signatureString);
+
+		$signature_key = $this->apiSecret . '&' . $this->oauthSecret;
+		$params['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_string, $signature_key, true));
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $upload_url);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		$res = @simplexml_load_string($response);
+		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
+	}
+
+	public function getCounts() {
+		$userId = '188024915@N02'; // Remplacez par l'ID de l'utilisateur dont vous voulez obtenir le nombre total de photos
+
+		$apiEndpoint = 'https://api.flickr.com/services/rest/';
+		$params = [
+			'method' => 'flickr.people.getInfo',
+			'api_key' => $this->apiKey,
+			'user_id' => $userId,
+			'format' => 'json',
+			'nojsoncallback' => 1,
+		];
+
+		$url = $apiEndpoint . '?' . http_build_query($params);
+
+		$response = file_get_contents($url);
+		$data = json_decode($response, true);
+		
+		return $data["person"]["photos"]["count"]["_content"];
+	}
+	
+	public function getOldestPhoto() {
+		$userId = '188024915@N02'; // Remplacez par l'ID de l'utilisateur dont vous voulez obtenir les photos
+
+		$apiEndpoint = 'https://api.flickr.com/services/rest/';
+		$params = [
+			'method' => 'flickr.photos.search',
+			'api_key' => $this->apiKey,
+			'user_id' => $userId,
+			'sort' => 'date-taken-asc', // Trie par date de prise de vue en ordre croissant
+			'per_page' => 1,
+			'page' => 1,
+			'format' => 'json',
+			'nojsoncallback' => 1,
+		];
+
+		$url = $apiEndpoint . '?' . http_build_query($params);
+
+		$response = file_get_contents($url);
+		$data = json_decode($response, true);
+
+		if ($data['stat'] === 'ok' && isset($data['photos']['photo'][0])) {
+			$oldestPhoto = $data['photos']['photo'][0];
+			return $oldestPhoto['id'];
+		} else {
+			echo "No photos found.";
+		}
+		die;
 	}
 
 	// https://www.flickr.com/services/api/auth.oauth.html
