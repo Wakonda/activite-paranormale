@@ -1153,19 +1153,35 @@ class AdminController extends AbstractController
 		$path = urldecode($path);
 		
 		$entity = $em->getRepository($path)->find($id);
+		$flickerGroupId = $flickr->getParametersByLocale($entity->getLanguage()->getAbbreviation());
+
 		$photo = realpath(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
 
-		$url = $requestParams->get("facebook_url", null);
+		$url = $requestParams->get("flickr_url", null);
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = $flickr->uploadPhoto($entity->getTitle(), $photo, $entity->getLanguage()->getAbbreviation());
-dump($res);
-		if(isset($res["success"]))
-			$res = $flickr->postImageGroup($entity->getLanguage()->getAbbreviation(), $res["success"]);
-dump($res);
-		$message = isset($res["success"]) ? ['state' => 'error', 'message' => $translator->trans('admin.flickr.Failed', [], 'validators'). "(".$res["success"].")"] : ['state' => 'success', 'message' => $translator->trans('admin.flickr.Success', [], 'validators')];
-die;
+		$sni = $entity->getSocialNetworkIdentifiers();
+
+		if(isset($sni["Flickr"]) and isset($sni["Flickr"][$flickerGroupId])) {
+			$resUpload = $flickr->setMeta($sni["Flickr"][$flickerGroupId]["id"], $entity->getTitle(), $entity->getText());
+		} else {
+			$resUpload = $flickr->uploadPhoto($entity->getTitle(), $photo, $entity->getLanguage()->getAbbreviation(), $entity->getText());
+
+			if(isset($resUpload["success"])) {
+				$photoId = $resUpload["success"];
+				$res = $flickr->postImageGroup($entity->getLanguage()->getAbbreviation(), $photoId);
+
+				$sni["Flickr"][$flickerGroupId] = ["id" => $photoId, "url" => "https://www.flickr.com/photos/188024915@N02/{$photoId}/in/pool-$flickerGroupId/", "labels" => null];
+				$entity->setSocialNetworkIdentifiers($sni);
+			}
+		}
+
+		$em->persist($entity);
+		$em->flush();
+
+		$message = isset($resUpload["success"]) ? ['state' => 'error', 'message' => $translator->trans('admin.flickr.Failed', [], 'validators'). "(".$resUpload["success"].")"] : ['state' => 'success', 'message' => $translator->trans('admin.flickr.Success', [], 'validators')];
+
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));

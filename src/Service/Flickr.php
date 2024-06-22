@@ -183,18 +183,31 @@ class Flickr {
 			'oauth_signature_method' => 'HMAC-SHA1',
 			'oauth_version' => '1.0'
 		];
-// $title = "Bienvenue à Barcelone";
-		if(!empty($title))
-			$params["title"] = (urlencode($title));
-		if(!empty($description))
-			$params["description"] = urlencode($description);
-		if(!empty($tag))
-			$params["tag"] = ($tag);
 
-		ksort($params);
-// dd($params);
-		$base_string = 'POST&' . urlencode($upload_url) . '&' . urlencode(http_build_query($params));
-// $params["title"] = "Bienvenue+%C3%A0+Barcelone";
+		if(!empty($title))
+			$params["title"] = $title;
+		if(!empty($description))
+			$params["description"] = $description;
+		if(!empty($tag))
+			$params["tag"] = $tag;
+		
+        foreach ($params as $key => $value) {
+            $signatureData[rawurlencode($key)] = rawurlencode($value);
+        }
+
+		ksort($signatureData);
+
+        $signatureString = '';
+        $delimiter = '';
+
+        foreach ($signatureData as $key => $value) {
+            $signatureString .= $delimiter . $key . '=' . $value;
+
+            $delimiter = '&';
+        }
+	
+		$base_string = 'POST&' . rawurlencode($upload_url) . '&' . rawurlencode($signatureString);
+
 		$signature_key = $this->apiSecret . '&' . $this->oauthSecret;
 		$params['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_string, $signature_key, true));
 
@@ -212,17 +225,65 @@ class Flickr {
 		$res = @simplexml_load_string($response);
 		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
 	}
-function rfc3986_encode($str)
 
-{
+	public function setMeta($photoId, $title, $description = null, $tag = null) {
+		$upload_url = 'https://api.flickr.com/services/rest';
 
-  $str = rawurlencode($str);
+		$nonce = md5(microtime() . mt_rand());
+		$timestamp = time();
+		$sig_method = 'HMAC-SHA1';
+		$oauth_version = "1.0";
 
-  $str = str_replace('%E7', '~', $str);
+		$params = [
+			'method' => "flickr.photos.setMeta",
+			'oauth_nonce' => $nonce,
+			'oauth_timestamp' => $timestamp,
+			'oauth_consumer_key' => $this->apiKey,
+			'oauth_token' => $this->oauthToken,
+			'oauth_signature_method' => 'HMAC-SHA1',
+			'oauth_version' => '1.0',
+			"photo_id" => $photoId
+		];
 
-  return $str;
+		if(!empty($title))
+			$params["title"] = $title;
+		if(!empty($description))
+			$params["description"] = $description;
+		if(!empty($tag))
+			$params["tag"] = $tag;
 
-}
+        foreach ($params as $key => $value) {
+            $signatureData[rawurlencode($key)] = rawurlencode($value);
+        }
+
+		ksort($signatureData);
+
+        $signatureString = '';
+        $delimiter = '';
+
+        foreach ($signatureData as $key => $value) {
+            $signatureString .= $delimiter . $key . '=' . $value;
+
+            $delimiter = '&';
+        }
+	
+		$base_string = 'POST&' . rawurlencode($upload_url) . '&' . rawurlencode($signatureString);
+
+		$signature_key = $this->apiSecret . '&' . $this->oauthSecret;
+		$params['oauth_signature'] = base64_encode(hash_hmac('sha1', $base_string, $signature_key, true));
+
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $upload_url);
+		curl_setopt($ch, CURLOPT_POST, true);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $params);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		$response = curl_exec($ch);
+		curl_close($ch);
+
+		$res = @simplexml_load_string($response);
+		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
+	}
+
 	// https://www.flickr.com/services/api/auth.oauth.html
 	public function authentication() {
 		$request_token_url = 'https://www.flickr.com/services/oauth/request_token';
@@ -322,12 +383,14 @@ function rfc3986_encode($str)
 		return $request_token;
 	}
 
-	private function getParametersByLocale($locale) {
+	public function getParametersByLocale($locale) {
 		switch($locale) {
 			case "fr":
 				$this->FLICK_GROUP_ID = '14860407@N20';
 				break;
 		}
+		
+		return $this->FLICK_GROUP_ID;
 	}
 
 	private function convertWebPToJPG($webpImagePath) {
