@@ -160,6 +160,10 @@ admin:
     vk:
         Success: "Message sent to VK successfully"
         Failed: "Failed to send to VK"
+    flickr:
+        Success: "Message sent to Flickr successfully"
+        Failed: "Failed to send to Flickr"
+        DeleteSuccess: "Post successfully deleted from Flickr"
     diaspora:
         Success: "Message sent to Diaspora successfully"
         Error: "Failed to send to Diaspora"

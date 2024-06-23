@@ -784,7 +784,7 @@
 		{
 			$flickrAPI = new Flickr();
 
-			return $flickerAPI->getParametersByLocale($type);
+			return $flickrAPI->getParametersByLocale($type);
 		}
 
 		public function slugifyUrl($title, $replace = [], $delimiter = '-')

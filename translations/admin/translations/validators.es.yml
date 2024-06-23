@@ -159,6 +159,10 @@ admin:
     vk:
         Success: "Mensaje enviado a VK con éxito"
         Failed: "Error al enviar a VK"
+    flickr:
+        Success: "Mensaje enviado a Flickr con éxito"
+        Failed: "Error al enviar a Flickr"
+        DeleteSuccess: "Publicación eliminada correctamente de Flickr"
     diaspora:
         Success: "Mensaje enviado a Diaspora con éxito"
         Error: "Error al enviar a Diaspora"

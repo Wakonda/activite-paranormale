@@ -1149,11 +1149,24 @@ class AdminController extends AbstractController
 	public function flickr(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Flickr $flickr, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$requestParams = $request->request;
+		
+		if($request->query->has("method") and $request->query->get("method") == "DELETE") {
+			$flickr->deletePhoto($request->query->get("photoId"));
+			$entity = $em->getRepository(urldecode($path))->find($id);
+			$flickerGroupId = $flickr->getParametersByLocale($entity->getLanguage()->getAbbreviation());
+			$sni = $entity->getSocialNetworkIdentifiers();
+			unset($sni["Flickr"][$flickerGroupId]);
+			$entity->setSocialNetworkIdentifiers($sni);
 
-        $entitiesWithMethod = [];
-        $count = [];
-// dd($flickr->getOldestPhoto());
+			$em->persist($entity);
+			$em->flush();
 
+			$this->addFlash("success", $translator->trans('admin.flickr.DeleteSuccess', [], 'validators'));
+
+			return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+		}
+		dd($request->query->all());
+die("ok");
 		if($flickr->getCounts() >= 1) {
 			$photoId = $flickr->getOldestPhoto();
 			$entityNamespaces = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
@@ -1195,10 +1208,6 @@ class AdminController extends AbstractController
 
 		$photo = realpath(__DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR."public".DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile());
 
-		$url = $requestParams->get("flickr_url", null);
-
-		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
-
 		$sni = $entity->getSocialNetworkIdentifiers();
 
 		if(isset($sni["Flickr"]) and isset($sni["Flickr"][$flickerGroupId])) {
@@ -1220,7 +1229,7 @@ class AdminController extends AbstractController
 
 		$message = isset($resUpload["success"]) ? ['state' => 'success', 'message' => $translator->trans('admin.flickr.Success', [], 'validators'). (!empty($resUpload["success"]) ? " (".$resUpload["success"].")" : "")] : ['state' => 'error', 'message' => $translator->trans('admin.flickr.Failed', [], 'validators')];
 
-		$this->addFlash($message["state"], $message["message"], [], 'validators');
+		$this->addFlash($message["state"], $message["message"]);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}

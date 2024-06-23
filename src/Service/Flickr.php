@@ -487,6 +487,12 @@ class Flickr {
 			case "fr":
 				$this->FLICK_GROUP_ID = '14860407@N20';
 				break;
+			case "en":
+				$this->FLICK_GROUP_ID = '14864823@N20';
+				break;
+			case "es":
+				$this->FLICK_GROUP_ID = '14896537@N20';
+				break;
 		}
 		
 		return $this->FLICK_GROUP_ID;

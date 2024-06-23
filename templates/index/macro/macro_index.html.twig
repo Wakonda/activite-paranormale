@@ -263,6 +263,7 @@
 
 {% macro flickr_form(entity, text = null) %}
 	{% if isFlickrAvailable(entity) %}
+	{% set type = entity.language.abbreviation %}
 		{% set obj = null %}
 		{% if method_exists(entity, "getSocialNetworkIdentifiers") %}
 			{% if entity.socialNetworkIdentifiers["Flickr"] is defined and entity.socialNetworkIdentifiers["Flickr"][flickr_id(type)] is defined %}
@@ -281,14 +282,10 @@
 				<div id="collapseFlickr" class="collapse" aria-labelledby="headingFlickr" data-parent="#accordionParentFlickr">
 					<div class="card-body">
 						<form action="{{ path('Admin_Flickr', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
-							<br>
-
-							<input type="url" placeholder="https://example.com" name="facebook_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
-							<br>
 							<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="flickr" type="submit" class="btn btn-outline-secondary" />
 
 							{% if obj is not empty %}
-								<a href="{{ path('Admin_Flickr', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: 'DELETE' }) }}" class="btn btn-outline-danger">{{ "admin.general.Delete"|trans([], "validators") }}</a>
+								<a href="{{ path('Admin_Flickr', { 'id' : entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), 'type': type, method: 'DELETE', photoId: obj.id }) }}" class="btn btn-outline-danger">{{ "admin.general.Delete"|trans([], "validators") }}</a>
 							{% endif %}
 						</form>
 					</div>
