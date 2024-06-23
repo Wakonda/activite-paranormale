@@ -12,6 +12,7 @@ $diaspora-color: darkorange;
 $vk-color: #0077FF;
 $bluesky-color: #0077FF;
 $tiktok-color: #ff0050;
+$flickr-color: #FF0084;
 
 * {
 	cursor: url(images_v2/greenNormalPoint.cur), auto;
@@ -497,6 +498,9 @@ a.social-share {
 }
 .social-share.tiktok {
 	background-color: $tiktok-color;
+}
+.social-share.flickr {
+	background-color: $flickr-color;
 }
 .social-share.weibo {
 	background-color: $weibo-color;
