@@ -122,6 +122,10 @@
 
 			$pattern = $this->getFormat($locale, $skeleton);
 			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
+			
+			if(empty($year))
+				$year = date("Y");
+			
 			$dateString = rtrim($year."-".$month."-".$day, "-");
 
 			return $this->removeZero(ucfirst($fmt->format(new \DateTime($dateString))));
