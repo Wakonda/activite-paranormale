@@ -7,7 +7,7 @@
 		const LETTERBOXD_FILM_ID = "Letterboxd film ID";
 		const SPOTIFY_ARTIST_ID = "Spotify artist ID";
 		const SPOTIFY_ALBUM_ID = "Spotify album ID";
-		const SPOTIFY_ID = "Spotify ID";
+		const SPOTIFY_TRACK_ID = "Spotify track ID";
 		const MUSICBRAINZ_ARTIST_ID = "MusicBrainz artist ID";
 		const MUSICBRAINZ_RECORDING_ID = "MusicBrainz recording ID";
 		const MUSICBRAINZ_RELEASE_GROUP_ID = "MusicBrainz release group ID";
@@ -76,6 +76,7 @@
 				self::ALLMUSIC_ALBUM_ID => "https://www.allmusic.com/album/${value}",
 				self::SPOTIFY_ALBUM_ID => "https://open.spotify.com/album/${value}",
 				self::SPOTIFY_ARTIST_ID => "https://open.spotify.com/artist/${value}",
+				self::SPOTIFY_TRACK_ID => "https://open.spotify.com/track/${value}",
 				self::MUSICBRAINZ_ARTIST_ID => "https://musicbrainz.org/artist/${value}",
 				self::ALLMUSIC_ARTIST_ID => "https://www.allmusic.com/artist/${value}",
 				self::ISNI => "https://isni.org/isni/${value}",

@@ -262,49 +262,49 @@ class AlbumAdminController extends AdminGenericController
 		$artist = $em->getRepository(Artist::class)->find($artistId);
 		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $artist->getLanguage()]);
 		$language = $artist->getLanguage();
-		
+
 		$datas = $spotify->getAlbumsByArtist($spotifyId);
-// dd($datas);
+
 		foreach($datas as $data) {
 			$album = $em->getRepository(Album::class)->findOneBy(["artist" => $artist, "language" => $language, "title" => $data["name"]]);
-			
+
 			if(!empty($album))
 				continue;
-			
+
 			$album = new Album();
 			$album->setArtist($artist);
 			$album->setLicence($licence);
 			$album->setLanguage($language);
 			$album->setTitle($data["name"]);
 			$album->setReleaseYear($data["release_date"]);
-			$album->setIdentifiers(json_encode([[Identifier::SPOTIFY_ALBUM_ID => $data["id"]]]));
+			$album->setIdentifiers(json_encode([["identifier" => Identifier::SPOTIFY_ALBUM_ID, "value" => $data["id"]]]));
 			
 			$em->persist($album);
 			
 			foreach($data["tracks"] as $track) {
 				$music = $em->getRepository(Music::class)->findOneBy(["album" => $album, "musicPiece" => $track["name"]]);
-				
+
 				if(!empty($music))
 					continue;
-			
+
 				$music = new Music();
 				$music->setAlbum($album);
 				$music->setMusicPiece($track["name"]);
-				
+
 				$seconds = floor($track["duration_ms"] / 1000);
 				$hours = floor($seconds / 3600);
 				$minutes = floor(($seconds % 3600) / 60);
 				$remainingSeconds = $seconds % 60;
-				
+
 				$music->setLength(sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds));
-				$music->setIdentifiers(json_encode([[Identifier::SPOTIFY_ID => $data["id"]]]));
-				
+				$music->setIdentifiers(json_encode([["identifier" => Identifier::SPOTIFY_TRACK_ID, "value" => $track["id"]]]));
+
 				$em->persist($music);
 			}
 		}
-		
+
 		$em->flush();
-		
+
 		return $this->redirect($this->generateUrl("Artist_Admin_Show", ["id" => $artist->getId()]));
 	}
 }

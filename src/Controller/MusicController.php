@@ -34,7 +34,7 @@ class MusicController extends AbstractController
 		$sortByColumn = [];
 		$sortDirColumn = [];
 			
-		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
+		for($i=0; $i<intval($order = $request->query->all('order')); $i++)
 		{
 			$sortByColumn[] = $order[$i]['column'];
 			$sortDirColumn[] = $order[$i]['dir'];
@@ -103,7 +103,7 @@ class MusicController extends AbstractController
 		$entity = $em->getRepository(Music::class)->find($id);
 		$album = $entity->getAlbum();
 		$artist = !empty($album) ? $album->getArtist() : $entity->getArtist();
-		
+
 		return $this->render('music/Music/music.html.twig', [
 			"album" => $album,
 			'entity' => $entity,

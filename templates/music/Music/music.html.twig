@@ -7,9 +7,11 @@
 	<meta name="twitter:card" content="summary" />
 	<meta property="og:title" content="{{ entity.musicPiece }}" />
 
-	{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
-	{% if thumbnail is not empty %}
-		<meta property="og:image" content="{{ thumbnail }}" />
+	{% if entity.embeddedCode is not empty %}
+		{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
+		{% if thumbnail is not empty %}
+			<meta property="og:image" content="{{ thumbnail }}" />
+		{% endif %}
 	{% endif %}
 {% endblock %}
 
@@ -28,7 +30,7 @@
 	<hr>
 	<ul class="fa-ul">
 		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="fw-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.title}) }}">{{ artist.title }}</a></li>
-		
+
 		{% if album is not empty %}
 			<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="fw-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.title, album: album.title}) }}">{{ album.title }}</a></li>
 		{% endif %}
@@ -87,7 +89,6 @@
 				{% for data in datas %}
 					{% include "store/Store/_product.html.twig" with { entity: data } %}
 				{% endfor %}
-				
 				<hr>
 			{% endif %}
 			<p class="image"><a href="" id="help_licence_link"><img src="{{ asset('extended/photo/licence/'~album.licence.logo) }}" alt="{{ album.licence.title }}" /></a></p>
@@ -95,6 +96,7 @@
 
 		{% if entity.identifiers is not empty %}
 			{% set datas = json_decode(entity.identifiers) %}
+			
 			{% if datas is not empty %}
 				<h3>{{ "music.listen.Identifiers"|trans([], "validators") }}</h3>
 				<ul class="fa-ul">

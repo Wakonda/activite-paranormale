@@ -87,11 +87,16 @@
 {% endblock %}
 
 {% block meta_plus %}
-	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />
-
+	{% if entity.photo is not null %}
+		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />
+	{% elseif entity.embeddedCode is not null %}
+		{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
+		{% if thumbnail is not empty %}
+			<meta property="og:image" content="{{ thumbnail }}" />
+		{% endif %}
+	{% endif %}
 	<meta name="twitter:card" content="summary" />
 	<meta property="og:title" content="{{ entity.title }}" />
-	{% if entity.photo is not empty %}<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />{% endif %}
 	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
 {% endblock %}
 

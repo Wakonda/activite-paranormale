@@ -10,6 +10,7 @@ artist:
         Sources: "Sources"
         AlbumList: "Liste des albums"
         Identifiers: "Numéros d'identification"
+        SynchronizeWithSpotify: "Synchroniser avec Spotify"
     biography:
         Title: "Titre"
         Occupations: "Professions"

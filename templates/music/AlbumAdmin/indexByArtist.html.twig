@@ -18,7 +18,7 @@
 <a href="{{ path('Album_Admin_New', {artistId: artistId}) }}" class="btn btn-success">{{ "album.admin.AddAlbum"|trans([], "validators") }}</a>
 
 {% if spotifyId is not empty %}
-	<a href="{{ path('Spotify_Album', { artistId: artistId, spotifyId: spotifyId }) }}" class="btn btn-info">{{ "admin.general.SynchronizeWithSpotify"|trans([], "validators") }}</a>
+	<a href="{{ path('Spotify_Album', { artistId: artistId, spotifyId: spotifyId }) }}" class="btn btn-info">{{ "artist.admin.SynchronizeWithSpotify"|trans([], "validators") }}</a>
 {% endif %}
 
 <hr>
