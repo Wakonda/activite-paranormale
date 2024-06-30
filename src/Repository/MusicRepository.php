@@ -80,7 +80,7 @@ class MusicRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'a.title', 'c.musicPiece', 'c.id');
+		$aColumns = ['c.id', 'a.title', 'c.musicPiece', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.album', 'al')
@@ -111,7 +111,7 @@ class MusicRepository extends EntityRepository
 
 	public function getDatatablesForIndexByAlbumAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $albumId, $count = false)
 	{
-		$aColumns = array( 'c.id', 'a.title', 'c.musicPiece', 'c.id');
+		$aColumns = ['c.musicPiece', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.album', 'al')

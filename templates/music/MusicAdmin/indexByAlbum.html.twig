@@ -18,6 +18,10 @@
 
 <a href="{{ path('Music_Admin_New', {albumId: albumId}) }}" class="btn btn-success">{{ "music.admin.AddMusic"|trans([], "validators") }}</a>
 
+{% if spotifyId is not empty %}
+	<a href="{{ path('Spotify_Track', { albumId: albumId, spotifyId: spotifyId }) }}" class="btn btn-info">{{ "artist.admin.SynchronizeWithSpotify"|trans([], "validators") }}</a>
+{% endif %}
+
 <script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 <script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>

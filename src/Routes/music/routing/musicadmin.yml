@@ -49,3 +49,7 @@ Music_Admin_IndexByAlbumDatatables:
 Music_Admin_Wikidata:
     path: /wikidata
     controller: App\Controller\MusicAdminController::wikidataAction
+
+Spotify_Track:
+    path: /music/spotify/track/{albumId}/{spotifyId}
+    controller: App\Controller\MusicAdminController::spotifyMusic
