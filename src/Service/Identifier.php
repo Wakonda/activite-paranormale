@@ -7,6 +7,7 @@
 		const LETTERBOXD_FILM_ID = "Letterboxd film ID";
 		const SPOTIFY_ARTIST_ID = "Spotify artist ID";
 		const SPOTIFY_ALBUM_ID = "Spotify album ID";
+		const SPOTIFY_ID = "Spotify ID";
 		const MUSICBRAINZ_ARTIST_ID = "MusicBrainz artist ID";
 		const MUSICBRAINZ_RECORDING_ID = "MusicBrainz recording ID";
 		const MUSICBRAINZ_RELEASE_GROUP_ID = "MusicBrainz release group ID";

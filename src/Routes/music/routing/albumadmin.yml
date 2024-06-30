@@ -57,3 +57,7 @@ Album_Admin_IndexByArtistDatatables:
     controller: App\Controller\AlbumAdminController::indexByArtistDatatablesAction
     requirements:
         _method: get
+
+Spotify_Album:
+    path: /music/spotify/album/{artistId}/{spotifyId}
+    controller: App\Controller\AlbumAdminController::spotifyAlbum

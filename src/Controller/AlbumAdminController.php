@@ -12,7 +12,10 @@ use App\Entity\Album;
 use App\Entity\Artist;
 use App\Entity\Music;
 use App\Entity\Language;
+use App\Entity\Licence;
 use App\Form\Type\AlbumAdminType;
+use App\Service\Spotify;
+use App\Service\Identifier;
 use App\Service\ConstraintControllerValidator;
 
 /**
@@ -210,10 +213,21 @@ class AlbumAdminController extends AdminGenericController
 		return new JsonResponse($res);
 	}
 
-    public function indexByArtistAction(Int $artistId)
+    public function indexByArtistAction(EntityManagerInterface $em, Int $artistId)
     {
+		$artist = $em->getRepository(Artist::class)->find($artistId);
+		$spotifyId = null;
+		
+		if(!empty($artist->getIdentifiers())) {
+			$identifiers = json_decode($artist->getIdentifiers(), true);
+			$key = array_search(Identifier::SPOTIFY_ARTIST_ID , array_column($identifiers, "identifier"));
+
+			if($key !== false)
+				$spotifyId = $identifiers[$key]["value"];
+		}
+
 		$twig = 'music/AlbumAdmin/indexByArtist.html.twig';
-		return $this->render($twig, ["artistId" => $artistId]);
+		return $this->render($twig, ["artistId" => $artistId, "spotifyId" => $spotifyId]);
     }
 
 	public function indexByArtistDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $artistId)
@@ -242,5 +256,55 @@ class AlbumAdminController extends AdminGenericController
 		}
 
 		return new JsonResponse($output);
+	}
+
+	public function spotifyAlbum(EntityManagerInterface $em, Spotify $spotify, $artistId, $spotifyId) {
+		$artist = $em->getRepository(Artist::class)->find($artistId);
+		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $artist->getLanguage()]);
+		$language = $artist->getLanguage();
+		
+		$datas = $spotify->getAlbumsByArtist($spotifyId);
+// dd($datas);
+		foreach($datas as $data) {
+			$album = $em->getRepository(Album::class)->findOneBy(["artist" => $artist, "language" => $language, "title" => $data["name"]]);
+			
+			if(!empty($album))
+				continue;
+			
+			$album = new Album();
+			$album->setArtist($artist);
+			$album->setLicence($licence);
+			$album->setLanguage($language);
+			$album->setTitle($data["name"]);
+			$album->setReleaseYear($data["release_date"]);
+			$album->setIdentifiers(json_encode([[Identifier::SPOTIFY_ALBUM_ID => $data["id"]]]));
+			
+			$em->persist($album);
+			
+			foreach($data["tracks"] as $track) {
+				$music = $em->getRepository(Music::class)->findOneBy(["album" => $album, "musicPiece" => $track["name"]]);
+				
+				if(!empty($music))
+					continue;
+			
+				$music = new Music();
+				$music->setAlbum($album);
+				$music->setMusicPiece($track["name"]);
+				
+				$seconds = floor($track["duration_ms"] / 1000);
+				$hours = floor($seconds / 3600);
+				$minutes = floor(($seconds % 3600) / 60);
+				$remainingSeconds = $seconds % 60;
+				
+				$music->setLength(sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds));
+				$music->setIdentifiers(json_encode([[Identifier::SPOTIFY_ID => $data["id"]]]));
+				
+				$em->persist($music);
+			}
+		}
+		
+		$em->flush();
+		
+		return $this->redirect($this->generateUrl("Artist_Admin_Show", ["id" => $artist->getId()]));
 	}
 }
