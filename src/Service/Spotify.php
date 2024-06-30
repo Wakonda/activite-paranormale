@@ -4,8 +4,8 @@ namespace App\Service;
 
 class Spotify {
 	private function getToken() {
-		$SPOTIFY_CLIENT_ID="656bd1af54454a6180c9c40b67260853";
-		$SPOTIFY_CLIENT_SECRET="f75f5b9150ff420aacedeb54547818c0";
+		$SPOTIFY_CLIENT_ID=$_ENV["SPOTIFY_CLIENT_ID"];
+		$SPOTIFY_CLIENT_SECRET=$_ENV["SPOTIFY_CLIENT_SECRET"];
 
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL, 'https://accounts.spotify.com/api/token');
