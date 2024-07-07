@@ -24,6 +24,16 @@ class ClassifiedAdsRepository extends EntityRepository
 			   ->setParameter("keyword", "%".$datas["keywords"]."%");
 		}
 
+		if(isset($datas["region"]) and !empty($region = $datas["region"])) {
+			$qb->andWhere("b.location LIKE :region")
+			   ->setParameter("region", "%".$region."%");
+		} else {
+			if(isset($datas["location_raw"]) and !empty($region = $datas["location_raw"])) {
+				$qb->andWhere("b.location LIKE :region")
+				   ->setParameter("region", "%".$region."%");
+			}
+		}
+
 		if(isset($datas["country"]) and !empty($country = $datas["country"])) {
 			$qb->andWhere("JSON_EXTRACT(b.location, '$.country_code') = :country")
 			   ->setParameter("country", $country->getInternationalName());
@@ -118,5 +128,31 @@ class ClassifiedAdsRepository extends EntityRepository
 		->setParameter('state', $state);
 
 		return $qb->getQuery()->getSingleScalarResult();
+	}
+
+	public function countByCategory($language)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("paca.title, ca.title, count(c) as count")
+		   ->join('c.language', 'l')
+		   ->join("c.state", "s")
+		   ->join("c.category", "ca")
+		   ->join("ca.parentCategory", "paca")
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->andWhere("c.archive = false")
+		   ->andWhere("s.displayState = true")
+		   ->groupBy("ca.title");
+
+		$res = [];
+		$counters = $qb->getQuery()->getResult();
+		$categories = $this->_em->createQuery('SELECT a.title, pc.title AS parentCategory FROM App\Entity\ClassifiedAdsCategory a JOIN a.parentCategory pc JOIN a.language l WHERE l.abbreviation = :language ORDER BY a.title ASC')->setParameter("language", $language)->getResult();
+
+		foreach($categories as $category) {
+			$key = array_search($category["title"], array_column($counters, "title"));
+			$res[$category["parentCategory"]][] = ["title" => $category["title"], "count" => $key !== false ? $counters[$key]["count"] : 0];
+		}
+
+		return $res;
 	}
 }

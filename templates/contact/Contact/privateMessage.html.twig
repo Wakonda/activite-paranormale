@@ -1,9 +1,9 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "privateMessage.send.MessageTo"|trans([], "validators") }} {{ recipient.username }}{% endblock %}
+{% block title %}{{ "privateMessage.send.MessageTo"|trans([], "validators") }} {{ recipientName }}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>{{ "privateMessage.send.MessageTo"|trans([], "validators") }} {{ recipient.username }}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/mail.png') }}" width="25" class="mt-1" alt="Mail"/></span>{{ "privateMessage.send.MessageTo"|trans([], "validators") }} {{ recipientName }}</h2>
 {% endblock h2_title %}
 
 {% block header_plus %}
@@ -18,7 +18,7 @@
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}private-message.png" alt="Red devil girl" /></p>
 	<br>
 	<hr class="hr2">
-		{{ form_start(form, {'action': path('Contact_SendPrivateMessage', {userId: recipient.id, initialMessageId: (initialMessageId is empty ? 0 : initialMessageId), className: className, idClassName: idClassName}), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		{{ form_start(form, {'action': path('Contact_SendPrivateMessage', {userId: recipientId, initialMessageId: (initialMessageId is empty ? 0 : initialMessageId), className: className, idClassName: idClassName}), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 			<div class="form-table form-table-4cols form-table-collapse">
 				{% if is_granted("IS_AUTHENTICATED_FULLY") == false %}
 					<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoContact, "contact.index.Name"|trans([], "validators")) }}</div>

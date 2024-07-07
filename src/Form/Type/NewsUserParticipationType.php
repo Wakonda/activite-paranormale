@@ -64,13 +64,11 @@ class NewsUserParticipationType extends AbstractType
 			));
 		}
 
-		if(!is_object($user))
-		{
+		if(!is_object($user)) {
 			$builder
 				->add('pseudoUsed', TextType::class, array('constraints' => [new NotBlank()]));
 		}
-		else
-		{
+		else {
 			$builder->add('isAnonymous', ChoiceType::class, array(
 				'choices'   => array(
 					'news.new.PublishedAnonymously' => 1,
@@ -90,8 +88,7 @@ class NewsUserParticipationType extends AbstractType
 			$data = $event->getData();
 			$form = $event->getForm();
 
-			if(is_object($data->getIllustration()))
-			{
+			if(is_object($data->getIllustration())) {
 				$formatArray = ['image/png', 'image/jpeg', 'image/gif', 'image/webp'];
 
 				if(!in_array($data->getIllustration()->getMimeType(), $formatArray))

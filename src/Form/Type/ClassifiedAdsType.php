@@ -17,21 +17,29 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use App\Service\Currency;
 
 class ClassifiedAdsType extends AbstractType
 {
+	private $token;
+
+	public function __construct(TokenStorageInterface $token)
+	{
+	   $this->token = $token;
+	}
+		
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];
 
 		$fields = [];
-
+// dd(Currency::getSymboleValues());
         $builder
             ->add('title', TextType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => true, "constraints" => [new NotBlank()]])
-			->add('currencyPrice', ChoiceType::class, ['choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'])
+			->add('currencyPrice', ChoiceType::class, ['choices' => Currency::getSymboleValues(), "data" => "EUR", 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'])
 			->add('price', NumberType::class, ['required' => true, 'translation_domain' => 'validators', "required" => false])
 		    ->add('location', HiddenType::class, ['required' => false])
 			->add('displayEmail', CheckboxType::class, ["required" => false])
@@ -51,6 +59,11 @@ class ClassifiedAdsType extends AbstractType
 					}
 			))
 		;
+		
+		if(empty($this->token->getToken())) {
+			$builder->add('contactName', TextType::class, ['required' => false])
+			        ->add('contactEmail', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]]);
+		}
     }
 
     public function getBlockPrefix()

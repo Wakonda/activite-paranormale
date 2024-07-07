@@ -18,6 +18,7 @@ use App\Entity\Language;
 use App\Entity\State;
 use App\Entity\FileManagement;
 use App\Entity\ClassifiedAdsCategory;
+use App\Entity\Region;
 use App\Form\Type\ClassifiedAdsType;
 use App\Form\Type\ClassifiedAdsSearchType;
 
@@ -25,16 +26,32 @@ class ClassifiedAdsController extends AbstractController
 {
     public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idCategory)
     {
+		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
+		$counters = $em->getRepository(ClassifiedAds::class)->countByCategory($request->getLocale());
+
 		$datas = [];
 
 		if(!empty($idCategory))
 			$datas["category"] = $em->getRepository(ClassifiedAdsCategory::class)->find($idCategory);
+
+		if($request->query->has("category_title"))
+			$datas["category"] = $em->getRepository(ClassifiedAdsCategory::class)->findOneBy(["title" => $request->query->get("category_title"), "language" => $language]);
 
 		$form = $this->createForm(ClassifiedAdsSearchType::class, $datas, ["locale" => $request->getLocale()]);
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid())
 			$datas = $form->getData();
+		
+		if(!empty($request->query->has("location_raw"))) {
+			$region = $em->getRepository(Region::class)->findOneBy(["title" => $request->query->get("location_raw")]);
+			$datas["location_raw"] = (!empty($region) ? $region->getTitle() : $request->query->get("location_raw"));
+			$datas["region"] = (!empty($region) ? $region->getInternationalName() : null);
+		} else {
+			$region = $em->getRepository(Region::class)->findOneBy(["title" => $form->get("location_raw")->getData()]);
+			$datas["location_raw"] = (!empty($region) ? $region->getTitle() : $form->get("location_raw")->getData());
+			$datas["region"] = (!empty($region) ? $region->getInternationalName() : null);
+		}
 
 		$query = $em->getRepository(ClassifiedAds::class)->getClassifiedAds($datas, $request->getLocale());
 
@@ -45,8 +62,9 @@ class ClassifiedAdsController extends AbstractController
 		);
 
 		$pagination->setCustomParameters(['align' => 'center']);
+		$form = $this->createForm(ClassifiedAdsSearchType::class, $datas, ["locale" => $request->getLocale()]);
 
-		return $this->render('classifiedAds/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView()]);
+		return $this->render('classifiedAds/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView(), "counters" => $counters]);
     }
 
 	public function read(EntityManagerInterface $em, $id, $title_slug) {
@@ -76,11 +94,6 @@ class ClassifiedAdsController extends AbstractController
 	// USER PARTICIPATION
     public function newAction(Request $request, EntityManagerInterface $em, Security $security, TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
     {
-		if(empty($this->getUser())) {
-			$this->addFlash('error', $translator->trans('classifiedAds.new.YouMustBeLogged', [], 'validators'));
-			return $this->redirect($this->generateUrl("Security_Login"));
-		}
-
         $entity = new ClassifiedAds();
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);
 
@@ -105,6 +118,9 @@ class ClassifiedAdsController extends AbstractController
 
 			$entity->setState($state);
 			$entity->setLanguage($language);
+			
+			if(empty($entity->getPrice()))
+				$entity->setCurrencyPrice(null);
 
 			if(is_object($ci = $entity->getIllustration())) {
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();
@@ -155,4 +171,8 @@ class ClassifiedAdsController extends AbstractController
 		
 		return $this->redirect($this->generateUrl("ClassifiedAds_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()]));
     }
+
+	public function indexOsClass(Request $request, EntityManagerInterface $em) {
+		return $this->render('classifiedAds/ClassifiedAds/indexOsClass.html.twig');
+	}
 }

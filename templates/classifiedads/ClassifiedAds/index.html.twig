@@ -11,16 +11,204 @@
 {% endblock h2_title %}
 
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/classifiedads-index.png') }}" width="550" alt="Heavy Metal" /></p>
+	<link rel="stylesheet" media="all" href="{{ asset('extended/js/jvectormap/jquery-jvectormap-2.0.2.css') }}"/>
+	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-2.0.2.min.js') }}"></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-be-mill-en.js') }}"></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-ch-mill-en.js') }}"></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-ca-lcc-en.js') }}"></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery.vmap.france.js') }}" charset="utf-8" ></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-es-merc.js') }}" charset="utf-8" ></script>
+	<script>
+		$(function() {
+			var belgium_colors = {"BE-BRU":"#fa9e58","BE-VAN":"#5BC4ED","BE-WLX":"#97C00D", "BE-WBR":"#94F900", "BE-VBR":"#FCED0D", "BE-VOV":"#f8cf5b", "BE-WLG":"#F19DAC", "BE-VLI":"#A8CEEF", "BE-WHT":"#A3A9B3", "BE-WNA":"#3878FF", "BE-VWV":"#dca0c2"};
+			var belgium = new jvm.Map({
+				map: 'be_mill_en',
+				container: $("#belgium_map"),
+				backgroundColor: 'transparent',
+				input_file_encoding: "iso-8859-1",
+				regionStyle: {
+				  initial: {
+					fill: '#8d8d8d'
+				  }
+				},
+				series: {
+					regions: [{
+						values: belgium_colors,
+						attribute: 'fill'
+					}]
+				}
+			});
+
+			var canada_colors = {"CA-NT":"#fa9e58","CA-NU":"#5BC4ED","CA-NS":"#97C00D", "CA-MB":"#94F900", "CA-SK":"#FCED0D", "CA-QC":"#f8cf5b", "CA-PE":"#F19DAC", "CA-BC":"#A8CEEF", "CA-YT":"#A3A9B3", "CA-NB":"#3878FF", "CA-NL":"#dca0c2", "CA-ON":"#ea7e83", "CA-AB":"#82c17f"};
+			var canada = new jvm.Map({
+				map: 'ca_lcc_en',
+				container: $('#canada_map'),
+				backgroundColor: 'transparent',
+				regionStyle: {
+				  initial: {
+					fill: '#8d8d8d'
+				  }
+				},
+				series: {
+					regions: [{
+						values: canada_colors,
+						attribute: 'fill'
+					}]
+				}
+			});
+			
+			var france_colors = {"80":"#5BC6ED","02":"#5BC4ED","77":"#97C00D","12":"#94F900","47":"#FCED0D","81":"#94FE00","07":"#F19DAC","90":"#A8CEEF","48":"#A3A9B3","84":"#3878FF","01":"#F19CAC","73":"#F1A2AC","74":"#F1A3AC","39":"#A8CCEF","25":"#A8CBEF","04":"#3873FF","05":"#3874FF","32":"#94FB00","24":"#FCEA0D","51":"#E09E63","60":"#5BC5ED","52":"#E09F63","88":"#65B661","27":"#E6C099","61":"#E66066","79":"#D58AB5","16":"#D588B5","49":"#EBFC94","53":"#EBFD94","59":"#F8C434","62":"#F8C534","08":"#E09C63","54":"#65B361","57":"#65B561","67":"#CCB32F","68":"#CCB42F","55":"#65B461","87":"#FE5CE6","18":"#ABD6C3","03":"#F4AE9F","41":"#ABDAC3","70":"#A8CDEF","23":"#FE5BE6","36":"#ABD8C3","971":"#FA8630","972":"#FA8730","974":"#FA8930","973":"#FA8830","63":"#F4B19F","43":"#F4B09F","42":"#F1A0AC","15":"#F4AF9F","19":"#FE5AE6","46":"#94FC00","71":"#FBF283","26":"#F19EAC","21":"#FBF083","76":"#E6C199","38":"#F19FAC","58":"#FBF183","69":"#F1A1AC","91":"#97C20D","45":"#ABDBC3","86":"#D58BB5","10":"#E09D63","89":"#FBF383","95":"#97C60D","37":"#ABD9C3","72":"#EBFE94","78":"#97C10D","28":"#ABD7C3","82":"#94FF00","66":"#A3AAB3","11":"#A3A6B3","64":"#FCEE0D","65":"#94FD00","09":"#94F800","34":"#A3A8B3","31":"#94FA00","06":"#3875FF","2B":"#FD9264","2A":"#FD9164","83":"#3877FF","30":"#A3A7B3","13":"#3876FF","40":"#FCEC0D","50":"#E65F66","14":"#E66166","85":"#EBFF94","17":"#D589B5","33":"#FCEB0D","44":"#EBFB94","22":"#64A0D3","35":"#64A2D3","29":"#64A1D3","56":"#64A3D3","93":"#97C40D","75":"#97BF0D","94":"#97C50D","92":"#97C30D"};
+			var france = new jvm.Map({
+				map: 'france_fr',
+				container: $('#france_map'),
+				backgroundColor: 'transparent',
+				regionStyle: {
+				  initial: {
+					fill: '#8d8d8d'
+				  }
+				},
+				series: {
+					regions: [{
+						values: france_colors,
+						attribute: 'fill'
+					}]
+				}
+			});
+
+			var switzerland_colors = {"CH-SO":"#fa9e58","CH-LU":"#5BC4ED","CH-SH":"#97C00D", "CH-SG":"#94F900", "CH-UR":"#FCED0D", "CH-NE":"#f8cf5b", "CH-BS":"#F19DAC", "CH-JU":"#A8CEEF", "CH-BL":"#A3A9B3", "CH-SZ":"#3878FF", "CH-BE":"#dca0c2", "CH-NW":"#ea7e83", "CH-ZG":"#82c17f", "CH-FR":"#ea7f83", "CH-ZH":"#d5c157", "CH-VS":"#eefda8", "CH-VD":"#eaccac", "CH-TI":"#00d7ca", "CH-TG":"#ff0000", "CH-AI":"#80005b", "CH-AR":"#ff9600", "CH-GE":"#81ff86", "CH-GR":"#9d5a00", "CH-GL":"#ffe4e1", "CH-AG":"#00ff7f", "CH-OW":"#ff8c00"};
+			var switzerland = new jvm.Map({
+				map: 'ch_mill_en',
+				container: $('#switzerland_map'),
+				backgroundColor: 'transparent',
+				regionStyle: {
+				  initial: {
+					fill: '#8d8d8d'
+				  }
+				},
+				series: {
+					regions: [{
+						values: switzerland_colors,
+						attribute: 'fill'
+					}]
+				}
+			});
+
+			var spain_colors = {"ES-NA": "#E6C199", "ES-B": "#EBFB94", "ES-CS": "#F19CAC", "ES-ZA": "#5BC6ED", "ES-O": "#F8C534", "ES-OR": "#D58BB5", "ES-M": "#E66066", "ES-L": "#EBFB94", "ES-J": "#94FB00", "ES-H": "#94FB00", "ES-CU": "#FE5AE6", "ES-T": "#EBFB94", "ES-C": "#D58BB5", "ES-AV": "#5BC6ED", "ES-A": "#F19CAC", "ES-CR": "#FE5AE6", "ES-CO": "#94FB00", "ES-VA": "#5BC6ED", "ES-TF": "#a764a9", "ES-Z": "#E09E63", "ES-MA": "#94FB00", "ES-AL": "#94FB00", "ES-CE": "#0e04f6", "ES-PM": "#A8CBEF", "ES-VI": "#A3A8B3", "ES-S": "#97C50D", "ES-TE": "#E09E63", "ES-CC": "#FCEB0D", "ES-P": "#5BC6ED", "ES-PO": "#D58BB5", "ES-GC": "#d1cd76", "ES-GI": "#EBFB94", "ES-TO": "#FE5AE6", "ES-MU": "#83bd45", "ES-GR": "#94FB00", "ES-GU": "#FE5AE6", "ES-AB": "#FE5AE6", "ES-SO": "#5BC6ED", "ES-ML": "#c3fa60", "ES-LU": "#D58BB5", "ES-SE": "#94FB00", "ES-CA": "#94FB00", "ES-SG": "#5BC6ED", "ES-BU": "#5BC6ED", "ES-SA": "#5BC6ED", "ES-V": "#F19CAC", "ES-LE": "#5BC6ED", "ES-BI": "#A3A8B3", "ES-HU": "#E09E63", "ES-LO"	: "#D58AB5", "ES-SS": "#A3A8B3", "ES-BA": "#FCEB0D"};
+			var spain = new jvm.Map({
+				map: 'es_merc',
+				container: $("#spain_map"),
+				backgroundColor: 'transparent',
+				regionStyle: {
+				  initial: {
+					fill: '#8d8d8d'
+				  }
+				},
+				series: {
+					regions: [{
+						values: spain_colors,
+						attribute: 'fill'
+					}]
+				}
+			});
+
+			$('.selector_map path').click(function(e){
+				var code = $(this).attr('data-code');
+				var map = $(this).closest("div.selector_map").vectorMap('get', 'mapObject');
+
+				window.location.replace('{{ path('ClassifiedAds_Index') }}?location_raw=' + map.getRegionName(code));
+			});
+
+			$(".selector_map").hide();
+			$("#france_map").show();
+			
+			$("select#select_country").change(function() {
+				$(".selector_map").hide();
+				let areas = eval($(this).val());
+				let areaArray = [];
+
+				for (const [key, value] of Object.entries(areas.mapData.paths)) {
+					areaArray.push(value.name);
+				}
+				
+				areaArray.sort(function (a, b) {
+					return a.localeCompare(b);
+				});
+
+				$("#select_area").find("option").remove();
+				
+				$("#select_area").append('<option value="">Sélectionner une région</option>');
+				
+				for(let i = 0; i < areaArray.length; i++)
+					$("#select_area").append('<option value="' + areaArray[i] + '">' + areaArray[i] + '</option>');
+				
+				$("#" + $(this).val() + "_map").show();
+			});
+			
+			$("select#select_country").change();
+			
+			$("#select_area").change(function() {
+				window.location.replace('{{ path('ClassifiedAds_Index') }}?location_raw=' + $(this).val());
+			});
+		});
+	</script>
+
+	<ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
+		<li class="nav-item" role="presentation">
+			<button id="geographic_area_selector" type="button" class="btn btn-secondary nav-link active" data-bs-toggle="pill" data-bs-target="#pills-geographic-area" type="button" role="tab" aria-controls="pills-geographic-area" aria-selected="false" tabindex="-1"><i class="fas fa-globe-europe"></i> {{ "classifiedAds.search.ByGeographicArea"|trans([], "validators") }}</button>
+		</li>
+		<li class="nav-item" role="presentation">
+			<button id="category_selector" type="button" class="btn btn-light nav-link" data-bs-toggle="pill" data-bs-target="#pills-category" type="button" role="tab" aria-controls="pills-category" aria-selected="false" tabindex="-1"><i class="fas fa-list"></i> {{ "classifiedAds.search.ByCategory"|trans([], "validators") }}</button>
+		</li>
+	</ul>
+	<div class="tab-content" id="pills-tabContent">
+		<div class="tab-pane fade show active" id="pills-geographic-area" role="tabpanel" aria-labelledby="pills-geographic-area-tab">
+			<div class="input-group w-auto">
+				<select id="select_country" class="form-select selected_theme_news">
+					<option value="belgium">{{ "classifiedAds.search.Belgium"|trans([], "validators") }}</option>
+					<option value="canada">{{ "classifiedAds.search.Canada"|trans([], "validators") }}</option>
+					<option value="spain">{{ "classifiedAds.search.Spain"|trans([], "validators") }}</option>
+					<option value="france" selected="">{{ "classifiedAds.search.France"|trans([], "validators") }}</option>
+					<option value="switzerland">{{ "classifiedAds.search.Switzerland"|trans([], "validators") }}</option>
+				</select>
+			</div>
+			<div id="belgium_map" class="selector_map" style="max-width: 100%; height: 500px;"></div>
+			<div id="canada_map" class="selector_map" style="max-width: 100%; height: 500px;"></div>
+			<div id="spain_map" class="selector_map" style="max-width: 100%; height: 500px;"></div>
+			<div id="france_map" class="selector_map" style="max-width: 100%; height: 500px;"></div>
+			<div id="switzerland_map" class="selector_map" style="max-width: 100%; height: 500px;"></div>
+		</div>
+		<div class="tab-pane fade " id="pills-category" role="tabpanel" aria-labelledby="pills-category-tab">
+			<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/classifiedads-index.png') }}" width="550" alt="Heavy Metal" /></p>
+			
+			<div id="accordion">
+				{% for key, counter in counters %}
+					<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-bs-target="#collapse_{{ slug(key) }}" aria-expanded="false" aria-controls="collapse_{{ slug(key) }}">{{ key }} <span class="number_theme">{{ (counter|column("count"))|reduce((carry, v) => carry + v) }}</span></h3>
+					<div id="collapse_{{ slug(key) }}" class="collapse" data-parent="#accordion">
+						<br>
+						<table class="table table-bordered">
+						{% for c in counter %}
+							<tr><td class="td_form_table w-75"><a href="{{ path('ClassifiedAds_Index', {category_title: c.title})}}" >{{ c.title }}</a></td>
+							<td class="tdGene"><span class="badge bg-info">{{ c.count }}</span></td></tr>
+						{% endfor %}
+						</table>
+					</div>
+				{% endfor %}
+			</div>
+			<hr>
+		</div>
+	</div>
+
 	<p>{{ "classifiedAds.index.Nbr"|trans([], "validators") }} <span class="badge bg-danger">{{ pagination.totalItemCount }}</span></p>
 	<hr>
-	
 	<h3>{{ "classifiedAds.search.SearchSort"|trans([], "validators") }}</h3>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'action': path('ClassifiedAds_Index'), 'method': 'GET', 'attr': {'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.country, "classifiedAds.search.Country"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, {'attr':{'class' : 'form-select'}}) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.location_raw, "classifiedAds.search.Location"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.location_raw) }}{{ form_widget(form.location_raw, {'attr':{'class' : 'form-select'}}) }}</div>
 
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.category, "classifiedAds.search.Category"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.category) }}{{ form_widget(form.category, {'attr':{'class' : 'form-select'}}) }}</div>
@@ -34,7 +222,7 @@
 	<br>
 	<br>
 	<br>
-	
+
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
 			<div class="row g-0">

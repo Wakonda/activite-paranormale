@@ -55,6 +55,16 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
      */
     private $markAs;
 
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $contactName;
+
+    /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $contactEmail;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -194,5 +204,25 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
     public function getMarkAs()
     {
         return $this->markAs;
+    }
+
+    public function setContactName($contactName)
+    {
+        $this->contactName = $contactName;
+    }
+
+    public function getContactName()
+    {
+        return $this->contactName;
+    }
+
+    public function setContactEmail($contactEmail)
+    {
+        $this->contactEmail = $contactEmail;
+    }
+
+    public function getContactEmail()
+    {
+        return $this->contactEmail;
     }
 }

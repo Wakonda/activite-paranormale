@@ -232,7 +232,7 @@ class MappedSuperclassBase implements SearchEngineInterface
         return $this->publicationDate;
     }
 
-    public function setAuthor(User $author)
+    public function setAuthor(?User $author)
     {
         $this->author = $author;
     }

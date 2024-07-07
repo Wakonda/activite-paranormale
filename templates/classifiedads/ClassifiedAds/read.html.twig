@@ -36,11 +36,11 @@
 {% block APBlog_body %}
 	{% if app.user is not empty and entity.author is not empty and app.user.id == entity.author.id %}
 		{% if entity.state.isStateDisplayed() %}
-			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 0 }) }}" class="btn btn-danger">Retirer mon annonce</a></p>
+			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 0 }) }}" class="btn btn-danger">{{ "classifiedAds.read.RemoveMyAd"|trans([], "validators") }}</a></p>
 		{% elseif entity.state.isWaiting() %}
-			<div class="alert alert-warning">Votre petite annonce est en attente de validation</div>
+			<div class="alert alert-warning">{{ "classifiedAds.read.YourClassifiedAdIsAwaitingValidation"|trans([], "validators") }}</div>
 		{% else %}
-			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 1 }) }}" class="btn btn-success">Publier mon annonce</a></p>
+			<p class="text-center"><a href="{{ path('ClassifiedAds_State', {id: entity.id, state: 1 }) }}" class="btn btn-success">{{ "classifiedAds.read.PublishMyAd"|trans([], "validators") }}</a></p>
 		{% endif %}
 	{% endif %}
 
@@ -80,12 +80,27 @@
 	
 	<br>
 	<h3><i class="fa-solid fa-at"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</h3>
-	<p><b>{{ "classifiedAds.read.Username"|trans([], "validators") }}</b> {% if entity.author.enabled %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author.username }}</a>{% else %}{{ entity.author.username }}{% endif %}</p>
-	{% if entity.displayEmail %}
-		<p><b>{{ "classifiedAds.read.Email"|trans([], "validators") }}</b> <a href="mailto:{{ entity.author.email }}">{{ entity.author.email }}</a></p>
+	
+	<ul>
+	{% if entity.author is not empty %}
+		<li><b>{{ "classifiedAds.read.Username"|trans([], "validators") }}</b> {% if entity.author.enabled %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author.username }}</a>{% else %}{{ entity.author.username }}{% endif %}</li>
+		{% if entity.displayEmail %}
+			<li><b>{{ "classifiedAds.read.Email"|trans([], "validators") }}</b> <a href="mailto:{{ entity.author.email }}">{{ entity.author.email }}</a></li>
+		{% endif %}
+	{% else %}
+		<li><b>{{ "classifiedAds.read.Username"|trans([], "validators") }}</b> {{ entity.contactName }}</li>
+		{% if entity.displayEmail %}
+			<li><b>{{ "classifiedAds.read.Email"|trans([], "validators") }}</b> <a href="mailto:{{ entity.contactEmail }}">{{ entity.contactEmail }}</a></li>
+		{% endif %}
 	{% endif %}
+	</ul>
 	<br>
-	<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: entity.author.id, initialMessageId: 0, idClassName: entity.id, className: 'ClassifiedAds'}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
+	
+	{% if entity.author is not empty %}
+		<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: entity.author.id, initialMessageId: 0, idClassName: entity.id, className: 'ClassifiedAds'}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
+	{% else %}
+		<div class="text-center"><a href="{{ path('Contact_SendPrivateMessage', {userId: 0, initialMessageId: 0, idClassName: entity.id, className: 'ClassifiedAds'}) }}" class="btn btn-primary"><i class="fa-solid fa-envelope"></i> {{ "classifiedAds.read.ContactPublisher"|trans([], "validators") }}</a></div>
+	{% endif %}
 	<br>
 
 	{% if entity.location is not empty %}

@@ -30,7 +30,7 @@
 	<div class="form-table-cell">{{ entity.price }} {{ entity.currencyPrice }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.Author"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.authorToString }}</div>
+	<div class="form-table-cell">{% if entity.authorToString is not empty %}{{ entity.authorToString }}{% else %}{{ entity.contactEmail }}{% if entity.contactName is not empty %} ({{ entity.contactName }}){% endif %}{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "classifiedAds.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" />{% endif %}</div>

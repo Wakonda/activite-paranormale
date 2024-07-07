@@ -78,6 +78,18 @@ class ContactController extends AbstractController
 			$initialMessageEntity = $em->getRepository(Contact::class)->find($initialMessageId);
 			$entity->setSubjectContact($initialMessageEntity->getSubjectContact());
 		}
+		
+		$recipientName = null;
+		$recipientId = null;
+
+		switch($className) {
+			case 'ClassifiedAds':
+				$entityLink = $em->getRepository(\App\Entity\ClassifiedAds::class)->find($idClassName);
+				$link = $translator->trans('index.className.ClassifiedAds', [], 'validators')." - <a href='".$this->generateUrl("ClassifiedAds_Read", ["id" => $idClassName, "title_slug" => $entityLink->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$entityLink->getTitle()."</a>";
+				$recipientName = (!empty($recipient) ? $recipient->getUsername() : (!empty($d = $entityLink->getContactName()) ? $d : ($entityLink->displayEmail() ? $entityLink->getContactEmail() : "")));
+				$recipientId = (!empty($recipient) ? $recipient->getId() : 0);
+				break;
+		}
 
         $form = $this->createForm(ContactPrivateMessageType::class, $entity, ["initialMessage" => $initialMessageEntity]);
 
@@ -90,31 +102,37 @@ class ContactController extends AbstractController
 				$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
 
 			if ($form->isSubmitted() && $form->isValid()) {
-				if(!empty($user = $this->getUser()))
-					$entity->setSender($user);
+				if(!empty($recipient)) {
+					if(!empty($user = $this->getUser()))
+						$entity->setSender($user);
 
-				$entity->setRecipient($recipient);
-				$entity->setInitialMessage(empty($initialMessageEntity) ? $entity : $initialMessageEntity);
-				$em->persist($entity);
-				$em->flush();
-				
+					$entity->setRecipient($recipient);
+					$entity->setInitialMessage(empty($initialMessageEntity) ? $entity : $initialMessageEntity);
+					$em->persist($entity);
+					$em->flush();
+				}
+
 				$entityLinked = null;
 				$link = null;
+				$recipientEmail = null;
+				$redirect = $this->redirect($this->generateUrl("APUserBunble_otherprofile", ["id" => $userId]));
 
 				switch($className) {
 					case 'ClassifiedAds':
 						$entityLink = $em->getRepository(\App\Entity\ClassifiedAds::class)->find($idClassName);
 						$link = $translator->trans('index.className.ClassifiedAds', [], 'validators')." - <a href='".$this->generateUrl("ClassifiedAds_Read", ["id" => $idClassName, "title_slug" => $entityLink->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$entityLink->getTitle()."</a>";
+						$recipientEmail = !empty($recipient) ? $recipient->getEmail() : $entityLink->getContactEmail();
+						$redirect = $this->redirect($this->generateUrl($entityLink->getShowRoute(), ["id" => $entityLink->getId()]));
 						break;
 				}
 
 				if(!empty($link))
 					$entity->setMessageContact($entity->getMessageContact()."<br><br>".$link);
 
-				if(!empty($entity->getEmailContact()) and !empty($recipient->getEmail())) {
+				if(!empty($entity->getEmailContact()) and !empty($recipientEmail)) {
 					$email = (new Email())
 						->from($entity->getEmailContact())
-						->to($recipient->getEmail())
+						->to($recipientEmail)
 						->subject("Activité-Paranormale - ".$entity->getSubjectContact())
 						->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
 
@@ -126,13 +144,14 @@ class ContactController extends AbstractController
 				if(!empty($this->getUser()))
 					return $this->redirect($this->generateUrl("Contact_IndexPrivateMessage"));
 				
-				return $this->redirect($this->generateUrl("APUserBunble_otherprofile", ["id" => $userId]));
+				return $redirect;
 			}
 		}
 
 		return $this->render("contact/Contact/privateMessage.html.twig", [
             'entity' => $entity,
-            'recipient' => $recipient,
+            'recipientId' => $recipientId,
+            'recipientName' => $recipientName,
             'form' => $form->createView(),
 			'initialMessageId' => !empty($initialMessageEntity) ? $initialMessageEntity->getId() : null,
 			'className' => $className,

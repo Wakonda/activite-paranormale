@@ -8,6 +8,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class ClassifiedAdsSearchType extends AbstractType
@@ -19,13 +21,14 @@ class ClassifiedAdsSearchType extends AbstractType
 
         $builder
             ->add('keywords', TextType::class, ['required' => false])
-            ->add('country', EntityType::class, [
-					'class'=>'App\Entity\Region',
-					'choice_label'=>'title',
+			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
+					'choice_label'=>'title', 
 					'required' => false,
-					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) {
-						return $repository->getCountryByLanguage($language);
-					}])
+					'choice_value' => function ($entity) {
+						return $entity ? $entity->getInternationalName() : '';
+					},
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
+			->add('location_raw', TextType::class, ["required" => false, "mapped" => false, "data" => isset($builder->getData()["location_raw"]) ? $builder->getData()["location_raw"] : null])
             ->add('category', EntityType::class, array('class'=>'App\Entity\ClassifiedAdsCategory', 
 					'choice_label'=>'title', 
 					'required' => false,

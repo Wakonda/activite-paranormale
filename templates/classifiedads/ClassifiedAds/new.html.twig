@@ -52,6 +52,18 @@
 		<h3>{{ "classifiedAds.new.ListingLocation"|trans([], "validators") }}</h3>
 		<div id="map" style="width:100%; height:400px"></div>
 		<br>
+
+		{% if app.user is null %}
+			<h3>{{ "classifiedAds.new.SellerInformation"|trans([], "validators") }}</h3>
+			<div class="form-table form-table-4cols form-table-collapse">
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.contactName, "classifiedAds.new.ContactName"|trans([], "validators") ) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.contactName) }}{{ form_widget(form.contactName, {'attr':{'class' : 'form-control'}}) }}</div>
+
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.contactEmail, "classifiedAds.new.ContactEmail"|trans([], "validators") ) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.contactEmail) }}{{ form_widget(form.contactEmail, {'attr':{'class' : 'form-control'}}) }}</div>
+			</div>
+		{% endif %}
+		<br>
 		{{ form_label(form.displayEmail, "classifiedAds.new.DisplayEmail"|trans([], "validators")) }}{{ form_errors(form.displayEmail) }}{{ form_widget(form.displayEmail) }}
 		{{ form_rest(form) }}
 		{{ form_errors(form) }}

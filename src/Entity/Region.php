@@ -45,7 +45,7 @@ class Region
      * @var string $flag
      *
 	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(name="flag", type="string", length=255)
+     * @ORM\Column(name="flag", type="string", length=255, nullable=true)
      */	
     private $flag;
 
@@ -58,6 +58,11 @@ class Region
      * @ORM\Column(name="family", type="string", length=255)
      */
     private $family;
+
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
+     */
+    protected $higherLevel;
 	
 	public function __toString()
 	{
@@ -210,5 +215,15 @@ class Region
     public function setFamily($family)
     {
         $this->family = $family;
+    }
+
+    public function getHigherLevel()
+    {
+        return $this->higherLevel;
+    }
+
+    public function setHigherLevel($higherLevel)
+    {
+        $this->higherLevel = $higherLevel;
     }
 }
