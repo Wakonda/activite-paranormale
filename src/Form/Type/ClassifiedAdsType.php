@@ -35,7 +35,7 @@ class ClassifiedAdsType extends AbstractType
 		$language = $options['locale'];
 
 		$fields = [];
-// dd(Currency::getSymboleValues());
+
         $builder
             ->add('title', TextType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => true, "constraints" => [new NotBlank()]])

@@ -21,6 +21,8 @@ class RegionAdminType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		$language = $options['locale'];
+
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('flag', FileType::class, ['data_class' => null, 'required' => true])
@@ -45,7 +47,14 @@ class RegionAdminType extends AbstractType
 						"region.form.".ucfirst(Region::AREA_FAMILY) => Region::AREA_FAMILY
 					],
 					'translation_domain' => 'validators'
-			]);
+			])
+			->add('higherLevel', EntityType::class, ['class'=>'App\Entity\Region', 
+				'choice_label'=>'title', 
+				'required' => false,
+				'choice_value' => function ($entity) {
+					return $entity ? $entity->getInternationalName() : '';
+				},
+				'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language, null);}]);
     }
 
     public function getBlockPrefix()
@@ -56,7 +65,8 @@ class RegionAdminType extends AbstractType
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
-			'data_class' => Region::class
+			'data_class' => Region::class,
+			'locale' => 'fr'
 		]);
 	}
 }

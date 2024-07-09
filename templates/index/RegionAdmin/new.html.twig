@@ -6,6 +6,17 @@
 
 {% block create_admin_route %}{{ path('Region_Admin_Create') }}{% endblock %}
 
+{% block js_specific %}
+	{% import "index/RegionAdmin/macro_region.html.twig" as macro_region %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.select2_autocomplete() }}
+
+	<script>
+		$("#{{ form.higherLevel.vars.id }}").select2();
+		{{ macro_region.updateListForm(form) }}
+	</script>
+{% endblock %}
+
 {% block tbody_admin_table %}
 	{% include 'index/RegionAdmin/_form.html.twig' %}
 {% endblock %}

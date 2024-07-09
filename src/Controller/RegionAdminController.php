@@ -62,7 +62,7 @@ class RegionAdminController extends AdminGenericController
 		$entity = new Region();
 
 		$twig = 'index/RegionAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType);
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -71,15 +71,16 @@ class RegionAdminController extends AdminGenericController
 		$entity = new Region();
 
 		$twig = 'index/RegionAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType);
+		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
     {
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = RegionAdminType::class;
 
 		$twig = 'index/RegionAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -87,7 +88,7 @@ class RegionAdminController extends AdminGenericController
 		$formType = RegionAdminType::class;
 		
 		$twig = 'index/RegionAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType);
+		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -125,6 +126,26 @@ class RegionAdminController extends AdminGenericController
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+	}
+
+	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
+	{
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = [];
+		
+		if(!empty($language))
+			$higherLevels = $em->getRepository(Region::class)->findBy(["language" => $language]);
+		else
+			$higherLevels = $em->getRepository(Region::class)->findAll();
+
+		$higherLevelArray = [];
+
+		foreach($higherLevels as $higherLevel)
+			$higherLevelArray[] = ["id" => $higherLevel->getId(), "title" => $higherLevel->getTitle()];
+
+		$translateArray['higherLevel'] = $higherLevelArray;
+
+		return new JsonResponse($translateArray);
 	}
 	
     public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)

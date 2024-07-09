@@ -76,10 +76,11 @@ class ThemeAdminController extends AdminGenericController
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
+		$entity = $em->getRepository($this->className)->find($id);
 		$formType = ThemeAdminType::class;
 
 		$twig = 'index/ThemeAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $request->getLocale()]);
+		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)

@@ -1,0 +1,35 @@
+{% macro updateListForm(form) %}
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('Region_Admin_ReloadListsByLanguage') }}", true);
+		
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var higherLevelSelect = document.getElementById("{{ form.higherLevel.vars.id }}");
+				higherLevelSelect.innerHTML = "";
+				
+				var option = document.createElement('option');
+				option.value = '';
+				higherLevelSelect.appendChild(option);
+				
+				data.higherLevel.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					higherLevelSelect.appendChild(option);
+				});
+				
+				{% if form.vars.value.higherLevel.id is defined %}
+					higherLevelSelect.value = "{{ form.vars.value.higherLevel.id }}";
+				{% endif %}
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("id", this.value);
+
+		xhr.send(formData);
+	});
+{% endmacro %}

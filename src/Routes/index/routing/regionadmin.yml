@@ -36,6 +36,10 @@ Region_Admin_IndexDatatables:
     requirements:
         _method: get
 
+Region_Admin_ReloadListsByLanguage:
+    path:  /reloadlistsbylanguage
+    controller: App\Controller\RegionAdminController::reloadListsByLanguageAction
+
 Region_Admin_ShowImageSelectorColorbox:
     path:  /showImageSelectorColorbox
     controller: App\Controller\RegionAdminController::showImageSelectorColorboxAction

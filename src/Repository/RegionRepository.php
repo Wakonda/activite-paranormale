@@ -80,15 +80,19 @@ class RegionRepository extends EntityRepository
 	}
 
 	// FORM
-	public function getCountryByLanguage($language)
+	public function getCountryByLanguage($language, $family = Region::COUNTRY_FAMILY)
 	{
 		$qb = $this->createQueryBuilder('o');
 		$qb->join('o.language', 'l')
 			->where('l.abbreviation = :language')
 			->setParameter('language', $language)
-			->andWhere("o.family = :familyCountry")
-			->setParameter("familyCountry", Region::COUNTRY_FAMILY)
 			->orderBy('o.title');
+
+		if(!empty($family)) {
+			$qb
+				->andWhere("o.family = :familyCountry")
+				->setParameter("familyCountry", $family);
+		}
 
 		return $qb;
 	}
