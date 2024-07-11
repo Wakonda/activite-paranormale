@@ -23,13 +23,8 @@ use App\Service\Currency;
 
 class ClassifiedAdsType extends AbstractType
 {
-	private $token;
+	public function __construct(private TokenStorageInterface $token){}
 
-	public function __construct(TokenStorageInterface $token)
-	{
-	   $this->token = $token;
-	}
-		
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options['locale'];

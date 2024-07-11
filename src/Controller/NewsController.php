@@ -207,8 +207,7 @@ class NewsController extends AbstractController
 
 		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
-		$user = $this->getUser();
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $authorizationChecker]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "securityUser" => $authorizationChecker]);
 
         return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
@@ -267,7 +266,7 @@ class NewsController extends AbstractController
 		if($entity->getState()->getDisplayState() or $user->getId() != $entity->getAuthor()->getId())
 			throw new \Exception("You are not authorized to edit this article.");
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $authorizationChecker]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "securityUser" => $authorizationChecker]);
 
         return $this->render('news/News/new.html.twig', [
             'entity' => $entity,
@@ -294,7 +293,7 @@ class NewsController extends AbstractController
 				throw new \Exception("You are not authorized to edit this document.");
 		}
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user, "securityUser" => $authorizationChecker]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "securityUser" => $authorizationChecker]);
         $form->handleRequest($request);
 		
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);

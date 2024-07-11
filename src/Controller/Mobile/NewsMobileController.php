@@ -235,7 +235,7 @@ class NewsMobileController extends AbstractController
 
 		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
 
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $security->getUser()]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
 
         return $this->render('mobile/News/new.html.twig', [
             'entity' => $entity,
@@ -248,7 +248,7 @@ class NewsMobileController extends AbstractController
 		$entity = new News();
 
 		$user = $security->getUser();
-        $form = $this->createForm(NewsUserParticipationType::class, $entity, ['language' => $request->getLocale(), "user" => $user]);
+        $form = $this->createForm(NewsUserParticipationType::class, $entity, ['language' => $request->getLocale()]);
         $form->handleRequest($request);
 		
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);

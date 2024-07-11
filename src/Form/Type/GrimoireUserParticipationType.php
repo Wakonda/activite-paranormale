@@ -13,15 +13,18 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 class GrimoireUserParticipationType extends AbstractType
 {
+	public function __construct(private TokenStorageInterface $token){}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["language"];
-		$user = $options["user"];
+		$user = $this->token->getToken()->getUser();
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
@@ -46,8 +49,7 @@ class GrimoireUserParticipationType extends AbstractType
 
 		if(!is_object($user))
 			$builder->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())));
-		else
-		{
+		else {
 			$builder->add('isAnonymous', ChoiceType::class, array(
 				'choices'   => array(
 					'witchcraft.new.PublishedAnonymously' => 1,
@@ -70,11 +72,10 @@ class GrimoireUserParticipationType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Grimoire',
 			'translation_domain' => 'validators',
-			'language' => 'fr',
-			'user' => null
-		));
+			'language' => 'fr'
+		]);
 	}
 }

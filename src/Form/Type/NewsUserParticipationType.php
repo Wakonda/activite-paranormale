@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,10 +25,12 @@ use Symfony\Component\Form\FormError;
 
 class NewsUserParticipationType extends AbstractType
 {
+	public function __construct(private TokenStorageInterface $token){}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["language"];
-		$user = $options["user"];
+		$user = $this->token->getToken()->getUser();
 		$securityUser = $options["securityUser"];
 
         $builder
@@ -111,7 +114,6 @@ class NewsUserParticipationType extends AbstractType
 			'data_class' => 'App\Entity\News',
 			'translation_domain' => 'validators',
 			'language' => 'fr',
-			'user' => null,
 			'securityUser' => null
 		]);
 	}

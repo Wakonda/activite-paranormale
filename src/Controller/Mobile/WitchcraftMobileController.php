@@ -83,17 +83,17 @@ class WitchcraftMobileController extends AbstractController
 	public function newAction(Request $request)
 	{
         $entity = new Grimoire();
-		
-		$user = $this->getUser();
-        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
+
+        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
 
 		return $this->render('mobile/Witchcraft/new.html.twig', ['form' => $form->createView()]);
 	}
 
 	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
+		$user = $this->getUser();
 		$entity  = new Grimoire();
-		$form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
+		$form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
 		
 		$form->handleRequest($request);
 

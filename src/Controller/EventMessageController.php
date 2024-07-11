@@ -216,7 +216,7 @@ class EventMessageController extends AbstractController
     {
         $entity = new EventMessage();
 
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $this->getUser()]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
@@ -252,7 +252,7 @@ class EventMessageController extends AbstractController
 		if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
 			throw new \Exception("You are not authorized to edit this document.");
 
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
 
         return $this->render('page/EventMessage/new.html.twig', [
             'entity' => $entity,
@@ -301,7 +301,7 @@ class EventMessageController extends AbstractController
 				throw new \Exception("You are not authorized to edit this document.");
 		}
 
-        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $locale, "user" => $user]);
+        $form = $this->createForm(EventMessageUserParticipationType::class, $entity, ["language" => $locale]);
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $locale]);

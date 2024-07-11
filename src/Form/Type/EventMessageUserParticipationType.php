@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,10 +25,12 @@ use Symfony\Component\Form\FormError;
 
 class EventMessageUserParticipationType extends AbstractType
 {
+	public function __construct(private TokenStorageInterface $token){}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["language"];
-		$user = $options["user"];
+		$user = $this->token->getToken()->getUser();
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))
@@ -42,13 +45,10 @@ class EventMessageUserParticipationType extends AbstractType
 			->add('latitude', HiddenType::class, array('required' => false))
 			;
 
-		if(!is_object($user))
-		{
+		if(!is_object($user)) {
 			$builder
 				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())));
-		}
-		else
-		{
+		} else {
 			$builder->add('isAnonymous', ChoiceType::class, array(
 				'choices'   => array(
 					'eventMessage.new.PublishedAnonymously' => 1,
@@ -103,11 +103,10 @@ class EventMessageUserParticipationType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults(array(
+		$resolver->setDefaults([
 			'data_class' => 'App\Entity\EventMessage',
 			'translation_domain' => 'validators',
-			'language' => 'fr',
-			'user' => null
-		));
+			'language' => 'fr'
+		]);
 	}
 }

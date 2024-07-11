@@ -186,8 +186,7 @@ class WitchcraftController extends AbstractController
     {
         $entity = new Grimoire();
 
-		$user = $this->getUser();
-        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
+        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
 
         return $this->render('witchcraft/Witchcraft/new.html.twig', [
             'entity' => $entity,
@@ -198,10 +197,9 @@ class WitchcraftController extends AbstractController
 	public function createAction(Request $request, EntityManagerInterface $em)
     {
 		$user = $this->getUser();
-
 		$entity = new Grimoire();
 
-        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale(), "user" => $user]);
+        $form = $this->createForm(GrimoireUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);

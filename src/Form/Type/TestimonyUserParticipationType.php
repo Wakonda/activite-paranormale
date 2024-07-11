@@ -17,6 +17,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -24,10 +25,12 @@ use App\Form\Field\DateTimePartialType;
 
 class TestimonyUserParticipationType extends AbstractType
 {
+	public function __construct(private TokenStorageInterface $token){}
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["locale"];
-		$user = $options["user"];
+		$user = $this->token->getToken()->getUser();
 		$securityUser = $options["securityUser"];
 
         $builder
@@ -61,14 +64,11 @@ class TestimonyUserParticipationType extends AbstractType
 			->add('nextStep', SubmitType::class, ['attr' => ['class' => 'submitcomment btn']])
 			->add('save', SubmitType::class, ['attr' => ['class' => 'submitcomment btn']]);
 
-		if(!is_object($user))
-		{
+		if(!is_object($user)) {
 			$builder
 				->add('pseudoUsed', TextType::class, array('constraints' => array(new NotBlank())))
 				->add('emailAuthor', TextType::class, array('required' => false, 'constraints' => array(new Email())));
-		}
-		else
-		{
+		} else {
 			$builder->add('isAnonymous', ChoiceType::class, array(
 				'choices'   => array(
 					'testimony.new.PublishedAnonymously' => 1,
@@ -83,8 +83,7 @@ class TestimonyUserParticipationType extends AbstractType
 			));
 		}
 
-		if($securityUser->isGranted('IS_AUTHENTICATED_FULLY'))
-		{
+		if($securityUser->isGranted('IS_AUTHENTICATED_FULLY')) {
 			$builder
 			->add('preview', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn'),
@@ -128,7 +127,6 @@ class TestimonyUserParticipationType extends AbstractType
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Testimony',
 			'locale' => 'fr',
-			'user' => null,
 			'securityUser' => null
 		]);
 	}

@@ -51,11 +51,10 @@ class TestimonyController extends AbstractController
     public function newAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new Testimony();
-		
+
 		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
-		
-		$user = $security->getUser();
-        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
+
+        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'securityUser' => $authorizationChecker]);
 
         return $this->render('testimony/Testimony/new.html.twig', [
             'entity' => $entity,
@@ -118,7 +117,7 @@ class TestimonyController extends AbstractController
 				throw new \Exception("You are not authorized to edit this document.");
 		}
 
-        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
+        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'securityUser' => $authorizationChecker]);
         $form->handleRequest($request);
 
 		$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => $request->getLocale()));
@@ -212,7 +211,7 @@ class TestimonyController extends AbstractController
 		if($entity->getState()->getDisplayState() == 1 or ($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $user->getId() != $entity->getAuthor()->getId()))
 			throw new \Exception("You are not authorized to edit this article.");
 
-        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'user' => $user, 'securityUser' => $authorizationChecker]);
+        $form = $this->createForm(TestimonyUserParticipationType::class, $entity, ['locale' => $request->getLocale(), 'securityUser' => $authorizationChecker]);
 
         return $this->render('testimony/Testimony/new.html.twig', [
             'entity' => $entity,
