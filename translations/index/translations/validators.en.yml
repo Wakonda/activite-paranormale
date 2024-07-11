@@ -125,6 +125,7 @@ region:
         Language: "Language"
         InternationalName: "International name"
         Family: "Family"
+        HigherLevel: "Higher level"
     form:
         Country: "Country"
         Area: "Area"
