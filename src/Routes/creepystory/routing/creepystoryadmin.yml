@@ -43,3 +43,7 @@ CreepyStory_Admin_ShowImageSelectorColorbox:
 CreepyStory_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\CreepyStoryAdminController::loadImageSelectorColorboxAction
+
+CreepyStory_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\CreepyStoryAdminController::internationalization

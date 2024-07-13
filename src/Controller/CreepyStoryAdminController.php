@@ -182,4 +182,45 @@ class CreepyStoryAdminController extends AdminGenericController
 	{
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
+
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
+	{
+		$formType = CreepyStoryAdminType::class;
+		$entity = new CreepyStory();
+
+		$entityToCopy = $em->getRepository(CreepyStory::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getTheme()->getInternationalName()]);
+		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
+		
+		if(empty($state)) {
+			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
+		}
+
+		$entity->setState($state);
+		$entity->setSource($entityToCopy->getSource());
+
+		if(!empty($theme))
+			$entity->setTheme($theme);
+
+		$entity->setLanguage($language);
+		
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+			
+			$entity->setIllustration($illustration);
+		}
+
+		$request->setLocale($language->getAbbreviation());
+
+		$twig = 'creepyStory/CreepyStoryAdmin/new.html.twig';
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+	}
 }
