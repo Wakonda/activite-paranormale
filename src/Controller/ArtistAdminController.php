@@ -196,10 +196,11 @@ class ArtistAdminController extends AdminGenericController
 
 		$entityToCopy = $em->getRepository(Artist::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$genre = $em->getRepository(MusicGenre::class)->findOneBy(["internationalName" => $entityToCopy->getGenre()->getInternationalName(), "language" => $language]);
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setTitle($entityToCopy->getTitle());
-		$entity->setGenre($entityToCopy->getGenre());
+		$entity->setGenre($genre);
 		$entity->setWebsite($entityToCopy->getWebsite());
 		$entity->setWikidata($entityToCopy->getWikidata());
 		$entity->setIdentifiers($entityToCopy->getIdentifiers());
