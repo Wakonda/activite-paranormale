@@ -35,7 +35,6 @@ class ClassifiedAdsAdminType extends AbstractType
 		    ->add('location', HiddenType::class, ['required' => false])
 			->add('displayEmail', CheckboxType::class, ["required" => false])
 			->add('illustration', IllustrationType::class, array('required' => true))
-			// ->add('illustration', FileType::class, array('data_class' => null, 'required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 					'choice_label' => function ($choice, $key, $value) {
 						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
@@ -82,6 +81,8 @@ class ClassifiedAdsAdminType extends AbstractType
 					},
 					'query_builder' => function(\App\Repository\StateRepository $repository) use ($language) { return $repository->getStateByLanguage($language);}
 			))
+			->add('contactName', TextType::class, ['required' => false])
+			->add('contactEmail', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
 		;
     }
 

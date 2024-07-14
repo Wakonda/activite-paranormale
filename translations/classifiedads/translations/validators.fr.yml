@@ -81,6 +81,8 @@ classifiedAds:
         Repeated: "Annonce dupliquée"
         Expired: "Annonce expirée"
         Offensive: "Annonce offensante"
+        ContactName: "Nom"
+        ContactEmail: "Email"
 classifiedAdsCategory:
     admin:
         Title: "Titre"

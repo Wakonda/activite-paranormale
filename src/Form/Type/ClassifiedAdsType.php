@@ -57,7 +57,7 @@ class ClassifiedAdsType extends AbstractType
 		
 		if(empty($this->token->getToken())) {
 			$builder->add('contactName', TextType::class, ['required' => false])
-			        ->add('contactEmail', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]]);
+			        ->add('contactEmail', TextType::class, ['required' => false]);
 		}
     }
 

@@ -22,6 +22,12 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "classifiedAds.admin.Photo"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.contactName, "classifiedAds.admin.ContactName"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.contactName) }}{{ form_widget(form.contactName, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.contactEmail, "classifiedAds.admin.ContactEmail"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.contactEmail) }}{{ form_widget(form.contactEmail, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.displayEmail, "classifiedAds.admin.DisplayEmail"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.displayEmail) }}{{ form_widget(form.displayEmail) }}</div>
 

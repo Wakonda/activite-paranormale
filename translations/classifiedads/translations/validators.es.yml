@@ -81,6 +81,8 @@ classifiedAds:
         Repeated: "Duplicado"
         Expired: "Vencido"
         Offensive: "Caducado"
+        ContactName: "Nombre"
+        ContactEmail: "Correo electrónico"
 classifiedAdsCategory:
     admin:
         Title: "Título"
