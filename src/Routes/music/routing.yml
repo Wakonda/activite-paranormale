@@ -18,6 +18,10 @@ Music_Music:
     path:  /music/piece/{music}/{id}
     controller: App\Controller\MusicController::musicAction
 
+Music_MusicShort:
+    path:  /music/piece/{id}
+    controller: App\Controller\MusicController::musicAction
+
 Music_Download:
     path:  /music/download/{id}
     controller: App\Controller\MusicController::downloadAction

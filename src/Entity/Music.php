@@ -94,6 +94,15 @@ class Music
 		return $artist." - ".$this->musicPiece.(!empty($album) ? " (".$album.")" : "");
 	}
 
+	public function getShowRoute() {
+		return "Music_MusicShort";
+	}
+
+	public function getUrlSlug()
+	{
+		return $this->musicPiece;
+	}
+
 	public function getLanguage() {
 		if(!empty($e = $this->album))
 			return $e->getLanguage();

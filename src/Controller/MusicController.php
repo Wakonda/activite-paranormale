@@ -98,7 +98,7 @@ class MusicController extends AbstractController
 		]);
 	}
 	
-	public function musicAction(EntityManagerInterface $em, $id, $music)
+	public function musicAction(EntityManagerInterface $em, $id, $music = null)
 	{
 		$entity = $em->getRepository(Music::class)->find($id);
 		$album = $entity->getAlbum();
