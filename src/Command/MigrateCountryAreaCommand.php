@@ -34,6 +34,24 @@ class MigrateCountryAreaCommand extends Command
     {
 		$output->writeln("Start WakondaGuru update");
 		
+		$conn = $this->em->getConnection();
+		
+		$conn->exec("UPDATE partner SET displayPage=0 WHERE title = 'Dailymotion';");
+		$conn->exec("UPDATE partner SET displayPage=0 WHERE title = 'Youtube';");
+		$conn->exec("UPDATE partner SET icon='fa-brands fa-x-twitter', color='#FFFFFF', displayPage=1 WHERE title = 'Twitter';");
+		$conn->exec("UPDATE partner SET displayPage=0 WHERE title = 'Scribd';");
+		$conn->exec("UPDATE partner SET icon='fab fa-facebook-square', color='#3b5998', displayPage=1 WHERE title = 'Facebook';");
+		$conn->exec("UPDATE partner SET icon='fab fa-mastodon', color='#5843D7', displayPage=1 WHERE title = 'Mastodon';");
+		$conn->exec("UPDATE partner SET icon='fab fa-diaspora', color='#ff8c00', displayPage=1 WHERE title = 'diaspora*';");
+		$conn->exec("UPDATE partner SET icon='fab fa-github-square', color='#333333', displayPage=1 WHERE title = 'Github';");
+		$conn->exec("UPDATE partner SET icon='fa-brands fa-x-twitter', color='#FFFFFF', displayPage=0 WHERE title = 'Twitter (Sorcellerie)';");
+		$conn->exec("UPDATE partner SET icon='fab fa-instagram', color='#bc2a8d', displayPage=1 WHERE title = 'Instagram';");
+		$conn->exec("UPDATE partner SET icon='fab fa-vk', color='#0077FF', displayPage=1 WHERE title = 'VKontakte';");
+		$conn->exec("UPDATE partner SET icon='fa-solid fa-spaghetti-monster-flying', color='#0077FF', displayPage=1 WHERE title = 'Bluesky';");
+		$conn->exec("UPDATE partner SET icon='fa-brands fa-flickr', color='#FF0084', displayPage=1 WHERE title = 'Flickr';");
+		$conn->exec("UPDATE partner SET icon='fa-brands fa-tiktok', color='#ff0050', displayPage=1 WHERE title = 'TikTok';");
+		$conn->exec("UPDATE partner SET title='X.com' WHERE title='Twitter';");
+
 		$fr = "BE-VAN;Antwerpen
 BE-WBR;Brabant wallon
 BE-WHT;Hainaut

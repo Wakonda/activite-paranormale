@@ -49,15 +49,51 @@ class Partner
     private $language;
 
 	/**
-	 * @var bool $active
-	 *
 	 * @ORM\Column(name="active", type="boolean")
 	 */
 	private $active;
 
+	/**
+	 * @ORM\Column(type="string", length=20, nullable=true)
+	 */
+	private $color;
+
+	/**
+	 * @ORM\Column(type="string", length=50, nullable=true)
+	 */
+	private $icon;
+
+	/**
+	 * @ORM\Column(type="boolean", nullable=true)
+	 */
+	private $displayPage;
+
 	public function __construct()
 	{
 		$this->active = true;
+	}
+
+	public function getTextColor(){
+		$hexCode = $this->color;
+		
+		if(empty($hexCode))
+			return null;
+
+		$redHex = substr($hexCode,0,2);
+		$greenHex = substr($hexCode,2,2);
+		$blueHex = substr($hexCode,4,2);
+	 
+		$r = (hexdec($redHex)) / 255;
+		$g = (hexdec($greenHex)) / 255;
+		$b = (hexdec($blueHex)) / 255;
+	 
+		$brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+		if($brightness > .6){
+			return '#000000';
+		}else{
+			return '#ffffff';
+		}
 	}
 
     /**
@@ -211,5 +247,35 @@ class Partner
 	public function getActive()
 	{
 		return $this->active;
+	}
+	
+	public function setColor($color)
+	{
+		$this->color = $color;
+	}
+	
+	public function getColor()
+	{
+		return $this->color;
+	}
+	
+	public function setIcon($icon)
+	{
+		$this->icon = $icon;
+	}
+	
+	public function getIcon()
+	{
+		return $this->icon;
+	}
+	
+	public function setDisplayPage($displayPage)
+	{
+		$this->displayPage = $displayPage;
+	}
+	
+	public function getdisplayPage()
+	{
+		return $this->displayPage;
 	}
 }

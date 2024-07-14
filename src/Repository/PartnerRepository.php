@@ -84,4 +84,15 @@ class PartnerRepository extends EntityRepository
 		
 		return $qb->getQuery()->getSingleScalarResult();
 	}
+	
+	public function getPartnersToDisplay($language) {
+		$qb = $this->createQueryBuilder("b");
+		$qb->innerjoin("b.language", "l")
+		   ->andWhere("l.abbreviation = :abbreviation")
+		   ->setParameter("abbreviation", $language)
+		   ->andWhere("b.active = true")
+		   ->andWhere("b.displayPage = true");
+
+		return $qb->getQuery()->getResult();
+	}
 }

@@ -128,7 +128,8 @@
 				new TwigFunction('get_env', [$this, 'getEnv']),
 				new TwigFunction('thumbnail_video', [$this, 'getThumbnailFromVideo']),
 				new TwigFunction('loader_video', [$this, 'getLoaderVideo'], ['is_safe' => ['html']]),
-				new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']])
+				new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']]),
+				new TwigFunction('partners', [$this, 'getPartners'], ['is_safe' => ['html']])
 			);
 		}
 
@@ -776,14 +777,12 @@
 		public function getBloggerId($type)
 		{
 			$bloggerAPI = new GoogleBlogger();
-
 			return $bloggerAPI->blogId_array[$bloggerAPI->getCorrectBlog($type)];
 		}
 
 		public function getFlickrId($type)
 		{
 			$flickrAPI = new Flickr();
-
 			return $flickrAPI->getParametersByLocale($type);
 		}
 
@@ -930,14 +929,12 @@
 		public function isMuseAvailable($locale): bool
 		{
 			$api = new \App\Service\Muse();
-			
 			return in_array($locale, $api->getLocaleAvailable());
 		}
 
 		public function isShopifyAvailable($type)
 		{
 			$api = new Shopify();
-
 			return in_array($type, $api->getTypes());
 		}
 
@@ -950,7 +947,6 @@
 		public function isPinterestAvailable($entity)
 		{
 			$api = new PinterestAPI();
-			
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 		
@@ -979,10 +975,7 @@
 		
 		public function getSourceDocument($sourceJSON, $locale = null, Array $classes = [])
 		{
-			if(!empty($locale))
-				$locale = $locale->getAbbreviation();
-			else
-				$locale = $this->translator->getLocale();
+			$locale = (!empty($locale)) ? $locale->getAbbreviation() : $this->translator->getLocale();
 
 			return (new \App\Service\FunctionsLibrary($this->em))->sourceString($sourceJSON, $locale, $classes);
 		}
@@ -1005,7 +998,7 @@
 			$thumbnail = !empty($t = $videoService->getThumbnailVideo()) ? $t : $entity->getAssetImagePath().$entity->getPhoto();
 			$url = $videoService->getURLByCode();
 			$platform = $videoService->getPlatformByCode();
-// dd($platform);
+
 			$id = "video-".$entity->getId();
 			$title = htmlspecialchars($entity->getTitle());
 
@@ -1074,6 +1067,10 @@
 		public function getEnv(string $varname): string
 		{
 			return $_ENV[$varname];
+		}
+		
+		public function getPartners() {
+			return $this->em->getRepository("App\Entity\Partner")->getPartnersToDisplay($this->translator->getLocale());
 		}
 
 		public function getName()
