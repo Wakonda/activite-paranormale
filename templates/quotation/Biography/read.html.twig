@@ -104,7 +104,7 @@
 		{% set gender = null %}
 		{% if entity.isMale() %}
 			{% set gender = '<i class="fa-solid fa-mars ms-2" style="color: darkturquoise"></i>' %}
-		{% else %}
+		{% elseif entity.isFemale() %}
 			{% set gender = '<i class="fa-solid fa-venus ms-2" style="color: hotpink"></i>' %}
 		{% endif %}
 

@@ -220,7 +220,9 @@ class ArtistAdminController extends AdminGenericController
 			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getBiography()->getInternationalName(), "language" => $language]);
 			
 			if(empty($biography))
-				continue;
+				$biography = $mbToCopy->getBiography();
+// dd($em->getRepository(Region::class)->findOneBy(["internationalName" => $biography->getNationality()->getInternationalName(), "language" => $language]));
+			$biography->setNationality($em->getRepository(Region::class)->findOneBy(["internationalName" => $biography->getNationality()->getInternationalName(), "language" => $language]));
 
 			$mb->setOccupation($mbToCopy->getOccupation());
 			$mb->setArtist($entity);
