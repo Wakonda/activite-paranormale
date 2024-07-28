@@ -1002,14 +1002,13 @@
 		<tbody>{{ noDataTR|raw }}</tbody>
 	</table>
 
-	<script>//setValue
-	
+	<script>
 		function reload{{ form.vars.id }}(data) {
 			$("#{{ form.vars.id}}_values tbody").html("");console.log(data.socialNetwork)
 			if(typeof data.socialNetwork !== "undefined") {
 				for(var j = 0; j < data.socialNetwork.length; j++) {
-				
-					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ j + "'><td>" + data.socialNetwork[j].socialNetwork + " (" + data.socialNetwork[j].url + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+					let title = data.socialNetwork[j].socialNetwork;
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ j + "'><td>" + title.charAt(0).toUpperCase() + title.slice(1) + " (" + data.socialNetwork[j].url + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
 				}
 			}
 		}
