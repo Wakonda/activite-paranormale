@@ -986,3 +986,172 @@
 		});
 	</script>
 {% endblock %}
+
+{% block social_network_edit_widget %}
+	<script src="{{ asset('extended/js/jsoneditor/jsoneditor.min.js') }}"></script>
+	{{ form_widget(form) }}
+
+	{% set noDataTR = '<tr><td colspan=3>' ~ "admin.source.NoData"|trans([], "validators") ~ '</td></tr>' %}
+
+	<div id="{{ form.vars.id}}_container" data-current-value="" data-current-datas="">
+	<div id='editor_holder_{{ form.vars.id}}' class='editor_holder'></div>
+	<button type="button" class="btn btn-success" id='add_source_{{ form.vars.id}}'><i class="far fa-save"></i> {{ "admin.source.Save"|trans([], "validators") }}</button>
+	</div>
+
+	<table class="table table-bordered table-striped mt-2" id="{{ form.vars.id}}_values">
+		<tbody>{{ noDataTR|raw }}</tbody>
+	</table>
+
+	<script>//setValue
+	
+		function reload{{ form.vars.id }}(data) {
+			$("#{{ form.vars.id}}_values tbody").html("");console.log(data.socialNetwork)
+			if(typeof data.socialNetwork !== "undefined") {
+				for(var j = 0; j < data.socialNetwork.length; j++) {
+				
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ j + "'><td>" + data.socialNetwork[j].socialNetwork + " (" + data.socialNetwork[j].url + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				}
+			}
+		}
+	
+		function ereload{{ form.vars.id }}(data) {
+			$("#{{ form.vars.id}}_values tbody").html("");
+			j = 0;
+				for (variable in data) {
+				console.log(data[variable])
+				if(data[variable] != null) {
+				j++
+					$("#{{ form.vars.id }}_values tbody").append("<tr data-id='"+ j + "'><td>" + variable + " (" + data[variable] + ")" + "</td><td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				}
+				}
+		}
+	
+		var schema{{ form.vars.id }} = 
+		{
+			schema: {
+			  type: "object",
+			  required_by_default: true,
+			  headerTemplate: "",
+			  properties: {
+				socialNetwork: {
+				    title: "{{ 'admin.identifier.Id'|trans([], 'validators') }}",
+					type: "string",
+      "enum": [
+        "Delicious",
+        "Facebook",
+        "Github",
+        "Instagram",
+        "Linkedin",
+        "Pinterest",
+        "RSS",
+        "Tumblr",
+        "Twitter",
+        "Vimeo",
+        "Youtube",
+      ],
+					required: true
+				},
+				url: {
+				  title: "{{ 'admin.identifier.Value'|trans([], 'validators') }}",
+				  type: "string",
+				  format: "url",
+				  required: true
+				}
+			  }
+			},
+			disable_edit_json: true,
+			disable_collapse: true,
+			disable_properties: true,
+			remove_button_labels: true,
+			compact: true,
+			theme: 'bootstrap4'
+		};
+
+		var editor{{ form.vars.id }} = new JSONEditor(document.getElementById('editor_holder_{{ form.vars.id}}'), schema{{ form.vars.id }});
+
+		if($("#{{ form.vars.id}}_container").data("currentDatas") !== "")
+			editor{{ form.vars.id }}.setValue(JSON.parse($("#{{ form.vars.id}}_container").data("currentDatas")));
+
+		JSONEditor.defaults.custom_validators.push((schema{{ form.vars.id }}, value, path) => {
+			const errors{{ form.vars.id }} = [];
+
+			if (schema{{ form.vars.id }}.required === true) {
+				if (value == "") {
+					errors{{ form.vars.id }}.push({
+						path: path,
+						message: "{{ ('admin.source.NoBlank'|trans([], 'validators'))|e('js') }}"
+					});
+				}
+			}
+
+			return errors{{ form.vars.id }};
+		});
+
+		var currentValue{{ form.vars.id }} = $("#{{ form.vars.id }}").val();
+
+		if(currentValue{{ form.vars.id }} !== "" && currentValue{{ form.vars.id }} !== "undefined") {
+			valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
+
+			$("#{{ form.vars.id}}_values tbody").html("");
+			for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
+				$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].socialNetwork + " (" + valuesToSave{{ form.vars.id }}[i].url + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+			}
+		}
+
+		document.getElementById('add_source_{{ form.vars.id}}').addEventListener('click',function() {
+			const errors{{ form.vars.id }} = editor{{ form.vars.id }}.validate();
+
+			editor{{ form.vars.id }}.options.show_errors = "always";
+			editor{{ form.vars.id }}.onChange();
+
+			if (errors{{ form.vars.id }}.length == 0) {
+			    editor{{ form.vars.id }}.options.show_errors = "never";
+				var valuesToSave{{ form.vars.id }} = [];
+				var currentValue{{ form.vars.id }} = $("#{{ form.vars.id }}").val();
+
+				if(currentValue{{ form.vars.id }} !== "" && currentValue{{ form.vars.id }} !== "undefined") {
+					valuesToSave{{ form.vars.id }} = JSON.parse(currentValue{{ form.vars.id }});
+				}
+
+				if($("#{{ form.vars.id}}_container").data("currentValue") !== "")
+					valuesToSave{{ form.vars.id }}.splice($("#{{ form.vars.id}}_container").data("currentValue"), 1);
+console.log(valuesToSave{{ form.vars.id }}, editor{{ form.vars.id }}.getValue())
+				valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
+
+				$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));
+				$("#{{ form.vars.id}}_values tbody").html("");
+
+				for(var i = 0; i < valuesToSave{{ form.vars.id }}.length; i++) {
+					$("#{{ form.vars.id}}_values tbody").append("<tr data-id='"+ i + "'><td>" + valuesToSave{{ form.vars.id }}[i].socialNetwork + " (" + valuesToSave{{ form.vars.id }}[i].url + ")" + "<td><a href='#' class='btn btn-outline-info btn-sm edit-source'><i class='fas fa-pen'></i></a></td><td><a href='#' class='btn btn-outline-danger btn-sm remove-source'><i class='fas fa-trash'></i></a></td></tr>")
+				}
+
+				var obj{{ form.vars.id }} = editor{{ form.vars.id }}.getValue()
+				Object.keys(obj{{ form.vars.id }}).forEach(k => obj{{ form.vars.id }}[k] = "");
+				editor{{ form.vars.id }}.setValue(obj{{ form.vars.id }});
+				$("#{{ form.vars.id}}_container").data("currentValue", "");
+			}
+		});
+
+		$(document).on("click", "#{{ form.vars.id}}_values .edit-source", function(e) {
+			e.preventDefault();
+			var values{{ form.vars.id }} = JSON.parse($("#{{ form.vars.id }}").val());
+
+			$("#{{ form.vars.id}}_container").data("currentValue", $(this).parent().parent("tr").data("id"));
+			$("#{{ form.vars.id}}_container").data("currentDatas", JSON.stringify(values{{ form.vars.id }}[$(this).parent().parent("tr").data("id")]));
+
+			editor{{ form.vars.id }}.setValue(values{{ form.vars.id }}[$(this).parent().parent("tr").data("id")]);
+		});
+
+		$(document).on("click", "#{{ form.vars.id}}_values .remove-source", function(e) {
+			e.preventDefault();
+			var values{{ form.vars.id }} = JSON.parse($("#{{ form.vars.id }}").val());
+			values{{ form.vars.id }}.splice($(this).parent().data("id"),1);
+
+			$("#{{ form.vars.id }}").val(JSON.stringify(values{{ form.vars.id }}));
+			$("#{{ form.vars.id}}_values tr[data-id=" + $(this).parent().parent().data("id") + "]").remove();
+
+			if($("#{{ form.vars.id}}_values tr").length == 0)
+				$("#{{ form.vars.id}}_values tbody").append('{{ noDataTR|raw }}');
+		});
+	</script>
+{% endblock %}

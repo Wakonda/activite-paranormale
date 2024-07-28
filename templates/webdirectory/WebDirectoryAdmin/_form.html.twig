@@ -29,38 +29,8 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.defunctYear, "directory.admin.DefunctYear"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.defunctYear) }}{{ form_widget(form.defunctYear, { 'attr': {'class': 'form-control'} }) }}</div>
 
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkFacebook, "Facebook") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkFacebook) }}{{ form_widget(form.socialNetworkFacebook, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTwitter, "Twitter") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkTwitter) }}{{ form_widget(form.socialNetworkTwitter, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkRSS, "RSS") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkRSS) }}{{ form_widget(form.socialNetworkRSS, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkYoutube, "Youtube") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkYoutube) }}{{ form_widget(form.socialNetworkYoutube, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkInstagram, "Instagram") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkInstagram) }}{{ form_widget(form.socialNetworkInstagram, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkPinterest, "Pinterest") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkPinterest) }}{{ form_widget(form.socialNetworkPinterest, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkDelicious, "Delicious") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkDelicious) }}{{ form_widget(form.socialNetworkDelicious, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkGithub, "Github") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkGithub) }}{{ form_widget(form.socialNetworkGithub, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkLinkedin, "Linkedin") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkLinkedin) }}{{ form_widget(form.socialNetworkLinkedin, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTumblr, "Tumblr") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkTumblr) }}{{ form_widget(form.socialNetworkTumblr, { 'attr': {'class': 'form-control'} }) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkVimeo, "Vimeo") }}</div>
-<div class="form-table-cell">{{ form_errors(form.socialNetworkVimeo) }}{{ form_widget(form.socialNetworkVimeo, { 'attr': {'class': 'form-control'} }) }}</div>
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetwork, "directory.form.SocialNetworks"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetwork) }}{{ form_widget(form.socialNetwork, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "directory.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
@@ -102,10 +72,10 @@
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));
 				
 				document.getElementById("{{ form.licence.vars.id }}").value = data.licence;
-				document.getElementById("{{ form.socialNetworkTwitter.vars.id }}").value = data.socialNetwork.twitter;
-				document.getElementById("{{ form.socialNetworkFacebook.vars.id }}").value = data.socialNetwork.facebook;
-				document.getElementById("{{ form.socialNetworkGithub.vars.id }}").value = data.socialNetwork.github;
-				document.getElementById("{{ form.socialNetworkInstagram.vars.id }}").value = data.socialNetwork.instagram;
+
+				editor{{ form.socialNetwork.vars.id }}.setValue(data.socialNetwork)
+				document.getElementById("{{ form.socialNetwork.vars.id }}").value = JSON.stringify(data.socialNetwork);
+				reload{{ form.socialNetwork.vars.id }}(data);
 
 				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
 					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;

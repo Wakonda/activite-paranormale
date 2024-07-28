@@ -44,6 +44,9 @@
 			if(empty(array_filter($dateArray)))
 				return null;
 
+			if (!preg_match('/^(-?\d{4})(-\d{2})?(-\d{2})?$/', $partialDate))
+				return $partialDate;
+
 			$bc = "";
 			if(str_starts_with($partialDate, "-"))
 				$bc = " G";

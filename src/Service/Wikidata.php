@@ -614,19 +614,19 @@
 			if(empty($res["image"]["url"]))
 				$res["image"] = $this->getImage($datas, $code, "P18");
 
-			$res["socialNetwork"] = ["twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
+			$res["socialNetwork"] = [];
 
 			if(property_exists($datas->entities->$code->claims, "P2002"))
-				$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
+				$res["socialNetwork"][] = ["socialNetwork" => "twitter", "url" => "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value];
 			
-			if(property_exists($datas->entities->$code->claims, "P9100"))
-				$res["socialNetwork"]["github"] = "https://github.com/topics/".$datas->entities->$code->claims->P9100[0]->mainsnak->datavalue->value;
+			// if(property_exists($datas->entities->$code->claims, "P9100"))
+				// $res["socialNetwork"]["github"] = "https://github.com/topics/".$datas->entities->$code->claims->P9100[0]->mainsnak->datavalue->value;
 			
-			if(property_exists($datas->entities->$code->claims, "P2013"))
-				$res["socialNetwork"]["facebook"] = "https://www.facebook.com/".$datas->entities->$code->claims->P2013[0]->mainsnak->datavalue->value;
+			// if(property_exists($datas->entities->$code->claims, "P2013"))
+				// $res["socialNetwork"]["facebook"] = "https://www.facebook.com/".$datas->entities->$code->claims->P2013[0]->mainsnak->datavalue->value;
 			
-			if(property_exists($datas->entities->$code->claims, "P2003"))
-				$res["socialNetwork"]["instagram"] = "https://www.instagram.com/".$datas->entities->$code->claims->P2003[0]->mainsnak->datavalue->value;
+			// if(property_exists($datas->entities->$code->claims, "P2003"))
+				// $res["socialNetwork"]["instagram"] = "https://www.instagram.com/".$datas->entities->$code->claims->P2003[0]->mainsnak->datavalue->value;
 			
 			$foundedDate = null;
 			
