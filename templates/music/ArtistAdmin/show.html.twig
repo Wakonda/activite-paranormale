@@ -89,6 +89,16 @@
 		{% endif %}
 	</div>
 
+	{% if entity.socialNetwork is not null %}
+		{% set socialNetworkArray = json_decode(entity.socialNetwork) %}
+		{% for sn in socialNetworkArray %}
+			{% if sn.url is not empty %}
+				<div class="form-table-cell form-table-cell-head">{{ sn.socialNetwork|ucfirst }}</div>
+				<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+
 	<div class="form-table-cell form-table-cell-head">{{ "artist.admin.Sources"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
 

@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormEvents;
 use App\Form\Field\SourceEditType;
 use App\Form\Field\IdentifiersEditType;
 use App\Entity\ArtistBiography;
+use App\Form\Field\SocialNetworkEditType;
 
 class ArtistAdminType extends AbstractType
 {
@@ -59,6 +60,7 @@ class ArtistAdminType extends AbstractType
 									  ->setParameter("locale", $language);
 						},
 				))
+            ->add('socialNetwork', SocialNetworkEditType::class, ['required' => false])
 			->add('country', EntityType::class, array('class'=>'App\Entity\Region', 
 					'choice_label'=>'title', 
 					'required' => false,

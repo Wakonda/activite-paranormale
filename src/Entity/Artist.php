@@ -98,6 +98,13 @@ class Artist
      * @ORM\Column(name="identifiers", type="text", nullable=true)
      */
     private $identifiers;
+
+    /**
+     * @var text $socialNetwork
+     *
+     * @ORM\Column(name="socialNetwork", type="text", nullable=true)
+     */
+    private $socialNetwork;
 	
 	public function __clone()
 	{
@@ -356,5 +363,15 @@ class Artist
     public function getIdentifiers()
     {
         return $this->identifiers;
+    }
+
+    public function setSocialNetwork($socialNetwork)
+    {
+        $this->socialNetwork = $socialNetwork;
+    }
+
+    public function getSocialNetwork()
+    {
+        return $this->socialNetwork;
     }
 }

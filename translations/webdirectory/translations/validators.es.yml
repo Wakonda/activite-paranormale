@@ -12,7 +12,7 @@ directory:
         Link: "Link"
         Logo: "Logo"
         WebsiteLanguage: "Idioma del sitio web"
-        SocialNetworks: "Social networks"
+        SocialNetworks: "Redes sociales"
         Validate: "Validate"
     validate:
         Validation: "Validación"

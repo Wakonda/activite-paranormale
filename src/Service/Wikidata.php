@@ -457,9 +457,23 @@
 
 			$res["links"] = isset($websitesArray["website"]) ? key($websitesArray["website"]) : null;
 
+			$res["socialNetwork"] = [];
+
+			if(property_exists($datas->entities->$code->claims, "P2002"))
+				$res["socialNetwork"][] = ["socialNetwork" => "twitter", "url" => "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value];
+
+			if(property_exists($datas->entities->$code->claims, "P2397"))
+				$res["socialNetwork"][] = ["socialNetwork" => "youtube", "url" => "https://www.youtube.com/channel/".$datas->entities->$code->claims->P2397[0]->mainsnak->datavalue->value];
+
+			if(property_exists($datas->entities->$code->claims, "P7085"))
+				$res["socialNetwork"][] = ["socialNetwork" => "facebook", "url" => "https://www.facebook.com/".$datas->entities->$code->claims->P7085[0]->mainsnak->datavalue->value];
+
+			if(property_exists($datas->entities->$code->claims, "P2003"))
+				$res["socialNetwork"][] = ["socialNetwork" => "instagram", "url" => "https://www.instagram.com/".$datas->entities->$code->claims->P2003[0]->mainsnak->datavalue->value];
+
 			if(property_exists($datas->entities->$code->claims, "P1902")) {
 				$value = $datas->entities->$code->claims->P1902[0]->mainsnak->datavalue->value;
-				
+
 				$res["identifiers"][] = [
 					"identifier" => Identifier::SPOTIFY_ARTIST_ID,
 					"value" => $value
@@ -618,60 +632,59 @@
 
 			if(property_exists($datas->entities->$code->claims, "P2002"))
 				$res["socialNetwork"][] = ["socialNetwork" => "twitter", "url" => "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value];
-			
+
 			if(property_exists($datas->entities->$code->claims, "P9100"))
 				$res["socialNetwork"][] = ["socialNetwork" => "github", "url" => "https://github.com/topics/".$datas->entities->$code->claims->P9100[0]->mainsnak->datavalue->value];
-			
+
 			if(property_exists($datas->entities->$code->claims, "P2013"))
 				$res["socialNetwork"][] = ["socialNetwork" => "facebook", "url" => "https://www.facebook.com/".$datas->entities->$code->claims->P2013[0]->mainsnak->datavalue->value];
-			
+
 			if(property_exists($datas->entities->$code->claims, "P2003"))
 				$res["socialNetwork"][] = ["socialNetwork" => "instagram", "url" => "https://www.instagram.com/".$datas->entities->$code->claims->P2003[0]->mainsnak->datavalue->value];
-			
+
 			$foundedDate = null;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P571")) {
 				$foundedDate = $datas->entities->$code->claims->P571[0]->mainsnak->datavalue->value->time;
 				$foundedDate = date_parse($foundedDate);
 			}
-			
+
 			$res["foundedDate"] = [
 				"year" => !empty($foundedDate) ? $foundedDate["year"] : null,
 				"month" => !empty($foundedDate) ? $foundedDate["month"] : null,
 				"day" => !empty($foundedDate) ? $foundedDate["day"] : null
 			];
-			
+
 			$defunctDate = null;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P576")) {
 				$defunctDate = $datas->entities->$code->claims->P576[0]->mainsnak->datavalue->value->time;
 				$defunctDate = date_parse($defunctDate);
 			}
-				
+
 			$res["defunctDate"] = [
 				"year" => !empty($defunctDate) ? $defunctDate["year"] : null,
 				"month" => !empty($defunctDate) ? $defunctDate["month"] : null,
 				"day" => !empty($defunctDate) ? $defunctDate["day"] : null
 			];
-			
+
 			$res["link"] = null;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P856")) {
 				$value = $datas->entities->$code->claims->P856[0]->mainsnak->datavalue->value;
-				
 				$res["link"] = $value;
 			}
-			
+
 			$res["licence"] = null;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P275")) {
 				$id = $datas->entities->$code->claims->P275[0]->mainsnak->datavalue->value->id;
 				$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids=${id}&languages=${language}&format=json"));
-				
+
 				if(property_exists($data->entities, "Q18810333") and property_exists($data->entities->Q18810333->labels, $language)) {
 					$languageEntity = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 					$licence = $this->em->getRepository(Licence::class)->findOneBy(["title" => $data->entities->Q18810333->labels->$language->value, "language" => $languageEntity]);
-					
+
 					if(!empty($licence))
 						$res["licence"] = $licence->getId();
 				}
@@ -679,27 +692,27 @@
 
 			return $res;
 		}
-		
+
 		public function getMovieDatas(string $code, string $language): array
 		{
 			$res = $this->getTitleAndUrl($code, $language);
 			$languageWiki = $language."wiki";
-			
+
 			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages=${language}&ids=${code}&sitefilter=${languageWiki}");
 
 			$datas = json_decode($content);
-			
+
 			$res["image"] = $this->getImage($datas, $code);
-			
+
 			if(property_exists($datas->entities->$code->claims, "P345")) {
 				$value = $datas->entities->$code->claims->P345[0]->mainsnak->datavalue->value;
-				
+
 				$res["identifiers"][] = [
 					"identifier" => Identifier::IMDB_ID,
 					"value" => $value
 				];
 			}
-			
+
 			if(property_exists($datas->entities->$code->claims, "P1258")) {
 				$value = $datas->entities->$code->claims->P1258[0]->mainsnak->datavalue->value;
 				
@@ -708,7 +721,7 @@
 					"value" => $value
 				];
 			}
-			
+
 			if(property_exists($datas->entities->$code->claims, "P6127")) {
 				$value = $datas->entities->$code->claims->P6127[0]->mainsnak->datavalue->value;
 
@@ -755,7 +768,7 @@
 			if(property_exists($datas->entities->$code->claims, "P577")) {
 				$publicationDate = $datas->entities->$code->claims->P577[0]->mainsnak->datavalue->value->time;
 				$publicationDate = date_parse($publicationDate);
-				
+
 				$res["publicationDate"] = [
 					"year" => $publicationDate["year"],
 					"month" => $publicationDate["month"],

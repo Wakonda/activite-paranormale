@@ -11,6 +11,7 @@ artist:
         AlbumList: "Lista de álbumes"
         Identifiers: "Número de identificación"
         SynchronizeWithSpotify: "Sincronizar con Spotify"
+        SocialNetworks: "Redes sociales"
     biography:
         Title: "Titulo"
         Occupations: "Ocupaciónes"

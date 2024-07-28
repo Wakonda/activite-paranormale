@@ -74,6 +74,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.identifiers, "artist.admin.Identifiers"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.identifiers) }}{{ form_widget(form.identifiers, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetwork, "artist.admin.SocialNetworks"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetwork) }}{{ form_widget(form.socialNetwork, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "artist.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
@@ -108,6 +111,10 @@
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);
 				reload{{ form.identifiers.vars.id }}(data);
+
+				editor{{ form.socialNetwork.vars.id }}.setValue(data.socialNetwork)
+				document.getElementById("{{ form.socialNetwork.vars.id }}").value = JSON.stringify(data.socialNetwork);
+				reload{{ form.socialNetwork.vars.id }}(data);
 
 				if(document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value == "") {
 					document.getElementById("{{ form.illustration.photo_selector.vars.id }}").value = data.image.url;
