@@ -1,0 +1,29 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{{ "admin.socialNetwork.SocialNetwork"|trans([], "validators") }}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Phpinfo') }}"><i class="fas fa-exclamation-circle"></i> PHP Info</a></li>
+	<li class="nav-item"><a class="nav-link" href="{{ path('api_entrypoint') }}"><i class="fas fa-plug"></i> A.P.I.</a></li>
+	<li class="nav-item"><a class="nav-link" href="https://github.com/Wakonda/activite-paranormale"><i class="fab fa-github-alt"></i> Github</a></li>
+{% endblock %}
+
+{% block body_main %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(form, {'action': path('Admin_PublishSocialNetwork'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetwork, "admin.socialNetwork.SocialNetwork"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.socialNetwork) }}{{ form_widget(form.socialNetwork, { 'attr': {'class': 'form-select'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "admin.socialNetwork.Message"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text, { 'attr': {'class': 'form-control'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.url, "admin.socialNetwork.Url"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.url) }}{{ form_widget(form.url, { 'attr': {'class': 'form-control'} }) }}</div>
+		</div>
+	{{ form_rest(form) }}
+	<div class="my-3">
+		<button class="btn btn-success" type="submit">{{ "admin.general.Send"|trans([], "validators") }}</button>
+	</div>
+	{{ form_end(form) }}
+{% endblock %}
