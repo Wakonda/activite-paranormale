@@ -131,6 +131,10 @@ Admin_Sitemap:
     path: /admin/sitemap
     controller: App\Controller\AdminController::generateSitemap
 
+Admin_PublishSocialNetwork:
+    path: /admin/publish/social_network
+    controller: App\Controller\AdminController::publishSocialNetwork
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index

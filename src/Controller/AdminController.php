@@ -1588,4 +1588,24 @@ die("ok");
 	private function isSelectQuery($sql) {
 		return str_starts_with(strtolower($sql), "select ");
 	}
+
+	public function publishSocialNetwork(Request $request, TwitterAPI $twitterAPI) {
+		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class, null, ["social_network" => "twitter"]);
+		
+		if($request->isMethod('post')) {
+			$form->handleRequest($request);
+			$data = $form->getData();
+			
+			$res = $twitterAPI->retweet($data["text"], $data["socialNetwork"]);
+
+			if(property_exists($res, "status") or property_exists($res, "reason")) {
+				$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
+				$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
+			}
+			elseif(property_exists($res, "data"))
+				$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+		}
+		
+		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView()]);
+	}
 }

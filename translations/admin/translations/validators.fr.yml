@@ -183,6 +183,10 @@ admin:
         Failed: "Echec lors de l'envoi sur Wordpress"
     wikipedia:
         Header: "En-tête"
+    socialNetwork:
+        SocialNetwork: "Réseau social"
+        Message: "Message"
+        Url: "URL"
     emoji:
         Emoji: "Émoji"
         Smiley: "Smiley"

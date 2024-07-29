@@ -32,6 +32,19 @@ class TwitterAPI
 
 		return $connection->post('tweets', $parameters, true);
 	}
+
+	public function retweet(string $message, string $locale)
+	{
+		$this->setLanguage($locale);
+
+		$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->OAUTH_TOKEN, $this->OAUTH_TOKEN_SECRET);
+
+		$connection->setApiVersion('2');
+
+		$parameters['text'] = $message;
+
+		return $connection->post('tweets', $parameters, true);
+	}
 	
 	public function setLanguage($language)
 	{
@@ -66,5 +79,15 @@ class TwitterAPI
 	public function getLanguages()
 	{
 		return ["en", "es", "fr", "magic_fr"];
+	}
+
+	public function getLanguagesCanonical()
+	{
+		return [
+			"Twitter (english)" => "en",
+			"Twitter (español)" => "es",
+			"Twitter (français)" => "fr",
+			"Twitter (français - magie)" => "magic_fr"
+		];
 	}
 }
