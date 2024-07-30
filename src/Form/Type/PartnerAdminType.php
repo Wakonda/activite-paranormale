@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\ColorType;
 
 class PartnerAdminType extends AbstractType
 {
@@ -35,7 +36,10 @@ class PartnerAdminType extends AbstractType
 										->orderBy('u.title', 'ASC');
 							},
 			))
-			->add('active', CheckboxType::class, array('required' => true))
+			->add('active', CheckboxType::class, ['required' => true])
+			->add('displayPage', CheckboxType::class, ['required' => false])
+            ->add('color', ColorType::class, ['required' => false])
+            ->add('icon', TextType::class, ['required' => false, "attr" => ["placeholder" => "fab fa-vk"]])
         ;
     }
 

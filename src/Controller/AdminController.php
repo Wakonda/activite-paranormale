@@ -1589,14 +1589,14 @@ die("ok");
 		return str_starts_with(strtolower($sql), "select ");
 	}
 
-	public function publishSocialNetwork(Request $request, TwitterAPI $twitterAPI) {
+	public function publishSocialNetwork(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI) {
 		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class, null, ["social_network" => "twitter"]);
-		
+
 		if($request->isMethod('post')) {
 			$form->handleRequest($request);
 			$data = $form->getData();
-			
-			$res = $twitterAPI->retweet($data["text"], $data["socialNetwork"]);
+
+			$res = $twitterAPI->retweet($data["text"]." ".$data["url"], $data["socialNetwork"]);
 
 			if(property_exists($res, "status") or property_exists($res, "reason")) {
 				$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;

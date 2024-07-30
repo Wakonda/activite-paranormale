@@ -16,3 +16,12 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.active, "partner.admin.Active"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.active) }}{{ form_widget(form.active) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.displayPage, "partner.admin.DisplayPage"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.displayPage) }}{{ form_widget(form.displayPage) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.color, "partner.admin.Color"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.color) }}{{ form_widget(form.color) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.icon, "partner.admin.Icon"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.icon) }}{{ form_widget(form.icon, { 'attr': {'class': 'form-control'} }) }}</div>

@@ -8,3 +8,6 @@ partner:
         Logo: "Logo"
         Language: "Language"
         Active: "Active"
+        DisplayPage: "Show on Home Page"
+        Color: "Color"
+        Icon: "Icon"
