@@ -42,7 +42,7 @@
 	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "partner.admin.Icon"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.icon }}</div>
+	<div class="form-table-cell"><i class="{{ entity.icon }}" aria-hidden="true"></i> {{ entity.icon }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "partner.admin.Color"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><span style="background-color:{{ entity.color }}; width: 50px; height: 20px; display: inline-block;" class="p-2 me-2"></span>{{ entity.color }}</div>
