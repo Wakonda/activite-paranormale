@@ -183,6 +183,10 @@ admin:
         Failed: "Failed to send to Wordpress"
     wikipedia:
         Header: "Header"
+    socialNetwork:
+        SocialNetwork: "Social network"
+        Message: "Message"
+        Url: "URL"
     emoji:
         Emoji: "Emoji"
         Smiley: "Smiley"
@@ -204,6 +208,7 @@ admin:
         TestimoniesToModerate: "Testimonies to moderate"
         WebDirectoriesToModerate: "Web directories to moderate"
         CommentsToModerate: "Comments to moderate"
+        ClassifiedAdsToModerate: "Classified ads to moderate"
         Waiting: "Waiting"
         Warned: "Warned"
         UnreadPosts: "Unread posts"

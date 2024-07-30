@@ -208,6 +208,7 @@ admin:
         TestimoniesToModerate: "Témoignages à modérer"
         WebDirectoriesToModerate: "Annuaires web à modérer"
         CommentsToModerate: "Commentaires à modérer"
+        ClassifiedAdsToModerate: "Petites annonces à modérer"
         Waiting: "En attente"
         Warned: "Averti"
         UnreadPosts: "Messages non lus"
