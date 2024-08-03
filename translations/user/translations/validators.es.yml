@@ -146,6 +146,7 @@ user:
         RewardThisAuthorSentence: "Puedes recompensar a este autor por su trabajo y animarlo. Para ello, puedes hacerle una donación."
         DonateToThisAuthor: "Donar a este autor"
         Donate: "Donar"
+        NoPaymentMethod: "Este usuario no ha configurado ningún medio de pago para recibir el donante."
         ReceiveRewards: "Recibe recompensas"
         ReceiveRewardsSentence: "Para recibir recompensas por sus publicaciones, puede configurar varios métodos de pago <a href='%url%'>completando su perfil</a>."
         AddressOfYourWallet: "Dirección de su billetera"

@@ -146,6 +146,7 @@ user:
         RewardThisAuthorSentence: "Vous pouvez récompenser cet auteur pour son travail et l'encourager. Pour cela, vous pouvez lui faire un don."
         DonateToThisAuthor: "Faites un don à cet auteur"
         Donate: "Faites un don"
+        NoPaymentMethod: "Cet utilisateur n'a configuré aucun moyen de paiement pour recevoir des dons."
         ReceiveRewards: "Recevoir des récompenses"
         ReceiveRewardsSentence: "Pour recevoir des récompenses pour vos publications, vous pouvez paramétrer plusieurs méthodes de paiement <a href='%url%'>en complétant votre profil</a>."
         AddressOfYourWallet: "Adresse de votre portefeuille"

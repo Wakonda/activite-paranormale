@@ -29,5 +29,7 @@
 			</div>
 		</div>
 		{% set i = i + 1 %}
+	{% else %}
+		<div class="alert alert-info"><i class="fa-solid fa-circle-info text-info"></i> {{ "user.donation.NoPaymentMethod"|trans([], "validators") }}</div>
 	{% endfor %}
 </div>
