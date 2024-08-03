@@ -30,7 +30,7 @@ class TestimonyUserParticipationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["locale"];
-		$user = $this->token->getToken()->getUser();
+		$user = !empty($token = $this->token->getToken()) ? $token->getUser() : null;
 		$securityUser = $options["securityUser"];
 
         $builder

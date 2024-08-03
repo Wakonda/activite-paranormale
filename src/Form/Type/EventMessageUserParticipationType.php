@@ -30,7 +30,7 @@ class EventMessageUserParticipationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["language"];
-		$user = $this->token->getToken()->getUser();
+		$user = !empty($token = $this->token->getToken()) ? $token->getUser() : null;
 
         $builder
             ->add('title', TextType::class, array('label' => 'Titre', 'required' => true, 'constraints' => array(new NotBlank())))

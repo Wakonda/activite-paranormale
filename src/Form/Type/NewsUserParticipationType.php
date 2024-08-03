@@ -30,7 +30,7 @@ class NewsUserParticipationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
 		$language = $options["language"];
-		$user = $this->token->getToken()->getUser();
+		$user = !empty($token = $this->token->getToken()) ? $token->getUser() : null;
 		$securityUser = $options["securityUser"];
 
         $builder
