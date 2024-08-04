@@ -502,7 +502,6 @@ class AdminController extends AbstractController
 						$img = $imgProperty;
 					}
 					$text = $entity->getText()."<br>";
-					$text .= (!empty($d = $entity->getWitchcraftTool()->getText()) ? $d."<br>" : "");
 					$text .= $entity->getImageEmbeddedCode()."<br><br>";
 					$text .= !empty($entity->getWitchcraftTool()->getSource()) ? "<br><b>".$translator->trans('news.index.Sources', [], 'validators', $language)."</b><span>".(new FunctionsLibrary())->sourceString($entity->getWitchcraftTool()->getSource(), $entity->getWitchcraftTool()->getLanguage()->getAbbreviation())."</span>" : "";
 					$text = "<div>".$parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath())."</div>";
@@ -533,6 +532,8 @@ class AdminController extends AbstractController
 					$text .= '<div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
 				elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
 					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
+				elseif(Store::TEMU_PLATFORM == $entity->getPlatform())
+					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff6d00; padding: 0.375rem 0.75rem;background-color: #ff6d00;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
 			}
 
 			$baseurl = "";

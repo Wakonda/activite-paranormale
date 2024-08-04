@@ -35,6 +35,7 @@ class Store
 	const ALIEXPRESS_PLATFORM = "aliexpress";
 	const AMAZON_PLATFORM = "amazon";
 	const SPREADSHOP_PLATFORM = "spreadshop";
+	const TEMU_PLATFORM = "temu";
 	
 	const BOOK_CATEGORY = "book";
 	const CLOTH_CATEGORY = "cloth";

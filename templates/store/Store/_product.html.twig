@@ -61,6 +61,11 @@
 						<span class="me-2"><i class="fab fa-alipay fa-fw"></i></span>
 						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
 					</a>
+				{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::TEMU_PLATFORM') %}
+					<a class="btn temu text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
+						<span class="me-2"><i class="fa-solid fa-warehouse fa-fw"></i></span>
+						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
+					</a>
 				{% else %}
 					<a class="btn spreadshop" href="{{ entity.url }}" rel="nofollow" target="_blank">
 						<span class="me-2"><i class="fas fa-cart-shopping fa-fw"></i></span>

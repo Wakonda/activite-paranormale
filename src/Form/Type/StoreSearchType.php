@@ -42,7 +42,7 @@ class StoreSearchType extends AbstractType
 
         $builder
 			->add('category', ChoiceType::class, ['choices' => $categories, 'expanded' => false, 'multiple' => false, "required" => false])
-			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
+			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM, ucfirst(Store::TEMU_PLATFORM) => Store::TEMU_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
 		;
     }
 

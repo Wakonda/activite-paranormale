@@ -90,6 +90,8 @@ class StoreController extends AbstractController
 			$text .= '<style>img { width: 170px }</style><div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $locale).'</a></div>';
 		elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
 			$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $locale).'</a></div>';
+		elseif(Store::TEMU_PLATFORM == $entity->getPlatform())
+			$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff6d00; padding: 0.375rem 0.75rem;background-color: #ff6d00;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnTemu', [], 'validators', $locale).'</a></div>';
 	
         return new Response($text);
     }

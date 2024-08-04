@@ -25,7 +25,7 @@
 		<div class="text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></div>
 		<br>
 	{% endif %}
-	
+
 	<div class="text-center">
 		{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
 			<a class="btn amazon" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
@@ -36,6 +36,11 @@
 			<a class="btn aliexpress" href="{{ entity.url }}" rel="nofollow" target="_blank">
 				<span class="me-2"><i class="fab fa-alipay fa-fw"></i></span>
 				<b class="align-middle">{{ "store.index.BuyOnAliexpress"|trans([], "validators") }}</b>
+			</a>
+		{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::TEMU_PLATFORM') %}
+			<a class="btn temu text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
+				<span class="me-2"><i class="fa-solid fa-warehouse fa-fw"></i></span>
+				<b class="align-middle">{{ "store.index.BuyOnTemu"|trans([], "validators") }}</b>
 			</a>
 		{% else %}
 			<a class="btn spreadshop" href="{{ entity.url }}" rel="nofollow" target="_blank">
@@ -306,6 +311,10 @@
 			</tbody>
 		</table>
 		{% endif %}
+	{% endif %}
+	
+	{% if entity.isWitchcraftToolCategory() %}
+		{% set url = path('WitchcraftTool_Show', { id: entity.witchcraftTool.id, title_slug: entity.witchcraftTool.urlSlug }) %}
 	{% endif %}
 	
 	{% if url is not null %}

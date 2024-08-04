@@ -674,18 +674,18 @@ a.navbar-brand:hover, a.navbar-brand:focus {
     color: #d7e13d;
     padding: 11px;
 }
-.amazon:hover, .read:hover, .witchcraft:hover, .submitcomment:hover, .spreadshop:hover, .aliexpress:hover {
+.amazon:hover, .read:hover, .witchcraft:hover, .submitcomment:hover, .spreadshop:hover, .aliexpress:hover, .temu:hover {
     opacity: .8;
 	text-decoration: none;
 	color: initial;
 }
-.amazon, .read, .witchcraft, .aliexpress, .spreadshop {
+.amazon, .read, .witchcraft, .aliexpress, .spreadshop, .temu {
     background: #ffad1d !important;
 	padding-left: 0.25rem;
 	color: black !important;
 	font-family: Comic Sans MS,Trebuchet MS,Times,Times New Roman,serif;
 }
-.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span {
+.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span, .temu span {
     background: white;
     border-radius: 5px;
     padding: 0.23rem;
@@ -705,6 +705,10 @@ a.navbar-brand:hover, a.navbar-brand:focus {
 }
 .spreadshop {
     background: #a73c9e !important;
+}
+
+.temu {
+    background: #ff6d00 !important;
 }
 
 /************ HISTORY *******/

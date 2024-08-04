@@ -4,6 +4,7 @@ store:
         BuyOnAmazon: "Comprar en Amazon"
         BuyOnAliexpress: "Comprar en Aliexpress"
         BuyOnSpreadshop: "Comprar en Spreadshop"
+        BuyOnTemu: "Comprar en Temu"
         BuyOn: "Cómpralo"
         Book: "Libro"
         Cloth: "Ropa"

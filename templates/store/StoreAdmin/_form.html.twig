@@ -150,7 +150,7 @@
 		for(const elem of urlContainer)
 			elem.style.display = "none";
 			
-		if(value == "{{ constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') }}" || value == "{{ constant('App\\Entity\\Stores\\Store::SPREADSHOP_PLATFORM') }}")
+		if(value == "{{ constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') }}" || value == "{{ constant('App\\Entity\\Stores\\Store::SPREADSHOP_PLATFORM') }}" || value == "{{ constant('App\\Entity\\Stores\\Store::TEMU_PLATFORM') }}")
 			for (const elem of urlContainer)
 				elem.style.display = "block";
 	}

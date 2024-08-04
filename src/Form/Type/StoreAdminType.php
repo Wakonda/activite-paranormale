@@ -171,7 +171,7 @@ class StoreAdminType extends AbstractType
 			->add('amazonCode', TextType::class, ['required' => true])
 			->add('currencyPrice', ChoiceType::class, ['choices' => Currency::getSymboleValues(), 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'])
 			->add('price', NumberType::class, ['required' => true, 'translation_domain' => 'validators', "required" => false])
-			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
+			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM, ucfirst(Store::TEMU_PLATFORM) => Store::TEMU_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
 		;
 		
 		if(!empty($fields))
@@ -190,7 +190,7 @@ class StoreAdminType extends AbstractType
 			if($data->getPlatform() == Store::AMAZON_PLATFORM and empty($data->getAmazonCode()))
 				$form->get('amazonCode')->addError(new FormError($notBlank->message));
 			
-			if($data->getPlatform() == Store::ALIEXPRESS_PLATFORM and empty($data->getUrl()))
+			if(in_array($data->getPlatform(), [Store::ALIEXPRESS_PLATFORM, Store::TEMU_PLATFORM]) and empty($data->getUrl()))
 				$form->get('url')->addError(new FormError($notBlank->message));
 
 			if((!empty($data->getPrice()) and empty($data->getCurrencyPrice())) or (empty($data->getPrice()) and !empty($data->getCurrencyPrice())))

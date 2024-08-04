@@ -886,21 +886,21 @@ div.bx-pager {
 .rounded {
     border-radius: 0.375rem!important;
 }
-.amazon, .read, .witchcraft, .aliexpress, .spreadshop {
+.amazon, .read, .witchcraft, .aliexpress, .spreadshop, .temu {
 	background: #ffad1d;
     padding: 0.25rem;
     color: black !important;
 	border-radius: .25rem;
 	display: inline-block;
 }
-.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span {
+.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span, .temu span {
     background: white;
     border-radius: 5px;
     padding: 0.23rem;
 	float: left;
 }
 
-.amazon:hover, .read:hover, .witchcraft:hover, .aliexpress:hover, .spreadshop:hover {
+.amazon:hover, .read:hover, .witchcraft:hover, .aliexpress:hover, .spreadshop:hover, .temu:hover {
     opacity: 0.8;
 }
 .read {
@@ -917,6 +917,10 @@ div.bx-pager {
 
 .spreadshop {
     background: #a73c9e;
+}
+
+.temu {
+    background: #ff6d00;
 }
 
 a.tags_display {
