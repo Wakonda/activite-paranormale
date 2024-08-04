@@ -793,7 +793,7 @@
 			if(!empty($replace))
 				$title = str_replace((array)$replace, ' ', $title);
 
-			if(preg_match("/^\p{Latin}+$/", $title)) {
+			if(preg_match("/[a-zA-ZÀ-ÖØ-öø-ÿ]/u", $title)) {
 				$title = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $title);
 				$title = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $title);
 			}
