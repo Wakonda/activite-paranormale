@@ -366,12 +366,7 @@ class WitchcraftTool
 
     public function getTheme()
     {
-        return $this->theme;
-    }
-
-    public function setTheme(Theme $theme)
-    {
-        $this->theme = $theme;
+        return $this->witchcraftThemeTool;
     }
 
     /**

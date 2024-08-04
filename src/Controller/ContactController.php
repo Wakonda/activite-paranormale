@@ -79,8 +79,8 @@ class ContactController extends AbstractController
 			$entity->setSubjectContact($initialMessageEntity->getSubjectContact());
 		}
 		
-		$recipientName = null;
-		$recipientId = null;
+		$recipientName = $recipient ?? $recipient->getUsername();
+		$recipientId = $userId;
 
 		switch($className) {
 			case 'ClassifiedAds':
