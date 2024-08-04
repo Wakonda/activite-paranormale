@@ -96,6 +96,13 @@ class FileManagementAdminController extends AbstractController
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
 						WHERE fm.realNameFile = '".addslashes($file)."';");
 				break;
+				case "eventMessage":
+					$res = $conn->fetchAllAssociative("
+						SELECT n.id, n.title, \"EventMessage_Admin_Show\" as route
+						FROM eventMessage n
+						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
+						WHERE fm.realNameFile = '".addslashes($file)."' OR n.thumbnail = '".$file."';");
+				break;
 				case "banner":
 					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Banner_Admin_Show\" as route
@@ -158,12 +165,12 @@ class FileManagementAdminController extends AbstractController
 						FROM document n
 						WHERE n.pdfDoc = '".$file."';");
 				break;
-				case "eventMessage":
-					$res = $conn->fetchAllAssociative("
-						SELECT n.id, n.title, \"EventMessage_Admin_Show\" as route
-						FROM eventMessage n
-						WHERE n.photo = '".$file."' OR n.thumbnail = '".$file."';");
-				break;
+				// case "eventMessage":
+					// $res = $conn->fetchAllAssociative("
+						// SELECT n.id, n.title, \"EventMessage_Admin_Show\" as route
+						// FROM eventMessage n
+						// WHERE n.photo = '".$file."' OR n.thumbnail = '".$file."';");
+				// break;
 				case "language":
 					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Language_Admin_Show\" as route
@@ -365,20 +372,23 @@ class FileManagementAdminController extends AbstractController
 	}
 	
 	private function listFolders($base_dir, $bd){
-      $directories = [];
+		if(empty($base_dir))
+			return [];
 
-      foreach(scandir($base_dir) as $file) {
-            if($file == '.' || $file == '..') continue;
-			
+		$directories = [];
+
+		foreach(scandir($base_dir) as $file) {
+			if($file == '.' || $file == '..') continue;
+
 			$dir = $base_dir.DIRECTORY_SEPARATOR.$file;
-			
-            if(is_dir($dir)) {
-                $directories[] = str_replace($bd.DIRECTORY_SEPARATOR, "", $dir);
-                $directories = array_merge($directories, $this->listFolders($dir, $bd));
-            }
-      }
 
-      return $directories;
+			if(is_dir($dir)) {
+				$directories[] = str_replace($bd.DIRECTORY_SEPARATOR, "", $dir);
+				$directories = array_merge($directories, $this->listFolders($dir, $bd));
+			}
+		}
+
+		return $directories;
 	}
 
 	private function getDirContents($dir, &$results = [], $mimeType = null) {
