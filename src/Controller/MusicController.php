@@ -124,7 +124,7 @@ class MusicController extends AbstractController
 
 	public function countByLanguage(Request $request, EntityManagerInterface $em)
 	{
-		return new Response($em->getRepository(Music::class)->countMusic($request->getLocale()));
+		return new Response($em->getRepository(Artist::class)->countArtist($request->getLocale()));
 	}
 	
 	public function musicGenreAction(Request $request, EntityManagerInterface $em, Int $genreId, String $genreTitle)

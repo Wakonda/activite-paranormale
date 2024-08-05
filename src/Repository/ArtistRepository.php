@@ -150,4 +150,15 @@ class ArtistRepository extends EntityRepository
 	{
 		return $this->getFileSelectorColorboxIllustrationAdmin($iDisplayStart, $iDisplayLength, $sSearch, $count);
 	}
+
+	public function countArtist(String $language)
+	{
+		$qb = $this->createQueryBuilder('a');
+		$qb->select("count(a)")
+		   ->join('a.language', 'l')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language);
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
 }

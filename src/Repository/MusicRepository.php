@@ -43,19 +43,6 @@ class MusicRepository extends EntityRepository
 					->setMaxResults($nbrMessageParPage);
 
 		return $queryBuilder->getQuery()->getResult();
-	}	
-	
-	public function countMusic(String $language)
-	{
-		$qb = $this->createQueryBuilder('c');
-		$qb->select("count(c)")
-		   ->join('c.album', 'al')
-		   ->join('al.artist', 'a')
-		   ->join('a.language', 'l')
-		   ->where('l.abbreviation = :language')
-		   ->setParameter('language', $language);
-
-		return $qb->getQuery()->getSingleScalarResult();
 	}
 
 	public function getMusicsByArtist($id)
