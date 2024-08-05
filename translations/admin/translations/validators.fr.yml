@@ -28,6 +28,7 @@ admin:
         SelectVisibleItems: "Sélectionner les éléments visibles"
         DeselectVisibleItems: "Désélectionner les éléments visibles"
         EntryArchived: "Cette entrée a été archivée !"
+        NoImageCouldBeLoaded: "Aucune image n'a pu être chargée"
     index:
         Welcome: "Accueil"
         InfoGene: "Informations générales"

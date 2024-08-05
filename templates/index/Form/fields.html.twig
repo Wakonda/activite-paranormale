@@ -5,6 +5,7 @@
 				<a href="#" class="input-group-text select_files_colorbox"><i class="fas fa-camera-retro" aria-hidden="true"></i></a>
 			{% endif %}
 			{{ form_widget(form, {'attr':{'class': 'existing_photo_colorbox form-control', 'placeholder': "admin.general.EnterURL"|trans([], "validators") }}) }}
+			<a href="#" class="input-group-text" id="preview_image_{{ form.vars.id }}"><i class="fas fa-eye" aria-hidden="true"></i></a>
 			<a href="#" class="input-group-text remove_files_colorbox"><i class="fas fa-times" aria-hidden="true"></i></a>
 		</div>
 
@@ -20,8 +21,33 @@
 			</div>
 		</div>
 
+		<div class="modal fade previewImageModal" id="previewImageModal_{{ form.vars.id }}" data-field-id="{{ form.vars.id }}" tabindex="-1" role="dialog" aria-labelledby="previewImageModal_{{ form.vars.id }}" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<img src="" class="img-fluid mx-auto d-block">
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="fas fa-times"></i></button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 		<script>
 			{% if base_path is not null %}
+				document.getElementById("preview_image_{{ form.vars.id }}").addEventListener('click', (e) => {
+					e.preventDefault();
+					
+					if(document.getElementById("{{ form.vars.id }}").value != "") {
+						var modal = new bootstrap.Modal(document.getElementById('previewImageModal_{{ form.vars.id }}'));
+						modal.show(document.getElementById('previewImageModal_{{ form.vars.id }}'));
+						
+						document.querySelector("#previewImageModal_{{ form.vars.id }} img").setAttribute("src", document.getElementById("{{ form.vars.id }}").value);
+					} else 
+						alert("{{ ('admin.general.NoImageCouldBeLoaded'|trans([], 'validators'))|e('js') }}");
+				});
+
 				document.querySelector("div#{{ form.vars.id }}_container .select_files_colorbox").addEventListener('click', (e) => {
 					e.preventDefault();
 					document.querySelector('#selectFileModal_{{ form.vars.id }} .modal-body').innerHTML = "";
