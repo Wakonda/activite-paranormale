@@ -152,7 +152,7 @@ class MusicAdminController extends AdminGenericController
 		{
 			$row = [];
 			$row[] = $entity->getId();
-			$row[] = $entity->getAlbum()->getArtist()->getTitle();
+			$row[] = !empty($album = $entity->getAlbum()) ? $album->getArtist()->getTitle() : $entity->getArtist()->getTitle();
 			$row[] = $entity->getMusicPiece();
 			$row[] = "
 			 <a href='".$this->generateUrl('Music_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
@@ -269,5 +269,31 @@ class MusicAdminController extends AdminGenericController
 		$em->flush();
 
 		return $this->redirect($this->generateUrl("Album_Admin_Show", ["id" => $album->getId()]));
+	}
+	
+	public function autocompleteFestival(Request $request, EntityManagerInterface $em)
+	{
+		$query = $request->query->get("q", null);
+		$locale = $request->query->get("locale", null);
+		
+		if(is_numeric($locale)) {
+			$language = $em->getRepository(Language::class)->find($locale);
+			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
+		}
+		
+		$datas =  $em->getRepository(\App\Entity\EventMessage::class)->getAutocompleteFestival($locale, $query);
+		
+		$results = [];
+		
+		foreach($datas as $data)
+		{
+			$obj = new \stdClass();
+			$obj->id = $data->getId();
+			$obj->text = $data->getTitle(). " (".$data->getYearFrom().")";
+			
+			$results[] = $obj;
+		}
+
+        return new JsonResponse(["results" => $results]);
 	}
 }

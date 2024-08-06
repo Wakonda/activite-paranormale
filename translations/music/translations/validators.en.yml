@@ -85,6 +85,7 @@ music:
         AddMusic: "Add a music"
         LinkMusic: "Link"
         Identifiers: "Identifiers"
+        Event: "Festival"
     index:
         Music: "Music"
         OfficialWebsite: "Official Website"

@@ -85,6 +85,7 @@ music:
         AddMusic: "Ajouter un morceau"
         LinkMusic: "Lien"
         Identifiers: "Numéros d'identification"
+        Event: "Festival"
     index:
         Music: "Musique"
         OfficialWebsite: "Site officiel"

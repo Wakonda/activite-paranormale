@@ -93,6 +93,18 @@ class MusicAdminType extends AbstractType
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('musicBiographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => BiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => MusicBiography::class, "query_parameters" => ["locale" => $language]]))
             ->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getMusicIdentifiers()])
+		    ->add('event', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Festival_Admin_Autocomplete',
+				'class' => \App\Entity\EventMessage::class,
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'req_params' => ['locale' => 'parent.children[language]']
+			])
         ;
 
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){

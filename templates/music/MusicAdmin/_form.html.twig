@@ -143,6 +143,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "music.admin.Sources"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.event, "music.admin.Event"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.event) }}{{ form_widget(form.event, { 'attr': {'class': 'form-control'} }) }}</div>
+
 {% include 'quotation/BiographyAdmin/_validateBiographyModal.html.twig' with { languageId: form.language.vars.id } %}
 
 <script>

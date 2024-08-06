@@ -50,6 +50,10 @@ Music_Admin_Wikidata:
     path: /wikidata
     controller: App\Controller\MusicAdminController::wikidataAction
 
+Festival_Admin_Autocomplete:
+    path: /festival/autocomplete
+    controller: App\Controller\MusicAdminController::autocompleteFestival
+
 Spotify_Track:
     path: /music/spotify/track/{albumId}/{spotifyId}
     controller: App\Controller\MusicAdminController::spotifyMusic

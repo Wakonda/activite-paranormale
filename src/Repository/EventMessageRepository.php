@@ -22,7 +22,6 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 		    ->andWhere('s.displayState = 1')
 			->setParameter('lang', $language)
 			->andWhere("c.yearFrom IS NOT NULL AND c.monthFrom IS NOT NULL AND c.dayFrom IS NOT NULL")
-			// ->andWhere("c.yearTo IS NOT NULL AND c.monthTo IS NOT NULL AND c.dayTo IS NOT NULL")
 			->andWhere("CURRENT_DATE() <= CONCAT(c.yearFrom, '-', LPAD(c.monthFrom, 2, '0'), '-', LPAD(c.dayFrom, 2, '0')) OR CURRENT_DATE() <= CONCAT(c.yearTo, '-', LPAD(c.monthTo, 2, '0'), '-', LPAD(c.dayTo, 2, '0'))")
 		    ->andWhere("c.archive = false")
 			->orderBy('c.dateTo', 'asc')
@@ -283,6 +282,34 @@ class EventMessageRepository extends MappedSuperclassBaseRepository
 		}
 		else
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		return $qb->getQuery()->getResult();
+	}
+	
+	public function getAutocompleteFestival($locale, $query)
+	{
+		$qb = $this->createQueryBuilder("pf");
+		
+		$qb->where("pf.type = :festival")
+		   ->setParameter("festival", \App\Entity\EventMessage::FESTIVAL_TYPE);
+		
+		if(!empty($locale))
+		{
+			$qb->leftjoin("pf.language", "la")
+			   ->andWhere('la.abbreviation = :locale')
+			   ->setParameter('locale', $locale);
+		}
+
+		if(!empty($query))
+		{
+			$query = is_array($query) ? "%".$query[0]."%" : "%".$query."%";
+			$query = "%".$query."%";
+			$qb->andWhere("pf.title LIKE :query")
+			   ->setParameter("query", $query);
+		}
+
+		$qb->orderBy("pf.title", "ASC")
+		   ->setMaxResults(15);
 
 		return $qb->getQuery()->getResult();
 	}

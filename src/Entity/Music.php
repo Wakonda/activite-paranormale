@@ -86,6 +86,11 @@ class Music
      *      )
 	 */
 	private $musicBiographies;
+
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
+     */
+    private $event;
 	
 	public function getTitle(): string {
 		$album = !empty($this->album) ? $this->album->getTitle() : null;
@@ -375,5 +380,15 @@ class Music
 	public function setMusicBiographies($musicBiographies)
 	{
 		$this->musicBiographies = $musicBiographies;
+	}
+
+	public function getEvent()
+	{
+		return $this->event;
+	}
+
+	public function setEvent($event)
+	{
+		$this->event = $event;
 	}
 }

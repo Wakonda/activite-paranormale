@@ -67,19 +67,26 @@ class MusicRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = ['c.id', 'a.title', 'c.musicPiece', 'c.id'];
+		$aColumns = ['c.id', 'CASE WHEN c.album IS NOT NULL THEN a.title else a2.title END', 'c.musicPiece', 'c.id'];
+		$aColumnsFilter = ['c.id', 'a.title', 'a2.title', 'c.musicPiece', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
-		$qb->join('c.album', 'al')
-		   ->join('al.artist', 'a')
-		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		$qb->leftjoin('c.album', 'al')
+		   ->leftjoin('al.artist', 'a')
+		   ->leftjoin('c.artist', 'a2');
+
+		if(is_array($aColumns[$sortByColumn[0]]))
+			foreach($aColumns[$sortByColumn[0]] as $column)
+				$qb->orderBy($column, $sortDirColumn[0]);
+		else
+			$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
 			$orWhere = [];
 			
-			foreach($aColumns as $column)
+			foreach($aColumnsFilter as $column)
 				$orWhere[] = $column." LIKE :search";
 
 			$qb->andWhere(implode(" OR ", $orWhere))
