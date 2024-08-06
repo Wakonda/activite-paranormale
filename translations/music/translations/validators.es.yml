@@ -120,6 +120,7 @@ music:
         Video: "Vídeo"
         GuestMusicians: "Músicos invitados"
         Festival: "Festival"
+        FestivalList: "Festival:"
 album:
     admin:
         Title: "Título"

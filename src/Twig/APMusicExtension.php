@@ -33,7 +33,8 @@
 				new TwigFunction('biography_by_artist', [$this, 'getBiographiesByArtist'], ['is_safe' => null]),
 				new TwigFunction('biography_by_music', [$this, 'getBiographiesByMusic'], ['is_safe' => null]),
 				new TwigFunction('music_by_album', [$this, 'getMusicsByAlbum'], ['is_safe' => null]),
-				new TwigFunction('music_genres', [$this, 'getAllGenresByLocale'], ['is_safe' => null])
+				new TwigFunction('music_genres', [$this, 'getAllGenresByLocale'], ['is_safe' => null]),
+				new TwigFunction('music_festival', [$this, 'getMusicsByFestival'], ['is_safe' => null])
 			);
 		}
 
@@ -64,5 +65,9 @@
 		
 		public function getAllGenresByLocale($locale) {
 			return $this->em->getRepository(MusicGenre::class)->getAllGenresByLocale($locale);
+		}
+		
+		public function getMusicsByFestival($event) {
+			return $this->em->getRepository(Music::class)->findBy(["event" => $event]);
 		}
 	}

@@ -36,7 +36,7 @@
 		{% endif %}
 
 		{% if entity.event is not empty %}
-			<li><span class="fa-li"><i class="fa-solid fa-headphones-simple"></i></span> <span class="fw-bold">{{ "music.music.Festival"|trans([], "validators") }}</span> <a href="{{ path('EventMessage_Read', {id: entity.event.id, title_slug: entity.event.urlSlug}) }}">{{ entity.event.title }} ({{ entity.event.yearFrom }})</a></li>
+			<li><span class="fa-li"><i class="fa-solid fa-headphones-simple"></i></span> <span class="fw-bold">{{ "music.music.FestivalList"|trans([], "validators") }}</span> <a href="{{ path('EventMessage_Read', {id: entity.event.id, title_slug: entity.event.urlSlug}) }}">{{ entity.event.title }} ({{ entity.event.yearFrom }})</a></li>
 		{% endif %}
 	</ul>
 	<hr>
