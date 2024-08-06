@@ -119,6 +119,7 @@ music:
         AudioFile: "Fichier audio"
         Video: "Vidéo"
         GuestMusicians: "Musiciens invités"
+        Festival: "Festival"
 album:
     admin:
         Title: "Titre"

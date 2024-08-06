@@ -125,13 +125,14 @@
 					}
 				},
 				datesRender: function( info  ) {
+				console.log(info.view.calendar.getDate())
 					var date = new Date(info.view.calendar.getDate());
 
 					var monthName = new Intl.DateTimeFormat("{{ app.request.locale }}", { month: "long" }).format;
 					var longName = monthName(date); // "July"
 
 					document.querySelector(".fc-monthButton-button").innerHTML = longName;
-					document.querySelector(".fc-yearButton-button").innerHTML = date.getUTCFullYear();
+					document.querySelector(".fc-yearButton-button").innerHTML = date.getFullYear();
 				},
 				header: {
 					left: 'prev,next today ',

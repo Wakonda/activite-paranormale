@@ -119,6 +119,7 @@ music:
         AudioFile: "Audio file"
         Video: "Video"
         GuestMusicians: "Guest musicians"
+        Festival: "Festival"
 album:
     admin:
         Title: "Title"

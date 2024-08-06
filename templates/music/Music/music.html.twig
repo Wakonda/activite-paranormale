@@ -34,6 +34,10 @@
 		{% if album is not empty %}
 			<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="fw-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.title, album: album.title}) }}">{{ album.title }}</a></li>
 		{% endif %}
+
+		{% if entity.event is not empty %}
+			<li><span class="fa-li"><i class="fa-solid fa-headphones-simple"></i></span> <span class="fw-bold">{{ "music.music.Festival"|trans([], "validators") }}</span> <a href="{{ path('EventMessage_Read', {id: entity.event.id, title_slug: entity.event.urlSlug}) }}">{{ entity.event.title }} ({{ entity.event.yearFrom }})</a></li>
+		{% endif %}
 	</ul>
 	<hr>
 	{% if entity.text is not empty %}
