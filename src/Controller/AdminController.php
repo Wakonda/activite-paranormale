@@ -818,13 +818,6 @@ class AdminController extends AbstractController
 	}
 
 	// Twitter
-	public function twitterAction(Request $request, EntityManagerInterface $em, TwitterAPI $twitterAPI, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
-	{
-		$this->sendTwitter($request, $em, $id, $path, $router, $twitterAPI, $translator);
-
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
-	}
-
 	private function sendTwitter(Request $request, EntityManagerInterface $em, $id, $path, $router, $twitterAPI, $translator, $socialNetwork = "twitter") {
 		$requestParams = $request->request;
 
@@ -862,13 +855,6 @@ class AdminController extends AbstractController
 	}
 
 	// Bluesky
-	public function bluesky(Request $request, EntityManagerInterface $em, Bluesky $bluesky, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
-	{
-		$this->sendBluesky($request, $em, $id, $path, $router, $bluesky, $translator);
-
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
-	}
-
 	private function sendBluesky(Request $request, EntityManagerInterface $em, $id, $path, $router, $bluesky, $translator, $socialNetwork = "bluesky") {
 		$requestParams = $request->request;
 
@@ -1306,16 +1292,15 @@ die("ok");
 	}
 
 	// Mastodon
-	public function mastodonAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect)
-	{
-		$this->sendMastodon($request, $em, $id, $path, $router, $mastodon, $translator);
-
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
-	}
-
-	public function twitterMastodonAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork) {
-		$this->sendTwitter($request, $em, $id, $path, $router, $twitter, $translator, $socialNetwork);
-		$this->sendMastodon($request, $em, $id, $path, $router, $mastodon, $translator, $socialNetwork);
+	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
+		$socialNetwork = explode("|", $family);
+		
+		if(in_array("twitter", $socialNetwork))
+			$this->sendTwitter($request, $em, $id, $path, $router, $twitter, $translator, $socialNetwork);
+		if(in_array("mastodon", $socialNetwork))
+			$this->sendMastodon($request, $em, $id, $path, $router, $mastodon, $translator, $socialNetwork);
+		if(in_array("bluesky", $socialNetwork))
+			$this->sendBluesky($request, $em, $id, $path, $router, $bluesky, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}

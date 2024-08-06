@@ -12,10 +12,6 @@ Admin_Phpinfo:
     path: /admin/phpinfo
     controller: App\Controller\AdminController::phpinfoAction
 
-Admin_Mastodon:
-    path: /admin/mastodon/{id}/{path}/{routeToRedirect}
-    controller: App\Controller\AdminController::mastodonAction
-
 Admin_Facebook:
     path: /admin/facebook/{id}/{path}/{routeToRedirect}
     controller: App\Controller\AdminController::facebookAction
@@ -69,13 +65,9 @@ Admin_ShopifyPost:
     path: /admin/shopifypost
     controller: App\Controller\AdminController::shopifyPostAction
 
-Admin_Twitter:
-    path: /admin/twitter/{id}/{path}/{routeToRedirect}
-    controller: App\Controller\AdminController::twitterAction
-
-Admin_TwitterMastodon:
-    path: /admin/twittermastodon/{id}/{path}/{routeToRedirect}/{socialNetwork}
-    controller: App\Controller\AdminController::twitterMastodonAction
+Admin_TwitterMastodonBluesky:
+    path: /admin/twittermastodonbluesky/{id}/{path}/{routeToRedirect}/{socialNetwork}/{family}
+    controller: App\Controller\AdminController::twitterMastodonBluesky
 
 Admin_Pinterest:
     path: /admin/pinterest/{id}/{path}/{routeToRedirect}
@@ -88,10 +80,6 @@ Admin_Tumblr:
 Admin_TumblrPost:
     path: /admin/tumblrpost
     controller: App\Controller\AdminController::tumblrPostAction
-
-Admin_Bluesky:
-    path: /admin/bluesky/{id}/{path}/{routeToRedirect}
-    controller: App\Controller\AdminController::bluesky
 
 Admin_WikipediaSections:
     path: /admin/loadWikipediaSectionsPageAction

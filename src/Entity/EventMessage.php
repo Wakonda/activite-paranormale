@@ -10,9 +10,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="eventmessage")
  * @ORM\HasLifecycleCallbacks
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type_event", type="string")
- * @ORM\DiscriminatorMap({"eventMessage" = "EventMessage", "music_event_message" = "MusicEventMessage"})
  * @ORM\Entity(repositoryClass="App\Repository\EventMessageRepository")
  */
 class EventMessage extends MappedSuperclassBase
