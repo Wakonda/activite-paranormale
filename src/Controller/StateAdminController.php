@@ -113,7 +113,7 @@ class StateAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = StateAdminType::class;
 		$entity = new State();

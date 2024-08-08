@@ -35,3 +35,7 @@ State_Admin_IndexDatatables:
     controller: App\Controller\StateAdminController::indexDatatablesAction
     requirements:
         _method: get
+
+State_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\StateAdminController::internationalization

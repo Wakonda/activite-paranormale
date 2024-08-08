@@ -32,7 +32,7 @@ class ArtistBiographyRepository extends EntityRepository
 		
 		$qb->select("b.id AS biographyId, b.title AS biographyTitle, b.slug AS biographySlug, IFNULL(mb.role, b.title) AS stageName, a.id AS artistId")
 		   ->addSelect("GROUP_CONCAT(DISTINCT mb.occupation SEPARATOR '#') AS occupations")
-		   ->addSelect("GROUP_CONCAT(mb.startYear, ' - ', IFNULL(mb.endYear, '') ORDER BY mb.startYear SEPARATOR '#') AS years")
+		   ->addSelect("GROUP_CONCAT(DISTINCT mb.startYear, ' - ', IFNULL(mb.endYear, '') ORDER BY mb.startYear SEPARATOR '#') AS years")
 		   ->addSelect("IF(MAX(IFNULL(mb.endYear,'9999')) = '9999', '', mb.endYear) AS lastYear")
 		   ->where("mb.artist = :artist")
 		   ->setParameter("artist", $artist)
@@ -42,12 +42,12 @@ class ArtistBiographyRepository extends EntityRepository
 		   ->addGroupBy("b.title");
 		   
 		$datas = ["current" => [], "former" => []];   
-
+// dd($qb->getQuery()->getSQL(), $qb->getQuery()->getResult());
 		foreach($qb->getQuery()->getResult() as $res) {
 			$res["occupations"] = explode("#", $res["occupations"]);
 			
 			$years = explode(" - ", $res["years"]);
-			$res["years"] =  (isset($years[0]) ? (new \App\Service\APDate())->doPartialDate($years[0], "fr") : "")." - ".(isset($years[1]) ? (new \App\Service\APDate())->doPartialDate($years[1], "fr") : "");
+			$res["years"] =  ((isset($years[0]) and !empty($years[0])) ? $years[0]." - " : "").((isset($years[1]) and !empty($years[1])) ? $years[1] : "");
 
 			if(empty($res["lastYear"]))
 				$datas["current"][] = $res;

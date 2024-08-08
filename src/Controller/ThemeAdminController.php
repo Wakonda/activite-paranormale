@@ -162,7 +162,7 @@ class ThemeAdminController extends AdminGenericController
 
 		$entityToCopy = $em->getRepository(Theme::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
-		$parentTheme = $em->getRepository(Theme::class)->findOneBy(["internationalName" => $entityToCopy->getParentTheme()->getInternationalName(), "language" => $language]);
+		$parentTheme = !empty($pt = $entityToCopy->getParentTheme()) ? $em->getRepository(Theme::class)->findOneBy(["internationalName" => $entityToCopy->getParentTheme()->getInternationalName(), "language" => $language]) : null;
 
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		
