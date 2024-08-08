@@ -138,7 +138,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     protected $slug;
 
     /**
-     * @ORM\Column(name="gender", type="string", length=100)
+     * @ORM\Column(name="gender", type="string", length=100, nullable=true)
      */
     private $gender;
 

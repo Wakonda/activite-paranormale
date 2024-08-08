@@ -207,6 +207,7 @@
 					$res = "Amatukami";
 					break;
 				case "news_pt":
+				case "irontv_pt":
 					$res = "AtividadeParanormal";
 					break;
 				case "magic_fr":
@@ -249,6 +250,6 @@
 			if($_ENV["APP_ENV"] == "dev")
 				return ["test_en", "test_fr", "test_es", "test_pt"];
 
-			return ["news_en", "news_es", "news_fr", "news_pt", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es", "test_pt"];
+			return ["news_en", "news_es", "news_fr", "news_pt", "irontv_pt", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es", "test_pt"];
 		}
 	}
