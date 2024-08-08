@@ -1293,13 +1293,13 @@ die("ok");
 
 	// Mastodon
 	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
-		$socialNetwork = explode("|", $family);
-		
-		if(in_array("twitter", $socialNetwork))
+		$socialNetworks = explode("|", $family);
+
+		if(in_array("twitter", $socialNetworks))
 			$this->sendTwitter($request, $em, $id, $path, $router, $twitter, $translator, $socialNetwork);
-		if(in_array("mastodon", $socialNetwork))
+		if(in_array("mastodon", $socialNetworks))
 			$this->sendMastodon($request, $em, $id, $path, $router, $mastodon, $translator, $socialNetwork);
-		if(in_array("bluesky", $socialNetwork))
+		if(in_array("bluesky", $socialNetworks))
 			$this->sendBluesky($request, $em, $id, $path, $router, $bluesky, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
