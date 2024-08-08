@@ -118,6 +118,7 @@ class Flickr {
 			"United States Government Work" => "Copyright",
 			"Public Domain Dedication (CC0)" => "CC0",
 			"Public Domain Mark" => "PDM 1.0",
+			"Attribution-NonCommercial-NoDerivs License" => "CC BY-NC-ND 2.0"
 		][$titleLicense];
 	}
 

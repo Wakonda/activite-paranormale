@@ -2,7 +2,7 @@ grimoire:
     admin:
         Title: "Titre"
         Text: "Texte"
-        Theme: "Theme"
+        Theme: "Thème"
         WritingDate: "Date de rédaction"
         Source: "Source"
         State: "Etat"
