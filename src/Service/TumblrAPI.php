@@ -6,8 +6,6 @@
 	
 	class TumblrAPI
 	{
-		private $blogName = "iron-tv";
-		
 		public function connect()
 		{
 			$client = new \Tumblr\API\Client($_ENV["TUMBLR_CONSUMER_KEY"], $_ENV["TUMBLR_CONSUMER_SECRET"]);
@@ -27,7 +25,7 @@
 			}
 		}
 		
-		public function addPost($title, $body, $tags = [])
+		public function addPost($blogName, $title, $body, $tags = [])
 		{
 			$client = new \Tumblr\API\Client($_ENV["TUMBLR_CONSUMER_KEY"], $_ENV["TUMBLR_CONSUMER_SECRET"]);
 			$requestHandler = $client->getRequestHandler();
@@ -55,12 +53,12 @@
 				if(!empty($tags))
 					$postData["tags"] = $tags;
 
-				$client->createPost($this->blogName, $postData);
+				$client->createPost($blogName, $postData);
 			}
 		}
 
 		public function getTypes()
 		{
-			return ["music_fr"];
+			return ["gothic_fr", "gothic_en", "gothic_es"];
 		}
 	}

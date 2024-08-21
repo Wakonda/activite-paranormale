@@ -1069,41 +1069,33 @@ class AdminController extends AbstractController
 
 		switch($entity->getRealClass())
 		{
-			case "Music":
-				$body = $entity->getEmbeddedCode();
-				$body .= "<br>".$entity->getText();
-				$body .= "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation());
-				break;
-			case "News":
-				$imgProperty = $entity->getPhotoIllustrationFilename();
-				$img = $entity->getAssetImagePath().$imgProperty;
-				$img = $imgSize->adaptImageSize(550, $img);
-
-				$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
-				$body = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<br><b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
-				$body = "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p>".$parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
-
-				break;
-			case "Cartography":
-			case "Photo":
-				$body = "<p><img src='".$baseurl."/".$img[2]."' style='width: ".$img[0]."; height:".$img[1]."' alt='' /></p><br>".$entity->getText().$imgCaption;
-				$body .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
-				$body = $parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
-				break;
-			case "Video":
-				$video = $parser->getVideoResponsive($entity->getEmbeddedCode());
-				if(!empty($entity->getMediaVideo()))
-					$video = $parser->getVideoResponsive('<video width="550" height="309" controls><source src="'.$request->getSchemeAndHttpHost().'/'.$entity->getAssetVideoPath().'/'.$entity->getMediaVideo().'" type="video/mp4"></video>');
-				$body = "<p><img src='".$baseurl."/".$img[2]."' width='".$img[0]."' height='".$img[1]."' alt='' /></p><br>".$entity->getText()."<br>".$video;
-				$body .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
-				$body = $parser->replacePathLinksByFullURL($body, $request->getSchemeAndHttpHost().$request->getBasePath());
+			case "Store":
+				$body = $entity->getImageEmbeddedCode();
+				$body .= $entity->getText();
+					
+				if(in_array(Store::class, [get_class($entity), get_parent_class($entity)])) {
+					$language = $entity->getLanguage()->getAbbreviation();
+					$body .= "<hr>";
+					if(Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
+						$body .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #E52F20; padding: 0.375rem 0.75rem;background-color: #E52F20;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
+					elseif(Store::AMAZON_PLATFORM == $entity->getPlatform())
+						$body .= '<div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
+					elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
+						$body .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
+					elseif(Store::TEMU_PLATFORM == $entity->getPlatform())
+						$body .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff6d00; padding: 0.375rem 0.75rem;background-color: #ff6d00;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
+				}
+				
 				break;
 		}
 
 		// Fix Tumblr bugs 
 		$body = str_replace(["\r\n", "\n", "\t", "\r"], ' ', $body);
+		$body = str_replace('img src=//', 'img src="https://', $body);
 
-		$tumblr->addPost($title, $body, $tags);
+		$blog = "gothic-".$entity->getLanguage()->getAbbreviation();
+
+		$tumblr->addPost($blog, $title, $body, $tags);
 
 		$session->getFlashBag()->add('success', $translator->trans('admin.tumblr.Success', [], 'validators'));
 
@@ -1152,8 +1144,7 @@ class AdminController extends AbstractController
 
 			return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 		}
-		dd($request->query->all());
-die("ok");
+
 		if($flickr->getCounts() >= 1) {
 			$photoId = $flickr->getOldestPhoto();
 			$entityNamespaces = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();

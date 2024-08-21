@@ -663,6 +663,30 @@
 	{% endif %}
 {% endmacro %}
 
+{% macro tumblr_form(entity, type) %}
+	{% set type = type~"_"~entity.language.abbreviation %}
+	{% if isTumblrAvailable(type) %}
+		<div class="accordion mb-2" id="accordionParentTumblr">
+			<div class="card sub_block">
+				<div class="card-header" role="tab" id="headingTumblr">
+					<span class="panel-title">
+					<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTumblr" aria-expanded="true" aria-controls="collapseOne">
+					<i class="fab fa-tumblr-square" aria-hidden="true"></i> Tumblr
+					</a>
+					</span>
+				</div>
+				<div id="collapseTumblr" class="collapse" aria-labelledby="headingTumblr" data-bs-parent="#accordionParentTumblr">
+					<div class="card-body">
+						<form action="{{ path('Admin_Tumblr', {'id': entity.id, 'path' : entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="POST">
+							<input type="submit" value="{{ "admin.general.Send"|trans([], "validators") }}" class="btn btn-outline-secondary" />
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% endif %}
+{% endmacro %}
+
 {% macro twitter_form_js() %}
 	{{ _self.generic_tags("twitter_area", "tags_twitter") }}
 	<script>
