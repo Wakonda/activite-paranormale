@@ -137,17 +137,25 @@
 			if(empty($entity) or empty($entity->getId()))
 				return null;
 
-			$adminRoute = ((new \ReflectionClass($entity))->getShortName())."_Admin_Edit";
-
-			$url = null;
+			$html = null;
 
 			try {
+				$adminRoute = ((new \ReflectionClass($entity))->getShortName())."_Admin_Edit";
 				$url = $this->router->generate($adminRoute, ["id" => $entity->getId()]);
-				return '<div class="mt-3 text-center"><a href="'.$url.'" class="btn btn-success text-white"><i class="fa-solid fa-pen-to-square"></i></a></div>';
+				$html .= '<a href="'.$url.'" class="btn btn-success btn-sm text-white"><i class="fa-solid fa-pen-to-square"></i></a>';
 			} catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
 			}
 
-			return null;
+			try {
+				$adminRoute = ((new \ReflectionClass($entity))->getShortName())."_Admin_Show";
+				$url = $this->router->generate($adminRoute, ["id" => $entity->getId()]);
+				$html .= '<a href="'.$url.'" class="btn btn-info btn-sm border-0 ms-2"><i class="fa-solid fa-eye"></i></a>';
+			} catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
+			}
+			
+			$html = !empty($html) ? '<div class="mt-3 text-center">'.$html.'</div>' : null;
+
+			return $html;
 		}
 
 		// Filters
