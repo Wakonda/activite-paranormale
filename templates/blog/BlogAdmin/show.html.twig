@@ -18,7 +18,7 @@
 	<div class="form-table-cell">{{ entity.banner|imgsize(200, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "blog.admin.Link"|trans([], "validators") }}</div>
-	<div class="form-table-cell"><a href="{{ entity.rss }}" alt="">{{ entity.link }}</a></div>
+	<div class="form-table-cell"><a href="{{ entity.link }}" alt="">{{ entity.link }}</a></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "blog.admin.Rss"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><a href="{{ entity.rss }}" alt="">{{ entity.rss }}</a></div>
