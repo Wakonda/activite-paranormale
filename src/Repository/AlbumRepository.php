@@ -53,7 +53,7 @@ class AlbumRepository extends EntityRepository
 
 	public function getDatatablesForIndexByArtistAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $artistId, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.genre', 'c.website', 'l.title', 'c.id');
+		$aColumns = ['c.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')

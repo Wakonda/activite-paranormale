@@ -256,6 +256,12 @@ class NewsAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getTheme()->getInternationalName()]);
 		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
+		
+		$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+		if(!in_array($language, $currentLanguagesWebsite)) {
+			$languageEnglish = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $languageEnglish, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
+		}
 
 		if(empty($state)) {
 			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
