@@ -167,8 +167,37 @@
 		<div class="clear"></div>
 	{% endif %}
 
+	{% if videos|length > 0 %}
+		<h3><i class="fas fa-video fa-sm"></i> {{ "video.index.Video"|trans([], "validators") }}</h3>
+		{% if videos|length > 0 %}
+			<table class="doc_datatables dt-responsive w-100">
+				<thead>
+					<tr>
+						<th>{{ "video.index.Title"|trans([], "validators") }}</th>
+						<th>{{ "video.index.Theme"|trans([], "validators") }}</th>
+						<th>{{ "book.biography.Read"|trans([], "validators") }}</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for video in videos %}
+						<tr class="trGene">
+							<td class="tdGene" style="width: 50%">{{ video.title }}</td>
+							<td class='tdGene'>{{ video.theme.title }}</td>
+							<td class='tdGene'>
+							<a class="btn read w-auto" href="{{ path('Video_Read', {'id': video.id, 'title_slug': video.getUrlSlug()}) }}">
+								<span class="me-2"><i class="fas fa-book fa-fw"></i></span><b class="align-middle">{{ "book.biography.Read"|trans([], "validators") }}</b>
+							</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="clear"></div>
+		{% endif %}
+	{% endif %}
+
 	{% if books|length > 0 or bookEditions|length > 0 %}
-			<h3><i class="fas fa-book fa-sm"></i> {{ "biography.index.Books"|trans([], "validators") }}</h3>
+		<h3><i class="fas fa-book fa-sm"></i> {{ "biography.index.Books"|trans([], "validators") }}</h3>
 		{% if books|length > 0 %}
 			<table class="doc_datatables dt-responsive w-100">
 				<thead>

@@ -101,6 +101,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.state, "video.admin.State"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.biography, "video.admin.Biography"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.biography) }}{{ form_widget(form.biography) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.available, "video.admin.Available"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.available) }}{{ form_widget(form.available) }}</div>
 

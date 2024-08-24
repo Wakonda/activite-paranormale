@@ -24,6 +24,7 @@ video:
         MinutesEdit: "minutos"
         SecondsEdit: "segundos"
         ChooseAnExistingFile: "Elija un archivo existente:"
+        Biography: "Autor"
     index:
         Video: "Vídeo"
         NbrTotalVideo: "Número total de Videos: "

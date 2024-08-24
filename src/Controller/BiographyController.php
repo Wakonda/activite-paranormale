@@ -13,6 +13,7 @@ use App\Entity\Document;
 use App\Entity\Book;
 use App\Entity\BookEditionBiography;
 use App\Entity\Language;
+use App\Entity\Video;
 use App\Service\APImgSize;
 use App\Form\Type\BiographySearchType;
 
@@ -39,12 +40,14 @@ class BiographyController extends AbstractController
 		$books = $em->getRepository(Book::class)->getBooksByBiographyInternationalName($entity->getInternationalName());
 		$bookEditions = $em->getRepository(BookEditionBiography::class)->getBookEditionByBiography($entity);
 		$quotationsByAuthor = $em->getRepository(Quotation::class)->findBy(['authorQuotation' => $entity]);
+		$videos = $em->getRepository(Video::class)->findBy(['biography' => $entity]);
 
 		return $this->render('quotation/Biography/read.html.twig', [
 			'entity' => $entity,
 			'quotationsByAuthor' => $quotationsByAuthor,
 			'documents' => $documents,
 			'books' => $books,
+			'videos' => $videos,
 			'bookEditions' => $bookEditions
 		]);	
 	}

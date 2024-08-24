@@ -139,13 +139,21 @@
 	<div>
 		<p id="media_duration" class="mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.duration|string_duration)|default('-') }}</p>
 		<hr>
+
+		{% if entity.biography is not empty %}
+			<ul class="fa-ul">
+				<li><span class="fa-li"><i class="fas fa-user"></i></span> <a href="{{ path('Biography_Show', {id: entity.biography.id, title_slug: entity.biography.slug}) }}">{{ entity.biography.title }}</a></li>
+			</ul>
+			<hr>
+		{% endif %}
+
 		<p>{{ entity.text|raw }}</p>
-		
+
 		{% if entity.photo is not empty %}
 			<br>
 			<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 		{% endif %}
-		
+
 		{% if entity.mediaVideo is not empty %}
 			<h3>{{ "video.read.Share"|trans([], "validators") }}</h3>
 			<div id="success_copy"><span></span></div>
@@ -156,7 +164,7 @@
 				<span class="input-group-text"><i class="fas fa-times"></i></span>
 				<input type="integer" id="custom_height" class="size_embedded form-control">
 			</div>
-			
+
 			<button type="button" id="copy-button" class="submitcomment clip_button btn mt-2" data-clipboard-action="copy"data-clipboard-target="#embedded_document" title="Click to copy me.">{{ "video.read.CopyToClipboard"|trans([], "validators") }}</button>
 		{% endif %}
 	</div>

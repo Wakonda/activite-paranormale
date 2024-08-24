@@ -115,6 +115,26 @@ class VideoAdminType extends AbstractType
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
 			])
+			->add('biography', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Biography_Admin_Autocomplete',
+				'class' => 'App\Entity\Biography',
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'allow_add' => [
+					'enabled' => true,
+					'new_tag_text' => ' (+)',
+					'new_tag_prefix' => '__',
+					'tag_separators' => '[","]'
+				],
+				'cache' => false,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'language' => $language,
+				"required" => false
+			])
 		;
 		
 		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){

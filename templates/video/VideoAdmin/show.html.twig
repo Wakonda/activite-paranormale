@@ -71,6 +71,11 @@
 		{% endif %}
 	</div>
 
+	{% if entity.biography is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "video.admin.Biography"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.biography.title }}</div>
+	{% endif %}
+
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>
 

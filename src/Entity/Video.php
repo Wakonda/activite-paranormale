@@ -51,6 +51,10 @@ class Video extends MappedSuperclassBase
 	/** @ORM\Column(type="boolean") */
 	private $available;
 
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Biography")
+     */
+    protected $biography;
 
 	public function __construct()
 	{
@@ -316,22 +320,12 @@ class Video extends MappedSuperclassBase
     {
         return $this->embeddedCode;
     }
-	
-	/**
-     * Set available
-     *
-     * @param text $available
-     */
+
     public function setAvailable($available)
     {
         $this->available = $available;
     }
 
-    /**
-     * Get available
-     *
-     * @return text 
-     */
     public function getAvailable()
     {
         return $this->available;
@@ -341,4 +335,14 @@ class Video extends MappedSuperclassBase
 	{
         return $this->available == 1;
 	}
+
+    public function setBiography($biography)
+    {
+        $this->biography = $biography;
+    }
+
+    public function getBiography()
+    {
+        return $this->biography;
+    }
 }
