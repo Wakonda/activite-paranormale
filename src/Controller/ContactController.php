@@ -46,16 +46,20 @@ class ContactController extends AbstractController
 			$form->get('captcha')->addError(new FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
 
 		if ($form->isValid()) {
-			$email = (new Email())
-				->from($entity->getEmailContact())
-				->to($_ENV["MAILER_CONTACT"])
-				->subject($entity->getSubjectContact())
-				->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+			$blackLists = ["ericjonesmyemail@gmail.com"];
+			
+			if(!in_array($entity->getEmailContact(), $blackLists)) {
+				$email = (new Email())
+					->from($entity->getEmailContact())
+					->to($_ENV["MAILER_CONTACT"])
+					->subject($entity->getSubjectContact())
+					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
 
-			$mailer->send($email);
+				$mailer->send($email);
 
-            $em->persist($entity);
-            $em->flush();
+				$em->persist($entity);
+				$em->flush();
+			}
 
 			return $this->render('contact/Contact/send.html.twig', [
 				'id' => $entity->getId(),
