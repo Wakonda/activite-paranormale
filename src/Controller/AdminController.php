@@ -1481,8 +1481,12 @@ class AdminController extends AbstractController
 				}
 
 				try {
+					$nullDatas = [];
+					
+					if(isset($updateData["null_data"])) {
 					$nullDatas = $updateData["null_data"];
 					unset($updateData["null_data"]);
+					}
 
 					foreach($updateData as $key => $ud) {
 						if((isset($nullDatas[$key]) and $nullDatas[$key][0] == "on") or $updateData[$key] == null)
