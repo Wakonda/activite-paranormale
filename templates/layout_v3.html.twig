@@ -304,13 +304,7 @@
 
 		<div class="footer container text-center py-2">
 			<div class="text-center">
-				{% if app.request.locale == "fr" %}
-					<span class="p-2"><a class="fw-bold" href="//forum-fr.activite-paranormale.com/" title="Forum">Forum</a></span>
-				{% elseif app.request.locale == "es" %}
-					<span class="p-2"><a class="fw-bold" href="//forum-es.activite-paranormale.com/" title="Forum">Forum</a></span>
-				{% else %}
-					<span class="p-2"><a class="fw-bold" href="//forum-en.activite-paranormale.com/" title="Forum">Forum</a></span>
-				{% endif %}
+				<span class="p-2"><a class="fw-bold" href="{{ path('Page_Generic', {internationalName: 'participation'}) }}" title="{{ "index.footerMenu.Participation"|trans([], "validators") }}">{{ "index.footerMenu.Participation"|trans([], "validators") }}</a></span>
 				<span class="p-2 text-black-50">|</span>
 				<span class="p-2"><a class="fw-bold" href="{{ path('ap_tags_index') }}" title="Tag">{{ "index.footerMenu.Tag"|trans([], "validators") }}</a></span>
 				<span class="p-2 text-black-50">|</span>

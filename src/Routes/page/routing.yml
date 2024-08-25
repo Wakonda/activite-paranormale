@@ -14,9 +14,9 @@ Page_PrivacyPolicy:
     path:  /privacy-policy
     controller: App\Controller\PageController::privacyPolicyAction
 
-# Page_Cookie:
-    # path: /cookie
-    # controller: App\Controller\PageController::cookieAction
+Page_Cookie:
+    path: /cookie
+    controller: App\Controller\PageController::cookieAction
 
 Page_IndexRSSFeed:
     path:  /rss
@@ -31,7 +31,7 @@ Page_Cryptocurrency:
     controller: App\Controller\PageController::cryptocurrency
 
 Page_Generic:
-    path:  /{internationalName}
+    path:  /page/{internationalName}
     controller: App\Controller\PageController::getPageByInternationalNameAction
 
 President_Archive_Index:

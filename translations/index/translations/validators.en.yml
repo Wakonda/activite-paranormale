@@ -71,6 +71,7 @@ index:
         MobileView: "Mobile view"
         Tag: "Tag"
         PrivacyPolicy: "Privacy policy"
+        Participation: "Participation"
         Contact: "Contact"
     rightMenu:
         Login: "Log in"

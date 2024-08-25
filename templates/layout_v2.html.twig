@@ -280,14 +280,8 @@
 							{% if is_mobile() == false %}
 								<li><a href="{{ path('Partner_Index', {'page':1}) }}" title="Follow us">{{ "index.footerMenu.FollowUs"|trans([], "validators") }}</a></li>
 							{% endif %}
-							{% if app.request.locale == "fr" %}
-								<li><a href="//forum-fr.activite-paranormale.com/" title="Forum">Forum</a></li>
-							{% elseif app.request.locale == "es" %}
-								<li><a href="//forum-es.activite-paranormale.com/" title="Forum">Forum</a></li>
-							{% else %}
-								<li><a href="//forum-en.activite-paranormale.com/" title="Forum">Forum</a></li>
-							{% endif %}
 
+							<li><a href="{{ path('Page_Generic', {internationalName: 'participation'}) }}" title="{{ "index.footerMenu.Participation"|trans([], "validators") }}">{{ "index.footerMenu.Participation"|trans([], "validators") }}</a></li>
 							<li><a href="{{ path('Page_PrivacyPolicy') }}" title="About">{{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a></li>
 							<li><a href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></li>
 							<li><a href="{{ path('Contact_Index') }}">{{ "index.footerMenu.Contact"|trans([], "validators") }}</a></li>

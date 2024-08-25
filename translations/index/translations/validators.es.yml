@@ -71,6 +71,7 @@ index:
         MobileView: "Versión para móviles"
         Tag: "Tag"
         PrivacyPolicy: "Política de privacidad"
+        Participation: "Participación"
         Contact: "Contacto"
     rightMenu:
         Login: "Iniciar sesión"

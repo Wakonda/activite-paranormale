@@ -828,7 +828,7 @@
 	<script>
 		tinymce.init({
 			statusbar: false,
-			extended_valid_elements : "a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name]",
+			extended_valid_elements : "a[class|name|href|target|title|onclick|rel],script[type|src],iframe[src|style|width|height|scrolling|marginwidth|marginheight|frameborder],img[class|src|border=0|alt|title|hspace|vspace|width|height|align|onmouseover|onmouseout|name],i[class]",
 			height: 300,
 			block_formats: 'Header 3=h3;Header 4=h4;Header 5=h5;Header 6=h6',
 			menubar: false,
@@ -840,6 +840,7 @@
 			entity_encoding: "raw",
 			toolbar: 'bold italic underline | blocks | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist | link image media replacePWithBr code | undo redo | fullscreen',
 			plugins: 'lists link image charmap media code fullscreen',
+			valid_elements: '*[*]',
 			paste_preprocess : function(pl, o) {
 				o.content = o.content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/gi, '');
 				o.content = o.content.replace(/<(\w+)\s*(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)[^>]*>/gi, '<$1 $2$3$4>');
