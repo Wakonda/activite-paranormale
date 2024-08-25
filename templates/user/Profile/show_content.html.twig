@@ -36,10 +36,10 @@
 		</div>
 	{% endif %}
 	
-	<br>
+	{#<br>
 	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 		{{ render(controller('App\\Controller\\UserController::phpbbAction')) }}
-	{% endif %}
+	{% endif %}#}
 	<br>
 	
 	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
