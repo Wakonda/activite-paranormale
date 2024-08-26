@@ -35,6 +35,9 @@ class BiographyController extends AbstractController
 	public function readAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Biography::class)->find($id);
+
+		if(empty($entity))
+			throw new NotFoundHttpException();
 		
 		$documents = $em->getRepository(Document::class)->getDocumentsByBiographyInternationalName($entity->getInternationalName());
 		$books = $em->getRepository(Book::class)->getBooksByBiographyInternationalName($entity->getInternationalName());

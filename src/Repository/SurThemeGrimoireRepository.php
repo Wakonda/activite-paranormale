@@ -29,13 +29,10 @@ class SurThemeGrimoireRepository extends EntityRepository
 	public function recupTheme($lang, $idTheme)
 	{
 		$qb = $this->createQueryBuilder('o');
-		$qb->join('o.language', 'l')
-		 ->where('l.abbreviation = :lang')
-		 ->setParameter('lang', $lang)
-		 ->andWhere('o.id = :idTheme')
+		$qb->andWhere('o.id = :idTheme')
 		 ->setParameter('idTheme', $idTheme);
 
-		return $qb->getQuery()->getSingleResult();
+		return $qb->getQuery()->getOneOrNullResult();
 	}
 
 	public function getSurThemeByLanguage($lang)

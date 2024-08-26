@@ -18,12 +18,13 @@ class StateRepository extends EntityRepository
 		$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 		if(!in_array($language, $currentLanguagesWebsite))
 			$language = "en";
-	
+
 		$qb = $this->createQueryBuilder('li');
 		$qb->join('li.language', 'l')
 		   ->where('l.abbreviation = :lang')
 		   ->setParameter('lang', $language)
 		   ->orderBy('li.title');
+		  
 		return $qb;
 	}
 
