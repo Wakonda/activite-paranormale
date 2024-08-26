@@ -38,7 +38,7 @@
 		{{ include("@WakondaMoonPhase/widget.html.twig") }}
 	</div>
 	
-	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', { 'internationalName' : "prayer", 'isTitle': true })) }}
+	{{ render(controller('App\\Controller\\PageController::getPagePartialByInternationalName', { 'internationalName' : "prayer", 'isTitle': true })) }}
 
 	<div class="text-center">
 		<a class="btn witchcraft" href="{{ path('WitchcraftTool_Index') }}">

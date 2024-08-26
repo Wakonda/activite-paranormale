@@ -20,7 +20,7 @@
 
 {% block APBlog_body %}
 	<p class="image">{{ "store-girl-angel-wallpaper.jpg"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid" })|raw }}</p>
-	{{ render(controller('App\\Controller\\PageController::getPageByInternationalNameAction', {'internationalName' : 'book'})) }}
+	{{ render(controller('App\\Controller\\PageController::getPagePartialByInternationalName', {'internationalName' : 'book'})) }}
 
 	<h3>{{ "book.search.SearchSort"|trans([], "validators") }}</h3>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}

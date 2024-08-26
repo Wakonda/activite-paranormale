@@ -103,6 +103,13 @@ class PageController extends AbstractController
 	}
 	
 	// GENERIC
+	public function getPagePartialByInternationalName(Request $request, EntityManagerInterface $em, $internationalName, $isTitle = false)
+    {
+		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $internationalName);
+
+        return $this->render('page/Page/genericPartial.html.twig', ['entity' => $entity, "isTitle" => $isTitle]);
+    }
+	
 	public function getPageByInternationalNameAction(Request $request, EntityManagerInterface $em, $internationalName, $isTitle = false)
     {
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $internationalName);
