@@ -49,6 +49,18 @@ class SavingCommonData
 			if(method_exists($entity, 'getAssetImagePath'))
 				$text = $this->saveImageFromUrlFromText($text, $entity);
 
+			if(str_contains($text, "<h2>")) {
+				$text = str_replace("<h5>", "<h6>", $text);
+				$text = str_replace("<h4>", "<h5>", $text);
+				$text = str_replace("<h3>", "<h4>", $text);
+				$text = str_replace("<h2>", "<h3>", $text);
+
+				$text = str_replace("</h5>", "</h6>", $text);
+				$text = str_replace("</h4>", "</h5>", $text);
+				$text = str_replace("</h3>", "</h4>", $text);
+				$text = str_replace("</h2>", "</h3>", $text);
+			}
+
 			$parser = new APParseHTML();
 			$text = $parser->centerImageInHTML($text, $entity);
 			$entity->setText($text);
