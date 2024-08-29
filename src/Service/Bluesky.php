@@ -130,12 +130,15 @@ class Bluesky {
 		$mimeType = $finfo->buffer(file_get_contents($file));
 		finfo_close($finfo);
 
+			$parser = new \App\Service\APParseHTML();
+			$contentFile = $parser->getContentURL($file);
+
 		$postOpt = [
 			CURLOPT_URL => "https://bsky.social/xrpc/com.atproto.repo.uploadBlob",
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_POST => true,
-			CURLOPT_POSTFIELDS => file_get_contents($file),
+			CURLOPT_POSTFIELDS => $contentFile,
 			CURLOPT_HTTPHEADER => [
 				"Authorization: Bearer " . $token,
 				"Content-Type: ".$mimeType
@@ -189,8 +192,9 @@ class Bluesky {
 	}
 
 	private function parseHTML($url) {
-		$html = file_get_contents($url);
-
+					$parser = new \App\Service\APParseHTML();
+			$html = $parser->getContentURL($url);
+// dd($html, $url);
 		$dom = new \DOMDocument();
 		@$dom->loadHTML($html);
 
