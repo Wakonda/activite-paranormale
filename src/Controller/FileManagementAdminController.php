@@ -165,12 +165,6 @@ class FileManagementAdminController extends AbstractController
 						FROM document n
 						WHERE n.pdfDoc = '".$file."';");
 				break;
-				// case "eventMessage":
-					// $res = $conn->fetchAllAssociative("
-						// SELECT n.id, n.title, \"EventMessage_Admin_Show\" as route
-						// FROM eventMessage n
-						// WHERE n.photo = '".$file."' OR n.thumbnail = '".$file."';");
-				// break;
 				case "language":
 					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Language_Admin_Show\" as route
@@ -276,17 +270,29 @@ class FileManagementAdminController extends AbstractController
 						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
 						WHERE fm.realNameFile = '".$file."';");
 				break;
-				case "witchcraft":
-					$res = 
-						$conn->fetchAllAssociative("
-						SELECT n.id, n.title, \"MenuGrimoire_Admin_Show\" as route
-						FROM menugrimoire n
-						WHERE n.photo = '".$file."';");
-				break;
-				case "witchcraft\grimoire":
+				case "witchcraft/grimoire":
 					$res = $conn->fetchAllAssociative("
 						SELECT n.id, n.title, \"Grimoire_Admin_Show\" as route
 						FROM grimoire n
+						LEFT JOIN filemanagement fm ON n.illustration_id = fm.id
+						WHERE fm.realNameFile = '".$file."';");
+				break;
+				case "witchcraft/menugrimoire":
+					$res = $conn->fetchAllAssociative("
+						SELECT n.id, n.title, \"Grimoire_Admin_Show\" as route
+						FROM menugrimoire n
+						WHERE n.photo = '".$file."';");
+				break;
+				case "witchcraft/surTheme":
+					$res = $conn->fetchAllAssociative("
+						SELECT n.id, n.title, \"Grimoire_Admin_Show\" as route
+						FROM surthemegrimoire n
+						WHERE n.photo = '".$file."';");
+				break;
+				case "witchcraft/witchcraftthemetool":
+					$res = $conn->fetchAllAssociative("
+						SELECT n.id, n.title, \"Grimoire_Admin_Show\" as route
+						FROM witchcraftthemetool n
 						WHERE n.photo = '".$file."';");
 				break;
 				case "classifiedads":
