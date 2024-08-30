@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ currentDate|dodate(false, app.request.locale) }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ (currentDate|date("Y-m-d"))|doPartialDate(app.request.locale) }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<style>
@@ -19,7 +19,7 @@
 
 	<p id="media_duration">
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" class="align-middle" />
-		<span class="align-middle"><b>{{ currentDate|dodate(false, app.request.locale) }}</b></span>
+		<span class="align-middle"><b>{{ (currentDate|date("Y-m-d"))|doPartialDate(app.request.locale) }}</b></span>
 	</p>
 
 	{% for theme, data in currentEvent %}

@@ -186,9 +186,9 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		$qb ->join('c.language', 'l')
 			->where('l.abbreviation = :lang')
 			->setParameter('lang', $language)
-			->andWhere("(REGEXP(c.birthDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.birthDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.birthDate), 2, '0')) = :monthDay
-			            OR REGEXP(c.deathDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM c.deathDate), 2, '0'), '-', LPAD(EXTRACT(DAY FROM c.deathDate), 2, '0')) = :monthDay)")
-			->setParameter("regexp", "^[0-9]{4}-[0-9]{2}-[0-9]{2}$")
+			->andWhere("(REGEXP(c.birthDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM TRIM(LEADING '-' FROM c.birthDate)), 2, '0'), '-', LPAD(EXTRACT(DAY FROM TRIM(LEADING '-' FROM c.birthDate)), 2, '0')) = :monthDay
+			            OR REGEXP(c.deathDate, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM TRIM(LEADING '-' FROM c.deathDate)), 2, '0'), '-', LPAD(EXTRACT(DAY FROM TRIM(LEADING '-' FROM c.deathDate)), 2, '0')) = :monthDay)")
+			->setParameter("regexp", "^(-[0-9]{3,4}|[0-9]{3,4})-[0-9]{2}-[0-9]{2}$")
 			->setParameter('monthDay', $month."-".$day)
 			->orderBy("EXTRACT(YEAR FROM c.birthDate)", "DESC")
 			->addOrderBy("EXTRACT(YEAR FROM c.deathDate)", "DESC");

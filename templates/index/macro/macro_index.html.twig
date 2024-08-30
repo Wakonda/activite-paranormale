@@ -718,10 +718,11 @@
 		});
 
 		document.getElementById("form_twitter").addEventListener("submit", (e) => {
-			e.preventDefault();
-			e.target.setAttribute("action", e.submitter.getAttribute("data-url"));
-
-			e.target.submit();
+			if(e.submitter.getAttribute("data-url") != null) {
+				e.preventDefault();
+				e.target.setAttribute("action", e.submitter.getAttribute("data-url"));
+				e.target.submit();
+			}
 		});
 	</script>
 {% endmacro %}

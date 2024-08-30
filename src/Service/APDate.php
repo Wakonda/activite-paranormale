@@ -38,31 +38,51 @@
 
 		public function doPartialDate(?string $partialDate, $locale)
 		{
+			$isBC = str_starts_with($partialDate, "-");
 			$partialDate = trim($partialDate, "-");
 			$dateArray = explode("-", $partialDate);
 
 			if(empty(array_filter($dateArray)))
 				return null;
 
-			if (!preg_match('/^(-?\d{4})(-\d{2})?(-\d{2})?$/', $partialDate))
+			if (!preg_match('/^(-?\d{1,4})(-\d{2})?(-\d{2})?$/', $partialDate) and !preg_match('/^(-?\d{1,4})(-\d{2})?$/', $partialDate))
 				return $partialDate;
 
 			$bc = "";
-			if(str_starts_with($partialDate, "-"))
+			if($isBC)
 				$bc = " G";
+			
+			$day = null;
+			$month = null;
+			$year = null;
 
-			if(count($dateArray) == 1)
+			if(count($dateArray) == 1) {
 				$skeleton = "YYYY".$bc;
-			elseif(isset($dateArray[2]) and !empty($dateArray[2]))
+				$year = $dateArray[0];
+			} elseif(isset($dateArray[2]) and !empty($dateArray[2])) {
 				$skeleton = 'YYYYMMMMd'.$bc;
-			else 
+				$day = $dateArray[2];
+				$month = $dateArray[1];
+				$year = $dateArray[0];
+			} else {
 				$skeleton = 'YYYYMMMM'.$bc;
+				$month = $dateArray[1];
+				$year = $dateArray[0];
+			}
 
 			$pattern = $this->getFormat($locale, $skeleton);
 
-			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
+			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::FULL, \IntlDateFormatter::NONE,\date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
 
-			return ucfirst($fmt->format(new \DateTime($partialDate)));
+			$cal = \IntlCalendar::fromDateTime(new \DateTime($partialDate));
+			if(!empty($day))
+				$cal->set(\IntlCalendar::FIELD_DAY_OF_MONTH, $day);
+			if(!empty($month))
+				$cal->set(\IntlCalendar::FIELD_MONTH, $month - 1);
+			if(!empty($year))
+				$cal->set(\IntlCalendar::FIELD_EXTENDED_YEAR, ($isBC ? "-" : "").str_pad($year, 4, "0", STR_PAD_LEFT));
+
+			return $this->removeZero(ucfirst($fmt->format($cal)));
 		}
 		
 		public function doPartialDateTime(?string $partialDateTime, $locale)
@@ -103,7 +123,7 @@
 			$pattern = $this->getFormat($locale, $skeleton);
 			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
 
-			return ucfirst($fmt->format(new \DateTime($partialDateTime)));
+			return $this->removeZero(ucfirst($fmt->format(new \DateTime($partialDateTime))));
 		}
 
 		public function doYearMonthDayDate($day, $month, $year, $locale) {
@@ -145,6 +165,7 @@
 		}
 		
 		private function removeZero(string $input): string {
-			return preg_replace('/\b0*(\d+)\b/', '$1', $input);
+			$input = preg_replace('/\b0*(\d+)\b/', '$1', $input);
+			return preg_replace('/\s-\s*(\d+)/', ' $1', $input);
 		}
 	}

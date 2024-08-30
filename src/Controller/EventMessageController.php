@@ -474,17 +474,23 @@ class EventMessageController extends AbstractController
 		foreach($entities as $entity) {
 			$type = EventMessage::DEATH_DATE_TYPE;
 
-			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("m-d") == $month."-".$day)
-				$type = EventMessage::BIRTH_DATE_TYPE;
+			if(!empty($entity->getBirthDate())) {
+				$yearEvent = (str_starts_with($entity->getBirthDate(), "-") ? "-" : "").str_pad(explode("-", ltrim($entity->getBirthDate(), "-"))[0], 4, "0", STR_PAD_LEFT);
+				$date = $yearEvent."-".explode("-", ltrim($entity->getBirthDate(), "-"), 2)[1];
+
+				if((new \DateTime($date))->format("m-d") == $month."-".$day)
+					$type = EventMessage::BIRTH_DATE_TYPE;
+			} else {
+				$yearEvent = (str_starts_with($entity->getDeathDate(), "-") ? "-" : "").str_pad(explode("-", ltrim($entity->getDeathDate(), "-"))[0], 4, "0", STR_PAD_LEFT);
+			}
 
 			$get = "get".ucfirst($type);
 
-			$yearEvent = (new \DateTime($entity->$get()))->format("Y");
 			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
 			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
 
 			if($yearEvent != $year) {
-				$res[$type][$centuryText][(new \DateTime($entity->$get()))->format("Y")][] = [
+				$res[$type][$centuryText][$yearEvent][] = [
 					"title" => $entity->getTitle(),
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
 				];

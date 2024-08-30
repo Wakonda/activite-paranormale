@@ -174,22 +174,24 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	}
 
 	public function getBirthDateToArray() {
-		$date = explode("-", $this->birthDate);
+		$isBC = str_starts_with($this->birthDate, "-");
+		$date = explode("-", trim($this->birthDate, "-"));
 		
 		return [
 			"day" => (isset($date[2]) and !empty($date[2])) ? intval($date[2]) : null,
 			"month" => (isset($date[1]) and !empty($date[1])) ? intval($date[1]) : null,
-			"year" => (isset($date[0]) and !empty($date[0])) ? intval($date[0]) : null, 
+			"year" => (isset($date[0]) and !empty($date[0])) ? ($isBC ? "-" : "").intval($date[0]) : null, 
 		];
 	}
 
 	public function getDeathDateToArray() {
-		$date = explode("-", $this->deathDate);
+		$isBC = str_starts_with($this->deathDate, "-");
+		$date = explode("-", trim($this->deathDate, "-"));
 		
 		return [
 			"day" => (isset($date[2]) and !empty($date[2])) ? intval($date[2]) : null,
 			"month" => (isset($date[1]) and !empty($date[1])) ? intval($date[1]) : null,
-			"year" => (isset($date[0]) and !empty($date[0])) ? intval($date[0]) : null, 
+			"year" => (isset($date[0]) and !empty($date[0])) ? ($isBC ? "-" : "").intval($date[0]) : null, 
 		];
 	}
 
