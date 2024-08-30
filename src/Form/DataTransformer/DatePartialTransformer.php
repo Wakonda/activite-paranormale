@@ -8,10 +8,10 @@ class DatePartialTransformer implements DataTransformerInterface
 {
     public function transform($dateString)
     {
-		$dateArray = explode("-", $dateString);
-		
+		$dateArray = explode("-", trim($dateString, "-"));
+
 		return [
-			"year" => (isset($dateArray[0]) and !empty($dateArray[0])) ? intval($dateArray[0]) : null,
+			"year" => (isset($dateArray[0]) and !empty($dateArray[0])) ? (str_starts_with($dateString, "-") ? "-" : "").intval($dateArray[0]) : null,
 			"month" => (isset($dateArray[1]) and !empty($dateArray[1])) ? intval($dateArray[1]) : null,
 			"day" => (isset($dateArray[2]) and !empty($dateArray[2])) ? intval($dateArray[2]) : null
 		];
