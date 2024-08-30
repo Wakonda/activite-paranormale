@@ -40,8 +40,12 @@ class Video {
 
 			if ($iframe) {
 				$src = $iframe->getAttribute('src');
-				$src = parse_url($src, PHP_URL_PATH);
-				$videoId = substr($src, strrpos($src, '/') + 1);
+				$src = parse_url($src);
+				$videoId = substr($src["path"], strrpos($src["path"], '/') + 1);
+				
+				if($videoId == "player.html") {
+					$videoId = str_replace("video=", "", $src["query"]);
+				}
 
 				return "https://www.dailymotion.com/thumbnail/video/{$videoId}";
 			}
