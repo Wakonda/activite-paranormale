@@ -164,8 +164,16 @@
 			return $fmt->format($dateTime);
 		}
 		
-		private function removeZero(string $input): string {
-			$input = preg_replace('/\b0*(\d+)\b/', '$1', $input);
+		public function removeZero(string $input): string {
+			return preg_replace('/\b0*(\d+)\b/', '$1', $input);
+		}
+		
+		private function removeBC(string $input): string {
 			return preg_replace('/\s-\s*(\d+)/', ' $1', $input);
+		}
+		
+		private function removeAll(string $input): string {
+			$input = $this->removeZero($input);
+			return $this->removeBC($input);
 		}
 	}

@@ -434,7 +434,7 @@ class EventMessageController extends AbstractController
 		return $response;
 	}
 
-	public function getAllEventsByDayAndMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year, $month, $day)
+	public function getAllEventsByDayAndMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $apDate, $year, $month, $day)
 	{
 		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
@@ -473,14 +473,17 @@ class EventMessageController extends AbstractController
 
 		foreach($entities as $entity) {
 			$type = EventMessage::DEATH_DATE_TYPE;
+			$isBC = false;
 
 			if(!empty($entity->getBirthDate())) {
-				$yearEvent = (str_starts_with($entity->getBirthDate(), "-") ? "-" : "").str_pad(explode("-", ltrim($entity->getBirthDate(), "-"))[0], 4, "0", STR_PAD_LEFT);
+				$isBC = str_starts_with($entity->getBirthDate(), "-");
+				$yearEvent = ($isBC ? "-" : "").str_pad(explode("-", ltrim($entity->getBirthDate(), "-"))[0], 4, "0", STR_PAD_LEFT);
 				$date = $yearEvent."-".explode("-", ltrim($entity->getBirthDate(), "-"), 2)[1];
 
 				if((new \DateTime($date))->format("m-d") == $month."-".$day)
 					$type = EventMessage::BIRTH_DATE_TYPE;
 			} else {
+				$isBC = str_starts_with($entity->getDeathDate(), "-");
 				$yearEvent = (str_starts_with($entity->getDeathDate(), "-") ? "-" : "").str_pad(explode("-", ltrim($entity->getDeathDate(), "-"))[0], 4, "0", STR_PAD_LEFT);
 			}
 
@@ -490,7 +493,7 @@ class EventMessageController extends AbstractController
 			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
 
 			if($yearEvent != $year) {
-				$res[$type][$centuryText][$yearEvent][] = [
+				$res[$type][($isBC ? "-" : "").$centuryText][$apDate->removeZero($yearEvent)][] = [
 					"title" => $entity->getTitle(),
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
 				];
