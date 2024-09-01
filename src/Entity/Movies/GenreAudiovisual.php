@@ -15,6 +15,8 @@ use App\Entity\FileManagement;
  */
 class GenreAudiovisual
 {
+	use \App\Entity\GenericEntityTrait;
+
     /**
      * @var integer $id
      *

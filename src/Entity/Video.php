@@ -26,7 +26,7 @@ class Video extends MappedSuperclassBase
     /**
      * @var string $platform
      *
-     * @ORM\Column(name="platform", type="string", length=255)
+     * @ORM\Column(name="platform", type="string", length=255, nullable=true)
      */
     private $platform;
 
@@ -45,7 +45,7 @@ class Video extends MappedSuperclassBase
 	/** @ORM\Column(type="text", nullable=true) */
 	private $embeddedCode;
 
-	/** @ORM\Column(type="string") */
+	/** @ORM\Column(type="string", nullable=true) */
 	protected $duration;
 	
 	/** @ORM\Column(type="boolean") */

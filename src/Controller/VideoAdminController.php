@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Video;
 use App\Entity\VideoTags;
@@ -125,6 +126,8 @@ class VideoAdminController extends AdminGenericController
 		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
 
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+
 		foreach($informationArray['entities'] as $entity)
 		{
 			$row = [];
@@ -142,7 +145,11 @@ class VideoAdminController extends AdminGenericController
 				$state = '<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>';
 			$row[] = $state;
 			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="" width="20px" height="13px">';
-			$row[] = $entity->getTheme()->getTitle();
+			$row[] = !empty($t = $entity->getTheme()) ? $t->getTitle() : null;
+			
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
+			$row[] =  $state->getTitle();
+			
 			$row[] = "
 			 <a href='".$this->generateUrl('Video_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>
 			 <a href='".$this->generateUrl('Video_Admin_Edit', ['id' => $entity->getId()])."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br>";
@@ -256,5 +263,53 @@ class VideoAdminController extends AdminGenericController
 
 		$twig = 'video/VideoAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+	}
+
+	/* FONCTION DE COMPTAGE */
+	public function countByState(EntityManagerInterface $em, $state)
+	{
+		// dd($this->className);
+		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
+		return new Response($countByStateAdmin);
+	}
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+
+		return new Response();
+	}
+
+	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+	{
+		$language = $request->getLocale();
+
+		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
+
+		$entity = $em->getRepository(Video::class)->find($id);
+		
+		$entity->setState($state);
+
+		if($state->getInternationalName() == "Validate") {
+			if(empty($entity->getTheme()))
+				return $this->redirect($this->generateUrl('Video_Admin_Edit', ['id' => $id]));
+		}
+
+		$em->persist($entity);
+		$em->flush();
+
+		if($state->getInternationalName() == "Validate")
+			$this->addFlash('success', $translator->trans('news.admin.NewsPublished', [], 'validators'));
+		else
+			$this->addFlash('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
+
+		return $this->redirect($this->generateUrl('Video_Admin_Show', ['id' => $id]));
 	}
 }

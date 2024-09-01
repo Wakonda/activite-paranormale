@@ -146,8 +146,8 @@ class VideoRepository extends MappedSuperclassBaseRepository
 		$aColumns = ['c.id', 'c.title', 'c.platform', 's.title', 'l.title', 't.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
-		$qb->join('c.language', 'l')
-		   ->join('c.theme', 't')
+		$qb->leftjoin('c.language', 'l')
+		   ->leftjoin('c.theme', 't')
 		   ->join('c.state', 's')
 		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
@@ -162,6 +162,21 @@ class VideoRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
+// dd($searchByColumns);
+		if(!empty($searchByColumns))
+		{
+			$aSearchColumns = ['c.id', 'c.title', 'c.platform', 'c.available', 'l.title', 't.title', 's.internationalName', 'c.id'];
+			foreach($aSearchColumns as $i => $aSearchColumn)
+			{
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
+				{
+					$search = "%".$value."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
+					   ->setParameter("searchByColumn".$i, $search);
+				}
+			}
+		}
+
 		if($count)
 		{
 			$qb->select("count(c)");

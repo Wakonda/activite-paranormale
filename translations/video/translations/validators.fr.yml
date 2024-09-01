@@ -34,6 +34,7 @@ video:
         PublicationDate: "Date de publication"
         Source: "Source"
         Comment: "Commentaire"
+        AddVideo: "Proposer une vidéo"
     world:
         WorldVideo: "Vidéo multilingue"
     tab:
@@ -55,3 +56,7 @@ video:
         CodeCopiedWithSuccess: "Le code a été copié avec succès"
         RequestSent: "Votre requête a bien été envoyée !"
         WatchTheVideo: "Regarder la vidéo"
+    validate:
+        Validation: "Confirmation"
+        ThankForYourParticipation: "Merci pour votre participation !"
+        ThankForYourParticipationText: "Votre vidéo nous a bien été transmise. Elle sera publiée sur notre site Internet dès qu'un modérateur l'aura validée."

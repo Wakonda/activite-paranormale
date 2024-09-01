@@ -163,4 +163,15 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 		return $res;
 	}
+
+	public function countByStateAdmin($state)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("count(c)")
+		->innerjoin('c.state', 's')
+		->where('s.internationalName = :state')
+		->setParameter('state', $state);
+
+		return $qb->getQuery()->getSingleScalarResult();
+	}
 }

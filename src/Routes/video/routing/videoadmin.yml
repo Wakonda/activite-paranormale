@@ -30,6 +30,16 @@ Video_Admin_Delete:
     path:  /{id}/delete
     controller: App\Controller\VideoAdminController::deleteAction
 
+Video_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\VideoAdminController::deleteMultiple
+
+Video_Admin_ChangeState:
+    path: /change_state/{id}/{state}
+    controller: App\Controller\VideoAdminController::changeStateAction
+    requirements:
+        id: \d+
+
 Video_Admin_Archive:
     path: /archive/{id}
     controller: App\Controller\VideoAdminController::archiveAction

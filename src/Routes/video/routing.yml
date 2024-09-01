@@ -57,6 +57,26 @@ Video_DisplayImage:
     path: /video/displayThumbnail/{file}
     controller: App\Controller\VideoController::displayThumbnail
 
+Video_New:
+    path: /video/new
+    controller: App\Controller\VideoController::newAction
+
+Video_Create:
+    path: /video/create
+    controller: App\Controller\VideoController::createAction
+
+Video_Edit:
+    path: /video/edit/{id}
+    controller: App\Controller\VideoController::editAction
+
+Video_Update:
+    path: /video/update/{id}
+    controller: App\Controller\VideoController::createAction
+
+Video_Validate:
+    path: /video/validate/{id}
+    controller: App\Controller\VideoController::validateAction
+
 # Administration
 Video_Admin:
     resource: "routing/videoadmin.yml"

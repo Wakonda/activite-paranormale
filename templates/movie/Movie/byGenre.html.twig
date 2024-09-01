@@ -4,7 +4,7 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ genre.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
-	<p class="image">{{ genre.photo|imgsize(550, genre.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ genre.photoIllustrationFilename|imgsize(550, genre.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	{{ genre.text|raw }}
 	<hr class="hr2">
 	{% for entity in pagination.items %}

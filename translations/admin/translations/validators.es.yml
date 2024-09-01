@@ -209,6 +209,7 @@ admin:
         WebDirectoriesToModerate: "Directorios web a moderar"
         CommentsToModerate: "Comentarios a moderar"
         ClassifiedAdsToModerate: "Anuncios clasificados a moderar"
+        VideosToModerate: "Vídeos a moderar"
         Waiting: "Espera"
         Warned: "Prevenido"
         UnreadPosts: "Mensajes no leídos"
