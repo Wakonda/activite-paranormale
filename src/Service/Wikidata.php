@@ -1146,7 +1146,7 @@
 		}
 
 		private function getCodeFromURL($url) {
-			if(!FunctionsLibrary::isUrl($url))
+			if(!str_starts_with($url, "http") and !FunctionsLibrary::isUrl($url))
 				return $url;
 
 			$locale = explode(".", parse_url($url ,PHP_URL_HOST))[0];
