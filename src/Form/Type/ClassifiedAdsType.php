@@ -38,12 +38,12 @@ class ClassifiedAdsType extends AbstractType
 			->add('price', NumberType::class, ['required' => true, 'translation_domain' => 'validators', "required" => false])
 		    ->add('location', HiddenType::class, ['required' => false])
 			->add('displayEmail', CheckboxType::class, ["required" => false])
-			->add('illustration', FileType::class, array('data_class' => null, 'required' => false))
-            ->add('category', EntityType::class, array('class'=>'App\Entity\ClassifiedAdsCategory', 
+			->add('illustration', FileType::class, ['data_class' => null, 'required' => false])
+            ->add('category', EntityType::class, ['class'=>'App\Entity\ClassifiedAdsCategory', 
 					'choice_label'=>'title', 
 					'required' => true,
 					'group_by' => 'getParentCategoryTitle',
-					'constraints' => array(new NotBlank()),
+					'constraints' => [new NotBlank()],
 					'query_builder' => function(EntityRepository $er) use ($language) {
 						return $er->createQueryBuilder('u')
 								  ->leftJoin('u.language', 'l')
@@ -52,7 +52,7 @@ class ClassifiedAdsType extends AbstractType
 								  ->andWhere("u.parentCategory IS NOT NULL")
 								  ->orderBy('u.title', 'ASC');
 					}
-			))
+			])
 		;
 		
 		if(empty($this->token->getToken())) {

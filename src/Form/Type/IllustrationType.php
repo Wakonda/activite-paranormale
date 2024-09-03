@@ -25,7 +25,7 @@ class IllustrationType extends AbstractType
             ->add('license', TextType::class, ['required' => true])
             ->add('author', TextType::class, ['required' => true])
             ->add('urlSource', TextType::class, ['required' => true, "constraints" => [new Url()]])
-            ->add('caption', TextareaType::class, ['required' => true])
+            ->add('caption', TextareaType::class, ['required' => false])
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'base_path' => $options["base_path"]])
 		;
 

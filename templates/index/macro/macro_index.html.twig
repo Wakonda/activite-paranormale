@@ -520,6 +520,7 @@
 			<div id="collapseBluesky" class="collapse" aria-labelledby="headingBluesky" data-parent="#accordionParentBluesky">
 				<div class="card-body">
 					<form id="form_bluesky" action="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'bluesky', family: 'bluesky' }) }}" method="post">
+						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }}  <span id="limit_string_bluesky" class="badge bg-danger">300</span></p>
 						{{ _self.tags_list("bluesky_area", "tags_bluesky") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -552,10 +553,29 @@
 	{{ _self.generic_tags("bluesky_area", "tags_bluesky") }}
 
 	<script>
-		document.getElementById("form_mastodon").addEventListener("submit", (e) => {
+		var blueskyAreaFunction = function(e) {
+			document.getElementById("limit_string_bluesky").innerHTML = limit - this.value.length;
+			const submitButtons = document.querySelectorAll('#form_bluesky input[type="submit"]');
+
+			if(limit <= this.value.length) {
+				submitButtons.forEach(button => {
+					button.setAttribute("disabled", "disabled");
+				});
+			}
+			else {
+				submitButtons.forEach(button => {
+					button.removeAttribute("disabled");
+				});
+			}
+		};
+
+		document.getElementById("bluesky_area").addEventListener("keydown", blueskyAreaFunction);
+		document.getElementById("bluesky_area").addEventListener("keyup", blueskyAreaFunction);
+		document.getElementById("limit_string_bluesky").innerHTML = limit - document.getElementById("bluesky_area").value.length;
+	
+		document.getElementById("form_bluesky").addEventListener("submit", (e) => {
 			e.preventDefault();
 			e.target.setAttribute("action", e.submitter.getAttribute("data-url"));
-
 			e.target.submit();
 		});
 	</script>
@@ -694,14 +714,17 @@
 
 		var twitterAreaFunction = function(e) {
 			document.getElementById("limit_string").innerHTML = limit - this.value.length;
+			const submitButtons = document.querySelectorAll('#form_twitter input[type="submit"]');
 
 			if(limit <= this.value.length) {
-				document.querySelector("input[type=submit]#tweet").setAttribute("disabled", "disabled");
-				document.querySelector("input[type=submit]#tweetMastodon").setAttribute("disabled", "disabled");
+				submitButtons.forEach(button => {
+					button.setAttribute("disabled", "disabled");
+				});
 			}
 			else {
-				document.querySelector("input[type=submit]#tweet").removeAttribute("disabled");
-				document.querySelector("input[type=submit]#tweetMastodon").removeAttribute("disabled");
+				submitButtons.forEach(button => {
+					button.removeAttribute("disabled");
+				});
 			}
 		};
 

@@ -34,7 +34,7 @@ class ClassifiedAdsAdminType extends AbstractType
 			->add('price', NumberType::class, ['required' => true, 'translation_domain' => 'validators', "required" => false])
 		    ->add('location', HiddenType::class, ['required' => false])
 			->add('displayEmail', CheckboxType::class, ["required" => false])
-			->add('illustration', IllustrationType::class, array('required' => true))
+			->add('illustration', IllustrationType::class, ['required' => false])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 					'choice_label' => function ($choice, $key, $value) {
 						return $choice->getTitle()." [".$choice->getAbbreviation()."]";
