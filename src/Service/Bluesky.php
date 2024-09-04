@@ -192,15 +192,15 @@ class Bluesky {
 	}
 
 	private function parseHTML($url) {
-					$parser = new \App\Service\APParseHTML();
-			$html = $parser->getContentURL($url);
-// dd($html, $url);
+		$parser = new \App\Service\APParseHTML();
+		$html = $parser->getContentURL($url);
+
 		$dom = new \DOMDocument();
 		@$dom->loadHTML($html);
 
 		$res = [
 			"title" => null,
-			"description" => null,
+			"description" => "",
 			"image" => null
 		];
 
@@ -214,7 +214,7 @@ class Bluesky {
 					$res["title"] = $meta->getAttribute('content');
 					break;
 				case 'og:description':
-					$res["description"] = $meta->getAttribute('content');
+					$res["description"] = is_null($content = $meta->getAttribute('content')) ? "" : $content;
 					break;
 				case 'og:image':
 					$res["image"] = $meta->getAttribute('content');

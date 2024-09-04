@@ -62,6 +62,8 @@ class BiographyAdminController extends AdminGenericController
 				$datas["nationality"] = $d;
 			if(!empty($d = $biography->getWikidata()))
 				$datas["wikidata"] = $d;
+			if(!empty($d = $biography->getGender()))
+				$datas["gender"] = $d;
 			
 			$illustration = !empty($entityBindded->getIllustration()) ? $entityBindded->getIllustration() : $biography->getIllustration();
 
@@ -104,6 +106,8 @@ class BiographyAdminController extends AdminGenericController
 				$biography->setNationality($datas["nationality"]);
 			if(isset($datas["wikidata"]))
 				$biography->setWikidata($datas["wikidata"]);
+			if(isset($datas["gender"]))
+				$biography->setGender($datas["gender"]);
 
 			if(isset($datas["links"]))
 				$biography->setLinks(json_encode($datas["links"]));
