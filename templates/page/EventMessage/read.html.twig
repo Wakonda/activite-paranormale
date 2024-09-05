@@ -88,12 +88,14 @@
 	{{ entity.text|raw }}
 	{% if entity.longitude is not empty and entity.latitude is not empty %}
 		<br>
+		<h3>{{ "eventMessage.new.Location"|trans([], "validators") }}</h3>
 		<div id="map-canvas" style="width:100%; height:400px"></div>
 	{% endif %}
 
 	{% set musics = music_festival(entity) %}
 	
 	{% if musics is not empty %}
+		<br>
 		<h3>{{ 'music.listen.TrackListing'|trans([], 'validators') }}</h3>
 		<table class="doc_datatables table dt-responsive w-100">
 			<tbody>
