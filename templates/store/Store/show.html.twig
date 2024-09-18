@@ -219,7 +219,7 @@
 	
 	{% if entity.isAlbumCategory() %}
 		{% set album = entity.album %}
-		{% set musics = music_by_album(album.artist) %}
+		{% set musics = music_by_album(album) %}
 		{% set url = path('Music_Listen', { id: album.id, artist: album.artist.title, artistId: album.artist.id, album: album.title }) %}
 		<hr>
 		<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (musics|duration_entities)|default('-') }}</p>
