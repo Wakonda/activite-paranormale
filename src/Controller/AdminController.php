@@ -178,6 +178,11 @@ class AdminController extends AbstractController
 				$method = "PUT";
 			}
 		}
+		
+		$theme = null;
+		
+		if(method_exists($entity, "getTheme") and !empty($t = $entity->getTheme()))
+			$theme = $t->getTitle();
 
 		$urlAddUpdate = $this->generateUrl('Admin_Blogger', ['id' => $entity->getId(), 'path' => urlencode($entity->getEntityName()), 'routeToRedirect' => $routeToRedirect, 'type' => $type, 'method' => $method]);
 
@@ -186,7 +191,7 @@ class AdminController extends AbstractController
 		if(!empty($obj))
 			$urlDelete = $this->generateUrl('Admin_Blogger', ['id' => $entity->getId(), 'path' => urlencode($entity->getEntityName()), 'routeToRedirect' => $routeToRedirect, 'type' => $type, 'method' => "DELETE"]);
 
-		return new JsonResponse(["obj" => $obj, "method" => $method, "tags" => $tags, "urlAddUpdate" => $urlAddUpdate, "urlDelete" => $urlDelete]);
+		return new JsonResponse(["obj" => $obj, "theme" => $theme, "method" => $method, "tags" => $tags, "urlAddUpdate" => $urlAddUpdate, "urlDelete" => $urlDelete]);
 	}
 
 	public function bloggerAction(Request $request, EntityManagerInterface $em, GoogleBlogger $blogger, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type, $method)

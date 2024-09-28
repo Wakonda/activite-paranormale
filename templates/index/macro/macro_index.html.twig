@@ -102,9 +102,14 @@
 					document.querySelectorAll('#blogger_tags option').forEach(option => option.remove());
 					
 					let data = JSON.parse(xmlHttp.responseText);
-					
+					var isSelected = false;
+
 					for(var i = 0; i < data.tags.length; i++) {
-						let isSelected = data.obj != null ? data.obj.labels.includes(data.tags[i]) : false;
+						if(data.obj != null)
+							isSelected = data.obj != null ? data.obj.labels.includes(data.tags[i]) : false;
+						else 
+							isSelected = data.theme != null ? data.theme.includes(data.tags[i]) : false;
+						
 						document.querySelector("select#blogger_tags").add(new Option(data.tags[i], data.tags[i], isSelected, isSelected));
 					}
 					
