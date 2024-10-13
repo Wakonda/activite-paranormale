@@ -248,6 +248,7 @@ class AdminController extends AbstractController
 			$isExternalImage = false;
 			
 			$tagsLinks = [];
+			$tagsLinkString = "";
 			$tagsEntity = $em->getRepository(\App\Entity\Tags::class)->findBy(['idClass' => $entity->getId(), 'nameClass' => $entity->getRealClass()]);
 
 			if(!empty($tagsEntity))
@@ -256,7 +257,10 @@ class AdminController extends AbstractController
 
 			if(method_exists($entity, "getTheme") and !empty($t = $entity->getTheme()))
 				$tagsLinks[] = '<a href="'.$this->generateUrl('Theme_Show', ['id' => $t->getId(), 'theme' => $t->getTitle()]).'">'.$t->getTitle().'</a>';
-// dd($tagsLinks);
+
+			if(!empty($tagsLinks))
+				$tagsLinkString = "<fieldset style='border: 1px solid black;border-radius: 0.3em;padding: 6px;'><legend style='padding: 3px;'><b>".$translator->trans('tag.admin.Tags', [], 'validators', $request->getLocale())."</b></legend>".implode(", ", $tagsLinks)."</fieldset>";
+
 			switch($entity->getRealClass())
 			{
 				case "Photo":
@@ -266,17 +270,14 @@ class AdminController extends AbstractController
 					$text = $entity->getText();
 					$text .= "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>";
 					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+					$text .= $tagsLinkString;
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "News":
 					$imgProperty = $entity->getPhotoIllustrationFilename();
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
-					
-					if(!empty($tagsLinks))
-						$tagsLinks = "<fieldset style='border: 1px solid black;border-radius: 0.3em;padding: 6px;'><legend style='padding: 3px;'><b>".$translator->trans('tag.admin.Tags', [], 'validators', $request->getLocale())."</b></legend>".implode(", ", $tagsLinks)."</fieldset>";
-
-					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>".$tagsLinks, $request->getSchemeAndHttpHost().$request->getBasePath());
+					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>".$tagsLinkString, $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "EventMessage":
@@ -285,8 +286,8 @@ class AdminController extends AbstractController
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
 
 					$source = empty($entity->getSource()) ? "" : "<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>";
-					
-					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>".$source, $request->getSchemeAndHttpHost().$request->getBasePath());
+
+					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>".$source.$tagsLinkString, $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 
 					if($entity->getType() == \App\Entity\EventMessage::EVENT_TYPE) {
@@ -307,7 +308,7 @@ class AdminController extends AbstractController
 					else
 						$text = $entity->getText()."<br>".$video;
 
-					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>".$tagsLinkString;
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "Grimoire":
@@ -316,7 +317,7 @@ class AdminController extends AbstractController
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
 					$text = $entity->getText();
 
-					$text = $parser->replacePathImgByFullURL($text."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+					$text = $parser->replacePathImgByFullURL($text."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>".$tagsLinkString, $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "WitchcraftTool":
@@ -324,7 +325,6 @@ class AdminController extends AbstractController
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
 					$text = $entity->getText();
-
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "President":
@@ -339,7 +339,7 @@ class AdminController extends AbstractController
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$text = $entity->getText();
 					$text .= "<b>".$translator->trans('cartography.admin.LinkGMaps', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span><a href='".$entity->getLinkGMaps()."'>".(new FunctionsLibrary())->cleanUrl($entity->getLinkGMaps())."</a></span>";
-					$text .= "<br><br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+					$text .= "<br><br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>".$tagsLinkString;
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "Book":
@@ -348,7 +348,7 @@ class AdminController extends AbstractController
 					$text = $entity->getText()."<br>";
 					$text .= $apExtension->getImageEmbeddedCodeByEntity($entity->getBookEditions()->first(), "book", "BookStore")."<br>";
 					$text .= "<b>".$translator->trans('biography.index.Author', [], 'validators', $entity->getLanguage()->getAbbreviation())." : </b>".implode(", ", array_map(function($e) { return $e->getTitle(); }, $entity->getAuthors()->getValues()))."<br>";
-					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>".$tagsLinkString;
 					break;
 				case "Store":
 					if(!empty($entity->getPhoto())) {
