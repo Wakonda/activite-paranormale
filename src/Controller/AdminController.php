@@ -246,7 +246,17 @@ class AdminController extends AbstractController
 			$text = "";
 			$imgProperty = "";
 			$isExternalImage = false;
+			
+			$tagsLinks = [];
+			$tagsEntity = $em->getRepository(\App\Entity\Tags::class)->findBy(['idClass' => $entity->getId(), 'nameClass' => $entity->getRealClass()]);
 
+			if(!empty($tagsEntity))
+				foreach($tagsEntity as $tag)
+					$tagsLinks[] = '<a href="'.$this->generateUrl('ap_tags_search', ['id' => $tag->getTagWord()->getId(), 'title_slug' => $tag->getTagWord()->getSlug()]).'">'.$tag->getTagWord()->getTitle().'</a>';
+
+			if(method_exists($entity, "getTheme") and !empty($t = $entity->getTheme()))
+				$tagsLinks[] = '<a href="'.$this->generateUrl('Theme_Show', ['id' => $t->getId(), 'theme' => $t->getTitle()]).'">'.$t->getTitle().'</a>';
+// dd($tagsLinks);
 			switch($entity->getRealClass())
 			{
 				case "Photo":
@@ -262,7 +272,11 @@ class AdminController extends AbstractController
 					$imgProperty = $entity->getPhotoIllustrationFilename();
 					$img = $entity->getAssetImagePath().$imgProperty;
 					$imgCaption = !empty($c = $entity->getPhotoIllustrationCaption()) ? implode(", ", $c["source"]) : "";
-					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>", $request->getSchemeAndHttpHost().$request->getBasePath());
+					
+					if(!empty($tagsLinks))
+						$tagsLinks = "<fieldset style='border: 1px solid black;border-radius: 0.3em;padding: 6px;'><legend style='padding: 3px;'><b>".$translator->trans('tag.admin.Tags', [], 'validators', $request->getLocale())."</b></legend>".implode(", ", $tagsLinks)."</fieldset>";
+
+					$text = $parser->replacePathImgByFullURL($entity->getAbstractText().$entity->getText()."<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>"."<b>".$translator->trans('news.index.Sources', [], 'validators', $entity->getLanguage()->getAbbreviation())."</b><br><span>".(new FunctionsLibrary())->sourceString($entity->getSource(), $entity->getLanguage()->getAbbreviation())."</span>".$tagsLinks, $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "EventMessage":
