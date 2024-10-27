@@ -103,6 +103,8 @@
 			{{ macro_index.diaspora_form(entity, entity.text) }}
 			{{ macro_index.bluesky_form(entity) }}
 			{{ macro_index.wordpress_form(entity) }}
+			{{ macro_index.vk_form(entity, entity.text) }}
+			{{ macro_index.telegram_form(entity) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}
@@ -114,4 +116,6 @@
 	{{ macro_index.facebook_form_js() }}
 	{{ macro_index.diaspora_form_js() }}
 	{{ macro_index.bluesky_form_js() }}
+	{{ macro_index.vk_form_js() }}
+	{{ macro_index.telegram_form_js() }}
 {% endblock %}

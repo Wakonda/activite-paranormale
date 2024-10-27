@@ -416,6 +416,43 @@
 	{{ _self.generic_tags("diaspora_area", "tags_diaspora") }}
 {% endmacro %}
 
+{% macro telegram_form(entity, text = null) %}
+	{% if isTelegramAvailable(entity) %}
+	<div class="accordion mb-2" id="accordionParentTelegram">
+		<div class="card sub_block">
+			<div class="card-header" role="tab" id="headingTelegram">
+				<span class="panel-title">
+				<a href="#" role="button" data-bs-toggle="collapse" data-bs-target="#collapseTelegram" aria-expanded="false" aria-controls="collapseTelegram">
+				<i class="fab fa-telegram" aria-hidden="true"></i> Telegram
+				</a>
+				</span>
+			</div>
+			<div id="collapseTelegram" class="collapse" aria-labelledby="headingTelegram" data-parent="#accordionParentTelegram">
+				<div class="card-body">
+					<form action="{{ path('Admin_Telegram', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route') }) }}" method="post">
+						{{ _self.tags_list("telegram_area", "tags_telegram") }}
+						<br>
+						{% set tags = get_tags(entity, false, true) %}
+						{% set tagsArray = tags|split(", ") %}
+						{% if entity.theme is defined and entity.theme is not empty %}{% set tagsArray = tagsArray|merge([ slug(entity.theme.title) ]) %}{% endif %}
+						
+						<textarea id="telegram_area" name="telegram_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
+						<br>
+						<input type="url" placeholder="https://example.com" name="diaspora_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
+						<br>
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% endif %}
+{% endmacro %}
+
+{% macro telegram_form_js() %}
+	{{ _self.generic_tags("diaspora_area", "tags_diaspora") }}
+{% endmacro %}
+
 {% macro vk_form(entity, text = null) %}
 	{% if isVKAvailable(entity) %}
 	<div class="accordion mb-2" id="accordionParentVK">

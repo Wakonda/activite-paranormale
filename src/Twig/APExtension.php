@@ -107,8 +107,9 @@
 				new TwigFunction('isBloggerAvailable', array($this, 'isBloggerAvailable')),
 				new TwigFunction('isFacebookAvailable', array($this, 'isFacebookAvailable')),
 				new TwigFunction('isFlickrAvailable', array($this, 'isFlickrAvailable')),
-				new TwigFunction('isVKAvailable', array($this, 'isVKAvailable')),
-				new TwigFunction('isDiasporaAvailable', array($this, 'isDiasporaAvailable')),
+				new TwigFunction('isVKAvailable', [$this, 'isVKAvailable']),
+				new TwigFunction('isDiasporaAvailable', [$this, 'isDiasporaAvailable']),
+				new TwigFunction('isTelegramAvailable', [$this, 'isTelegramAvailable']),
 				new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
 				new TwigFunction('isMuseAvailable', array($this, 'isMuseAvailable')),
 				new TwigFunction('isTumblrAvailable', array($this, 'isTumblrAvailable')),
@@ -901,6 +902,12 @@
 		public function isDiasporaAvailable($entity): bool
 		{
 			$api = new \App\Service\Diaspora();
+			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
+		}
+
+		public function isTelegramAvailable($entity): bool
+		{
+			$api = new \App\Service\Telegram();
 			return in_array($entity->getLanguage()->getAbbreviation(), $api->getLanguages());
 		}
 

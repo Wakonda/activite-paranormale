@@ -71,3 +71,7 @@ Video_Admin_LoadImageSelectorColorbox:
 Video_Admin_Internationalization:
     path:  /internationalization/{id}
     controller: App\Controller\VideoAdminController::internationalizationAction
+
+Video_Admin_VideoDuration:
+    path:  /video_duration
+    controller: App\Controller\VideoAdminController::getVideoDuraction

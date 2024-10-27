@@ -49,6 +49,12 @@ Admin_Diaspora:
     defaults:
         method: "POST"
 
+Admin_Telegram:
+    path: /admin/telegram/{id}/{path}/{routeToRedirect}
+    controller: App\Controller\AdminController::telegram
+    defaults:
+        method: "POST"
+
 Admin_DiasporaPost:
     path: /admin/diasporapost
     controller: App\Controller\AdminController::diasporaPostAction

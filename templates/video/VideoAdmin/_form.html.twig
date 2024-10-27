@@ -116,7 +116,21 @@
 
 		textarea.addEventListener('paste', function(event) {
 			document.getElementById("{{ form.platform.vars.id }}").value = getPlatformFromEmbeddedCode(event.clipboardData.getData('text'));
-			console.log('Pasted into the textarea:', getPlatformFromEmbeddedCode(event.clipboardData.getData('text')));
+
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", "{{ path('Video_Admin_VideoDuration') }}?embeddedCode=" + btoa(event.clipboardData.getData('text')), true);
+
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var data = JSON.parse(xhr.responseText);
+					
+					document.getElementById("{{ form.hourDuration.vars.id }}").value = data.hour;
+					document.getElementById("{{ form.minuteDuration.vars.id }}").value = data.minute;
+					document.getElementById("{{ form.secondDuration.vars.id }}").value = data.second;
+				}
+			};
+
+			xhr.send();
 		});
 	});
 

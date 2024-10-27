@@ -205,6 +205,11 @@ class VideoAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
+	public function getVideoDuraction(Request $request) {
+		$videoService = new \App\Service\Video(base64_decode($request->query->get("embeddedCode")));
+		return new JsonResponse($videoService->getDuration());
+	}
+
 	public function chooseExistingFileAction()
     {
 		$webPath = $this->getParameter('kernel.project_dir').'/public/extended/flash/Video/KAWAplayer_v1/videos/';

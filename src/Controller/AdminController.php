@@ -702,6 +702,23 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 
+	public function telegram(Request $request, EntityManagerInterface $em, Telegram $telegram, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	{
+		$session = $request->getSession();
+		$entity = $em->getRepository($path)->find($id);
+
+		$text = $session->get("telegram_area")." ".$session->get("telegram_url");
+
+		$result = $telegram->postMessage($text, $entity->getLanguage()->getAbbreviation());
+
+		if(isset($result["error"]))
+			$session->getFlashBag()->add('error', $translator->trans('admin.telegram.Error', [], 'validators')." (".$result["error"].": ".$result["error_description"].")");
+		else
+			$session->getFlashBag()->add('success', $translator->trans('admin.telegram.Success', [], 'validators'));
+		
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+	}
+
 	// Shopify
 	public function shopifyAction(Request $request, EntityManagerInterface $em, Shopify $shopify, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type)
 	{

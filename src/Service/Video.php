@@ -127,4 +127,59 @@ class Video {
 
 		return $platform;
 	}
+
+	public function getCodeByThumbnailVideo() {
+		$code = $this->embeddedCode;
+		$platform = $this->getPlatformByCode($code);
+		$pattern = '/<[^>]*>/';
+
+		if ($platform == strtolower(self::YOUTUBE_PLATFORM)) {
+			$pattern = '/youtube\.com\/embed\/([a-zA-Z0-9_-]+)/';
+			if (preg_match($pattern, $code, $matches))
+				return $matches[1];
+		} elseif ($platform == strtolower(self::DAILYMOTION_PLATFORM)) {
+			$dom = new \DOMDocument();
+			$dom->loadHTML($code);
+			$iframe = $dom->getElementsByTagName('iframe')->item(0);
+
+			if ($iframe) {
+				$src = parse_url($iframe->getAttribute('src'));
+				return substr($src["path"], strrpos($src["path"], '/') + 1);
+				
+				if($videoId == "player.html")
+					return str_replace("video=", "", $src["query"]);
+			}
+		} elseif($platform == strtolower(self::RUTUBE_PLATFORM)) {
+			$pattern = '/src="https:\/\/rutube\.ru\/play\/embed\/([^"]+)"/';
+			if (preg_match($pattern, $code, $matches)) {
+				return $matches[1];
+			}
+		} else
+			return null;
+
+		return null;
+	}
+
+	public function getDuration() {
+		$code = $this->embeddedCode;
+		$platform = $this->getPlatformByCode($code);
+		$videoId = $this->getCodeByThumbnailVideo($code);
+		
+		if ($platform == strtolower(self::YOUTUBE_PLATFORM)) {
+			$key = $_ENV["YOUTUBE_KEY"];
+			$data = json_decode(file_get_contents("https://www.googleapis.com/youtube/v3/videos?id={$videoId}&part=contentDetails&key={$key}"));
+
+			if(property_exists($data, "items")) {
+				$interval = new \DateInterval($data->items[0]->contentDetails->duration);
+
+				$hours = $interval->h;
+				$minutes = $interval->i;
+				$seconds = $interval->s;
+
+				return ["hour" => $hours, "minute" => $minutes, "second" => $seconds];
+			}
+		}
+
+		return [];
+	}
 }
