@@ -16,6 +16,7 @@ $vk-color: #0077FF;
 $bluesky-color: #0077FF;
 $tiktok-color: #ff0050;
 $flickr-color: #FF0084;
+$telegram-color: #24A1DE;
 
 body {
 	margin: 0;
@@ -445,6 +446,9 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 }
 .social-share.flickr {
 	background-color: $flickr-color;
+}
+.social-share.telegram {
+	background-color: $telegram-color;
 }
 .social-share.weibo {
 	background-color: $weibo-color;
