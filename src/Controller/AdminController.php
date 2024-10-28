@@ -30,6 +30,7 @@ use App\Service\VK;
 use App\Service\Bluesky;
 use App\Service\Amazon;
 use App\Service\Flickr;
+use App\Service\Telegram;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
 use App\Service\PaginatorNativeSQL;

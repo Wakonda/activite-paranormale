@@ -83,6 +83,7 @@
 			{{ macro_index.vk_form(entity, entity.text) }}
 			{{ macro_index.instagram_form(entity) }}
 			{{ macro_index.bluesky_form(entity) }}
+			{{ macro_index.telegram_form(entity) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}
@@ -95,4 +96,5 @@
 	{{ macro_index.instagram_form_js() }}
 	{{ macro_index.vk_form_js() }}
 	{{ macro_index.bluesky_form_js() }}
+	{{ macro_index.telegram_form_js() }}
 {% endblock %}
