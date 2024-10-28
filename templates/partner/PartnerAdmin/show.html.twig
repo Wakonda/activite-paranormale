@@ -18,7 +18,7 @@
 	<div class="form-table-cell"><a href="{{ entity.link }}" alt="" >{{ entity.link }}</a></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "partner.admin.Logo"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.photo|imgsize(550, 'extended/photo/partner/', true, {"class": "mx-auto d-block img-fluid"})|raw }}</div>
+	<div class="form-table-cell"><div class="w-25">{{ entity.photo|imgsize(550, 'extended/photo/partner/', true, {"class": "mx-auto d-block img-fluid"})|raw }}</div></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "partner.admin.Language"|trans([], "validators") }}</div>
 	<div class="form-table-cell"><img src="{{ asset('extended/photo/language/') }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
