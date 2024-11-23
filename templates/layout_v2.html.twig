@@ -93,7 +93,7 @@
 											{% endif %}
 										</ul>
 									</div>
-									<h3>{{ "index.leftMenu.Section"|trans([], "validators") }}</h3>
+									{#<h3>{{ "index.leftMenu.Section"|trans([], "validators") }}</h3>
 									<ul>
 										<li><a href="{{ path('Archive_Index') }}">{{ "index.leftMenu.Archive"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\ArchiveController::nbrArchiveAction')) }}</span></li>
 										<li><a href="{{ path('News_World') }}">{{ "index.leftMenu.World"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\NewsController::countWorldNewsAction')) }}</span></li>
@@ -128,7 +128,7 @@
 										<li><a href="{{ path('WebDirectory_User_New') }}" title="Offer link">{{ "index.leftMenu.OfferLink"|trans([], "validators") }}</a></li>
 										<li><a href="{{ path('Video_New') }}" title="Post a video">{{ "index.leftMenu.AddVideo"|trans([], "validators") }}</a></li>
 										<li><a href="{{ path('ClassifiedAds_New') }}" title="Post a classified ads">{{ "index.leftMenu.PublishClassifiedAds"|trans([], "validators") }}</a></li>
-									</ul>
+									</ul>#}
 								</div>
 								<div id="publicity_right_menu" class="news_section">
 									{% set ads = advertising(300, 250) %}

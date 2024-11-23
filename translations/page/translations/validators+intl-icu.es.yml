@@ -131,9 +131,6 @@ rssFeed:
         Photo: "Foto"
         Testimony: "Testigo"
         Video: "Vídeo"
-        French: "Français"
-        English: "English"
-        Spanish: "Español"
     read:
         CopyToClipboard: "Copiado al portapapeles"
         CodeCopiedWithSuccess: "El código ha sido copiado con éxito"

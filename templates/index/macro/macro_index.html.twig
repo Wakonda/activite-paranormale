@@ -559,9 +559,10 @@
 				</a>
 				</span>
 			</div>
+			
 			<div id="collapseBluesky" class="collapse" aria-labelledby="headingBluesky" data-parent="#accordionParentBluesky">
 				<div class="card-body">
-					<form id="form_bluesky" action="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'bluesky', family: 'bluesky' }) }}" method="post">
+					<form id="form_bluesky" method="post">
 						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }}  <span id="limit_string_bluesky" class="badge bg-danger">300</span></p>
 						{{ _self.tags_list("bluesky_area", "tags_bluesky") }}
 						<br>
@@ -572,7 +573,7 @@
 						<br>
 						<input type="url" placeholder="https://example.com" name="bluesky_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
-						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'bluesky', family: 'bluesky' }) }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 						
 						{% if isTwitterAvailable(entity) %}
 							<input value="{{ "admin.general.Send"|trans([], "validators") }} Bluesky + Twitter" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'bluesky', family: 'twitter|bluesky' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
@@ -636,7 +637,7 @@
 			</div>
 			<div id="collapseMastodon" class="collapse" aria-labelledby="headingMastodon" data-parent="#accordionParentMastodon">
 				<div class="card-body">
-					<form id="form_mastodon" action="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'mastodon', family: 'mastodon' }) }}" method="post">
+					<form id="form_mastodon" method="post">
 						{{ _self.tags_list("mastodon_area", "tags_mastodon") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
@@ -646,7 +647,7 @@
 						<br>
 						<input type="url" placeholder="https://example.com" name="mastodon_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
-						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'mastodon', family: 'mastodon' }) }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 
 						{% if isTwitterAvailable(entity) %}
 							<input value="{{ "admin.general.Send"|trans([], "validators") }} Mastodon + Twitter" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'mastodon', family: 'twitter|mastodon' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
@@ -671,7 +672,6 @@
 		document.getElementById("form_mastodon").addEventListener("submit", (e) => {
 			e.preventDefault();
 			e.target.setAttribute("action", e.submitter.getAttribute("data-url"));
-
 			e.target.submit();
 		});
 	</script>
@@ -690,7 +690,7 @@
 			</div>
 			<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" data-parent="#accordionParentTwitter">
 				<div class="card-body">
-					<form id="form_twitter" action="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter', family: 'twitter' }) }}" method="post">
+					<form id="form_twitter" method="post">
 						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string" class="badge bg-danger">280</span></p>
 
 						{% if addPhoto == true %}
@@ -706,7 +706,7 @@
 						<br>
 						<input type="url" placeholder="https://example.com" name="twitter_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
-						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
+						<input value="{{ "admin.general.Send"|trans([], "validators") }}" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter', family: 'twitter' }) }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 
 						{% if isMastodonAvailable(entity) %}
 							<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter', family: 'twitter|mastodon' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />

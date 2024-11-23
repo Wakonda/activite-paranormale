@@ -12,12 +12,11 @@ use Doctrine\ORM\EntityRepository;
  */
 class LanguageRepository extends EntityRepository
 {
-	public function getAllAvailableLanguages(array $languages)
+	public function getAllAvailableLanguages()
 	{
 		$qb = $this->createQueryBuilder('o');
 
-		$qb->where('o.abbreviation IN (:languages)')
-			->setParameter('languages', $languages)
+		$qb->where('o.current = true')
 			->orderBy('o.title', 'asc');
 		
 		return $qb->getQuery()->getResult();
@@ -25,18 +24,20 @@ class LanguageRepository extends EntityRepository
 
 	public function displayFlagWithoutWorld()
 	{
-		$query = $this->_em->createQuery('SELECT a FROM App\Entity\Language a WHERE a.abbreviation NOT IN (:languages) ORDER BY a.abbreviation ASC');
-		$query->setParameter('languages', array_merge(explode(",", $_ENV["LANGUAGES"]), ["all"]));
+		$query = $this->_em->createQuery('SELECT a FROM App\Entity\Language a WHERE a.abbreviation NOT IN (:languages) and a.current != true ORDER BY a.abbreviation ASC');
+		$query->setParameter('languages', ["all"]);
 
 		return $query->getResult();
 	}
 	
-	public function worldFlag()
+	public function getAllLanguages()
 	{
 		$qb = $this->createQueryBuilder('o');
 
-		$qb->where('o.abbreviation = :langAll')
-			->setParameter('langAll', "all");
+		$qb->where('o.abbreviation != :all')
+			->setParameter('all', "all")
+			->orderBy("o.current", "desc")
+			->addOrderBy("o.title");
 
 		return $qb->getQuery()->getResult();
 	}
@@ -60,7 +61,7 @@ class LanguageRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.abbreviation', 'c.title', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.abbreviation', 'c.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);

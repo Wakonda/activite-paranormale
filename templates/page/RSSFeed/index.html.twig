@@ -124,10 +124,10 @@
 		</div>
 
 		<div class="form-table-cell form-table-cell-head">{{ "rssFeed.index.Language"|trans([], "validators") }}</div>
-		<div class="form-table-cell">
-			<input type="checkbox" class="language" id="en" {% if app.request.locale == "en" %}checked{% endif %}/> <label for="en">{{ "rssFeed.index.English"|trans([], "validators") }}</label><br>
-			<input type="checkbox" class="language" id="es" {% if app.request.locale == "es" %}checked{% endif %}/> <label for="es">{{ "rssFeed.index.Spanish"|trans([], "validators") }}</label><br>
-			<input type="checkbox" class="language" id="fr" {% if app.request.locale == "fr" %}checked{% endif %}/> <label for="fr">{{ "rssFeed.index.French"|trans([], "validators") }}</label>
+		<div class="form-table-cell" style="height: 150px; overflow-y: scroll;">
+			{% for otherLanguage in otherLanguages %}
+				<input type="checkbox" class="language" id="{{ otherLanguage.abbreviation }}" {% if otherLanguage.abbreviation == app.request.locale %}checked{% endif %}/> <label for="{{ otherLanguage.abbreviation }}">{{ otherLanguage.title }}</label><br>
+			{% endfor %}
 		</div>
 
 		<div class="form-table-cell form-table-cell-head">{{ "rssFeed.index.Number"|trans([], "validators") }}</div>

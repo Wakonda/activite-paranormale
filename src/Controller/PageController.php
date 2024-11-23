@@ -118,9 +118,10 @@ class PageController extends AbstractController
     }
 
 	// RSS Feed
-	public function indexRSSFeedAction()
+	public function indexRSSFeedAction(EntityManagerInterface $em)
 	{
-		return $this->render('page/RSSFeed/index.html.twig');
+		$otherLanguages = $em->getRepository(\App\Entity\Language::class)->getAllLanguages();
+		return $this->render('page/RSSFeed/index.html.twig', ["otherLanguages" => $otherLanguages]);
 	}
 
 	public function generateRSSFeedAction(Request $request, RSSFeed $rss)

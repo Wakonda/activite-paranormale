@@ -45,7 +45,7 @@ class Bluesky {
 		$this->setLanguage($locale);
 
 		list($identifier, $token) = $this->getToken();
-		
+
 		$facets = [];
 		
 		foreach($this->getTagsAndPositionsFromText($message) as $tag) {
@@ -54,7 +54,7 @@ class Bluesky {
 				"features" => [["tag" => ltrim($tag["tag"], "#"), '$type' => "app.bsky.richtext.facet#tag"]],
 			];
 		}
-		
+
 		$data = $this->parseHTML($url);
 
 		$postData = [
@@ -175,6 +175,14 @@ class Bluesky {
 				$this->HANDLE = $_ENV["BLUESKY_FR_HANDLE"];
 				$this->PASSWORD = $_ENV["BLUESKY_FR_PASSWORD"];
 				break;
+			case "pt":
+				$this->HANDLE = $_ENV["BLUESKY_PT_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_PT_PASSWORD"];
+				break;
+			case "ru":
+				$this->HANDLE = $_ENV["BLUESKY_RU_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_RU_PASSWORD"];
+				break;
 		}
 	}
 
@@ -227,6 +235,6 @@ class Bluesky {
 
 	public function getLanguages()
 	{
-		return ["en", "es", "fr"];
+		return ["en", "es", "fr", "pt", "ru"];
 	}
 }

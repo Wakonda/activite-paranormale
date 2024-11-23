@@ -628,6 +628,8 @@ class AdminController extends AbstractController
 	// Diaspora
 	public function diasporaAction(Request $request, EntityManagerInterface $em, Diaspora $diaspora, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
+		// dump($diaspora->getClients("http://activite-paranormale.net/admin/diasporapost", "pt"));
+		// dd($diaspora->getOpenIDConfiguration("pt"));
 		$session = $request->getSession();
 		$session->set("id_diaspora", $id);
 

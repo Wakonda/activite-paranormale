@@ -52,6 +52,12 @@ class Language
 	 */
 	private $direction;
 
+	/**
+	 * @ORM\Column(name="current", type="boolean")
+	 *
+	 */
+	private $current;
+
     /**
      * Get id
      *
@@ -199,4 +205,14 @@ class Language
 			$this->setLogo($filename);
 		}
     }
+
+	public function setCurrent($current)
+	{
+		$this->current = $current;
+	}
+
+	public function getCurrent()
+	{
+		return $this->current;
+	}
 }

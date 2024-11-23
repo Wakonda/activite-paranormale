@@ -684,7 +684,7 @@
 		
 		public function isCurrentLanguages($language_article)
 		{
-			$languages = explode(",", $_ENV["LANGUAGES"]);
+			$languages = array_map(function($e) { return $e->getAbbreviation(); }, $this->em->getRepository(Language::class)->getAllAvailableLanguages());
 			
 			if(in_array($language_article, $languages))
 				return true;
@@ -694,7 +694,7 @@
 		
 		public function getAllAvailableLanguages()
 		{
-			return $this->em->getRepository(Language::class)->getAllAvailableLanguages(explode(",", $_ENV["LANGUAGES"]));
+			return $this->em->getRepository(Language::class)->getAllAvailableLanguages();
 		}
 		
 		public function base64Encode($str)

@@ -6,6 +6,8 @@ News_Admin_Index:
 News_Admin_Show:
     path:  /show/{id}
     controller: App\Controller\NewsAdminController::showAction
+    requirements:
+       id: \d+
 
 News_Admin_New:
     path:  /new

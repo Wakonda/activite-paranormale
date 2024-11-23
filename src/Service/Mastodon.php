@@ -58,11 +58,19 @@ class Mastodon {
 				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_ES_ACCESS_TOKEN"];
 				$this->MASTODON_URL = $_ENV["MASTODON_ES_URL"];
 				break;
+			case "pt":
+				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_PT_ACCESS_TOKEN"];
+				$this->MASTODON_URL = $_ENV["MASTODON_PT_URL"];
+				break;
+			case "ru":
+				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_RU_ACCESS_TOKEN"];
+				$this->MASTODON_URL = $_ENV["MASTODON_RU_URL"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr", "en", "es"];
+		return ["fr", "en", "es", "pt", "ru"];
 	}
 }
