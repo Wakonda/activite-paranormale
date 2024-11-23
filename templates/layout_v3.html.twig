@@ -223,12 +223,6 @@
 									<a href="{{ path('UsefulLink_Index') }}" class="btn btn-info mb-3"><i class="fas fa-code"></i> {{ 'index.development.Develop'|trans([], "validators") }}</a>
 								</div>
 							</div>
-							{% if is_mobile() == false %}
-								<div class="news_section">
-									<h3>{{ "index.leftMenu.Visitors"|trans([], "validators") }}</h3>
-									<script src="//ri.revolvermaps.com/0/0/6.js?i=9mxbzahlca0&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;f=times_new_roman&amp;l=0" async="async"></script>
-								</div>
-							{% endif %}
 							<div id="quotation_right_menu" class="news_section mt-3">
 								<h3>{{ "index.leftMenu.Quotations"|trans([], "validators") }}</h3>
 								<img class="image_wrapper img-fluid mx-auto d-block" src="{{ asset('extended/photo/quotation-random.webp') }}" alt="Random quotation" width="200" loading="lazy"/>

@@ -93,7 +93,7 @@
 											{% endif %}
 										</ul>
 									</div>
-									{#<h3>{{ "index.leftMenu.Section"|trans([], "validators") }}</h3>
+									<h3>{{ "index.leftMenu.Section"|trans([], "validators") }}</h3>
 									<ul>
 										<li><a href="{{ path('Archive_Index') }}">{{ "index.leftMenu.Archive"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\ArchiveController::nbrArchiveAction')) }}</span></li>
 										<li><a href="{{ path('News_World') }}">{{ "index.leftMenu.World"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\NewsController::countWorldNewsAction')) }}</span></li>
@@ -128,7 +128,7 @@
 										<li><a href="{{ path('WebDirectory_User_New') }}" title="Offer link">{{ "index.leftMenu.OfferLink"|trans([], "validators") }}</a></li>
 										<li><a href="{{ path('Video_New') }}" title="Post a video">{{ "index.leftMenu.AddVideo"|trans([], "validators") }}</a></li>
 										<li><a href="{{ path('ClassifiedAds_New') }}" title="Post a classified ads">{{ "index.leftMenu.PublishClassifiedAds"|trans([], "validators") }}</a></li>
-									</ul>#}
+									</ul>
 								</div>
 								<div id="publicity_right_menu" class="news_section">
 									{% set ads = advertising(300, 250) %}
@@ -207,12 +207,6 @@
 										<a href="{{ path('UsefulLink_Index') }}" class="btn btn-info mb-3"><i class="fas fa-code"></i> {{ 'index.development.Develop'|trans([], "validators") }}</a>
 									</div>
 								</div>
-								{% if is_mobile() == false %}
-									<div class="news_section">
-										<h3>{{ "index.leftMenu.Visitors"|trans([], "validators") }}</h3>
-										<script src="//ri.revolvermaps.com/0/0/6.js?i=9mxbzahlca0&amp;m=1&amp;c=ff0000&amp;cr1=ffffff&amp;f=times_new_roman&amp;l=0" async="async"></script>
-									</div>
-								{% endif %}
 								<div id="quotation_right_menu" class="news_section">
 									<h3>{{ "index.leftMenu.Quotations"|trans([], "validators") }}</h3>
 									<img class="image_wrapper" src="{{ asset('extended/photo/quotation-random.webp') }}" alt="Random quotation" width="200" />
