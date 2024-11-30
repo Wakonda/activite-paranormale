@@ -85,7 +85,7 @@
 			{% if entity.theme.internationalName == 'music' %}
 				{{ macro_index.blogger_music_form(entity, "irontv") }}
 			{% else %}
-				{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
+				{{ macro_index.blogger_multi_form(entity, "news") }}
 			{% endif %}
 			{{ macro_index.twitter_form(entity) }}
 			{{ macro_index.facebook_form(entity, entity.abstractText) }}
