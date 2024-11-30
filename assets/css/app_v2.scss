@@ -1292,10 +1292,23 @@ h2 span img {
     border-top: 1px solid rgba(0,0,0,.125);
 }
 
-#carousel-world-news-index .card-header {
+.carousel-world-news-index .card-header {
     color: #aaa;
 	border-bottom: rgb(187, 196, 45) solid 1px;
 	padding: 5px 10px 5px 10px;
+	background-color: #000e00;
+}
+#wordNewsTab.nav.nav-tabs {
+	border: none;
+}
+#wordNewsTab.nav.nav-tabs .nav-item button.nav-link {
+    color: #d3dd3c;
+	background-color: black;
+}
+#wordNewsTab.nav.nav-tabs .nav-item button.nav-link:hover, #wordNewsTab.nav.nav-tabs .nav-item button.nav-link.active {
+    background: #d3dd3c;
+    color: #000;
+    border-color: #d3dd3c;
 }
 /******** FORM ********/
 .input-group-text {

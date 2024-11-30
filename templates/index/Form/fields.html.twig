@@ -1140,7 +1140,7 @@
 
 				if($("#{{ form.vars.id}}_container").data("currentValue") !== "")
 					valuesToSave{{ form.vars.id }}.splice($("#{{ form.vars.id}}_container").data("currentValue"), 1);
-console.log(valuesToSave{{ form.vars.id }}, editor{{ form.vars.id }}.getValue())
+
 				valuesToSave{{ form.vars.id }}.push(editor{{ form.vars.id }}.getValue());
 
 				$("#{{ form.vars.id }}").val(JSON.stringify(valuesToSave{{ form.vars.id }}));

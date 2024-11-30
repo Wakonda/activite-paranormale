@@ -285,10 +285,22 @@ table.dataTable tr.odd {
     color: #aaa !important;
 }
 /********** WIDGET NEWS *****/
-#carousel-world-news-index .card-header {
+.carousel-world-news-index .card-header {
     background: #000e00;
     color: #aaa;
 	border-bottom: rgb(187, 196, 45) solid 1px;
+}
+#wordNewsTab.nav.nav-tabs {
+	border: none;
+}
+#wordNewsTab.nav.nav-tabs .nav-item button.nav-link {
+    color: #d3dd3c;
+	background-color: black;
+}
+#wordNewsTab.nav.nav-tabs .nav-item button.nav-link:hover, #wordNewsTab.nav.nav-tabs .nav-item button.nav-link.active {
+    background: #d3dd3c;
+    color: #000;
+    border-color: #d3dd3c;
 }
 
 /********** WORLD **********/

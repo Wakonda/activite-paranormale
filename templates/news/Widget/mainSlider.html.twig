@@ -1,42 +1,55 @@
 ﻿{% if worldNews is not empty %}
 	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
-
-	<div id="carousel-world-news-index" class="carousel-pagination carousel slide" data-bs-ride="carousel">
-		<ol class="carousel-indicators carousel-indicators-numbers pagination">
-		{% set i = 0 %}
-		{% set j = 1 %}
-		{% for worldNew in worldNews %}
-			<li data-bs-target="#carousel-world-news-index" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
-			{% set i = i + 1 %}
-			{% set j = j + 1 %}
+	<ul class="nav nav-tabs mb-2" id="wordNewsTab" role="tablist">
+		{% for language in worldNews.languages %}
+		  <li class="nav-item" role="presentation">
+			<button class="nav-link{{ loop.first ? ' active' : '' }} rounded-3" id="{{ language.abbreviation }}-tab" data-bs-toggle="tab" data-bs-target="#{{ language.abbreviation }}-tab-pane" type="button" role="tab" aria-controls="{{ language.abbreviation }}-tab-pane" aria-selected="true"><img class="image_wrapper" src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" title="{{ language.abbreviation }}" width="20" height="13" alt="{{ language.abbreviation }}" /> - {{ language.title }} <span class="badge bg-danger">{{ worldNews.entities[language.abbreviation]|length }}</span></button>
+		  </li>
 		{% endfor %}
-		</ol>
+	</ul>
 
-		<div class="carousel-inner">
-			{% set i = 0 %}
-			{% for worldNew in worldNews %}
-				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-					<div class="card mb-3">
-						<div class="card-header h-100 text-start">
-							<img class="image_wrapper" src="{{ asset(worldNew.language.getAssetImagePath()) }}{{ worldNew.language.logo }}" title="{{ worldNew.language.abbreviation }}" width="20" height="13" alt="{{ worldNew.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ worldNew.title }}</span>
-						</div>
-						<div class="row g-0">
-							<div class="col-md-4 mt-3">
-								{{ worldNew.photoIllustrationFilename|imgsize(null, worldNew.getAssetImagePath(), true, { 'loading': 'lazy'})|raw }}
-							</div>
-							<div class="col-md-8">
-								<div class="card-body">
-									{{ worldNew.abstractText|raw }}
+	<div class="tab-content" id="wordNewsTabContent">
+		{% for language in worldNews.languages %}
+			<div class="tab-pane fade{{ loop.first ? ' show active' : '' }}" id="{{ language.abbreviation }}-tab-pane" role="tabpanel" aria-labelledby="{{ language.abbreviation }}-tab" tabindex="0">
+				<div id="carousel-world-news-index-{{ language.abbreviation }}" class="carousel-pagination carousel carousel-world-news-index">
+					<ol class="carousel-indicators carousel-indicators-numbers pagination">
+					{% set i = 0 %}
+					{% set j = 1 %}
+					{% for entity in worldNews.entities[language.abbreviation] %}
+						<li data-bs-target="#carousel-world-news-index-{{ language.abbreviation }}" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+						{% set i = i + 1 %}
+						{% set j = j + 1 %}
+					{% endfor %}
+					</ol>
+
+					<div class="carousel-inner">
+						{% set i = 0 %}
+						{% for entity in worldNews.entities[language.abbreviation] %}
+							<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+								<div class="card mb-3">
+									<div class="card-header h-100 text-start">
+										<img class="image_wrapper" src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" title="{{ entity.language.abbreviation }}" width="20" height="13" alt="{{ entity.language.abbreviation }}" /> - <span style="font-weight: bold; font-size: 16px;">{{ entity.title }}</span>
+									</div>
+									<div class="row g-0">
+										<div class="col-md-4 mt-3">
+											{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, { 'loading': 'lazy'})|raw }}
+										</div>
+										<div class="col-md-8">
+											<div class="card-body">
+												{{ entity.abstractText|raw }}
+											</div>
+										</div>
+									</div>
+									<div class="card-footer text-white-50 text-end">
+										<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': entity.id, 'title_slug':entity.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
+									</div>
 								</div>
 							</div>
-						</div>
-						<div class="card-footer text-white-50 text-end">
-							<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': worldNew.id, 'title_slug':worldNew.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
-						</div>
+							{% set i = i + 1 %}
+						{% endfor %}
 					</div>
 				</div>
-				{% set i = i + 1 %}
-			{% endfor %}
-		</div>
+			</div>
+		{% endfor %}
 	</div>
 {% endif %}
