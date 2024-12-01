@@ -100,6 +100,62 @@ class RegistrationFormType extends AbstractType
 			->add('donation', HiddenType::class, ['label' => false, 'required' => false, 'attr' => ['class' => 'invisible']])
 			->addEventListener(FormEvents::PRE_SUBMIT, [$this, 'onPreSubmitData']);
 
+
+		$socialNetworkTikTokDefault = "";
+		$socialNetworkFacebookDefault = "";
+		$socialNetworkTwitterDefault = "";
+		$socialNetworkYoutubeDefault = "";
+		$socialNetworkInstagramDefault = "";
+		$socialNetworkPinterestDefault = "";
+		$socialNetworkLinkedinDefault = "";
+
+		if($builder->getData()->getSocialNetwork() != null)
+		{
+			$socialNetworkArray = json_decode($builder->getData()->getSocialNetwork());
+
+			foreach($socialNetworkArray as $socialNetwork)
+			{
+				switch($socialNetwork->link)
+				{
+					case "TikTok":
+						$socialNetworkTikTokDefault = $socialNetwork->url;
+						break;
+					case "Facebook":
+						$socialNetworkFacebookDefault = $socialNetwork->url;
+						break;
+					case "Twitter":
+						$socialNetworkTwitterDefault = $socialNetwork->url;
+						break;
+					case "Youtube":
+						$socialNetworkYoutubeDefault = $socialNetwork->url;
+						break;
+					case "Instagram":
+						$socialNetworkInstagramDefault = $socialNetwork->url;
+						break;
+					case "Pinterest":
+						$socialNetworkPinterestDefault = $socialNetwork->url;
+						break;
+					case "Linkedin":
+						$socialNetworkLinkedinDefault = $socialNetwork->url;
+						break;
+				}
+			}
+		}
+
+		$builder
+			->add('socialNetworkFacebook', TextType::class, array('label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Facebook', 'class' => 'social_network_select'), 'data' => $socialNetworkFacebookDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkTwitter', TextType::class, array('label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Twitter', 'class' => 'social_network_select'), 'data' => $socialNetworkTwitterDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkTikTok', TextType::class, array('label' => 'TikTok', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'TikTok', 'class' => 'social_network_select'), 'data' => $socialNetworkTikTokDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkYoutube', TextType::class, array('label' => 'Youtube', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Youtube', 'class' => 'social_network_select'), 'data' => $socialNetworkYoutubeDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkInstagram', TextType::class, array('label' => 'Instagram', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Instagram', 'class' => 'social_network_select'), 'data' => $socialNetworkInstagramDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkPinterest', TextType::class, array('label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Pinterest', 'class' => 'social_network_select'), 'data' => $socialNetworkPinterestDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkLinkedin', TextType::class, array('label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Linkedin', 'class' => 'social_network_select'), 'data' => $socialNetworkLinkedinDefault, 'constraints' => [new Url()]))
+
+			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'))
+		;
+		
+		$builder->add('socialNetwork', HiddenType::class, array('label' => false, 'required' => false, 'attr' => ['class' => 'invisible']));
+
 		$avatar = $builder->getData()->getAvatar();
 
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($avatar)
@@ -134,6 +190,18 @@ class RegistrationFormType extends AbstractType
 				$json[] = ["donation" => ucfirst($donation), "address" => $data[$donation]];
 
 		$data["donation"] = json_encode($json);
+
+		$linkJson = [
+			["link" => "Facebook", "url" => $data['socialNetworkFacebook'], "label" => "FacebookAccount"],
+			["link" => "Twitter", "url" => $data['socialNetworkTwitter'], "label" => "TwitterAccount"],
+			["link" => "TikTok", "url" => $data['socialNetworkTikTok'], "label" => "TikTokAccount"],
+			["link" => "Youtube", "url" => $data['socialNetworkYoutube'], "label" => "YoutubeAccount"],
+			["link" => "Instagram", "url" => $data['socialNetworkInstagram'], "label" => "InstagramAccount"],
+			["link" => "Pinterest", "url" => $data['socialNetworkPinterest'], "label" => "PinterestAccount"],
+			["link" => "Linkedin", "url" => $data['socialNetworkLinkedin'], "label" => "LinkedInAccount"]
+		];
+
+		$data["socialNetwork"] = json_encode($linkJson);
 
 		$event->setData($data);
 	}

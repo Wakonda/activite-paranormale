@@ -155,6 +155,11 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
      */
     private $donation;
 
+    /**
+     * @ORM\Column(name="socialNetwork", type="text", nullable=true)
+     */
+    private $socialNetwork;
+
 	public function __construct()
 	{
         $this->enabled = false;
@@ -630,5 +635,15 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function getDonation()
     {
         return $this->donation;
+    }
+
+    public function setSocialNetwork($socialNetwork)
+    {
+        $this->socialNetwork = $socialNetwork;
+    }
+
+    public function getSocialNetwork()
+    {
+        return $this->socialNetwork;
     }
 }

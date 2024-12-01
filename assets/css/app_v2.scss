@@ -17,6 +17,8 @@ $bluesky-color: #0077FF;
 $tiktok-color: #ff0050;
 $flickr-color: #FF0084;
 $telegram-color: #24A1DE;
+$youtube-color: #FF0000;
+$pinterest-color: #E60023;
 
 body {
 	margin: 0;
@@ -462,6 +464,12 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 }
 .social-share.vk {
 	background-color: $vk-color;
+}
+.social-share.youtube {
+	background-color: $youtube-color;
+}
+.social-share.pinterest {
+	background-color: $pinterest-color;
 }
 
 #mastodonModal .modal-content {

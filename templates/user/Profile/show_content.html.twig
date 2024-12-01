@@ -36,6 +36,20 @@
 		</div>
 	{% endif %}
 	
+	{% if user.socialNetwork is not empty %}
+		{% set datas = json_decode(user.socialNetwork) %}
+		{% if datas|length > 0 %}
+			<br>
+			<h3>{{ "user.register.SocialNetworks"|trans([], "validators") }}</h3>
+			
+			<div class="form-table form-table-4cols form-table-collapse">
+				{% for data in datas %}
+					<div class="form-table-cell form-table-cell-head" style="color: white"><div class="social-share {{ data.link|lower }} rounded text-center"><i class="fab fa-{{ data.link|lower }}" aria-hidden="true"></i> {{ data.link }}</div></div><div class="form-table-cell"><a href="{{ data.url }}" alt="{{ data.link }}" target="_blank">{{ data.url }}</a></div>
+				{% endfor %}
+			</div>
+		{% endif %}
+	{% endif %}
+	
 	{#<br>
 	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 		{{ render(controller('App\\Controller\\UserController::phpbbAction')) }}

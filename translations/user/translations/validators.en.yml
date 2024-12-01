@@ -62,6 +62,7 @@ user:
         Other: "Others"
         FileSizeLimit: "File size limit"
         AcceptedFormat: "Accepted format"
+        SocialNetworks: "Social networks"
     checkEmail:
         CheckYourEmails: "Check your Emails"
         Congratulation: "Congratulations and Thank you for registering!"

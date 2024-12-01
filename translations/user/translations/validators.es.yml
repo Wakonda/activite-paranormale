@@ -62,6 +62,7 @@ user:
         Other: "Otro"
         FileSizeLimit: "Tamaño máximo"
         AcceptedFormat: "Formatos aceptados"
+        SocialNetworks: "Redes sociales"
     checkEmail:
         CheckYourEmails: "Revisáis su correo electrónico"
         Congratulation: "Gracias por suscribirse a usted!"

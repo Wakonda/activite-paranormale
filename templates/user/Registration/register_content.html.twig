@@ -75,7 +75,46 @@
 			{{ form_widget(form.presentation, {'attr':{'class' : 'form-control'}}) }}
 		</div>
 	</div>
-	
+	<br>
+	<h3>{{ "user.register.SocialNetworks"|trans([], "validators") }}</h3>
+	<div class="form-table form-table-4cols form-table-collapse">
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkFacebook) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkFacebook) }}
+			{{ form_widget(form.socialNetworkFacebook, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTwitter) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkTwitter) }}
+			{{ form_widget(form.socialNetworkTwitter, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkTikTok) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkTikTok) }}
+			{{ form_widget(form.socialNetworkTikTok, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkYoutube) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkYoutube) }}
+			{{ form_widget(form.socialNetworkYoutube, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkInstagram) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkInstagram) }}
+			{{ form_widget(form.socialNetworkInstagram, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkLinkedin) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkLinkedin) }}
+			{{ form_widget(form.socialNetworkLinkedin, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetworkPinterest) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.socialNetworkPinterest) }}
+			{{ form_widget(form.socialNetworkPinterest, {'attr':{'class' : 'form-control'}}) }}
+		</div>
+	</div>
+
 	<br>
 	<h3>{{ "user.donation.ReceiveRewards"|trans([], "validators") }}</h3>
 	<div class="form-table form-table-4cols form-table-collapse">
