@@ -735,7 +735,6 @@ div#tab_resources a { margin-bottom: 1rem }
 	color: white !important;
 	text-decoration: none !important;
 	border-radius:20px;
-	-moz-border-radius:20px;
 	display:inline-block;
 	font-family:Times New Roman;
 	font-size:23px;
@@ -1535,7 +1534,6 @@ h2 span img {
   width: 100%;
   overflow: hidden;
 }
-
 .carousel-inner::after {
   display: block;
   clear: both;
@@ -1548,7 +1546,6 @@ h2 span img {
   float: left;
   width: 100%;
   margin-right: -100%;
-  -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
   transition: transform 0.6s ease-in-out;
 }
@@ -2091,7 +2088,6 @@ button {
 }
 .card-columns {
     column-count: 2;
-    -moz-column-gap: 1.25rem;
     column-gap: 1.25rem;
     orphans: 1;
     widows: 1;

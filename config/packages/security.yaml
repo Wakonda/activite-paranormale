@@ -44,6 +44,5 @@ security:
                 path: /
 
     access_control:
-        - { path: /admin.*, roles: ROLE_ADMIN, requires_channel: https }
-        - { path: /_console.*, roles: ROLE_ADMIN, requires_channel: https }
-        - { path: '^/', roles: PUBLIC_ACCESS, requires_channel: https }
+        - { path: /admin.*, roles: ROLE_ADMIN }
+        - { path: /_console.*, roles: ROLE_ADMIN }

@@ -356,8 +356,6 @@ div.read-content p {
 	}
 
 	.mce-abs-layout-item.mce-textbox {
-		-webkit-box-sizing: border-box !important;
-		-moz-box-sizing: border-box !important;
 		box-sizing: border-box !important;
 		display: block !important;
 		width: 100% !important;
@@ -368,8 +366,6 @@ div.read-content p {
 	}
 
 	.mce-abs-layout-item.mce-combobox > .mce-textbox {
-		-ms-flex: 1 1 auto;
-		-webkit-flex: 1 1 auto;
 		flex: 1 1 auto;
 		height: 29px !important;
 	}
