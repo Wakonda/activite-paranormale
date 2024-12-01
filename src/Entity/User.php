@@ -326,12 +326,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     {
         return $this->username;
     }
-	  
-    /**
-     * Set username
-     *
-     * @param text $username
-     */
+
     public function setUsername($username)
     {
         $this->username = $username;
@@ -369,46 +364,25 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this->emailCanonical;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * Gets the last login time.
-     *
-     * @return \DateTime|null
-     */
     public function getLastLogin()
     {
         return $this->lastLogin;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getConfirmationToken()
     {
         return $this->confirmationToken;
     }
 
-	/**
-     * Set avatar
-     *
-     * @param string $avatar
-     */
     public function setAvatar($avatar) {
         $this->avatar = $avatar;
     }
- 
-    /**
-     * Get avatar
-     *
-     * @return string
-     */
+
     public function getAvatar() {
         return $this->avatar;
     }
@@ -471,121 +445,61 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 		}
     }
 
-    /**
-     * Set inscriptionDate
-     *
-     * @param datetime $inscriptionDate
-     */
     public function setInscriptionDate($inscriptionDate)
     {
         $this->inscriptionDate = $inscriptionDate;
     }
 
-    /**
-     * Get inscriptionDate
-     *
-     * @return datetime 
-     */
     public function getInscriptionDate()
     {
         return $this->inscriptionDate;
     }
-	  
-    /**
-     * Set birthDate
-     *
-     * @param date $birthDate
-     */
+
     public function setBirthDate($birthDate)
     {
         $this->birthDate = $birthDate;
     }
 
-    /**
-     * Get birthDate
-     *
-     * @return date 
-     */
     public function getBirthDate()
     {
         return $this->birthDate;
     }
-	  
-    /**
-     * Set city
-     *
-     * @param text $city
-     */
+
     public function setCity($city)
     {
         $this->city = $city;
     }
 
-    /**
-     * Get city
-     *
-     * @return text 
-     */
     public function getCity()
     {
         return $this->city;
     }
-	  
-    /**
-     * Set siteWeb
-     *
-     * @param text $siteWeb
-     */
+
     public function setSiteWeb($siteWeb)
     {
         $this->siteWeb = $siteWeb;
     }
 
-    /**
-     * Get siteWeb
-     *
-     * @return text 
-     */
     public function getSiteWeb()
     {
         return $this->siteWeb;
     }
-	  
-    /**
-     * Set blog
-     *
-     * @param text $blog
-     */
+
     public function setBlog($blog)
     {
         $this->blog = $blog;
     }
 
-    /**
-     * Get blog
-     *
-     * @return text 
-     */
     public function getBlog()
     {
         return $this->blog;
     }
-	  
-    /**
-     * Set presentation
-     *
-     * @param text $presentation
-     */
+
     public function setPresentation($presentation)
     {
         $this->presentation = $presentation;
     }
 
-    /**
-     * Get presentation
-     *
-     * @return text 
-     */
     public function getPresentation()
     {
         return $this->presentation;
@@ -610,29 +524,19 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     {
         $this->civility = $civility;
     }
-	
-    /**
-     * Set salt
-     *
-     * @param text $salt
-     */
+
     public function setSalt($salt)
     {
         $this->salt = $salt;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setUsernameCanonical()
     {
         $this->usernameCanonical = Canonicalizer::canonicalize($this->username);
 
         return $this;
     }
-    /**
-     * {@inheritdoc}
-     */
+
     public function setEmail($email)
     {
         $this->email = $email;
@@ -640,9 +544,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEmailCanonical()
     {
         $this->emailCanonical = Canonicalizer::canonicalize($this->email);
@@ -650,9 +551,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setEnabled($boolean)
     {
         $this->enabled = (bool) $boolean;
@@ -660,9 +558,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPassword($password)
     {
         $this->password = $password;
@@ -670,9 +565,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setSuperAdmin($boolean)
     {
         if (true === $boolean) {
@@ -684,9 +576,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setLastLogin(\DateTime $time = null)
     {
         $this->lastLogin = $time;
@@ -694,9 +583,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setConfirmationToken($confirmationToken)
     {
         $this->confirmationToken = $confirmationToken;
@@ -704,9 +590,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setPasswordRequestedAt(?\DateTime $date)
     {
         $this->passwordRequestedAt = $date;
@@ -714,11 +597,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Gets the timestamp that the user requested a password reset.
-     *
-     * @return null|\DateTime
-     */
     public function getPasswordRequestedAt()
     {
         return $this->passwordRequestedAt;
@@ -733,9 +611,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
                $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function setRoles(array $roles)
     {
         $this->roles = [];
@@ -747,21 +622,11 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * Set donation
-     *
-     * @param text $donation
-     */
     public function setDonation($donation)
     {
         $this->donation = $donation;
     }
 
-    /**
-     * Get donation
-     *
-     * @return text 
-     */
     public function getDonation()
     {
         return $this->donation;

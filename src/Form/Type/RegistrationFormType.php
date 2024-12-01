@@ -26,6 +26,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 use App\Service\Currency;
+use App\Entity\Region;
 
 class RegistrationFormType extends AbstractType
 {
@@ -61,6 +62,8 @@ class RegistrationFormType extends AbstractType
 									  ->join("u.language", "l")
 									  ->where("l.abbreviation = :abbreviation")
 									  ->setParameter("abbreviation", $locale)
+									  ->andWhere('u.family = :country')
+									  ->setParameter('country', Region::COUNTRY_FAMILY)
 									  ->orderBy('u.title', 'ASC');
 						},
 			])
