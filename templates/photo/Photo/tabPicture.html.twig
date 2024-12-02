@@ -10,7 +10,7 @@
 	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			$('table.doc_datatables').DataTable( {
+			new DataTable('table.doc_datatables', {
 				"language": {
 					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
 				},
@@ -22,13 +22,7 @@
 				"pageLength": {{ total_line_display }},
 				"processing": true,
 				"serverSide": true,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
+				"responsive": true,
 				"order": [[ 2, "desc" ]],
 				"ajax": "{{ path('Photo_TabPictureDatatables', { 'themeId' : themeId }) }}"
 			});
