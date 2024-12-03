@@ -21,9 +21,6 @@
 
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
-
-		{% import "index/macro/macro_index.html.twig" as macro_index %}
-		{{ macro_index.analytics_gtags() }}
 	</head>
 
 	<body>
@@ -298,23 +295,21 @@
 		</div>
 
 		<div class="footer container text-center py-2">
-			<div class="text-center">
-				<span class="p-2"><a class="fw-bold" href="{{ path('Page_Generic', {internationalName: 'participation'}) }}" title="{{ "index.footerMenu.Participation"|trans([], "validators") }}">{{ "index.footerMenu.Participation"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="{{ path('ap_tags_index') }}" title="Tag">{{ "index.footerMenu.Tag"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="https://wakonda.guru" target="_parent">Wakonda.Guru</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="{{ path('Page_About') }}" title="About">{{ "index.footerMenu.About"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="{{ path('Page_PrivacyPolicy') }}" title="Privacy policy">{{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="{{ path('Contact_Index') }}">{{ "index.footerMenu.Contact"|trans([], "validators") }}</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="{{ path('WebDirectorySEO_Index') }}" title="SEO">S.E.O.</a></span>
-				<span class="p-2 text-black-50">|</span>
-				<span class="p-2"><a class="fw-bold" href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></span>
-			</div>
+			<span class="p-2"><a class="fw-bold" href="{{ path('Page_Generic', {internationalName: 'participation'}) }}" title="{{ "index.footerMenu.Participation"|trans([], "validators") }}">{{ "index.footerMenu.Participation"|trans([], "validators") }}</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="{{ path('ap_tags_index') }}" title="Tag">{{ "index.footerMenu.Tag"|trans([], "validators") }}</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="https://wakonda.guru" target="_parent">Wakonda.Guru</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="{{ path('Page_About') }}" title="About">{{ "index.footerMenu.About"|trans([], "validators") }}</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="{{ path('Page_PrivacyPolicy') }}" title="Privacy policy">{{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="{{ path('Contact_Index') }}">{{ "index.footerMenu.Contact"|trans([], "validators") }}</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="{{ path('WebDirectorySEO_Index') }}" title="SEO">S.E.O.</a></span>
+			<span class="p-2 text-black-50">|</span>
+			<span class="p-2"><a class="fw-bold" href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></span>
 		</div>
 
 		<div class="footer container footer-copyright text-center py-2">
@@ -346,5 +341,8 @@
 
 			detectAdBlock();
 		</script>
+
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+		{{ macro_index.analytics_gtags() }}
 	</body>
 </html>
