@@ -24,7 +24,6 @@
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
 
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
-		{{ macro_index.analytics_gtags() }}
 	</head>
 	<body>
 		<div id="header_print" class="d-none">
@@ -313,5 +312,6 @@
 
 			detectAdBlock();
 		</script>
+		{{ macro_index.analytics_gtags() }}
 	</body>
 </html>
