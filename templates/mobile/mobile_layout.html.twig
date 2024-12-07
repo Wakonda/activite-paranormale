@@ -113,9 +113,9 @@
 		-
 		<a href="{{ path('ap_pagemobile_page', {page: 'privacyPolicy'}) }}"><i class="fas fa-balance-scale"></i> {{ "index.footerMenu.PrivacyPolicy"|trans([], "validators") }}</a>
 		-
-		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/frenchFlagMobile.png') }}" width="42" alt="fr" /></a>
-		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/englishFlagMobile.png') }}" width="42" alt="en" /></a>
-		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/spanishFlagMobile.png') }}" width="42" alt="es" /></a>
+		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/frenchFlagMobile.webp') }}" width="42" alt="fr" /></a>
+		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/englishFlagMobile.svg') }}" width="42" alt="en" /></a>
+		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/spanishFlagMobile.webp') }}" width="42" alt="es" /></a>
 
 		{% set partners = partners() %}
 

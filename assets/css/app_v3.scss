@@ -86,7 +86,7 @@ p {
 	color: black !important;
 }
 
-.navbar-dark .navbar-nav li.nav-item.active, .navbar-dark .navbar-nav li.nav-item:hover {
+.navbar-dark .navbar-nav li.nav-item a.active, .navbar-dark .navbar-nav li.nav-item a:hover {
     color: #fff;
     background: #660;
 }

@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block APBlog_body %}
-	<p class="image">{{ "layout-user.jpg"|imgsize(550, 'extended/photo/', true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ "layout-user.webp"|imgsize(550, 'extended/photo/', true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<div>
 		{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 			{{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} |
