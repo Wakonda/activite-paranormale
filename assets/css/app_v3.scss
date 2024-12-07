@@ -214,6 +214,10 @@ table.dataTable tr.even td.sorting_1 {
 /********** MENU ***********/
 div#dropdownFlagItems {
 	min-width: auto;
+	background-color: #bbc42d;
+}
+div#dropdownFlagItems .dropdown-item:active, div#dropdownFlagItems .dropdown-item:hover {
+    background: #660;
 }
 .navbar-dark .navbar-nav a.nav-link:hover {
 	color: white !important;
