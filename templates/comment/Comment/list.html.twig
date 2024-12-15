@@ -31,7 +31,11 @@
 						</span>
 						- {{ childComment.dateComment|dodate(true, app.request.locale) }}
 					</p>
-					<p>{{ childComment.messageComment|raw }}</p>
+					{% if childComment.isDenied() %}
+						<div class="alert alert-warning"><i class="fa-solid fa-cat"></i> {{ "comment.edit.CommentDeleted"|trans([], "validators") }}</div>
+					{% else %}
+						<p>{{ childComment.messageComment|raw }}</p>
+					{% endif %}
 				</div>
 			{% endfor %}
 		{% endif %}

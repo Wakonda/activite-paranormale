@@ -371,7 +371,7 @@
 				return $dateString;
 			}
 
-			return '-';
+			return 'r-';
 		}
 		
 		public function shortDateFilter($dateTime, $locale)

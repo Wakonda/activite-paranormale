@@ -8,6 +8,7 @@ comment:
         Comment: "Commentaire"
         LoggedAs: "Vous êtes connecté en tant que "
         Validate: "Valider"
+        CommentDeleted: "Ce commentaire a été supprimé"
     error:
         NotBlank: "Ce champ ne peut pas être vide"
         Email: "Cette valeur n'est pas une adresse email valide."

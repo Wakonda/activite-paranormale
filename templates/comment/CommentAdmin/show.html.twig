@@ -3,6 +3,7 @@
 {% block h2_title %}{{ "admin.index.Comment"|trans([], "validators") }}{% endblock %}
 
 {% block index_admin_route %}{{ path('Comment_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{{ path('Comment_Admin_Delete', {id: entity.id}) }}{% endblock %}
 
 {% block tbody_admin_table %}
 	<div class="form-table-cell form-table-cell-head">Id</div>

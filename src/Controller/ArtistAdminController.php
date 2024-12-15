@@ -18,6 +18,7 @@ use App\Entity\Region;
 use App\Entity\MusicGenre;
 use App\Form\Type\ArtistAdminType;
 use App\Service\ConstraintControllerValidator;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Artist controller.
@@ -57,7 +58,9 @@ class ArtistAdminController extends AdminGenericController
 	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$originalBiographies = new ArrayCollection($em->getRepository(ArtistBiography::class)->findBy(["artist" => $entityBindded->getId()]));
-
+		
+		
+dd($serializer->serialize($entityBindded->getArtistBiographies()[0], 'json'), $entityBindded->getArtistBiographies());
 		foreach($originalBiographies as $originalBiography)
 		{
 			if(false === $entityBindded->getArtistBiographies()->contains($originalBiography))

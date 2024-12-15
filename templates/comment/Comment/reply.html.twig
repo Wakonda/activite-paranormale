@@ -48,17 +48,17 @@
 				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 				{
 					let res = JSON.parse(xmlHttp.responseText);
-					
+
 					if(res.status == "success") {
 						bootstrap.Modal.getInstance(document.getElementById("replyModal")).hide();
-						document.getElementById("comment_refresh").innerHTML = "";
-						document.querySelector("#getElementById").appendChild(document.createRange().createContextualFragment(res.content));
+						document.getElementById('comment_refresh').innerHTML = "";
+						document.getElementById("comment_refresh").appendChild(document.createRange().createContextualFragment(res.content));
 					} else {
 						document.getElementById('comment_reply_refresh').innerHTML = res.content;
 					}
 					tinymce.remove("#{{ commentReplyType.messageComment.vars.id }}")
 					loadTinyMCE{{ commentReplyType.messageComment.vars.id }}("#{{ commentReplyType.messageComment.vars.id }}")
-					
+
 					document.querySelector("#{{ commentReplyType.vars.id }}").addEventListener("submit", (e) => {
 						e.preventDefault()
 						submitFormReply(e)

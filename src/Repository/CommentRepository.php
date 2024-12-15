@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use App\Entity\Comment;
 
 /**
  * CommentRepository
@@ -12,33 +13,31 @@ use Doctrine\ORM\EntityRepository;
  */
 class CommentRepository extends EntityRepository
 {
-	public function getShowComment($nbrMessageParPage, $page, $className, $idClassName)
+	public function getShowComment($nbrMessageParPage, $page, $idClassName)
 	{	
 		$premierMessageAafficher=($page-1)*$nbrMessageParPage;
-	
+
 		$qb = $this->createQueryBuilder('o');
 
-		$qb->where('o.classNameComment = :classNameComment')
-			->setParameter('classNameComment', $className)
-			->andWhere('o.idClassComment = :idClassComment')
+		$qb->join('o.entity', 'a')
+			->where('a.id = :idClassComment')
 			->setParameter('idClassComment', $idClassName)
 			->andWhere("o.parentComment IS NULL")
 			->orderBy('o.dateComment', 'DESC')
 			->setFirstResult($premierMessageAafficher)
 			->setMaxResults($nbrMessageParPage);
-		
+
 		return $qb->getQuery()->getResult();
 	}
-	
-	public function countComment($className, $idClassName)
+
+	public function countComment($idClassName)
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb ->select("count(c)")
-		    ->where('c.classNameComment = :classNameComment')
-			->setParameter('classNameComment', $className)
-			->andWhere('c.idClassComment = :idClassComment')
+			->join('c.entity', 'a')
+			->where('a.id = :idClassComment')
 			->setParameter('idClassComment', $idClassName)
-			->andWhere("o.parentComment IS NULL");
+			->andWhere("c.parentComment IS NULL");
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
@@ -57,13 +56,13 @@ class CommentRepository extends EntityRepository
 		$qb->select("count(c)")
 		   ->where("c.state = :state")
 		   ->setParameter("state", $state);
-		
+
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 	
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'user', 'c.emailComment', 'c.dateComment', 'c.state', 'c.id');
+		$aColumns = ['c.id', 'user', 'c.emailComment', 'c.dateComment', 'c.state', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->addSelect("IF(c.authorComment IS NOT NULL, u.username, c.anonymousAuthorComment) AS user, c.emailComment, c.dateComment, c.id, c.state")
@@ -74,14 +73,14 @@ class CommentRepository extends EntityRepository
 		{
 			$search = "%".$sSearch."%";
 			$orWhere = [];
-			
+
 			foreach($aColumns as $column)
 				$orWhere[] = $column." LIKE :search";
 
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-		
+
 		if(!empty($searchByColumns))
 		{
 			for($i = 0; $i < count($aColumns); $i++)
@@ -95,7 +94,7 @@ class CommentRepository extends EntityRepository
 						$search = "%".$searchByColumns[$i]."%";
 						$qb->andWhere($aColumns[$i]." LIKE :searchByColumn".$i);
 					}
-					
+
 					$qb->setParameter("searchByColumn".$i, $search);
 				}
 			}
@@ -115,15 +114,15 @@ class CommentRepository extends EntityRepository
 	public function getCommentbyPage($nbrMessageParPage, $page, $className, $idClassName)
 	{	
 		$premierMessageAafficher=($page-1)*$nbrMessageParPage;
-		$queryBuilder = $this->createQueryBuilder('o');
+		$qb = $this->createQueryBuilder('o');
 
-		$queryBuilder->join('o.'.$className, 'c')
-					->where('c.id = :id')
-					->setParameter('id', $idClassName)
-					->orderBy('o.dateCommentaire', 'DESC')
-					->setFirstResult($premierMessageAafficher)
-					->setMaxResults($nbrMessageParPage);
+		$qb->join('o.'.$className, 'c')
+			->where('c.id = :id')
+			->setParameter('id', $idClassName)
+			->orderBy('o.dateCommentaire', 'DESC')
+			->setFirstResult($premierMessageAafficher)
+			->setMaxResults($nbrMessageParPage);
 		
-		return $queryBuilder->getQuery()->getResult();
+		return $qb->getQuery()->getResult();
 	}
 }

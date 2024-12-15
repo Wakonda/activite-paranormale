@@ -24,7 +24,7 @@
 
 		public function doDateTime($locale, $datetime)
 		{
-			if($datetime != null)
+			if($datetime == null)
 				return "-";
 
 			$formatter = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::MEDIUM);

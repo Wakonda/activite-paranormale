@@ -132,7 +132,7 @@ class CommentController extends AbstractController
 		$form = $this->createForm(CommentType::class, $entity, ['userType' => $anonymousComment]);
 		$entities = $em->getRepository($classNameComment)->getShowComment(self::$nbrMessageByPage, $page, $idClassName);
 		
-        return $this->render('comment/Comment/index.html.twig', array(
+        return $this->render('comment/Comment/index.html.twig', [
 			'idClassName' => $idClassName,
 			'entities' => $entities,
 			'className' => $className,
@@ -141,7 +141,7 @@ class CommentController extends AbstractController
 			'nbrMessageByPage' => self::$nbrMessageByPage,
 			'currentPage' => $page,
 			'path' => $path
-		));
+		]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
@@ -191,7 +191,7 @@ class CommentController extends AbstractController
 			$entities = $em->getRepository($classNameComment)->getShowComment(self::$nbrMessageByPage, $page, $idClassName);
 		}
 
-		return $this->render('comment/Comment/edit.html.twig', array(
+		return $this->render('comment/Comment/edit.html.twig', [
 			'idClassName' => $idClassName,
 			'className' => $className,
 			'entities' => $entities,
@@ -201,7 +201,7 @@ class CommentController extends AbstractController
 			'nbrMessageByPage' => self::$nbrMessageByPage,
 			'currentPage' => $page,
 			'path' => $path
-		));
+		]);
     }
 
 	public function reply(Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory, $idClassName, $className) {
@@ -251,7 +251,7 @@ class CommentController extends AbstractController
 				$nbrOfPages = ceil($countComment/self::$nbrMessageByPage);
 				$entities = $em->getRepository($classNameComment)->getShowComment(self::$nbrMessageByPage, $page, $idClassName);
 
-				$content = $this->render('comment/Comment/edit.html.twig', array(
+				$content = $this->render('comment/Comment/edit.html.twig', [
 					'idClassName' => $idClassName,
 					'className' => $className,
 					'entities' => $entities,
@@ -261,31 +261,31 @@ class CommentController extends AbstractController
 					'nbrMessageByPage' => self::$nbrMessageByPage,
 					'currentPage' => $page,
 					'path' => $path
-				))->getContent();
-				
+				])->getContent();
+
 				return new JsonResponse(["status" => "success", "content" => $content]);
 			} else {
-				$content = $this->render('comment/Comment/reply.html.twig', array(
+				$content = $this->render('comment/Comment/reply.html.twig', [
 					'idClassName' => $idClassName,
 					'className' => $className,
 					'commentReplyType' => $commentType->createView(),
 					'entity' => $entity,
 					'path' => $path,
 					'parentComment' => $parentComment
-				))->getContent();
+				])->getContent();
 
 				return new JsonResponse(["status" => "error", "content" => $content]);	
 			}
 		}
 
-		return $this->render('comment/Comment/reply.html.twig', array(
+		return $this->render('comment/Comment/reply.html.twig', [
 			'idClassName' => $idClassName,
 			'className' => $className,
 			'commentReplyType' => $commentType->createView(),
 			'entity' => $entity,
 			'path' => $path,
 			'parentComment' => $parentComment
-		));
+		]);
 	}
 
 	public function paginationAction(Request $request, EntityManagerInterface $em, $idClassName, $className) {
