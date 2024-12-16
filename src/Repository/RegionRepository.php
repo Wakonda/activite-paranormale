@@ -118,7 +118,7 @@ class RegionRepository extends EntityRepository
 			$qb->groupBy('c.flag')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{

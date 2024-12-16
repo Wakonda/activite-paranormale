@@ -135,7 +135,7 @@ class SurThemeGrimoireRepository extends EntityRepository
 			$qb->groupBy('c.photo')->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
 
 		$entities = $qb->getQuery()->getResult();
-		$res = array();
+		$res = [];
 		
 		foreach($entities as $entity)
 		{

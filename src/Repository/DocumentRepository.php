@@ -19,7 +19,7 @@ class DocumentRepository extends MappedSuperclassBaseRepository
 		$qb->join("c.language", "l")
 		   ->join("c.documentFamily", "co")
 		   ->leftjoin("c.authorDocumentBiographies", "ad");
-		   
+
 		$subquery = $this->_em->createQueryBuilder()
 			->select('dc.title')
 			->from(DocumentFamily::class, 'dc')

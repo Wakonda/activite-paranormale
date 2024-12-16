@@ -100,7 +100,6 @@ class VideoRepository extends MappedSuperclassBaseRepository
 	}
 	
 	// ADMINISTRATION
-	
 	public function countVideoByAvailability($state)
 	{
 		$qb = $this->createQueryBuilder('c');
@@ -162,10 +161,10 @@ class VideoRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-// dd($searchByColumns);
+
 		if(!empty($searchByColumns))
 		{
-			$aSearchColumns = ['c.id', 'c.title', 'c.platform', 'c.available', 'l.title', 't.title', 's.internationalName', 'c.id'];
+			$aSearchColumns = ['c.id', 'c.title', 'c.platform', 's.internationalName', 'l.title', 't.title', 's.internationalName', 'c.id'];
 			foreach($aSearchColumns as $i => $aSearchColumn)
 			{
 				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))

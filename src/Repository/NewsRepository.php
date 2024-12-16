@@ -59,19 +59,19 @@ class NewsRepository extends MappedSuperclassBaseRepository
 	public function getArchive($nbrMessageParPage, $page, $lang)
 	{	
 		$premierMessageAafficher=($page-1)*$nbrMessageParPage;
-		$queryBuilder = $this->createQueryBuilder('o');
+		$qb = $this->createQueryBuilder('o');
 		
-		$queryBuilder->join('o.state', 's')
-					->join('o.language', 'l')
-					->where('l.abbreviation = :lang')
-					->setParameter('lang', $lang)
-					->andWhere('s.displayState = 1')
-					->andWhere('o.archive = 1')
-					->orderBy('o.publicationDate', 'DESC')
-					->setFirstResult($premierMessageAafficher)
-					->setMaxResults($nbrMessageParPage);
+		$qb->join('o.state', 's')
+			->join('o.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $lang)
+			->andWhere('s.displayState = 1')
+			->andWhere('o.archive = 1')
+			->orderBy('o.publicationDate', 'DESC')
+			->setFirstResult($premierMessageAafficher)
+			->setMaxResults($nbrMessageParPage);
 
-		return $queryBuilder->getQuery()->getResult();
+		return $qb->getQuery()->getResult();
 	}
 	
 	public function getEntitiesArchivedPagination($page, $theme, $locale)
