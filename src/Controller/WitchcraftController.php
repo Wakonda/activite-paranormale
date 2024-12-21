@@ -29,6 +29,7 @@ class WitchcraftController extends AbstractController
     public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
 		$menuGrimoires = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale());
+		$countTheme = $em->getRepository(SurThemeGrimoire::class)->countGrimoireByParentTheme($request->getLocale());
 
 		$pagination = $paginator->paginate(
 			$menuGrimoires, /* query NOT result */
@@ -48,7 +49,7 @@ class WitchcraftController extends AbstractController
 			if ($firstPTag)
 				$html = $firstPTag->nodeValue;
 
-			$datas[] = ["entity" => $menuGrimoire, "abstract" => $html];
+			$datas[] = ["entity" => $menuGrimoire, "abstract" => $html, "count" => (isset($countTheme[$menuGrimoire->getTitle()]) ? $countTheme[$menuGrimoire->getTitle()] : 0)];
 		}
 
 		$pagination->setCustomParameters(['align' => 'center']);

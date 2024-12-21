@@ -15,7 +15,10 @@
 				</div>
 				<div class="col-md-8 content-card">
 					<div class="card-body p-2 ps-3">
-						<h5 class="card-title text-center">{{ MG.entity.title }}</h5>
+						<h5 class="card-title text-center">
+							{{ MG.entity.title }}
+							<span class="badge bg-danger float-end mt-1">{{ MG.count }}</span>
+						</h5>
 						<hr>
 						<p class="card-text mb-0 text-center">{{ MG.abstract|raw }}</p>
 						<hr>
