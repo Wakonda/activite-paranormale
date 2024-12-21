@@ -67,7 +67,6 @@
 						<div class="row">
 							<div class="col">
 								{% set list = blogger_list(entity.language.abbreviation) %}
-
 								<select name="blogger_list[]" id="blogger_list" class="form-select" data-live-search="true" data-width="100%" style="z-index: inherit; position: relative">
 									{% for t, l in list %}
 										<option value="{{ t }}" {{ type == t ? "selected" : "" }}>{{ l }}</option>
@@ -93,6 +92,23 @@
 		$(function() {
 			$('#blogger_tags').select2();
 		});
+		
+		function slugifyUrl(title, replace = [], delimiter = '-') {
+			if (replace.length > 0) {
+				replace.forEach(char => {
+					title = title.split(char).join(' ');
+				});
+			}
+
+			title = title.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+			title = title.replace(/[^a-zA-Z0-9\/_|+ -]/g, '');
+			title = title.trim().toLowerCase();
+			title = title.replace(/[\/_|+ -]+/g, delimiter);
+			title = title.replace(/\./g, '');
+
+			return title;
+		}
+		
 		function changeBlogger(val) {
 			let xmlHttp = new XMLHttpRequest();
 
@@ -108,7 +124,7 @@
 						if(data.obj != null)
 							isSelected = data.obj != null ? data.obj.labels.includes(data.tags[i]) : false;
 						else 
-							isSelected = data.theme != null ? data.theme.includes(data.tags[i]) : false;
+							isSelected = data.theme != null ? slugifyUrl(data.theme).includes(slugifyUrl(data.tags[i])) : false;
 						
 						document.querySelector("select#blogger_tags").add(new Option(data.tags[i], data.tags[i], isSelected, isSelected));
 					}
