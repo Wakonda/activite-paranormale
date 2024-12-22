@@ -3,6 +3,7 @@ tag:
         Tag: "Tag"
         Photo: "Foto"
         Number: "Número: "
+        Total: "Total"
     search:
         ArticleTagged: >-
             {number, plural,
