@@ -6,7 +6,7 @@
 			{% elseif entity.imageEmbeddedCode is not empty %}
 				{% include 'store/Store/_store_embedded_image.html.twig' with { id: entity.id, title: entity.title, embeddedCode: entity.imageEmbeddedCode } %}
 			{% else %}
-				<img src="{{ path('Store_GenerateEmbeddedCode', {id: entity.id}) }}" class="w-100"/>
+				<img src="{{ path('Store_GenerateEmbeddedCode', {id: entity.id}) }}" class="w-100">
 			{% endif %}
 		</div>
 
@@ -43,7 +43,6 @@
 						</div>
 					{% endfor %}
 				{% endif %}
-				
 				<hr>
 			</div>
 			<div class="card-footer text-center">

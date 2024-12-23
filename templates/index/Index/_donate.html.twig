@@ -7,12 +7,12 @@
 				<h4 class="modal-title w-100 fw-bold">{{ "index.donate.DonateInCryptocurrency"|trans([], "validators") }}</h4>
 			</div>
 			<div class="modal-body">
-				<div class="card-columns">
+				<div class="card-columns" style="display: grid;grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));gap: 1rem;">
 					<div class="card">
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/btc-logo.svg') }}" alt="Bitcoin" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'bitcoin'}) }}">Bitcoin</a></h4>
 						</div>
-						<img class="card-img-top" alt="Bitcoin" src="{{ asset('extended/photo/donation/btc-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/btc-qrcode.svg') }}" alt="Bitcoin QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("BITCOIN_ADDRESS") }}</p>
 						</div>
@@ -21,7 +21,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img style="height: 20px" src="{{ asset('extended/photo/donation/eth-logo.svg') }}" alt="Ethereum" class="align-middle" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'ethereum'}) }}">Ethereum</a></h4>
 						</div>
-						<img class="card-img-top" alt="Ethereum" src="{{ asset('extended/photo/donation/eth-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/eth-qrcode.svg') }}" alt="Ethereum QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("ETHEREUM_ADDRESS") }}</p>
 						</div>
@@ -30,7 +30,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/ada-logo.svg') }}" alt="Cardano" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'cardano'}) }}">Cardano</a></h4>
 						</div>
-						<img class="card-img-top" alt="Cardano" src="{{ asset('extended/photo/donation/ada-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/ada-qrcode.svg') }}" alt="Cardano QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("CARDANO_ADDRESS") }}</p>
 						</div>
@@ -39,7 +39,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/vet-logo.svg') }}" alt="Vechain" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'vechain'}) }}">Vechain</a></h4>
 						</div>
-						<img class="card-img-top" alt="Vechain" src="{{ asset('extended/photo/donation/vet-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/vet-qrcode.svg') }}" alt="Vechain QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("VECHAIN_ADDRESS") }}</p>
 						</div>
@@ -48,7 +48,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/trx-logo.svg') }}" alt="Tron" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'tron'}) }}">Tron</a></h4>
 						</div>
-						<img class="card-img-top" alt="Tron" src="{{ asset('extended/photo/donation/trx-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/trx-qrcode.svg') }}" alt="Tron QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("TRON_ADDRESS") }}</p>
 						</div>
@@ -57,7 +57,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="15" src="{{ asset('extended/photo/donation/zil-logo.svg') }}" alt="Zilliqa" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'zilliqa'}) }}">Zilliqa</a></h4>
 						</div>
-						<img class="card-img-top" alt="Zilliqa" src="{{ asset('extended/photo/donation/zil-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/zil-qrcode.svg') }}" alt="Zilliqa QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("ZILLIQA_ADDRESS") }}</p>
 						</div>
@@ -66,7 +66,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/doge-logo.svg') }}" alt="Dogecoin" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'dogecoin'}) }}">Dogecoin</a></h4>
 						</div>
-						<img class="card-img-top" alt="Dogecoin" src="{{ asset('extended/photo/donation/doge-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/doge-qrcode.svg') }}" alt="Dogecoin QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("DOGECOIN_ADDRESS") }}</p>
 						</div>
@@ -75,7 +75,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/chz-logo.svg') }}" alt="Chiliz" class="align-bottom" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'chiliz'}) }}">Chiliz</a></h4>
 						</div>
-						<img class="card-img-top" alt="Chiliz" src="{{ asset('extended/photo/donation/chz-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/chz-qrcode.svg') }}" alt="Chiliz QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("CHILIZ_ADDRESS") }}</p>
 						</div>
@@ -84,7 +84,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/algo-logo.svg') }}" alt="Algorand" class="align-middle" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'algorand'}) }}">Algorand</a></h4>
 						</div>
-						<img class="card-img-top" alt="Algorand" src="{{ asset('extended/photo/donation/algo-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/algo-qrcode.svg') }}" alt="Algorand QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("ALGORAND_ADDRESS") }}</p>
 						</div>
@@ -93,16 +93,16 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/solana-logo.svg') }}" alt="Solana" class="align-middle" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'solana'}) }}">Solana</a></h4>
 						</div>
-						<img class="card-img-top" alt="Algorand" src="{{ asset('extended/photo/donation/solana-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/solana-qrcode.svg') }}" alt="Solana QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("SOLANA_ADDRESS") }}</p>
 						</div>
 					</div>
 					<div class="card">
 						<div class="card-header bg-transparent border-success">
-							<h4><img width="20" src="{{ asset('extended/photo/donation/polkadot-logo.svg') }}" alt="Solana" class="align-middle" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'polkadot'}) }}">Polkadot</a></h4>
+							<h4><img width="20" src="{{ asset('extended/photo/donation/polkadot-logo.svg') }}" alt="Polkadot" class="align-middle" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'polkadot'}) }}">Polkadot</a></h4>
 						</div>
-						<img class="card-img-top" alt="Algorand" src="{{ asset('extended/photo/donation/polkadot-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/polkadot-qrcode.svg') }}" alt="Polkadot QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("POLKADOT_ADDRESS") }}</p>
 						</div>
@@ -111,7 +111,7 @@
 						<div class="card-header bg-transparent border-success">
 							<h4><img width="20" src="{{ asset('extended/photo/donation/digibyte-logo.svg') }}" alt="Digibyte" class="align-middle" loading="lazy"> <a href="{{ path('Page_Cryptocurrency', {title: 'digibyte'}) }}">Digibyte</a></h4>
 						</div>
-						<img class="card-img-top" alt="Algorand" src="{{ asset('extended/photo/donation/digibyte-qrcode.svg') }}" loading="lazy">
+						<img class="card-img-top" src="{{ asset('extended/photo/donation/digibyte-qrcode.svg') }}" alt="Digibyte QR Code" loading="lazy">
 						<div class="card-body">
 							<p class="card-text">{{ get_env("DIGIBYTE_ADDRESS") }}</p>
 						</div>
@@ -124,11 +124,3 @@
 		</div>
 	</div>
 </div>
-
-<style>
-.card-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
-  gap: 1rem;
-}
-</style>
