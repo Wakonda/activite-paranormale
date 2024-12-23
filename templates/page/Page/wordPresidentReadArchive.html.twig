@@ -4,10 +4,10 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
-	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}">
+	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}">
 {% endblock %}
 
 {% block APBlog_body %}
@@ -15,11 +15,11 @@
 	<div>
 	<p>{{ entity.text|raw }}</p>	
 	</div>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	<p><i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %}</p>
 
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'url':app.request.server.get("REQUEST_URI"), 'entity': entity} %}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

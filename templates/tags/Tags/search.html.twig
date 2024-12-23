@@ -4,15 +4,15 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ entity.title }}"</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
-	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}">
+	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}">
 {% endblock %}
 
 {% block header_plus %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>

@@ -88,16 +88,16 @@
 
 {% block meta_plus %}
 	{% if entity.photo is not null %}
-		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}" />
+		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photo)) }}">
 	{% elseif entity.embeddedCode is not null %}
 		{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
 		{% if thumbnail is not empty %}
-			<meta property="og:image" content="{{ thumbnail }}" />
+			<meta property="og:image" content="{{ thumbnail }}">
 		{% endif %}
 	{% endif %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
+	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}">
 {% endblock %}
 
 {% block APBlog_body %}
@@ -139,7 +139,6 @@
 	<div>
 		<p id="media_duration" class="mt-2"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.duration|string_duration)|default('-') }}</p>
 		<hr>
-
 		{% if entity.biography is not empty %}
 			<ul class="fa-ul">
 				<li><span class="fa-li"><i class="fas fa-user"></i></span> <a href="{{ path('Biography_Show', {id: entity.biography.id, title_slug: entity.biography.slug}) }}">{{ entity.biography.title }}</a></li>

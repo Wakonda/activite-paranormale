@@ -4,12 +4,12 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Quotation"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ "quotation.index.Quotation"|trans([], "validators") }} - {{ entity.authorQuotation.title }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ "quotation.index.Quotation"|trans([], "validators") }} - {{ entity.authorQuotation.title }}">
 
 	{% if entity.images is not empty %}
 		{% set img = entity.images|last %}
-		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath() ~ img.image)) }}" />
+		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath() ~ img.image)) }}">
 	{% endif %}
 {% endblock %}
 

@@ -5,21 +5,20 @@
 {% block meta_description %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endblock %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
-	<meta property="og:description" content="{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}">
+	<meta property="og:description" content="{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}">
 {% endblock %}
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
 	<br>
-	
-	<h3>{{ "movie.read.Datasheet"|trans([], "validators") }}</h3>
-	
-	{% set biographyDatas = movie_biographies_by_occupation(entity) %}
 
+	<h3>{{ "movie.read.Datasheet"|trans([], "validators") }}</h3>
+
+	{% set biographyDatas = movie_biographies_by_occupation(entity) %}
 	{% set actors = [] %}
 
 	<table class="table">
@@ -127,7 +126,7 @@
 		<h3>{{ "movie.read.FullStreaming"|trans([], "validators") }}</h3>
 		{{ entity.fullStreaming|raw }}
 	{% endif %}
-	
+
 	{% set datas = get_store_by_entity(entity, "movie", "MovieStore") %}
 
 	{% if datas|length > 0 %}
@@ -137,7 +136,7 @@
 	{% for data in datas %}
 		{% include "store/Store/_product.html.twig" with { entity: data } %}
 	{% endfor %}
-	
+
 	{% set filmSeries = film_series(entity) %}
 	{% if filmSeries|length > 1 %}
 		<h3>{{ "movie.read.FilmSeries"|trans([], "validators") }}</h3>

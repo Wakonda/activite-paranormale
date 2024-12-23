@@ -4,14 +4,14 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.musicPiece }}" />
-	<meta property="og:description" content="{{ entity.text }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.musicPiece }}">
+	<meta property="og:description" content="{{ entity.text }}">
 
 	{% if entity.embeddedCode is not empty %}
 		{% set thumbnail = thumbnail_video(entity.embeddedCode) %}
 		{% if thumbnail is not empty %}
-			<meta property="og:image" content="{{ thumbnail }}" />
+			<meta property="og:image" content="{{ thumbnail }}">
 		{% endif %}
 	{% endif %}
 {% endblock %}

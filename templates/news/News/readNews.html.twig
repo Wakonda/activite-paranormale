@@ -12,10 +12,10 @@
 		<meta name="robots" content="noindex">
 	{% endif %}
 
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
-	<meta property="og:description" content="{{ ((entity.abstractText|striptags)|replace({'"': ''}))|slice(0, 300) }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}">
+	<meta property="og:description" content="{{ ((entity.abstractText|striptags)|replace({'"': ''}))|slice(0, 300) }}">
 
 	<link rel="alternate" media="only screen and (max-width: 640px)" href="{{ url('ap_newsmobile_read', {'id' : entity.id}) }}">
 {% endblock %}

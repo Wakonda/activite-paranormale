@@ -4,15 +4,15 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
-	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
+	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}">
 
 	{% if entity.location is not empty %}
 		{% set locationDatas = json_decode(entity.location) %}
-		<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
-		<link href='{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}' rel='stylesheet' />
-		<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+		<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}">
+		<link href='{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}' rel='stylesheet'>
+		<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen">
 		<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 		<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 

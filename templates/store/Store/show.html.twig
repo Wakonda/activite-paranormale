@@ -4,10 +4,10 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/store.png') }}" width="27" class="mt-1" alt="Book"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
-	<meta name="twitter:card" content="summary" />
-	<meta property="og:title" content="{{ entity.title }}" />
+	<meta name="twitter:card" content="summary">
+	<meta property="og:title" content="{{ entity.title }}">
 	{% set image = image_store(entity) %}
-	{% if image is not empty %}<meta property="og:image" content="{{ image }}" />{% endif %}
+	{% if image is not empty %}<meta property="og:image" content="{{ image }}">{% endif %}
 {% endblock %}
 
 {% block APBlog_body %}
