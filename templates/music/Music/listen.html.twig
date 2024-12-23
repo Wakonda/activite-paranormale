@@ -32,6 +32,7 @@
 	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entities|duration_entities)|default('-') }}</p>
 	<hr>
 	<ul class="fa-ul">
+		<li><span class="fa-li"><i class="fas fa-microphone-lines"></i></span> <span class="fw-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.slug}) }}">{{ artist.title }}</a></li>
 		<li><span class="fa-li"><i class="fas fa-music"></i></span> <span class="fw-bold">{{ "music.listen.NbrTitle"|trans([], "validators") }}</span> {{ entities|length }}</li>
 		<li><span class="fa-li"><i class="fas fa-calendar-alt"></i></span> <span class="fw-bold">{{ "music.listen.ReleaseDate"|trans([], "validators") }}</span> {{ album.releaseYear|doPartialDate(app.request.locale) }}</li>
 	</ul>
@@ -54,7 +55,7 @@
 			<tbody>
 				{% for entity in entities %}
 					<tr>
-					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'music' : entity.musicPiece }) }}" alt="" class="fw-bold">{{ entity.musicPiece }}</a></td>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'music' : entity.slug }) }}" alt="" class="fw-bold">{{ entity.musicPiece }}</a></td>
 					<td><i class="far fa-clock"></i> {{ (entity.length|string_duration)|default('-') }}</td>
 					</tr>
 				{% endfor %}

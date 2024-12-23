@@ -97,8 +97,8 @@
 				{% for entity in entities %}
 					<tr>
 						<td class="tdGene">{{ entity['album_title'] }}</td>
-						<td class="tdGene"><span class="badge bg-info">{{ entity['number_title'] }}</span></td>
-						<td><a href="{{ path('Music_Listen', { 'id' : entity['album_id'], 'artist' : entity['artist_title'], 'artistId' : entity['artist_id'], 'album' : entity['album_title'] }) }}">{{ "music.album.Read"|trans([], "validators") }}</a></td>
+						<td class="tdGene"><span class="badge bg-info text-dark">{{ entity['number_title'] }}</span></td>
+						<td><a href="{{ path('Music_Listen', { 'id' : entity['album_id'], 'artist' : entity['artist_slug'], 'artistId' : entity['artist_id'], 'album' : entity['album_slug'] }) }}">{{ "music.album.Read"|trans([], "validators") }}</a></td>
 					</tr>
 				{% endfor %}
 			</tbody>

@@ -74,26 +74,24 @@ class Partner
 	}
 
 	public function getTextColor(){
-		$hexCode = $this->color;
+		// Retirer le caractère '#' s'il est présent
+		$hexColor = ltrim($this->color, '#');
 		
-		if(empty($hexCode))
-			return null;
-
-		$redHex = substr($hexCode,0,2);
-		$greenHex = substr($hexCode,2,2);
-		$blueHex = substr($hexCode,4,2);
-	 
-		$r = (hexdec($redHex)) / 255;
-		$g = (hexdec($greenHex)) / 255;
-		$b = (hexdec($blueHex)) / 255;
-	 
-		$brightness = (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
-
-		if($brightness > .6){
-			return '#000000';
-		}else{
-			return '#ffffff';
+		// Vérifier si le format est valide (6 caractères hexadécimaux)
+		if (!preg_match('/^[a-fA-F0-9]{6}$/', $hexColor)) {
+			throw new InvalidArgumentException('Format de couleur hexadécimale invalide. Utilisez #RRGGBB.');
 		}
+
+		// Extraire les composantes rouge, vert et bleu
+		$r = hexdec(substr($hexColor, 0, 2));
+		$g = hexdec(substr($hexColor, 2, 2));
+		$b = hexdec(substr($hexColor, 4, 2));
+
+		// Calculer la luminosité relative (selon la formule WCAG)
+		$luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b);
+
+		// Retourner noir pour une couleur lumineuse, blanc sinon
+		return ($luminance > 186) ? '#000000' : '#FFFFFF';
 	}
 
     /**

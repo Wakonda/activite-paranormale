@@ -91,6 +91,11 @@ class Music
      * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
      */
     private $event;
+
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
 	
 	public function getTitle(): string {
 		$album = !empty($this->album) ? $this->album->getTitle() : null;
@@ -101,11 +106,6 @@ class Music
 
 	public function getShowRoute() {
 		return "Music_MusicShort";
-	}
-
-	public function getUrlSlug()
-	{
-		return $this->musicPiece;
 	}
 
 	public function getLanguage() {
@@ -148,16 +148,32 @@ class Music
      *
      * @param string $musicPieceFile
      */
-    public function setMusicPieceFile($musicPieceFile)
+    public function setMusicPiece($musicPiece)
     {
-        $this->musicPieceFile = $musicPieceFile;
+		if(!empty($musicPiece))
+			$this->musicPiece = htmlspecialchars($musicPiece, ENT_NOQUOTES, 'UTF-8');
+
+		$this->setSlug();
     }
 
-    /**
-     * Get musicPieceFile
-     *
-     * @return string 
-     */
+    public function setSlug()
+    {
+		if(empty($this->slug)) {
+			$generator = new SlugGenerator;
+			$this->slug = $generator->generate($this->musicPiece);
+		}
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+	public function getUrlSlug()
+	{
+		return !empty($this->slug) ? $this->slug : $this->musicPiece;
+	}
+
     public function getMusicPieceFile()
     {
         return $this->musicPieceFile;
@@ -222,41 +238,16 @@ class Music
 		}
     }
 
-    /**
-     * Set musicPiece
-     *
-     * @param string $musicPiece
-     */
-    public function setMusicPiece($musicPiece)
-    {
-        $this->musicPiece = $musicPiece;
-    }
-
-    /**
-     * Get musicPiece
-     *
-     * @return string 
-     */
     public function getMusicPiece()
     {
         return $this->musicPiece;
     }
 
-    /**
-     * Set length
-     *
-     * @param string $length
-     */
     public function setLength($length)
     {
         $this->length = $length;
     }
 
-    /**
-     * Get length
-     *
-     * @return string 
-     */
     public function getLength()
     {
         return $this->length;
@@ -282,81 +273,41 @@ class Music
         $this->artist = $artist;
     }
 
-    /**
-     * Set embeddedCode
-     *
-     * @param text $embeddedCode
-     */
     public function setEmbeddedCode($embeddedCode)
     {
         $this->embeddedCode = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $embeddedCode));
     }
 
-    /**
-     * Get embeddedCode
-     *
-     * @return text 
-     */
     public function getEmbeddedCode()
     {
         return $this->embeddedCode;
     }
 
-    /**
-     * Set text
-     *
-     * @param text $text
-     */
     public function setText($text)
     {
 		$this->text = $text;
     }
 
-    /**
-     * Get text
-     *
-     * @return text 
-     */
     public function getText()
     {
         return $this->text;
     }
 
-    /**
-     * Set source
-     *
-     * @param string $source
-     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
-    /**
-     * Get source
-     *
-     * @return string 
-     */
     public function getSource()
     {
         return $this->source;
     }
 
-    /**
-     * Set wikidata
-     *
-     * @param string $wikidata
-     */
     public function setWikidata($wikidata)
     {
         $this->wikidata = $wikidata;
     }
 
-    /**
-     * Get wikidata
-     *
-     * @return string 
-     */
     public function getWikidata()
     {
         return $this->wikidata;

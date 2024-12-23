@@ -86,6 +86,11 @@ class Album
      */
     private $reviewScores;
 
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
+
 	public function __toString(): string
 	{
 		return $this->title." - ".$this->artist->getTitle();
@@ -114,7 +119,10 @@ class Album
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+		if(!empty($title))
+			$this->title = htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8');
+
+		$this->setSlug();
     }
 
     /**
@@ -126,6 +134,34 @@ class Album
     {
         return $this->title;
     }
+	
+    /**
+     * Set slug
+     *
+     * @param string $slug
+     */
+    public function setSlug()
+    {
+		if(empty($this->slug)) {
+			$generator = new SlugGenerator;
+			$this->slug = $generator->generate($this->title);
+		}
+    }
+
+    /**
+     * Get slug
+     *
+     * @return string 
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+	public function getUrlSlug()
+	{
+		return !empty($this->slug) ? $this->slug : $this->title;
+	}
 
     /**
      * Set artist

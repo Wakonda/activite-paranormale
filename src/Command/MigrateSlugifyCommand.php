@@ -34,28 +34,22 @@ class MigrateSlugifyCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$generator = new SlugGenerator;
-		$entities = $this->em->getRepository("\App\Entity\Stores\Store")->findAll();
+		$entities = $this->em->getRepository("\App\Entity\Album")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE Store SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE Album SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
-		$entities = $this->em->getRepository("\App\Entity\Biography")->findAll();
+		$entities = $this->em->getRepository("\App\Entity\Artist")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE biography SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE artist SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
-		$entities = $this->em->getRepository("\App\Entity\TagWord")->findAll();
+		$entities = $this->em->getRepository("\App\Entity\Music")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE tagword SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
-		}
-
-		$entities = $this->em->getRepository("\App\Entity\Grimoire")->findAll();
-		
-		foreach($entities as $entity) {
-			$conn->exec("UPDATE grimoire SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE Music SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
         return 0;

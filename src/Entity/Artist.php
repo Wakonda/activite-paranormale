@@ -105,6 +105,11 @@ class Artist
      * @ORM\Column(name="socialNetwork", type="text", nullable=true)
      */
     private $socialNetwork;
+
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
 	
 	public function __clone()
 	{
@@ -129,7 +134,10 @@ class Artist
      */
     public function setTitle($title)
     {
-        $this->title = $title;
+		if(!empty($title))
+			$this->title = htmlspecialchars($title, ENT_NOQUOTES, 'UTF-8');
+
+		$this->setSlug();
     }
 
     /**
@@ -141,6 +149,24 @@ class Artist
     {
         return $this->title;
     }
+
+    public function setSlug()
+    {
+		if(empty($this->slug)) {
+			$generator = new SlugGenerator;
+			$this->slug = $generator->generate($this->title);
+		}
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+	public function getUrlSlug()
+	{
+		return !empty($this->slug) ? $this->slug : $this->title;
+	}
 
     /**
      * Set genre

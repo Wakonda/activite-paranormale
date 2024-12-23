@@ -156,7 +156,7 @@ class MappedSuperclassBase implements SearchEngineInterface
     {
         return $this->slug;
     }
-	
+
 	public function getUrlSlug()
 	{
 		return !empty($this->slug) ? $this->slug : $this->title;

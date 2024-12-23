@@ -30,10 +30,10 @@
 	<p id="media_duration"><img src="{{ asset('extended/photo/timer.svg') }}" alt="Timer" width="30" class="align-middle" /> {{ (entity.length|string_duration)|default('-') }}</p>
 	<hr>
 	<ul class="fa-ul">
-		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="fw-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.title}) }}">{{ artist.title }}</a></li>
+		<li><span class="fa-li"><i class="fas fa-guitar"></i></span> <span class="fw-bold">{{ "music.music.Artist"|trans([], "validators") }}</span> <a href="{{ path('Music_Album', {id: artist.id, title_slug: artist.slug}) }}">{{ artist.title }}</a></li>
 
 		{% if album is not empty %}
-			<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="fw-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.title, album: album.title}) }}">{{ album.title }}</a></li>
+			<li><span class="fa-li"><i class="fas fa-record-vinyl"></i></span> <span class="fw-bold">{{ "music.music.Album"|trans([], "validators") }}</span> <a href="{{ path('Music_Listen', {id: album.id, artistId: album.artist.id, artist: album.artist.slug, album: album.slug}) }}">{{ album.title }}</a></li>
 		{% endif %}
 
 		{% if entity.event is not empty %}

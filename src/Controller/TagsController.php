@@ -53,7 +53,7 @@ class TagsController extends AbstractController
 			$row[] = '<a href="'.$this->generateUrl("ap_tags_search", ['id' => $entity->getId(), 'title_slug' => $entity->getSlug()]).'" >'.$entity->getTitle().'</a>';
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';
 			
-			$row[] = '<span class="badge bg-info">'.$em->getRepository(Tags::class)->getDatatablesForSearchTagsAdmin($entity, $request->getLocale(), $iDisplayStart, $iDisplayLength, $sSearch, true).'</span>';
+			$row[] = '<span class="badge bg-info text-dark">'.$em->getRepository(Tags::class)->getDatatablesForSearchTagsAdmin($entity, $request->getLocale(), $iDisplayStart, $iDisplayLength, $sSearch, true).'</span>';
 
 			$output['data'][] = $row;
 		}

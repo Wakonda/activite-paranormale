@@ -106,7 +106,7 @@ class AlbumRepository extends EntityRepository
 	{
 		$qb = $this->_em->createQueryBuilder();
 
-		$qb->select("al.id AS album_id, al.title AS album_title, ar.id AS artist_id, ar.title AS artist_title, COUNT(al.id) AS number_title")
+		$qb->select("al.id AS album_id, al.title AS album_title, ar.id AS artist_id, ar.title AS artist_title, al.slug AS album_slug, ar.slug AS artist_slug, COUNT(al.id) AS number_title")
 		   ->from("App\Entity\Music", "mu")
 		   ->leftjoin("mu.album", "al")
 		   ->leftjoin("al.artist", "ar")
