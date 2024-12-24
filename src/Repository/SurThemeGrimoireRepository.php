@@ -35,15 +35,6 @@ class SurThemeGrimoireRepository extends EntityRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
-/*
-select stg.title, count(*)
-from surthemegrimoire stg
-join surthemegrimoire stg2 on stg2.parentTheme_id = stg.id
-join grimoire g on g.surTheme_id = stg2.id
-where stg.parentTheme_id is null
-group by stg.title
-*/
-
 	public function countGrimoireByParentTheme($locale) {
 		$qb = $this->createQueryBuilder("stg");
 		
@@ -52,9 +43,12 @@ group by stg.title
 		   ->join(\App\Entity\SurThemeGrimoire::class, "stg2", "WITH", "stg2.parentTheme = stg.id")
 		   ->join(\App\Entity\Grimoire::class, "g", "WITH", "g.surTheme = stg2.id")
 		   ->join("stg.language", "l")
+		   ->join('g.state', 's')
 		   ->where("stg.parentTheme IS NULL")
 		   ->andWhere("l.abbreviation = :locale")
 		   ->setParameter("locale", $locale)
+		   ->andWhere('s.displayState = 1')
+		   ->andWhere('g.archive = false')
 		   ->groupBy("stg.title");
 
 		$res = [];

@@ -143,7 +143,7 @@ class Album
     public function setSlug()
     {
 		if(empty($this->slug)) {
-			$generator = new SlugGenerator;
+			$generator = new \Ausi\SlugGenerator\SlugGenerator;
 			$this->slug = $generator->generate($this->title);
 		}
     }

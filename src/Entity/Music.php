@@ -159,7 +159,7 @@ class Music
     public function setSlug()
     {
 		if(empty($this->slug)) {
-			$generator = new SlugGenerator;
+			$generator = new \Ausi\SlugGenerator\SlugGenerator;
 			$this->slug = $generator->generate($this->musicPiece);
 		}
     }
@@ -177,6 +177,11 @@ class Music
     public function getMusicPieceFile()
     {
         return $this->musicPieceFile;
+    }
+
+    public function setMusicPieceFile($musicPieceFile)
+    {
+        $this->musicPieceFile = $musicPieceFile;
     }
 
 	public function getFullPicturePath() {
