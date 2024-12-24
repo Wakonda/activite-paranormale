@@ -260,9 +260,9 @@
 			}
 
 			if($svg->isSVG())
-				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white" />';
+				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white">';
 			else
-				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' alt="" '.$optionString.' />';
+				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' alt="" '.$optionString.'>';
 
 			return $this->imgCaptionFilter($caption, $src, $res);
 		}
@@ -281,7 +281,7 @@
 							  <div class="modal-dialog" role="document">
 								<div class="modal-content">
 								  <div class="modal-body">
-									<img src="'.$src.'" class="w-100 bg-white" />
+									<img src="'.$src.'" class="w-100 bg-white">
 									'.(!empty($infosPicture) ? '<hr class="hr2"><ul class="fa-ul">'.$infosPicture.'</ul>' : "").'
 									<hr class="hr2">
 									'.$caption["caption"].'
@@ -308,7 +308,7 @@
 			$file = realPath($this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$filePath);
 
 			if(file_exists($file)) {
-				return '<iframe src="data:application/pdf;base64,'.base64_encode(file_get_contents($file)).'" width="100%" height="500" scrolling="no" marginheight="0" marginwidth="0" frameborder="0"></iframe>';
+				return '<iframe src="data:application/pdf;base64,'.base64_encode(file_get_contents($file)).'" width="100%" height="500" scrolling="no" marginheight="0" marginwidth="0"></iframe>';
 			}
 
 			return null;
@@ -441,7 +441,7 @@
 		public function HTMLPurifierFilter($content)
 		{
 			$content = "<div>".$content."</div>";
-			$config = array( 'show-body-only' => true);
+			$config = ['show-body-only' => true];
 
 			$tidy = new \tidy();
 			$tidy->parseString($content, $config, 'utf8');
@@ -484,7 +484,7 @@
 			$text = str_replace("/".$entity->getAssetImagePath(), $entity->getAssetImagePath(), $text);
 
 			// We remove all break line
-			$text = str_replace(array("\r\n", "\r"), "\n", $text);
+			$text = str_replace(["\r\n", "\r"], "\n", $text);
 			$lines = explode("\n", $text);
 			$new_lines = [];
 
@@ -508,9 +508,9 @@
 		public function getRandomBannerForIndexFilter()
 		{
 			$abbreviation = $this->translator->getLocale();
-			$language = $this->em->getRepository(Language::class)->findOneBy(array("abbreviation" => $abbreviation));
+			$language = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $abbreviation]);
 			
-			$entities = $this->em->getRepository(Banner::class)->findBy(array('language' => $language, 'display' => true));
+			$entities = $this->em->getRepository(Banner::class)->findBy(['language' => $language, 'display' => true]);
 
 			if(empty($entities))
 				return null;
@@ -1048,8 +1048,7 @@
 				return "<iframe class=\"video\" title=\"$title\" id=\"$id\" srcdoc=\"<style>*{text-decoration:none !important}body,.full{width:100%;height:100%;margin:0;position:absolute;display:flex;justify-content:center;object-fit:cover;align-items:center}.play{background-color:{$color};color:#fff;border-radius:.6rem;padding-right:1.5rem;height:fit-content;padding-left:1.5rem;padding-bottom:.5rem;padding-top:.5rem;z-index:100;font-size:2rem}.play:before{content:'\\25BA'}</style>
 				<a href='{$url}' class='full'><img src='{$thumbnail}' class='full'><div class='play'></div></a>\"
 				width=\"560\" height=\"315\"
-				allow=\"autoplay\"
-				frameborder=\"0\"></iframe>".$script;
+				allow=\"autoplay\"></iframe>".$script;
 			}
 
 			if($platform == "twitter") {

@@ -1,45 +1,5 @@
 <script>
-	function randomCreepyStory() {
-		let xmlHttp = new XMLHttpRequest();
-		document.querySelector("#randomIcon").classList.remove("fa-shuffle");
-		document.querySelector("#randomIcon").classList.add("fa-arrows-rotate", "fa-spin");
-
-		xmlHttp.onreadystatechange = function() {
-			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
-				var data = JSON.parse(xmlHttp.response);
-				
-				if(data.length == 0)
-					document.getElementById("creepyStoryRandomContainer").style.display = 'none';
-				else {
-					document.getElementById("titleRandom").innerHTML = data.title;
-					document.getElementById("textRandom").innerHTML = data.text;
-					document.getElementById("authorRandom").innerHTML = data.author;
-					document.getElementById("writingDateRandom").innerHTML = data.date;
-					document.getElementById("photoRandom").innerHTML = data.photo;
-					document.getElementById("titleRandom").setAttribute("href", data.showRoute);
-				}
-
-				document.getElementById("randomIcon").remove();
-				var i = document.createElement("i")
-				i.classList.add("fa-solid", "fa-shuffle");
-				i.id = "randomIcon";
-
-				document.getElementById("randomCreeyStory").appendChild(i);
-			}
-		}
-
-		xmlHttp.open("GET", "{{ path('CreepyStory_LoadRandom') }}", true);
-		xmlHttp.send();
-	}
-
-	document.addEventListener('DOMContentLoaded', (event) => {
-		document.querySelector("#randomCreeyStory").addEventListener("click", (e) => {
-			e.preventDefault();
-			randomCreepyStory();
-		});
-
-		randomCreepyStory();
-	});
+	function randomCreepyStory(){let e=new XMLHttpRequest;document.querySelector("#randomIcon").classList.remove("fa-shuffle"),document.querySelector("#randomIcon").classList.add("fa-arrows-rotate","fa-spin"),e.onreadystatechange=function(){if(4==e.readyState&&200==e.status){var t=JSON.parse(e.response);0==t.length?document.getElementById("creepyStoryRandomContainer").style.display="none":(document.getElementById("titleRandom").innerHTML=t.title,document.getElementById("textRandom").innerHTML=t.text,document.getElementById("authorRandom").innerHTML=t.author,document.getElementById("writingDateRandom").innerHTML=t.date,document.getElementById("photoRandom").innerHTML=t.photo,document.getElementById("titleRandom").setAttribute("href",t.showRoute)),document.getElementById("randomIcon").remove();var n=document.createElement("i");n.classList.add("fa-solid","fa-shuffle"),n.id="randomIcon",document.getElementById("randomCreeyStory").appendChild(n)}},e.open("GET","/creepy_story/random",!0),e.send()}document.addEventListener("DOMContentLoaded",(e=>{document.querySelector("#randomCreeyStory").addEventListener("click",(e=>{e.preventDefault(),randomCreepyStory()})),randomCreepyStory()}));
 </script>
 
 <div id="creepyStoryRandomContainer" class="mt-3">

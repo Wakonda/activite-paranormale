@@ -218,16 +218,14 @@
 								</div>
 								<div id="validate_right_menu" class="news_section">
 									<h3>{{ "index.leftMenu.Validation"|trans([], "validators") }}</h3>
-									<p>
-										<a href="https://validator.w3.org/check?uri={{ app.request.uri }}"><img
-										src="https://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88"></a>
+									<a href="https://validator.w3.org/check?uri={{ app.request.uri }}"><img
+									src="https://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Transitional" height="31" width="88"></a>
 
-										<a href="https://jigsaw.w3.org/css-validator/validator?uri={{ app.request.uri }}">
-										<img style="border:0;width:88px;height:31px"
-										src="https://jigsaw.w3.org/css-validator/images/vcss"
-										alt="Valid CSS!">
-										</a>
-									</p>
+									<a href="https://jigsaw.w3.org/css-validator/validator?uri={{ app.request.uri }}">
+									<img style="border:0;width:88px;height:31px"
+									src="https://jigsaw.w3.org/css-validator/images/vcss"
+									alt="Valid CSS!">
+									</a>
 								</div>
 								<div class="button_01"><a href="{{ path('WebDirectory_Index') }}">{{ "index.leftMenu.More"|trans([], "validators") }}</a></div>
 							</div>
@@ -285,29 +283,7 @@
 		</div>
 
 		<script>
-			async function detectAdBlock() {
-			  let adBlockEnabled = false
-			  const googleAdUrl = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js'
-			  try {
-				await fetch(new Request(googleAdUrl)).catch(_ => adBlockEnabled = true)
-			  } catch (e) {
-				adBlockEnabled = true
-			  } finally {
-				if(adBlockEnabled == false) {
-					for (let element of document.getElementsByClassName("advertising-alternative"))
-						element.classList.add("d-none");
-					for (let element of document.getElementsByClassName("adsbygoogle"))
-						element.classList.remove("d-none");
-				} else {
-					for (let element of document.getElementsByClassName("advertising-alternative"))
-						element.classList.remove("d-none");
-					for (let element of document.getElementsByClassName("adsbygoogle"))
-						element.classList.add("d-none");
-				}
-			  }
-			}
-
-			detectAdBlock();
+			async function detectAdBlock(){let e=!1;try{await fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")).catch((t=>e=!0))}catch(t){e=!0}finally{if(0==e){for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.add("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.remove("d-none")}else{for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.remove("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.add("d-none")}}}detectAdBlock();
 		</script>
 		{{ macro_index.analytics_gtags() }}
 	</body>

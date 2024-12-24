@@ -18,9 +18,6 @@
 	
 	{% block header_mobile_plus %}{% endblock %}
 	<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}">
-
-	{% import "index/macro/macro_index.html.twig" as macro_index %}
-	{{ macro_index.analytics_gtags() }}
   </head>
 
   <body>
@@ -118,7 +115,6 @@
 		<a href="{{ path('ap_newsmobile_selectlanguage', {'language':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper rounded" src="{{ asset('extended/photo/language/spanishFlagMobile.webp') }}" width="42" alt="es" /></a>
 
 		{% set partners = partners() %}
-
 		<div class="mt-2">
 			{% for partner in partners %}
 				<a class="btn social-share btn-sm" style="background-color: {{ partner.color }};" href="{{ partner.link }}" title="{{ partner.title }}" target="_blank"><i class="{{ partner.icon }} fa-xl" style="color: {{ partner.getTextColor() }}"></i></a>
@@ -128,5 +124,8 @@
     </div>
 	{% block additional_javascript %}{% endblock %}
 	{{ encore_entry_script_tags('app_mobile') }}
+
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.analytics_gtags() }}
   </body>
 </html>

@@ -3,16 +3,16 @@
 	<head>
 		<title>{% block title %}{% endblock %}</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}" />
+		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}">
 
 	    {% block stylesheets %}
             {{ encore_entry_link_tags('app_v3') }}
         {% endblock %}
 
-		<link rel="stylesheet" href="{{ asset('extended/css/style_display_pdf.css') }}" type="text/css" media="screen" />
-		
+		<link rel="stylesheet" href="{{ asset('extended/css/style_display_pdf.css') }}" type="text/css" media="screen">
+
 		{{ encore_entry_script_tags('app_v3') }}	
-		
+
 		{% if is_mobile() or is_tablet() %}
 			<script src="{{ asset('extended/js/pdf.js') }}"></script>
 		{% endif %}
@@ -62,13 +62,13 @@
 				<canvas id="pdf-canvas" class="m-auto d-block w-auto"></canvas>
 			</div>
 		{% else %}
-			<iframe src="{{ asset(block('path_file')~block('file_name')) }}" width="100%" height="100%" scrolling="no" marginheight="0" marginwidth="0" frameborder="0"> </iframe>
+			<iframe src="{{ asset(block('path_file')~block('file_name')) }}" width="100%" height="100%" scrolling="no" marginheight="0" marginwidth="0"> </iframe>
 		{% endif %}
-		
+
 		<div id="footer" class="py-1 text-center">
 			<span class="mt-2 text-light ms-3"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</span>
 		</div>
-		
+
 		<script>
 			{% if is_mobile() or is_tablet() %}
 				function resizeIframe()

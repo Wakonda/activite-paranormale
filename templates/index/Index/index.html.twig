@@ -3,7 +3,7 @@
 {% block title %}Activité-Paranormale{% endblock %}
 
 {% block header_plus %}
-	<link rel="stylesheet" href="{{ asset('extended/js/Marquee/marquee.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/Marquee/marquee.min.css') }}" type="text/css" media="screen">
 	<script src="{{ asset('extended/js/Marquee/marquee.min.js') }}"></script>
 	<script>
 		document.addEventListener("DOMContentLoaded",function(){let e=new Marquee(document.getElementById("marquee1"));document.querySelector(".pause-marquee").addEventListener("click",function(){e.pause(),document.querySelector(".resume-marquee").classList.remove("d-none"),document.querySelector(".pause-marquee").classList.add("d-none")}),document.querySelector(".resume-marquee").addEventListener("click",function(){e.resume(),document.querySelector(".resume-marquee").classList.add("d-none"),document.querySelector(".pause-marquee").classList.remove("d-none")}),document.querySelector(".next-marquee").addEventListener("click",function(){e.next(),document.querySelector(".pause-marquee").click()}),document.querySelector(".previous-marquee").addEventListener("click",function(){e.previous(),document.querySelector(".pause-marquee").click()})});
@@ -13,7 +13,7 @@
 {% block h2_title %}
 	<h2>
 	<span class="float-start">
-		<img src="{{ asset('extended/photo/anger.png') }}" width="25" class="mt-1" alt="Anger ghost"/>
+		<img src="{{ asset('extended/photo/anger.png') }}" width="25" class="mt-1" alt="Anger ghost">
 	</span>Activité-Paranormale
 	</h2>
 {% endblock h2_title %}
@@ -35,7 +35,7 @@
 	{% set bannerArray = ""|random_banner %}
 
 	{% if bannerArray is not null %}
-		<p class="image"><a href="{{ bannerArray['link'] }}" target="_blank"><img src="{{ asset('extended/photo/banner/') }}{{ bannerArray['name'] }}" width = "{{ bannerArray['width'] }}" height = "{{ bannerArray['height'] }}" alt="" class=" mx-auto d-block img-fluid" /></a></p>
+		<p class="image"><a href="{{ bannerArray['link'] }}" target="_blank"><img src="{{ asset('extended/photo/banner/') }}{{ bannerArray['name'] }}" width = "{{ bannerArray['width'] }}" height = "{{ bannerArray['height'] }}" alt="" class=" mx-auto d-block img-fluid"></a></p>
 	{% endif %}
 	
 	{{ render(controller('App\\Controller\\PageController::wordPresidentAction')) }}

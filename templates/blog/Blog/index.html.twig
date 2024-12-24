@@ -12,13 +12,11 @@
 {% block APBlog_body %}
 	{% for blog in blogs %}
 		<h3>{{ blog.title }}</h3>
-		<p class="image">
 		{% if blog.isActive %}
-			{{ blog.banner|imgsize(550, blog.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}
+			{{ blog.banner|imgsize(550, blog.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid mb-2'})|raw }}
 		{% else %}
-			{{ blog.banner|imgsize(550, blog.getAssetImagePath(), true, { 'class' : 'mx-auto d-block img-fluid inactive' })|raw }}
+			{{ blog.banner|imgsize(550, blog.getAssetImagePath(), true, { 'class' : 'mx-auto d-block img-fluid inactive mb-2' })|raw }}
 		{% endif %}
-		</p>
 		{{ blog.text|raw }}
 		<ul class="fa-ul">
 			<li>
