@@ -105,7 +105,7 @@ class Music
 	}
 
 	public function getShowRoute() {
-		return "Music_MusicShort";
+		return "Music_Music";
 	}
 
 	public function getLanguage() {

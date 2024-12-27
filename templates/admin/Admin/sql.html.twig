@@ -252,6 +252,7 @@
 										{% endfor %}
 									</table>
 									{{ knp_pagination_render(pagination) }}
+									<fieldset class="border p-2"><legend class="float-none w-auto h5">Whole result</legend>{{ pagination.totalItemCount }} row{{ pagination.totalItemCount > 1 ? "s" : "" }}</fieldset>
 								{% else %}
 									<div class="alert alert-success"><i class="fa-regular fa-thumbs-up"></i> No rows.</div>
 								{% endif %}

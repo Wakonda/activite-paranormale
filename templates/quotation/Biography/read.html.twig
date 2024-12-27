@@ -379,7 +379,7 @@
 				<tbody>
 					{% for music in musics %}
 						<tr class="trGene">
-							<td class="tdGene"><a href="{{ path('Music_Music', {id: music.musicId, music: music.musicTitle}) }}">{{ music.musicTitle }}</a></td>
+							<td class="tdGene"><a href="{{ path('Music_Music', {id: music.musicId, title_slug: music.slug}) }}">{{ music.musicTitle }}</a></td>
 							<td class="tdGene">
 							{% set occupationArray = [] %}
 							{% for occupation in music.occupations|split("|") %}

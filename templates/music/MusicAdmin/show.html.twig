@@ -91,7 +91,7 @@
 		<div class="form-table-cell"><a href="{{ path('EventMessage_Admin_Show', {id: entity.event.id}) }}">{{ entity.event.title }} ({{ entity.event.yearFrom }})</a></div>
 	{% endif %}
 
-	<a href="{{ path('Music_Music', { id: entity.id, music: entity.musicPiece }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+	<a href="{{ path('Music_Music', { id: entity.id, title_slug: entity.slug }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}
 
 {% block data_bottom %}
@@ -99,8 +99,15 @@
 
 	{{ macro_index.blogger_music_form(entity, "irontv") }}
 
-	{{ macro_index.twitter_form(entity) }}
-	{{ macro_index.facebook_form(entity) }}
+	{% set artist = null %}
+	{% if entity.album is not empty %}
+		{% set artist = entity.album.artist %}
+	{% elseif entity.artist is not empty %}
+		{% set artist = entity.artist %}
+	{% endif %}
+
+	{{ macro_index.twitter_form(entity, false, "", " " ~ artist.getSocialNetworkUsername("twitter")) }}
+	{{ macro_index.facebook_form(entity, (entity.title ~ " " ~ artist.getSocialNetworkUsername("facebook"))|trim) }}
 	{{ macro_index.mastodon_form(entity) }}
 	{{ macro_index.diaspora_form(entity) }}
 	{{ macro_index.bluesky_form(entity) }}

@@ -400,4 +400,14 @@ class Artist
     {
         return $this->socialNetwork;
     }
+
+	public function getSocialNetworkUsername(string $socialNetwork) {
+		$res = "";
+		foreach(json_decode($this->socialNetwork, true) as $sn) {
+			if(!empty($sn["url"]) and strtolower($sn["socialNetwork"]) == strtolower($socialNetwork))
+				$res = "@".ltrim(parse_url($sn["url"], PHP_URL_PATH), "@/");
+		}
+
+		return $res;
+	}
 }

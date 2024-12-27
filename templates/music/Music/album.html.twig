@@ -123,7 +123,7 @@
 			<tbody>
 				{% for entity in musicByArtists %}
 					<tr>
-					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'music' : entity.musicPiece }) }}" alt="" class="fw-bold">{{ entity.musicPiece }}</a></td>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'title_slug' : entity.slug }) }}" alt="" class="fw-bold">{{ entity.musicPiece }}</a></td>
 					<td><i class="far fa-clock"></i> {{ (entity.length|string_duration)|default('-') }}</td>
 					</tr>
 				{% endfor %}

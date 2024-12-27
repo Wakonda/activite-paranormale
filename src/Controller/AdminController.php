@@ -1568,7 +1568,7 @@ class AdminController extends AbstractController
 					$num_results_on_page,
 					$conn
 				);
-
+// dd($pagination);
 				$pagination->setCustomParameters(['align' => 'center']);
 			}
 
