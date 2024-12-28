@@ -44,7 +44,7 @@ testimony:
         Licence: "Licence"
         IsAnonymous: "Publish anonymously?"
         NextStep: "Next step"
-        Draft: "Draft"
+        Draft: "Save in draft mode"
         Preview: "Preview"
         PublishedAnonymously: "Published anonymously"
         PostedWithMyUserAccount: "Posted with my user account"

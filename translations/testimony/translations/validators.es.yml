@@ -44,7 +44,7 @@ testimony:
         Licence: "Licencia"
         IsAnonymous: "¿Publicar anónimamente?"
         NextStep: "Paso siguiente"
-        Draft: "Sucio"
+        Draft: "Guardar en modo borrador"
         Preview: "Previsualizar"
         PublishedAnonymously: "Publicado anónimamente"
         PostedWithMyUserAccount: "Publicado con mi cuenta de usuario"

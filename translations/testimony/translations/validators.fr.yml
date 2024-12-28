@@ -44,7 +44,7 @@ testimony:
         Licence: "Licence"
         IsAnonymous: "Publié anonymement ?"
         NextStep: "Ajouter un fichier ou une photo"
-        Draft: "Brouillon"
+        Draft: "Enregistrer en mode brouillon"
         Preview: "Prévisualiser"
         PublishedAnonymously: "Publié anonymement"
         PostedWithMyUserAccount: "Publié avec mon compte utilisateur"

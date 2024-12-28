@@ -32,7 +32,7 @@ news:
         FileSizeLimit: "File size limit"
         AcceptedFormat: "Accepted format"
         IsAnonymous: "Publish anonymously?"
-        Draft: "Draft"
+        Draft: "Save in draft mode"
         Validate: "Validate"
         Preview: "Preview"
         PublishedAnonymously: "Published anonymously"

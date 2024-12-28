@@ -32,7 +32,7 @@ news:
         FileSizeLimit: "Taille maximum"
         AcceptedFormat: "Formats acceptés"
         IsAnonymous: "Publié anonymement ?"
-        Draft: "Brouillon"
+        Draft: "Enregistrer en mode brouillon"
         Validate: "Valider"
         Preview: "Prévisualiser"
         PublishedAnonymously: "Publié anonymement"
