@@ -273,7 +273,6 @@ class VideoAdminController extends AdminGenericController
 	/* FONCTION DE COMPTAGE */
 	public function countByState(EntityManagerInterface $em, $state)
 	{
-		// dd($this->className);
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
 	}

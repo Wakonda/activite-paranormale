@@ -30,6 +30,16 @@ Photo_Admin_Delete:
     path:  /{id}/delete
     controller: App\Controller\PhotoAdminController::deleteAction
 
+Photo_Admin_DeleteMultiple:
+    path:  /delete_multiple
+    controller: App\Controller\PhotoAdminController::deleteMultiple
+
+Photo_Admin_ChangeState:
+    path: /change_state/{id}/{state}
+    controller: App\Controller\PhotoAdminController::changeStateAction
+    requirements:
+        id: \d+
+
 Photo_Admin_Archive:
     path: /archive/{id}
     controller: App\Controller\PhotoAdminController::archiveAction

@@ -10,11 +10,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class VideoUserParticipationType extends AbstractType
+class PhotoUserParticipationType extends AbstractType
 {
 	public function __construct(private TokenStorageInterface $token){}
 
@@ -24,9 +25,8 @@ class VideoUserParticipationType extends AbstractType
 		$user = !empty($token = $this->token->getToken()) ? $token->getUser() : null;
 
         $builder
-            ->add('title', TextType::class, ['label' => 'Titre', 'required' => false])
-			->add('embeddedCode', TextareaType::class, ['required' => true, 'constraints' => [new NotBlank()], "attr" => ["placeholder" => '<iframe width="560" height="315" src="https://www.youtube.com/embed/video"></iframe>', 'rows' => 5]])
-            ->add('text', TextareaType::class, array('required' => false))
+			->add('illustration', FileType::class, ['data_class' => null, 'required' => true, 'constraints' => [new NotBlank()]])
+			->add('text', TextareaType::class, array('required' => false))
 			->add('validate', SubmitType::class, array(
 				'attr' => array('class' => 'submitcomment btn'),
 			))
@@ -53,13 +53,13 @@ class VideoUserParticipationType extends AbstractType
 
     public function getBlockPrefix()
     {
-        return 'ap_page_videouserparticipationtype';
+        return 'ap_page_photouserparticipationtype';
     }
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
-			'data_class' => 'App\Entity\Video',
+			'data_class' => 'App\Entity\Photo',
 			'translation_domain' => 'validators',
 			'language' => 'fr'
 		]);

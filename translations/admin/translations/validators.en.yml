@@ -211,6 +211,7 @@ admin:
         CommentsToModerate: "Comments to moderate"
         ClassifiedAdsToModerate: "Classified ads to moderate"
         VideosToModerate: "Videos to moderate"
+        PhotosToModerate: "Photos to moderate"
         Waiting: "Waiting"
         Warned: "Warned"
         UnreadPosts: "Unread posts"

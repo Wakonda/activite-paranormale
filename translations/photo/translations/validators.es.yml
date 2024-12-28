@@ -19,9 +19,17 @@ photo:
         State: "Estado"
         Licence: "Licencia"
         WritingDate: "Fecha de redacción"
+    new:
+        AddPhoto: "Sugerir una foto"
+        Photo: "Foto"
+        Text: "Texto"
     read:
         SourcePhoto: "Fuente de la foto"
     slider:
         More: "Más"
     world:
         WorldPhoto: "Foto multilingüe"
+    validate:
+        Validation: "Validación"
+        ThankForYourParticipation: "¡Gracias por su participación!"
+        ThankForYourParticipationText: "Su foto ha sido transmitido a nosotros. Será publicado en nuestra página web como la aprobación de un moderador."

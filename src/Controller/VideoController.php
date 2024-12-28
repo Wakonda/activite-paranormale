@@ -431,8 +431,6 @@ class VideoController extends AbstractController
 		}
 
         if ($form->isValid()) {
-			$generator = new \Ausi\SlugGenerator\SlugGenerator;
-
 			$em->persist($entity);
 			$em->flush();
 			

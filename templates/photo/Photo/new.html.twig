@@ -1,0 +1,73 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "photo.new.AddPhoto"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "photo.new.AddPhoto"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_js(form.text.vars.id) }}
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
+			{% if form.isAnonymous is defined %}
+				function publishAnonymously(value)
+				{
+					if(value == 1)
+						document.querySelector("div#anonymously_message").innerHTML = "<div class='alert alert-info'><i class='fas fa-info-circle'></i> {{ 'news.new.AnonymousMessage'|trans([], 'validators') }}</div>";
+					else
+						document.querySelector("div#anonymously_message").innerHTML = "";
+				}
+				
+				document.querySelector("select#{{ form.isAnonymous.vars.id }}").addEventListener("change", (e) => {
+					publishAnonymously(e.target.value);
+				});
+				
+				publishAnonymously(document.querySelector("select#{{ form.isAnonymous.vars.id }}").value);
+			{% endif %}
+		});
+	</script>
+{% endblock %}
+
+{% block APBlog_body %}
+	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}photo-user-participation.webp" alt="Girl taking photo" width="550" class="mx-auto d-block img-fluid"/></p>
+	<br>
+	<hr class="hr2">
+	{{ form_start(form, {'action': path('Photo_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "photo.new.Photo"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">
+				{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}
+				<div>
+					<span class="fw-bold">{{ "news.new.AcceptedFormat"|trans([], "validators") }} :</span> PNG, JPG, JPEG, GIF, WEBP
+					<br>
+					<span class="fw-bold">{{ "news.new.FileSizeLimit"|trans([], "validators") }} :</span> 500 ko
+				</div>
+			</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.text, "photo.new.Text"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.text) }}{{ form_widget(form.text) }}</div>
+
+			{% if app.user is null %}
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.pseudoUsed, "eventMessage.new.Pseudo"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">{{ form_errors(form.pseudoUsed) }}{{ form_widget(form.pseudoUsed, {'attr':{'class' : 'form-control'}}) }}</div>
+			{% else %}
+				<div class="form-table-cell form-table-cell-head">{{ form_label(form.isAnonymous, "eventMessage.new.IsAnonymous"|trans([], "validators")) }}</div>
+				<div class="form-table-cell">
+					{{ form_errors(form.isAnonymous) }}{{ form_widget(form.isAnonymous, {'attr':{'class' : 'form-select'}}) }}
+					<div id="anonymously_message"></div>
+				</div>
+			{% endif %}
+		</div>
+		
+		<div class="text-end mt-3">
+			{{ form_widget(form.validate, { 'label': "eventMessage.new.Validate"|trans([], "validators") }) }}
+		</div>
+		{{ form_rest(form) }}
+		{{ form_errors(form) }}
+	{{ form_end(form) }}
+
+	<hr class="hr2"/>
+	{{ "google"|advertisement|raw }}
+{% endblock %}

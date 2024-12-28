@@ -11,9 +11,12 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Theme;
 use App\Entity\Photo;
 use App\Entity\Language;
+use App\Entity\State;
+use App\Entity\FileManagement;
 use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
+use App\Form\Type\PhotoUserParticipationType;
 
 class PhotoController extends AbstractController
 {
@@ -213,5 +216,137 @@ class PhotoController extends AbstractController
 		$sameTopics = $em->getRepository(Photo::class)->getSameTopics($entity);
 		
 		return $this->render("photo/Photo/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
+	}
+
+	// USER PARTICIPATION
+    public function newAction(Request $request)
+    {
+        $entity = new Photo();
+
+        $form = $this->createForm(PhotoUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
+
+        return $this->render('photo/Photo/new.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView()
+        ]);
+    }
+	
+	public function createAction(Request $request, EntityManagerInterface $em)
+    {
+		return $this->genericCreateUpdate($request, $em);
+    }
+
+	private function genericCreateUpdate(Request $request, EntityManagerInterface $em, $id = 0)
+	{
+		$locale = $request->getLocale();
+		$user = $this->getUser();
+
+		if(empty($id))
+			$entity = new Photo();
+		else {
+			$entity = $em->getRepository(Photo::class)->find($id);
+
+			if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
+				throw new \Exception("You are not authorized to edit this document.");
+		}
+
+        $form = $this->createForm(PhotoUserParticipationType::class, $entity, ["language" => $locale]);
+        $form->handleRequest($request);
+
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $locale]);
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
+
+		$entity->setState($state);
+		$entity->setLanguage($language);
+
+		if(is_object($user)) {
+			if($entity->getIsAnonymous() == 1) {
+				if($form->get('validate')->isClicked())
+					$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
+
+				$entity->setAuthor($user);
+				$entity->setPseudoUsed("Anonymous");
+			}
+			else {
+				$entity->setAuthor($user);
+				$entity->setPseudoUsed($user->getUsername());
+			}
+		}
+		else {
+			$user = $em->getRepository(User::class)->findOneBy(['username' => 'Anonymous']);
+			$entity->setAuthor($user);
+			$entity->setIsAnonymous(0);
+		}
+
+        if ($form->isValid()) {
+			if(is_object($ci = $entity->getIllustration())) {
+				$titleFile = uniqid()."_".$ci->getClientOriginalName();
+				$illustration = new FileManagement();
+				$illustration->setTitleFile($titleFile);
+				$illustration->setRealNameFile($titleFile);
+				$illustration->setExtensionFile(pathinfo($ci->getClientOriginalName(), PATHINFO_EXTENSION));
+				
+				$ci->move($entity->getTmpUploadRootDir(), $titleFile);
+				
+				$entity->setIllustration($illustration);
+			}
+
+			$em->persist($entity);
+			$em->flush();
+			
+			return $this->redirect($this->generateUrl('Photo_Validate', ['id' => $entity->getId()]));
+        }
+
+        return $this->render('photo/Photo/new.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView()
+        ]);
+	}
+
+    public function editAction(Request $request, EntityManagerInterface $em, $id)
+    {
+		$user = $this->getUser();
+
+        $entity = $em->getRepository(Photo::class)->find($id);
+
+		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
+			throw new AccessDeniedHttpException("You can't edit this document.");
+
+		if($entity->getState()->isStateDisplayed() or $user->getId() != $entity->getAuthor()->getId())
+			throw new \Exception("You are not authorized to edit this document.");
+
+        $form = $this->createForm(PhotoUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
+
+        return $this->render('photo/Photo/new.html.twig', [
+            'entity' => $entity,
+            'form' => $form->createView()
+        ]);
+    }
+
+	public function updateAction(Request $request, EntityManagerInterface $em, $id)
+    {
+		return $this->genericCreateUpdate($request, $em, $id);
+    }
+
+	public function validateAction(Request $request, EntityManagerInterface $em, $id)
+	{
+        $entity = $em->getRepository(Photo::class)->find($id);
+
+		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
+			throw new AccessDeniedHttpException("You can't edit this document.");
+
+		$user = $this->getUser();
+
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
+			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
+
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
+		$state = $em->getRepository(State::class)->findOneBy(['internationalName' => 'Waiting', 'language' => $language]);
+
+		$entity->setState($state);
+		$em->persist($entity);
+		$em->flush();
+
+		return $this->render('photo/Photo/validate_externaluser_text.html.twig');
 	}
 }

@@ -37,7 +37,7 @@
 	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "photo.admin.Theme"|trans([], "validators") }}</div>
-	<div class="form-table-cell">{{ entity.theme.title }}</div>
+	<div class="form-table-cell">{% if entity.theme is not empty %}{{ entity.theme.title }}{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "photo.admin.PseudoUsed"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.pseudoUsed }}</div>
@@ -55,7 +55,12 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Photo_Admin_Internationalization", "showRoute": "Photo_Admin_Show", "editRoute": "Photo_Admin_Edit"})) }}
+	{% if entity.state.isWaiting() %}
+		<a href="{{ path('Photo_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "eventMessage.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('Photo_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "eventMessage.admin.Refuse"|trans([], "validators") }}</a>
+	{% else %}
+		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Photo_Admin_Internationalization", "showRoute": "Photo_Admin_Show", "editRoute": "Photo_Admin_Edit"})) }}
+	{% endif %}
 
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}

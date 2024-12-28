@@ -18,6 +18,7 @@ use App\Entity\Region;
 use App\Entity\MusicGenre;
 use App\Form\Type\ArtistAdminType;
 use App\Service\ConstraintControllerValidator;
+use App\Service\TwitterAPI;
 
 /**
  * Artist controller.
@@ -221,7 +222,7 @@ class ArtistAdminController extends AdminGenericController
 			
 			if(empty($biography))
 				$biography = $mbToCopy->getBiography();
-// dd($em->getRepository(Region::class)->findOneBy(["internationalName" => $biography->getNationality()->getInternationalName(), "language" => $language]));
+			
 			$biography->setNationality($em->getRepository(Region::class)->findOneBy(["internationalName" => $biography->getNationality()->getInternationalName(), "language" => $language]));
 
 			$mb->setOccupation($mbToCopy->getOccupation());

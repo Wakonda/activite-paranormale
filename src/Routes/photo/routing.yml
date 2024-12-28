@@ -45,6 +45,26 @@ Photo_SelectThemeForIndexWorld:
     defaults:
         language: all
 
+Photo_New:
+    path: /photo/new
+    controller: App\Controller\PhotoController::newAction
+
+Photo_Create:
+    path: /photo/create
+    controller: App\Controller\PhotoController::createAction
+
+Photo_Edit:
+    path: /photo/edit/{id}
+    controller: App\Controller\PhotoController::editAction
+
+Photo_Update:
+    path: /photo/update/{id}
+    controller: App\Controller\PhotoController::createAction
+
+Photo_Validate:
+    path: /photo/validate/{id}
+    controller: App\Controller\PhotoController::validateAction
+
 # Administration
 Photo_Admin:
     resource: "routing/photoadmin.yml"

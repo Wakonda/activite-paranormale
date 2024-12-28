@@ -5,10 +5,49 @@
 {% block new_admin_route %}{{ path('Photo_Admin_New') }}{% endblock %}
 {% block indexdatatables_admin_route %}{{ path('Photo_Admin_IndexDatatables') }}{% endblock %}
 
+{% block js_edit_additional %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.moderation_buttons("Photo_Admin_DeleteMultiple") }}
+
+	document.querySelector(".index_admin").insertAdjacentElement('afterend', unselectAllButton);
+	
+	for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'none';
+	
+	{% if app.request.attributes.get('display') == 0 %}
+		for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'inline-block';
+	{% endif %}
+
+	document.querySelector("select#selected_state").addEventListener("change", (e) => {
+		if(e.target.options[e.target.selectedIndex].getAttribute('data-display') == 1)
+			for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'none';
+		else
+			for (let el of document.querySelectorAll('.moderationButton')) el.style.display = 'inline-block';
+
+		oTable.columns(3).search(e.target.value).draw();
+	});
+{% endblock %}
+
+{% block body_main_additional %}
+	<div class="container-fluid mt-3">
+		{% set states = ""|states_by_language %}
+
+		<label>{{ "news.admin.State"|trans([], "validators") }}</label>
+		<select id="selected_state" class="form-select">
+			<option value=""></option>
+			{% for state in states %}
+				<option value="{{ state.internationalName }}" data-display="{{ state.displayState }}" {% if app.request.query.get("state") == state.internationalName %}selected{% endif %}>{{ state.title }}</option>
+			{% endfor %}
+		</select>
+		<hr>
+	</div>
+{% endblock %}
+
 {% block thead_admin_table %}
 	<th class="label_form">Id</th>
 	<th class="label_form">{{ "photo.admin.Title"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "photo.admin.PublicationDate"|trans([], "validators") }}</th>
+	<th id="state_column" class="label_form">{{ "photo.admin.State"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}
 
@@ -16,6 +55,7 @@
 	<th class="label_form">Id</th>
 	<th class="label_form">{{ "photo.admin.Title"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "photo.admin.PublicationDate"|trans([], "validators") }}</th>
+	<th>{{ "photo.admin.State"|trans([], "validators") }}</th>
 	<th class="label_form">{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}
 
@@ -29,4 +69,18 @@
 			</tr>
 		</table>
 	</div>
+{% endblock %}
+
+{% block datatables_additional_options %}
+	{% import "admin/GenericAdmin/macro.html.twig" as macro_admin %}
+	
+	{{ macro_admin.datatables_moderation_additional_options() }},
+    searchCols: [
+      null,
+      null,
+      null,
+      {'search': '{{ app.request.query.get("state") }}' },
+      null,
+      null
+    ]
 {% endblock %}

@@ -45,6 +45,19 @@ class TwitterAPI
 
 		return $connection->post('tweets', $parameters, true);
 	}
+
+	public function getUsernameById(string $id, string $locale)
+	{
+		$this->setLanguage($locale);
+
+		$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->OAUTH_TOKEN, $this->OAUTH_TOKEN_SECRET);
+
+		$connection->setApiVersion('1.1');
+
+		$parameters['ids'] = $id;
+
+		dd( $connection->get('users', $parameters, true));
+	}
 	
 	public function setLanguage($language)
 	{

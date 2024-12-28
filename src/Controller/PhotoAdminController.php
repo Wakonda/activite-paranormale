@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Photo;
 use App\Entity\PhotoTags;
@@ -116,9 +117,10 @@ class PhotoAdminController extends AdminGenericController
 	{
 		$informationArray = $this->indexDatatablesGenericAction($request, $em);
 		$output = $informationArray['output'];
+		
+		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 
-		foreach($informationArray['entities'] as $entity)
-		{
+		foreach($informationArray['entities'] as $entity) {
 			$row = [];
 
 			if($entity->getArchive())
@@ -127,6 +129,8 @@ class PhotoAdminController extends AdminGenericController
 			$row[] = $entity->getId();
 			$row[] = $entity->getTitle();
 			$row[] = $date->doDate($request->getLocale(), $entity->getPublicationDate());
+			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
+			$row[] =  $state->getTitle();
 			$row[] = "
 			 <a href='".$this->generateUrl('Photo_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />
 			 <a href='".$this->generateUrl('Photo_Admin_Edit', array('id' => $entity->getId()))."'><i class='fas fa-sync-alt' aria-hidden='true'></i> ".$translator->trans('admin.general.Update', [], 'validators')."</a><br />
@@ -226,5 +230,51 @@ class PhotoAdminController extends AdminGenericController
 
 		$twig = 'photo/PhotoAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+	}
+
+	public function countByState(EntityManagerInterface $em, $state)
+	{
+		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
+		return new Response($countByStateAdmin);
+	}
+
+	public function deleteMultiple(Request $request, EntityManagerInterface $em)
+	{
+		$ids = json_decode($request->request->get("ids"));
+
+		$entities = $em->getRepository($this->className)->findBy(['id' => $ids]);
+
+		foreach($entities as $entity)
+			$em->remove($entity);
+
+		$em->flush();
+
+		return new Response();
+	}
+
+	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+	{
+		$language = $request->getLocale();
+
+		$state = $em->getRepository(State::class)->getStateByLanguageAndInternationalName($language, $state);
+
+		$entity = $em->getRepository(Photo::class)->find($id);
+		
+		$entity->setState($state);
+
+		if($state->getInternationalName() == "Validate") {
+			if(empty($entity->getTheme()))
+				return $this->redirect($this->generateUrl('Photo_Admin_Edit', ['id' => $id]));
+		}
+
+		$em->persist($entity);
+		$em->flush();
+
+		if($state->getInternationalName() == "Validate")
+			$this->addFlash('success', $translator->trans('news.admin.NewsPublished', [], 'validators'));
+		else
+			$this->addFlash('success', $translator->trans('news.admin.NewsRefused', [], 'validators'));
+
+		return $this->redirect($this->generateUrl('Photo_Admin_Show', ['id' => $id]));
 	}
 }

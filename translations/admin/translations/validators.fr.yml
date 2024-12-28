@@ -211,6 +211,7 @@ admin:
         CommentsToModerate: "Commentaires à modérer"
         ClassifiedAdsToModerate: "Petites annonces à modérer"
         VideosToModerate: "Vidéos à modérer"
+        PhotosToModerate: "Photos à modérer"
         Waiting: "En attente"
         Warned: "Averti"
         UnreadPosts: "Messages non lus"

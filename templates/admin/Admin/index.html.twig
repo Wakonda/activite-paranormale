@@ -443,10 +443,12 @@
 			{% set countClassifiedAdsByStateWarned = render(controller('App\\Controller\\ClassifiedAdsAdminController::countByState', {'state':'Warned'})) %}
 			{% set countVideoByStateWaiting = render(controller('App\\Controller\\VideoAdminController::countByState', {'state':'Waiting'})) %}
 			{% set countVideoByStateWarned = render(controller('App\\Controller\\VideoAdminController::countByState', {'state':'Warned'})) %}
+			{% set countPhotoByStateWaiting = render(controller('App\\Controller\\PhotoAdminController::countByState', {'state':'Waiting'})) %}
+			{% set countPhotoByStateWarned = render(controller('App\\Controller\\PhotoAdminController::countByState', {'state':'Warned'})) %}
 			
 			{% set totalToModerate = countNewsByStateWaiting + countNewsByStateWarned + countGrimoireByStateWaiting + countEventMessageByStateWaiting +
 			                         countWebDirectoryByStateWaiting + countCommentByStateWaiting + countContactByStateWaiting + countTestimonyByStateWaiting +
-									 countTestimonyByStateWarned + countClassifiedAdsByStateWaiting + countClassifiedAdsByStateWarned + countVideoByStateWaiting + countVideoByStateWarned %}
+									 countTestimonyByStateWarned + countClassifiedAdsByStateWaiting + countClassifiedAdsByStateWarned + countVideoByStateWaiting + countVideoByStateWarned + countPhotoByStateWaiting + countPhotoByStateWarned %}
 			
 			<div class="card-header">
 				<h5 class="panel-title">
@@ -522,6 +524,13 @@
 							<tr>
 								<td>{{ "file.admin.MediaManagement"|trans([], "validators") }}</td>
 								<td><a href="{{ path('FileManagement_Admin_ListFiles') }}" alt="">{{ "admin.general.Display"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td>{{ "admin.moderation.PhotosToModerate"|trans([], "validators") }}</td>
+								<td>
+									<strong><em>{{ "admin.moderation.Waiting"|trans([], "validators") }} </em></strong>[<a href="{{ path('Photo_Admin_Index', {'state': 'Waiting', 'display' : 0}) }}" alt="" >{{ countPhotoByStateWaiting }}</a>]
+									<strong><em>{{ "admin.moderation.Warned"|trans([], "validators") }} </em></strong>[<a href="{{ path('Photo_Admin_Index', {'state': 'Warned', 'display' : 0}) }}" alt="" >{{ countPhotoByStateWarned }}</a>]
+								</td>
 							</tr>
 						</tbody>
 					</table>

@@ -331,18 +331,16 @@ class NewsController extends AbstractController
 			$entity->setIsAnonymous(0);
 		}
 
-        if ($form->isValid())
-		{
-			if(is_object($ci = $entity->getIllustration()))
-			{
+        if ($form->isValid()) {
+			if(is_object($ci = $entity->getIllustration())) {
 				$titleFile = uniqid()."_".$ci->getClientOriginalName();
 				$illustration = new FileManagement();
 				$illustration->setTitleFile($titleFile);
 				$illustration->setRealNameFile($titleFile);
 				$illustration->setExtensionFile(pathinfo($ci->getClientOriginalName(), PATHINFO_EXTENSION));
-				
+
 				$ci->move($entity->getTmpUploadRootDir(), $titleFile);
-				
+
 				$entity->setIllustration($illustration);
 			}
 
@@ -350,13 +348,9 @@ class NewsController extends AbstractController
 			$em->flush();
 			
 			if($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
-			{
 				return $this->redirect($this->generateUrl('News_Waiting', ['id' => $entity->getId()]));
-			}
 			elseif($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
-			{
 				return $this->redirect($this->generateUrl('Profile_Show'));
-			}
 			
 			return $this->redirect($this->generateUrl('News_Validate', ['id' => $entity->getId()]));
         }

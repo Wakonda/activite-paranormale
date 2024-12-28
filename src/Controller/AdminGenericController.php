@@ -31,7 +31,7 @@ abstract class AdminGenericController extends AbstractController
 	
 	protected $illustrations = [];
 	
-	private $parser;
+	protected $parser;
 
 	abstract public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal);
 	abstract public function postValidationAction($form, EntityManagerInterface $em, $entityBindded);

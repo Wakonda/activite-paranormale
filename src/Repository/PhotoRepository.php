@@ -117,10 +117,12 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = ['c.id', 'c.title', 'c.publicationDate', 'c.id'];
+		$aColumns = ['c.id', 'c.title', 'c.publicationDate', 's.internationalName', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
-		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		$qb
+		   ->join('c.state', 's')
+		   ->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
 		if(!empty($sSearch))
 		{
@@ -133,6 +135,19 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
+		if(!empty($searchByColumns))
+		{
+			foreach($aColumns as $i => $aSearchColumn)
+			{
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
+				{
+					$search = "%".$value."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
+					   ->setParameter("searchByColumn".$i, $search);
+				}
+			}
+		}
+
 		if($count)
 		{
 			$qb->select("count(c)");
