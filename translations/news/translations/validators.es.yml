@@ -33,6 +33,7 @@ news:
         AcceptedFormat: "Formatos aceptados"
         IsAnonymous: "¿Publicada de forma anónima?"
         Draft: "Guardar en modo borrador"
+        DraftSuccess: "Artículo guardado en modo borrador. Puedes editarlo en cualquier momento yendo a tu perfil."
         Validate: "Validar"
         Preview: "Previsualizar"
         PublishedAnonymously: "Publicado anónimamente"

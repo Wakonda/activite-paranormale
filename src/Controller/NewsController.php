@@ -349,8 +349,10 @@ class NewsController extends AbstractController
 			
 			if($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 				return $this->redirect($this->generateUrl('News_Waiting', ['id' => $entity->getId()]));
-			elseif($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked())
+			elseif($this->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('draft')->isClicked()) {
+				$this->addFlash('success', $translator->trans('news.new.DraftSuccess', [], 'validators'));
 				return $this->redirect($this->generateUrl('Profile_Show'));
+			}
 			
 			return $this->redirect($this->generateUrl('News_Validate', ['id' => $entity->getId()]));
         }

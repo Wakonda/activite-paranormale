@@ -33,6 +33,7 @@ news:
         AcceptedFormat: "Formats acceptés"
         IsAnonymous: "Publié anonymement ?"
         Draft: "Enregistrer en mode brouillon"
+        DraftSuccess: "Article enregistré en mode brouillon. Vous pouvez le modifier à tout moment en allant dans votre profil."
         Validate: "Valider"
         Preview: "Prévisualiser"
         PublishedAnonymously: "Publié anonymement"

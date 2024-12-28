@@ -33,6 +33,7 @@ news:
         AcceptedFormat: "Accepted format"
         IsAnonymous: "Publish anonymously?"
         Draft: "Save in draft mode"
+        DraftSuccess: "Article saved in draft mode. You can edit it at any time by going to your profile."
         Validate: "Validate"
         Preview: "Preview"
         PublishedAnonymously: "Published anonymously"
