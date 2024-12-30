@@ -8,6 +8,8 @@
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_js(form.text.vars.id) }}
 
+	{% include 'page/Page/publicationCharter.html.twig' %}
+
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'action': path('ap_witchcraftmobile_create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="mb-3 row">

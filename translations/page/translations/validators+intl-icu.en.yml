@@ -9,6 +9,8 @@ page:
         Licence: "Licence"
         State: "State"
         PseudoUsed: "Pseudo used"
+    participation:
+        Charter: "By contributing to <b>Activité-Paranormale</b>, you accept its publication charter. You can consult it by <a href='%url%' class='text-danger' target='_blank'>clicking here <i class='fa-solid fa-arrow-up-right-from-square'></i></a>"
 president:
     admin:
         Title: "Title"

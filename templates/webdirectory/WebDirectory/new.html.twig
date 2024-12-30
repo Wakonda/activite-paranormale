@@ -6,9 +6,10 @@
 {% block APBlog_body %}
 	<div class="alert alert-info">{{ "directory.index.Promote"|trans({'%start_link%': '', '%end_link%': ''}, "validators") }}</div>
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-webdirectory.jpg" alt="Devil" width="550" /></p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-webdirectory.jpg" alt="Devil" width="550"></p>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
+	{% include 'page/Page/publicationCharter.html.twig' %}
 	{{ form_start(form, {'action': path('WebDirectory_User_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "directory.form.Title"|trans([], "validators")) }}</div>

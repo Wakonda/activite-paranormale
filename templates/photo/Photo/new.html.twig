@@ -32,8 +32,8 @@
 {% block APBlog_body %}
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}photo-user-participation.webp" alt="Girl taking photo" width="550" class="mx-auto d-block img-fluid"/></p>
-	<br>
 	<hr class="hr2">
+	{% include 'page/Page/publicationCharter.html.twig' %}
 	{{ form_start(form, {'action': path('Photo_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "photo.new.Photo"|trans([], "validators")) }}</div>

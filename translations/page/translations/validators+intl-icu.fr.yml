@@ -9,6 +9,9 @@ page:
         State: "Etat"
         WritingDate: "Date de rédaction"
         PublicationDate: "Date de publication"
+    participation:
+        Charter: "En contribuant à <b>Activité-Paranormale</b>, vous acceptez sa charte de publication."
+        ConsultCharter: "Consulter la charte"
 president:
     admin:
         Title: "Titre"

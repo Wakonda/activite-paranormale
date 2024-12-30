@@ -33,7 +33,8 @@
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}suggest-ritual.jpg" alt="Suggest a ritual" width="550" /></p>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
+	{% include 'page/Page/publicationCharter.html.twig' %}
 	{{ form_start(form, {'action': path('Witchcraft_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "witchcraft.new.Title"|trans([], "validators") ) }}</div>

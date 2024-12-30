@@ -9,6 +9,8 @@ page:
         PublicationDate: "Fecha de publicación"
         Licence: "Licencia"
         State: "Estado"
+    participation:
+        Charter: "Al contribuir a <b>Actividad-Paranormal</b>, aceptas sus estatutos de publicación. Puedes consultarlo <a href='%url%' class='text-danger' target='_blank'>click aquí <i class='fa-solid fa-arrow-up-right-from-square'></i></a>"
 president:
     admin:
         Title: "Titulo"
