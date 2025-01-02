@@ -21,6 +21,7 @@
 				}
 
 				xmlhttp.open("GET", "{{ path('Licence_ShowColorboxByLicence', { id: entity.licence.id}) }}", true);
+				xmlhttp.setRequestHeader("X-Requested-With","XMLHttpRequest");
 				xmlhttp.send();
 			});
 		});
