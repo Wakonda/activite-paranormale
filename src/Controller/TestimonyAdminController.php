@@ -106,7 +106,7 @@ class TestimonyAdminController extends AdminGenericController
 	
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
-		$entities = $em->getRepository(TestimonyFileManagement::class)->getAllFilesForTestimonyByIdClassName($id);
+		$entities = $em->getRepository(TestimonyFileManagement::class)->getAllFilesByIdClassName($id);
 
 		$additionalFiles = [];
 

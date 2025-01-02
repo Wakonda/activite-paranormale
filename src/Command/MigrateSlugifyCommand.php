@@ -37,7 +37,7 @@ class MigrateSlugifyCommand extends Command
 		$entities = $this->em->getRepository("\App\Entity\Album")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE Album SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE album SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
 		$entities = $this->em->getRepository("\App\Entity\Artist")->findAll();
@@ -49,7 +49,7 @@ class MigrateSlugifyCommand extends Command
 		$entities = $this->em->getRepository("\App\Entity\Music")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE Music SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE music SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
         return 0;

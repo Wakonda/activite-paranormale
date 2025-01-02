@@ -31,7 +31,7 @@ class FileManagementController extends AbstractController
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		
-		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, "file");
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName, "file");
 		
 		$form = $this->createForm(FileManagementType::class, $entity);
 
@@ -67,7 +67,7 @@ class FileManagementController extends AbstractController
 			}
 		}
 		
-		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, $kind);
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName, $kind);
 
 		return $this->render('filemanagement/FileManagement/index.html.twig', [
 			'entity' => $entity,
@@ -125,7 +125,7 @@ class FileManagementController extends AbstractController
     public function showImageAction(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
-		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName);
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName);
 
         return $this->render('filemanagement/FileManagement/showImage.html.twig', [
 			'entities' => $entities,
@@ -137,7 +137,6 @@ class FileManagementController extends AbstractController
 	
     public function uploadFileDropzoneAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
-		$newNameFile = "";
 		$file = $request->files->all();
 		$title = $request->request->all()["title"];
 
@@ -160,7 +159,7 @@ class FileManagementController extends AbstractController
     public function drawingPaintAction(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
-		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, "drawing");
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName, "drawing");
 
         return $this->render('filemanagement/FileManagement/drawingPaint.html.twig', [
 			'entities' =>$entities,
@@ -200,7 +199,7 @@ class FileManagementController extends AbstractController
 		$em->persist($entity);
 		$em->flush();
 		
-		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName, $kind);
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName, $kind);
 		
 		return $this->render('filemanagement/FileManagement/drawingPaint.html.twig', array(
 			'entity' => $entity,

@@ -343,7 +343,7 @@ class FileManagementAdminController extends AbstractController
     public function showImageAction(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
-		$entities = $em->getRepository($classNameFileManagement)->getAllFilesForTestimonyByIdClassName($idClassName);
+		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName);
 
         return $this->render('filemanagement/FileManagementAdmin/showImage.html.twig', [
 			'entities' => $entities,

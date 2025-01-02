@@ -12,7 +12,7 @@ use Doctrine\ORM\EntityRepository;
  */
 class TestimonyFileManagementRepository extends EntityRepository
 {
-	public function getAllFilesForTestimonyByIdClassName($idClassName, $kind = null)
+	public function getAllFilesByIdClassName($idClassName, $kind = null)
 	{
 		$qb = $this->createQueryBuilder('o');
 

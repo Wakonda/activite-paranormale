@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/superman.png') }}" width="25" class="mt-1" alt="Monster"/></span>{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/superman.png') }}" width="25" class="mt-1" alt="Monsterspan>{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
@@ -15,14 +15,14 @@
 			dt.page.len( 10 ).order( [ 2, 'desc' ] ).draw();
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 {% endblock %}
 
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/testimony-tab.jpg') }}" alt="Strange man" width="550" /></p>
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/testimony-tab.jpg') }}" alt="Strange man" width="550"></p>
 	<hr>
-	<table class="doc_datatables dt-responsive w-100">
+	<table class="table doc_datatables dt-responsive w-100">
 		<thead>
 			<tr>
 				<th class="label_form">{{ "testimony.tab.Title"|trans([], "validators") }}</th>
@@ -34,7 +34,7 @@
 			{% for entity in entities %}
 				<tr class="trGene">
 					<td class="tdGene"><a href="{{ path('Testimony_Show', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}" >{{ entity.title }}</a></td>
-					<td class="tdGene"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></td>
+					<td class="tdGene"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13"></td>
 					<td class="tdGene" data-order="{{ entity.writingDate|date("U") }}">{{ entity.writingDate|dodate(false, app.request.locale) }}</td>
 				</tr>
 			{% endfor %}

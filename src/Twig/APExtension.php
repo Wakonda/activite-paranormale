@@ -130,7 +130,8 @@
 				new TwigFunction('thumbnail_video', [$this, 'getThumbnailFromVideo']),
 				new TwigFunction('loader_video', [$this, 'getLoaderVideo'], ['is_safe' => ['html']]),
 				new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']]),
-				new TwigFunction('partners', [$this, 'getPartners'], ['is_safe' => ['html']])
+				new TwigFunction('partners', [$this, 'getPartners'], ['is_safe' => ['html']]),
+				new TwigFunction('fileManagements', [$this, 'getFileManagements'], ['is_safe' => ['html']])
 			);
 		}
 
@@ -1082,9 +1083,13 @@
 		{
 			return $_ENV[$varname];
 		}
-		
+
 		public function getPartners() {
 			return $this->em->getRepository("App\Entity\Partner")->getPartnersToDisplay($this->translator->getLocale());
+		}
+
+		public function getFileManagements($entity) {
+			return $this->em->getRepository(get_class($entity)."FileManagement")->getAllFilesByIdClassName($entity->getId());
 		}
 
 		public function getName()

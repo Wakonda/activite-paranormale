@@ -60,7 +60,7 @@ class TestimonyMobileController extends AbstractController
 	public function readAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Testimony::class)->find($id);
-		$files = $em->getRepository(TestimonyFileManagement::class)->getAllFilesForTestimonyByIdClassName($entity->getId());
+		$files = $em->getRepository(TestimonyFileManagement::class)->getAllFilesByIdClassName($entity->getId());
 		
 		return $this->render('mobile/Testimony/read.html.twig', [
 			'entity' => $entity,
