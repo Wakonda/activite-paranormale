@@ -237,4 +237,15 @@ class Bluesky {
 	{
 		return ["en", "es", "fr", "pt", "ru"];
 	}
+
+	public function getLanguagesCanonical()
+	{
+		return [
+			"Bluesky (english)" => "bluesky_en",
+			"Bluesky (español)" => "bluesky_es",
+			"Bluesky (français)" => "bluesky_fr",
+			"Bluesky (português)" => "bluesky_pt",
+			"Bluesky (Русский)" => "bluesky_ru"
+		];
+	}
 }

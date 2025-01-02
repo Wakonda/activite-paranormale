@@ -73,4 +73,15 @@ class Mastodon {
 	{
 		return ["fr", "en", "es", "pt", "ru"];
 	}
+
+	public function getLanguagesCanonical()
+	{
+		return [
+			"Mastodon (english)" => "mastodon_en",
+			"Mastodon (español)" => "mastodon_es",
+			"Mastodon (français)" => "mastodon_fr",
+			"Mastodon (português)" => "mastodon_pt",
+			"Mastodon (Русский)" => "mastodon_ru"
+		];
+	}
 }

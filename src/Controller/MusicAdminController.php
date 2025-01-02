@@ -152,7 +152,7 @@ class MusicAdminController extends AdminGenericController
 		{
 			$row = [];
 			$row[] = $entity->getId();
-			$row[] = !empty($album = $entity->getAlbum()) ? $album->getArtist()->getTitle() : $entity->getArtist()->getTitle();
+			$row[] = !empty($album = $entity->getAlbum()) ? $album->getArtist()->getTitle() : (!empty($artist = $entity->getArtist()) ? $artist->getTitle() : "");
 			$row[] = $entity->getMusicPiece();
 			$row[] = "
 			 <a href='".$this->generateUrl('Music_Admin_Show', array('id' => $entity->getId()))."'><i class='fas fa-book' aria-hidden='true'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br />

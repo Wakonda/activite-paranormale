@@ -402,6 +402,9 @@ class Artist
     }
 
 	public function getSocialNetworkUsername(string $socialNetwork) {
+		if(empty($this->socialNetwork))
+			return null;
+	
 		$res = "";
 		foreach(json_decode($this->socialNetwork, true) as $sn) {
 			if(!empty($sn["url"]) and strtolower($sn["socialNetwork"]) == strtolower($socialNetwork))

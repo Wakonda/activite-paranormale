@@ -142,7 +142,7 @@ class VideoRepository extends MappedSuperclassBaseRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = ['c.id', 'c.title', 'c.platform', 's.title', 'l.title', 't.title', 'c.id'];
+		$aColumns = ['c.id', 'c.title', 'c.platform', 'c.available', 'l.title', 't.title', 's.internationalName', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->leftjoin('c.language', 'l')

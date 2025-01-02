@@ -97,10 +97,10 @@ class TwitterAPI
 	public function getLanguagesCanonical()
 	{
 		return [
-			"Twitter (english)" => "en",
-			"Twitter (español)" => "es",
-			"Twitter (français)" => "fr",
-			"Twitter (français - magie)" => "magic_fr"
+			"Twitter (english)" => "twitter_en",
+			"Twitter (español)" => "twitter_es",
+			"Twitter (français)" => "twitter_fr",
+			"Twitter (français - magie)" => "twitter_magic_fr"
 		];
 	}
 }

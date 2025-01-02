@@ -129,4 +129,13 @@ class Facebook {
 	{
 		return ["fr", "en", "es"];
 	}
+
+	public function getLanguagesCanonical()
+	{
+		return [
+			"Facebook (english)" => "facebook_en",
+			"Facebook (español)" => "facebook_es",
+			"Facebook (français)" => "facebook_fr"
+		];
+	}
 }

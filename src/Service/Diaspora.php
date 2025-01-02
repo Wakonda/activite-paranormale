@@ -267,4 +267,14 @@ class Diaspora {
 	{
 		return ["fr", "en", "es", "pt"];
 	}
+
+	public function getLanguagesCanonical()
+	{
+		return [
+			"Diaspora (english)" => "mastodon_en",
+			"Diaspora (español)" => "mastodon_es",
+			"Diaspora (français)" => "mastodon_fr",
+			"Diaspora (português)" => "mastodon_pt"
+		];
+	}
 }

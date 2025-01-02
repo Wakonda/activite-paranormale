@@ -937,7 +937,7 @@ class AdminController extends AbstractController
 				$text = $entity->getText()."<hr>".$entity->getEmbeddedCode();
 				break;
 		}
-// dd($data);
+
 		$data = [
 			"_id" => get_class($entity)."_".$entity->getId(),
 			"image" => $image,
@@ -948,10 +948,10 @@ class AdminController extends AbstractController
 			"tags" => $tagsArray,
 			"categories" => [$entity->getTheme()->getTitle()],
 		];
-// dd($data);
+
 		$api = new Wordpress();
 		$result = $api->postMessage($data);
-// dd($result);
+
 		if($result["status"] == "success") {
 			$this->addFlash('success', $translator->trans('admin.wordpress.Success', [], 'validators'));
 		} else
@@ -1609,21 +1609,45 @@ class AdminController extends AbstractController
 		return str_starts_with(strtolower($sql), "select ");
 	}
 
-	public function publishSocialNetwork(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI) {
-		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class, null, ["social_network" => "twitter"]);
+	public function publishSocialNetwork(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI, Bluesky $bluesky, Mastodon $mastodon, Facebook $facebook, Diaspora $diaspora) {
+		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
 
 		if($request->isMethod('post')) {
 			$form->handleRequest($request);
 			$data = $form->getData();
 
-			$res = $twitterAPI->retweet($data["text"]." ".$data["url"], $data["socialNetwork"]);
+			list($socialNetwork, $locale) = explode("_", $data["socialNetwork"]);
 
-			if(property_exists($res, "status") or property_exists($res, "reason")) {
-				$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
-				$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
+			switch($socialNetwork) {
+				case "twitter":
+					$res = $twitterAPI->retweet($data["text"]." ".$data["url"], $locale);
+
+					if(property_exists($res, "status") or property_exists($res, "reason")) {
+						$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
+						$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
+					}
+					elseif(property_exists($res, "data"))
+						$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+				break;
+				case "bluesky":
+					$res = $bluesky->postMessage($data["text"], $data["url"], $locale);
+
+					if(property_exists($res, "error"))
+						$this->addFlash('error', $translator->trans('admin.bluesky.Failed', [], 'validators'). " (".$res->error."; ".$res->message.")");
+					else
+						$this->addFlash('success', $translator->trans('admin.bluesky.Success', [], 'validators'));
+				break;
+				case "mastodon":
+					$res = $mastodon->postMessage($data["url"], $data["text"], $locale);
+					$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
+					$this->addFlash($message["state"], $message["message"], [], 'validators');
+				break;
+				case "facebook":
+					$res = json_decode($facebook->postMessage($data["url"], $data["text"], $locale));
+					$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
+					$this->addFlash($message["state"], $message["message"], [], 'validators');
+				break;
 			}
-			elseif(property_exists($res, "data"))
-				$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
 		}
 		
 		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView()]);

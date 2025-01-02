@@ -24,7 +24,7 @@ class Music
     private $id;
 
     /**
-	 * @Assert\File(maxSize="6000000")
+	 * @Assert\File(maxSize="5M")
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $musicPieceFile;

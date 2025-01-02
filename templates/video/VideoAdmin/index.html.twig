@@ -50,7 +50,7 @@
 	<th id="state_column" class="label_form">{{ "news.admin.State"|trans([], "validators") }}</th>
 	<th>{{ "video.admin.Language"|trans([], "validators") }}</th>
 	<th>{{ "video.admin.Theme"|trans([], "validators") }}</th>
-	<th class="d-none"></th>
+	<th>{{ "news.admin.State"|trans([], "validators") }}</th>
 	<th>{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}
 
@@ -61,7 +61,7 @@
 	<th>{{ "video.admin.State"|trans([], "validators") }}</th>
 	<th>{{ "video.admin.Language"|trans([], "validators") }}</th>
 	<th>{{ "video.admin.Theme"|trans([], "validators") }}</th>
-	<th class="d-none"></th>
+	<th>{{ "news.admin.State"|trans([], "validators") }}</th>
 	<th>{{ "admin.index.Action"|trans([], "validators") }}</th>
 {% endblock %}
 
@@ -94,6 +94,8 @@
       null,
       null,
       {'search': '{{ app.request.query.get("state") }}' },
+      null,
+      null,
       null,
       null,
       null

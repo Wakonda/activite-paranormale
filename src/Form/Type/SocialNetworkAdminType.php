@@ -12,25 +12,18 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Doctrine\ORM\EntityManagerInterface;
 
 class SocialNetworkAdminType extends AbstractType
 {
-	public function __construct(
-		private EntityManagerInterface $entityManager
-	) {
-	}
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		$list = [];
+		$list = [
+			"Bluesky" => (new \App\Service\Bluesky())->getLanguagesCanonical(),
+			"Facebook" => (new \App\Service\Facebook())->getLanguagesCanonical(),
+			"Mastodon" => (new \App\Service\Mastodon())->getLanguagesCanonical(),
+			"Twitter" => (new \App\Service\TwitterAPI())->getLanguagesCanonical()
+		];
 
-		switch($options["social_network"]) {
-			case "twitter":
-				$list = (new \App\Service\TwitterAPI())->getLanguagesCanonical();
-				break;
-		}
-		
         $builder
             ->add('text', TextareaType::class, ['label' => 'Texte', 'required' =>true, 'constraints' => [new NotBlank()]])
             ->add('url', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
@@ -47,8 +40,6 @@ class SocialNetworkAdminType extends AbstractType
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
-		$resolver->setDefaults([
-			'social_network' => null,
-		]);
+		$resolver->setDefaults([]);
 	}
 }
