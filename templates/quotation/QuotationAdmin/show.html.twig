@@ -37,6 +37,9 @@
 		<div class="form-table-cell">{% if entity.country is not empty %}<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" />{% endif %}</div>
 	{% endif %}
 
+	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Family"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ ("quotation.admin." ~ (entity.family|ucfirst))|trans([], "validators") }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.textQuotation|nl2br }}</div>
 
@@ -74,7 +77,7 @@
 	{% endif %}
 	</div>
 
-	<a href="{{ path('Quotation_Read', { 'id' : entity.id }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+	<a href="{{ path(entity.showRoute, { 'id' : entity.id }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}
 
 {% block data_bottom %}
@@ -92,10 +95,12 @@
 	{% if entity.isQuotationFamily() or entity.isPoemFamily() %}
 		{{ macro_index.twitter_form(entity, true, '"', '", ' ~ entity.authorQuotation.title ~ " " ~ tags) }}
 		{{ macro_index.facebook_form(entity, '"' ~ entity.textQuotation ~ '", ' ~ entity.authorQuotation.title ~ " " ~ tags) }}
+		{{ macro_index.diaspora_form(entity, '"' ~ entity.textQuotation ~ '", ' ~ entity.authorQuotation.title ~ " " ~ tags) }}
 		{{ macro_index.mastodon_form(entity, '"', '", ' ~ entity.authorQuotation.title ~ " " ~ tags) }}
 	{% else %}
 		{{ macro_index.twitter_form(entity, true, '"', '", ' ~ entity.country.title ~ " " ~ tags) }}
 		{{ macro_index.facebook_form(entity, '"' ~ entity.textQuotation ~ '", ' ~ entity.country.title ~ " " ~ tags) }}
+		{{ macro_index.diaspora_form(entity, '"' ~ entity.textQuotation ~ '", ' ~ entity.country.title ~ " " ~ tags) }}
 		{{ macro_index.mastodon_form(entity, '"', '", ' ~ entity.country.title ~ " " ~ tags) }}
 	{% endif %}
 	{{ macro_index.muse_form(entity) }}
@@ -105,4 +110,5 @@
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.twitter_form_js() }}
 	{{ macro_index.facebook_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
 {% endblock %}
