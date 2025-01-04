@@ -55,7 +55,10 @@ class PublisherRepository extends MappedSuperclassBaseRepository
 		$qb = $this->createQueryBuilder("b");
 		$qb->select("count(b)")
 		   ->where("b.title = :title")
-		   ->setParameter("title", $entity->getTitle());
+		   ->setParameter("title", $entity->getTitle())
+		   ->innerjoin("b.language", "l")
+		   ->andWhere("l.abbreviation = :abbreviation")
+		   ->setParameter("abbreviation", $entity->getLanguage()->getAbbreviation());
 		   
 		if($entity->getId() != null)
 		{

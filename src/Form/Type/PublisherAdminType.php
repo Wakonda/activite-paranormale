@@ -12,7 +12,9 @@ use Symfony\Component\Validator\Constraints\Url;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\EventListener\InternationalNameFieldListener;
 
 class PublisherAdminType extends AbstractType
 {
@@ -36,6 +38,8 @@ class PublisherAdminType extends AbstractType
 				},
 			])
 		;
+		
+		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
     }
 
     public function getBlockPrefix()

@@ -491,10 +491,10 @@ a, button, #rate, .social_network_to_select, input[type="image"], input[type="bu
 #social_network td {
 	padding: initial;
 }
-/************* Design Visionneuse News ***************/
-.infoDefile {
-	display: inline;
-	color: white;
+
+.img-150 img {
+	width: 150px;
+	height: auto;
 }
 
 .bg-white {
@@ -752,11 +752,6 @@ p.colored_delete_video {
 p#media_duration {
 	font-size: 20px;
 	text-align: center;
-}
-
-/********** MUSIC *********/
-audio.audio_show {
-	width: 543px;
 }
 
 /********** PAGINATION *********/
@@ -1688,8 +1683,7 @@ h2 span img {
   list-style: none;
 }
 ol,
-ul,
-dl {
+ul {
   margin-top: 0;
   margin-bottom: 1rem;
 }

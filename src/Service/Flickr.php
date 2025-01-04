@@ -135,7 +135,7 @@ class Flickr {
 		$oauth_version = "1.0";
 
 		$method = 'flickr.groups.pools.add';
-		$params = array(
+		$params = [
 			'group_id' => $group_id,
 			'method' => $method,
 			'oauth_consumer_key' => $this->apiKey,
@@ -145,7 +145,7 @@ class Flickr {
 			'oauth_token' => $this->oauthToken,
 			'oauth_version' => '1.0',
 			'photo_id' => $photo_id
-		);
+		];
 
 		ksort($params);
 
@@ -220,9 +220,17 @@ class Flickr {
 		curl_setopt($ch, CURLOPT_POST, true);
 		curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		
+		// Only in dev
+		if($_ENV["APP_ENV"] == "dev") {
+			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
+			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+		}
+		
 		$response = curl_exec($ch);
+
 		curl_close($ch);
-// dump($response);
+
 		$res = @simplexml_load_string($response);
 		return !$res ? ["error" => $response] : ["success" => (string)$res->photoid];
 	}
@@ -500,12 +508,22 @@ class Flickr {
 	}
 
 	private function convertWebPToJPG($webpImagePath) {
-		$webpImage = imagecreatefromwebp($webpImagePath);
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$type = finfo_file($finfo, $webpImagePath);
+		finfo_close($finfo);
 
-		$pathInfo = pathinfo($webpImagePath);
+		if ($type == "image/webp") {
+			$webpImage = imagecreatefromwebp($webpImagePath);
 
-		if ($webpImage === false) {
-			return $webpImage;
+			if ($webpImage === false) {
+				return $webpImage;
+			}
+		} elseif($type == "image/jpeg") {
+			$webpImage = imagecreatefromjpeg($webpImagePath);
+			$pathInfo = pathinfo($webpImagePath);
+		} else {
+			$webpImage = imagecreatefrompng($webpImagePath);
+			$pathInfo = pathinfo($webpImagePath);
 		}
 
 		$outputImagePath = $pathInfo["dirname"].DIRECTORY_SEPARATOR.$pathInfo["filename"].".jpg";

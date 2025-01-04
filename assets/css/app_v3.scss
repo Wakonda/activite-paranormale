@@ -662,6 +662,10 @@ a.tags_display {
     margin-right: 6px;
 }
 /********** STORE ***********/
+.img-150 img {
+	width: 150px;
+	height: auto;
+}
 a.navbar-brand:hover, a.navbar-brand:focus {
 	text-shadow: 0 0 7px #ccd718 !important;
 	color: #ccd718 !important;

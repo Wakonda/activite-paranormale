@@ -43,3 +43,7 @@ Publisher_Admin_ShowImageSelectorColorbox:
 Publisher_Admin_LoadImageSelectorColorbox:
     path:  /loadImageSelectorColorbox
     controller: App\Controller\PublisherAdminController::loadImageSelectorColorbox
+
+Publisher_Admin_Internationalization:
+    path:  /internationalization/{id}
+    controller: App\Controller\PublisherAdminController::internationalization

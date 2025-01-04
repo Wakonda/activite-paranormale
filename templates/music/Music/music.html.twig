@@ -47,7 +47,7 @@
 	<div class="tabs">
 		{% if entity.musicPieceFile is not empty %}
 			<h3>{{ "music.music.AudioFile"|trans([], "validators") }}</h3>
-			<audio controls class="audio_show">
+			<audio controls class="audio_show w-100">
 				<source src="{{ asset(entity.getAssetMusicPath()) }}{{ entity.musicPieceFile }}" type="audio/mp3">
 			</audio>
 			<p class="text-center">

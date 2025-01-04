@@ -67,6 +67,13 @@ class Publisher
      */
     private $language;
 
+	/**
+	 * @var string $internationalName
+	 *
+	 * @ORM\Column(name="internationalName", type="string", length=255)
+	 */
+	private $internationalName;
+
     /**
      * Get id
      *
@@ -206,5 +213,15 @@ class Publisher
     public function getLanguage()
     {
         return $this->language;
+    }
+
+    public function setInternationalName($internationalName)
+    {
+        $this->internationalName = $internationalName;
+    }
+
+    public function getInternationalName()
+    {
+        return $this->internationalName;
     }
 }

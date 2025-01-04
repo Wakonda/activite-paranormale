@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Publisher;
+use App\Entity\Language;
+use App\Entity\FileManagement;
 use App\Form\Type\PublisherAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -124,4 +126,33 @@ class PublisherAdminController extends AdminGenericController
 	{
 		return $this->loadImageSelectorColorboxGenericAction($request, $em);
 	}
+
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
+    {
+		$formType = PublisherAdminType::class;
+		$entity = new Publisher();
+
+		$entityToCopy = $em->getRepository(Publisher::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+
+		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setWebsite($entityToCopy->getWebsite());
+		$entity->setInternationalName($entityToCopy->getInternationalName());
+		$entity->setLanguage($language);
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
+		}
+
+		$twig = 'book/PublisherAdmin/new.html.twig';
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
+    }
 }

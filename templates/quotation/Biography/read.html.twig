@@ -211,9 +211,9 @@
 						<tr class="trGene">
 							<td class="tdGene" style="width: 50%">
 								<p class="text-center">{{ book.title }}</p>
-								{% set dataStore = (book.bookEditions is not empty ? image_embedded_code(book.bookEditions[0], "book", "BookStore") : null) %}
+								{% set dataStore = (book.bookEditions is not empty ? get_store_by_entity(book.bookEditions[0], "book", "BookStore") : null) %}
 								{% if dataStore is not empty %}
-									<p class="text-center">{{ book.store|raw }}</p>
+									<p class="text-center img-150">{{ dataStore[0].imageEmbeddedCode|raw }}</p>
 								{% else %}
 									{{ book.photo|imgsize(150, book.getAssetImagePath())|raw }}
 								{% endif %}
@@ -221,8 +221,14 @@
 							<td class='tdGene'><img src="{{ asset(book.language.getAssetImagePath()) }}{{ book.language.logo }}" alt="" width="20" height="13" /></td>
 							<td class='tdGene'>
 							<a class="btn read w-auto" href="{{ path('Book_Show', {'id': book.id, 'title_slug': book.getUrlSlug()}) }}">
-								<span class="me-2"><i class="fas fa-book fa-fw"></i></span><b class="align-middle">{{ "book.biography.Read"|trans([], "validators") }}</b>
+								<i class="fas fa-book fa-fw"></i>
 							</a>
+
+							{% if dataStore is not empty %}
+								<a class="btn amazon w-auto" href="{{ dataStore[0].getExternalAmazonStoreLink() }}">
+									<i class="fab fa-amazon fa-fw"></i>
+								</a>
+							{% endif %}
 							</td>
 						</tr>
 					{% endfor %}
