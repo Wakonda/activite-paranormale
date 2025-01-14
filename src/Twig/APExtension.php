@@ -131,7 +131,8 @@
 				new TwigFunction('loader_video', [$this, 'getLoaderVideo'], ['is_safe' => ['html']]),
 				new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']]),
 				new TwigFunction('partners', [$this, 'getPartners'], ['is_safe' => ['html']]),
-				new TwigFunction('fileManagements', [$this, 'getFileManagements'], ['is_safe' => ['html']])
+				new TwigFunction('fileManagements', [$this, 'getFileManagements'], ['is_safe' => ['html']]),
+				new TwigFunction('isImageExists', [$this, 'isImageExists'], ['is_safe' => ['html']])
 			);
 		}
 
@@ -179,6 +180,20 @@
 		public function urlcleanFilter($urlclean)
 		{
 			return (new \App\Service\FunctionsLibrary())->cleanUrl($urlclean);
+		}
+
+		public function isImageExists($file, $path, bool $useAssetPath = true, $private = false) {
+			$realPath = $useAssetPath ? DIRECTORY_SEPARATOR.$path : $path;
+
+			if($private)
+				$p = realpath($this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".$realPath.$file);
+			else
+				$p = $path.$file;
+
+			if(empty($file) or !file_exists($p))
+				return false;
+		
+			return true;
 		}
 
 		public function imgsizeFilter($file, $width, $path, bool $useAssetPath = true, $options = null, $caption = [], bool $displayIfFileNotExist = true, $private = false)

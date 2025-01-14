@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "quotation.index.Quotation"|trans([], "validators") }} - {{ entity.authorQuotation.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Quotation"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"></span>{{ "quotation.index.Quotation"|trans([], "validators") }}{% if entity.isQuotationFamily %} - {{ entity.authorQuotation.title }}{% endif %}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary">
@@ -10,6 +10,10 @@
 	{% if entity.images is not empty %}
 		{% set img = entity.images|last %}
 		<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath() ~ img.image)) }}">
+	{% elseif entity.authorQuotation is not empty and entity.authorQuotation.illustration is not empty and isImageExists(entity.authorQuotation.photoIllustrationFilename, entity.authorQuotation.getAssetImagePath()) %}
+		<meta property="og:image" content="{{ absolute_url(asset(entity.authorQuotation.getAssetImagePath() ~ entity.authorQuotation.photoIllustrationFilename)) }}">
+	{% else %}
+		<meta property="og:image" content="{{ absolute_url(asset('extended/photo/read-quote.webp')) }}">
 	{% endif %}
 {% endblock %}
 
