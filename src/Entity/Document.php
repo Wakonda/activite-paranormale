@@ -70,6 +70,13 @@ class Document extends MappedSuperclassBase
         return $this->releaseDateOfDocument;
     }
 
+	public function getExtensionFile() {
+		if(empty($this->pdfDoc))
+			return null;
+
+		return pathinfo($this->pdfDoc, PATHINFO_EXTENSION);
+	}
+
     /**
      * Get id
      *

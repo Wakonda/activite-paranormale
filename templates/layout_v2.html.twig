@@ -110,12 +110,13 @@
 									<h3>{{ "index.leftMenu.ArtCulture"|trans([], "validators") }}</h3>
 									<ul>
 										{% set quotation_counter = json_decode(render(controller('App\\Controller\\QuotationController::countQuotation')), true) %}
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}" title="All quotations">{{ "quotation.index.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></li>
+										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}">{{ "quotation.index.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></li>
 										<li><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MovieController::countByLanguage')) }}</span></li>
 										<li><a href="{{ path('Book_Index') }}">{{ "index.leftMenu.Book"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\BookController::countByLanguage')) }}</span></li>
 										<li><a href="{{ path('Music_Index') }}">{{ "index.leftMenu.Music"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MusicController::countByLanguage')) }}</span></li>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY')}) }}" title="All quotations">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></li>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}" title="All quotations">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></li>
+										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY')}) }}">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></li>
+										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></li>
+										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY')}) }}">{{ "quotation.index.Humor"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::HUMOR_FAMILY')] }}</span></li>
 										<li><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\TelevisionSerieController::countByLanguage')) }}</span></li>
 									</ul>
 									<h3>{{ "index.leftMenu.Participate"|trans([], "validators") }}</h3>
@@ -263,7 +264,6 @@
 					</div>
 					<div class="cleaner"></div>
 				</div>
-
 				<div id="templatemo_footer">
 					<div id="templatemo_footer_bar">
 						<ul class="footer_menu">
@@ -282,7 +282,6 @@
 				</div>
 			</div>
 		</div>
-
 		<script>
 			async function detectAdBlock(){let e=!1;try{await fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")).catch((t=>e=!0))}catch(t){e=!0}finally{if(0==e){for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.add("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.remove("d-none")}else{for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.remove("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.add("d-none")}}}detectAdBlock();
 		</script>

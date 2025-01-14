@@ -23,7 +23,7 @@
 	{% for entity in pagination.items %}
 		<div class="card mb-3">
 			<div class="row g-0">
-				<div class="col-md-4 align-self-center text-center">
+				<div class="store_embedded_image col-md-4 align-self-center text-center">
 					{% set dataStore = (entity is not empty ? image_embedded_code(entity, "book", "BookStore") : null) %}
 					{% if dataStore is not empty %}
 						{{ dataStore|raw }}
@@ -68,6 +68,12 @@
 	<div class="mt-3 justify-content-center">
 		{{ knp_pagination_render(pagination) }}
 	</div>
+
+	{% set sources = source_document(publisher.source, publisher.language) %}
+	{% if sources is not empty %}
+		<h3>{{ "book.byPublisher.Sources"|trans([], "validators") }}</h3>
+		{{ sources|raw }}
+	{% endif %}
 
 	<br>
 	<hr class="hr2">

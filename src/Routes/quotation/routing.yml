@@ -14,6 +14,16 @@ Quotation_Read:
     requirements:
         id: \d+
 
+Humor_Read:
+    path:  /humor/read/{id}
+    controller: App\Controller\QuotationController::readHumor
+    requirements:
+        id: \d+
+
+Humor_listDatatables:
+    path:  /listhumordatatables
+    controller: App\Controller\QuotationController::listHumorDatatables
+
 Proverb_listDatatables:
     path:  /listproverbdatatables
     controller: App\Controller\QuotationController::listProverbDatatables

@@ -56,3 +56,27 @@
 		{% endif %}
 	</div>
 {% endblock %}
+
+{% block data_bottom %}
+	{% if entity.televisionSerie.state.isStateDisplayed() %}
+		{% import "index/macro/macro_index.html.twig" as macro_index %}
+		{% if entity.televisionSerie.archive == false %}
+			{{ macro_index.twitter_form(entity, false, entity.televisionSerie.title~" - ") }}
+			{{ macro_index.facebook_form(entity, entity.televisionSerie.title~" - "~entity.title) }}
+			{{ macro_index.mastodon_form(entity, entity.televisionSerie.title~" - ") }}
+			{{ macro_index.diaspora_form(entity, entity.televisionSerie.title~" - "~entity.title) }}
+			{{ macro_index.bluesky_form(entity, entity.televisionSerie.title~" - "~entity.title) }}
+			{{ macro_index.telegram_form(entity, entity.televisionSerie.title~" - "~entity.title) }}
+		{% endif %}
+	{% endif %}
+{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.twitter_form_js() }}
+	{{ macro_index.facebook_form_js() }}
+	{{ macro_index.mastodon_form_js() }}
+	{{ macro_index.diaspora_form_js() }}
+	{{ macro_index.bluesky_form_js() }}
+	{{ macro_index.telegram_form_js() }}
+{% endblock %}

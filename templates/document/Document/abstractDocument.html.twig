@@ -116,7 +116,7 @@
 		
 		<h3>{{ "document.abstract.Share"|trans([], "validators") }}</h3>
 		<div id="success_copy"><span></span></div>
-		<textarea id="embedded_document" class="generation bg-light form-control" readonly cols="65" rows="3"><iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe></textarea>
+		<textarea id="embedded_document" class="generation bg-light form-control" readonly cols="65" rows="3">{% if entity.extensionFile == "pdf" %}<iframe src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309"></iframe>{% else %}<img src="{{ absolute_url(asset(entity.getAssetImagePath())) }}{{ entity.pdfDoc }}" width="550" height="309">{% endif %}</textarea>
 		
 		<div class="mt-2 mb-2">
 			<span>{{ "document.abstract.DocumentSize"|trans([], "validators") }} </span>
@@ -134,7 +134,6 @@
 	<hr class="hr2"/>
 	<p>
 		{% if entity.theme is not empty %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }} - <i class="fas fa-user"></i> {% if entity.author is not empty and entity.isAnonymous == false %}<a href="{{ path('APUserBunble_otherprofile', {id: entity.author.id}) }}">{{ entity.author }}</a>{% else %}{{ entity.pseudoUsed }}{% endif %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>
-	
 		{% include 'index/History/index.html.twig' with { 'entity': entity } %}
 	</p>
 

@@ -65,7 +65,8 @@ class AdminController extends AbstractController
 			$entities = $em->getRepository(get_class($entity))->findBy(["internationalName" => $entity->getInternationalName()]);
 
 			foreach($entities as $e)
-				$locales[] = $e->getLanguage()->getAbbreviation();
+				if(!empty($e->getLanguage()))
+					$locales[] = $e->getLanguage()->getAbbreviation();
 		}
 
 		$form = $this->createForm(\App\Form\Type\InternationalizationAdminType::class, null, ["locales" => $locales]);
@@ -272,6 +273,22 @@ class AdminController extends AbstractController
 					$text .= "<div><b>".$translator->trans('file.admin.CaptionPhoto', [], 'validators', $request->getLocale())."</b><br>".$imgCaption."</div>";
 					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
 					$text .= $tagsLinkString;
+					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
+					break;
+				case "Document":
+					$text = "";
+					$extension = pathinfo($entity->getPdfDoc(), PATHINFO_EXTENSION);
+					if($apExtension->isImageFilter($extension)) {
+						$imgProperty = $entity->getPdfDoc();
+						$img = $entity->getAssetImagePath().$imgProperty;
+					} else {
+						$text = '<iframe src="'.$request->getSchemeAndHttpHost().$request->getBasePath().$entity->getAssetImagePath()."/".$entity->getPdfDoc().'" height="550" width="300" title="Iframe Example"></iframe>';
+					}
+
+					$text .= $entity->getText();
+					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>";
+					$text .= $tagsLinkString;
+					$text = $parser->replacePathImgByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					$text = $parser->replacePathLinksByFullURL($text, $request->getSchemeAndHttpHost().$request->getBasePath());
 					break;
 				case "News":

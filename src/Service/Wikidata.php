@@ -224,6 +224,9 @@
 
 			$res["image"] = $this->getImage($datas, $code);
 
+			if(empty($res["image"]["url"]))
+				$res["image"] = $this->getImage($datas, $code, "P154");
+
 			return $res;
 		}
 		

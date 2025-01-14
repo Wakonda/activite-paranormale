@@ -65,3 +65,6 @@
 	{{ form_errors(form.zilliqa) }}
 	{{ form_widget(form.zilliqa, {'attr':{'class' : 'form-control'}}) }}
 </div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.enabled, "user.admin.Activate"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.enabled) }}{{ form_widget(form.enabled) }}</div>

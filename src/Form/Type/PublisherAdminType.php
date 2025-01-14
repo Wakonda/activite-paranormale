@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
+use App\Form\Field\SourceEditType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
@@ -24,6 +25,7 @@ class PublisherAdminType extends AbstractType
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('website', TextType::class, ['data_class' => null, 'required' => false, 'constraints' => [new Url()]])
 			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Publisher_Admin_ShowImageSelectorColorbox'])
+			->add('wikidata', TextType::class, ['required' => false])
             ->add('text', TextareaType::class, ['required' => false])
             ->add('language', EntityType::class, ['class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {
@@ -37,9 +39,10 @@ class PublisherAdminType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				},
 			])
+			->add('source', SourceEditType::class, ['required' => false])
 		;
 		
-		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
+		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener(false));
     }
 
     public function getBlockPrefix()

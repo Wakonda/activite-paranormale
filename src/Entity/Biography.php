@@ -381,21 +381,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
         return $this->illustration;
     }
 
-    /**
-     * Set source
-     *
-     * @param string $source
-     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
-    /**
-     * Get source
-     *
-     * @return string 
-     */
     public function getSource()
     {
         return $this->source;
@@ -451,21 +441,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
         return $this->nationality;
     }
 
-    /**
-     * Set wikidata
-     *
-     * @param String $wikidata
-     */
     public function setWikidata($wikidata)
     {
         $this->wikidata = $wikidata;
     }
 
-    /**
-     * Get wikidata
-     *
-     * @return String
-     */
     public function getWikidata()
     {
         return $this->wikidata;

@@ -16,6 +16,7 @@ class Quotation
 	const QUOTATION_FAMILY = "quotation";
 	const PROVERB_FAMILY = "proverb";
 	const POEM_FAMILY = "poem";
+	const HUMOR_FAMILY = "humor";
 
     /**
      * @var integer $id
@@ -106,6 +107,10 @@ class Quotation
 		return $this->family == self::POEM_FAMILY;
 	}
 
+	public function isHumorFamily(): bool {
+		return $this->family == self::HUMOR_FAMILY;
+	}
+
 	public function getTitle() {
 		if($this->isPoemFamily())
 			return $this->title;
@@ -121,9 +126,10 @@ class Quotation
 	{
 		if($this->isProverbFamily())
 			return "Proverb_Read";
-
-		if($this->isPoemFamily())
+		elseif($this->isPoemFamily())
 			return "Poem_Read";
+		elseif($this->isHumorFamily())
+			return "Humor_Read";
 
 		return "Quotation_Read";
 	}

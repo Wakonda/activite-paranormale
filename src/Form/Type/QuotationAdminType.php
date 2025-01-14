@@ -44,6 +44,7 @@ class QuotationAdminType extends AbstractType
 			->add('family', ChoiceType::class, ['multiple' => false, 'expanded' => false, "required" => true,
 					"choices" => [
 						"quotation.index.Quotation" => Quotation::QUOTATION_FAMILY,
+						"quotation.index.Humor" => Quotation::HUMOR_FAMILY,
 						"quotation.index.Proverb" => Quotation::PROVERB_FAMILY,
 						"quotation.index.Poem" => Quotation::POEM_FAMILY
 					],

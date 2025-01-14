@@ -22,7 +22,6 @@
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}">
 	</head>
-
 	<body>
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
 			<div class="container">
@@ -68,7 +67,6 @@
 				</div>
 			</div>
 		</nav>
-
 		<div class="container global-container pb-3">
 			<div class="row mt-2">
 				<div class="col-lg-3 my-4 order-2 order-lg-1">
@@ -124,12 +122,13 @@
 								<h3>{{ "index.leftMenu.ArtCulture"|trans([], "validators") }}</h3>
 								<ul>
 									{% set quotation_counter = json_decode(render(controller('App\\Controller\\QuotationController::countQuotation')), true) %}
-									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}" title="All quotations">{{ "quotation.index.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></li>
+									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}">{{ "quotation.index.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></li>
 									<li><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MovieController::countByLanguage')) }}</span></li>
 									<li><a href="{{ path('Book_Index') }}">{{ "index.leftMenu.Book"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\BookController::countByLanguage')) }}</span></li>
 									<li><a href="{{ path('Music_Index') }}">{{ "index.leftMenu.Music"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\MusicController::countByLanguage')) }}</span></li>
-									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY')}) }}" title="All quotations">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></li>
-									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}" title="All quotations">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></li>
+									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY')}) }}">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></li>
+									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></li>
+									<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY')}) }}">{{ "quotation.index.Humor"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::HUMOR_FAMILY')] }}</span></li>
 									<li><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\TelevisionSerieController::countByLanguage')) }}</span></li>
 								</ul>
 								<h3>{{ "index.leftMenu.Participate"|trans([], "validators") }}</h3>
@@ -256,7 +255,6 @@
 							</div>
 						</div>
 					</div>
-
 					<div class="card mt-2">
 						<div class="card-header"><span class="float-start"><img src="{{ asset('extended/photo/twitter_bird.png') }}" width="25" class="mt-1 float-start" alt="Blue bird - Twitter"></span>
 							{{ "index.leftMenu.FollowUsOn"|trans([], "validators") }}
@@ -268,7 +266,6 @@
 						</div>
 					</div>
 				</div>
-
 				<div class="col-lg-9 main-container order-1 order-lg-2 pb-3">
 					<div {% block main_card_properties %}{% endblock %} class="card mt-4">
 						<div class="card-header h-100">
@@ -288,7 +285,6 @@
 				</div>
 			</div>
 		</div>
-
 		<div class="footer container text-center py-2">
 			{% if is_mobile() == false %}
 				<span class="p-2"><a class="fw-bold" href="{{ path('Partner_Index', {'page':1}) }}" title="Follow us">{{ "index.footerMenu.FollowUs"|trans([], "validators") }}</a></span>
@@ -310,15 +306,12 @@
 			<span class="p-2 text-black-50">|</span>
 			<span class="p-2"><a class="fw-bold" href="{{ path('Page_Faq') }}" title="FAQ">F.A.Q.</a></span>
 		</div>
-
 		<div class="footer container footer-copyright text-center py-2 fw-bold">
 			Copyright <i class="far fa-copyright fa-sm"></i> 2009-{{ 'now'|date("Y") }} <a class="fw-bold" href="{{ path('Page_Copyright') }}" title="Copyright">Activité-Paranormale</a>
 		</div>
-
 		<script>
 			async function detectAdBlock(){let e=!1;try{await fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")).catch((t=>e=!0))}catch(t){e=!0}finally{if(0==e){for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.add("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.remove("d-none")}else{for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.remove("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.add("d-none")}}}detectAdBlock();
 		</script>
-
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.analytics_gtags() }}
 	</body>

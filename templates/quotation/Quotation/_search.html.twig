@@ -2,6 +2,11 @@
 <script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+
+{% if columnDefs is not defined %}
+	{% set columnDefs = '[{target: 0, visible: false},{target: 3,orderable: false}]' %}
+{% endif %}
+
 <script>
 	document.addEventListener('DOMContentLoaded', function () {
 		table = $('table.doc_datatables').DataTable( {
@@ -16,16 +21,7 @@
 			"pageLength": {{ total_line_display }},
 			"processing": true,
 			"serverSide": true,
-			"columnDefs": [
-				{
-					target: 0,
-					visible: false
-				},
-				{
-					target: 3,
-					orderable: false
-				}
-			],
+			"columnDefs": {{ columnDefs }},
 			"responsive": {
 				"details": {
 					display: $.fn.dataTable.Responsive.display.childRowImmediate,

@@ -16,6 +16,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -73,6 +74,7 @@ class UserAdminType extends AbstractType
 					User::ROLE_DEFAULT => User::ROLE_DEFAULT
 				]
 			])
+			->add('enabled', CheckboxType::class, ['required' => false])
         ;
 		
 		$donationArray = [];

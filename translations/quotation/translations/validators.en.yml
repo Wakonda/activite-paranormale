@@ -3,6 +3,7 @@ quotation:
         Quotation: "Quotation"
         Proverb: "Proverb"
         Poem: "Poem"
+        Humor: "Humor"
     search:
         SearchSort: "Search / Sort"
         Keywords: "Keywords"
@@ -18,6 +19,7 @@ quotation:
         Region: "Region"
         Proverb: "Proverb"
         Poem: "Poem"
+        Humor: "Humor"
         Read: "Read"
     read:
         Explanation: "Explanation"
@@ -27,6 +29,7 @@ quotation:
         Quotation: "Quotation"
         Proverb: "Proverb"
         Poem: "Poem"
+        Humor: "Humor"
         Source: "Source"
         Language: "Language"
         Explanation: "Explanation"

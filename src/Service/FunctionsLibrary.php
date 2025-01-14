@@ -105,4 +105,37 @@ class FunctionsLibrary
 	public function isApplication() {
 		return $_SERVER['HTTP_USER_AGENT'] == "activite-paranormale-application";
 	}
+
+	public function copyBiography($biography, $language) {
+		$newBiography = new \App\Entity\Biography();
+		$newBiography->setTitle($biography->getTitle());
+		if(!empty($biography->getNationality()))
+			$country = $this->em->getRepository(\App\Entity\Region::class)->findOneBy(["internationalName" => $biography->getNationality()->getInternationalName(), "language" => $language]);
+
+		$newBiography->setInternationalName($biography->getInternationalName());
+		$newBiography->setKind($biography->getKind());
+		$newBiography->setLanguage($language);
+		$newBiography->setBirthDate($biography->getBirthDate());
+		$newBiography->setDeathDate($biography->getDeathDate());
+		$newBiography->setNationality($country);
+		$newBiography->setLinks($biography->getLinks());
+		$newBiography->setWikidata($biography->getWikidata());
+		$newBiography->setIdentifiers($biography->getIdentifiers());
+		$newBiography->setGender($biography->getGender());
+
+		if(!empty($ci = $biography->getIllustration())) {
+			$illustration = new \App\Entity\FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+			$illustration->setExtensionFile(pathinfo($ci->getRealNameFile(), PATHINFO_EXTENSION));
+
+			$newBiography->setIllustration($illustration);
+		}
+		
+		return $newBiography;
+	}
 }

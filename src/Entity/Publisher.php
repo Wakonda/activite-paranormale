@@ -74,6 +74,20 @@ class Publisher
 	 */
 	private $internationalName;
 
+	/**
+	 * @var string $wikidata
+	 *
+	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
+	 */
+	private $wikidata;
+
+    /**
+     * @var text $source
+     *
+     * @ORM\Column(name="source", type="text", nullable=true)
+     */
+    private $source;
+
     /**
      * Get id
      *
@@ -223,5 +237,25 @@ class Publisher
     public function getInternationalName()
     {
         return $this->internationalName;
+    }
+
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    public function getWikidata()
+    {
+        return $this->wikidata;
+    }
+
+    public function setSource($source)
+    {
+        $this->source = $source;
+    }
+
+    public function getSource()
+    {
+        return $this->source;
     }
 }

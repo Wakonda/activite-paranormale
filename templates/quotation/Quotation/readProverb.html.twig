@@ -4,10 +4,10 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Proverb"|trans([], "validators") }} - {{ entity.country.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
-	<div id="quotation_bubble_parent" class="mb-3">
-		<div id="quotation_bubble" class="fst-italic">
-			&ldquo;{{ entity.textQuotation }}&rdquo;
-		</div>
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/read-proverb.webp') }}" alt="Alien smoking" width="550"></p>
+	<hr>
+	<div id="quotation_bubble" class="alert alert-light text-center">
+		&ldquo;{{ entity.textQuotation|nl2br }}&rdquo;
 	</div>
 
 	<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" /> <a href="{{ path('Proverb_Country_Show', { 'id' : entity.country.id, 'title': entity.country.title }) }}" alt="{{ entity.country.title }}" class="fw-bold">{{ entity.country.title }}</a></span>

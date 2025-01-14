@@ -40,6 +40,58 @@ class QuotationController extends AbstractController
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::POEM_FAMILY]);
         return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY, "form" => $form->createView()]);
     }
+
+    public function listHumor(Request $request)
+    {
+		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::HUMOR_FAMILY]);
+        return $this->render('quotation/Quotation/listHumor.html.twig', ["family" => Quotation::HUMOR_FAMILY, "form" => $form->createView()]);
+    }
+	
+	public function listHumorDatatables(Request $request, EntityManagerInterface $em)
+    {
+		$language = $request->getLocale();
+
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
+		{
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
+		}
+
+		$form = $this->createForm(QuotationSearchType::class, null, ["locale" => $request->getLocale(), "family" => Quotation::HUMOR_FAMILY]);
+		parse_str($request->query->get($form->getName()), $datas);
+		$form->submit($datas[$form->getName()]);
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::HUMOR_FAMILY, $language, $form->getData());
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::HUMOR_FAMILY, $language, $form->getData(), true);
+
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$row = [];
+			$row[] = $entity->getId();
+			$row[] = "<i>".$entity->getTextQuotation()."</i>";
+			$row[] = "<a href='".$this->generateUrl('Humor_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
+
+			$output['data'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+    }
 	
 	public function listQuotationDatatables(Request $request, EntityManagerInterface $em)
     {
@@ -234,6 +286,13 @@ class QuotationController extends AbstractController
 		$entity = $em->getRepository(Quotation::class)->find($id);
 
 		return $this->render("quotation/Quotation/readProverb.html.twig", ['entity' => $entity]);
+	}
+
+	public function readHumor(EntityManagerInterface $em, $id)
+	{
+		$entity = $em->getRepository(Quotation::class)->find($id);
+
+		return $this->render("quotation/Quotation/readHumor.html.twig", ['entity' => $entity]);
 	}
 
 	public function readQuotation(EntityManagerInterface $em, $id)

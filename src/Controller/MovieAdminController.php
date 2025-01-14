@@ -21,6 +21,7 @@ use App\Form\Type\MovieAdminType;
 use App\Service\ConstraintControllerValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\TagsManagingGeneric;
+use App\Service\FunctionsLibrary;
 
 /**
  * Movie controller.
@@ -244,7 +245,7 @@ class MovieAdminController extends AdminGenericController
         return new JsonResponse(["results" => $results]);
 	}
 	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+    public function internationalizationAction(Request $request, EntityManagerInterface $em, FunctionsLibrary $functionsLibrary, $id)
     {
 		$formType = MovieAdminType::class;
 		$entity = new Movie();
@@ -321,8 +322,19 @@ class MovieAdminController extends AdminGenericController
 
 			$biography = $em->getRepository(Biography::class)->findOneBy(["internationalName" => $mbToCopy->getBiography()->getInternationalName(), "language" => $language]);
 
-			if(empty($biography))
-				continue;
+			if(empty($biography)) {
+				$biography = $em->getRepository(Biography::class)->findOneBy(["wikidata" => $mbToCopy->getBiography()->getWikidata()]);
+			
+				if(empty($biography))
+					continue;
+				
+				$newBiography = $functionsLibrary->copyBiography($mbToCopy->getBiography(), $language);
+
+				$em->persist($newBiography);
+				$em->flush();
+
+				$biography = $newBiography;
+			}
 			$mb->setRole($mbToCopy->getRole());
 			$mb->setOccupation($mbToCopy->getOccupation());
 			$mb->setMovie($entity);

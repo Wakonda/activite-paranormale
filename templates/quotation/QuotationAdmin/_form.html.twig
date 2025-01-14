@@ -43,15 +43,15 @@
 			element.style.display="none";
 		for (let element of document.getElementsByClassName("titleContainer"))
 			element.style.display="none";
-			
+
 		if(value == "{{ constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}")
 			for (let element of document.getElementsByClassName("authorContainer"))
 				element.style.display="block";
-			
+
 		if(value == "{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}")
 			for (let element of document.getElementsByClassName("titleContainer"))
 				element.style.display="block";
-			
+
 		if(value == "{{ constant('App\\Entity\\Quotation::PROVERB_FAMILY') }}")
 			for (let element of document.getElementsByClassName("countryContainer"))
 				element.style.display="block";

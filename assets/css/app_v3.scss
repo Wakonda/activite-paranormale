@@ -384,38 +384,7 @@ div.list_quotations_author {
     z-index: 1;
 }
 #quotation_bubble {
-    background: #848484;
-    border-radius: 50px;
-    min-width: 120px;
-    width: 100%;
-    min-height: 20px;
-    padding: 10px;
-    display: inline-block;
-    text-align: center;
-    color: #fff;
-    position: relative;
     font-size: 22px;
-    margin-bottom: 8px;
-    line-height: 28px;
-}
-#quotation_bubble:before {
-    content: "";
-    width: 50px;
-    z-index: -1;
-    height: 50px;
-    position: absolute;
-    bottom: -20px;
-    left: 27px;
-    border-radius: 50%;
-    border-left: 30px solid #848484;
-    border-right: 30px solid transparent;
-	box-sizing: unset;
-}
-span#author_quotation a {
-    font-size: 20px;
-}
-span#author_quotation {
-    margin-left: 88px;
 }
 /********** SOCIAL NETWORK ***********/
 table#social_network {

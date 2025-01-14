@@ -42,3 +42,12 @@ span.icon a:hover {
 p {
 	margin: 0 0 0px !important;
 }
+
+.d-block {
+	display: block;
+}
+
+.mx-auto {
+  margin-right: auto !important;
+  margin-left: auto !important;
+}

@@ -3,6 +3,7 @@ quotation:
         Quotation: "Citation"
         Proverb: "Proverbe"
         Poem: "Poésie"
+        Humor: "Humour"
     search:
         SearchSort: "Rechercher / Trier"
         Keywords: "Mots-clés"
@@ -18,6 +19,7 @@ quotation:
         Region: "Zone géographique"
         Proverb: "Proverbe"
         Poem: "Poésie"
+        Humor: "Humour"
         Read: "Lire"
     read:
         Explanation: "Explication"
@@ -27,6 +29,7 @@ quotation:
         Quotation: "Citation"
         Proverb: "Proverbe"
         Poem: "Poésie"
+        Humor: "Humour"
         Source: "Source"
         Language: "Langue"
         Explanation: "Explication"

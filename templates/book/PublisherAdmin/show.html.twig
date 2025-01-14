@@ -30,7 +30,20 @@
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "publisher.admin.Language"|trans([], "validators") }}</div>
-	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
+	<div class="form-table-cell">{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" />{% endif %}</div>
+	
+	<div class="form-table-cell form-table-cell-head">Wikidata</div>
+	<div class="form-table-cell">{{ entity.internationalName }}</div>
+
+	{% if entity.wikidata is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "publisher.admin.InternationalName"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.wikidata }} (<a href="https://www.wikidata.org/wiki/{{ entity.wikidata }}">Wikidata</a>)</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "publisher.admin.Source"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ source_document(entity.source, entity.language) }}</div>
+
+	<a href="{{ path('ByPublisherBook_Index', { idPublisher: entity.id, titlePublisher: entity.internationalName }) }}" class="btn btn-warning mt-2" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
 {% endblock %}
 
 {% block data_bottom %}

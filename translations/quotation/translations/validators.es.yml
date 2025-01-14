@@ -3,6 +3,7 @@ quotation:
         Quotation: "Cita"
         Proverb: "Proverbio"
         Poem: "Poesía"
+        Humor: "Humor"
     search:
         SearchSort: "Buscar / Ordenar"
         Keywords: "Palabras clave"
@@ -18,6 +19,7 @@ quotation:
         Region: "Región"
         Proverb: "Proverbio"
         Poem: "Poesía"
+        Humor: "Humor"
         Read: "Leer"
     read:
         Explanation: "Explicación"
@@ -27,6 +29,7 @@ quotation:
         Quotation: "Cita"
         Proverb: "Proverbio"
         Poem: "Poesía"
+        Humor: "Humor"
         Source: "Fuente"
         Language: "Lengua"
         Explanation: "Explicación"

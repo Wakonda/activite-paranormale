@@ -50,6 +50,7 @@ book:
         Characters: "Characters"
     byPublisher:
         VisitThePublishersWebsite: "Visit the publisher's website"
+        Sources: "Sources"
     world:
         WorldBook: "Multilingual book"
 bookEdition:
@@ -101,6 +102,8 @@ publisher:
         Website: "Website"
         Text: "Text"
         Language: "Language"
+        InternationalName: "International name"
+        Source: "Source"
 biographies:
     admin:
         Translator: "Translator"

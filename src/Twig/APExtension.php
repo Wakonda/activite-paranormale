@@ -173,7 +173,7 @@
 		
 		public function isImageFilter($extension)
 		{
-			return in_array(strtolower($extension), ["png", "gif", "jpg", "jpeg", "bmp", "webp"]);
+			return in_array(strtolower($extension), ["png", "gif", "jpg", "jpeg", "bmp", "webp", "jfif"]);
 		}
 
 		public function urlcleanFilter($urlclean)
@@ -372,7 +372,7 @@
 				return $dateString;
 			}
 
-			return 'r-';
+			return '-';
 		}
 		
 		public function shortDateFilter($dateTime, $locale)

@@ -133,7 +133,7 @@
 					<td class="td_form_table">{{ "bookEdition.read.Publisher"|trans([], "validators") }}</td>
 					<td class="tdGene">
 						{% set img = bookEdition.publisher.photo|imgsize(200, bookEdition.publisher.getAssetImagePath(), true, null, null, false) %}
-						<a href="{{ path('ByPublisherBook_Index', {'idPublisher': bookEdition.publisher.id, 'titlePublisher': bookEdition.publisher.title}) }}">{% if img is not empty %}{{ img|raw }}{% else %}{{ bookEdition.publisher.title }}{% endif %}</a>
+						<a href="{{ path('ByPublisherBook_Index', {'idPublisher': bookEdition.publisher.id, 'titlePublisher': bookEdition.publisher.internationalName}) }}">{% if img is not empty %}{{ img|raw }}{% else %}{{ bookEdition.publisher.title }}{% endif %}</a>
 					</td>
 				</tr>
 				{% endif %}

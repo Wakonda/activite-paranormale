@@ -49,7 +49,7 @@ class BiographyAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('text', TextareaType::class, array('required' => false))
-            ->add('source', SourceEditType::class, array('required' => false))
+            ->add('source', SourceEditType::class, ['required' => false])
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {
 					return $choice->getTitle()." [".$choice->getAbbreviation()."]";

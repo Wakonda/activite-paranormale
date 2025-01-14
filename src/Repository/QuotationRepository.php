@@ -81,6 +81,8 @@ class QuotationRepository extends EntityRepository
 		} elseif($family == Quotation::PROVERB_FAMILY) {
 			$aColumns = ['c.id', 'c.textQuotation', 'a.title'];
 			$qb->join('c.country', 'a');
+		} elseif($family == Quotation::HUMOR_FAMILY) {
+			$aColumns = ['c.id', 'c.textQuotation'];
 		}
 
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
@@ -160,7 +162,8 @@ class QuotationRepository extends EntityRepository
 		$res = [
 			Quotation::QUOTATION_FAMILY => 0,
 			Quotation::PROVERB_FAMILY => 0,
-			Quotation::POEM_FAMILY => 0
+			Quotation::POEM_FAMILY => 0,
+			Quotation::HUMOR_FAMILY => 0
 		];
 		
 		foreach($qb->getQuery()->getResult() as $data)
