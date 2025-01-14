@@ -1,0 +1,46 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "quotation.index.Humor"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"></span>{{ "quotation.index.Humor"|trans([], "validators") }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/read-humor.webp') }}" alt="Princess elf" width="550"></p>
+	<hr>
+
+	<div id="quotation_bubble" class="alert alert-light">
+		{{ entity.textQuotation|nl2br }}
+	</div>
+	
+	{% if entity.explanation is not empty %}
+	<br>
+	<br>
+	<h3>{{ "quotation.read.Explanation"|trans([], "validators") }}</h3>
+	{{ entity.explanation|raw }}
+	{% endif %}
+
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
+		<br>
+		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+		{{ sources|raw }}
+	{% endif %}
+
+	<hr>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation, 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
+
+	{% if entity.tags is not empty %}
+		<br>
+		{% set tags = json_decode(entity.tags)|column("value") %}
+		<fieldset class="p-2">
+			<legend class="ml-2 float-none"> {{ "quotation.read.Tags"|trans([], "validators") }} </legend>
+			{% for tag in tags %}
+				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+			{% endfor %}
+		</fieldset>
+	{% endif %}
+	<br>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
