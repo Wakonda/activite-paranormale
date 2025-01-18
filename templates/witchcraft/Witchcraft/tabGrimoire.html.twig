@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ themeDisplay }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/chaudron.png') }}" width="25" class="mt-1" alt="Cauldron"/></span>{{ themeDisplay }}</h2>{% endblock h2_title %}
+{% block title %}{{ fob.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/chaudron.png') }}" width="25" class="mt-1" alt="Cauldron"/></span>{{ fob.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
@@ -62,7 +62,7 @@
 	<br>
 	<hr class="hr2">
 	{% if fob.parentTheme is not empty %}
-		<p><span><i class="fas fa-dragon"></i> <a href="{{ path('Witchcraft_Theme', {id: fob.parentTheme.id}) }}">{{ fob.parentTheme.title }}</a></p>
+		<p><span><i class="fas fa-dragon"></i> <a href="{{ path('Witchcraft_Theme', {id: fob.parentTheme.id, slug: fob.parentTheme.slug}) }}">{{ fob.parentTheme.title }}</a></p>
 	{% endif %}
 	<hr class="hr2">
 	

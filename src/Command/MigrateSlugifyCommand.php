@@ -52,10 +52,24 @@ class MigrateSlugifyCommand extends Command
 			$conn->exec("UPDATE music SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}*/
 
-		$entities = $this->em->getRepository("\App\Entity\Publisher")->findAll();
+		// $entities = $this->em->getRepository("\App\Entity\Publisher")->findAll();
+		
+		// foreach($entities as $entity) {
+			// $conn->exec("UPDATE publisher SET internationalName = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		// }
+
+        // return 0;
+
+		$entities = $this->em->getRepository("\App\Entity\SurThemeGrimoire")->findAll();
 		
 		foreach($entities as $entity) {
-			$conn->exec("UPDATE publisher SET internationalName = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+			$conn->exec("UPDATE surthemegrimoire SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
+
+		$entities = $this->em->getRepository("\App\Entity\Grimoire")->findAll();
+		
+		foreach($entities as $entity) {
+			$conn->exec("UPDATE grimoire SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 
         return 0;

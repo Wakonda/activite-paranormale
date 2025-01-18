@@ -504,11 +504,20 @@ class EventMessageController extends AbstractController
 				];
 			}
 		}
-
+		
+		$previous = (clone $currentDate)->modify("-1 day");
+		$next = (clone $currentDate)->modify("+1 day");
+		
+		$nextPrevious = [
+			"previous" => ["date" => $previous, "url" => $this->generateUrl("EventMessage_SelectDayMonth", ["year" => $previous->format("Y"), "month" => $previous->format("m"), "day" => $previous->format("d")])],
+			"next" => ["date" => $next, "url" => $this->generateUrl("EventMessage_SelectDayMonth", ["year" => $next->format("Y"), "month" => $next->format("m"), "day" => $next->format("d")])]
+		];
+// dd($currentEvent, (clone $currentDate)->modify("-1 day"), (clone $currentDate)->modify("+1 day"));
 		return $this->render("page/EventMessage/dayMonthEvent.html.twig", [
 			"res" => $res,
 			"currentEvent" => $currentEvent,
-			"currentDate" => $currentDate
+			"currentDate" => $currentDate,
+			"nextPrevious" => $nextPrevious
 		]);
 	}
 	

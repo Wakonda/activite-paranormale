@@ -81,10 +81,19 @@ class SurThemeGrimoire
 	 * @Assert\NotBlank(groups={"stg_validation"})
      */
     private $internationalName;
+
+	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
 	
 	public function __toString()
 	{
 		return $this->title;
+	}
+
+	public function getUrlSlug() {
+		return $this->slug;
 	}
 
 	public function getMenuGrimoireTitle()
@@ -110,6 +119,7 @@ class SurThemeGrimoire
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     /**
@@ -290,5 +300,16 @@ class SurThemeGrimoire
     public function setParentTheme(SurThemeGrimoire $parentTheme)
     {
         $this->parentTheme = $parentTheme;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = (new SlugGenerator)->generate($this->title);
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

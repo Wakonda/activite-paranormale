@@ -26,8 +26,11 @@ class Video {
 				
 				foreach(["maxresdefault", "hqdefault", "mqdefault", "sddefault"] as $format) {
 					$url = "https://img.youtube.com/vi/{$videoId}/$format.jpg";
-					if(substr(get_headers($url, 1)[0], 9, 3) != "404")
-						return $url;
+					
+					try {
+						if(substr(get_headers($url, 1)[0], 9, 3) != "404")
+							return $url;
+					} catch(\Exception $e) {}
 				}
 
 				return null;

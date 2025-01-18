@@ -18,7 +18,7 @@ Witchcraft_TabGrimoireDatatables:
     controller: App\Controller\WitchcraftController::tabGrimoireDatatablesAction
 
 Witchcraft_Theme:
-    path: /grimoire/theme/{id}
+    path: /grimoire/theme/{id}/{slug}
     controller: App\Controller\WitchcraftController::theme
     requirements:
        id: \d+

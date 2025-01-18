@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ (currentDate|date("Y-m-d"))|doPartialDate(app.request.locale) }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ (currentDate|date("Y-m-d"))|doPartialDate(app.request.locale) }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<style>
@@ -12,13 +12,13 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-day-month.jpg') }}" alt="Angel girl rock" /></p>
+	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-day-month.jpg') }}" alt="Angel girl rock"></p>
 	<hr>
 	
 	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
 
 	<p id="media_duration">
-		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" class="align-middle" />
+		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" class="align-middle">
 		<span class="align-middle"><b>{{ (currentDate|date("Y-m-d"))|doPartialDate(app.request.locale) }}</b></span>
 	</p>
 
@@ -32,9 +32,9 @@
 	{% else %}
 		<div class="alert alert-info"><i class="fa-solid fa-triangle-exclamation"></i> {{ "eventMessage.dayMonth.NoEventToday"|trans([], "validators") }}</div>
 	{% endfor %}
-	
+
 	<hr>
-	
+
 	<p id="media_duration">
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" />
 		<span class="align-middle"><b>{{ (currentDate|date("d"))|doYearMonthDayDate(currentDate|date("m"), null, app.request.locale) }}</b></span>
@@ -57,7 +57,13 @@
 	{% else %}
 		<div class="alert alert-info"><i class="fa-solid fa-triangle-exclamation"></i> {{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
 	{% endfor %}
-
+	
 	<hr class="hr2">
+
+	<div class="mb-3">
+		<a href="{{ nextPrevious.previous.url }}"><i class="fas fa-angle-double-left"></i> {{ (nextPrevious.previous.date|date("Y-m-d"))|doPartialDate(app.request.locale) }} <i class="fas fa-angle-double-left"></i></a>
+		<a href="{{ nextPrevious.next.url }}" class="float-end"><i class="fas fa-angle-double-right"></i> {{ (nextPrevious.next.date|date("Y-m-d"))|doPartialDate(app.request.locale) }} <i class="fas fa-angle-double-right"></i></a>
+	</div>
+	
 	{{ "google"|advertisement|raw }}
 {% endblock %}

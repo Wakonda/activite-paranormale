@@ -63,10 +63,9 @@ class WitchcraftController extends AbstractController
 	public function tabGrimoireAction(Request $request, EntityManagerInterface $em, $theme, $id, $surtheme)
     {
 		$fob = $em->getRepository(SurThemeGrimoire::class)->recupTheme($request->getLocale(), $id);
-		
+
         return $this->render('witchcraft/Witchcraft/tabGrimoire.html.twig', [
 			'themeId' => $id,
-			'themeDisplay' => $theme,
 			"fob" => $fob
 		]);
     }
@@ -103,7 +102,7 @@ class WitchcraftController extends AbstractController
 
 			$row = [];
 			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';			
-			$row[] = '<a href="'.$this->generateUrl("Witchcraft_ReadGrimoire", ['id' => $entity->getId(), 'title_slug' => $entity->getTitle(), 'surtheme' => $entity->getSurTheme()->getTitle()]).'" >'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl("Witchcraft_ReadGrimoire", ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug(), 'surtheme' => $entity->getSurTheme()->getSlug()]).'" >'.$entity->getTitle().'</a>';
 
 			$output['data'][] = $row;
 		}
@@ -250,7 +249,7 @@ class WitchcraftController extends AbstractController
 	{
 		$entity = $em->getRepository(Grimoire::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
-			return $this->redirect($this->generateUrl('Witchcraft_ReadGrimoire', ['id' => $entity->getId(), 'title_slug' => $entity->getTitle(), 'surtheme' => $entity->getSurTheme()->getTitle()]));
+			return $this->redirect($this->generateUrl('Witchcraft_ReadGrimoire', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug(), 'surtheme' => $entity->getSurTheme()->getSlug()]));
 
 		return $this->render('witchcraft/Witchcraft/waiting.html.twig', [
             'entity' => $entity,

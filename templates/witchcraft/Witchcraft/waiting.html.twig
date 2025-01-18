@@ -10,7 +10,7 @@
 	<div>{{ entity.text|raw }}</div>
 	<br />
 	<hr class="hr2">
-	<p>{% if entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}<span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.parentTheme.title, 'id': entity.surTheme.id, 'theme' : entity.surTheme.title })}}">{{ entity.surTheme.title }}</a></span> - <span>{{ entity.writingDate|dodate(false, app.request.locale) }}</span></p>
+	<p>{% if entity.pseudoUsed is not empty %}<span>{{ entity.pseudoUsed }}</span> - {% endif %}<span><a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': entity.surTheme.parentTheme.slug, 'id': entity.surTheme.id, 'theme' : entity.surTheme.slug })}}">{{ entity.surTheme.title }}</a></span> - <span>{{ entity.writingDate|dodate(false, app.request.locale) }}</span></p>
 {% endblock %}
 
 {% block button_validate %}<input type="submit" value="{{ 'witchcraft.waiting.Validate'|trans([], 'validators') }}" class="submitcomment btn" onclick="window.location='{{ path('Witchcraft_Validate', {'id' : entity.id}) }}';" />{% endblock %}

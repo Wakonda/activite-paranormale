@@ -14,7 +14,7 @@
 		{% for surThemeGrimoire in surThemeGrimoires %}
 				<li>
 					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
-					<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': menuGrimoire.title, 'id': surThemeGrimoire.id, 'theme' : surThemeGrimoire.title })}}">{{ surThemeGrimoire.title }}</a>
+					<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': menuGrimoire.slug, 'id': surThemeGrimoire.id, 'theme' : surThemeGrimoire.slug })}}">{{ surThemeGrimoire.title }}</a>
 					[{{ render(controller("App\\Controller\\WitchcraftController::countRitualAction", {'id': surThemeGrimoire.id })) }}]
 				</li>
 		{% endfor %}

@@ -22,7 +22,7 @@
 						<hr>
 						<p class="card-text mb-0 text-center">{{ MG.abstract|raw }}</p>
 						<hr>
-						<p class="card-text text-center"><a href="{{ path('Witchcraft_Theme', {'id' : MG.entity.id })}}" class="btn read"><span class="me-2"><i class="fas fa-book fa-fw"></i></span> {{ "witchcraft.index.Read"|trans([], "validators") }}</a></p>
+						<p class="card-text text-center"><a href="{{ path('Witchcraft_Theme', {'id' : MG.entity.id, slug: MG.entity.slug })}}" class="btn read"><span class="me-2"><i class="fas fa-book fa-fw"></i></span> {{ "witchcraft.index.Read"|trans([], "validators") }}</a></p>
 					</div>
 				</div>
 			</div>
