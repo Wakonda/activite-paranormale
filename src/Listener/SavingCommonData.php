@@ -61,6 +61,8 @@ class SavingCommonData
 				$text = str_replace("</h2>", "</h3>", $text);
 			}
 
+			$text = str_replace("<hr>", "", $text);
+
 			$parser = new APParseHTML();
 			$text = $parser->centerImageInHTML($text, $entity);
 			$entity->setText($text);
