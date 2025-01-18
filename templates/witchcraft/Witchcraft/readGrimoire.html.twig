@@ -21,9 +21,10 @@
 
 	{% set sources = source_document(entity.source, entity.language) %}
 	{% if sources is not empty %}
-		<br>
-		<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
-		{{ sources|raw }}
+		<div class="mt-2">
+			<h3>{{ "witchcraft.read.Source"|trans([], "validators") }}</h3>
+			{{ sources|raw }}
+		</div>
 	{% endif %}
 
 	<hr class="hr2">
