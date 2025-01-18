@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 use App\Entity\Contact;
 use App\Entity\User;
@@ -49,6 +50,7 @@ class ContactController extends AbstractController
 			$blackLists = ["ericjonesmyemail@gmail.com"];
 			
 			if(!in_array($entity->getEmailContact(), $blackLists)) {
+				try {
 				$email = (new Email())
 					->from($entity->getEmailContact())
 					->to($_ENV["MAILER_CONTACT"])
@@ -56,6 +58,8 @@ class ContactController extends AbstractController
 					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
 
 				$mailer->send($email);
+				} catch (TransportException $e) {
+				}
 
 				$em->persist($entity);
 				$em->flush();

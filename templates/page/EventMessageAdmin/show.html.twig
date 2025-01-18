@@ -99,6 +99,7 @@
 			{{ macro_index.mastodon_form(entity, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation)) ~ " - " ~ dateTo) }}
 			{{ macro_index.diaspora_form(entity, entity.abstractText) }}
 			{{ macro_index.bluesky_form(entity, (entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, entity.language.abbreviation)) ~ " - " ~ dateTo) }}
+			{{ macro_index.vk_form(entity, entity.abstractText) }}
 		{% endif %}
 	{% endif %}
 {% endblock %}
@@ -110,4 +111,5 @@
 	{{ macro_index.mastodon_form_js() }}
 	{{ macro_index.diaspora_form_js() }}
 	{{ macro_index.bluesky_form_js() }}
+	{{ macro_index.vk_form_js() }}
 {% endblock %}

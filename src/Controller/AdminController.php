@@ -1205,7 +1205,7 @@ class AdminController extends AbstractController
 			$photoId = $flickr->getOldestPhoto();
 			$entityNamespaces = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 			$data = null;
-				
+
 			foreach ($entityNamespaces as $entityClass) {
 				if (class_exists($entityClass)) {
 					if(!empty($data))
@@ -1217,7 +1217,7 @@ class AdminController extends AbstractController
 					if ($mappedSuperclassAnnotation !== null) {
 						continue;
 					}
-					
+
 					if ($reflectionClass->hasMethod("setSocialNetworkIdentifiers")) {
 						$data = $em->getRepository($entityClass)->createQueryBuilder('u')->where("u.socialNetworkIdentifiers LIKE '%Flickr%'")->andWhere("u.socialNetworkIdentifiers LIKE :photoId")->setParameter("photoId", "%".$photoId."%")->getQuery()->getOneOrNullResult();
 
@@ -1574,7 +1574,7 @@ class AdminController extends AbstractController
 			if(!empty($table)) {
 				$page = $request->query->get("page");
 				$where = $request->query->has("where") ? implode(" AND ", $request->query->all("where", [])) : null;
-				
+
 				$sortBy = $request->query->get("sortBy", null);
 				$sortDir = $request->query->get("sortDir", "ASC");
 				$orderBy = !empty($sortBy) ? " ORDER BY ".$sortBy." ".$sortDir : "";
@@ -1621,7 +1621,7 @@ class AdminController extends AbstractController
 
         return $this->render('admin/Admin/sql.html.twig', ["tables" => $tables, "tableInfos" => $conn->fetchAllAssociative("SHOW TABLE STATUS")]);
     }
-	
+
 	private function isSelectQuery($sql) {
 		return str_starts_with(strtolower($sql), "select ");
 	}
@@ -1632,41 +1632,48 @@ class AdminController extends AbstractController
 		if($request->isMethod('post')) {
 			$form->handleRequest($request);
 			$data = $form->getData();
+			$socialNetworks = $data["socialNetwork"];
 
-			list($socialNetwork, $locale) = explode("_", $data["socialNetwork"]);
+			if($form->isValid()) {
+				foreach($socialNetworks as $socialNetwork) {
+					list($socialNetwork, $locale) = explode("_", $socialNetwork);
 
-			switch($socialNetwork) {
-				case "twitter":
-					$res = $twitterAPI->retweet($data["text"]." ".$data["url"], $locale);
+					switch($socialNetwork) {
+						case "twitter":
+							$res = $twitterAPI->retweet($data["text"]." ".$data["url"], $locale);
 
-					if(property_exists($res, "status") or property_exists($res, "reason")) {
-						$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
-						$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
+							if(property_exists($res, "status") or property_exists($res, "reason")) {
+								$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
+								$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
+							}
+							elseif(property_exists($res, "data"))
+								$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+						break;
+						case "bluesky":
+							$res = $bluesky->postMessage($data["text"], $data["url"], $locale);
+
+							if(property_exists($res, "error"))
+								$this->addFlash('error', $translator->trans('admin.bluesky.Failed', [], 'validators'). " (".$res->error."; ".$res->message.")");
+							else
+								$this->addFlash('success', $translator->trans('admin.bluesky.Success', [], 'validators'));
+						break;
+						case "mastodon":
+							$res = $mastodon->postMessage($data["url"], $data["text"], $locale);
+							$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
+							$this->addFlash($message["state"], $message["message"], [], 'validators');
+						break;
+						case "facebook":
+							$res = json_decode($facebook->postMessage($data["url"], $data["text"], $locale));
+							$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
+							$this->addFlash($message["state"], $message["message"], [], 'validators');
+						break;
 					}
-					elseif(property_exists($res, "data"))
-						$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
-				break;
-				case "bluesky":
-					$res = $bluesky->postMessage($data["text"], $data["url"], $locale);
+				}
 
-					if(property_exists($res, "error"))
-						$this->addFlash('error', $translator->trans('admin.bluesky.Failed', [], 'validators'). " (".$res->error."; ".$res->message.")");
-					else
-						$this->addFlash('success', $translator->trans('admin.bluesky.Success', [], 'validators'));
-				break;
-				case "mastodon":
-					$res = $mastodon->postMessage($data["url"], $data["text"], $locale);
-					$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
-					$this->addFlash($message["state"], $message["message"], [], 'validators');
-				break;
-				case "facebook":
-					$res = json_decode($facebook->postMessage($data["url"], $data["text"], $locale));
-					$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
-					$this->addFlash($message["state"], $message["message"], [], 'validators');
-				break;
+				$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
 			}
 		}
-		
+
 		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView()]);
 	}
 }

@@ -25,10 +25,12 @@ class SocialNetworkAdminType extends AbstractType
 		];
 
         $builder
-            ->add('text', TextareaType::class, ['label' => 'Texte', 'required' =>true, 'constraints' => [new NotBlank()]])
+            ->add('text', TextareaType::class, ['label' => 'Texte', 'required' => true, 'constraints' => [new NotBlank()]])
             ->add('url', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
 			->add('socialNetwork', ChoiceType::class, [
 				'choices'  => $list,
+				'multiple' => true,
+				'constraints' => [new NotBlank()],
 				'label' => 'biographies.admin.Occupation', 'translation_domain' => 'validators', "attr" => ["class" => "form-control list-occupation"]
 			]);
     }
