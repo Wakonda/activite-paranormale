@@ -1,0 +1,47 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.Account"|trans([], "validators") }}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Phpinfo') }}"><i class="fas fa-exclamation-circle"></i> PHP Info</a></li>
+	<li class="nav-item"><a class="nav-link" href="{{ path('api_entrypoint') }}"><i class="fas fa-plug"></i> A.P.I.</a></li>
+	<li class="nav-item"><a class="nav-link" href="https://github.com/Wakonda/activite-paranormale"><i class="fab fa-github-alt"></i> Github</a></li>
+{% endblock %}
+
+{% block body_main %}
+	<h4>{{ "admin.index.Tools"|trans([], "validators") }}</h4>
+	<div class="form-table form-table-4cols form-table-collapse mb-3">
+		<div class="form-table-cell form-table-cell-head">Google Adsense</div>
+		<div class="form-table-cell"><a href='https://www.google.com/adsense/v3/app?hl=fr#home' alt="Google Adsense"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>
+
+		<div class="form-table-cell form-table-cell-head">Google Analytics</div>
+		<div class="form-table-cell"><a href='https://www.google.com/intl/fr/analytics/' alt="Google Analytics"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>
+
+		<div class="form-table-cell form-table-cell-head">Google Search</div>
+		<div class="form-table-cell"><a href='https://www.google.com/cse/all' alt="Google Search"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>
+
+		<div class="form-table-cell form-table-cell-head">Google Webmaster Tools</div>
+		<div class="form-table-cell"><a href='https://www.google.com/webmasters/tools/home?hl=fr' alt="Google Webmasters Tools"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>
+
+		<div class="form-table-cell form-table-cell-head">A-Ads</div>
+		<div class="form-table-cell"><a href='https://aads.com/' alt="Google Webmasters Tools"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>		
+
+		<div class="form-table-cell form-table-cell-head">Yandex Webmaster</div>
+		<div class="form-table-cell"><a href='https://webmaster.yandex.com/welcome/' alt="Google Webmasters Tools"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>		
+
+		<div class="form-table-cell form-table-cell-head">Bing Webmaster Tools</div>
+		<div class="form-table-cell"><a href='https://www.bing.com/webmasters/about' alt="Google Webmasters Tools"><i class="fas fa-wrench" aria-hidden="true"></i> {{ "admin.index.Manage"|trans([], "validators") }}</a></div>
+	</div>
+
+	<h4>Diaspora (Français)</h4>
+	<div class="form-table form-table-4cols form-table-collapse mb-3">
+		<div class="form-table-cell form-table-cell-head">{{ "admin.index.Password"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ get_env("DIASPORA_FR_PASSWORD") }}</div>
+	</div>
+
+	<h4>Diaspora (Português)</h4>
+	<div class="form-table form-table-4cols form-table-collapse mb-3">
+		<div class="form-table-cell form-table-cell-head">{{ "admin.index.Password"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ get_env("DIASPORA_FR_PASSWORD") }}</div>
+	</div>
+{% endblock %}
