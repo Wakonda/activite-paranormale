@@ -60,7 +60,7 @@ class Video {
 				$curl = curl_init();
 				curl_setopt($curl, CURLOPT_URL,"https://rutube.ru/api/video/{$videoId}/thumbnail");
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true); 
+				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 

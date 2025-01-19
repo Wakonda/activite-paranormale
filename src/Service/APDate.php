@@ -59,6 +59,7 @@
 			if(count($dateArray) == 1) {
 				$skeleton = "YYYY".$bc;
 				$year = $dateArray[0];
+				$partialDate = $partialDate."-01-01";
 			} elseif(isset($dateArray[2]) and !empty($dateArray[2])) {
 				$skeleton = 'YYYYMMMMd'.$bc;
 				$day = $dateArray[2];

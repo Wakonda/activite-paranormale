@@ -78,6 +78,7 @@ admin:
         Banner: "Bannière"
         Album: "Album"
         TagWord: "Tag"
+        Logo: "Logo"
         Book: "Livre"
         Publisher: "Editeur"
         WitchcraftTool: "Outils de sorcellerie"
@@ -100,6 +101,9 @@ admin:
         ActivateMaintenance: "Activer le mode maintenance"
         DesactivateMaintenance: "Désactiver le mode maintenance"
         DatabaseMaintenance: "Maintenance de la base de données"
+        Account: "Compte"
+        Tools: "Outils"
+        Password: "Mot de passe"
     show:
         Internationalization: "Internationalisation"
         ReallyWantRemoveDatas: "Souhaitez-vous réellement supprimer ces données ?"

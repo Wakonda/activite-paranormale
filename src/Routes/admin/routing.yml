@@ -117,6 +117,10 @@ Admin_Maintenance:
     defaults:
         mode: ""
 
+Admin_Account:
+    path: /admin/account
+    controller: App\Controller\AdminController::account
+
 Admin_SQLExplorer:
     path: /admin/sqlExplorer
     controller: App\Controller\AdminController::sqlExplorer

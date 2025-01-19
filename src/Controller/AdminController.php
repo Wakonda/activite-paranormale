@@ -1676,4 +1676,8 @@ class AdminController extends AbstractController
 
 		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView()]);
 	}
+
+	public function account() {
+		return $this->render("admin/Admin/account.html.twig");
+	}
 }

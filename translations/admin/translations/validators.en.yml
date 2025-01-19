@@ -101,6 +101,9 @@ admin:
         ActivateMaintenance: "Turn on maintenance mode"
         DesactivateMaintenance: "Turn off maintenance mode"
         DatabaseMaintenance: "Database maintenance"
+        Account: "Account"
+        Tools: "Tools"
+        Password: "Password"
     show:
         Internationalization: "Internationalization"
         ReallyWantRemoveDatas: "Are you sure you want to delete this data?"
