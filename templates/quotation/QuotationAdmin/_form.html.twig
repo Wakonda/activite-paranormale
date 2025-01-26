@@ -13,6 +13,9 @@
 <div class="form-table-cell form-table-cell-head countryContainer">{{ form_label(form.country, "quotation.admin.Country"|trans([], "validators")) }}</div>
 <div class="form-table-cell countryContainer">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head dateContainer">{{ form_label(form.date, "quotation.admin.Date"|trans([], "validators")) }}</div>
+<div class="form-table-cell dateContainer">{{ form_errors(form.date) }}{{ form_widget(form.date, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.textQuotation, "quotation.admin.Text"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
 	{{ form_errors(form.textQuotation) }}{{ form_widget(form.textQuotation, { 'attr': {'class': 'form-control', 'rows': 10} }) }}
@@ -43,6 +46,8 @@
 			element.style.display="none";
 		for (let element of document.getElementsByClassName("titleContainer"))
 			element.style.display="none";
+		for (let element of document.getElementsByClassName("dateContainer"))
+			element.style.display="none";
 
 		if(value == "{{ constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}")
 			for (let element of document.getElementsByClassName("authorContainer"))
@@ -52,7 +57,11 @@
 			for (let element of document.getElementsByClassName("titleContainer"))
 				element.style.display="block";
 
-		if(value == "{{ constant('App\\Entity\\Quotation::PROVERB_FAMILY') }}")
+		if(value == "{{ constant('App\\Entity\\Quotation::SAYING_FAMILY') }}")
+			for (let element of document.getElementsByClassName("dateContainer"))
+				element.style.display="block";
+
+		if(value == "{{ constant('App\\Entity\\Quotation::PROVERB_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::SAYING_FAMILY') }}")
 			for (let element of document.getElementsByClassName("countryContainer"))
 				element.style.display="block";
 	}

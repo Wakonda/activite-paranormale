@@ -28,6 +28,8 @@ class RegionAdminController extends AdminGenericController
 	
 	protected $indexRoute = "Region_Admin_Index"; 
 	protected $showRoute = "Region_Admin_Show";
+	protected $formName = 'ap_index_regiontype';
+
 	protected $illustrations = [["field" => "flag", 'selectorFile' => 'photo_selector']];
 	
 	public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal)

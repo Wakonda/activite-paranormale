@@ -274,7 +274,7 @@
 				
 				$src = "data:".$mime_type.";base64," . base64_encode($data);
 			}
-
+// dd(round($newLong));
 			if($svg->isSVG())
 				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white">';
 			else
@@ -285,6 +285,7 @@
 		
 		public function imgCaptionFilter(?array $caption = [], string $src = null, string $imgContent = null): ?string {
 			$res = $imgContent;
+
 			if(!empty($caption) and (!empty($caption["caption"]) or !empty(array_filter(array_values($caption["source"]))))) {
 				$caption["source"]["url"] = !empty($url = $caption["source"]["url"]) ? '<a href="'.$url.'">'.parse_url($url, PHP_URL_HOST).'</a>' : null;
 				
@@ -309,9 +310,25 @@
 							  </div>
 							</div>';
 				$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge bg-info float-end" data-bs-toggle="modal" data-bs-target="#fileManagementModal"><i class="fas fa-info fa-fw"></i></a>' : '';
+
+				$dom = new \DOMDocument();
+				$height = 0;
 				
+				if(!empty($res)) {
+					@$dom->loadHTML($res);
+
+					if($dom->getElementsByTagName("img")->length == 1) {
+						$height = $dom->getElementsByTagName("img")->item(0)->getAttribute("height");
+						
+						if(!empty($height))
+							$caption["caption"] = !empty($c = $caption["caption"]) ? '<a class="badge bg-info ms-2" data-bs-toggle="modal" data-bs-target="#fileManagementModal"> <i class="fas fa-info fa-fw"></i></a>' : '';
+					}
+				}
+
 				if(empty($imgContent))
 					$res = '<div class="image">'.$res.'<p>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</p></div>'.(!empty($c = $caption["caption"]) ? $modal : '');
+				elseif($height < 100)
+					$res = '<div class="image">'.$res.'<p class="text-center" style="font-size: 12px"><i>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</i></p></div>'.(!empty($c = $caption["caption"]) ? $modal : '');
 				else
 					$res = '<figure class="image">'.$res.'<figcaption>'.implode(", ", array_filter($caption["source"])).$caption["caption"].'</figcaption></figure>'.(!empty($c = $caption["caption"]) ? $modal : '');
 			}
@@ -395,9 +412,9 @@
 			return (new \App\Service\APDate())->shortDate($dateTime, $locale);
 		}
 		
-		public function doPartialDateFilter(?string $partialDate, $language)
+		public function doPartialDateFilter(?string $partialDate, $language, $skeleton = null)
 		{
-			return (new \App\Service\APDate())->doPartialDate($partialDate, $language);
+			return (new \App\Service\APDate())->doPartialDate($partialDate, $language, $skeleton);
 		}
 		
 		public function doPartialDateTimeFilter(?string $partialDateTime, $language)

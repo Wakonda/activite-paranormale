@@ -17,6 +17,7 @@ class Quotation
 	const PROVERB_FAMILY = "proverb";
 	const POEM_FAMILY = "poem";
 	const HUMOR_FAMILY = "humor";
+	const SAYING_FAMILY = "saying";
 
     /**
      * @var integer $id
@@ -84,6 +85,11 @@ class Quotation
 	 * @ORM\Column(type="string", nullable=true) 
 	 */
 	protected $family;
+
+	/**
+	 * @ORM\Column(type="string", nullable=true) 
+	 */
+	protected $date;
 	
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Region")
@@ -109,6 +115,10 @@ class Quotation
 
 	public function isHumorFamily(): bool {
 		return $this->family == self::HUMOR_FAMILY;
+	}
+
+	public function isSayingFamily(): bool {
+		return $this->family == self::SAYING_FAMILY;
 	}
 
 	public function getTitle() {
@@ -269,6 +279,16 @@ class Quotation
 	public function setCountry($country)
 	{
 		$this->country = $country;
+	}
+	
+	public function getDate()
+	{
+		return $this->date;
+	}
+	
+	public function setDate($date)
+	{
+		$this->date = $date;
 	}
 
 	public function setTitle($title)

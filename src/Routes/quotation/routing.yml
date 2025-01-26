@@ -28,6 +28,10 @@ Proverb_listDatatables:
     path:  /listproverbdatatables
     controller: App\Controller\QuotationController::listProverbDatatables
 
+Saying_listDatatables:
+    path:  /listsayingdatatables
+    controller: App\Controller\QuotationController::listSayingDatatables
+
 Proverb_Country_Show:
     path:  /quotation/proverb/{id}/{title}
     controller: App\Controller\QuotationController::proverbCountry
@@ -45,6 +49,24 @@ Proverb_Read:
     controller: App\Controller\QuotationController::readProverb
     requirements:
         id: \d+
+
+Saying_Read:
+    path:  /saying/read/{id}
+    controller: App\Controller\QuotationController::readSaying
+    requirements:
+        id: \d+
+
+Saying_Country_Show:
+    path:  /quotation/saying/{id}/{title}
+    controller: App\Controller\QuotationController::sayingCountry
+    requirements:
+        id: \d+
+
+Saying_listSayingByCountryDatatables:
+    path:  /listsayingbycountrydatatables/{countryId}
+    controller: App\Controller\QuotationController::listSayingByCountryDatatables
+    requirements:
+        countryId: \d+
 
 Poem_listDatatables:
     path:  /listpoemdatatables

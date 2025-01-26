@@ -4,6 +4,7 @@ quotation:
         Proverb: "Proverbio"
         Poem: "Poesía"
         Humor: "Humor"
+        Saying: "Refrán"
     search:
         SearchSort: "Buscar / Ordenar"
         Keywords: "Palabras clave"
@@ -20,6 +21,7 @@ quotation:
         Proverb: "Proverbio"
         Poem: "Poesía"
         Humor: "Humor"
+        Saying: "Refrán"
         Read: "Leer"
     read:
         Explanation: "Explicación"
@@ -30,6 +32,7 @@ quotation:
         Proverb: "Proverbio"
         Poem: "Poesía"
         Humor: "Humor"
+        Saying: "Refrán"
         Source: "Fuente"
         Language: "Lengua"
         Explanation: "Explicación"
@@ -42,6 +45,7 @@ quotation:
         Title: "Título"
         Text: "Texto"
         Country: "País"
+        Date: "Fecha"
     imageGenerator:
         Generate: "Generar una imagen"
         Image: "Image"

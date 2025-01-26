@@ -29,8 +29,10 @@ class DatePartialType extends AbstractType
 		
 		$builder
 			->add('day', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Day"], "translation_domain" => "validators"])
-			->add('month', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Month"], "translation_domain" => "validators"])
-			->add('year', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Year"], "translation_domain" => "validators"]);
+			->add('month', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Month"], "translation_domain" => "validators"]);
+			
+		if($options["year"])
+			$builder->add('year', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Year"], "translation_domain" => "validators"]);
 	
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event) use ($options)
 		{
@@ -38,11 +40,13 @@ class DatePartialType extends AbstractType
 			$form = $event->getForm();
 			$notBlank = new NotBlank();
 			
-			$year = $form->get('year')->getData();
+			if($form->has('year'))
+				$year = $form->get('year')->getData();
+
 			$month = $form->get('month')->getData();
 			$day = $form->get('day')->getData();
 
-			if(empty($year) and (!empty($month) or !empty($day)) and !$options["allow_empty_year"]) {
+			if($form->has('year') and empty($year) and (!empty($month) or !empty($day)) and !$options["allow_empty_year"]) {
 				$form->get('year')->addError(new FormError($notBlank->message));
 			}
 
@@ -50,7 +54,7 @@ class DatePartialType extends AbstractType
 				$form->get('month')->addError(new FormError($notBlank->message));
 			}
 			
-			if(!empty($month) and !empty($year)) {
+			if($form->has('year') and !empty($month) and !empty($year)) {
 				if(empty($day))
 					$day = "01";
 				
@@ -71,7 +75,8 @@ class DatePartialType extends AbstractType
 	{
 		$resolver->setDefaults([
 			'error_bubbling' => false,
-			'allow_empty_year' => false
+			'allow_empty_year' => false,
+			'year' => true
 		]);
 	}
 }

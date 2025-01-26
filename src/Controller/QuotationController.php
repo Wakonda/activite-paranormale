@@ -18,7 +18,7 @@ class QuotationController extends AbstractController
 {
     public function index(Request $request, EntityManagerInterface $em, $family)
     {
-		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());//dd($counter);
 		$family = empty($family) ? Quotation::QUOTATION_FAMILY : $family;
         return $this->render('quotation/Quotation/index.html.twig', ["family" => $family, "counter" => $counter]);
     }
@@ -45,6 +45,12 @@ class QuotationController extends AbstractController
     {
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::HUMOR_FAMILY]);
         return $this->render('quotation/Quotation/listHumor.html.twig', ["family" => Quotation::HUMOR_FAMILY, "form" => $form->createView()]);
+    }
+
+    public function listSaying(Request $request)
+    {
+		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::SAYING_FAMILY]);
+        return $this->render('quotation/Quotation/listSaying.html.twig', ["family" => Quotation::SAYING_FAMILY, "form" => $form->createView()]);
     }
 	
 	public function listHumorDatatables(Request $request, EntityManagerInterface $em)
@@ -188,6 +194,54 @@ class QuotationController extends AbstractController
 		return $response;
     }
 	
+	public function listSayingDatatables(Request $request, EntityManagerInterface $em)
+    {
+		$language = $request->getLocale();
+
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
+		{
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
+		}
+
+		$form = $this->createForm(QuotationSearchType::class, null, ["locale" => $request->getLocale(), "family" => Quotation::SAYING_FAMILY]);
+		parse_str($request->query->get($form->getName()), $datas);
+		$form->submit($datas[$form->getName()]);
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::SAYING_FAMILY, $language, $form->getData());
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::SAYING_FAMILY, $language, $form->getData(), true);
+
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$row = [];
+			$row[] = $entity->getId();
+			$row[] = "<i>".$entity->getTextQuotation()."</i>";
+			$flag = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20" height="13">';
+			$row[] = "$flag <a href='".$this->generateUrl('Saying_Country_Show', ['id' => $entity->getCountry()->getId(), 'title' => $entity->getCountry()->getTitle()])."'>".$entity->getCountry()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Saying_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
+			
+			$output['data'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+    }
+	
 	public function listPoemDatatables(Request $request, EntityManagerInterface $em)
     {
 		$language = $request->getLocale();
@@ -257,8 +311,8 @@ class QuotationController extends AbstractController
 			$sortDirColumn[] = $order[$i]['dir'];
 		}
 
-        $entities = $em->getRepository(Quotation::class)->getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language);
-		$iTotal = $em->getRepository(Quotation::class)->getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, true);
+        $entities = $em->getRepository(Quotation::class)->getDatatablesByCountryForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, Quotation::PROVERB_FAMILY);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesByCountryForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, Quotation::PROVERB_FAMILY, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -281,11 +335,64 @@ class QuotationController extends AbstractController
 		return $response;
 	}
 
+	public function sayingCountry(EntityManagerInterface $em, $id) {
+		$country = $em->getRepository(Region::class)->find($id);
+
+		return $this->render('quotation/Quotation/listSayingByCountry.html.twig', ["country" => $country]);
+	}
+
+	public function listSayingByCountryDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $countryId) {
+		$language = $request->getLocale();
+
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+			
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
+		{
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
+		}
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesByCountryForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, Quotation::SAYING_FAMILY);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesByCountryForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, Quotation::SAYING_FAMILY, true);
+
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$row = [];
+			$row[] = "<i>".$entity->getTextQuotation()."</i>";
+			$row[] = "<a href='".$this->generateUrl('Saying_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
+
+			$output['data'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
+
 	public function readProverb(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Quotation::class)->find($id);
 
 		return $this->render("quotation/Quotation/readProverb.html.twig", ['entity' => $entity]);
+	}
+
+	public function readSaying(EntityManagerInterface $em, $id)
+	{
+		$entity = $em->getRepository(Quotation::class)->find($id);
+
+		return $this->render("quotation/Quotation/readSaying.html.twig", ['entity' => $entity]);
 	}
 
 	public function readHumor(EntityManagerInterface $em, $id)

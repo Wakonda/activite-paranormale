@@ -77,14 +77,20 @@
 {% block date_partial_widget %}
 	{{ form_errors(form.day) }}
 	{{ form_errors(form.month) }}
-	{{ form_errors(form.year) }}
+	
+	{% if form.year is defined %}
+		{{ form_errors(form.year) }}
+	{% endif %}
 
 	<div class="input-group">
 		{{ form_widget(form.day, {'attr':{'class': 'form-control'}}) }}
 		<span class="input-group-text">/</span>
 		{{ form_widget(form.month, {'attr':{'class': 'form-control'}}) }}
-		<span class="input-group-text">/</span>
-		{{ form_widget(form.year, {'attr':{'class': 'form-control'}}) }}
+		
+		{% if form.year is defined %}
+			<span class="input-group-text">/</span>
+			{{ form_widget(form.year, {'attr':{'class': 'form-control'}}) }}
+		{% endif %}
 	</div>
 
 	<script>
@@ -95,12 +101,14 @@
 				document.getElementById("{{ form.month.vars.id }}").focus();
 		});
 		
-		document.getElementById("{{ form.month.vars.id }}").addEventListener("keyup", (e) => {
-			var targetElement = event.target || event.srcElement;
-			
-			if(targetElement.value.length == 2 || targetElement.value > 1)
-				document.getElementById("{{ form.year.vars.id }}").focus();
-		});
+		{% if form.year is defined %}
+			document.getElementById("{{ form.month.vars.id }}").addEventListener("keyup", (e) => {
+				var targetElement = event.target || event.srcElement;
+				
+				if(targetElement.value.length == 2 || targetElement.value > 1)
+					document.getElementById("{{ form.year.vars.id }}").focus();
+			});
+		{% endif %}
 	</script>
 {% endblock %}
 

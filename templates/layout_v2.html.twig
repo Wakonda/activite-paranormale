@@ -117,6 +117,7 @@
 										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY')}) }}">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></li>
 										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></li>
 										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY')}) }}">{{ "quotation.index.Humor"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::HUMOR_FAMILY')] }}</span></li>
+										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::SAYING_FAMILY')}) }}">{{ "quotation.index.Saying"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ quotation_counter[constant('App\\Entity\\Quotation::SAYING_FAMILY')] }}</span></li>
 										<li><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ render(controller('App\\Controller\\TelevisionSerieController::countByLanguage')) }}</span></li>
 									</ul>
 									<h3>{{ "index.leftMenu.Participate"|trans([], "validators") }}</h3>

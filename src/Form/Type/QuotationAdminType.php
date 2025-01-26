@@ -13,6 +13,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use App\Form\Field\SourceEditType;
 use App\Entity\Quotation;
+use App\Form\Field\DatePartialType;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -46,7 +47,8 @@ class QuotationAdminType extends AbstractType
 						"quotation.index.Quotation" => Quotation::QUOTATION_FAMILY,
 						"quotation.index.Humor" => Quotation::HUMOR_FAMILY,
 						"quotation.index.Proverb" => Quotation::PROVERB_FAMILY,
-						"quotation.index.Poem" => Quotation::POEM_FAMILY
+						"quotation.index.Poem" => Quotation::POEM_FAMILY,
+						"quotation.index.Saying" => Quotation::SAYING_FAMILY
 					],
 					'translation_domain' => 'validators'
 			])
@@ -72,6 +74,7 @@ class QuotationAdminType extends AbstractType
 			->add('source', SourceEditType::class, array('required' =>false))
 			->add('explanation', TextareaType::class, array('required' => false))
             ->add('tags', TextType::class, ['required' => false])
+            ->add('date', DatePartialType::class, ['required' => false, "year" => false])
         ;
 
 		$builder->addEventListener(FormEvents::POST_SUBMIT, function(FormEvent $event)

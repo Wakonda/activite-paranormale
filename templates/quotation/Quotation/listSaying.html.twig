@@ -1,0 +1,25 @@
+<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/' ~ family ~ '.webp') }}" alt="Gothic horror sunset" width="550" /></p>
+<hr>
+{% include 'quotation/Quotation/_search.html.twig' with { route: 'Saying_listDatatables' } %}
+
+<table class="doc_datatables dt-responsive w-100">
+	<thead>
+		<tr>
+			<th class="label_form d-none"></th>
+			<th class="label_form">{{ "quotation.list.Saying"|trans([], "validators") }}</th>
+			<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
+			<th class="label_form">{{ "quotation.list.Read"|trans([], "validators") }}</th>
+		</tr>
+	</thead>
+	<tbody>
+
+	</tbody>
+	<tfoot>
+		<tr>
+			<th class="label_form d-none"></th>
+			<th class="label_form">{{ "quotation.list.Saying"|trans([], "validators") }}</th>
+			<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
+			<th class="label_form">{{ "quotation.list.Read"|trans([], "validators") }}</th>
+		</tr>
+	</tfoot>
+</table>

@@ -1,0 +1,77 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "quotation.index.Saying"|trans([], "validators") }} - {{ entity.country.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"/></span>{{ "quotation.index.Saying"|trans([], "validators") }} - {{ entity.country.title }}</h2>{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/read-saying.webp') }}" alt="Black widow forest" width="550"></p>
+	<hr>
+	<div id="quotation_bubble" class="alert alert-light text-center">
+		&ldquo;{{ entity.textQuotation|nl2br }}&rdquo;
+	</div>
+
+	<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" /> <a href="{{ path('Proverb_Country_Show', { 'id' : entity.country.id, 'title': entity.country.title }) }}" alt="{{ entity.country.title }}" class="fw-bold">{{ entity.country.title }}</a></span>
+
+	{% if entity.date is not empty %}
+		{% set dateArray = entity.date|split("-") %}
+		- <i class="fa-regular fa-calendar-days"></i> <a href="{{ path('EventMessage_SelectDayMonth', {year: 'now'|date('Y'), month: dateArray[0], day: dateArray[1]}) }}">{{ entity.date|doPartialDate(app.request.locale, "MMMMd") }}</a>
+	{% endif %}
+
+	{% if entity.images is not empty %}
+		<div id="carousel-quote-read" class="carousel-pagination carousel slide mt-3" data-interval="false">
+			<ol class="carousel-indicators carousel-indicators-numbers pagination">
+			{% set i = 0 %}
+			{% set j = 1 %}
+			{% for imageEntity in entity.images %}
+				<li data-bs-target="#carousel-quote-read" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+				{% set i = i + 1 %}
+				{% set j = j + 1 %}
+			{% endfor %}
+			</ol>
+
+			<div class="carousel-inner">
+				{% set i = 0 %}
+				{% for imageEntity in entity.images %}
+					<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+						<div>{{ imageEntity.image|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</div>
+					</div>
+					{% set i = i + 1 %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+	
+	{% if entity.explanation is not empty %}
+	<br>
+	<br>
+	<h3>{{ "quotation.read.Explanation"|trans([], "validators") }}</h3>
+	{{ entity.explanation|raw }}
+	{% endif %}
+
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
+		<br>
+		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+		{{ sources|raw }}
+	{% endif %}
+
+	<hr>
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.country.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
+
+	{% if entity.tags is not empty %}
+		<br>
+		{% set tags = json_decode(entity.tags)|column("value") %}
+		<fieldset class="p-2">
+			<legend class="ml-2 float-none"> {{ "quotation.read.Tags"|trans([], "validators") }} </legend>
+			{% for tag in tags %}
+				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+			{% endfor %}
+		</fieldset>
+	{% endif %}
+	<br>
+
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

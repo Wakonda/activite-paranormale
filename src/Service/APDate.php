@@ -36,7 +36,7 @@
 			return $patternGenerator->getBestPattern($skeleton);
 		}
 
-		public function doPartialDate(?string $partialDate, $locale)
+		public function doPartialDate(?string $partialDate, $locale, $skeleton = null)
 		{
 			$isBC = str_starts_with($partialDate, "-");
 			$partialDate = trim($partialDate, "-");
@@ -56,19 +56,30 @@
 			$month = null;
 			$year = null;
 
-			if(count($dateArray) == 1) {
-				$skeleton = "YYYY".$bc;
-				$year = $dateArray[0];
-				$partialDate = $partialDate."-01-01";
-			} elseif(isset($dateArray[2]) and !empty($dateArray[2])) {
-				$skeleton = 'YYYYMMMMd'.$bc;
-				$day = $dateArray[2];
-				$month = $dateArray[1];
-				$year = $dateArray[0];
+			if(!empty($skeleton)) {
+				switch($skeleton) {
+					case 'MMMMd':
+						$month = $dateArray[0];
+						$day = $dateArray[1];
+						$year = "2000";
+						$partialDate = $year."-".$month."-".$day;
+						break;
+				}
 			} else {
-				$skeleton = 'YYYYMMMM'.$bc;
-				$month = $dateArray[1];
-				$year = $dateArray[0];
+				if(count($dateArray) == 1) {
+					$skeleton = "YYYY".$bc;
+					$year = $dateArray[0];
+					$partialDate = $partialDate."-01-01";
+				} elseif(isset($dateArray[2]) and !empty($dateArray[2])) {
+					$skeleton = 'YYYYMMMMd'.$bc;
+					$day = $dateArray[2];
+					$month = $dateArray[1];
+					$year = $dateArray[0];
+				} else {
+					$skeleton = 'YYYYMMMM'.$bc;
+					$month = $dateArray[1];
+					$year = $dateArray[0];
+				}
 			}
 
 			$pattern = $this->getFormat($locale, $skeleton);

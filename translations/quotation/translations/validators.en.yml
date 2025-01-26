@@ -4,6 +4,7 @@ quotation:
         Proverb: "Proverb"
         Poem: "Poem"
         Humor: "Humor"
+        Saying: "Saying"
     search:
         SearchSort: "Search / Sort"
         Keywords: "Keywords"
@@ -20,6 +21,7 @@ quotation:
         Proverb: "Proverb"
         Poem: "Poem"
         Humor: "Humor"
+        Saying: "Saying"
         Read: "Read"
     read:
         Explanation: "Explanation"
@@ -30,6 +32,7 @@ quotation:
         Proverb: "Proverb"
         Poem: "Poem"
         Humor: "Humor"
+        Saying: "Saying"
         Source: "Source"
         Language: "Language"
         Explanation: "Explanation"
@@ -42,6 +45,7 @@ quotation:
         Title: "Title"
         Text: "Text"
         Country: "Country"
+        Date: "Date"
     imageGenerator:
         Generate: "Generate an image"
         Image: "Image"

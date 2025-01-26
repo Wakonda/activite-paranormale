@@ -81,6 +81,9 @@ class QuotationRepository extends EntityRepository
 		} elseif($family == Quotation::PROVERB_FAMILY) {
 			$aColumns = ['c.id', 'c.textQuotation', 'a.title'];
 			$qb->join('c.country', 'a');
+		} elseif($family == Quotation::SAYING_FAMILY) {
+			$aColumns = ['c.id', 'c.textQuotation', 'a.title'];
+			$qb->join('c.country', 'a');
 		} elseif($family == Quotation::HUMOR_FAMILY) {
 			$aColumns = ['c.id', 'c.textQuotation'];
 		}
@@ -111,7 +114,7 @@ class QuotationRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
-	public function getProverbDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, $count = false)
+	public function getDatatablesByCountryForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $countryId, $language, $family, $count = false)
 	{
 		$aColumns = ['c.textQuotation', null];
 
@@ -120,7 +123,7 @@ class QuotationRepository extends EntityRepository
 		   ->where('l.abbreviation = :language')
 		   ->setParameter('language', $language)
 		   ->andWhere("c.family = :family")
-		   ->setParameter("family", Quotation::PROVERB_FAMILY)
+		   ->setParameter("family", $family)
 		   ->andWhere("c.country = :countryId")
 		   ->setParameter("countryId", $countryId);
 

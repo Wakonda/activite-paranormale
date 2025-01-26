@@ -11,14 +11,16 @@
 	</thead>
 	<tbody>
 		{% for key, e in entities_other_languages(entity) %}
-			<tr>
-				<td>{{ e.title }}</td>
-				<td>{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()~e.language.logo) }}" width="20" />{% endif %}</td>
-				<td>
-					<a href="{{ path(showRoute, {'id' : e.id }) }}"><i class="fas fa-book" aria-hidden="true"></i> {{ "admin.general.Read"|trans([], "validators") }}</a><br>
-					<a href="{{ path(editRoute, {'id' : e.id }) }}"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a>
-				</td>
-			</tr>
+			{% if e.language is not empty %}
+				<tr>
+					<td>{{ e.title }}</td>
+					<td>{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()~e.language.logo) }}" width="20" />{% endif %}</td>
+					<td>
+						<a href="{{ path(showRoute, {'id' : e.id }) }}"><i class="fas fa-book" aria-hidden="true"></i> {{ "admin.general.Read"|trans([], "validators") }}</a><br>
+						<a href="{{ path(editRoute, {'id' : e.id }) }}"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a>
+					</td>
+				</tr>
+			{% endif %}
 		{% endfor %}
 	</tbody>
 </table>

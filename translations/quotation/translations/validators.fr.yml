@@ -4,6 +4,7 @@ quotation:
         Proverb: "Proverbe"
         Poem: "Poésie"
         Humor: "Humour"
+        Saying: "Dicton"
     search:
         SearchSort: "Rechercher / Trier"
         Keywords: "Mots-clés"
@@ -20,6 +21,7 @@ quotation:
         Proverb: "Proverbe"
         Poem: "Poésie"
         Humor: "Humour"
+        Saying: "Dicton"
         Read: "Lire"
     read:
         Explanation: "Explication"
@@ -30,6 +32,7 @@ quotation:
         Proverb: "Proverbe"
         Poem: "Poésie"
         Humor: "Humour"
+        Saying: "Dicton"
         Source: "Source"
         Language: "Langue"
         Explanation: "Explication"
@@ -42,6 +45,7 @@ quotation:
         Title: "Titre"
         Text: "Texte"
         Country: "Pays"
+        Date: "Date"
     imageGenerator:
         Generate: "Générer une image"
         Image: "Image"
