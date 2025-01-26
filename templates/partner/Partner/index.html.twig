@@ -10,22 +10,26 @@
 	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/followus.webp') }}" alt="Follow us" /></p>
 	<hr>
 	{% for partner in pagination.items %}
-		<h3>{{ partner.title }}</h3>
-		<p class="image">
-		{% if partner.isActive == false %}
-			{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class' : 'inactive mx-auto d-block img-fluid bg-light p-2' })|raw }}
-		{% else %}
-			<a href="{{ partner.link }}" target="_blank" >{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class': 'mx-auto d-block img-fluid bg-light p-2'})|raw }}</a>
-		{% endif %}
-		</p>
-		{% if partner.isActive == false %}
-			<ul class="fa-ul">
-				<li>
-					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
-					{{ "partner.index.Inactive"|trans([], "validators") }}
-				</li>
-			</ul>
-		{% endif %}
+		<div class="clearfix mb-2">
+			<h3>{{ partner.title }}</h3>
+			<p class="image">
+			{% if partner.isActive == false %}
+				{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class' : 'inactive mx-auto d-block img-fluid bg-light p-2' })|raw }}
+			{% else %}
+				<a href="{{ partner.link }}" target="_blank" >{{ partner.photo|imgsize(550, 'extended/photo/partner/', true, { 'class': 'mx-auto d-block img-fluid bg-light p-2'})|raw }}</a>
+			{% endif %}
+			</p>
+			{% if partner.isActive == false %}
+				<ul class="fa-ul">
+					<li>
+						<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
+						{{ "partner.index.Inactive"|trans([], "validators") }}
+					</li>
+				</ul>
+			{% else %}
+				<a href="{{ partner.link }}" class="btn btn-warning float-end" alt="{{ partner.title }}" target="_blank">{{ 'partner.index.Display'|trans([], 'validators') }} <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+			{% endif %}
+		</div>
 	{% endfor %}
 	<hr class="hr2">
 	<br>

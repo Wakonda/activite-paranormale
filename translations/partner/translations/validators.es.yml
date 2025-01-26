@@ -2,6 +2,7 @@ partner:
     index:
         Partner: "Socio"
         Inactive: "Inactivo"
+        Display: "Mostrar"
     admin:
         Title: "Titulo"
         Link: "Link"

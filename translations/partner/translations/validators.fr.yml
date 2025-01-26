@@ -2,6 +2,7 @@ partner:
     index:
         Partner: "Suivez-vous"
         Inactive: "Inactif"
+        Display: "Afficher"
     admin:
         Title: "Titre"
         Link: "Lien"
