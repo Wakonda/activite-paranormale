@@ -113,7 +113,8 @@ eventMessage:
         Horoscope: "Horoscope"
         Convention: "Conférence"
         Festival: "Festival"
-        Saint: "Saints"
+        Saint: "Saint"
+        Saying: "Dicton"
         NoEventToday: "Aucun événement aujourd'hui"
         NoEvent: "Aucun événement"
 rssFeed:

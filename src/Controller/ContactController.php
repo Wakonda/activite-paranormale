@@ -51,13 +51,13 @@ class ContactController extends AbstractController
 			
 			if(!in_array($entity->getEmailContact(), $blackLists)) {
 				try {
-				$email = (new Email())
-					->from($entity->getEmailContact())
-					->to($_ENV["MAILER_CONTACT"])
-					->subject($entity->getSubjectContact())
-					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+					$email = (new Email())
+						->from($entity->getEmailContact())
+						->to($_ENV["MAILER_CONTACT"])
+						->subject($entity->getSubjectContact())
+						->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
 
-				$mailer->send($email);
+					$mailer->send($email);
 				} catch (TransportException $e) {
 				}
 

@@ -56,6 +56,9 @@
 		}
 
 		public function getImageEntity($entity) {
+			if(empty($entity))
+				return null;
+
 			if(!empty($photo = $entity->getPhoto())) {
 				$baseurl = $this->requestStack->getCurrentRequest()->getSchemeAndHttpHost().$this->requestStack->getCurrentRequest()->getBasePath();
 				return $baseurl."/".$entity->getAssetImagePath().$photo;

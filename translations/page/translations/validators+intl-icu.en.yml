@@ -114,7 +114,8 @@ eventMessage:
         Horoscope: "Horoscope"
         Convention: "Convention"
         Festival: "Festival"
-        Saint: "Saints"
+        Saint: "Saint"
+        Saying: "Saying"
         NoEventToday: "No event today"
         NoEvent: "No event"
 rssFeed:

@@ -10,6 +10,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mailer\Exception\TransportException;
 
 use App\Entity\Video;
 use App\Entity\Contact;
@@ -151,7 +152,7 @@ class VideoController extends AbstractController
 		if($form->get("captcha")->getData() != $request->getSession()->get("captcha_word"))
 			$form->get('captcha')->addError(new \Symfony\Component\Form\FormError($translator->trans('captcha.error.InvalidCaptcha', [], 'validators')));
 
-		if($form->isValid() and $form->isSubmitted()) {
+		if($form->isSubmitted() and $form->isValid()) {
 			$entity  = new Contact();
 			$entity->setDateContact(new \DateTime("now"));
 			$entity->setStateContact(0);
@@ -160,13 +161,16 @@ class VideoController extends AbstractController
 			$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
 			$entity->setSubjectContact("Suppression d'une vidéo");
 
-			$email = (new Email())
-				->from($_ENV["MAILER_CONTACT"])
-				->to($_ENV["MAILER_CONTACT"])
-				->subject("Suppression d'une vidéo")
-				->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
+			try {
+				$email = (new Email())
+					->from($_ENV["MAILER_CONTACT"])
+					->to($_ENV["MAILER_CONTACT"])
+					->subject("Suppression d'une vidéo")
+					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
 
-			$mailer->send($email);
+				$mailer->send($email);
+			} catch (TransportException $e) {
+			}
 
 			$em->persist($entity);
 			$em->flush();

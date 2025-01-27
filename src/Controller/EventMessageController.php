@@ -15,6 +15,7 @@ use App\Entity\Language;
 use App\Entity\Theme;
 use App\Entity\State;
 use App\Entity\User;
+use App\Entity\Quotation;
 use App\Entity\FileManagement;
 use App\Form\Type\EventMessageUserParticipationType;
 use App\Service\APImgSize;
@@ -440,12 +441,12 @@ class EventMessageController extends AbstractController
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
 		$yearForDateTime = $year < 0 ? "-".str_pad(abs($year), 4, "0", STR_PAD_LEFT) : $year;
 
+		$res = [];
+		$currentEvent = [];
+
 		$currentDate = new \DateTime($yearForDateTime."-".$month."-".$day);
 
 		$bc = $translator->trans("eventMessage.dayMonth.BC", [], "validators");
-
-		$res = [];
-		$currentEvent = [];
 
 		$entities = $em->getRepository(EventMessage::class)->getAllEventsByDayAndMonth($day, $month, $request->getLocale());
 
@@ -512,7 +513,15 @@ class EventMessageController extends AbstractController
 			"previous" => ["date" => $previous, "url" => $this->generateUrl("EventMessage_SelectDayMonth", ["year" => $previous->format("Y"), "month" => $previous->format("m"), "day" => $previous->format("d")])],
 			"next" => ["date" => $next, "url" => $this->generateUrl("EventMessage_SelectDayMonth", ["year" => $next->format("Y"), "month" => $next->format("m"), "day" => $next->format("d")])]
 		];
-// dd($currentEvent, (clone $currentDate)->modify("-1 day"), (clone $currentDate)->modify("+1 day"));
+
+		$entities = $em->getRepository(Quotation::class)->getSayingsByDateAndLocale($month, $day, $request->getLocale());
+
+		foreach($entities as $entity) {
+			$res[Quotation::SAYING_FAMILY][""][""][] = [
+				"title" => '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20px" height="13px"> <i>'.$entity->getTextQuotation().'</i>'
+			];
+		}
+
 		return $this->render("page/EventMessage/dayMonthEvent.html.twig", [
 			"res" => $res,
 			"currentEvent" => $currentEvent,

@@ -54,7 +54,7 @@ class NewsController extends AbstractController
 		]);
     }
 	
-	public function readNewsAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
+	public function readNewsAction(Request $request, EntityManagerInterface $em, $id, $title_slug = null)
 	{
 		$entity = $em->getRepository(News::class)->findByDisplayState($id);
 

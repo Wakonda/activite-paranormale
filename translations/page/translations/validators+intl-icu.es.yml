@@ -112,6 +112,7 @@ eventMessage:
         Convention: "Conferencia"
         Festival: "Festival"
         Saint: "Santos"
+        Saying: "Refrán"
         NoEventToday: "No hay acontecimiento hoy"
         NoEvent: "No acontecimiento"
 rssFeed:

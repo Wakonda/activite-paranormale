@@ -259,4 +259,16 @@ class QuotationRepository extends EntityRepository
 
 		return $qb->getQuery();
 	}
+
+	public function getSayingsByDateAndLocale($month, $day, $locale) {
+		$qb = $this->createQueryBuilder('c');
+		
+		$qb->join('c.language', 'l')
+		   ->where('l.abbreviation = :locale')
+		   ->andWhere('c.date = :date')
+		   ->setParameter('locale', $locale)
+		   ->setParameter('date', $month."-".$day);
+		   
+		return $qb->getQuery()->getResult();
+	}
 }
