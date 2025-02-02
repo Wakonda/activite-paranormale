@@ -233,6 +233,21 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 		return $qb->getQuery()->getResult();
 	}
+	
+	public function getAllEventsByFeastDay($feastDay, $language)
+	{
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $language)
+			->andWhere("c.feastDay = :feastDay")
+			->setParameter("feastDay", $feastDay);
+
+		return $qb->getQuery()->getResult();
+	}
+
+
 
 	public function getAllEventsByMonthOrYear($year, $month, $language)
 	{

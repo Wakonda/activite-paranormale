@@ -64,6 +64,11 @@
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.blogger_form(entity, "magic_fr") }}
-		{{ macro_index.twitter_form(entity) }}
+		{{ macro_index.twitter_form(entity, "magic_fr") }}
 	{% endif %}
+{% endblock %}
+
+{% block js_specific %}
+	{% import "index/macro/macro_index.html.twig" as macro_index %}
+	{{ macro_index.twitter_form_js() }}
 {% endblock %}

@@ -615,7 +615,11 @@ class EventMessageController extends AbstractController
 
 				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			}
+		}
+		
+		$saints = $em->getRepository(Biography::class)->getAllEventsByFeastDay($month."-".$day, $request->getLocale());
 
+		foreach($saints as $entity) {
 			if(!empty($entity->getFeastDay())) {
 				$res[EntityLinkBiography::SAINT_OCCUPATION][""][""][] = [
 					"title" => $entity->getTitle(),
