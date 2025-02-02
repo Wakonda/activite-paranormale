@@ -41,32 +41,7 @@ class SavingCommonData
         $entity = $args->getEntity();
         $entityManager = $args->getEntityManager();
 
-		if(get_parent_class($entity) == 'App\Entity\MappedSuperclassBase')
-		{
-			$text = $entity->getText();
-			$text = $this->purifierText($text);
-
-			if(method_exists($entity, 'getAssetImagePath'))
-				$text = $this->saveImageFromUrlFromText($text, $entity);
-
-			if(str_contains($text, "<h2>")) {
-				$text = str_replace("<h5>", "<h6>", $text);
-				$text = str_replace("<h4>", "<h5>", $text);
-				$text = str_replace("<h3>", "<h4>", $text);
-				$text = str_replace("<h2>", "<h3>", $text);
-
-				$text = str_replace("</h5>", "</h6>", $text);
-				$text = str_replace("</h4>", "</h5>", $text);
-				$text = str_replace("</h3>", "</h4>", $text);
-				$text = str_replace("</h2>", "</h3>", $text);
-			}
-
-			$text = str_replace("<hr>", "", $text);
-
-			$parser = new APParseHTML();
-			$text = $parser->centerImageInHTML($text, $entity);
-			$entity->setText($text);
-		}
+		$this->cleanText($entity);
     }
 
 	public function postPersist(LifecycleEventArgs $args): void
@@ -151,5 +126,36 @@ class SavingCommonData
 			$meta = $entityManager->getClassMetadata(get_class($entity));
 			$uow->recomputeSingleEntityChangeSet($meta, $entity);
 		}
+
+		$this->cleanText($entity);
     }
+
+	private function cleanText($entity) {
+		if(method_exists($entity, "setText"))
+		{
+			$text = $entity->getText();
+			$text = $this->purifierText($text);
+
+			if(method_exists($entity, 'getAssetImagePath'))
+				$text = $this->saveImageFromUrlFromText($text, $entity);
+
+			if(str_contains($text, "<h2>")) {
+				$text = str_replace("<h5>", "<h6>", $text);
+				$text = str_replace("<h4>", "<h5>", $text);
+				$text = str_replace("<h3>", "<h4>", $text);
+				$text = str_replace("<h2>", "<h3>", $text);
+
+				$text = str_replace("</h5>", "</h6>", $text);
+				$text = str_replace("</h4>", "</h5>", $text);
+				$text = str_replace("</h3>", "</h4>", $text);
+				$text = str_replace("</h2>", "</h3>", $text);
+			}
+
+			$text = str_replace("<hr>", "", $text);
+
+			$parser = new APParseHTML();
+			$text = $parser->centerImageInHTML($text, $entity);
+			$entity->setText($text);
+		}
+	}
 }

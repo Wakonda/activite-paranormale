@@ -13,7 +13,6 @@ movie:
         Occupations: "Occupations"
         Genre: "Genre"
     search:
-        Validate: "Validate"
         PublicationDateUp: "Publication date ↑"
         PublicationDateDown: "Publication date ↓"
         TitleUp: "Title ↑"
@@ -175,7 +174,6 @@ televisionSerie:
         Keywords: "Keywords"
         Genre: "Genre"
         Sort: "Sort"
-        Validate: "Validate"
         NoMatchingRecordsFound: "No matching records found"
         PublicationDateUp: "Publication date ↑"
         PublicationDateDown: "Publication date ↓"

@@ -82,7 +82,6 @@ witchcraftTool:
         PublicationDateUp: "Date de publication ↑"
         PublicationDateDown: "Date de publication ↓"
         Sort: "Trier par"
-        Validate: "Valider"
         Read: "Lire"
         NoMatchingRecordsFound: "Aucun élément à afficher"
         MoreDetails: "Plus de détails"

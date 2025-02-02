@@ -291,6 +291,9 @@ class WitchcraftController extends AbstractController
 			$datas = $form->getData();
 		}
 
+		if($request->query->has("reset"))
+			$datas = [];
+
 		$query = $em->getRepository(WitchcraftTool::class)->getWitchcraftTools($datas, $request->getLocale());
 		$themes = $em->getRepository(WitchcraftThemeTool::class)->getThemeByLanguage($request->getLocale());
 

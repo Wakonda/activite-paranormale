@@ -65,6 +65,13 @@ class Biography implements Interfaces\PhotoIllustrationInterface
      */
     private $deathDate;
 
+    /**
+     * @var date $feastDay
+     *
+     * @ORM\Column(name="feastDay", type="string", length=12, nullable=true)
+     */
+    private $feastDay;
+
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Region")
 	 * @Groups("api_read")
@@ -429,6 +436,16 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     public function getDeathDate()
     {
         return $this->deathDate;
+    }
+
+    public function setFeastDay($feastDay)
+    {
+        $this->feastDay = $feastDay;
+    }
+
+    public function getFeastDay()
+    {
+        return $this->feastDay;
     }
 
     public function setNationality($nationality)

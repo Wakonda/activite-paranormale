@@ -38,6 +38,9 @@ class BookController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid())
 			$datas = $form->getData();
 
+		if($request->query->has("reset"))
+			$datas = [];
+
 		$query = $em->getRepository(Book::class)->getBooks($datas, $request->getLocale());
 
 		$pagination = $paginator->paginate(

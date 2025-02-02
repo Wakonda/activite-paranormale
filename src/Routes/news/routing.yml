@@ -13,6 +13,12 @@ News_ReadNews:
     requirements:
        title: .+
 
+Archive_Old_ReadNews:
+    path: /ArchiveRead-{id}-{title}.ap
+    controller: App\Controller\NewsController::readNewsAction
+    requirements:
+       title: .+
+
 News_ReadNews_New:
     path: /news/read/{id}/{title_slug}
     controller: App\Controller\NewsController::readNewsAction

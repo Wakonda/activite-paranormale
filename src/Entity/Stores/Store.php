@@ -47,6 +47,7 @@ class Store
 	const WITCHCRAFT_TOOL_CATEGORY = "witchcraftTool";
 	const STICKER_CATEGORY = "sticker";
 	const MUG_CATEGORY = "mug";
+	const JEWEL_CATEGORY = "jewel";
 	
     /**
      * @var integer $id
@@ -177,6 +178,10 @@ class Store
 	
 	public function isStickerCategory(): bool {
 		return $this->category == self::STICKER_CATEGORY;
+	}
+	
+	public function isJewelCategory(): bool {
+		return $this->category == self::JEWEL_CATEGORY;
 	}
 	
 	public function isMugCategory(): bool {

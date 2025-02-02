@@ -8,6 +8,8 @@
 {% endif %}
 
 <script>
+	var action = null;
+
 	document.addEventListener('DOMContentLoaded', function () {
 		table = $('table.doc_datatables').DataTable( {
 			"language": {
@@ -33,7 +35,8 @@
 				"url": "{{ path(route) }}",
 				"type": "GET",
 				"data": function(d) {
-					d.form = $("#{{ form.vars.id }}").serialize()
+					d.form = $("#{{ form.vars.id }}").serialize(),
+					d.action = action
 				}
 			},
 				"preDrawCallback": function(settings) {
@@ -50,6 +53,7 @@
 		{% endif %}
 
 		document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
+			action = e.submitter.getAttribute("name");
 			e.preventDefault();
 			let valFilter = document.getElementById("{{ form.keywords.vars.id }}").value;
 			let valSort = document.getElementById("{{ form.sort.vars.id }}").value;
@@ -90,7 +94,9 @@
 		<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-select'}}) }}</div>
 	</div>
 	{{ form_rest(form) }}
-	<button type="submit" class="btn submitcomment float-end">{{ "quotation.search.Validate"|trans([], "validators") }}</button>
+	<button type="submit" class="btn submitcomment float-end mt-3"><i class="fa-solid fa-magnifying-glass"></i> {{ "index.search.Validate"|trans([], "validators") }}</button>
+	<button type="submit" name="reset" class="btn btn-danger float-start mt-3"><i class="fa-solid fa-trash-can"></i> {{ "index.search.Reset"|trans([], "validators") }}</button>
 {{ form_end(form) }}
+<br>
 <br>
 <hr>

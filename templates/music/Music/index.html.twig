@@ -11,6 +11,8 @@
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
 	<script>
+		var action = null;
+
 		document.addEventListener('DOMContentLoaded', function () {
 			oTable = $('table.music_datatables').DataTable( {
 				"language": {
@@ -29,7 +31,8 @@
 					"url": "{{ path('Music_ListDatatables') }}",
 					"type": "GET",
 					"data": function(d) {
-						d.form = $("#{{ form.vars.id }}").serialize()
+						d.form = $("#{{ form.vars.id }}").serialize(),
+						d.action = action
 					}
 				},
 				"preDrawCallback": function( settings ) {
@@ -41,6 +44,7 @@
 			});
 		
 			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
+				action = e.submitter.getAttribute("name");
 				e.preventDefault();
 				oTable.ajax.reload();
 			});
@@ -69,8 +73,10 @@
 			<div class="form-table-cell">{{ form_errors(form.bandStartingWith) }}{{ form_widget(form.bandStartingWith, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-end">{{ "artist.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3"><i class="fa-solid fa-magnifying-glass"></i> {{ "index.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" name="reset" class="btn btn-danger float-start mt-3"><i class="fa-solid fa-trash-can"></i> {{ "index.search.Reset"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
+	<br>
 	<br>
 	<hr>
 	<br>

@@ -80,6 +80,7 @@ class BiographyAdminType extends AbstractType
 			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Biography_Admin_ShowImageSelectorColorbox'))
 			->add('birthDate', DatePartialType::class, ['required' => false])
 			->add('deathDate', DatePartialType::class, ['required' => false])
+			->add('feastDay', DatePartialType::class, ['required' => false, "year" => false])
 			->add('nationality', EntityType::class, array('class'=>'App\Entity\Region',
 					'choice_label'=>'title',
 					'required' => false,

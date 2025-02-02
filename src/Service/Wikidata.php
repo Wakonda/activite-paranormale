@@ -2,26 +2,25 @@
 	namespace App\Service;
 
 	use Doctrine\ORM\EntityManagerInterface;
-	
 	use App\Entity\Biography;
 	use App\Entity\Region;
 	use App\Entity\Language;
 	use App\Entity\Licence;
 	use App\Service\Identifier;
-	
+
 	class Wikidata {
 		private $em;
-		
+
 		public function __construct(EntityManagerInterface $em)
 		{
 			$this->em = $em;
 		}
-		
+
 		public function getTitleAndUrl(string &$code, string $language): array
 		{
 			if(empty($code))
 				return [];
-	
+
 			$res = [];
 			$languageWiki = $language."wiki";
 
@@ -33,7 +32,7 @@
 
 			if(property_exists($datas, "error"))
 				return [];
-			
+
 			$title = null;
 			$url = null;
 
@@ -55,7 +54,7 @@
 			$res["title"] = ucfirst($title);
 			$res["url"] = $url;
 			$res["code"] = $code;
-			
+
 			return $res;
 		}
 
@@ -73,10 +72,10 @@
 
 			if(property_exists($datas->entities->$code->claims, "P2002"))
 				$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P2397"))
 				$res["socialNetwork"]["youtube"] = "https://www.youtube.com/channel/".$datas->entities->$code->claims->P2397[0]->mainsnak->datavalue->value;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P7085"))
 				$res["socialNetwork"]["facebook"] = "https://www.facebook.com/".$datas->entities->$code->claims->P7085[0]->mainsnak->datavalue->value;
 			
@@ -87,12 +86,12 @@
 				$res["socialNetwork"]["link"] = $datas->entities->$code->claims->P856[0]->mainsnak->datavalue->value;
 
 			$birthDate = null;
-			
+
 			if(property_exists($datas->entities->$code->claims, "P569")) {
 				$birthDate = $datas->entities->$code->claims->P569[0]->mainsnak->datavalue->value->time;
 				$birthDate = date_parse($birthDate);
 			}
-			
+
 			if(property_exists($datas->entities->$code->claims, "P21")) {
 				$res["gender"] = $this->getPropertyValue($datas->entities->$code->claims->P21[0]->mainsnak->datavalue->value->id, "en");
 			}
@@ -114,14 +113,29 @@
 			if(property_exists($datas->entities->$code->claims, "P570")) {
 				$deathDate = $datas->entities->$code->claims->P570[0]->mainsnak->datavalue->value->time;
 				$deathDate = date_parse($deathDate);
-				
+
 				$res["deathDate"] = [
 					"year" => !empty($deathDate["year"]) ? $deathDate["year"] : null,
 					"month" => !empty($deathDate["year"]) ? $deathDate["month"] : null,
 					"day" => !empty($deathDate["year"]) ? $deathDate["day"] : null
 				];
 			}
-			
+
+			$res["feastDay"] = [
+				"month" => null,
+				"day" => null
+			];
+
+			if(property_exists($datas->entities->$code->claims, "P841")) {
+				$feastDay = $this->getPropertyValue($datas->entities->$code->claims->P841[0]->mainsnak->datavalue->value->id);
+				$feastDay = \DateTime::createFromFormat("F d", $feastDay);
+
+				$res["feastDay"] = [
+					"month" => intval($feastDay->format("m")),
+					"day" => intval($feastDay->format("d"))
+				];
+			}
+
 			$res["nationality"]["country"]["id"] = null;
 			
 			if(property_exists($datas->entities->$code->claims, "P27")) {

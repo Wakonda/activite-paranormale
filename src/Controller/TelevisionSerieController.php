@@ -30,6 +30,9 @@ class TelevisionSerieController extends AbstractController
 		if ($form->isSubmitted() && $form->isValid())
 			$datas = $form->getData();
 
+		if($request->query->has("reset"))
+			$datas = [];
+
 		$query = $em->getRepository(TelevisionSerie::class)->getTelevisionSeries($datas, $request->getLocale());
 
 		$pagination = $paginator->paginate(

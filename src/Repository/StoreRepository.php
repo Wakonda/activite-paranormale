@@ -220,11 +220,22 @@ class StoreRepository extends EntityRepository
 			$qb->andWhere("b.category = :category")
 			   ->setParameter("category", $c);
 		}
-		
+
 		if(isset($datas["platform"]) and !empty($c = $datas["platform"]))
 		{
 			$qb->andWhere("b.platform = :platform")
 			   ->setParameter("platform", $c);
+		}
+
+		if(isset($datas["keywords"]) and !empty($c = $datas["keywords"])) {
+			$fields = ["b.title", "b.text"];
+			$orWhere = [];
+
+			foreach($fields as $field)
+				$orWhere[] = $field." LIKE :keyword";
+
+			$qb->andWhere(implode(" OR ", $orWhere));
+			$qb->setParameter("keyword", "%$c%");
 		}
 
 		$qb->setFirstResult($offset)

@@ -46,10 +46,8 @@ class WitchcraftToolAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 
 		//Default values
-		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $entityBindded->getLanguage(), "internationalName" => "magic"]);
 		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $entityBindded->getLanguage()]);
 		$state = $em->getRepository(State::class)->findOneBy(["internationalName" => "Validate", "language" => $entityBindded->getLanguage()]);
-		$entityBindded->setTheme($theme);
 		$entityBindded->setLicence($licence);
 		$entityBindded->setState($state);
 	}

@@ -36,7 +36,6 @@ artist:
         Genre: "Style"
         Country: "País"
         BandStartingWith: "Grupo que comienza por"
-        Validate: "Validar"
 musicGenre:
     admin:
         Title: "Titulo"

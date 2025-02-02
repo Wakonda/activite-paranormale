@@ -30,7 +30,6 @@ book:
         PublicationDateUp: "Publication date ↑"
         PublicationDateDown: "Publication date ↓"
         Sort: "Sort by"
-        Validate: "Validate"
         Read: "Read"
         NoMatchingRecordsFound: "No matching records found"
         LiteraryGenre: "Literary genre"

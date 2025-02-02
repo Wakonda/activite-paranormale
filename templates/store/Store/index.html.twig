@@ -23,8 +23,13 @@
 			<div class="form-table-cell form-table-cell-head">{{ form_label(form.platform, "store.search.Platform"|trans([], "validators")) }}</div>
 			<div class="form-table-cell">{{ form_errors(form.platform) }}{{ form_widget(form.platform, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(form.keywords, "store.search.Keywords"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(form.keywords) }}{{ form_widget(form.keywords, {'attr':{'class' : 'form-select'}}) }}</div>
+		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-end mt-3">{{ "store.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3"><i class="fa-solid fa-magnifying-glass"></i> {{ "index.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" name="reset" class="btn btn-danger float-start mt-3"><i class="fa-solid fa-trash-can"></i> {{ "index.search.Reset"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<br>

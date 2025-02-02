@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -35,14 +36,16 @@ class StoreSearchType extends AbstractType
 				$this->translator->trans("store.index.".ucfirst(Store::FUNNY_CATEGORY), [], 'validators') => Store::FUNNY_CATEGORY,
 				$this->translator->trans("store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY), [], 'validators') => Store::GOTHIC_CLOTH_CATEGORY,
 				$this->translator->trans("store.index.".ucfirst(Store::MUG_CATEGORY), [], 'validators') => Store::MUG_CATEGORY,
-				$this->translator->trans("store.index.".ucfirst(Store::STICKER_CATEGORY), [], 'validators') => Store::STICKER_CATEGORY
+				$this->translator->trans("store.index.".ucfirst(Store::STICKER_CATEGORY), [], 'validators') => Store::STICKER_CATEGORY,
+				$this->translator->trans("store.index.".ucfirst(Store::JEWEL_CATEGORY), [], 'validators') => Store::JEWEL_CATEGORY
 			];
 
 		ksort($categories);
 
         $builder
 			->add('category', ChoiceType::class, ['choices' => $categories, 'expanded' => false, 'multiple' => false, "required" => false])
-			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM, ucfirst(Store::TEMU_PLATFORM) => Store::TEMU_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators']);
+			->add('platform', ChoiceType::class, ['choices' => [ucfirst(Store::ALIEXPRESS_PLATFORM) => Store::ALIEXPRESS_PLATFORM, ucfirst(Store::AMAZON_PLATFORM) => Store::AMAZON_PLATFORM, ucfirst(Store::SPREADSHOP_PLATFORM) => Store::SPREADSHOP_PLATFORM, ucfirst(Store::TEMU_PLATFORM) => Store::TEMU_PLATFORM], 'expanded' => false, 'multiple' => false, 'required' => false, 'translation_domain' => 'validators'])
+            ->add('keywords', TextType::class, ['required' => false]);
 		;
     }
 

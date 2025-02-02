@@ -155,7 +155,8 @@ class StoreAdminType extends AbstractType
 						$this->translator->trans("store.index.".ucfirst(Store::FUNNY_CATEGORY), [], 'validators') => Store::FUNNY_CATEGORY,
 						$this->translator->trans("store.index.".ucfirst(Store::GOTHIC_CLOTH_CATEGORY), [], 'validators') => Store::GOTHIC_CLOTH_CATEGORY,
 						$this->translator->trans("store.index.".ucfirst(Store::MUG_CATEGORY), [], 'validators') => Store::MUG_CATEGORY,
-						$this->translator->trans("store.index.".ucfirst(Store::STICKER_CATEGORY), [], 'validators') => Store::STICKER_CATEGORY
+						$this->translator->trans("store.index.".ucfirst(Store::STICKER_CATEGORY), [], 'validators') => Store::STICKER_CATEGORY,
+						$this->translator->trans("store.index.".ucfirst(Store::JEWEL_CATEGORY), [], 'validators') => Store::JEWEL_CATEGORY
 				];
 
 				ksort($categories);

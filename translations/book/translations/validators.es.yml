@@ -30,7 +30,6 @@ book:
         PublicationDateUp: "Fecha de publicación ↑"
         PublicationDateDown: "Fecha de publicación ↓"
         Sort: "Ordenar por"
-        Validate: "Validar"
         Read: "Leer"
         NoMatchingRecordsFound: "No se encontraron resultados"
         LiteraryGenre: "Género"

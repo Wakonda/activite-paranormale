@@ -33,6 +33,9 @@ class StoreController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid() && isset($datas[$form->getName()]))
 			$datas = $datas[$form->getName()];
+		
+		if($request->query->has("reset"))
+			$datas = [];
 
 		$query = $em->getRepository(Store::class)->getStores($datas, $nbMessageByPage, $page, $request->getLocale());
 

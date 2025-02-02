@@ -48,18 +48,18 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->where('l.abbreviation = :locale')
 		   ->setParameter('locale', $locale);
 
-		if(!empty($title = $datas["title"])) {
+		if(isset($datas["title"]) and !empty($title = $datas["title"])) {
 			$search = "%".$title."%";
 			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
 
-		if(!empty($occupation = $datas["occupation"])) {
+		if(isset($datas["occupation"]) and !empty($occupation = $datas["occupation"])) {
 			$qb->join(EntityLinkBiography::class, "elb", \Doctrine\ORM\Query\Expr\Join::WITH, "elb.biography = c.id")
 			   ->andWhere('elb.occupation = :occupation')
 			   ->setParameter('occupation', $occupation);
 		}
-		if(!empty($country = $datas["country"])) {
+		if(isset($datas["country"]) and !empty($country = $datas["country"])) {
 			$qb->join("c.nationality", "co")
 			   ->andWhere('co.internationalName = :abbreviation')
 			   ->setParameter('abbreviation', $country->getInternationalName());

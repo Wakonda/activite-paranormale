@@ -22,7 +22,9 @@
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
+		var action = null;
+
+		document.addEventListener('DOMContentLoaded', function (e) {
 			oTable = $('table.document_datatables').DataTable( {
 				"language": {
 					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
@@ -40,7 +42,8 @@
 					"url": "{{ path('Document_ListDatatables') }}",
 					"type": "GET",
 					"data": function(d) {
-						d.form = $("#{{ form.vars.id }}").serialize()
+						d.form = $("#{{ form.vars.id }}").serialize(),
+						d.action = action
 					}
 				},
 				"preDrawCallback": function( settings ) {
@@ -52,6 +55,7 @@
 			});
 
 			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
+				action = e.submitter.getAttribute("name");
 				e.preventDefault();
 				oTable.ajax.reload();
 			});
@@ -78,9 +82,10 @@
 			<div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-end">{{ "document.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3"><i class="fa-solid fa-magnifying-glass"></i> {{ "index.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" name="reset" class="btn btn-danger float-start mt-3"><i class="fa-solid fa-trash-can"></i> {{ "index.search.Reset"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
-	<br><hr><br>
+	<br><br><hr><br>
 	<table class="document_datatables dt-responsive w-100">
 		<thead>
 			<tr>

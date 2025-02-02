@@ -30,6 +30,7 @@ class EntityLinkBiography implements Interfaces\BiographyInterface
 	const ALCHEMIST_OCCUPATION = "alchemist";
 	const POLITICIAN_OCCUPATION = "politician";
 	const SCIENTIST_OCCUPATION = "scientist";
+	const SAINT_OCCUPATION = "saint";
 
     /**
      * @var integer $id
@@ -64,7 +65,8 @@ class EntityLinkBiography implements Interfaces\BiographyInterface
 			self::OCCULTIST_OCCUPATION,
 			self::ALCHEMIST_OCCUPATION,
 			self::POLITICIAN_OCCUPATION,
-			self::SCIENTIST_OCCUPATION
+			self::SCIENTIST_OCCUPATION,
+			self::SAINT_OCCUPATION
 		];
 	}
 	

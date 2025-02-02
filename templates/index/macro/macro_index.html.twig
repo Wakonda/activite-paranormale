@@ -454,7 +454,7 @@
 						
 						<textarea id="telegram_area" name="telegram_area" rows="3" cols="70" class="form-control" data-tags="{{ tagsArray|json_encode }}">{% if text is not null %}{{ ((text|replace({"\n": " ", "\r": " ", "\t": " "}))|striptags)|raw }}{% else %}{{ entity.title }}{% endif %}</textarea>
 						<br>
-						<input type="url" placeholder="https://example.com" name="diaspora_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
+						<input type="url" placeholder="https://example.com" name="telegram_url" class="form-control" value="{{ url(entity.showRoute, {id: entity.id, title_slug: entity.urlSlug}) }}" />
 						<br>
 						<input value="{{ "admin.general.Send"|trans([], "validators") }}" id="tweet" type="submit" class="btn btn-outline-secondary" />
 					</form>
@@ -466,7 +466,7 @@
 {% endmacro %}
 
 {% macro telegram_form_js() %}
-	{{ _self.generic_tags("diaspora_area", "tags_diaspora") }}
+	{{ _self.generic_tags("telegram_area", "tags_telegram") }}
 {% endmacro %}
 
 {% macro vk_form(entity, text = null) %}

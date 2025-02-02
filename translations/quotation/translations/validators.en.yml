@@ -12,7 +12,6 @@ quotation:
         PublicationDateUp: "Publication date ↑"
         PublicationDateDown: "Publication date ↓"
         Sort: "Sort by"
-        Validate: "Validate"
         TotalNumber: "Total number:"
     list:
         Author: "Author"
@@ -83,6 +82,7 @@ biography:
         Occupations: "Occupations"
         ThisItemCannotBeDeleted: "This item cannot be deleted."
         Gender: "Gender"
+        FeastDay: "Feast"
     index:
         Quotations: "Quotations"
         NoQuotation: "No quotation"
@@ -131,6 +131,7 @@ biography:
         Politician: "Politician"
         Scientist: "Scientist"
         Author: "Author"
+        Saint: "Saint"
     search:
         ArtistBiography: "Artist"
         MusicBiography: "Music"
@@ -144,7 +145,6 @@ biography:
         Occupation: "Occupation"
         Region: "Region"
         Nationality: "Nationality"
-        Validate: "Validate"
         NumberOfBiographies: "Number of biographies: "
     link:
         Website: "Website"

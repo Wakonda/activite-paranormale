@@ -35,9 +35,12 @@ class ArtistSearchType extends AbstractType
             ->add('genre', EntityType::class, array('class'=>'App\Entity\MusicGenre',
 					'choice_label'=>'title',
 					'required' => false,
-					'query_builder' => function(\App\Repository\MusicGenreRepository $er)
+					'query_builder' => function(\App\Repository\MusicGenreRepository $er) use ($language)
 						{
 							return $er->createQueryBuilder('u')
+							          ->join("u.language", "l")
+									  ->where("l.abbreviation = :language")
+									  ->setParameter("language", $language)
 									  ->orderBy('u.title', 'ASC');
 						},
 				))

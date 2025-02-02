@@ -16,16 +16,9 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class DatePartialType extends AbstractType
 {
-    private $transformer;
-
-    public function __construct(DatePartialTransformer $transformer)
-    {
-        $this->transformer = $transformer;
-    }
-	
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->addModelTransformer($this->transformer);
+        $builder->addModelTransformer(new DatePartialTransformer($options["year"]));
 		
 		$builder
 			->add('day', IntegerType::class, ['required' => false, "attr" => ["placeholder" => "admin.date.Day"], "translation_domain" => "validators"])

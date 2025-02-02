@@ -32,7 +32,6 @@ document:
         Title: "Título"
         Category: "Categoría"
         Theme: "Tema"
-        Validate: "Validar"
     admin:
         Title: "Título"
         Document: "Documento"

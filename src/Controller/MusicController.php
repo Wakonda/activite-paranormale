@@ -45,9 +45,14 @@ class MusicController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 
 		$form->submit($datas[$form->getName()]);
+
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
 		
-        $entities = $em->getRepository(Artist::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData());
-		$iTotal = $em->getRepository(Artist::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData(), true);
+        $entities = $em->getRepository(Artist::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $datas);
+		$iTotal = $em->getRepository(Artist::class)->getDatatablesForIndex($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $datas, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,

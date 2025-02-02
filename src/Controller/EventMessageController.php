@@ -17,6 +17,7 @@ use App\Entity\State;
 use App\Entity\User;
 use App\Entity\Quotation;
 use App\Entity\FileManagement;
+use App\Entity\EntityLinkBiography;
 use App\Form\Type\EventMessageUserParticipationType;
 use App\Service\APImgSize;
 use App\Service\APDate;
@@ -479,7 +480,9 @@ class EventMessageController extends AbstractController
 			if(!empty($entity->getBirthDate())) {
 				$isBC = str_starts_with($entity->getBirthDate(), "-");
 				$yearEvent = ($isBC ? "-" : "").str_pad(explode("-", ltrim($entity->getBirthDate(), "-"))[0], 4, "0", STR_PAD_LEFT);
-				$date = $yearEvent."-".explode("-", ltrim($entity->getBirthDate(), "-"), 2)[1];
+
+				$dateMonthDay = explode("-", ltrim($entity->getBirthDate(), "-"), 2);
+				$date = $yearEvent.((!empty($dateMonthDay) and isset($dateMonthDay[1])) ? "-".$dateMonthDay[1] : null);
 
 				if((new \DateTime($date))->format("m-d") == $month."-".$day)
 					$type = EventMessage::BIRTH_DATE_TYPE;
@@ -504,8 +507,15 @@ class EventMessageController extends AbstractController
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
 				];
 			}
+
+			if(!empty($entity->getFeastDay())) {
+				$res[EntityLinkBiography::SAINT_OCCUPATION][""][""][] = [
+					"title" => $entity->getTitle(),
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
+				];
+			}
 		}
-		
+
 		$previous = (clone $currentDate)->modify("-1 day");
 		$next = (clone $currentDate)->modify("+1 day");
 		
@@ -605,11 +615,26 @@ class EventMessageController extends AbstractController
 
 				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
 			}
+
+			if(!empty($entity->getFeastDay())) {
+				$res[EntityLinkBiography::SAINT_OCCUPATION][""][""][] = [
+					"title" => $entity->getTitle(),
+					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
+				];
+			}
 		}
 
 		foreach($photos as $key => $photo) {
 			if(empty($photo["illustration"]) or !file_exists($photo["path"].$photo["illustration"]->getRealNameFile()))
 				unset($photos[$key]);
+		}
+
+		$entities = $em->getRepository(Quotation::class)->getSayingsByDateAndLocale($month, $day, $request->getLocale());
+
+		foreach($entities as $entity) {
+			$res[Quotation::SAYING_FAMILY][""][""][] = [
+				"title" => '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="" width="20px" height="13px"> <i>'.$entity->getTextQuotation().'</i>'
+			];
 		}
 
 		return $this->render("page/EventMessage/widget.html.twig", [

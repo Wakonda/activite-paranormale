@@ -39,7 +39,8 @@
 			<div class="form-table-cell">{{ form_errors(form.sort) }}{{ form_widget(form.sort, {'attr':{'class' : 'form-select'}}) }}</div>
 		</div>
 		{{ form_rest(form) }}
-		<button type="submit" class="btn submitcomment float-end mt-3">{{ "book.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" class="btn submitcomment float-end mt-3"><i class="fa-solid fa-magnifying-glass"></i> {{ "index.search.Validate"|trans([], "validators") }}</button>
+		<button type="submit" name="reset" class="btn btn-danger float-start mt-3"><i class="fa-solid fa-trash-can"></i> {{ "index.search.Reset"|trans([], "validators") }}</button>
 	{{ form_end(form) }}
 	<br>
 	<br>

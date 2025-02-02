@@ -53,7 +53,6 @@ classifiedAds:
         Category: "Category"
         Keywords: "Keywords"
         Location: "Location"
-        Validate: "Search"
         ByGeographicArea: "By geographic area"
         ByCategory: "By category"
         Belgium: "Belgium"

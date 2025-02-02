@@ -1636,7 +1636,7 @@ class AdminController extends AbstractController
 
 			if($form->isValid()) {
 				foreach($socialNetworks as $socialNetwork) {
-					list($socialNetwork, $locale) = explode("_", $socialNetwork);
+					list($socialNetwork, $locale) = explode("_", $socialNetwork, 2);
 
 					switch($socialNetwork) {
 						case "twitter":

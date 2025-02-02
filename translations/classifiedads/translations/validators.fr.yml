@@ -53,7 +53,6 @@ classifiedAds:
         Category: "Catégorie"
         Keywords: "Mots-clés"
         Location: "Localisation"
-        Validate: "Rechercher"
         ByGeographicArea: "Par zone géographique"
         ByCategory: "Par catégorie"
         Belgium: "Belgique"

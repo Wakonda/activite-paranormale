@@ -33,16 +33,16 @@ class DocumentRepository extends MappedSuperclassBaseRepository
 
 		$aColumns = ['c.title', 'ad.title', 'c.releaseDateOfDocument', 'documentFamilyTitle', 'l.title'];
 
-		if(!empty($title = $datas["title"])) {
+		if(isset($datas["title"]) and !empty($title = $datas["title"])) {
 			$search = "%".$title."%";
 			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
-		if(!empty($documentFamily = $datas["documentFamily"])) {
+		if(isset($datas["documentFamily"]) and !empty($documentFamily = $datas["documentFamily"])) {
 			$qb->andWhere('co.internationalName = :internationalName')
 			   ->setParameter('internationalName', $documentFamily->getInternationalName());
 		}
-		if(!empty($theme = $datas["theme"])) {
+		if(isset($datas["theme"]) and !empty($theme = $datas["theme"])) {
 			$qb->join("c.theme", "t")
 		       ->andWhere('t.internationalName = :internationalName')
 			   ->setParameter('internationalName', $theme->getInternationalName());

@@ -14,6 +14,7 @@ store:
         Movie: "Película"
         Mug: "Taza"
         Sticker: "Pegatina"
+        Jewel: "Joya"
         TelevisionSerie: "Serie de televisión"
         WitchcraftTool: "Herramientas de brujería"
         Format: "Formato"
@@ -38,6 +39,7 @@ store:
         Movie: "Película"
         Mug: "Taza"
         Sticker: "Pegatina"
+        Jewel: "Joya"
         TelevisionSerie: "Serie de televisión"
         WitchcraftTool: "Herramientas de brujería"
         Format: "Formato"
@@ -55,6 +57,7 @@ store:
     search:
         SearchSort: "Buscar / Ordenar"
         Category: "Categoría"
+        Keywords: "Palabras clave"
         Validate: "Validar"
         Read: "Leer"
         NoMatchingRecordsFound: "No se encontraron resultados"

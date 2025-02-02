@@ -74,8 +74,13 @@ class QuotationController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 		$form->submit($datas[$form->getName()]);
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::HUMOR_FAMILY, $language, $form->getData());
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::HUMOR_FAMILY, $language, $form->getData(), true);
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::HUMOR_FAMILY, $language, $datas);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::HUMOR_FAMILY, $language, $datas, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -120,8 +125,13 @@ class QuotationController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 		$form->submit($datas[$form->getName()]);
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, $form->getData());
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, $form->getData(), true);
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, $datas);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::QUOTATION_FAMILY, $language, $datas, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -167,8 +177,13 @@ class QuotationController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 		$form->submit($datas[$form->getName()]);
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, $form->getData());
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, $form->getData(), true);
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, $datas);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::PROVERB_FAMILY, $language, $datas, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -215,8 +230,13 @@ class QuotationController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 		$form->submit($datas[$form->getName()]);
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::SAYING_FAMILY, $language, $form->getData());
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::SAYING_FAMILY, $language, $form->getData(), true);
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::SAYING_FAMILY, $language, $datas);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::SAYING_FAMILY, $language, $datas, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,
@@ -263,8 +283,13 @@ class QuotationController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 		$form->submit($datas[$form->getName()]);
 
-        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, $form->getData());
-		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, $form->getData(), true);
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, $datas);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::POEM_FAMILY, $language, $datas, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,

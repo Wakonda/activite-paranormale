@@ -23,20 +23,20 @@ class ArtistRepository extends EntityRepository
 		   ->where('l.abbreviation = :locale')
 		   ->setParameter('locale', $locale);
 
-		if(!empty($title = $datas["title"])) {
+		if(isset($datas["title"]) and !empty($title = $datas["title"])) {
 			$search = "%".$title."%";
 			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
-		if(!empty($genre = $datas["genre"])) {
+		if(isset($datas["genre"]) and !empty($genre = $datas["genre"])) {
 			$qb->andWhere('g.id = :id')
 			   ->setParameter('id', $genre);
 		}
-		if(!empty($bandStartingWith = $datas["bandStartingWith"])) {
+		if(isset($datas["bandStartingWith"]) and !empty($bandStartingWith = $datas["bandStartingWith"])) {
 			$qb->andWhere('SUBSTRING(c.title, 1, 1) = :bandStartingWith')
 			   ->setParameter('bandStartingWith', $bandStartingWith);
 		}
-		if(!empty($country = $datas["country"])) {
+		if(isset($datas["country"]) and !empty($country = $datas["country"])) {
 			$qb->join("c.country", "co")
 			   ->andWhere('co.internationalName = :internationalName')
 			   ->setParameter('internationalName', $country->getInternationalName());

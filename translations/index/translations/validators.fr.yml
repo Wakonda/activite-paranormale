@@ -113,6 +113,9 @@ index:
         Preview: "Aperçu"
         DownloadForAndroid: "Télécharger pour Android"
         Text: "Plongez dans le mystère avec l'application Android 'Activité-Paranormale' ! Découvrez toute l'actualité fascinante de l'insolite et du paranormal, directement depuis votre smartphone. Explorez les phénomènes étranges, les histoires mystérieuses et les découvertes incroyables qui défient l'explication rationnelle. Restez toujours à jour avec les dernières investigations, vidéos intrigantes, et interviews exclusives de chercheurs et d'experts du paranormal. Avec 'Activité-Paranormale', le mystère est à portée de main, prêt à éveiller votre curiosité et à vous plonger dans l'inexpliqué !"
+    search:
+        Validate: "Valider"
+        Reset: "Réinitialiser"
 civility:
     admin:
         Title: "Titre"

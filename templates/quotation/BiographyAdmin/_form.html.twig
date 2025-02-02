@@ -62,6 +62,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.occupations, "biography.admin.Occupations"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.occupations) }}{{ form_widget(form.occupations, { 'attr': {'class': 'form-select'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.feastDay, "biography.admin.FeastDay"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.feastDay) }}{{ form_widget(form.feastDay, { 'attr': {'class': 'form-select'} }) }}</div>
+
 <script>
 	document.getElementById("wikidata").addEventListener("click", (e) => {
 		e.preventDefault();
@@ -86,6 +89,8 @@
 				document.getElementById("{{ form.deathDate.day.vars.id }}").value = data.deathDate.day;
 				document.getElementById("{{ form.deathDate.month.vars.id }}").value = data.deathDate.month;
 				document.getElementById("{{ form.deathDate.year.vars.id }}").value = data.deathDate.year;
+				document.getElementById("{{ form.feastDay.day.vars.id }}").value = data.feastDay.day;
+				document.getElementById("{{ form.feastDay.month.vars.id }}").value = data.feastDay.month;
 				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 				document.getElementById("url_{{ form.text.vars.id }}").value = data.url;
 				document.getElementById("url_{{ form.text.vars.id }}").dispatchEvent(new Event("change"));

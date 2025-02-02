@@ -12,7 +12,6 @@ movie:
         Occupations: "Activités"
         Genre: "Genre"
     search:
-        Validate: "Valider" 
         PublicationDateUp: "Date de publication ↑"
         PublicationDateDown: "Date de publication ↓"
         TitleUp: "Titre ↑"
@@ -176,7 +175,6 @@ televisionSerie:
         Keywords: "Mots-clés"
         Genre: "Genre"
         Sort: "Trier"
-        Validate: "Valider"
         NoMatchingRecordsFound: "Aucun élément à afficher"
         PublicationDateUp: "Date de publication ↑"
         PublicationDateDown: "Date de publication ↓"

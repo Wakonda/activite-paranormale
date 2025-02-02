@@ -53,6 +53,9 @@ class ClassifiedAdsController extends AbstractController
 			$datas["region"] = (!empty($region) ? $region->getInternationalName() : null);
 		}
 
+		if($request->query->has("reset"))
+			$datas = [];
+
 		$query = $em->getRepository(ClassifiedAds::class)->getClassifiedAds($datas, $request->getLocale());
 
 		$pagination = $paginator->paginate(
