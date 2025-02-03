@@ -49,7 +49,7 @@ class GrimoireAdminType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				}
 			))
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Grimoire_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Grimoire_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
         ;
     }
 

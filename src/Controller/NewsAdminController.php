@@ -275,7 +275,7 @@ class NewsAdminController extends AdminGenericController
 			$entity->setTheme($theme);
 
 		$entity->setLanguage($language);
-		
+
 		if(!empty($ci = $entityToCopy->getIllustration())) {
 			$illustration = new FileManagement();
 			$illustration->setTitleFile($ci->getTitleFile());
@@ -284,7 +284,7 @@ class NewsAdminController extends AdminGenericController
 			$illustration->setLicense($ci->getLicense());
 			$illustration->setAuthor($ci->getAuthor());
 			$illustration->setUrlSource($ci->getUrlSource());
-			
+
 			$entity->setIllustration($illustration);
 		}
 

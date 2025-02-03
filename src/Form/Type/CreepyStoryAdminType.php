@@ -53,7 +53,7 @@ class CreepyStoryAdminType extends AbstractType
 			])
             ->add('source', SourceEditType::class, ['required' => false])
             ->add('pseudoUsed', TextType::class, ['required' =>true, 'constraints' => [new NotBlank()]])
-			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'CreepyStory_Admin_ShowImageSelectorColorbox'])
+			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'CreepyStory_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()])
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,
 				'allow_add' => [

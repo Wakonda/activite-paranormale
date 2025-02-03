@@ -31,7 +31,7 @@ class BookEditionAdminType extends AbstractType
 
         $builder
             ->add('subtitle', TextType::class, array('required' => false))
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => null))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => null, 'file_path' => $builder->getData()->getAssetImagePath()))
             ->add('backCover', TextareaType::class, array('required' => false))
 			->add('isbn10', TextType::class, array('required' => false, 'constraints' => array(new Isbn("isbn10"))))
 			->add('isbn13', TextType::class, array('required' => false, 'constraints' => array(new Isbn("isbn13"))))

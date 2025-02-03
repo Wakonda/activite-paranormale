@@ -60,7 +60,7 @@ class AlbumAdminType extends AbstractType
 				"constraints" => [new NotBlank()]
 			])
 			->add('releaseYear', DatePartialType::class, ['required' => false])
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Album_Admin_ShowImageSelectorColorbox'))	
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Album_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))	
 			->add('licence', EntityType::class, array('class'=>'App\Entity\Licence', 
 					'choice_label'=>'title', 
 					'required' => true,

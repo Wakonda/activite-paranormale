@@ -39,7 +39,7 @@ class TagWordAdminType extends AbstractType
 				'constraints' => [new NotBlank()]
 			])
 			->add('wikidata', TextType::class, ['required' => false])
-			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'TagWord_Admin_ShowImageSelectorColorbox']);
+			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'TagWord_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()]);
     }
 
     public function getBlockPrefix()

@@ -24,7 +24,7 @@ class PublisherAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('website', TextType::class, ['data_class' => null, 'required' => false, 'constraints' => [new Url()]])
-			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Publisher_Admin_ShowImageSelectorColorbox'])
+			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Publisher_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()])
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('text', TextareaType::class, ['required' => false])
             ->add('language', EntityType::class, ['class'=>'App\Entity\Language',

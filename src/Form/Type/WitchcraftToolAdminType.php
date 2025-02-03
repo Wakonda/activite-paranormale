@@ -67,7 +67,7 @@ class WitchcraftToolAdminType extends AbstractType
 						return $repository->createQueryBuilder("p")->innerjoin("p.language", "l")->where("l.abbreviation = :language")->setParameter("language", $language)->orderBy("p.title", "ASC");
 					}
 			))
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'WitchcraftTool_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'WitchcraftTool_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false));
 

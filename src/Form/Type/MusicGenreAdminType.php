@@ -51,7 +51,7 @@ class MusicGenreAdminType extends AbstractType
 					},
 			))
 			->add('wikidata', TextType::class, ['required' => false])
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'MusicGenre_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'MusicGenre_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
             ->add('source', SourceEditType::class, array('required' => false))
 		;
 

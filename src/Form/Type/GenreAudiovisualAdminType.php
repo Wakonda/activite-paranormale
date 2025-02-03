@@ -41,7 +41,7 @@ class GenreAudiovisualAdminType extends AbstractType
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, ['required' => false])
 			->add('fiction', CheckboxType::class, ['required' => true])
-			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'GenreAudiovisual_Admin_ShowImageSelectorColorbox'])
+			->add('illustration', IllustrationType::class, ['required' => true, 'base_path' => 'GenreAudiovisual_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()])
 		;
     }
 

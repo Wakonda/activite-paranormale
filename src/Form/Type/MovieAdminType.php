@@ -97,7 +97,7 @@ class MovieAdminType extends AbstractType
 				'req_params' => ['locale' => 'parent.children[language]'],
 				'language' => $language
 			])
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Movie_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Movie_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
 			->add('movieBiographies', CollectionType::class, array("label" => false, "required" => false, 'entry_type' => BiographiesAdminType::class, "allow_add" => true, "allow_delete" => true, "entry_options" => ["label" => false, "data_class" => MovieBiography::class, "language" => $language, "req_params" => ["locale" => $this->getBlockPrefix()."[language]"]]))
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,

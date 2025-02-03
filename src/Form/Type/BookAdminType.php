@@ -39,7 +39,7 @@ class BookAdminType extends AbstractType
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('introduction', TextareaType::class, ['required' => false])
-			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Book_Admin_ShowImageSelectorColorbox'])
+			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'Book_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()])
             ->add('text', TextareaType::class, array('required' => false))
 			->add('genre', EntityType::class, ['class'=>'App\Entity\LiteraryGenre',
 					'required' => true,

@@ -15,6 +15,7 @@ use App\Entity\Licence;
 use App\Entity\State;
 use App\Entity\WitchcraftThemeTool;
 use App\Entity\Language;
+use App\Entity\FileManagement;
 use App\Form\Type\WitchcraftToolAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -26,10 +27,10 @@ class WitchcraftToolAdminController extends AdminGenericController
 {
 	protected $entityName = 'WitchcraftTool';
 	protected $className = WitchcraftTool::class;
-	
+
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
-	
+
 	protected $indexRoute = "WitchcraftTool_Admin_Index"; 
 	protected $showRoute = "WitchcraftTool_Admin_Show";
 	protected $formName = 'ap_witchcraft_witchcrafttooladmintype';
@@ -134,7 +135,7 @@ class WitchcraftToolAdminController extends AdminGenericController
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
-		
+
 		if(!empty($language))
 			$themes = $em->getRepository(WitchcraftThemeTool::class)->findByLanguage($language, array('title' => 'ASC'));
 		else
@@ -161,23 +162,33 @@ class WitchcraftToolAdminController extends AdminGenericController
 		
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setTitle($entityToCopy->getTitle());
-		$entity->setText($entityToCopy->getText());
-		$entity->setPhoto($entityToCopy->getPhoto());
 		$entity->setWikidata($entityToCopy->getWikidata());
 		$entity->setPublicationDate($entityToCopy->getPublicationDate());
-		
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
+		}
+
 		$witchcraftThemeTool = null;
-		
+
 		if(!empty($entityToCopy->getWitchcraftThemeTool()))
 			$witchcraftThemeTool = $em->getRepository(WitchcraftThemeTool::class)->findOneBy(["internationalName" => $entityToCopy->getWitchcraftThemeTool()->getInternationalName(), "language" => $language]);
-		
+
 		$entity->setWitchcraftThemeTool($witchcraftThemeTool);
-		
+
 		$state = null;
-		
+
 		if(!empty($entityToCopy->getState()))
 			$state = $em->getRepository(State::class)->findOneBy(["internationalName" => $entityToCopy->getState()->getInternationalName(), "language" => $language]);
-		
+
 		$entity->setState($state);
 
 		$entity->setSource($entityToCopy->getSource());
@@ -186,7 +197,7 @@ class WitchcraftToolAdminController extends AdminGenericController
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
 			$wikidata = new \App\Service\Wikidata($em);
 			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
-			
+
 			if(!empty($data) and !empty($data["url"]))
 			{
 				$sourceArray = [[
@@ -194,9 +205,9 @@ class WitchcraftToolAdminController extends AdminGenericController
 					"url" => $data["url"],
 					"type" => "url",
 				]];
-				
+
 				$entity->setSource(json_encode($sourceArray));
-				
+
 				if(!empty($title = $data["title"]))
 					$entity->setTitle($title);
 			}

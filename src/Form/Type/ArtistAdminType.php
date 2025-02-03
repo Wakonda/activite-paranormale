@@ -33,7 +33,7 @@ class ArtistAdminType extends AbstractType
             ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
             ->add('genre', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('website', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Artist_Admin_ShowImageSelectorColorbox'))
+            ->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Artist_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
 			->add('biography', TextareaType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',
 				'choice_label' => function ($choice, $key, $value) {

@@ -77,7 +77,7 @@ class BiographyAdminType extends AbstractType
 					],
 					'translation_domain' => 'validators'
 			])
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Biography_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Biography_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
 			->add('birthDate', DatePartialType::class, ['required' => false])
 			->add('deathDate', DatePartialType::class, ['required' => false])
 			->add('feastDay', DatePartialType::class, ['required' => false, "year" => false])

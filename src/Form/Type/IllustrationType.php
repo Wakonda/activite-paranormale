@@ -20,6 +20,7 @@ class IllustrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+		// dd($builder);
         $builder
             ->add('titleFile', FileType::class, ['data_class' => null, 'required' => true])
             ->add('license', TextType::class, ['required' => true])
@@ -50,13 +51,15 @@ class IllustrationType extends AbstractType
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
         $view->vars['base_path'] = $options['base_path'];
+        $view->vars['file_path'] = $options['file_path'];
     }
 
 	public function configureOptions(OptionsResolver $resolver)
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\FileManagement',
-			'base_path' => null
+			'base_path' => null,
+			'file_path' => null
 		]);
 	}
 }

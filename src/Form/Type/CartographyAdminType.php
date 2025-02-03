@@ -29,7 +29,7 @@ class CartographyAdminType extends AbstractType
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('coordXMap', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
             ->add('coordYMap', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Cartography_Admin_ShowImageSelectorColorbox'))
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'Cartography_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()))
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
             ->add('language', EntityType::class, array('class'=>'App\Entity\Language',

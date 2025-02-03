@@ -43,7 +43,7 @@
 						var modal = new bootstrap.Modal(document.getElementById('previewImageModal_{{ form.vars.id }}'));
 						modal.show(document.getElementById('previewImageModal_{{ form.vars.id }}'));
 						
-						document.querySelector("#previewImageModal_{{ form.vars.id }} img").setAttribute("src", document.getElementById("{{ form.vars.id }}").value);
+						document.querySelector("#previewImageModal_{{ form.vars.id }} img").setAttribute("src", "/{{ form.parent.vars.file_path }}" + document.getElementById("{{ form.vars.id }}").value);
 					} else 
 						alert("{{ ('admin.general.NoImageCouldBeLoaded'|trans([], 'validators'))|e('js') }}");
 				});

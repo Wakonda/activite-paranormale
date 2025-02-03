@@ -84,7 +84,7 @@ class UsefulLinkAdminType extends AbstractType
 				'usefullink.admin.'.ucfirst(UsefulLink::TECHNICAL_FAMILY) => UsefulLink::TECHNICAL_FAMILY
 			 ], 
 			 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
-			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'UsefulLink_Admin_ShowImageSelectorColorbox'));
+			->add('illustration', IllustrationType::class, array('required' => false, 'base_path' => 'UsefulLink_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()));
 
 		$builder->add('internationalName', HiddenType::class, ['required' => true, 'constraints' => [new NotBlank()]])->addEventSubscriber(new InternationalNameFieldListener());
 

@@ -901,6 +901,15 @@
 			
 			$locale = $entity->getLanguage()->getAbbreviation();
 
+			if(method_exists($entity, "getRealClass")) {
+				switch($entity->getRealClass()) {
+					case "WitchcraftTool":
+					case "Grimoire":
+						$locale = "magic_".$locale;
+					break;
+				}
+			}
+
 			return in_array($locale, $api->getLanguages());
 		}
 
