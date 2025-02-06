@@ -152,6 +152,8 @@
 
 			if(empty($year))
 				$skeleton = 'MMMMd';
+			elseif(empty($day) and !empty($month) and !empty($year))
+				$skeleton = 'YYYYMMMM'.(str_starts_with($year, "-") ? " G" : "");
 			else
 				$skeleton .= (str_starts_with($year, "-") ? " G" : "");
 

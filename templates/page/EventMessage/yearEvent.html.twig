@@ -1,6 +1,6 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }}{% endblock %}
+{% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ currentDate|date("Y") }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ currentDate|date("Y") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
@@ -41,7 +41,13 @@
 	{% else %}
 		<div class="alert alert-info">{{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
 	{% endfor %}
-	
-	<hr class="hr2"/>
+
+	<hr class="hr2">
+
+	<div class="mb-3">
+		<a href="{{ path('EventMessage_SelectYear', { year: currentDate|date("Y") - 1 }) }}"><i class="fas fa-angle-double-left"></i> {{ currentDate|date("Y") - 1 }} <i class="fas fa-angle-double-left"></i></a>
+		<a href="{{ path('EventMessage_SelectYear', { year: currentDate|date("Y") + 1 }) }}" class="float-end"><i class="fas fa-angle-double-right"></i> {{ currentDate|date("Y") + 1 }} <i class="fas fa-angle-double-right"></i></a>
+	</div>
+
 	{{ "google"|advertisement|raw }}
 {% endblock %}

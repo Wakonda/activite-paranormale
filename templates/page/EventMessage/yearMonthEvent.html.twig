@@ -1,6 +1,6 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }}{% endblock %}
+{% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ (((""|doYearMonthDayDate(currentDate|date("m"), currentDate|date("Y"), app.request.locale)))|trim)|capitalize }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ (((""|doYearMonthDayDate(currentDate|date("m"), currentDate|date("Y"), app.request.locale)))|trim)|capitalize }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
@@ -34,14 +34,23 @@
 				{% if event.endDate is not null %}
 					{% set dateArray = dateArray|merge([(event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale)]) %}
 				{% endif %}
-			
+
 				<li>[{{ dateArray|join(" - ") }}] - <a href="{{ event.url }}">{{ event.title }}</a></li>
 			{% endfor %}
 		</ul>
 	{% else %}
 		<div class="alert alert-info">{{ "eventMessage.dayMonth.NoEvent"|trans([], "validators") }}</div>
 	{% endfor %}
-	
-	<hr class="hr2"/>
+
+	<hr class="hr2">
+
+	{% set previous = currentDate|date_modify("- 1 month") %}
+	{% set next = currentDate|date_modify("+ 1 month") %}
+
+	<div class="mb-3">
+		<a href="{{ path('EventMessage_SelectYearMonth', { year: previous|date("Y"), month: previous|date("m") }) }}"><i class="fas fa-angle-double-left"></i> {{ (((""|doYearMonthDayDate(previous|date("m"), previous|date("Y"), app.request.locale)))|trim)|capitalize }} <i class="fas fa-angle-double-left"></i></a>
+		<a href="{{ path('EventMessage_SelectYearMonth', { year: next|date("Y"), month: next|date("m") }) }}" class="float-end"><i class="fas fa-angle-double-right"></i> {{ (((""|doYearMonthDayDate(next|date("m"), next|date("Y"), app.request.locale)))|trim)|capitalize }} <i class="fas fa-angle-double-right"></i></a>
+	</div>
+
 	{{ "google"|advertisement|raw }}
 {% endblock %}
