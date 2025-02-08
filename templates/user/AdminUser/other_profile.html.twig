@@ -1,7 +1,7 @@
 {# src/AP/UserBundle/Resources/view/Security/login.html.twig #}
 {% extends "content_layout.html.twig" %}
 {% block title %}{{ "user.otherProfile.AccountOf"|trans([], "validators") }}{{ user.username }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/voodoo-doll-icon.png') }}" width="28" class="mt-1" alt="Voodoo doll"/></span>{{ "user.otherProfile.AccountOf"|trans([], "validators") }} {{ user.username }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/voodoo-doll-icon.png') }}" width="28" class="mt-1" alt="Voodoo doll"></span>{{ "user.otherProfile.AccountOf"|trans([], "validators") }} {{ user.username }}</h2>{% endblock h2_title %}
 	
 {% block APBlog_body %}
 	{% block fos_user_content %}

@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/witchcrafttools-index.svg') }}" width="27" class="mt-1" alt="Witchcraft Tool"/></span>{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/witchcrafttools-index.svg') }}" width="27" class="mt-1" alt="Witchcraft Tool"></span>{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script>
@@ -96,12 +96,12 @@
 		<div class="alert alert-danger fst-italic text-center">{{ "witchcraftTool.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
 		<br>
 	{% endfor %}
-	
+
 	<div class="mt-3 justify-content-center">
 		{{ knp_pagination_render(pagination) }}
 	</div>
 
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

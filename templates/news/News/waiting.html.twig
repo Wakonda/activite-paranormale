@@ -1,7 +1,7 @@
 {% extends "index/Generic/waiting.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 {% block meta_description %}{% endblock %}
 
 {% block header_plus %}
@@ -26,11 +26,11 @@
 {% block content_waiting %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
-	<br />
+	<br>
 	<div>{{ entity.abstractText|raw }}</div>
 	<div>{{ entity.text|raw }}</div>
-	<br />
-	<hr class="hr2"/>
+	<br>
+	<hr class="hr2">
 	<p>{% if entity.theme is not empty %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', {id: entity.theme.id, theme: entity.theme.title}) }}">{{ entity.theme.title }}</a></span> - {% endif %}<i class="fas fa-calendar-alt"></i> <span>{{ entity.publicationDate|dodate(false, app.request.locale) }}</span> - <i class="fas fa-user"></i> <span>{{ entity.pseudoUsed }}</span>{% if entity.licence is not empty %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}</p>
 	{{ getTagsByEntityForDisplay(entity) }}
 {% endblock %}

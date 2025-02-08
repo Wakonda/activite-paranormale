@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ entity.title }}"{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ entity.title }}"</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"></span>{{ countEntities }} {{ 'tag.search.ArticleTagged'|trans({'number': countEntities}, "validators") }} "{{ entity.title }}"</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary">

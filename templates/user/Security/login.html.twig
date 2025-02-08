@@ -2,10 +2,10 @@
 
 {% block title %}{{ "user.index.Login"|trans([], "validators") }}{% endblock %}
 
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/connectYou.png') }}"  width="25" class="mt-1" alt="Connect you" /></span>{{ "user.index.Login"|trans([], "validators") }}</h2>{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/connectYou.png') }}"  width="25" class="mt-1" alt="Connect you"></span>{{ "user.index.Login"|trans([], "validators") }}</h2>{% endblock %}
 {% block APBlog_body %}
 	{% block fos_user_content %}
-		<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/login.jpg') }}" alt="Ange" /></p>
+		<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/login.jpg') }}" alt="Ange"></p>
 		<div class="text-center">
 			{% if error %}
 				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
@@ -31,6 +31,6 @@
 		</div>
 	{% endblock fos_user_content %}
 	
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

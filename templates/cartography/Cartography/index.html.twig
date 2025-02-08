@@ -10,7 +10,7 @@
 
 {% block h2_title %}
 	<h2>
-		<span class="float-start"><img src="{{ asset('extended/photo/bio-hazard-icon.png') }}" width="25" class="mt-1" alt="Biohazard"/></span>{{ 'cartography.index.Cartography'|trans([], "validators") }}
+		<span class="float-start"><img src="{{ asset('extended/photo/bio-hazard-icon.png') }}" width="25" class="mt-1" alt="Biohazard"></span>{{ 'cartography.index.Cartography'|trans([], "validators") }}
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
 		{% endif %}
@@ -94,7 +94,7 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
 {% endblock %}
 
 {% block APBlog_body %}

@@ -1,13 +1,13 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "witchcraft.validate.Validation"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire"/></span>{{ "witchcraft.validate.Validation"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire"></span>{{ "witchcraft.validate.Validation"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block APBlog_body %}
 	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/validate-witchcraft-new-user.jpg') }}" alt="Validate witchcraft new user" width="550" /></p>
 	<hr>
 	<div class="alert alert-success">{{ "witchcraft.validate.ThankForYourParticipation"|trans([], "validators") }}</div>
 	<p>{{ "witchcraft.validate.ThankForYourParticipationText"|trans([], "validators") }}</p>
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

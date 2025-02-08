@@ -1,16 +1,16 @@
 {% extends "content_layout.html.twig" %}
 {% block title %}{{ "user.logout.Logout"|trans({}, "validators") }}{% endblock %}
 
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/pirate-icon.png') }}" width="25" class="mt-1" alt="Pirate"/></span>{{ "user.logout.Logout"|trans({}, "validators") }}</h2>{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/pirate-icon.png') }}" width="25" class="mt-1" alt="Pirate"></span>{{ "user.logout.Logout"|trans({}, "validators") }}</h2>{% endblock %}
 {% block APBlog_body %}
 	{% block fos_user_content %}
-		<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}logout.jpg" width="550" alt="Logout" /></p>
+		<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}logout.jpg" width="550" alt="Logout"></p>
 		<div class="alert alert-success">{{ "user.logout.SuccessLogout"|trans({}, "validators") }}</div>
 		<form action="{{ path('Index_Index') }}" method="POST" >
 			<input type="submit" value="{{ "user.logout.BackHomepage"|trans({}, "validators") }}" class="submitcomment btn" />
 		</form>
 	{% endblock fos_user_content %}
-	
-	<hr class="hr2"/>
+
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

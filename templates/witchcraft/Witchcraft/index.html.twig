@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block title %}{{ "witchcraft.index.Witchcraft"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="mt-1" alt="Skull"/></span>{{ "witchcraft.index.MagicPrayer"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="mt-1" alt="Skull"></span>{{ "witchcraft.index.MagicPrayer"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block APBlog_body %}
 	{% for MG in menuGrimoire %}
 		<div class="card mb-3">
@@ -45,7 +45,7 @@
 
 	<div class="text-center">
 		<a class="btn witchcraft" href="{{ path('WitchcraftTool_Index') }}">
-			<span class="me-2"><img src="{{ asset('extended/photo/witchcraftStore.png') }}" width="25" height="25"/></span>
+			<span class="me-2"><img src="{{ asset('extended/photo/witchcraftStore.png') }}" alt="Witchcraft store logo" width="25" height="25"></span>
 			<b class="align-text-top">{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</b>
 		</a>
 	</div>

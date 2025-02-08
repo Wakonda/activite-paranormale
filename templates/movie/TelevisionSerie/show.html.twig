@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
@@ -21,7 +21,7 @@
 			</tr>
 			<tr>
 				<td class="td_form_table">{{ "televisionSerie.read.Country"|trans([], "validators") }}</td>
-				<td class="tdGene">{% if entity.country is not null %}<img id="flagC" src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" /> - {{ entity.country.title }}{% endif %}</td>
+				<td class="tdGene">{% if entity.country is not null %}<img id="flagC" src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20"> - {{ entity.country.title }}{% endif %}</td>
 			</tr>
 			{% for occupation, biographies in biographyDatas %}
 				{% if occupation != constant('App\\Entity\\Movies\\MediaInterface::ACTOR_OCCUPATION') %}

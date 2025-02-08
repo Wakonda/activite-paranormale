@@ -3,16 +3,16 @@
 {% block title %}{% if entity is not empty %}{{ entity.title }}{% endif %}{% endblock %}
 
 {% block h2_title %}
-		<h2><span class="float-start"><img src="{{ asset('extended/photo/cookie-icon.png') }}" width="25" class="mt-1" alt="Cookie"/></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
+		<h2><span class="float-start"><img src="{{ asset('extended/photo/cookie-icon.png') }}" width="25" class="mt-1" alt="Cookie"></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/cookie-explanation.jpg') }}" alt="Statue evil" width="550" /></p>
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/cookie-explanation.jpg') }}" alt="Statue evil" width="550"></p>
 
 	{% if entity is not empty %}
 		{{ entity.text|raw }}
 	{% endif %}
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

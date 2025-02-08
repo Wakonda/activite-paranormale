@@ -3,7 +3,7 @@
 {% block title %}{{ "directory.index.Annuaire"|trans([], "validators") }}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/blue-monster.png') }}" width="25" class="mt-1" alt="Blue monster"/></span>{{ "directory.index.Annuaire"|trans([], "validators") }}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/blue-monster.png') }}" width="25" class="mt-1" alt="Blue monster"></span>{{ "directory.index.Annuaire"|trans([], "validators") }}</h2>
 {% endblock h2_title %}
 
 {% block header_plus %}
@@ -42,13 +42,13 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 {% endblock %}
 
 {% block APBlog_body %}
 	<div class="alert alert-info">{{ ("directory.index.Promote"|trans({'%start_link%': '<b><u><a href="'~path('WebDirectory_User_New')~'" class="alert-link">', '%end_link%': '</a></u></b>'}, "validators"))|raw }}</div>
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}webdirectory.jpg" width="550" alt="Woman Zombie" /></p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}webdirectory.jpg" width="550" alt="Woman Zombie"></p>
 	<br>
 	<hr class="hr2">
 	<table class="index_directories dt-responsive w-100">

@@ -3,7 +3,7 @@
 {% block title %}AP - {{ status_code }}{% endblock %}
 {% block h2_title %}
 	<h2>
-		<span class="float-start"><img src="{{ asset('extended/photo/error404.png') }}" width="25" class="mt-1" alt="Error"/></span>{{ "error.exception.Error"|trans([], "validators") }} {{ status_code }}
+		<span class="float-start"><img src="{{ asset('extended/photo/error404.png') }}" width="25" class="mt-1" alt="Error"></span>{{ "error.exception.Error"|trans([], "validators") }} {{ status_code }}
 	</h2>
 {% endblock h2_title %}
 
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<p><img src="{{ asset('extended/photo/error404.jpg') }}" class="mx-auto d-block img-fluid" alt="Error"/></p>
+	<p><img src="{{ asset('extended/photo/error404.jpg') }}" class="mx-auto d-block img-fluid" alt="Error"></p>
 	<br>
 	<div class="alert alert-danger">{{ status_text|trans([], "validators") }}</div>
 	{% if app.user.lastlogin is defined and is_granted('ROLE_ADMIN') %}

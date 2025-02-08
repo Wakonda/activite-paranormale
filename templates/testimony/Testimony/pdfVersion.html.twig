@@ -2,9 +2,9 @@
 
 {% block main_content_pdf %}
 	<h1>{{ entity.title }}</h1>
-    <br />
+    <br>
 	<p class="texte">{{ ((entity.text|HTMLPurifier)|removeStyleAttributeFromHtmlTags)|raw }}</p>
-	<br />
-	<hr class="hr2"/>
+	<br>
+	<hr class="hr2">
 	<p>{{ entity.theme.title }} - {{ entity.publicationDate|dodate(false, app.request.locale) }} - {{ entity.pseudoUsed }} - {{ entity.licence.title }}</p>
 {% endblock %}

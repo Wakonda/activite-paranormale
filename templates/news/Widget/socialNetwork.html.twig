@@ -1,11 +1,11 @@
 <div id="social_network" class="d-flex justify-content-between justify-content-md-start flex-wrap">
 	{% if entity.getPdfVersionRoute() is defined %}
 	<div class="d-none d-sm-inline pe-1 pb-1">
-		<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select" /></a>
+		<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select"></a>
 	</div>
 	{% endif %}
 	<div class="d-none d-sm-inline pe-1 pb-1">
-		<span id="print_page" class="social_network_to_select"><img src="{{ asset('extended/photo/print.svg') }}" width="40" alt="Print version" /></span>
+		<span id="print_page" class="social_network_to_select"><img src="{{ asset('extended/photo/print.svg') }}" width="40" alt="Print version"></span>
 		<script>
 			document.getElementById("print_page").addEventListener("click", (e) => {
 				window.print();

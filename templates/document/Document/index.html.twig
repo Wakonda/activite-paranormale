@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/folder.png') }}" width="25" class="mt-1" alt="Folder"/></span>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/folder.png') }}" width="25" class="mt-1" alt="Folder"></span>
 		{{ "document.index.Document"|trans([], "validators") }}
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
@@ -61,11 +61,11 @@
 			});
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 {% endblock %}
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/document.jpg') }}" alt="Skull and Book" /></p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/document.jpg') }}" alt="Skull and Book"></p>
 	<hr>
 	{{ "document.index.TotalNumberArticles"|trans([], "validators") }}<span class="badge bg-danger" id="count_document"></span>
 	<hr>

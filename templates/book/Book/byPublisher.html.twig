@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ publisher.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="{{ publisher.title }}"/></span>{{ publisher.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="{{ publisher.title }}"></span>{{ publisher.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ publisher.photoIllustrationFilename|imgsize(550, publisher.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, publisher.photoIllustrationCaption)|raw }}</p>

@@ -1,18 +1,18 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ entity.image|imgsize(550, entity.getAssetImagePath()~entity.folder~"/", true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<br>
 	{{ entity.text|raw }}
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	<p>
 		<i class="fas fa-calendar-alt"></i> {{ entity.publishedAt|dodate(false, app.request.locale) }} - <img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" class="align-middle" alt="{{ entity.language.abbreviation }}" width="20" height="13" />
 	</p>
 	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.title, 'entity':entity, 'url':app.request.server.get("REQUEST_URI") } %}
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

@@ -1,14 +1,14 @@
 {% extends "index/Generic/waiting.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 {% block meta_description %}{% endblock %}
 
 {% block header_plus %}
 	{% if entity.longitude is not empty and entity.latitude is not empty %}
-	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
-	<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet' />
-	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}">
+	<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet'>
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen">
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
@@ -33,7 +33,7 @@
 	<p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 	<p id="media_duration">
 		<a href="{{ path('EventMessage_Calendar') }}" alt="">
-		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" class="align-middle" /> 
+		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" class="align-middle"> 
 		{% if entity.dateTo == entity.dateFrom %}
 			{{ entity.dateFrom|dodate(false, app.request.locale) }}
 		{% else %}

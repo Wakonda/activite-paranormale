@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/spiderman.png') }}" width="25" class="mt-1" alt="Clown"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/spiderman.png') }}" width="25" class="mt-1" alt="Clown"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/clipboard.js-master/dist/clipboard.min.js') }}"></script>
@@ -110,7 +110,7 @@
 			<h5 class="modal-title">{{ "video.read.VideoNotAvailableTitle"|trans([], "validators") }}</h5>
 		  </div>
 		  <div class="modal-body">
-			<p class='image'><img src='{{ asset("extended/photo/video/delete/video-delete.jpg") }}' alt='Deleted video' class="mx-auto d-block w-100"/></p><p class='fw-bold colored_delete_video text-center'>{{ "video.read.ConfirmationVideoNotAvailable"|trans([], "validators") }}</p>
+			<p class='image'><img src='{{ asset("extended/photo/video/delete/video-delete.jpg") }}' alt='Deleted video' class="mx-auto d-block w-100"></p><p class='fw-bold colored_delete_video text-center'>{{ "video.read.ConfirmationVideoNotAvailable"|trans([], "validators") }}</p>
 		  </div>
 		  <div class="modal-footer" id="modal-notify-container">
 			{% include 'video/Video/_notify_video.html.twig' with { 'entity': entity } %}

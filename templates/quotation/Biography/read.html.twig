@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nessy-icon-biography.png') }}" width="30" class="mt-1" alt="Sea monster"/></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nessy-icon-biography.png') }}" width="30" class="mt-1" alt="Sea monster"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 {% block meta_description %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endblock %}
 
 {% block meta_plus %}
@@ -127,7 +127,7 @@
 		{% set linkArray = json_decode(entity.links) %}
 		{% for sn in linkArray %}
 			{% if sn.url is not empty %}
-				<a href="{{ sn.url }}" alt="{{ ("biography.link."~sn.label)|trans([], "validators") }}" title="{{ ("biography.link."~sn.label)|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/webdirectory/social_network/'~ (sn.link|lower)~'.png') }}" alt="{{ sn.link }}" width="50"/></a>
+				<a href="{{ sn.url }}" alt="{{ ("biography.link."~sn.label)|trans([], "validators") }}" title="{{ ("biography.link."~sn.label)|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/webdirectory/social_network/'~ (sn.link|lower)~'.png') }}" alt="{{ sn.link }}" width="50"></a>
 			{% endif %}
 		{% endfor %}
 		<br>
@@ -137,7 +137,7 @@
 	{% if quotationsByAuthor|length > 0 %}
 		<h3><i class="fas fa-comment-dots fa-sm"></i> {{ "biography.index.Quotations"|trans([], "validators") }}</h3>
 		<p class="text-center" id="loading_quotation">
-			<img src="{{ asset('extended/photo/ajax-loader.gif') }}" alt="Loading" />
+			<img src="{{ asset('extended/photo/ajax-loader.gif') }}" alt="Loading">
 			<br>
 			{{ "generality.data.LoadingInProgress"|trans([], "validators") }}
 		</p>

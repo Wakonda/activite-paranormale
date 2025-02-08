@@ -1,10 +1,10 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "licence.showColorbox.WhatLicensesChoose"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ "licence.showColorbox.WhatLicensesChoose"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"></span>{{ "licence.showColorbox.WhatLicensesChoose"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/licences-show.webp') }}" alt="Gothic blond girl" width="550" /></p>
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/licences-show.webp') }}" alt="Gothic blond girl" width="550"></p>
 	<hr>
 	{% for entity in entities %}
 		<h3>{{ entity.title }}</h3>

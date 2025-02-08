@@ -1,11 +1,11 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "creepyStory.index.CreepyStory"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"/></span>{{ "creepyStory.index.CreepyStory"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="mt-1" alt="Flying Saucer"></span>{{ "creepyStory.index.CreepyStory"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block header_plus %}
 {% endblock %}
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/creepy-story-index.jpg') }}" width="550" alt="Creepy Story" /></p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/creepy-story-index.jpg') }}" width="550" alt="Creepy Story"></p>
 	<p>{{ "creepyStory.index.CountCreepyStory"|trans([], "validators") }}<span class="badge bg-danger">{{ nbr }}</span></p>
 	<hr>
 

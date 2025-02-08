@@ -3,7 +3,7 @@
 	<ul class="nav nav-tabs mb-2" id="wordNewsTab" role="tablist">
 		{% for language in worldNews.languages %}
 		  <li class="nav-item" role="presentation">
-			<button class="nav-link{{ language.abbreviation == app.request.locale ? ' active' : '' }} rounded-3" id="{{ language.abbreviation }}-tab" data-bs-toggle="tab" data-bs-target="#{{ language.abbreviation }}-tab-pane" type="button" role="tab" aria-controls="{{ language.abbreviation }}-tab-pane" aria-selected="true"><img class="image_wrapper" src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" title="{{ language.abbreviation }}" width="20" height="13" alt="{{ language.abbreviation }}" /> - {{ language.title }} <span class="badge bg-danger">{{ worldNews.entities[language.abbreviation]|length }}</span></button>
+			<button class="nav-link{{ language.abbreviation == app.request.locale ? ' active' : '' }} rounded-3" id="{{ language.abbreviation }}-tab" data-bs-toggle="tab" data-bs-target="#{{ language.abbreviation }}-tab-pane" type="button" role="tab" aria-controls="{{ language.abbreviation }}-tab-pane" aria-selected="true"><img class="image_wrapper" src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" title="{{ language.abbreviation }}" width="20" height="13" alt="{{ language.abbreviation }}"> - {{ language.title }} <span class="badge bg-danger">{{ worldNews.entities[language.abbreviation]|length }}</span></button>
 		  </li>
 		{% endfor %}
 	</ul>

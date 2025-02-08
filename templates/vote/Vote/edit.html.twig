@@ -1,7 +1,7 @@
-<link href="{{ asset('extended/js/bootstrap-star-rating/css/star-rating.min.css') }}" media="all" rel="stylesheet" type="text/css" />
+<link href="{{ asset('extended/js/bootstrap-star-rating/css/star-rating.min.css') }}" media="all" rel="stylesheet" type="text/css">
 <script src="{{ asset('extended/js/bootstrap-star-rating/js/star-rating.min.js') }}"></script>
 <script src="{{ asset('extended/js/bootstrap-star-rating/js/locales/' ~ app.request.locale ~ '.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('extended/js/bootstrap-star-rating/css/theme.min.css') }}" />
+<link rel="stylesheet" href="{{ asset('extended/js/bootstrap-star-rating/css/theme.min.css') }}">
 <script src="{{ asset('extended/js/bootstrap-star-rating/js/theme.min.js') }}"></script>
 
 <div class="star_rate mt-2">
@@ -17,7 +17,7 @@
 						{{ "vote.edit.Vote"|trans({ 'number': (countVoteByClassName|default(0)) }, "validators") }})
 					{% endapply %}
 				</span>
-				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</a>
+				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</button>
 			</div>
 		</div>
 		<div class="alert alert-dark g-0 p-3"><a href="#" class="btn btn-danger" id="post_favorite"><i class="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}fa-solid{% else %}fa-regular{% endif %} fa-heart" id="favorite_icon"></i> </a></div>

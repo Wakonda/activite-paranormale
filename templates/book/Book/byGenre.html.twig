@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ genre.title }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="Movie"/></span>{{ genre.title }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shopping_cart.png') }}" width="25" class="mt-1" alt="Movie"></span>{{ genre.title }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	<p class="image">{{ genre.photoIllustrationFilename|imgsize(550, genre.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, genre.photoIllustrationCaption)|raw }}</p>
@@ -57,7 +57,7 @@
 
 		{% if pagination.paginationData.pageCount > 1 %}
 			<br>
-			<hr class="hr2"/>
+			<hr class="hr2">
 		{% endif %}
 	</div>
 

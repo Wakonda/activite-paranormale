@@ -3,13 +3,12 @@
 {% block title %}{% if entity is not empty %}{{ entity.title }}{% endif %}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/creative-commons-icon.png') }}" width="25" class="mt-1" alt="Law"/></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/creative-commons-icon.png') }}" width="25" class="mt-1" alt="Law"></span>{% if entity is not empty %}{{ entity.title }}{% endif %}</h2>
 {% endblock h2_title %}
 
 {% block header_plus %}
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
-
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
@@ -51,7 +50,7 @@
 			{% endfor %}
 		</tbody>
 	</table>
-	
+
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

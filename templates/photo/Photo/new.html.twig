@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "photo.new.AddPhoto"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "photo.new.AddPhoto"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"></span>{{ "photo.new.AddPhoto"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
@@ -31,7 +31,7 @@
 
 {% block APBlog_body %}
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
-	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}photo-user-participation.webp" alt="Girl taking photo" width="550" class="mx-auto d-block img-fluid"/></p>
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/') }}photo-user-participation.webp" alt="Girl taking photo" width="550" class="mx-auto d-block img-fluid"></p>
 	<hr class="hr2">
 	{% include 'page/Page/publicationCharter.html.twig' %}
 	{{ form_start(form, {'action': path('Photo_Create'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
@@ -68,6 +68,6 @@
 		{{ form_errors(form) }}
 	{{ form_end(form) }}
 
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

@@ -1,16 +1,16 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "classifiedAds.new.NewClassifiedAds"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "classifiedAds.new.NewClassifiedAds"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"></span>{{ "classifiedAds.new.NewClassifiedAds"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
-	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}">
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen">
 	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
 	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
 	<script src="{{ asset('extended/js/geosearch/geosearch.umd.js') }}"></script>
-	<link  rel="stylesheet"  href="{{ asset('extended/js/geosearch/geosearch.min.css') }}"/>
+	<link  rel="stylesheet"  href="{{ asset('extended/js/geosearch/geosearch.min.css') }}">
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}

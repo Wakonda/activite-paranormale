@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ currentDate|date("Y") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"/></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ currentDate|date("Y") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span> {{ "eventMessage.calendar.Events"|trans([], "validators") }} - {{ currentDate|date("Y") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<style>
@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-year.jpg') }}" alt="Alone girl" /></p>
+	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/eventMessage-year.jpg') }}" alt="Alone girl"></p>
 	<hr>
 	
 	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}

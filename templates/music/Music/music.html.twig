@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ entity.musicPiece }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"/></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/disk.png') }}" width="25" class="mt-1" alt="Guitar"></span>{{ artist.title }} - {{ entity.musicPiece }}</h2>{% endblock h2_title %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary">
@@ -51,7 +51,7 @@
 				<source src="{{ asset(entity.getAssetMusicPath()) }}{{ entity.musicPieceFile }}" type="audio/mp3">
 			</audio>
 			<p class="text-center">
-				<img src="{{ asset('extended/photo/abstract-download-document.svg') }}" alt="Download file icon" class="align-middle" width="40"/>
+				<img src="{{ asset('extended/photo/abstract-download-document.svg') }}" alt="Download file icon" class="align-middle" width="40">
 				<a href="{{ path('Music_Download', {'id' : entity.id}) }}">{{ "music.music.DownloadFile"|trans([], "validators") }}</a>
 			</p>
 		{% endif %}

@@ -1,11 +1,11 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "index.archive.Archive"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"/></span>{{ "index.archive.Archive"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"></span>{{ "index.archive.Archive"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block header_plus %}
 {% endblock %}
 {% block APBlog_body %}
-	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/archive_index.jpg') }}" width="550" alt="Strange dream" /></p>
+	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/archive_index.jpg') }}" width="550" alt="Strange dream"></p>
 	<hr>
 	{% if is_granted('ROLE_ARCHIVIST') == false %}
 		{{ ("index.archive.Unauthorized"|trans({"%urlAccount%": path("Registration_Register"), "%urlContact%": path("Contact_Index")}, "validators"))|raw }}

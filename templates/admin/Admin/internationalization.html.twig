@@ -14,7 +14,7 @@
 			{% if e.language is not empty %}
 				<tr>
 					<td>{{ e.title }}</td>
-					<td>{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()~e.language.logo) }}" width="20" />{% endif %}</td>
+					<td>{% if entity.language is not empty %}<img src="{{ asset(entity.language.getAssetImagePath()~e.language.logo) }}" width="20">{% endif %}</td>
 					<td>
 						<a href="{{ path(showRoute, {'id' : e.id }) }}"><i class="fas fa-book" aria-hidden="true"></i> {{ "admin.general.Read"|trans([], "validators") }}</a><br>
 						<a href="{{ path(editRoute, {'id' : e.id }) }}"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a>
@@ -35,8 +35,8 @@
 <script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 <script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
 <script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen" />
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen" />
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 <script>
 	document.querySelector("#{{ form.language.vars.id }}_select_language").addEventListener("click", (e) => {
 		e.preventDefault();

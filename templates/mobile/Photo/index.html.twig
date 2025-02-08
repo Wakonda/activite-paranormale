@@ -2,7 +2,7 @@
 
 {% block title %}{{ "mobile.main.Photo"|trans([], "validators") }}{% endblock %}
 {% block page_title%}
-	<span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="me-2" alt="Flying Saucer"/></span>
+	<span class="float-start"><img src="{{ asset('extended/photo/flying-saucer-ufo-photo.png') }}" width="25" class="me-2" alt="Flying Saucer"></span>
 	{{ "mobile.main.Photo"|trans([], "validators") }}
 	{% if app.request.attributes.get('theme') != "" %}
 		{{ (" - "~app.request.attributes.get('theme')) }}

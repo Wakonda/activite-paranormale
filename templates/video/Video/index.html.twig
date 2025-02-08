@@ -1,11 +1,11 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "video.index.Video"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/movie.svg') }}" width="25" class="mt-1" alt="Movie"/></span>{{ "video.index.Video"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/movie.svg') }}" width="25" class="mt-1" alt="Movie"></span>{{ "video.index.Video"|trans([], "validators") }}</h2>{% endblock h2_title %}
 {% block header_plus %}
 {% endblock %}
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/video.jpg') }}" height="550" alt="Mermaid" /></p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/video.jpg') }}" height="550" alt="Mermaid"></p>
 	<p>{{ "video.index.NbrTotalVideo"|trans([], "validators") }}<span class="badge bg-danger">{{ nbr }}</span></p>
 	<hr>
 

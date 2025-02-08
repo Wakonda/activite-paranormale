@@ -1,6 +1,6 @@
 {% extends "content_layout.html.twig" %}
 {% block title %}{{ "user.showProfile.YourAccount"|trans([], "validators") }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/elite-icon.png') }}" width="25" class="mt-1" alt="Elite"/></span>{{ "user.showProfile.YourAccount"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/elite-icon.png') }}" width="25" class="mt-1" alt="Elite"></span>{{ "user.showProfile.YourAccount"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block APBlog_body %}
 	{% for flashMessage in app.session.flashbag.get('success') %}
@@ -18,7 +18,7 @@
 		{% include "user/Profile/show_content.html.twig" %}
 	{% endblock fos_user_content %}
 	
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
 

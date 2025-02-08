@@ -22,7 +22,7 @@
 <p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 <p id="media_duration">
 	<a href="{{ path('EventMessage_Calendar') }}" alt="">
-	<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" class="align-middle"/> 
+	<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="30" class="align-middle"> 
 	{% if entity.dateTo == entity.dateFrom %}
 		{{ entity.dateFrom|dodate(false, app.request.locale) }}
 	{% else %}
@@ -39,7 +39,7 @@
 	<div id="map-canvas" style="width:100%; height:400px"></div>
 {% endif %}
 <br>
-<hr class="hr2"/>
+<hr class="hr2">
 <p>
 	{% if entity.theme is not null %}<i class="fas fa-dragon"></i> <a dir="{{ entity.language.direction }}" href="{{ path('Theme_Show', { id: entity.theme.id, theme: entity.theme.title }) }}">{{ entity.theme.title }}</a> - {% endif %}<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}{% if entity.licence is not null %} - <a href="{{ path('Licence_ShowColorboxByLicence', { 'id' : entity.licence.id }) }}" alt="" id="news_licence_link"><img class="align-middle" src="{{ asset('extended/photo/licence/'~entity.licence.logo) }}" alt="{{ entity.licence.title }}" /></a>{% endif %}
 	{% if is_current_languages(entity.language.abbreviation) == false %}

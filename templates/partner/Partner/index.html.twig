@@ -3,11 +3,11 @@
 {% block title %}{{ "partner.index.Partner"|trans([], "validators") }}{% endblock %}
 
 {% block h2_title %}
-	<h2><span class="float-start"><img src="{{ asset('extended/photo/red-monster.png') }}" width="25" class="mt-1" alt="Red monster"/></span>{{ "partner.index.Partner"|trans([], "validators") }}</h2>
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/red-monster.png') }}" width="25" class="mt-1" alt="Red monster"></span>{{ "partner.index.Partner"|trans([], "validators") }}</h2>
 {% endblock h2_title %}
 
 {% block APBlog_body %}
-	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/followus.webp') }}" alt="Follow us" /></p>
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/followus.webp') }}" alt="Follow us"></p>
 	<hr>
 	{% for partner in pagination.items %}
 		<div class="clearfix mb-2">

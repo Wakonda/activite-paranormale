@@ -18,7 +18,7 @@
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<p><span style="font-weight: bold; font-size: 16px;">{{ entity.title }}</span></p>
 					<div class="image" style="float:left; margin-right: 5px;">{{ entity.photoIllustrationFilename|imgsize(250, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid", 'loading': 'lazy'})|raw }}</div>
-					<p><img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="20" class="align-middle"/> 
+					<p><img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="20" class="align-middle"> 
 					{% if entity.isDatesEqual() or entity.getDateToString() is empty %}
 						<a href="{{ path('EventMessage_SelectDayMonth', {year: entity.yearFrom, month: entity.monthFrom, day: entity.dayFrom}) }}">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
 					{% else %}

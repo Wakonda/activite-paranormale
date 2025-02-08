@@ -10,7 +10,7 @@
 
 {% block h2_title %}
 	<h2>
-		<span class="float-start"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"/></span>{{ "book.index.Book"|trans([], "validators") }}
+		<span class="float-start"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"></span>{{ "book.index.Book"|trans([], "validators") }}
 
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}

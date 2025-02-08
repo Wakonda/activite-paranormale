@@ -179,4 +179,23 @@
 			xmlhttp.send(null);
 		}
 	});
+
+	document.getElementById("{{ form.imageEmbeddedCode.vars.id }}").addEventListener('paste', (event) => {
+		if(document.getElementById("{{ form.platform.vars.id }}").value == "{{ constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') }}") {
+			event.preventDefault();
+			let textarea = document.getElementById("{{ form.imageEmbeddedCode.vars.id }}");
+			let content = (event.clipboardData || window.clipboardData).getData('text');
+			let altValue = document.getElementById("{{ form.title.vars.id }}").value;
+			let parser = new DOMParser();
+			let doc = parser.parseFromString(content, "text/html");
+
+			doc.querySelectorAll("img").forEach(img => {
+				if (!img.hasAttribute("alt")) {
+					img.setAttribute("alt", altValue.replace(/\"/g, "'"));
+				}
+			});
+
+			textarea.value = doc.body.innerHTML;
+		}
+	});
 </script>

@@ -10,7 +10,7 @@
 
 {% block h2_title %}
 	<h2>
-		<span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"/></span>{{ "televisionSerie.index.TelevisionSerie"|trans([], "validators") }}
+		<span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"></span>{{ "televisionSerie.index.TelevisionSerie"|trans([], "validators") }}
 
 		{% if app.request.attributes.get('theme') != "" %}
 			{{ (" - "~app.request.attributes.get('theme')) }}
@@ -85,6 +85,6 @@
 	</div>
 
 	<br>
-	<hr class="hr2"/>
+	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}
