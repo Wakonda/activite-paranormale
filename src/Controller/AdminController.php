@@ -1365,7 +1365,7 @@ class AdminController extends AbstractController
 
 		$res = $mastodon->postMessage($currentURL, $request->request->get($fieldName."_area"), $entity->getLanguage()->getAbbreviation());
 
-		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). " (".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 	}

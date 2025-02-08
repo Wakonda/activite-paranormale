@@ -11,7 +11,7 @@ class Mastodon {
 
 		$accessToken = $this->MASTODON_ACCESS_TOKEN;
 		$urlMastodon = $this->MASTODON_URL;
-
+// dd($accessToken, $urlMastodon);
 		$res = new \stdClass;
 
 		$ch = curl_init();
@@ -34,8 +34,15 @@ class Mastodon {
 		$result = curl_exec($ch);
 		if (curl_errno($ch)) {
 			$res->error = curl_error($ch);
-		} else
-			$res->success = "success";
+		} else {
+			$data = json_decode($result);
+
+			if(property_exists($data, "error")) {
+				$res->error = new \stdClass();
+				$res->error->message = $data->error;
+			} else
+				$res->success = "success";
+		}
 
 		curl_close($ch);
 
@@ -66,12 +73,16 @@ class Mastodon {
 				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_RU_ACCESS_TOKEN"];
 				$this->MASTODON_URL = $_ENV["MASTODON_RU_URL"];
 				break;
+			case "magic_fr":
+				$this->MASTODON_ACCESS_TOKEN = $_ENV["MASTODON_MAGIC_FR_ACCESS_TOKEN"];
+				$this->MASTODON_URL = $_ENV["MASTODON_MAGIC_FR_URL"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr", "en", "es", "pt", "ru"];
+		return ["fr", "en", "es", "pt", "ru", "magic_fr"];
 	}
 
 	public function getLanguagesCanonical()
@@ -81,7 +92,8 @@ class Mastodon {
 			"Mastodon (español)" => "mastodon_es",
 			"Mastodon (français)" => "mastodon_fr",
 			"Mastodon (português)" => "mastodon_pt",
-			"Mastodon (Русский)" => "mastodon_ru"
+			"Mastodon (Русский)" => "mastodon_ru",
+			"Mastodon (Magic FR)" => "mastodon_magic_fr"
 		];
 	}
 }
