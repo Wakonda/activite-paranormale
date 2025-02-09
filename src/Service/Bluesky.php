@@ -183,6 +183,18 @@ class Bluesky {
 				$this->HANDLE = $_ENV["BLUESKY_RU_HANDLE"];
 				$this->PASSWORD = $_ENV["BLUESKY_RU_PASSWORD"];
 				break;
+			case "magic_fr":
+				$this->HANDLE = $_ENV["BLUESKY_MAGIC_FR_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_MAGIC_FR_PASSWORD"];
+				break;
+			case "magic_en":
+				$this->HANDLE = $_ENV["BLUESKY_MAGIC_EN_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_MAGIC_EN_PASSWORD"];
+				break;
+			case "magic_es":
+				$this->HANDLE = $_ENV["BLUESKY_MAGIC_ES_HANDLE"];
+				$this->PASSWORD = $_ENV["BLUESKY_MAGIC_ES_PASSWORD"];
+				break;
 		}
 	}
 
@@ -235,7 +247,7 @@ class Bluesky {
 
 	public function getLanguages()
 	{
-		return ["en", "es", "fr", "pt", "ru"];
+		return ["en", "es", "fr", "pt", "ru", "magic_fr", "magic_en", "magic_es"];
 	}
 
 	public function getLanguagesCanonical()
@@ -245,7 +257,10 @@ class Bluesky {
 			"Bluesky (español)" => "bluesky_es",
 			"Bluesky (français)" => "bluesky_fr",
 			"Bluesky (português)" => "bluesky_pt",
-			"Bluesky (Русский)" => "bluesky_ru"
+			"Bluesky (Русский)" => "bluesky_ru",
+			"Bluesky (Magic FR)" => "bluesky_magic_fr",
+			"Bluesky (Magic EN)" => "bluesky_magic_en",
+			"Bluesky (Magic EN)" => "bluesky_magic_es"
 		];
 	}
 }

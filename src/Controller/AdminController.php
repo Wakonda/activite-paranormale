@@ -923,6 +923,16 @@ class AdminController extends AbstractController
 
 		$locale = $entity->getLanguage()->getAbbreviation();
 
+		$locale = $entity->getLanguage()->getAbbreviation();
+		if(method_exists($entity, "getRealClass")) {
+			switch($entity->getRealClass()) {
+				case "WitchcraftTool":
+				case "Grimoire":
+					$locale = "magic_".$entity->getLanguage()->getAbbreviation();
+				break;
+			}
+		}
+
 		$res = $bluesky->postMessage($requestParams->get($socialNetwork."_area"), $currentURL, $locale);
 
 		if(property_exists($res, "error"))
@@ -1363,7 +1373,17 @@ class AdminController extends AbstractController
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = $mastodon->postMessage($currentURL, $request->request->get($fieldName."_area"), $entity->getLanguage()->getAbbreviation());
+		$locale = $entity->getLanguage()->getAbbreviation();
+		if(method_exists($entity, "getRealClass")) {
+			switch($entity->getRealClass()) {
+				case "WitchcraftTool":
+				case "Grimoire":
+					$locale = "magic_".$entity->getLanguage()->getAbbreviation();
+				break;
+			}
+		}
+
+		$res = $mastodon->postMessage($currentURL, $request->request->get($fieldName."_area"), $locale);
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). " (".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 
