@@ -205,8 +205,7 @@
 			else
 				$p = $path.$file;
 
-			if(empty($file) or !file_exists($p))
-			{
+			if(empty($file) or !file_exists($p)) {
 				if(!$displayIfFileNotExist)
 					return null;
 				
@@ -229,22 +228,19 @@
 			$info[0] = intval($info[0]);
 			$info[1] = intval($info[1]);
 
-			if($info[0] > $width)
-			{
+			if($info[0] > $width) {
 				$eX = $width / $info[0];
 				$newLarg = $eX * $info[0];
 				$newLong = $eX * $info[1];
 			}
-			else
-			{
+			else {
 				$newLarg = $info[0];
 				$newLong = $info[1];
 			}
 
 			$optionString = "";
 
-			if(empty($width)) 
-			{
+			if(empty($width)) {
 				if(empty($options))
 					$options = [];
 
@@ -254,8 +250,7 @@
 					$options["class"] = "img-fluid bg-light";
 			}
 			
-			if(!empty($options))
-			{
+			if(!empty($options)) {
 				$optionArray = [];
 				foreach($options as $key => $option)
 				{
@@ -274,7 +269,7 @@
 				
 				$src = "data:".$mime_type.";base64," . base64_encode($data);
 			}
-// dd(round($newLong));
+
 			if($svg->isSVG())
 				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white">';
 			else

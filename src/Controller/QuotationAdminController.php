@@ -68,10 +68,11 @@ class QuotationAdminController extends AdminGenericController
 		return $this->showGenericAction($em, $id, $twig, ["imageGeneratorForm" => $form->createView()]);
     }
 
-    public function newAction(Request $request, EntityManagerInterface $em)
+    public function newAction(Request $request, EntityManagerInterface $em, $family)
     {
 		$formType = QuotationAdminType::class;
 		$entity = new Quotation();
+		$entity->setFamily($family);
 
 		$twig = 'quotation/QuotationAdmin/new.html.twig';
 		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);

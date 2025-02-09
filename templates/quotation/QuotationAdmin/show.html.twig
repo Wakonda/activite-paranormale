@@ -2,17 +2,17 @@
 
 {% block h2_title %}{{ "admin.index.Quotation"|trans([], "validators") }}{% endblock %}
 
-{% block edit_admin_route %}{{ path('Quotation_Admin_Edit', { 'id': entity.id }) }}{% endblock %}
-{% block new_admin_route %}{{ path('Quotation_Admin_New') }}{% endblock %}
+{% block edit_admin_route %}{{ path('Quotation_Admin_Edit', { id: entity.id }) }}{% endblock %}
+{% block new_admin_route %}{{ path('Quotation_Admin_New', {family: entity.family}) }}{% endblock %}
 {% block index_admin_route %}{{ path('Quotation_Admin_Index') }}{% endblock %}
-{% block delete_admin_route %}{{ path('Quotation_Admin_Delete', { 'id': entity.id }) }}{% endblock %}
+{% block delete_admin_route %}{{ path('Quotation_Admin_Delete', { id: entity.id }) }}{% endblock %}
 
 {% block additional_new_entry %}
 	{% if entity.isQuotationFamily() %}
 		<li class="nav-item dropdown">
 		<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"><i class="far fa-address-book" aria-hidden="true"></i> {{ "admin.general.Create"|trans([], "validators") }}...</a>
 			<div class="dropdown-menu">
-				<a class="dropdown-item" href="{{ path('Quotation_Admin_CreateSameAuthor', {'biographyId': entity.authorQuotation.id}) }}">{{ "quotation.admin.ForSameAuthor"|trans([], "validators") }}</a>
+				<a class="dropdown-item" href="{{ path('Quotation_Admin_CreateSameAuthor', {biographyId: entity.authorQuotation.id}) }}">{{ "quotation.admin.ForSameAuthor"|trans([], "validators") }}</a>
 			</div>
 		</li>
 	{% endif %}

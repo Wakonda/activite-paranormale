@@ -11,8 +11,10 @@ Quotation_Admin_Show:
     controller: App\Controller\QuotationAdminController::showAction
 
 Quotation_Admin_New:
-    path:  /new
+    path:  /new/{family}
     controller: App\Controller\QuotationAdminController::newAction
+    defaults:
+        family: quotation
 
 Quotation_Admin_Create:
     path:  /create
