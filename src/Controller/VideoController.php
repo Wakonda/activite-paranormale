@@ -17,6 +17,7 @@ use App\Entity\Contact;
 use App\Entity\Theme;
 use App\Entity\State;
 use App\Entity\Language;
+use App\Entity\User;
 use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
@@ -481,7 +482,7 @@ class VideoController extends AbstractController
 
 		$user = $this->getUser();
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and !empty($user) and $user->getId() != $entity->getAuthor()->getId()))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);

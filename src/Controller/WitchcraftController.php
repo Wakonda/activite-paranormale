@@ -265,7 +265,7 @@ class WitchcraftController extends AbstractController
 
 		$user = $this->getUser();
 
-		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and ($user->getId() != $entity->getAuthor()->getId() and $entity->getAuthor()->getUsername() != "Anonymous")))
+		if($entity->getState()->isStateDisplayed() or (!empty($entity->getAuthor()) and !$this->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and (!empty($user) and $user->getId() != $entity->getAuthor()->getId() and $entity->getAuthor()->getUsername() != "Anonymous")))
 			throw new AccessDeniedHttpException("You are not authorized to edit this document.");
 		
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
