@@ -5,6 +5,7 @@ namespace App\Entity\Movies;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Language;
 use App\Entity\FileManagement;
+use Ausi\SlugGenerator\SlugGenerator;
 
 /**
  * App\Entity\GenreAudiovisual
@@ -74,6 +75,11 @@ class GenreAudiovisual
 	private $wikidata;
 
 	/**
+     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
+     */
+    protected $slug;
+
+	/**
 	 * @var string $fiction
 	 *
 	 * @ORM\Column(name="fiction", type="boolean", nullable=true)
@@ -83,6 +89,10 @@ class GenreAudiovisual
 	public function __toString()
 	{
 		return $this->title;
+	}
+
+	public function getUrlSlug() {
+		return $this->slug;
 	}
 
     /**
@@ -142,6 +152,7 @@ class GenreAudiovisual
     public function setTitle(string $title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     /**
@@ -283,5 +294,16 @@ class GenreAudiovisual
     public function getFiction()
     {
         return $this->fiction;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug))
+			$this->slug = (new SlugGenerator)->generate($this->title);
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

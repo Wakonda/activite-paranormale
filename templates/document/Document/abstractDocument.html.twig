@@ -62,8 +62,8 @@
 {% endblock %}
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
-	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/document-abstract.jpg') }}" alt="Girl - Monster" /></p>
-	<hr />
+	<p class="image"><img width="550" class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/document-abstract.jpg') }}" alt="Girl - Monster"></p>
+	<hr>
 	<div class="tabs">
 		<h3>{{ "document.abstract.Abstract"|trans([], "validators") }}</h3>
 		{% if entity.text|striptags is not empty %}

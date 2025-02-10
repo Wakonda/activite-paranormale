@@ -19,7 +19,7 @@ Movie_Show:
         id: \d+
 
 ByGenreMovie_Index:
-    path: /movie/genre/{idGenre}/{titleGenre}/{page}
+    path: /movie/genre/{idGenre}/{title_slug}/{page}
     controller: App\Controller\MovieController::byGenreAction
     defaults:
         page: 1

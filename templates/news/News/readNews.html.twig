@@ -41,7 +41,7 @@
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
-	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}</p>
+	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {class: "mx-auto d-block img-fluid", alt: entity.title}, entity.photoIllustrationCaption)|raw }}</p>
 	<br>
 	{% set dir = entity.language.direction %}
 	<div dir="{{ dir }}">{{ entity.abstractText|raw }}</div>

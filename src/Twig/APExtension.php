@@ -252,15 +252,14 @@
 			
 			if(!empty($options)) {
 				$optionArray = [];
-				foreach($options as $key => $option)
-				{
-					$optionArray[] = $key.'="'.$option.'"';
+				foreach($options as $key => $option) {
+					$optionArray[] = $key.'="'.str_replace('"', "'", $option).'"';
 				}
 				$optionString = implode(" ", $optionArray);
 			}
-			
+// dd($optionString);
 			$src = $realPath.$file;
-			
+
 			if($private) {
 				$data = file_get_contents($p);
 				$finfo = finfo_open();
@@ -271,9 +270,9 @@
 			}
 
 			if($svg->isSVG())
-				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white">';
+				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white" '.$optionString.'>';
 			else
-				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' alt="" '.$optionString.'>';
+				$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' '.$optionString.'>';
 
 			return $this->imgCaptionFilter($caption, $src, $res);
 		}
@@ -381,8 +380,7 @@
 
 		public function dodateFilter($date, $time, $language)
 		{
-			if((is_object($date) or is_string($date)) and !empty($date))
-			{
+			if((is_object($date) or is_string($date)) and !empty($date)) {
 				if(is_string($date))
 					$date = new \DateTime($date);
 
@@ -427,8 +425,7 @@
 			$display = "<div class='hidden_for_print'>";
 			$display .= "<h3>".$this->translator->trans("generality.page.Advertisement", [], "validators")."</h3>";
 			
-			if($pub == "google")
-			{
+			if($pub == "google") {
 				if((new \Mobile_Detect)->isMobile())
 					$ads = $this->advertising(300, 250);
 				else
@@ -517,8 +514,7 @@
 			$new_lines = [];
 
 			foreach ($lines as $i => $line) {
-				if(!empty($line))
-				{
+				if(!empty($line)) {
 					if(strstr($line, $entity->getAssetImagePath()))
 						$new_lines[] = trim($line);
 					else
@@ -561,8 +557,7 @@
 			$width = $imageSize[0];
 			$height = $imageSize[1];
 
-			if($imageSize[0] > 550)
-			{
+			if($imageSize[0] > 550) {
 				$width = 550;
 				$height = (550 * $imageSize[1]) / $imageSize[0];
 			}
@@ -608,8 +603,7 @@
 			$durations = [];
 			$seconds = 0;
 
-			foreach($entities as $entity)
-			{
+			foreach($entities as $entity) {
 				if(empty($entity->getLength()))
 					continue;
 

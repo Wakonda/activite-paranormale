@@ -166,7 +166,7 @@
 				</tr>
 				<tr>
 					<td class="td_form_table">{{ "movie.read.Genre"|trans([], "validators") }}</td>
-					<td class="tdGene"><a href="{{ path('ByGenreMovie_Index', {idGenre: movie.genre.id, titleGenre: movie.genre.title}) }}">{{ movie.genre }}</a></td>
+					<td class="tdGene"><a href="{{ path('ByGenreMovie_Index', {idGenre: movie.genre.id, title_slug: movie.genre.urlSlug}) }}">{{ movie.genre }}</a></td>
 				</tr>
 				<tr>
 					<td class="td_form_table">{{ "movie.read.Country"|trans([], "validators") }}</td>

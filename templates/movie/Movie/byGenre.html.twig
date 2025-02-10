@@ -23,7 +23,7 @@
 							<div class="d-flex justify-content-around">
 								<div class="p-2"><i class="far fa-clock"></i> {{ entity.duration|default("-") }} {{ 'movie.index.Minute'|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</div>
 								<div class="p-2"><i class="fas fa-calendar-day"></i> {{ (entity.releaseYear|doPartialDate(app.request.locale))|default("-") }}</div>
-								<div class="p-2"><i class="fas fa-film"></i> <a href="{{ path('ByGenreMovie_Index', {idGenre: entity.id, titleGenre: entity.genre.title}) }}">{{ entity.genre }}</a></div>
+								<div class="p-2"><i class="fas fa-film"></i> <a href="{{ path('ByGenreMovie_Index', {idGenre: entity.id, title_slug: entity.genre.urlSlug}) }}">{{ entity.genre }}</a></div>
 							</div>
 
 							<p class="card-text mb-0 text-center my-3"></p>

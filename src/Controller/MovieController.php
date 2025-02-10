@@ -55,7 +55,7 @@ class MovieController extends AbstractController
 		return $this->render('movie/Movie/show.html.twig', ['entity' => $entity]);
 	}
 
-	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
+	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $title_slug, $page)
 	{
 		$nbMessageByPage = 12;
 

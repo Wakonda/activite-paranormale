@@ -34,6 +34,13 @@ class MigrateSlugifyCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$generator = new SlugGenerator;
+		
+		$entities = $this->em->getRepository("\App\Entity\Movies\GenreAudiovisual")->findAll();
+		
+		foreach($entities as $entity) {
+			$conn->exec("UPDATE genreaudiovisual SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
+		
 		/*$entities = $this->em->getRepository("\App\Entity\Album")->findAll();
 		
 		foreach($entities as $entity) {
@@ -60,7 +67,7 @@ class MigrateSlugifyCommand extends Command
 
         // return 0;
 
-		$entities = $this->em->getRepository("\App\Entity\SurThemeGrimoire")->findAll();
+		/*$entities = $this->em->getRepository("\App\Entity\SurThemeGrimoire")->findAll();
 		
 		foreach($entities as $entity) {
 			$conn->exec("UPDATE surthemegrimoire SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
@@ -70,7 +77,7 @@ class MigrateSlugifyCommand extends Command
 		
 		foreach($entities as $entity) {
 			$conn->exec("UPDATE grimoire SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
-		}
+		}*/
 
         return 0;
     }
