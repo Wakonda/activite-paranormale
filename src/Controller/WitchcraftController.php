@@ -101,7 +101,7 @@ class WitchcraftController extends AbstractController
 			$img = $imgSize->adaptImageSize(150, $img);
 
 			$row = [];
-			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="" style="width: '.$img[0].';">';			
+			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="'.str_replace('"', "'", $entity->getTitle()).'" style="width: '.$img[0].';">';			
 			$row[] = '<a href="'.$this->generateUrl("Witchcraft_ReadGrimoire", ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug(), 'surtheme' => $entity->getSurTheme()->getSlug()]).'" >'.$entity->getTitle().'</a>';
 
 			$output['data'][] = $row;

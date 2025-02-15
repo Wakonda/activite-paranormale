@@ -39,7 +39,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<p class="image">{{ fob.photo|imgsize(550, fob.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+	<p class="image">{{ fob.photo|imgsize(550, fob.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid', alt: fob.title})|raw }}</p>
 	<hr>
 	{{ fob.text|raw }}
 	<br>

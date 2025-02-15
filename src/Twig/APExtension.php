@@ -212,6 +212,7 @@
 				$file = "file_no_exist_".$this->translator->getLocale().".png";
 				$p = "extended/photo/".$file;
 				$realPath = ($useAssetPath) ? "/extended/photo/" : "extended/photo/";
+				$options["alt"] = "Image not found";
 			}
 
 			$newLarg = 0.0;

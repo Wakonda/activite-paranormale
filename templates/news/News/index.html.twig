@@ -5,6 +5,9 @@
 	{% if app.request.attributes.get('theme') != "" %}
 		{{ (" - "~app.request.attributes.get('theme')) }}
 	{% endif %}
+	{% if page is not empty %}
+		- {{ "admin.index.Page"|trans([], "validators") }} {{ page }}
+	{% endif %}
 {% endblock %}
 
 {% block meta_plus %}

@@ -7,7 +7,7 @@
 {% block title %}{{ menuGrimoire.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/skull.png') }}" width="25" class="mt-1" alt="Skull"></span>{{ menuGrimoire.title }}</h2>{% endblock h2_title %}
 {% block APBlog_body %}
-		<p class="image">{{ menuGrimoire.photo|imgsize(550, menuGrimoire.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
+		<p class="image">{{ menuGrimoire.photo|imgsize(550, menuGrimoire.getAssetImagePath(), true, {class: 'mx-auto d-block img-fluid', alt: menuGrimoire.title})|raw }}</p>
 		<hr>
 		{{ menuGrimoire.text|raw }}
 		<ul class="fa-ul">
