@@ -62,6 +62,11 @@
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Thumbnail"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.thumbnail is not empty %}{{ entity.thumbnail|imgsize(200, entity.getAssetImagePath())|raw }}{% endif %}</div>
 
+	{% if entity.country is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Country"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{% if entity.country is not empty %}<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13">{% endif %}</div>
+	{% endif %}
+
 	<div class="form-table-cell form-table-cell-head">{{ "eventMessage.admin.Latitude"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.latitude }}</div>
 

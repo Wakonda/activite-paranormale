@@ -132,6 +132,11 @@ class EventMessage extends MappedSuperclassBase
 	 */
 	private $internationalName;
 	
+	/**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
+     */
+    protected $country;
+	
 	public function __construct()
 	{
 		parent::__construct();
@@ -539,4 +544,14 @@ class EventMessage extends MappedSuperclassBase
     {
         return $this->internationalName;
     }
+	
+	public function getCountry()
+	{
+		return $this->country;
+	}
+	
+	public function setCountry($country)
+	{
+		$this->country = $country;
+	}
 }

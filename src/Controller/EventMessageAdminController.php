@@ -280,4 +280,60 @@ class EventMessageAdminController extends AdminGenericController
 
 		return new Response();
 	}
+
+	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
+	{
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = [];
+		
+		if(!empty($language))
+		{
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
+			
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+
+			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
+			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
+			$countries = $em->getRepository(Region::class)->getCountryByLanguage($language->getAbbreviation())->getQuery()->getResult();
+		}
+		else
+		{
+			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
+			$states = $em->getRepository(State::class)->findAll();
+			$licences = $em->getRepository(Licence::class)->findAll();
+			$countries = $em->getRepository(Region::class)->findAll();
+		}
+
+		$themeArray = [];
+		$stateArray = [];
+		$licenceArray = [];
+		$countryArray = [];
+		
+		foreach($themes as $theme)
+			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
+
+		$translateArray['theme'] = $themeArray;
+
+		foreach($states as $state)
+			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName()];
+
+		$translateArray['state'] = $stateArray;
+
+		foreach($licences as $licence)
+			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
+
+		$translateArray['licence'] = $licenceArray;
+
+		foreach($countries as $country)
+			$countryArray[] = ["id" => $country->getInternationalName(), "title" => $country->getTitle()];
+
+		$translateArray['country'] = $countryArray;
+		
+		$response = new Response(json_encode($translateArray));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+	}
 }

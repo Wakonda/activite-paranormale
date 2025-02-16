@@ -90,7 +90,7 @@ class Quotation
 	 * @ORM\Column(type="string", nullable=true) 
 	 */
 	protected $date;
-	
+
 	/**
      * @ORM\ManyToOne(targetEntity="App\Entity\Region")
      */

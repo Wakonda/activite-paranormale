@@ -77,7 +77,8 @@
 				new TwigFilter('str_replace', array($this, 'strReplaceFilter')),
 				new TwigFilter('removeStyleAttributeFromHtmlTags', array($this, 'removeStyleAttributeFromHtmlTagsFilter')),
 				new TwigFilter('ucfirst', array($this, 'UcfirstFilter')),
-				new TwigFilter('imgCaption', array($this, 'imgCaptionFilter'))
+				new TwigFilter('imgCaption', array($this, 'imgCaptionFilter')),
+				new TwigFilter('remove_cr', array($this, 'removeCarriageReturnFilter'))
 			);
 		}
 
@@ -170,6 +171,10 @@
 		public function firstFilter($str)
 		{
 			return $str[0];
+		}
+
+		public function removeCarriageReturnFilter($string) {
+			return str_replace(["\n", "\r", "\t"], ' ', $string);
 		}
 		
 		public function isImageFilter($extension)

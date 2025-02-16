@@ -456,15 +456,21 @@ class EventMessageController extends AbstractController
 			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
 			$centuryText = $translator->trans('eventMessage.dayMonth.Century', ["number" => $year, "romanNumber" => $romanNumber, "bc" => $bc], 'validators');
 
+			$extraTitle = null;
+			
+			if(!empty($country = $entity->getCountry())) {
+				$extraTitle = '<img src="'.$request->getBasePath().'/'.$entity->getCountry()->getAssetImagePath().$entity->getCountry()->getFlag().'" alt="Flag '.$entity->getCountry()->getTitle().'" width="20px" height="13px"> ';
+			}
+
 			if($yearEvent != $year) {
 				$res[$entity->getType()][empty($yearEvent) ? "noYear" : $centuryText][$entity->getYearFrom()][] = [
-					"title" => $entity->getTitle(),
+					"title" => $extraTitle.$entity->getTitle(),
 					"theme" => $entity->getTheme()->getTitle(),
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
 				];
 			} else {
 				$currentEvent[$entity->getType()][] = [
-					"title" => $entity->getTitle(),
+					"title" => $extraTitle.$entity->getTitle(),
 					"theme" => !empty($entity->getTheme()) ? $entity->getTheme()->getTitle() : null,
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
 				];

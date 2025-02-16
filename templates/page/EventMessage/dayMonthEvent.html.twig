@@ -49,7 +49,7 @@
 			<ul>
 				{% for year, d in da %}
 					{% for event in d %}
-						<li>{% if year is not empty %}<b>{{ year }}</b> - {% endif %}{% if event.url is defined %}<a href="{{ event.url }}">{{ event.title }}</a>{% else %}{{ event.title|raw }}{% endif %}</li>
+						<li>{% if year is not empty %}<b>{{ year }}</b> - {% endif %}{% if event.url is defined %}<a href="{{ event.url }}">{{ event.title|raw }}</a>{% else %}{{ event.title|raw }}{% endif %}</li>
 					{% endfor %}
 				{% endfor %}
 			</ul>

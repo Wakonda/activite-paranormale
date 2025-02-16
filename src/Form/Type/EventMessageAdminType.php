@@ -78,6 +78,10 @@ class EventMessageAdminType extends AbstractType
             ->add('type', ChoiceType::class, ['choices' => ['eventMessage.dayMonth.'.ucfirst(EventMessage::EVENT_TYPE) => EventMessage::EVENT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CELEBRATION_TYPE) => EventMessage::CELEBRATION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::CONVENTION_TYPE) => EventMessage::CONVENTION_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::SAINT_TYPE) => EventMessage::SAINT_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::HOROSCOPE_TYPE) => EventMessage::HOROSCOPE_TYPE, 'eventMessage.dayMonth.'.ucfirst(EventMessage::FESTIVAL_TYPE) => EventMessage::FESTIVAL_TYPE], 'expanded' => false, 'multiple' => false, 'required' => true, 'constraints' => [new NotBlank()], 'translation_domain' => 'validators'])
 			->add('wikidata', TextType::class, ['required' => false])
             ->add('source', SourceEditType::class, array('required' => false))
+			->add('country', EntityType::class, ['class'=>'App\Entity\Region',
+					'choice_label'=>'title', 
+					'required' => false,
+					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}])
 		    ->add('tags', Select2EntityType::class, [
 				'multiple' => true,
 				'allow_add' => [

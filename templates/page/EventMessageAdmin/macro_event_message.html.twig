@@ -4,7 +4,7 @@
 		var currentState = currentStateSelect.options[currentStateSelect.selectedIndex].dataset.intl;
 
 		var xhr = new XMLHttpRequest();
-		xhr.open("POST", "{{ path('News_Admin_ReloadThemeByLanguage') }}", true);
+		xhr.open("POST", "{{ path('EventMessage_Admin_ReloadThemeByLanguage') }}", true);
 
 		xhr.onreadystatechange = function() {
 			if (xhr.readyState === 4 && xhr.status === 200) {
@@ -41,6 +41,20 @@
 					option.value = element.id;
 					option.text = element.title;
 					licenceSelect.appendChild(option);
+				});
+
+				var countrySelect = document.getElementById("{{ form.country.vars.id }}");
+				countrySelect.innerHTML = "";
+
+				var emptyOption = document.createElement("option");
+				emptyOption.value = "";
+				countrySelect.appendChild(emptyOption);
+
+				data.country.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					countrySelect.appendChild(option);
 				});
 			}
 		};

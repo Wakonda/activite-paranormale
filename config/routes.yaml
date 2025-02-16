@@ -125,3 +125,7 @@ CreepyStory:
 ClassifiedAds:
     resource: "../src/Routes/classifiedads/routing.yml"
     prefix:   /
+
+Deal:
+    resource: "../src/Routes/deal/routing.yml"
+    prefix:   /

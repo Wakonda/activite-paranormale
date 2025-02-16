@@ -72,3 +72,7 @@ EventMessage_Admin_Wikidata:
 EventMessage_Admin_DeleteMultiple:
     path:  /delete_multiple
     controller: App\Controller\EventMessageAdminController::deleteMultiple
+
+EventMessage_Admin_ReloadThemeByLanguage:
+    path: /reload_theme_by_language
+    controller: App\Controller\EventMessageAdminController::reloadThemeByLanguage

@@ -65,6 +65,7 @@ eventMessage:
         Longitude: "Longitude"
         Latitude: "Latitude"
         Source: "Sources"
+        Country: "Pays"
         Validate: "Valider"
         Refuse: "Refuser"
     slider:

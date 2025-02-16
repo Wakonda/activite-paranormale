@@ -50,26 +50,6 @@
 								<td><a href="{{ path('Biography_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
 							</tr>
 							<tr>
-								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "admin.index.Quotation"|trans([], "validators") }}</a></td>
-								<td><a href="{{ path('Quotation_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
-							</tr>
-							<tr>
-								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Proverb"|trans([], "validators") }}</a></td>
-								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
-							</tr>
-							<tr>
-								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Poem"|trans([], "validators") }}</a></td>
-								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::POEM_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
-							</tr>
-							<tr>
-								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Humor"|trans([], "validators") }}</a></td>
-								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
-							</tr>
-							<tr>
-								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Saying"|trans([], "validators") }}</a></td>
-								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::SAYING_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
-							</tr>
-							<tr>
 								<td><a href="{{ path('Document_Admin_Index') }}">{{ "admin.index.Doc"|trans([], "validators") }}</a></td>
 								<td><a href="{{ path('Document_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
 							</tr>
@@ -106,7 +86,51 @@
 				</div>
 			</div>
 		</div>
-		
+
+		<div class="card mb-2">
+			<div class="card-header">
+				<h5 class="panel-title">
+					<a class="accordion-toggle" data-bs-toggle="collapse" data-parent="#accordion" href="#collapseMuse">
+					<i class="fa-solid fa-masks-theater text-danger"></i> Muse
+					</a>
+				</h5>
+			</div>
+			<div id="collapseMuse" class="panel-collapse collapse">
+				<div class="card-body">
+					<table class="table table-striped table-bordered dataTable index_admin">
+						<thead>
+							<tr>
+								<th class="label_form">{{ "admin.index.Table"|trans([], "validators") }}</th>
+								<th class="label_form">{{ "admin.index.Create"|trans([], "validators") }}</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "admin.index.Quotation"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New') }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Proverb"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Poem"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::POEM_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Humor"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Saying"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::SAYING_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+
 		<div class="card mb-2">
 			<div class="card-header">
 				<h5 class="panel-title">

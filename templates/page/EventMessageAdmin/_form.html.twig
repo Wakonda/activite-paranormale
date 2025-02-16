@@ -52,6 +52,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.theme, "eventMessage.admin.Theme"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.theme) }}{{ form_widget(form.theme, { 'attr': {'class': 'form-select'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head countryContainer">{{ form_label(form.country, "eventMessage.admin.Country"|trans([], "validators")) }}</div>
+<div class="form-table-cell countryContainer">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.latitude, "eventMessage.admin.Latitude"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.latitude) }}{{ form_widget(form.latitude, { 'attr': {'class': 'form-control'} }) }}</div>
 
