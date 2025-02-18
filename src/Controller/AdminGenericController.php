@@ -57,6 +57,16 @@ abstract class AdminGenericController extends AbstractController
 					$entity->setState($state);
 			}
 		}
+		
+		// TEMP 
+		$pseudoUsed = match($request->getLocale()) {
+			"en" => "Rael2012",
+			"es" => "Scipius",
+			default => "Wakonda"
+		};
+		if(method_exists($entity, "setPseudoUsed"))
+		$entity->setPseudoUsed($pseudoUsed);
+		// TEMP
 	}
 	
 	protected function datatablesParameters(Request $request): array {
