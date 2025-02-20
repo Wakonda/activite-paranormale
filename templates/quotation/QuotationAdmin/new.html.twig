@@ -13,6 +13,10 @@
 
 	{% import "quotation/QuotationAdmin/macro_quotation.html.twig" as macro_quotation %}
 	{{ macro_quotation.tagify("#" ~ form.tags.vars.id) }}
+
+	<script>
+		{{ macro_quotation.updateListForm(form) }}
+	</script>
 {% endblock %}
 
 {% block tbody_admin_table %}

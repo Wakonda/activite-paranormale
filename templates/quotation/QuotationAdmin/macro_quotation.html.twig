@@ -48,3 +48,30 @@
 		new Tagify(input, {enforceWhitelist: false});
 	</script>
 {% endmacro %}
+
+{% macro updateListForm(form) %}
+	document.getElementById("{{ form.language.vars.id }}").addEventListener("change", function() {
+		var xhr = new XMLHttpRequest();
+		xhr.open("POST", "{{ path('Quotation_Admin_ReloadByLanguage') }}", true);
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState === 4 && xhr.status === 200) {
+				var data = JSON.parse(xhr.responseText);
+
+				var countrySelect = document.getElementById("{{ form.country.vars.id }}");
+				countrySelect.innerHTML = "";
+				data.country.forEach(function(element) {
+					var option = document.createElement("option");
+					option.value = element.id;
+					option.text = element.title;
+					countrySelect.appendChild(option);
+				});
+			}
+		};
+
+		var formData = new FormData();
+		formData.append("id", this.value);
+
+		xhr.send(formData);
+	});
+{% endmacro %}

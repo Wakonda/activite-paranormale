@@ -9,11 +9,13 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 use App\Entity\Quotation;
 use App\Entity\QuotationImage;
 use App\Entity\Language;
 use App\Entity\Biography;
+use App\Entity\Region;
 use App\Form\Type\QuotationAdminType;
 use App\Form\Type\QuotationImageGeneratorType;
 use App\Service\ConstraintControllerValidator;
@@ -308,5 +310,34 @@ class QuotationAdminController extends AdminGenericController
 		$redirect = $this->generateUrl('Quotation_Admin_Show', array('id' => $entity->getId()));
 
 		return $this->redirect($redirect);
+	}
+
+	public function reloadByLanguage(Request $request, EntityManagerInterface $em)
+	{
+		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
+		$translateArray = [];
+		
+		if(!empty($language)) {
+			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
+				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+
+			$countries = $em->getRepository(Region::class)->findByLanguage($language, ['title' => 'ASC']);
+		}
+		else {
+			$countries = $em->getRepository(Region::class)->findAll();
+		}
+
+		$countryArray = [];
+		
+		foreach($countries as $country)
+			$countryArray[] = ["id" => $country->getId(), "title" => $country->getTitle()];
+
+		$translateArray['country'] = $countryArray;
+		
+		$response = new Response(json_encode($translateArray));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
 	}
 }

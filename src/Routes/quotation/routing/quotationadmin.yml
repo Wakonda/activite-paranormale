@@ -42,6 +42,10 @@ Quotation_Admin_IndexDatatables:
     requirements:
         _method: get
 
+Quotation_Admin_ReloadByLanguage:
+    path: /reload_by_language
+    controller: App\Controller\QuotationAdminController::reloadByLanguage
+
 Quotation_Admin_WYSIWYG_UploadFile:
     path: /wysiwyg_uploadfile
     controller: App\Controller\QuotationAdminController::QuotationAdminController::WYSIWYGUploadFileAction
