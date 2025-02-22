@@ -136,8 +136,7 @@ class CartographyController extends AbstractController
 		$sortByColumn = [];
 		$sortDirColumn = [];
 
-		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
-		{
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++) {
 			$sortByColumn[] = $order[$i]['column'];
 			$sortDirColumn[] = $order[$i]['dir'];
 		}
@@ -147,9 +146,14 @@ class CartographyController extends AbstractController
 		parse_str($request->query->get($form->getName()), $datas);
 
 		$form->submit($datas[$form->getName()]);
-
-        $entities = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData());
-		$iTotal = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $form->getData(), true);
+		
+		$formData = $form->getData();
+	
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$formData = [];
+dump($request->query->all());
+        $entities = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $formData);
+		$iTotal = $em->getRepository(Cartography::class)->getAllCartographyPlacesByLanguage($request->getLocale(), $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $formData, true);
 
 		$output = [
 			"recordsTotal" => $iTotal,

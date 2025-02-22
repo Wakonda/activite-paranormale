@@ -26,7 +26,7 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 			$qb->andWhere('c.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
-		if(!empty($theme = $datas["theme"])) {
+		if(isset($datas["theme"]) and !empty($theme = $datas["theme"])) {
 			$qb->join("c.theme", "t")
 		       ->andWhere('t.internationalName = :internationalName')
 			   ->setParameter('internationalName', $theme->getInternationalName());

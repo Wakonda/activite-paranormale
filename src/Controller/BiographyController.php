@@ -95,7 +95,7 @@ class BiographyController extends AbstractController
 
 			$row = [];
 			$row[] = '<a href="'.$this->generateUrl("Biography_Show", ['id' => $entity->getId(), 'title_slug' => $entity->getSlug()]).'" >'.$entity->getTitle().'</a>';
-			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="'.str_replace('"', "'", $entity->getTitle()).'" style="width: '.$img[0].';">';
+			$row[] = '<img src="'.$request->getBasePath().'/'.$img[2].'" alt="'.addslashes($entity->getTitle()).'" style="width: '.$img[0].';">';
 
 			$output['data'][] = $row;
 		}
