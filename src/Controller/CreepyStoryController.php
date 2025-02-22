@@ -154,7 +154,7 @@ class CreepyStoryController extends AbstractController
 				"text" => substr($entity->getText(), 0, 250)."...",
 				"author" => $entity->authorToString(),
 				"date" => $date->doDate($request->getLocale(), $entity->getPublicationDate()),
-				"photo" => '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="" class="card-img img-fluid">',
+				"photo" => '<img src="'.$request->getBasePath().'/'.$photo[2].'" alt="'.addslashes($entity->getTitle()).'" class="card-img img-fluid">',
 				"showRoute" => $this->generateUrl("CreepyStory_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug()])
 			];
 		}

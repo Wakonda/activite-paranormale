@@ -64,7 +64,7 @@ class MusicController extends AbstractController
 		{
 			$logo = $imgSize->adaptImageSize(200, $entity->getAssetImagePath().$entity->getPhotoIllustrationFilename());
 			$row = [];
-			$row[] = $entity->getTitle().(!empty($entity->getPhotoIllustrationFilename()) ? '<div><img src="'.$request->getBasePath().'/'.$logo[2].'" class="bg-white" alt="" style="width: '.$logo[0].'"></div>' : "");
+			$row[] = $entity->getTitle().(!empty($entity->getPhotoIllustrationFilename()) ? '<div><img src="'.$request->getBasePath().'/'.$logo[2].'" class="bg-white" alt="'.addslashes($entity->getTitle()).'" style="width: '.$logo[0].'"></div>' : "");
 			$row[] = !empty($genre = $entity->getGenre()) ? $genre->getTitle() : null;
 			$row[] = '<a href="'.$this->generateUrl("Music_Album", ['id' => $entity->getId(), 'title_slug' => $entity->getTitle()]).'" >'.$translator->trans('music.index.Read', [], 'validators').'</a>';
 

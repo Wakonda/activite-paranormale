@@ -69,12 +69,12 @@ class DocumentController extends AbstractController
 		foreach($entities as $entity)
 		{
 			$row = [];
-			$row[] = '<a href="'.$this->generateUrl('DocumentBundle_AbstractDocument', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'" alt="">'.$entity->getTitle().'</a>';
+			$row[] = '<a href="'.$this->generateUrl('DocumentBundle_AbstractDocument', ['id' => $entity->getId(), 'title_slug' => $entity->getUrlSlug()]).'">'.$entity->getTitle().'</a>';
 
 			foreach($entity->getAuthorDocumentBiographies() as $authorDocumentBiography) {
 				$correctBio = $em->getRepository(Biography::class)->getBiographyInCorrectLanguage($authorDocumentBiography, $request->getLocale());
 				if (!empty($correctBio))
-					$row[] = '<p><a href="'.$this->generateUrl('Biography_Show', ['id' => $correctBio->getId(), 'title_slug' => $correctBio->getSlug()]).'" alt="">'.$correctBio->getTitle().'</a></p>';
+					$row[] = '<p><a href="'.$this->generateUrl('Biography_Show', ['id' => $correctBio->getId(), 'title_slug' => $correctBio->getSlug()]).'">'.$correctBio->getTitle().'</a></p>';
 				else
 					$row[] = '<p>'.$authorDocumentBiography->getTitle().'</p>';
 			}
@@ -83,7 +83,7 @@ class DocumentController extends AbstractController
 			
 			$internationalName = (empty($df = $entity->getDocumentFamily())) ? "" : $df->getInternationalName();
 			$row[] = !empty($df = $em->getRepository(DocumentFamily::class)->getDocumentFamilyRealNameByInternationalNameAndLanguage($internationalName, $request->getLocale())) ? $df->getTitle() : '';
-			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt=""width="20" height="13" />';
+			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="'.addslashes($entity->getLanguage()->getTitle()).'" width="20" height="13" />';
 
 			$output['data'][] = $row;
 		}
