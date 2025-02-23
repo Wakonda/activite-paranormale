@@ -899,7 +899,7 @@
 	</script>
 {% endmacro %}
 
-{% macro tinymce_admin_js(selector, uploadRoute) %}
+{% macro tinymce_admin_js(selector, uploadRoute, button = null) %}
 	{% set language = null %}
 	{% if app.request.locale == "fr" %}
 		{% set language = "fr_FR" %}
@@ -920,7 +920,7 @@
 			{% endif %}
 			selector:'#{{ selector }}',
 			entity_encoding: "raw",
-			toolbar: 'bold italic underline | blocks | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist | link image media replacePWithBr code | undo redo | fullscreen',
+			toolbar: 'bold italic underline | blocks | forecolor backcolor | alignleft aligncenter alignright alignjustify | numlist bullist | link image media replacePWithBr code | undo redo | fullscreen {% if button is not empty %} | {{ button.title }}{% endif %}',
 			plugins: 'lists link image charmap media code fullscreen',
 			valid_elements: '*[*]',
 			paste_preprocess : function(pl, o) {
@@ -942,6 +942,9 @@
 						editor.insertContent(selection);
 					}
 				});
+				{% if button is not empty %}
+					{{ button.html|raw }}
+				{% endif %}
 			},
 			{% if uploadRoute != "" %}
 				file_picker_types: 'file image',

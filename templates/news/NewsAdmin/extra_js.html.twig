@@ -1,0 +1,42 @@
+{% import "news/NewsAdmin/macro_news.html.twig" as macro_news %}
+
+<script>
+	{{ macro_news.updateListForm(form) }}
+</script>
+
+{% import "index/macro/macro_index.html.twig" as macro_index %}
+
+{% set extraButton = {title: "paste_news", html: "editor.ui.registry.addButton('paste_news', {
+	tooltip: 'Special paste for news',
+	icon: 'copy',
+	onAction: (_) => {
+		navigator.clipboard.readText()
+		.then(text => {
+			var paragraphs = text.split(/\\n+/);
+
+			for(let i= 0; i < paragraphs.length; i++) {
+				if(paragraphs[i].replace(/<[^>]*>?/gm, '').replace(/[\u0000-\u001F\u007F-\u009F]/g, '').length == 0)
+					paragraphs[i] = '';
+				else
+					paragraphs[i] = '<p>' + paragraphs[i].replace(/<[^>]*>?/gm, '') + '</p>'
+			}
+
+			paragraphs = paragraphs.filter(item => item !== '')
+			var firstParagraph = paragraphs[0] || '';
+
+			paragraphs = paragraphs.slice(1);
+
+			tinymce.get('ap_news_newsadmintype_abstractText').setContent(firstParagraph)
+			tinymce.get('ap_news_newsadmintype_text').setContent(paragraphs.join(''))
+		})
+		.catch(err => {
+			console.error('Failed to read clipboard contents: ', err);
+		});
+	}
+});"} %}
+
+{{ macro_index.tinymce_init_js() }}
+{{ macro_index.tinymce_admin_js(form.abstractText.vars.id, path('News_Admin_WYSIWYG_UploadFile'), extraButton) }}
+{{ macro_index.tinymce_admin_js(form.text.vars.id, path('News_Admin_WYSIWYG_UploadFile')) }}
+{{ macro_index.tinymce_light_js(form.illustration.caption.vars.id) }}
+{{ macro_index.select2_autocomplete() }}
