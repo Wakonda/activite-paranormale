@@ -9,6 +9,18 @@
 {% endblock %}
 
 {% block body_main %}
+	{% block body_main_additional %}{% endblock %}
+	{% for flashMessage in app.session.flashbag.get('success') %}
+		<div class="alert alert-success text-center">
+			{{ flashMessage|raw }}
+		</div>
+	{% endfor %}
+	{% for flashMessage in app.session.flashbag.get('error') %}
+		<div class="alert alert-danger text-center">
+			{{ flashMessage|raw }}
+		</div>
+	{% endfor %}
+
 	{% form_theme form 'index/CSS/form_div_layout.html.twig' %}
 	{{ form_start(form, {'action': path('Admin_PublishSocialNetwork'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
 		<div class="form-table form-table-4cols form-table-collapse">
@@ -26,6 +38,23 @@
 		<button class="btn btn-success" type="submit">{{ "admin.general.Send"|trans([], "validators") }}</button>
 	</div>
 	{{ form_end(form) }}
+	
+	<h2 class="title"><b>RePost</b></h2>
+
+	{% form_theme rePostForm 'index/CSS/form_div_layout.html.twig' %}
+	{{ form_start(rePostForm, {'action': path('Admin_RePost'), 'attr':{'class' : 'form-horizontal', novalidate: 'novalidate'}}) }}
+		<div class="form-table form-table-4cols form-table-collapse">
+			<div class="form-table-cell form-table-cell-head">{{ form_label(rePostForm.socialNetwork, "admin.socialNetwork.SocialNetwork"|trans([], "validators")) }}</div>
+			<div class="form-table-cell">{{ form_errors(rePostForm.socialNetwork) }}{{ form_widget(rePostForm.socialNetwork, { 'attr': {'class': 'form-select'} }) }}</div>
+
+			<div class="form-table-cell form-table-cell-head">{{ form_label(rePostForm.postId) }}</div>
+			<div class="form-table-cell">{{ form_errors(rePostForm.postId) }}{{ form_widget(rePostForm.postId, { 'attr': {'class': 'form-control'} }) }}</div>
+		</div>
+	{{ form_rest(rePostForm) }}
+	<div class="my-3">
+		<button class="btn btn-success" type="submit">{{ "admin.general.Send"|trans([], "validators") }}</button>
+	</div>
+	{{ form_end(rePostForm) }}
 {% endblock %}
 
 {% block style_edit %}
@@ -40,6 +69,7 @@
 		$(function()
 		{
 			$('#{{ form.socialNetwork.vars.id }}').select2();
+			$('#{{ rePostForm.socialNetwork.vars.id }}').select2();
 		});
 	</script>
 {% endblock %}

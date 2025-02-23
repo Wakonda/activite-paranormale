@@ -33,7 +33,7 @@ class TwitterAPI
 		return $connection->post('tweets', $parameters, true);
 	}
 
-	public function retweet(string $message, string $locale)
+	public function postLink(string $message, string $locale)
 	{
 		$this->setLanguage($locale);
 
@@ -44,6 +44,21 @@ class TwitterAPI
 		$parameters['text'] = $message;
 
 		return $connection->post('tweets', $parameters, true);
+	}
+
+	public function retweet(string $tweet_id, string $locale)
+	{
+		$this->setLanguage($locale);
+
+		$connection = new TwitterOAuth($this->CONSUMER_KEY, $this->CONSUMER_SECRET, $this->OAUTH_TOKEN, $this->OAUTH_TOKEN_SECRET);
+
+		$connection->setApiVersion('2');
+		
+		$userId = explode("-", $this->OAUTH_TOKEN)[0];
+
+		$parameters['tweet_id'] = $tweet_id;
+
+		return $connection->post('users/'.$userId.'/retweets', $parameters, true);
 	}
 
 	public function getUsernameById(string $id, string $locale)

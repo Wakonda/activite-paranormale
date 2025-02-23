@@ -17,7 +17,7 @@
 		<tbody>
 			<tr>
 				<td class="td_form_table">{{ "televisionSerie.read.Genre"|trans([], "validators") }}</td>
-				<td class="tdGene"><a href="{{ path('ByGenreTelevisionSerie_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.title}) }}">{{ entity.genre }}</a></td>
+				<td class="tdGene"><a href="{{ path('ByGenreTelevisionSerie_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.urlSlug}) }}">{{ entity.genre }}</a></td>
 			</tr>
 			<tr>
 				<td class="td_form_table">{{ "televisionSerie.read.Country"|trans([], "validators") }}</td>

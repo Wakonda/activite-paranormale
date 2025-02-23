@@ -176,7 +176,7 @@ class UserController extends AbstractController
 
         $user = $em->getRepository(User::class)->findUserByUsernameOrEmail($username);
 
-        if (null !== $user and (!$user->isPasswordRequestNonExpired($this->retryTtl)) or empty($user->getPassword())) {
+        if (null !== $user and (!$user->isPasswordRequestNonExpired($this->retryTtl) or empty($user->getPassword()))) {
             if (null === $user->getConfirmationToken()) {
                 $user->setConfirmationToken($this->generateToken());
             }

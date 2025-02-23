@@ -133,6 +133,10 @@ Admin_PublishSocialNetwork:
     path: /admin/publish/social_network
     controller: App\Controller\AdminController::publishSocialNetwork
 
+Admin_RePost:
+    path: /admin/publish/repost
+    controller: App\Controller\AdminController::rePost
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index

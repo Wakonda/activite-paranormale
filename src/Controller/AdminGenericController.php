@@ -319,32 +319,37 @@ abstract class AdminGenericController extends AbstractController
 	{
 		$regex = '/[^a-zA-Z0-9_-]+/';
 
-		foreach($this->illustrations as $illustration)
-		{
+		foreach($this->illustrations as $illustration) {
 			$fieldName = $illustration["field"];
 			$getter = "get".ucfirst($illustration["field"]);
 			$setter = "set".ucfirst($illustration["field"]);
 
 			if(empty($entity->$getter()))
 				return;
-				
+
 			if(!method_exists($entity->$getter(), "getTitleFile"))
 				return;
 
-			if(empty($entity->$getter()->getTitleFile()))
-			{
+			if(empty($entity->$getter()->getTitleFile())) {
 				$existingFile = null;
 				if(isset($illustration['selectorFile']) and ($f = $form->get($fieldName)->get($illustration['selectorFile'])->getData()) != null)
 					$existingFile = $f;
 
 				if(filter_var($existingFile, FILTER_VALIDATE_URL)) {
 					$html = $this->parser->getContentURL(urldecode($existingFile));
+
 					$pi = pathinfo($existingFile);
-					$filename = preg_replace($regex, "-", urldecode($pi["filename"])).".".$pi["extension"];
+					
+					if(!isset($pi["extension"]))
+						$extension = image_type_to_extension(getimagesizefromstring($html)[2], false);
+					else
+						$extension = $pi["extension"];
+
+					$filename = preg_replace($regex, "-", urldecode($pi["filename"])).".".$extension;
 					$filename = uniqid()."_".$filename;
 
 					list($filename, $content) = APImgSize::convertToWebP($html, $filename);
-					
+
 					file_put_contents($entity->getTmpUploadRootDir().$filename, $html);
 
 					$existingFile = $filename;
@@ -399,7 +404,7 @@ abstract class AdminGenericController extends AbstractController
 	{
         $entity = $em->getRepository($this->className)->find($id);
 		$entity->setArchive(!$entity->getArchive());
-		
+
 		if($entity->getArchive())
 			$this->moveFiles("public", "private", $entity, $additionalFiles);
 		else

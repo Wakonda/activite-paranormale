@@ -233,6 +233,10 @@
 							document.getElementById("{{ form.author.vars.id }}").value = obj.user;
 
 							tinymce.get("{{ form.caption.vars.id }}").setContent(obj.description);
+
+							if(typeof obj.source !== "undefined") {
+								document.getElementById("{{ form.urlSource.vars.id }}").value = obj.source;
+							}
 						}
 					}
 				}

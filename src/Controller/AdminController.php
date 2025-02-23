@@ -1418,8 +1418,22 @@ class AdminController extends AbstractController
 		} elseif(str_contains($urlHost, "flickr")) {
 			$flickr = new \App\Service\Flickr();
 			$res = $flickr->getImageInfos($url);
+		} elseif(str_contains($urlHost, "starryai")) {
+			$res = [
+			"url" => $url,
+			"user" => "StarryAI",
+			"license" => "CC0",
+			"source" => "https://starryai.com/",
+			"description" => ""];
+		} elseif(str_contains($urlHost, "pixai")) {
+			$res = [
+				"url" => $url,
+				"user" => "Pixai.art",
+				"license" => "CC0",
+				"source" => "https://pixai.art/",
+				"description" => ""];
 		}
-											   
+
 		return new JsonResponse($res);
 	}
 
@@ -1648,6 +1662,7 @@ class AdminController extends AbstractController
 
 	public function publishSocialNetwork(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI, Bluesky $bluesky, Mastodon $mastodon, Facebook $facebook, Diaspora $diaspora) {
 		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
+		$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
 
 		if($request->isMethod('post')) {
 			$form->handleRequest($request);
@@ -1660,7 +1675,7 @@ class AdminController extends AbstractController
 
 					switch($socialNetwork) {
 						case "twitter":
-							$res = $twitterAPI->retweet($data["text"]." ".$data["url"], $locale);
+							$res = $twitterAPI->postLink($data["text"]." ".$data["url"], $locale);
 
 							if(property_exists($res, "status") or property_exists($res, "reason")) {
 								$errorMessage = property_exists($res, "status") ? $res->status : $res->reason;
@@ -1694,7 +1709,41 @@ class AdminController extends AbstractController
 			}
 		}
 
-		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView()]);
+		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView(), "rePostForm" => $rePostForm->createView()]);
+	}
+
+	public function rePost(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI) {
+		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
+		$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
+
+		if($request->isMethod('post')) {
+			$rePostForm->handleRequest($request);
+			$data = $rePostForm->getData();
+			$socialNetworks = $data["socialNetwork"];
+
+			if($rePostForm->isValid()) {
+				foreach($socialNetworks as $socialNetwork) {
+					list($socialNetwork, $locale) = explode("_", $socialNetwork, 2);
+
+					switch($socialNetwork) {
+						case "twitter":
+							$res = $twitterAPI->retweet($data["postId"], $locale);
+
+							if(property_exists($res, "title")) {
+								$errorMessage = $res->title;
+								$this->addFlash('error', $translator->trans('admin.twitter.FailedToSendTweet', [], 'validators'). " (".$errorMessage."; ".$res->detail.")");
+							}
+							elseif(property_exists($res, "data") and property_exists($res->data, "retweeted") and $res->data->retweeted)
+								$this->addFlash('success', $translator->trans('admin.twitter.TweetSent', [], 'validators'));
+						break;
+					}
+				}
+
+				$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
+			}
+		}
+
+		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView(), "rePostForm" => $rePostForm->createView()]);
 	}
 
 	public function account() {

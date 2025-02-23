@@ -58,7 +58,7 @@
 							<h5 class="card-title text-center"><a href="{{ path('TelevisionSerie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">{{ entity.title }}</a></h5>
 							<hr>
 							<div class="d-flex justify-content-around">
-								<div class="p-2"><i class="fas fa-film"></i> <a href="{{ path('ByGenreTelevisionSerie_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.title}) }}">{{ entity.genre }}</a></div>
+								<div class="p-2"><i class="fas fa-film"></i> <a href="{{ path('ByGenreTelevisionSerie_Index', {idGenre: entity.genre.id, titleGenre: entity.genre.urlSlug}) }}">{{ entity.genre }}</a></div>
 							</div>
 
 							<p class="card-text mb-0 text-center my-3"></p>
