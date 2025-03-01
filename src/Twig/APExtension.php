@@ -78,7 +78,7 @@
 				new TwigFilter('removeStyleAttributeFromHtmlTags', array($this, 'removeStyleAttributeFromHtmlTagsFilter')),
 				new TwigFilter('ucfirst', array($this, 'UcfirstFilter')),
 				new TwigFilter('imgCaption', array($this, 'imgCaptionFilter')),
-				new TwigFilter('remove_cr', array($this, 'removeCarriageReturnFilter'))
+				new TwigFilter('meta_description', [$this, 'getMetaDescription'])
 			);
 		}
 
@@ -136,6 +136,24 @@
 				new TwigFunction('isImageExists', [$this, 'isImageExists'], ['is_safe' => ['html']])
 			);
 		}
+		
+		public function getMetaDescription($string, $split = null) {
+			$string = strip_tags($string);
+			$string = str_replace(["\n", "\r", "\t"], ' ', $string);
+			$string = str_replace('"', "'", $string);
+			$string = str_replace('  ', " ", $string);
+
+			if(!empty($split) and !empty($string)) {
+				$stringArray = explode($split, $string);
+
+				if(!empty($stringArray))
+					$string = $stringArray[0];
+			}
+
+			$string = html_entity_decode(mb_substr($string, 0, 300), ENT_QUOTES);
+
+			return $string;
+		}
 
 		public function quickEdit($entity) {
 			if(empty($entity) or empty($entity->getId()))
@@ -171,10 +189,6 @@
 		public function firstFilter($str)
 		{
 			return $str[0];
-		}
-
-		public function removeCarriageReturnFilter($string) {
-			return str_replace(["\n", "\r", "\t"], ' ', $string);
 		}
 		
 		public function isImageFilter($extension)

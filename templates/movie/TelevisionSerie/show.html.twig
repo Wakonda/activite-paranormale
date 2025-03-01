@@ -2,6 +2,7 @@
 
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Television serie"></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block meta_description %}{% if entity.introduction is not empty %}{{ entity.introduction|meta_description }}{% else %}{{ entity.text|meta_description }}{% endif %}{% endblock %}
 
 {% block APBlog_body %}
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}

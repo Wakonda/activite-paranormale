@@ -2,12 +2,12 @@
 
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/book-read.svg') }}" width="25" class="mt-1" alt="Book"></span>{{ entity.title }}</h2>{% endblock h2_title %}
-{% block meta_description %}{% if entity.introduction is not empty %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% else %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endif %}{% endblock %}
+{% block meta_description %}{% if entity.introduction is not empty %}{{ entity.introduction|meta_description }}{% else %}{{ entity.text|meta_description }}{% endif %}{% endblock %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary">
 	<meta property="og:title" content="{{ entity.title }}">
-	<meta property="og:description" content="{% if entity.introduction is not empty %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% else %}{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endif %}">
+	<meta property="og:description" content="{% if entity.introduction is not empty %}{{ entity.introduction|meta_description }}{% else %}{{ entity.text|meta_description }}{% endif %}">
 {% endblock %}
 
 {% block APBlog_body %}

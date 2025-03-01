@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta name="keywords" content="{{ render(controller('App\\Controller\\PageController::keywordsMetaTagAction'))|remove_cr }}">
-	<meta name="description" content="{% block meta_description %}{{ render(controller('App\\Controller\\PageController::descriptionMetaTagAction'))|remove_cr }}{% endblock %}">
+	<meta name="keywords" content="{{ render(controller('App\\Controller\\PageController::keywordsMetaTagAction'))|meta_description }}">
+	<meta name="description" content="{% block meta_description %}{{ render(controller('App\\Controller\\PageController::descriptionMetaTagAction'))|meta_description }}{% endblock %}">
     <meta name="author" content="Wakonda">
 	<meta name="google-site-verification" content="Qog5JpRMIFDRk7NFb0PSxJUQRNz0hFNR0Is_WCs4Lwc">
 

@@ -59,6 +59,7 @@
 				{{ macro_index.twitter_form(entity) }}
 				{{ macro_index.mastodon_form(entity) }}
 				{{ macro_index.bluesky_form(entity) }}
+				{{ macro_index.instagram_form(entity) }}
 			{% endif %}
 			{{ macro_index.shopify_form(entity, "magic", entity.surTheme.title) }}
 		{% endif %}
@@ -75,4 +76,5 @@
 	{{ macro_index.twitter_form_js() }}
 	{{ macro_index.mastodon_form_js() }}
 	{{ macro_index.bluesky_form_js() }}
+	{{ macro_index.instagram_form_js() }}
 {% endblock %}

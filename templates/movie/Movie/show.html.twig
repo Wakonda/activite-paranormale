@@ -2,7 +2,7 @@
 
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/cinema.svg') }}" width="25" class="mt-1" alt="Movie"></span>{{ entity.title }}</h2>{% endblock h2_title %}
-{% block meta_description %}{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}{% endblock %}
+{% block meta_description %}{{ entity.introduction|meta_description }}{% endblock %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary">
@@ -16,7 +16,7 @@
 			<meta property="og:image" content="{{ thumbnail }}">
 		{% endif %}
 	{% endif %}
-	<meta property="og:description" content="{{ ((entity.introduction|striptags)|replace({'"': ''}))|slice(0, 300) }}">
+	<meta property="og:description" content="{{ entity.introduction|meta_description }}">
 {% endblock %}
 
 {% block APBlog_body %}

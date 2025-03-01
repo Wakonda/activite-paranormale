@@ -2,12 +2,13 @@
 
 {% block title %}{{ entity.title }}{% endblock %}
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/shanks-icon.png') }}" width="25" class="mt-1" alt="Abduction"></span>{{ entity.title }}</h2>{% endblock h2_title %}
+{% block meta_description %}{{ entity.text|meta_description }}{% endblock %}
 
 {% block meta_plus %}
 	<meta name="twitter:card" content="summary">
 	<meta property="og:title" content="{{ entity.title }}">
 	<meta property="og:image" content="{{ absolute_url(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)) }}">
-	<meta property="og:description" content="{{ ((entity.text|striptags)|replace({'"': ''}))|slice(0, 300) }}">
+	<meta property="og:description" content="{{ entity.text|meta_description }}">
 {% endblock %}
 
 {% block APBlog_body %}
