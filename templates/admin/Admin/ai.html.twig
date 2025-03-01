@@ -1,0 +1,29 @@
+{% macro social_network(textarea, locale, text) %}
+	<a href="#" id="generate{{ textarea }}" class="btn btn-primary float-start me-1"><i class="fa-solid fa-robot" id="generate_icon{{ textarea }}"></i></a>
+
+    <script src="https://js.puter.com/v2/"></script>
+    <script>
+		// https://docs.puter.com/playground/
+		document.getElementById("generate{{ textarea }}").addEventListener("click", (e) => {
+			e.preventDefault();
+			document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-robot");
+			document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-arrows-rotate", "fa-spin");		
+
+			(async () => {
+				const textarea = document.getElementById('{{ textarea }}');
+
+				const chat_resp = await puter.ai.chat('Language : {{ locale }}. Write a tweet on - {{ text }}', { stream: true });
+
+				for await (const part of chat_resp) {
+					textarea.value += part?.text;
+					textarea.scrollTop = textarea.scrollHeight;
+				}
+
+				document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-robot");
+				document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-arrows-rotate", "fa-spin");
+				
+				document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
+			})();
+		});
+    </script>
+{% endmacro %}

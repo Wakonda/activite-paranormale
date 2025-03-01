@@ -695,6 +695,8 @@
 
 {% macro twitter_form(entity, addPhoto = false, textBefore = "", textAfter = "") %}
 	{% if isTwitterAvailable(entity) %}
+	{% from 'admin/Admin/ai.html.twig' import social_network as sn %}
+	
 	<div class="accordion mb-2" id="accordionParentTwitter">
 		<div class="card sub_block">
 			<div class="card-header" role="tab" id="headingTwitter">
@@ -713,6 +715,7 @@
 							<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
 						{% endif %}
 
+						{{ sn("twitter_area", entity.language.title, entity.title) }}
 						{{ _self.tags_list("twitter_area", "tags_twitter") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}
