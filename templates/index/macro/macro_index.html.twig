@@ -709,7 +709,7 @@
 			<div id="collapseTwitter" class="collapse" aria-labelledby="headingTwitter" data-parent="#accordionParentTwitter">
 				<div class="card-body">
 					<form id="form_twitter" method="post">
-						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string" class="badge bg-danger">280</span></p>
+						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string_twitter_area" class="badge bg-danger">280</span></p>
 
 						{% if addPhoto == true %}
 							<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
@@ -774,7 +774,7 @@
 		var limit = 280;
 
 		var twitterAreaFunction = function(e) {
-			document.getElementById("limit_string").innerHTML = limit - this.value.length;
+			document.getElementById("limit_string_twitter_area").innerHTML = limit - this.value.length;
 			const submitButtons = document.querySelectorAll('#form_twitter input[type="submit"]');
 
 			if(limit <= this.value.length) {
@@ -791,13 +791,13 @@
 
 		document.getElementById("twitter_area").addEventListener("keydown", twitterAreaFunction);
 		document.getElementById("twitter_area").addEventListener("keyup", twitterAreaFunction);
-		document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
+		document.getElementById("limit_string_twitter_area").innerHTML = limit - document.getElementById("twitter_area").value.length;
 
 		//Twitter Tags
 		document.querySelectorAll("div#tags_twitter a").forEach(e => {
 			e.addEventListener('click', (e2) => {
 				e2.preventDefault();
-				document.getElementById("limit_string").innerHTML = limit - document.getElementById("twitter_area").value.length;
+				document.getElementById("limit_string_twitter_area").innerHTML = limit - document.getElementById("twitter_area").value.length;
 			});
 		});
 
