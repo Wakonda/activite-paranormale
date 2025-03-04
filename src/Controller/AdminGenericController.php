@@ -339,7 +339,7 @@ abstract class AdminGenericController extends AbstractController
 					$html = $this->parser->getContentURL(urldecode($existingFile));
 
 					$pi = pathinfo($existingFile);
-					
+
 					if(!isset($pi["extension"]))
 						$extension = image_type_to_extension(getimagesizefromstring($html)[2], false);
 					else

@@ -116,7 +116,7 @@ eventMessage:
         Festival: "Festival"
         Saint: "Saint"
         Saying: "Dicton"
-        NoEventToday: "Aucun événement aujourd'hui"
+        NoEventToday: "Aucun événement ce jour-là"
         NoEvent: "Aucun événement"
 rssFeed:
     menu:

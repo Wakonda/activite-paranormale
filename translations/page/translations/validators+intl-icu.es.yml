@@ -114,7 +114,7 @@ eventMessage:
         Festival: "Festival"
         Saint: "Santos"
         Saying: "Refrán"
-        NoEventToday: "No hay acontecimiento hoy"
+        NoEventToday: "No hay eventos este día"
         NoEvent: "No acontecimiento"
 rssFeed:
     menu:

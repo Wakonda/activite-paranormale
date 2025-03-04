@@ -61,12 +61,12 @@
 				$finfo = finfo_open(FILEINFO_MIME_TYPE);
 				$mime_type = finfo_file($finfo, $img);
 				$size = $uploadedFile->getSize();
-				$content = file_get_contents($uploadedFile->getPathname());
+				$content = file_get_contents($uploadedFile->getPathname());echo ";;;";
 			} else {
 				$finfo = new \finfo(FILEINFO_MIME_TYPE);
 				$mime_type = $finfo->buffer($uploadedFile);
 				$img = $content = $uploadedFile;
-				$size = strlen($uploadedFile);
+				$size = strlen($uploadedFile);echo "dddd";
 			}
 
 			if(\App\Service\ImageSVG::isSVGByContent($content)) {

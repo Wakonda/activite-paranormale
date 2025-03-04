@@ -217,13 +217,16 @@ class AlbumAdminController extends AdminGenericController
     {
 		$artist = $em->getRepository(Artist::class)->find($artistId);
 		$spotifyId = null;
-		
+
 		if(!empty($artist->getIdentifiers())) {
 			$identifiers = json_decode($artist->getIdentifiers(), true);
-			$key = array_search(Identifier::SPOTIFY_ARTIST_ID , array_column($identifiers, "identifier"));
+			
+			if(!empty($identifiers)) {
+				$key = array_search(Identifier::SPOTIFY_ARTIST_ID , array_column($identifiers, "identifier"));
 
-			if($key !== false)
-				$spotifyId = $identifiers[$key]["value"];
+				if($key !== false)
+					$spotifyId = $identifiers[$key]["value"];
+			}
 		}
 
 		$twig = 'music/AlbumAdmin/indexByArtist.html.twig';

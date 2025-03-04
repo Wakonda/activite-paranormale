@@ -1432,6 +1432,13 @@ class AdminController extends AbstractController
 				"license" => "CC0",
 				"source" => "https://pixai.art/",
 				"description" => ""];
+		} elseif(str_contains($urlHost, "x.com")) {
+			$res = [
+				"url" => $url,
+				"user" => "Grok",
+				"license" => "CC0",
+				"source" => "https://x.com/",
+				"description" => ""];
 		}
 
 		return new JsonResponse($res);

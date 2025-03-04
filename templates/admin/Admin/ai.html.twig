@@ -5,6 +5,7 @@
     <script>
 		// https://docs.puter.com/playground/
 		document.getElementById("generate{{ textarea }}").addEventListener("click", (e) => {
+			document.getElementById("{{ textarea }}").value = "";
 			e.preventDefault();
 			document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-robot");
 			document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-arrows-rotate", "fa-spin");		
