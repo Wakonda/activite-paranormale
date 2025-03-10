@@ -642,6 +642,7 @@
 
 {% macro mastodon_form(entity, textBefore = "", textAfter = "") %}
 	{% if isMastodonAvailable(entity) %}
+	{% from 'admin/Admin/ai.html.twig' import social_network as sn %}
 	<div class="accordion mb-2" id="accordionParentMastodon">
 		<div class="card sub_block">
 			<div class="card-header" role="tab" id="headingMastodon">
@@ -654,6 +655,7 @@
 			<div id="collapseMastodon" class="collapse" aria-labelledby="headingMastodon" data-parent="#accordionParentMastodon">
 				<div class="card-body">
 					<form id="form_mastodon" method="post">
+						{{ sn("mastodon_area", entity.language.title, entity.title) }}
 						{{ _self.tags_list("mastodon_area", "tags_mastodon") }}
 						<br>
 						{% set tags = get_tags(entity, false, true) %}

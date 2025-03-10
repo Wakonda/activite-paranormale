@@ -595,7 +595,7 @@ class EventMessageController extends AbstractController
 		foreach($entities as $entity) {
 			$type = EventMessage::DEATH_DATE_TYPE;
 
-			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("m-d") == $month."-".$day)
+			if(!empty($entity->getBirthDate()) and $apDate->getMonthDay($entity->getBirthDate()) == $month."-".$day)
 				$type = EventMessage::BIRTH_DATE_TYPE;
 
 			$get = "get".ucfirst($type);

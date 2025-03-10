@@ -190,4 +190,14 @@
 			$input = $this->removeZero($input);
 			return $this->removeBC($input);
 		}
+		
+		public function getMonthDay(string $date) {
+			$date = ltrim($date, "-");
+			list($year, $month, $day) = explode("-", $date);
+			
+			$year = str_pad($year, 4, "0", STR_PAD_LEFT);
+			$date = new \DateTime($year."-".$month."-".$day);
+			
+			return $date->format("m-d");
+		}
 	}

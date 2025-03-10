@@ -93,8 +93,8 @@
 	{% endif %}
 
 	<div class="btn-group mt-2" role="group" aria-label="Basic mixed styles example">
-	<a href="{{ path('Biography_Show', { id: entity.id, title_slug: entity.slug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
-	<button type="button" class="btn btn-danger" onClick="navigator.clipboard.writeText('{{ absolute_url(path('Biography_Show', { id: entity.id, title_slug: entity.slug })) }}');"><i class="fa-solid fa-copy"></i></button>
+		<a href="{{ path('Biography_Show', { id: entity.id, title_slug: entity.slug }) }}" class="btn btn-warning" target="_blank">{{ "admin.general.Display"|trans([], "validators") }}</a>
+		<button type="button" class="btn btn-danger" onClick="navigator.clipboard.writeText('{{ absolute_url(path('Biography_Show', { id: entity.id, title_slug: entity.slug })) }}');"><i class="fa-solid fa-copy"></i></button>
 	</div>
 {% endblock %}
 
