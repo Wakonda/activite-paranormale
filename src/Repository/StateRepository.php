@@ -15,8 +15,16 @@ class StateRepository extends EntityRepository
 	// FORM
 	public function getStateByLanguage($language)
 	{
+		$qb = $this->createQueryBuilder('li');
+		$count = $qb->select("COUNT('li')")
+		   ->join('li.language', 'l')
+		   ->where('l.abbreviation = :lang')
+		   ->setParameter('lang', $language)
+		   ->getQuery()
+		   ->getSingleScalarResult();
+
 		$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
-		if(!in_array($language, $currentLanguagesWebsite))
+		if(!in_array($language, $currentLanguagesWebsite) and empty($count))
 			$language = "en";
 
 		$qb = $this->createQueryBuilder('li');
@@ -39,13 +47,12 @@ class StateRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.title', 'c.internationalName', 'c.id');
+		$aColumns = ['c.id', 'c.title', 'c.internationalName', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
 
-		if(!empty($sSearch))
-		{
+		if(!empty($sSearch)) {
 			$search = "%".$sSearch."%";
 			$orWhere = [];
 			
@@ -55,8 +62,7 @@ class StateRepository extends EntityRepository
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
 		}
-		if($count)
-		{
+		if($count) {
 			$qb->select("count(c)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}
@@ -76,8 +82,7 @@ class StateRepository extends EntityRepository
 		   ->andWhere("l.abbreviation = :abbreviation")
 		   ->setParameter("abbreviation", $entity->getLanguage()->getAbbreviation());
 		   
-		if($entity->getId() != null)
-		{
+		if($entity->getId() != null) {
 		   $qb->andWhere("b.id != :id")
 		      ->setParameter("id", $entity->getId());
 		}

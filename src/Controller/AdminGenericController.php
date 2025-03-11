@@ -142,7 +142,7 @@ abstract class AdminGenericController extends AbstractController
     {
 		$this->defaultValueForMappedSuperclassBase($request, $em, $entity);
         $form = $this->createForm($formType, $entity, $options);
-
+// dd($entity);
         return $this->render($twig, [
             'entity' => $entity,
             'form'   => $form->createView()
