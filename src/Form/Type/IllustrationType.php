@@ -20,7 +20,6 @@ class IllustrationType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-		// dd($builder);
         $builder
             ->add('titleFile', FileType::class, ['data_class' => null, 'required' => true])
             ->add('license', TextType::class, ['required' => true])
@@ -34,7 +33,7 @@ class IllustrationType extends AbstractType
             ->setAttribute('base_path', $options['base_path'])
         ;
 
-		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event){
+		$builder->addEventListener(FormEvents::POST_SET_DATA, function(FormEvent $event) use ($options) {
 			$data = $event->getData();
 			$form = $event->getForm();
 

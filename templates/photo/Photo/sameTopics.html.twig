@@ -7,7 +7,7 @@
 			<div class="card mb-3">
 				<div class="row g-0">
 					<div class="col-md-4 align-self-center text-center">
-						{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, {loading: "lazy"})|raw }}
+						{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, {loading: "lazy", alt: entity.title})|raw }}
 					</div>
 					<div class="col-md-8 content-card">
 						<div class="card-body">
