@@ -17,7 +17,7 @@
 			{% for entity in entities %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<p><span style="font-weight: bold; font-size: 16px;">{{ entity.title }} (<a href="{{ path('Photo_Read', { 'id':entity.id, 'title_slug':entity.getUrlSlug()}) }}">{{ "photo.slider.More"|trans([], "validators") }}</a>)</span></p>
-					<div class="image" style="">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid', 'loading': 'lazy'})|raw }}</div>
+					<div class="image" style="">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid', 'loading': 'lazy', alt: entity.title})|raw }}</div>
 				</div>
 				{% set i = i + 1 %}
 			{% endfor %}

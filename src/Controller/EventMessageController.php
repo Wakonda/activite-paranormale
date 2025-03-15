@@ -576,7 +576,7 @@ class EventMessageController extends AbstractController
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];
 
-				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration(), "title" => $entity->getTitle()];
 			} else {
 				$currentEvent[$entity->getType()][] = [
 					"id" => $entity->getId(),
@@ -586,7 +586,7 @@ class EventMessageController extends AbstractController
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];
 
-				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration(), "title" => $entity->getTitle()];
 			}
 		}
 
@@ -611,7 +611,7 @@ class EventMessageController extends AbstractController
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
 				];
 
-				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration(), "title" => $entity->getTitle()];
 			} else {
 				$currentEvent[$type][] = [
 					"id" => $entity->getId(), 
@@ -619,7 +619,7 @@ class EventMessageController extends AbstractController
 					"url" => $this->generateUrl("Biography_Show", ["id" => $entity->getId(), "title_slug" => $entity->getSlug() ])
 				];
 
-				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration()];
+				$photos[] = ["id" => $entity->getId(), "path" => $entity->getAssetImagePath(), "illustration" => $entity->getIllustration(), "title" => $entity->getTitle()];
 			}
 		}
 		

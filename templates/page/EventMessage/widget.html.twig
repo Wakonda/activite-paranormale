@@ -12,9 +12,8 @@
 	{% endfor %}
 
 	<h3 class="mt-3">{{ "eventMessage.index.OnThisDay"|trans([], "validators") }} - {{ currentDate }}</h3>
-
 	{% if illustration is not empty and illustration.illustration is not empty %}
-		{{ illustration.illustration.realNameFile|imgsize(250, illustration.path, true, {"class": "mx-auto d-block", "loading": "lazy"})|raw }}
+		{{ illustration.illustration.realNameFile|imgsize(250, illustration.path, true, {class: "mx-auto d-block", loading: "lazy", alt: illustration.title})|raw }}
 		<br>
 	{% endif %}
 
