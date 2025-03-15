@@ -25,7 +25,7 @@ class SearchEngine {
 		$this->filename = $filename;
 		$this->perPage = $perPage;
 		
-		$this->dsn = "mysql:host=${host};dbname=${dbname};charset=UTF8";
+		$this->dsn = "mysql:host={$host};dbname={$dbname};charset=UTF8";
 	}
 	
 	public function setType(string $type) {
@@ -64,7 +64,7 @@ class SearchEngine {
 				
 				$text = $this->sanitizeDataArray($data);
 				
-				$pdoSqlite->exec("INSERT INTO doclist (id, classname, searchText, language) VALUES (${id}, '${classname}', '${text}', '${language}')");
+				$pdoSqlite->exec("INSERT INTO doclist (id, classname, searchText, language) VALUES ({$id}, '{$classname}', '{$text}', '{$language}')");
 			}
 		}
 		
@@ -101,14 +101,14 @@ class SearchEngine {
 
 				foreach($data as $d) {
 					if(preg_match('/\.(jpe?g|png|gif|bmp|webp|svg)$/i', $d))
-						$pdoSqlite->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '${d}', '${language}')");
+						$pdoSqlite->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES ({$id}, '{$classname}', '{$d}', '{$language}')");
 					else {
 						libxml_use_internal_errors(true);
 						$dom = new DOMDocument();
 						$dom->loadHTML($d);
 
 						foreach ($dom->getElementsByTagName('img') as $i => $img) {
-							$pdoSqlite->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '{$img->getAttribute('src')}', '${language}')");
+							$pdoSqlite->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES ({$id}, '{$classname}', '{$img->getAttribute('src')}', '{$language}')");
 						}
 					}
 				}
@@ -175,9 +175,9 @@ class SearchEngine {
 		$paramsString = implode(" AND ", $params);
 		
 		if($this->type == "image") {
-			$query = "SELECT ${select} FROM imageList WHERE id || classname IN (SELECT id || classname FROM doclist WHERE doclist MATCH '${paramsString}')";
+			$query = "SELECT {$select} FROM imageList WHERE id || classname IN (SELECT id || classname FROM doclist WHERE doclist MATCH '{$paramsString}')";
 		} else {
-			$query = "SELECT ${select} FROM doclist WHERE doclist MATCH '${paramsString}'"; 
+			$query = "SELECT {$select} FROM doclist WHERE doclist MATCH '{$paramsString}'"; 
 		}
 
 		return $query;
@@ -190,7 +190,7 @@ class SearchEngine {
 			$limit = $this->perPage;
 			$offset = ($pageNumber - 1) * $limit;
 			
-			$limitString = " LIMIT ${limit} OFFSET ${offset}";
+			$limitString = " LIMIT {$limit} OFFSET {$offset}";
 		}
 		
 		$query = null;
@@ -223,11 +223,11 @@ class SearchEngine {
 		unset($data["language"]);
 		unset($data["classname"]);
 
-		$pdo->exec("DELETE FROM imageList WHERE id = ${id} AND classname = '{$classname}'");
+		$pdo->exec("DELETE FROM imageList WHERE id = {$id} AND classname = '{$classname}'");
 
 		foreach($data as $d) {
 			if(preg_match('/\.(jpe?g|png|gif|bmp)$/i', $d))
-				$pdo->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '${d}', '${language}')");
+				$pdo->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES ({$id}, '{$classname}', '{$d}', '{$language}')");
 			else {
 				if(empty($d))
 					continue;
@@ -236,7 +236,7 @@ class SearchEngine {
 				$dom->loadHTML($d, LIBXML_NOERROR);
 
 				foreach ($dom->getElementsByTagName('img') as $i => $img) {
-					$pdo->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES (${id}, '${classname}', '{$img->getAttribute('src')}', '${language}')");
+					$pdo->exec("INSERT INTO imageList (id, classname, imagePath, language) VALUES ({$id}, '{$classname}', '{$img->getAttribute('src')}', '{$language}')");
 				}
 			}
 		}
@@ -263,7 +263,7 @@ class SearchEngine {
 		
 		$classname = $data["classname"];
 		
-		$statement = $pdo->prepare("SELECT * FROM doclist WHERE id = ${id} AND classname = '{$classname}'");
+		$statement = $pdo->prepare("SELECT * FROM doclist WHERE id = {$id} AND classname = '{$classname}'");
 		$statement->execute();
 		
 		if($statement->fetchColumn() !== false) {
@@ -275,7 +275,7 @@ class SearchEngine {
 
 			$text = $this->sanitizeDataArray($data);
 
-			$pdo->exec("INSERT INTO doclist (id, classname, searchText, language) VALUES (${id}, '${classname}', '${text}', '${language}')");
+			$pdo->exec("INSERT INTO doclist (id, classname, searchText, language) VALUES ({$id}, '{$classname}', '{$text}', '{$language}')");
 		}
 	
 		$pdo = null;
@@ -306,7 +306,7 @@ class SearchEngine {
 
 		$text = $this->sanitizeDataArray($data);
 		
-		$pdo->exec("UPDATE doclist SET classname = '${classname}', searchText = '${text}', language = '${language}' WHERE id = ${id}");
+		$pdo->exec("UPDATE doclist SET classname = '{$classname}', searchText = '{$text}', language = '{$language}' WHERE id = {$id}");
 		
 		$pdo = null;
 	}
@@ -314,8 +314,8 @@ class SearchEngine {
 	public function delete(int $id, string $classname): void {
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 
-		$pdo->exec("DELETE FROM doclist WHERE id = ${id} AND classname = '{$classname}'");
-		$pdo->exec("DELETE FROM imageList WHERE id = ${id} AND classname = '{$classname}'");
+		$pdo->exec("DELETE FROM doclist WHERE id = {$id} AND classname = '{$classname}'");
+		$pdo->exec("DELETE FROM imageList WHERE id = {$id} AND classname = '{$classname}'");
 		
 		$pdo = null;
 	}

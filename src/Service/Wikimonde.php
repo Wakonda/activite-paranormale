@@ -49,7 +49,7 @@
 			
 			foreach($res as $title => $r) {
 				if(!empty($title))
-					$contentArray[] = "<h3>${title}</h3>";
+					$contentArray[] = "<h3>{$title}</h3>";
 
 				$contentArray[] = implode("", $r);
 			}

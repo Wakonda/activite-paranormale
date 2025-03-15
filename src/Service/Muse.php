@@ -42,7 +42,7 @@
 		{
 			$ch = curl_init();
 
-			$url = $this->url."webservices/${family}";
+			$url = $this->url."webservices/{$family}";
 
 			curl_setopt($ch, CURLOPT_POST, true);
 
@@ -100,7 +100,7 @@
 		public function getImages($identifier, $token, $family) {
 			$ch = curl_init();
 
-			$url = $this->url."api/${family}/${identifier}/images";
+			$url = $this->url."api/{$family}/{$identifier}/images";
 
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
@@ -128,7 +128,7 @@
 		{
 			$ch = curl_init();
 
-			$url = $this->url."api/${family}";
+			$url = $this->url."api/{$family}";
 
 			if(isset($data["identifier"]) and !empty($idt = $data["identifier"])) {
 				$url .= "/".$idt;
@@ -167,7 +167,7 @@
 
 			$ch = curl_init();
 
-			$url = $this->url."api/${urlPart}_images";
+			$url = $this->url."api/{$urlPart}_images";
 
 			if(empty($image["imgBase64"])) {
 				$url .= "/".$data["identifier"];
@@ -191,7 +191,7 @@
 		public function getImages($identifier, $token, $family) {
 			$ch = curl_init();
 
-			$url = $this->url."api/${family}/${identifier}/images";
+			$url = $this->url."api/{$family}/{$identifier}/images";
 
 			curl_setopt($ch, CURLOPT_URL, $url);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

@@ -73,14 +73,14 @@ class SearchEngineCommand extends Command
 					$classname = $this->em->getClassMetadata(get_class($data))->getTableName();
 					
 					$query = "SELECT n.id, l.abbreviation AS language, n.title, n.text 
-					FROM ${classname} n
+					FROM {$classname} n
 					INNER JOIN language l ON n.language_id = l.id
 					WHERE n.id = {$data->getId()}";
 					
 					$this->searchEngine->run($filename, $query, $classname);
 					
 					$query = "SELECT n.id, l.abbreviation AS language, i.realNameFile, n.text 
-					FROM ${classname} n
+					FROM {$classname} n
 					INNER JOIN language l ON n.language_id = l.id
 					INNER JOIN filemanagement i ON n.illustration_id = i.id
 					WHERE n.id = {$data->getId()}";

@@ -359,7 +359,7 @@ class GrimoireRepository extends EntityRepository
 	public function getGrimoireBySocialNetworkIdentifiers($key, $id) {
 		$qb = $this->createQueryBuilder("g");
 
-		$qb->where("JSON_EXTRACT(g.socialNetworkIdentifiers, '$.${key}.id') = :id")
+		$qb->where("JSON_EXTRACT(g.socialNetworkIdentifiers, '$.{$key}.id') = :id")
 		   ->setParameter("id", $id)
 		   ->setMaxResults(1);
 

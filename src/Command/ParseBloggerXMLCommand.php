@@ -55,7 +55,7 @@ class ParseBloggerXMLCommand extends Command
 			if(!$this->isPost($categories))
 				continue;
 			
-			if(strpos($entry->getElementsByTagName("id")->item(0)->nodeValue, "tag:blogger.com,1999:blog-${blogId}.post") !== false) {
+			if(strpos($entry->getElementsByTagName("id")->item(0)->nodeValue, "tag:blogger.com,1999:blog-{$blogId}.post") !== false) {
 				$idsArray = explode("-", $entry->getElementsByTagName("id")->item(0)->nodeValue);
 				
 				$entity = $this->em->getRepository(Grimoire::class)->getGrimoireBySocialNetworkIdentifiers("Blogger", end($idsArray));

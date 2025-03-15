@@ -26,7 +26,7 @@ class Instagram {
 		
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id=${appId}&client_secret=${secretKey}&fb_exchange_token=${accessToken}");
+		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id={$appId}&client_secret={$secretKey}&fb_exchange_token={$accessToken}");
 			
 		// Only on dev
 		if($_ENV["APP_ENV"] == "dev") {
@@ -46,7 +46,7 @@ class Instagram {
 
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${apiGraphVersion}/${userId}/accounts?access_token=".$result->access_token);
+		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$apiGraphVersion}/{$userId}/accounts?access_token=".$result->access_token);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 		// Only on dev
@@ -75,7 +75,7 @@ class Instagram {
 		
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${apiGraphVersion}/${pageId}?fields=instagram_business_account&access_token=${accessToken}");
+		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$apiGraphVersion}/{$pageId}?fields=instagram_business_account&access_token={$accessToken}");
 			
 		// Only on dev
 		if($_ENV["APP_ENV"] == "dev") {
@@ -109,7 +109,7 @@ class Instagram {
 		$caption = urlencode($caption);
 		$image_url = urlencode($image_url);
 
-		$instagramURL = "https://graph.facebook.com/${apiGraphVersion}/${userId}/media?image_url=${image_url}&is_carousel_item=0&caption=${caption}&access_token=${accessToken}";
+		$instagramURL = "https://graph.facebook.com/{$apiGraphVersion}/{$userId}/media?image_url={$image_url}&is_carousel_item=0&caption={$caption}&access_token={$accessToken}";
 
 		$ch = curl_init();
 		
@@ -138,7 +138,7 @@ class Instagram {
 			
 			$ch = curl_init();
 
-			$instagramURL = "https://graph.facebook.com/${apiGraphVersion}/${userId}/media_publish?creation_id=${id}&access_token=${accessToken}";
+			$instagramURL = "https://graph.facebook.com/{$apiGraphVersion}/{$userId}/media_publish?creation_id={$id}&access_token={$accessToken}";
 
 			curl_setopt($ch, CURLOPT_URL, $instagramURL);
 			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);

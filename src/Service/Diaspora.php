@@ -85,7 +85,7 @@ class Diaspora {
 
 		$redirect_uri = urlencode($redirect_uri);
 
-		$loginUrl = "{$this->DIASPORA_URL}api/openid_connect/authorizations/new?response_type=code&client_id={$this->DIASPORA_CLIENT_ID}&redirect_uri=${redirect_uri}&scope=${scope}";
+		$loginUrl = "{$this->DIASPORA_URL}api/openid_connect/authorizations/new?response_type=code&client_id={$this->DIASPORA_CLIENT_ID}&redirect_uri={$redirect_uri}&scope={$scope}";
 
 		if(!isset($_GET['code']))
 		{

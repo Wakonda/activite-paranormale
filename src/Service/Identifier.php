@@ -65,24 +65,24 @@
 		
 		public static function getURLIdentifier(string $value): array {
 			return [
-				self::IMDB_ID => "https://www.imdb.com/title/${value}",
-				self::ROTTEN_TOMATOES_ID => "https://www.rottentomatoes.com/m/${value}", 
-				self::LETTERBOXD_FILM_ID => "https://letterboxd.com/film/${value}",
-				self::ISRC => "https://isrcsearch.ifpi.org/#!/search?isrcCode=${value}&tab=lookup&showReleases=0&start=0&number=10",
-				self::ALLMUSIC_SONG_ID => "https://www.allmusic.com/song/${value}",
-				self::MUSICBRAINZ_RECORDING_ID => "https://musicbrainz.org/recording/${value}",
-				self::AMAZON_STANDARD_IDENTIFICATION_NUMBER => "https://www.amazon.com/dp/${value}",
-				self::MUSICBRAINZ_RELEASE_GROUP_ID => "https://musicbrainz.org/release-group/${value}",
-				self::ALLMUSIC_ALBUM_ID => "https://www.allmusic.com/album/${value}",
-				self::SPOTIFY_ALBUM_ID => "https://open.spotify.com/album/${value}",
-				self::SPOTIFY_ARTIST_ID => "https://open.spotify.com/artist/${value}",
-				self::SPOTIFY_TRACK_ID => "https://open.spotify.com/track/${value}",
-				self::MUSICBRAINZ_ARTIST_ID => "https://musicbrainz.org/artist/${value}",
-				self::ALLMUSIC_ARTIST_ID => "https://www.allmusic.com/artist/${value}",
-				self::ISNI => "https://isni.org/isni/${value}",
-				self::VIAF_ID => "https://viaf.org/viaf/${value}",
-				self::YOUTUBE_VIDEO_ID => "https://www.youtube.com/watch?v=${value}",
-				self::ENCYCLOPAEDIA_METALLUM_ARTIST_ID => "https://www.metal-archives.com/artists//${value}"
+				self::IMDB_ID => "https://www.imdb.com/title/{$value}",
+				self::ROTTEN_TOMATOES_ID => "https://www.rottentomatoes.com/m/{$value}", 
+				self::LETTERBOXD_FILM_ID => "https://letterboxd.com/film/{$value}",
+				self::ISRC => "https://isrcsearch.ifpi.org/#!/search?isrcCode={$value}&tab=lookup&showReleases=0&start=0&number=10",
+				self::ALLMUSIC_SONG_ID => "https://www.allmusic.com/song/{$value}",
+				self::MUSICBRAINZ_RECORDING_ID => "https://musicbrainz.org/recording/{$value}",
+				self::AMAZON_STANDARD_IDENTIFICATION_NUMBER => "https://www.amazon.com/dp/{$value}",
+				self::MUSICBRAINZ_RELEASE_GROUP_ID => "https://musicbrainz.org/release-group/{$value}",
+				self::ALLMUSIC_ALBUM_ID => "https://www.allmusic.com/album/{$value}",
+				self::SPOTIFY_ALBUM_ID => "https://open.spotify.com/album/{$value}",
+				self::SPOTIFY_ARTIST_ID => "https://open.spotify.com/artist/{$value}",
+				self::SPOTIFY_TRACK_ID => "https://open.spotify.com/track/{$value}",
+				self::MUSICBRAINZ_ARTIST_ID => "https://musicbrainz.org/artist/{$value}",
+				self::ALLMUSIC_ARTIST_ID => "https://www.allmusic.com/artist/{$value}",
+				self::ISNI => "https://isni.org/isni/{$value}",
+				self::VIAF_ID => "https://viaf.org/viaf/{$value}",
+				self::YOUTUBE_VIDEO_ID => "https://www.youtube.com/watch?v={$value}",
+				self::ENCYCLOPAEDIA_METALLUM_ARTIST_ID => "https://www.metal-archives.com/artists//{$value}"
 			];
 		}
 	}

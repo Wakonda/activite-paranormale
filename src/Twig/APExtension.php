@@ -1106,7 +1106,7 @@
 				$destImage = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.base64_decode(base64_encode($thumbnail));//dd(file_get_contents($destImage));
 				$file = empty($thumbnail) ? "/extended/photo/twitter-video.webp" : $this->router->generate("Video_DisplayImage", ["file" => base64_encode($thumbnail)]);
 
-				return "<img src='${file}' id='tweet-img' class='cursor-pointer' style='max-width: 550px;width: 100%' title='".$this->translator->trans("video.read.WatchTheVideo", [], "validators")."'><div id='tweet-container'></div>
+				return "<img src='{$file}' id='tweet-img' class='cursor-pointer' style='max-width: 550px;width: 100%' title='".$this->translator->trans("video.read.WatchTheVideo", [], "validators")."'><div id='tweet-container'></div>
 						<script>
 							var tweet = '".trim(addcslashes($entity->getEmbeddedCode(), "/'\"\\"))."';
 							

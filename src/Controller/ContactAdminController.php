@@ -123,7 +123,7 @@ class ContactAdminController extends AdminGenericController
 
 			$delete = "<a onclick=\"return confirm('".$translator->trans('admin.show.ReallyWantRemoveDatas', [], 'validators')."')\" href='".$this->generateUrl('Contact_Admin_Delete', ['id' => $entity->getId()])."'><i class='fas fa-trash'></i> ".$translator->trans('admin.general.Delete', [], 'validators')."</a><br>";
 
-			$row[] = "<a href='".$this->generateUrl('Contact_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>${delete}";
+			$row[] = "<a href='".$this->generateUrl('Contact_Admin_Show', ['id' => $entity->getId()])."'><i class='fas fa-book'></i> ".$translator->trans('admin.general.Read', [], 'validators')."</a><br>{$delete}";
 			$output['data'][] = $row;
 		}
 

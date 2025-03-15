@@ -29,6 +29,9 @@ class FunctionsLibrary
 	}
 
 	public function sourceString($sourceJSON, string $locale, Array $classes = []): ?String {
+		if(empty($sourceJSON))
+			return null;
+
 		$datas = json_decode($sourceJSON, true);
 
 		if(empty($datas))

@@ -24,7 +24,7 @@ class Facebook {
 
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id=${appId}&client_secret=${secretKey}&fb_exchange_token=${accessToken}");
+		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id={$appId}&client_secret={$secretKey}&fb_exchange_token={$accessToken}");
 			
 		// Only on dev
 		if($_ENV["APP_ENV"] == "dev") {
@@ -44,7 +44,7 @@ class Facebook {
 
 		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${apiGraphVersion}/${userId}/accounts?access_token=".$result->access_token);
+		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$apiGraphVersion}/{$userId}/accounts?access_token=".$result->access_token);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 
 		// Only on dev
@@ -75,7 +75,7 @@ class Facebook {
 		
 		$llt = $this->FACEBOOK_ACCESS_TOKEN;
 
-		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/${pageId}/feed?message=${message}&link=${url}&access_token=".$llt);
+		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$pageId}/feed?message={$message}&link={$url}&access_token=".$llt);
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
 		curl_setopt($ch, CURLOPT_POST, 1);
 

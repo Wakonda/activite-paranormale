@@ -17,7 +17,7 @@
 
 			$key = $_ENV["PIXABAY_KEY"];
 			
-			$url = "https://pixabay.com/api/?key=${key}&id=${id}&min_width=${minWidth}";
+			$url = "https://pixabay.com/api/?key={$key}&id={$id}&min_width={$minWidth}";
 
 			$image = json_decode(@file_get_contents($url));
 

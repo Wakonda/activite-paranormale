@@ -17,7 +17,7 @@
 		}
 		
 		public function getContentBySection(Int $sectionIndex = null): String {
-			$url = "https://{$this->locale}.wikipedia.org/w/api.php?action=parse&format=json&page={$this->page}&prop=text".($sectionIndex !== null ? "&section=${sectionIndex}" : "");
+			$url = "https://{$this->locale}.wikipedia.org/w/api.php?action=parse&format=json&page={$this->page}&prop=text".($sectionIndex !== null ? "&section={$sectionIndex}" : "");
 
 			$content = json_decode(file_get_contents($url), true);
 
