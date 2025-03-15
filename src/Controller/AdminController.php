@@ -71,12 +71,19 @@ class AdminController extends AbstractController
 
 		$form = $this->createForm(\App\Form\Type\InternationalizationAdminType::class, null, ["locales" => $locales]);
 
+		$availableLanguages = [];
+		foreach($em->getRepository(Language::class)->getAllAvailableLanguages() as $l) {
+			if(!in_array($l->getAbbreviation(), $locales))
+				$availableLanguages[] = $l;
+		}
+
 		return $this->render("admin/Admin/internationalization.html.twig", [
 			"entity" => $entity,
 			"form" => $form->createView(),
 			"route" => $this->generateUrl($route, ["id" => $entity->getId()]),
 			"showRoute" => $showRoute,
-			"editRoute" => $editRoute
+			"editRoute" => $editRoute,
+			"availableLanguages" => $availableLanguages
 		]);
 	}
 

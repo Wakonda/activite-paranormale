@@ -1,5 +1,9 @@
-<h3>{{ "admin.show.Internationalization"|trans([], "validators") }}</h3>
+<h3>{{ "admin.show.Internationalization"|trans([], "validators") }}
 
+{% for l in availableLanguages %}
+	<a href="{{ route }}?fromId={{ entity.id }}&locale={{ l.id }}"><img src="{{ asset(l.getAssetImagePath()~l.logo) }}" width="30" class="border border-black rounded"></a>
+{% endfor %}
+</h3>
 {% if method_exists(entity, "getInternationalName") %}
 <table class="table table-striped table-bordered doc_datatables">
 	<thead>
