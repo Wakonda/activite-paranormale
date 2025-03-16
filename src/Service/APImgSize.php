@@ -61,7 +61,7 @@
 				$finfo = finfo_open(FILEINFO_MIME_TYPE);
 				$mime_type = finfo_file($finfo, $img);
 				$size = $uploadedFile->getSize();
-				$content = file_get_contents($uploadedFile->getPathname());echo ";;;";
+				$content = file_get_contents($uploadedFile->getPathname());
 			} else {
 				$finfo = new \finfo(FILEINFO_MIME_TYPE);
 				$mime_type = $finfo->buffer($uploadedFile);
