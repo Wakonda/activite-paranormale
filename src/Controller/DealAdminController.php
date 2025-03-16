@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Deal;
+use App\Entity\language;
 use App\Form\Type\DealAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -114,5 +115,26 @@ class DealAdminController extends AdminGenericController
 		}
 
 		return new JsonResponse($output);
+	}
+	
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
+	{
+		$formType = DealAdminType::class;
+		$entity = new Deal();
+
+		$entityToCopy = $em->getRepository(Deal::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+
+		$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+
+		$entity->setTitle($entityToCopy->getTitle());
+		$entity->setPhoto($entityToCopy->getPhoto());
+		$entity->setLink($entityToCopy->getLink());
+		$entity->setLanguage($language);
+
+		$request->setLocale($language->getAbbreviation());
+
+		$twig = 'deal/DealAdmin/new.html.twig';
+		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new']);
 	}
 }

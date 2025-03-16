@@ -246,7 +246,7 @@ class NewsAdminController extends AdminGenericController
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
-	
+
 	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = NewsAdminType::class;
