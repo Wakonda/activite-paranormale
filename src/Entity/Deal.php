@@ -99,10 +99,10 @@ class Deal
 			$ExtFile = strrev($explodeNF[0]);
 			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
 			if(!$this->id){
-				$this->photo->move($this->getTmpUploadRootPdfDir(), $NewNameFile);
+				$this->photo->move($this->getTmpUploadRootDir(), $NewNameFile);
 			} else {
 				if (is_object($this->photo))
-					$this->photo->move($this->getUploadRootPdfDir(), $NewNameFile);
+					$this->photo->move($this->getUploadRootDir(), $NewNameFile);
 			}
 			if (is_object($this->photo))
 				$this->setPhoto($NewNameFile);

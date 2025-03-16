@@ -39,7 +39,7 @@ class MigrateImportDataFromWikipediaCommand extends Command
         $this->wikidata = $wikidata;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->addOption('locale', null, InputOption::VALUE_REQUIRED, 'Locale?')
@@ -48,7 +48,7 @@ class MigrateImportDataFromWikipediaCommand extends Command
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 		$output->writeln("Start Wikipedia data migration");
 

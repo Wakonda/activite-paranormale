@@ -30,12 +30,12 @@ class SearchEngineCommand extends Command
 		$this->parameterBag = $parameterBag;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         // ...
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 		$output->writeln("Start Search engine indexation");
 		

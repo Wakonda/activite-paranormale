@@ -24,12 +24,12 @@ class MovieInternationalNameCommand extends Command
         $this->em = $em;
     }
 
-    protected function configure()
+    protected function configure(): void
     {
         // ...
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
 		$output->writeln("Start News migration");
 		
