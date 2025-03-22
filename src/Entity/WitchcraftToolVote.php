@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\WitchcraftToolVoteRepository")
- * @ORM\Table(name="witchcrafttoolvote")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\WitchcraftToolVoteRepository')]
+#[ORM\Table(name: 'witchcrafttoolvote')]
 class WitchcraftToolVote extends Vote
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\WitchcraftTool")
-	* @ORM\JoinColumn(name="witchcraftTool_id", nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\WitchcraftTool')]
+	#[ORM\JoinColumn(name: 'witchcraftTool_id', nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()

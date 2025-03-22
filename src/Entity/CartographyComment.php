@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\CartographyCommentRepository")
- * @ORM\Table(name="cartographycomment")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\CartographyCommentRepository')]
+#[ORM\Table(name: 'cartographycomment')]
 class CartographyComment extends Comment
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Cartography")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Cartography')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getEntityLinked()
@@ -31,21 +27,11 @@ class CartographyComment extends Comment
 		return 'CartographyComment';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Cartography $entity
-     */
     public function setEntity(Cartography $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Cartography
-     */
     public function getEntity()
     {
         return $this->entity;

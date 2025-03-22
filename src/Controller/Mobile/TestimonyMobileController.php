@@ -19,8 +19,7 @@ use App\Entity\State;
 use App\Entity\Theme;
 use App\Entity\User;
 use App\Service\FunctionsLibrary;
-
-require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php");
+use Detection\MobileDetect;
 
 class TestimonyMobileController extends AbstractController
 {
@@ -37,7 +36,7 @@ class TestimonyMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+		if((new MobileDetect())->isMobile() or $functionsLibrary->isApplication())
 			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);

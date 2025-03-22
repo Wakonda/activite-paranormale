@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VideoVoteRepository")
- * @ORM\Table(name="videovote")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\VideoVoteRepository')]
+#[ORM\Table(name: 'videovote')]
 class VideoVote extends Vote
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Video")
-	* @ORM\JoinColumn(name="video_id", nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Video')]
+	#[ORM\JoinColumn(name: 'video_id', nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName() {

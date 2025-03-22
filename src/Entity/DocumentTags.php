@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="documenttags")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'documenttags')]
 class DocumentTags extends Tags
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Document")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Document')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()
@@ -26,21 +22,11 @@ class DocumentTags extends Tags
 		return 'DocumentTags';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Document $entity
-     */
     public function setEntity(Document $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Document 
-     */
     public function getEntity()
     {
         return $this->entity;

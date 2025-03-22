@@ -5,16 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Movies\Movie;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="movietags")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'movietags')]
 class MovieTags extends Tags
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Movies\Movie")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Movies\Movie')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()
@@ -27,21 +23,11 @@ class MovieTags extends Tags
 		return 'MovieTags';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Movies\Movie $entity
-     */
     public function setEntity(Movie $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Movies\Movie
-     */
     public function getEntity()
     {
         return $this->entity;

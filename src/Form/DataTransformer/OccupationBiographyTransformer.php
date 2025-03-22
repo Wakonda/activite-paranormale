@@ -25,7 +25,7 @@ class OccupationBiographyTransformer implements DataTransformerInterface
      * @param  Issue|null $issue
      * @return string
      */
-    public function transform($entity)
+    public function transform(mixed $entity): mixed
     {
 		if(!empty($this->defaultRoles))
 			return $this->defaultRoles;
@@ -40,7 +40,7 @@ class OccupationBiographyTransformer implements DataTransformerInterface
      * @return Issue|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
-    public function reverseTransform($values)
+    public function reverseTransform(mixed $values): mixed
     {
 		$res = [];
 

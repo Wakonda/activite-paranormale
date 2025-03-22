@@ -8,25 +8,25 @@ use Symfony\Component\Serializer\Annotation\Groups;
 /**
  * UsefullinkTags
  *
- * @ORM\Table(name="usefullink_tags")
- * @ORM\Entity(repositoryClass="App\Repository\UsefullinkTagsRepository")
+#[ORM\Table(name: 'usefullink_tags")
+#[ORM\Entity(repositoryClass: 'App\Repository\UsefullinkTagsRepository")
  */
 class UsefullinkTags
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
      */
     private $id;
 
     /**
      * @var string
      *
-     * @ORM\Column(type="string", length=255)
-	 * @Groups("api_read")
+	#[ORM\Column(type: 'string', length: 255)]
+	#[Groups('api_read')]
      */
     private $title;
 

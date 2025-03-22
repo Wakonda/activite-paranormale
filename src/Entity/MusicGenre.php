@@ -7,9 +7,9 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * App\Entity\MusicGenre
  *
- * @ORM\Table(name="musicgenre")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\MusicGenreRepository")
+#[ORM\Table(name: 'musicgenre")
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\MusicGenreRepository")
  */
 class MusicGenre
 {
@@ -18,54 +18,38 @@ class MusicGenre
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
      */
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
     private $title;
 
     /**
-     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
+	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
      */
     private $illustration;
 
     /**
      * @var text $text
      *
-     * @ORM\Column(name="text", type="text", nullable=true)
+	#[ORM\Column(name: 'text', type: 'text', nullable: true)]
      */
     private $text;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	private $internationalName;
 
-    /**
-     * @ORM\Column(name="source", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 	
 	public function __clone()

@@ -25,7 +25,7 @@ class TagWordTransformer implements DataTransformerInterface
      * @param  Issue|null $issue
      * @return string
      */
-    public function transform($entity)
+    public function transform(mixed $entity): mixed
     {
 		if(is_array($entity))
 			return $entity;
@@ -76,7 +76,7 @@ class TagWordTransformer implements DataTransformerInterface
      * @return Issue|null
      * @throws TransformationFailedException if object (issue) is not found.
      */
-    public function reverseTransform($tags)
+    public function reverseTransform(mixed $tags): mixed
     {
 		$res = [];
 

@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EventMessageVoteRepository")
- * @ORM\Table(name="eventmessagevote")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\EventMessageVoteRepository')]
+#[ORM\Table(name: 'eventmessagevote')]
 class EventMessageVote extends Vote
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
-	* @ORM\JoinColumn(name="eventMessage_id", nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\EventMessage')]
+	#[ORM\JoinColumn(name: 'eventMessage_id', nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()

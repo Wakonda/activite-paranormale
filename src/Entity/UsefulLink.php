@@ -15,8 +15,8 @@ use Ausi\SlugGenerator\SlugGenerator;
 /**
  * App\Entity\UsefulLink
  *
- * @ORM\Table(name="usefullink")
- * @ORM\Entity(repositoryClass="App\Repository\UsefulLinkRepository")
+#[ORM\Table(name: 'usefullink")
+#[ORM\Entity(repositoryClass: 'App\Repository\UsefulLinkRepository")
  * @ApiResource(normalizationContext = {"groups" = {"api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
  * @ApiFilter(SearchFilter::class, properties = {"category" = "exact", "usefullinkTags.title" = "exact"})
  * @ApiFilter(OrderFilter::class, properties = {"id"}, arguments = {"orderParameterName" = "order"})
@@ -32,115 +32,69 @@ class UsefulLink
 	const USEFULLINK_FAMILY = "usefullink";
 	const TECHNICAL_FAMILY = "technical";
 
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-	 * @ApiProperty(identifier=true)
-	 * @Groups("api_read")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ApiProperty(identifier: true)]
+	#[Groups('api_read')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $title;
 
-    /**
-     * @var string $text
-     *
-     * @ORM\Column(name="text", type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'text', type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $text;
 
-    /**
-     * @var string $links
-     *
-     * @ORM\Column(name="links", type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'links', type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $links;
 
-    /**
-     * @var string $tags
-     *
-     * @ORM\Column(name="tags", type="json", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'tags', type: 'json', nullable: true)]
+	#[Groups('api_read')]
     private $tags;
 
-    /**
-     * @var string $category
-     *
-     * @ORM\Column(name="category", type="string", length=100, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'category', type: 'string', length: 100, nullable: true)]
+	#[Groups('api_read')]
     private $category;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     protected $language;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
-	 * @Groups("api_read")
-     */
+
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Licence')]
+	#[Groups('api_read')]
     protected $licence;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	private $internationalName;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Blog")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Blog')]
+	#[Groups('api_read')]
 	private $website;
 
-    /**
-     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
-	 * @Groups("api_read")
-     */
+	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
+	#[Groups('api_read')]
     private $illustration;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'datetime', nullable: true)]
+	#[Groups('api_read')]
 	private $createdAt = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'datetime', nullable: true)]
+	#[Groups('api_read')]
 	private $updatedAt = null;
 
-	/**
-     * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups('api_read')]
 	private $slug;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\UsefullinkTags")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToMany(targetEntity: 'App\Entity\UsefullinkTags')]
+	#[Groups('api_read')]
     private $usefullinkTags;
 
-	/**
-	 * @Groups("api_read")
-	 */
+	#[Groups('api_read')]
 	public function getImgPath(): ?array
 	{
 		if(!empty($this->illustration) and file_exists($f = $this->getAssetImagePath().$this->illustration->getRealNameFile()))
@@ -176,7 +130,6 @@ class UsefulLink
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
@@ -185,22 +138,11 @@ class UsefulLink
 		return get_called_class();
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     * @return UsefulLink
-     */
     public function setTitle($title)
     {
 		if(!empty($title))
@@ -209,22 +151,11 @@ class UsefulLink
 		$this->setSlug();
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set text
-     *
-     * @param string $text
-     * @return UsefulLink
-     */
     public function setText($text)
     {
         $this->text = $text;
@@ -232,22 +163,11 @@ class UsefulLink
         return $this;
     }
 
-    /**
-     * Get text
-     *
-     * @return string 
-     */
     public function getText()
     {
         return $this->text;
     }
 
-    /**
-     * Set links
-     *
-     * @param string $links
-     * @return UsefulLink
-     */
     public function setLinks($links)
     {
         $this->links = $links;
@@ -255,22 +175,11 @@ class UsefulLink
         return $this;
     }
 
-    /**
-     * Get links
-     *
-     * @return string 
-     */
     public function getLinks()
     {
         return $this->links;
     }
 
-    /**
-     * Set tags
-     *
-     * @param string $tags
-     * @return UsefulLink
-     */
     public function setTags($tags)
     {
         $this->tags = json_decode($tags);
@@ -278,22 +187,11 @@ class UsefulLink
         return $this;
     }
 
-    /**
-     * Get tags
-     *
-     * @return string 
-     */
     public function getTags()
     {
         return is_null($this->tags) ? [] : json_encode($this->tags);
     }
 
-    /**
-     * Set category
-     *
-     * @param string $category
-     * @return UsefulLink
-     */
     public function setCategory($category)
     {
         $this->category = $category;
@@ -301,11 +199,6 @@ class UsefulLink
         return $this;
     }
 
-    /**
-     * Get category
-     *
-     * @return string 
-     */
     public function getCategory()
     {
         return $this->category;

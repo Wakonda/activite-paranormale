@@ -7,29 +7,21 @@ use App\Service\APPurifierHTML;
 
 use App\Entity\EntityLinkBiography;
 
-/**
- * App\Entity\BookEditionBiography
- *
- * @ORM\Table(name="book_edition_biography")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\BookEditionBiographyRepository")
- */
+#[ORM\Table(name: 'book_edition_biography')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\BookEditionBiographyRepository')]
 class BookEditionBiography extends EntityLinkBiography
 {
 	const PREFACE_OCCUPATION = "preface";
 	const TRANSLATOR_OCCUPATION = "translator";
 	const AUTHOR_OCCUPATION = "author";
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="BookEdition", inversedBy="biographies")
-	 * @ORM\JoinColumn(name="book_edition_id", referencedColumnName="id")
-	 */
+	#[ORM\ManyToOne(targetEntity: 'BookEdition', inversedBy: 'biographies')]
+	#[ORM\JoinColumn(name: 'book_edition_id', referencedColumnName: 'id')]
 	private $bookEdition;
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Book", inversedBy="biographies")
-	 * @ORM\JoinColumn(name="book_id", referencedColumnName="id")
-	 */
+	#[ORM\ManyToOne(targetEntity: 'Book', inversedBy: 'biographies')]
+	#[ORM\JoinColumn(name: 'book_id', referencedColumnName: 'id')]
 	private $book;
 
 	public static function getOccupations(): Array {

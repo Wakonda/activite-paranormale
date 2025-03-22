@@ -14,20 +14,19 @@ use Ausi\SlugGenerator\SlugGenerator;
 
 use App\Entity\Language;
 
-/**
- * App\Entity\Store
- *
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\StoreRepository")
- * @ORM\InheritanceType("SINGLE_TABLE")
- * @ORM\DiscriminatorColumn(name="type", type="string")
- * @ORM\DiscriminatorMap({"store" = "Store", "book_store" = "BookStore", "album_store" = "AlbumStore", "movie_store" = "MovieStore", "televisionserie_store" = "TelevisionSerieStore", "witchcrafttool_store" = "WitchcraftToolStore"})
- * @ApiResource(normalizationContext = {"groups" = {"api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
- * @ApiFilter(SearchFilter::class, properties = {"category" = "exact"})
- * @ApiFilter(OrderFilter::class, properties = {"id"}, arguments = {"orderParameterName" = "order"})
- * @ApiFilter(OrSearchFilter::class, properties={"title", "text"})
- */
-
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\StoreRepository')]
+#[ORM\InheritanceType("SINGLE_TABLE")]
+#[ORM\DiscriminatorColumn(name: "type", type: "string")]
+#[ORM\DiscriminatorMap(["store" => "Store", "book_store" => "BookStore", "album_store" => "AlbumStore", "movie_store" => "MovieStore", "televisionserie_store" => "TelevisionSerieStore", "witchcrafttool_store" => "WitchcraftToolStore"])]
+#[ApiResource(
+    normalizationContext: ['groups' => ['api_read']],
+    collectionOperations: ['GET'],
+    itemOperations: ['GET']
+)]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['id'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(OrSearchFilter::class, properties: ['title', 'text'])]
 class Store
 {
 	use \App\Entity\GenericEntityTrait;
@@ -48,100 +47,64 @@ class Store
 	const STICKER_CATEGORY = "sticker";
 	const MUG_CATEGORY = "mug";
 	const JEWEL_CATEGORY = "jewel";
-	
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups('api_read')]
     private $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $text;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $url;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'imageEmbeddedCode', type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $imageEmbeddedCode;
 
-    /**
-     * @var float $price
-     *
-     * @ORM\Column(type="float", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'float', nullable: true)]
+	#[Groups('api_read')]
     private $price;
 
-    /**
-     * @var string $currencyPrice
-     *
-     * @ORM\Column(type="string", length=10, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'currencyPrice', type: 'string', length: 10, nullable: true)]
+	#[Groups('api_read')]
     private $currencyPrice;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'amazonCode', type: 'string', length: 255, nullable: true)]
+	#[Groups('api_read')]
     private $amazonCode;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups('api_read')]
     private $platform;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[Groups('api_read')]
     private $category;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
+	#[Groups('api_read')]
     protected $language;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $characteristic;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
-    /**
-     * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
-     */
+	#[ORM\Column(name: 'socialNetworkIdentifiers', type: 'json', nullable: true)]
     private $socialNetworkIdentifiers;
 
-	/**
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 	
 	public function getShowRoute(): string {
@@ -196,9 +159,7 @@ class Store
 		return $this->slug;
 	}
 
-    /**
-	 * @Groups("api_read")
-     */
+	#[Groups('api_read')]
 	public function getExternalAmazonStoreLink()
 	{
 		$idPartner = null;
@@ -235,172 +196,87 @@ class Store
 		return $this->slug;
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
 		$this->setSlug();
     }
 
-    /**
-     * Get title
-     *
-     * @return string
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set text
-     *
-     * @param string $text
-     */
     public function setText($text)
     {
         $this->text = $text;
     }
 
-    /**
-     * Get text
-     *
-     * @return string
-     */
     public function getText()
     {
         return $this->text;
     }
 
-    /**
-     * Set imageEmbeddedCode
-     *
-     * @param string $imageEmbeddedCode
-     */
     public function setImageEmbeddedCode($imageEmbeddedCode)
     {
         $this->imageEmbeddedCode = $imageEmbeddedCode;
     }
 
-    /**
-     * Get imageEmbeddedCode
-     *
-     * @return string
-     */
     public function getImageEmbeddedCode()
     {
         return $this->imageEmbeddedCode;
     }
 
-    /**
-     * Set price
-     *
-     * @param float $price
-     */
     public function setPrice($price)
     {
         $this->price = $price;
     }
 
-    /**
-     * Get price
-     *
-     * @return float 
-     */
     public function getPrice()
     {
         return $this->price;
     }
 
-    /**
-     * Set currencyPrice
-     *
-     * @param string $currencyPrice
-     */
     public function setCurrencyPrice($currencyPrice)
     {
         $this->currencyPrice = $currencyPrice;
     }
 
-    /**
-     * Get currencyPrice
-     *
-     * @return string 
-     */
     public function getCurrencyPrice()
     {
         return $this->currencyPrice;
     }
 
-    /**
-     * Set category
-     *
-     * @param string $category
-     */
     public function setCategory($category)
     {
         $this->category = $category;
     }
 
-    /**
-     * Get category
-     *
-     * @return string 
-     */
     public function getCategory()
     {
         return $this->category;
     }
 
-    /**
-     * Set amazonCode
-     *
-     * @param integer $amazonCode
-     */
     public function setAmazonCode($amazonCode)
     {
         $this->amazonCode = $amazonCode;
     }
 
-    /**
-     * Get amazonCode
-     *
-     * @return integer 
-     */
     public function getAmazonCode()
     {
         return $this->amazonCode;
     }
 
-    /**
-     * Set platform
-     *
-     * @param string $platform
-     */
     public function setPlatform($platform)
     {
         $this->platform = $platform;
     }
 
-    /**
-     * Get platform
-     *
-     * @return string 
-     */
     public function getPlatform()
     {
         return $this->platform;
@@ -439,41 +315,21 @@ class Store
         $this->characteristic = json_encode($characteristic);
     }
 
-    /**
-     * Set socialNetworkIdentifiers
-     *
-     * @param string $socialNetworkIdentifiers
-     */
     public function setSocialNetworkIdentifiers($socialNetworkIdentifiers)
     {
         $this->socialNetworkIdentifiers = $socialNetworkIdentifiers;
     }
 
-    /**
-     * Get socialNetworkIdentifiers
-     *
-     * @return string 
-     */
     public function getSocialNetworkIdentifiers()
     {
         return $this->socialNetworkIdentifiers;
     }
-	
-	/**
-     * Set photo
-     *
-     * @param string $photo
-     */
+
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
@@ -484,7 +340,6 @@ class Store
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -494,16 +349,12 @@ class Store
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../../public/'.$this->getAssetPhotoPath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadPhoto() {
-        // the file property can be empty if the field is not required
         if (null === $this->photo) {
             return;
         }

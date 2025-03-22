@@ -6,119 +6,73 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Ausi\SlugGenerator\SlugGenerator;
 
-/**
- * App\Entity\Grimoire
- *
- * @ORM\Table(name="grimoire")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\GrimoireRepository")
- */
+#[ORM\Table(name: 'grimoire')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\GrimoireRepository')]
 class Grimoire
 {
 	use \App\Entity\GenericEntityTrait;
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-	 * @Assert\NotBlank(message="admin.error.NotBlank", groups={"grimoire_validation"})
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
+	#[Assert\NotBlank(message: 'admin.error.NotBlank', groups: ['grimoire_validation'])]
     private $title;
 
-    /**
-     * @var string $text
-     *
-     * @ORM\Column(name="text", type="text")
-	 * @Assert\NotBlank(message="admin.error.NotBlank", groups={"grimoire_validation"})
-     */
+	#[ORM\Column(name: 'text', type: 'text')]
+	#[Assert\NotBlank(message: 'admin.error.NotBlank', groups: ['grimoire_validation'])]
     private $text;
 
-    /**
-     * @var string $writingDate
-     *
-     * @ORM\Column(type="datetime")
-     */
+	#[ORM\Column(name: 'writingDate', type: 'datetime')]
     private $writingDate;
 
-    /**
-     * @var string $source
-     *
-     * @ORM\Column(name="source", type="text", nullable=true)
-	 * @Assert\NotBlank(message="admin.error.NotBlank", groups={"grimoire_validation"})
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
+	#[Assert\NotBlank(message: 'admin.error.NotBlank', groups: ['grimoire_validation'])]
     private $source;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(name="photo", type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(name: 'photo', type: 'string', length: 255, nullable: true)]
     private $photo;
 
-    /**
-     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-	 * @Assert\NotBlank(message="admin.error.NotBlank", groups={"grimoire_validation"})
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
+	#[Assert\NotBlank(message: 'admin.error.NotBlank', groups: ['grimoire_validation'])]
     private $language;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\SurThemeGrimoire")
-	 * @Assert\NotBlank(message="admin.error.NotBlank", groups={"grimoire_validation"})
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\SurThemeGrimoire')]
+	#[ORM\JoinColumn(name: 'surTheme_id')]
+	#[Assert\NotBlank(message: 'admin.error.NotBlank', groups: ['grimoire_validation'])]
     private $surTheme;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\State")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\State')]
     protected $state;
 
-    /**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
-	 * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=true)
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
+	#[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id', nullable: true)]
     protected $author;
 
-    /**
-     * @ORM\Column(name="isAnonymous", type="string", length=1, nullable=true)
-     */
+	#[ORM\Column(name: 'isAnonymous', type: 'string', length: 1, nullable: true)]
     protected $isAnonymous;
-	
-	/**
-     * @ORM\Column(name="pseudoUsed", type="string", length=255, nullable=true)
-     */
+
+	#[ORM\Column(name: 'pseudoUsed', type: 'string', length: 255, nullable: true)]
     protected $pseudoUsed;
 
-    /**
-     * @ORM\Column(name="archive", type="boolean", nullable=true)
-     */
+	#[ORM\Column(name: 'archive', type: 'boolean', nullable: true)]
     private $archive;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true, options={"default" : null})
-     */
+	#[ORM\Column(name: 'publicationDate', type: 'datetime', nullable: true, options: ["default" => null])]
     protected $publicationDate;
 
-    /**
-     * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
-     */
+	#[ORM\Column(name: 'socialNetworkIdentifiers', type: 'json', nullable: true)]
     private $socialNetworkIdentifiers;
 
-	/**
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 
 	public function __construct()
@@ -182,112 +136,57 @@ class Grimoire
 		}
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
 		$this->setSlug();
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set text
-     *
-     * @param text $text
-     */
     public function setText($text)
     {
         $this->text = $text;
     }
 
-    /**
-     * Get text
-     *
-     * @return text 
-     */
     public function getText()
     {
         return $this->text;
     }
 
-    /**
-     * Set writingDate
-     *
-     * @param string $writingDate
-     */
     public function setWritingDate($writingDate)
     {
         $this->writingDate = $writingDate;
     }
 
-    /**
-     * Get writingDate
-     *
-     * @return string 
-     */
     public function getWritingDate()
     {
         return $this->writingDate;
     }
 
-    /**
-     * Set source
-     *
-     * @param string $source
-     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
-    /**
-     * Get source
-     *
-     * @return string 
-     */
     public function getSource()
     {
         return $this->source;
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
@@ -298,7 +197,6 @@ class Grimoire
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -308,7 +206,6 @@ class Grimoire
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
@@ -342,141 +239,71 @@ class Grimoire
         $this->state = $state;
     }
 
-    /**
-     * Set author
-     *
-     * @param App\Entity\User $author
-     */
     public function setAuthor(User $author)
     {
         $this->author = $author;
     }
 
-    /**
-     * Get author
-     *
-     * @return App\Entity\User 
-     */
     public function getAuthor()
     {
         return $this->author;
     }
 
-    /**
-     * Set isAnonymous
-     *
-     * @param string $isAnonymous
-     */
     public function setIsAnonymous($isAnonymous)
     {
         $this->isAnonymous = $isAnonymous;
     }
 
-    /**
-     * Get isAnonymous
-     *
-     * @return string 
-     */
     public function getIsAnonymous()
     {
         return $this->isAnonymous;
     }
 
-    /**
-     * Set pseudoUsed
-     *
-     * @param string $pseudoUsed
-     */
     public function setPseudoUsed($pseudoUsed)
     {
         $this->pseudoUsed = $pseudoUsed;
     }
 
-    /**
-     * Get pseudoUsed
-     *
-     * @return string 
-     */
     public function getPseudoUsed()
     {
         return $this->pseudoUsed;
     }
 
-    /**
-     * Set archive
-     *
-     * @param boolean $archive
-     */
     public function setArchive($archive)
     {
         $this->archive = $archive;
     }
 
-    /**
-     * Get archive
-     *
-     * @return boolean 
-     */
     public function getArchive()
     {
         return $this->archive;
     }
 
-    /**
-     * Set publicationDate
-     *
-     * @param date $publicationDate
-     */
     public function setPublicationDate($publicationDate)
     {
         $this->publicationDate = $publicationDate;
     }
 
-    /**
-     * Get publicationDate
-     *
-     * @return date
-     */
     public function getPublicationDate()
     {
         return $this->publicationDate;
     }
 
-    /**
-     * Set illustration
-     *
-     * @param string $illustration
-     */
     public function setIllustration($illustration)
     {
         $this->illustration = $illustration;
     }
 
-    /**
-     * Get illustration
-     *
-     * @return string 
-     */
     public function getIllustration()
     {
         return $this->illustration;
     }
 
-    /**
-     * Set socialNetworkIdentifiers
-     *
-     * @param string $socialNetworkIdentifiers
-     */
     public function setSocialNetworkIdentifiers($socialNetworkIdentifiers)
     {
         $this->socialNetworkIdentifiers = $socialNetworkIdentifiers;
     }
 
-    /**
-     * Get socialNetworkIdentifiers
-     *
-     * @return string 
-     */
     public function getSocialNetworkIdentifiers()
     {
         return $this->socialNetworkIdentifiers;

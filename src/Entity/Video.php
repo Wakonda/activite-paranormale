@@ -5,55 +5,37 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * App\Entity\Video
- *
- * @ORM\Table(name="video")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\VideoRepository")
- */
+#[ORM\Table(name: 'video')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\VideoRepository')]
 class Video extends MappedSuperclassBase
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $platform
-     *
-     * @ORM\Column(name="platform", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'platform', type: 'string', length: 255, nullable: true)]
     private $platform;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(name: 'mediaVideo', type: 'string', length: 255, nullable: true)]
 	 private $mediaVideo;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
-	/** @ORM\Column(type="text", nullable=true) */
+	#[ORM\Column(name: 'embeddedCode', type: 'text', nullable: true)]
 	private $embeddedCode;
 
-	/** @ORM\Column(type="string", nullable=true) */
+	#[ORM\Column(type: 'text', nullable: true)]
 	protected $duration;
-	
-	/** @ORM\Column(type="boolean") */
+
+	#[ORM\Column(type: 'boolean')]
 	private $available;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Biography")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Biography')]
     protected $biography;
 
 	public function __construct()
@@ -106,58 +88,32 @@ class Video extends MappedSuperclassBase
 		return $dom->saveHTML();
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set platform
-     *
-     * @param string $platform
-     */
     public function setPlatform($platform)
     {
         $this->platform = $platform;
     }
 
-    /**
-     * Get platform
-     *
-     * @return string 
-     */
     public function getPlatform()
     {
         return $this->platform;
     }
 
-    /**
-     * Set mediaVideo
-     *
-     * @param string $mediaVideo
-     */
     public function setMediaVideo($mediaVideo)
     {
         $this->mediaVideo = $mediaVideo;
     }
 
-    /**
-     * Get mediaVideo
-     *
-     * @return string 
-     */
     public function getMediaVideo()
     {
         return $this->mediaVideo;
     }
 
     public function getUploadRootDirMediaVideo() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -167,16 +123,12 @@ class Video extends MappedSuperclassBase
 	}
 
     protected function getTmpUploadRootDirMediaVideo() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetVideoPath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadMediaVideo() {
-        // the file property can be empty if the field is not required
         if (null === $this->mediaVideo) {
             return;
         }
@@ -223,10 +175,8 @@ class Video extends MappedSuperclassBase
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadPhoto() {
         if (null === $this->photo) {
             return;
@@ -261,61 +211,31 @@ class Video extends MappedSuperclassBase
 		}
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
     }
 
-    /**
-     * Set duration
-     *
-     * @param string $duration
-     */
     public function setDuration($duration)
     {
         $this->duration = $duration;
     }
 
-    /**
-     * Get duration
-     *
-     * @return string 
-     */
     public function getDuration()
     {
         return $this->duration;
     }
 
-    /**
-     * Set embeddedCode
-     *
-     * @param text $embeddedCode
-     */
     public function setEmbeddedCode($embeddedCode)
     {
         $this->embeddedCode = preg_replace('/^<!DOCTYPE.+?>/', '', str_replace( array('<html>', '</html>', '<body>', '</body>'), array('', '', '', ''), $embeddedCode));
     }
 
-    /**
-     * Get embeddedCode
-     *
-     * @return text 
-     */
     public function getEmbeddedCode()
     {
         return $this->embeddedCode;

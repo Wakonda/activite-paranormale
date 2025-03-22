@@ -7,12 +7,8 @@ use App\Service\APPurifierHTML;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Ausi\SlugGenerator\SlugGenerator;
 
-/**
- * App\Entity\Biography
- *
- * @ORM\Table(name="biography")
- * @ORM\Entity(repositoryClass="App\Repository\BiographyRepository")
- */
+#[ORM\Table(name: 'biography')]
+#[ORM\Entity(repositoryClass: 'App\Repository\BiographyRepository')]
 class Biography implements Interfaces\PhotoIllustrationInterface
 {
 	use \App\Entity\GenericEntityTrait;
@@ -24,129 +20,70 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	const MALE_GENDER="male";
 	const FEMALE_GENDER="female";
 
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $title;
 
-    /**
-     * @var text $text
-     *
-     * @ORM\Column(name="text", type="text", nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'text', type: 'text', nullable: true)]
+	#[Groups('api_read')]
     private $text;
 
-    /**
-     * @var date $birthDate
-     *
-     * @ORM\Column(name="birthDate", type="string", length=12, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'birthDate', type: 'string', length:12, nullable: true)]
+	#[Groups('api_read')]
     private $birthDate;
 
-    /**
-     * @var date $deathDate
-     *
-     * @ORM\Column(name="deathDate", type="string", length=12, nullable=true)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'deathDate', type: 'string', length:12, nullable: true)]
+	#[Groups('api_read')]
     private $deathDate;
 
-    /**
-     * @var date $feastDay
-     *
-     * @ORM\Column(name="feastDay", type="string", length=12, nullable=true)
-     */
+	#[ORM\Column(name: 'feastDay', type: 'string', length:12, nullable: true)]
+	#[Groups('api_read')]
     private $feastDay;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
+	#[Groups('api_read')]
     protected $nationality;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-	/**
-	 * @var string $kind
-	 *
-	 * @ORM\Column(name="kind", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'kind', type: 'string', length: 255)]
 	 private $kind;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Document", mappedBy="authorDocumentBiographies")
-     */
+	#[ORM\ManyToMany(targetEntity: 'App\Entity\Document', mappedBy: 'authorDocumentBiographies')]
     private $documents;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Book", mappedBy="authors")
-     */
+	#[ORM\ManyToMany(targetEntity: 'App\Entity\Book', mappedBy: 'authors')]
     private $books;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	private $internationalName;
 
-    /**
-     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-    /**
-     * @var text $source
-     *
-     * @ORM\Column(name="source", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 
-    /**
-     * @var text $links
-     *
-     * @ORM\Column(name="links", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'links', type: 'text', nullable: true)]
     private $links;
 
-    /**
-     * @ORM\Column(name="identifiers", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'identifiers', type: 'text', nullable: true)]
     private $identifiers;
 
-	/**
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 
-    /**
-     * @ORM\Column(name="gender", type="string", length=100, nullable=true)
-     */
+	#[ORM\Column(name: 'gender', type: 'string', length: 100, nullable: true)]
     private $gender;
 
 	public function __toString()
@@ -154,9 +91,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 		return $this->title;
 	}
 
-	/**
-	 * @Groups("api_read")
-	 */
+	#[Groups('api_read')]
 	public function getImgBase64(): ?string
 	{
 		if(!empty($this->illustration) and file_exists($f = realpath($this->getTmpUploadRootDir().$this->illustration->getRealNameFile())))
@@ -231,53 +166,28 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	public function isFemale() {
 		return $this->gender == self::FEMALE_GENDER;
 	}
-	
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
 		$this->setSlug();
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set text
-     *
-     * @param text $text
-     */
     public function setText($text)
     {
         $this->text = $this->purifier($text);
     }
 
-    /**
-     * Get text
-     *
-     * @return text 
-     */
     public function getText()
     {
         return $this->text;
@@ -294,7 +204,6 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -304,85 +213,44 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-  /**
-    * Get documents
-    *
-    * @return Doctrine\Common\Collections\Collection
-    */
 	public function getDocuments()
 	{
 		return $this->documents;
 	}
 
-  /**
-    * Get books
-    *
-    * @return Doctrine\Common\Collections\Collection
-    */
 	public function getBooks()
 	{
 		return $this->books;
 	}
 
-    /**
-     * Set kind
-     *
-     * @param string $kind
-     */
     public function setKind($kind)
     {
         $this->kind = $kind;
     }
 
-    /**
-     * Get kind
-     *
-     * @return kind 
-     */
     public function getKind()
     {
         return $this->kind;
     }
 
-    /**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return internationalName 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;
     }
 
-    /**
-     * Set illustration
-     *
-     * @param string $illustration
-     */
     public function setIllustration($illustration)
     {
         $this->illustration = $illustration;
     }
 
-    /**
-     * Get illustration
-     *
-     * @return string 
-     */
     public function getIllustration()
     {
         return $this->illustration;
@@ -398,41 +266,21 @@ class Biography implements Interfaces\PhotoIllustrationInterface
         return $this->source;
     }
 
-    /**
-     * Set birthDate
-     *
-     * @param date $birthDate
-     */
     public function setBirthDate($birthDate)
     {
         $this->birthDate = $birthDate;
     }
 
-    /**
-     * Get birthDate
-     *
-     * @return date
-     */
     public function getBirthDate()
     {
         return $this->birthDate;
     }
 
-    /**
-     * Set deathDate
-     *
-     * @param date $deathDate
-     */
     public function setDeathDate($deathDate)
     {
         $this->deathDate = $deathDate;
     }
 
-    /**
-     * Get deathDate
-     *
-     * @return date
-     */
     public function getDeathDate()
     {
         return $this->deathDate;
@@ -468,21 +316,11 @@ class Biography implements Interfaces\PhotoIllustrationInterface
         return $this->wikidata;
     }
 
-    /**
-     * Set links
-     *
-     * @param String $links
-     */
     public function setLinks($links)
     {
         $this->links = $links;
     }
 
-    /**
-     * Get links
-     *
-     * @return String
-     */
     public function getLinks(): ?string
     {
 		if(empty(array_filter(array_column(!empty($d = json_decode($this->links, true)) ? $d : [], "url"))))

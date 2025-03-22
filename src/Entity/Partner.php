@@ -5,67 +5,39 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * App\Entity\Partner
- *
- * @ORM\Table(name="partner")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\PartnerRepository")
- */
+#[ORM\Table(name: 'partner')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\PartnerRepository')]
 class Partner
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @var string $link
-     *
-     * @ORM\Column(name="link", type="string", length=255)
-     */
+	#[ORM\Column(name: 'link', type: 'string', length: 255)]
     private $link;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-	/**
-	 * @ORM\Column(name="active", type="boolean")
-	 */
+	#[ORM\Column(name: 'active', type: 'boolean')]
 	private $active;
 
-	/**
-	 * @ORM\Column(type="string", length=20, nullable=true)
-	 */
+	#[ORM\Column(type: 'string', length: 20, nullable: true)]
 	private $color;
 
-	/**
-	 * @ORM\Column(type="string", length=50, nullable=true)
-	 */
+	#[ORM\Column(type: 'string', length: 50, nullable: true)]
 	private $icon;
 
-	/**
-	 * @ORM\Column(type="boolean", nullable=true)
-	 */
+	#[ORM\Column(name: 'displayPage', type: 'boolean', nullable: true)]
 	private $displayPage;
 
 	public function __construct()
@@ -94,71 +66,36 @@ class Partner
 		return ($luminance > 186) ? '#000000' : '#FFFFFF';
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set link
-     *
-     * @param string $link
-     */
     public function setLink($link)
     {
         $this->link = $link;
     }
 
-    /**
-     * Get link
-     *
-     * @return string 
-     */
     public function getLink()
     {
         return $this->link;
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
@@ -169,7 +106,6 @@ class Partner
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -179,16 +115,12 @@ class Partner
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadImagePart() {
-        // the file property can be empty if the field is not required
         if (null === $this->photo) {
             return;
         }

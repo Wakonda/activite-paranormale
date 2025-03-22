@@ -5,16 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\EventMessage;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="eventmessagetags")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'eventmessagetags')]
 class EventMessageTags extends Tags
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\EventMessage')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()
@@ -27,21 +23,11 @@ class EventMessageTags extends Tags
 		return 'EventMessageTags';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\EventMessage $entity
-     */
     public function setEntity(EventMessage $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\EventMessage
-     */
     public function getEntity()
     {
         return $this->entity;

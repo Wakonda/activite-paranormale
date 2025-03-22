@@ -10,6 +10,7 @@ use App\Entity\Stores\Store;
 use App\Form\Type\StoreSearchType;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Service\FunctionsLibrary;
+use Detection\MobileDetect;
 
 class StoreMobileController extends AbstractController
 {
@@ -38,7 +39,7 @@ class StoreMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+		if((new MobileDetect())->isMobile() or $functionsLibrary->isApplication())
 			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);

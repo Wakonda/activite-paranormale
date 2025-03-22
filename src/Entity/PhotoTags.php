@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="phototags")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'phototags')]
 class PhotoTags extends Tags
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Photo")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Photo')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()
@@ -26,21 +22,11 @@ class PhotoTags extends Tags
 		return 'PhotoTags';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Photo $entity
-     */
     public function setEntity(Photo $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Photo 
-     */
     public function getEntity()
     {
         return $this->entity;

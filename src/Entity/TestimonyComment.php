@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\TestimonyCommentRepository")
- * @ORM\Table(name="testimonycomment")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\TestimonyCommentRepository')]
+#[ORM\Table(name: 'testimonycomment')]
 class TestimonyComment extends Comment
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Testimony")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Testimony')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getEntityLinked()
@@ -31,21 +27,11 @@ class TestimonyComment extends Comment
 		return 'TestimonyComment';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Testimony $entity
-     */
     public function setEntity(Testimony $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Testimony 
-     */
     public function getEntity()
     {
         return $this->entity;

@@ -4,13 +4,9 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * App\Entity\MusicBiography
- *
- * @ORM\Table(name="music_biography")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\MusicBiographyRepository")
- */
+#[ORM\Table(name: 'music_biography')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\MusicBiographyRepository')]
 class MusicBiography extends EntityLinkBiography
 {
 	const VOCAL_OCCUPATION = "vocal";
@@ -20,10 +16,8 @@ class MusicBiography extends EntityLinkBiography
 	const KEYBOARD_OCCUPATION = "keyboard";
 	const VIOLIN_OCCUPATION = "violin";
 
-	/**
-	 * @ORM\ManyToOne(targetEntity="Music", inversedBy="musicBiographies")
-	 * @ORM\JoinColumn(name="music_id", referencedColumnName="id")
-	 */
+	#[ORM\ManyToOne(targetEntity: 'Music', inversedBy: 'musicBiographies')]
+	#[ORM\JoinColumn(name: 'music_id', referencedColumnName: 'id')]
 	private $music;
 	
 	public static function getOccupations(): Array {
@@ -37,21 +31,11 @@ class MusicBiography extends EntityLinkBiography
 		];
 	}
 
-    /**
-     * Set music
-     *
-     * @param string $music
-     */
     public function setMusic($music)
     {
         $this->music = $music;
     }
 
-    /**
-     * Get music
-     *
-     * @return string 
-     */
     public function getMusic()
     {
         return $this->music;

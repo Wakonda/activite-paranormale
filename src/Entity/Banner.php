@@ -5,72 +5,38 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * Banner
- *
- * @ORM\Table(name="banner")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\BannerRepository")
- */
+#[ORM\Table(name: 'banner')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\BannerRepository')]
 class Banner
 {
-    /**
-     * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
     private $title;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="link", type="string", length=255)
-	 * @Assert\Url()
-     */
+	#[ORM\Column(name: 'link', type: 'string', length: 255)]
+	#[Assert\Url]
     private $link;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $image;
 
-    /**
-     * @var boolean
-     *
-     * @ORM\Column(name="display", type="boolean")
-     */
+	#[ORM\Column(name: 'display', type: 'boolean')]
     private $display;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
@@ -78,22 +44,11 @@ class Banner
         return $this;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
-	
-	/**
-     * Set link
-     *
-     * @param string $link
-     * @return Banner
-     */
+
     public function setLink($link)
     {
         $this->link = $link;
@@ -101,22 +56,11 @@ class Banner
         return $this;
     }
 
-    /**
-     * Get link
-     *
-     * @return string 
-     */
     public function getLink()
     {
         return $this->link;
     }
 
-    /**
-     * Set image
-     *
-     * @param string $image
-     * @return Banner
-     */
     public function setImage($image)
     {
         $this->image = $image;
@@ -124,11 +68,6 @@ class Banner
         return $this;
     }
 
-    /**
-     * Get image
-     *
-     * @return string 
-     */
     public function getImage()
     {
         return $this->image;
@@ -141,7 +80,6 @@ class Banner
 
     public function getUploadRootDir()
 	{
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -152,16 +90,12 @@ class Banner
 
     public function getTmpUploadRootDir()
 	{
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadImage() {
-        // the file property can be empty if the field is not required
         if (null === $this->image) {
             return;
         }
@@ -195,12 +129,6 @@ class Banner
 		}
     }
 
-    /**
-     * Set display
-     *
-     * @param boolean $display
-     * @return Banner
-     */
     public function setDisplay($display)
     {
         $this->display = $display;
@@ -208,11 +136,6 @@ class Banner
         return $this;
     }
 
-    /**
-     * Get display
-     *
-     * @return boolean 
-     */
     public function getDisplay()
     {
         return $this->display;

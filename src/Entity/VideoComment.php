@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VideoCommentRepository")
- * @ORM\Table(name="videocomment")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\VideoCommentRepository')]
+#[ORM\Table(name: 'videocomment')]
 class VideoComment extends Comment
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Video")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Video')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getEntityLinked()
@@ -31,21 +27,11 @@ class VideoComment extends Comment
 		return 'VideoComment';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Video $entity
-     */
     public function setEntity(Video $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Video 
-     */
     public function getEntity()
     {
         return $this->entity;

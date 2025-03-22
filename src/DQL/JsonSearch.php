@@ -8,7 +8,7 @@ class JsonSearch extends FunctionNode
 {
     protected $parsedArguments = [];
 	
-    public function parse(\Doctrine\ORM\Query\Parser $parser)
+    public function parse(\Doctrine\ORM\Query\Parser $parser): void
     {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
@@ -40,7 +40,7 @@ class JsonSearch extends FunctionNode
     }
 
 
-    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
+    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker): string
     {
         return sprintf('JSON_SEARCH(%s, %s, %s, %s)',
             $sqlWalker->walkStringPrimary($this->parsedArguments[0]),

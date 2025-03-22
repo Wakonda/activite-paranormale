@@ -4,49 +4,33 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\AdvertisingRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\AdvertisingRepository')]
 class Advertising
 {
 	const FOLDER = "advertising";
 	const PATH_FILE = "photo/".self::FOLDER."/";
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+	#[ORM\Column(type: 'string', length: 255)]
     protected $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+	#[ORM\Column(type: 'text', nullable: true)]
     protected $text;
 	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
 	protected $language;
-	
-    /**
-     * @ORM\Column(type="integer")
-     */
+
+    #[ORM\Column(type: 'integer')]
     protected $width;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Column(type: 'integer')]
     protected $height;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     protected $active;
 
 	public function __construct() {

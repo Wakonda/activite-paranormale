@@ -4,77 +4,56 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * App\Entity\Comment
- *
- * @ORM\Table(name="comment")
- * @ORM\Entity(repositoryClass="App\Repository\CommentRepository")
- * @ORM\InheritanceType("JOINED")
- * @ORM\DiscriminatorColumn(name="discr", type="string")
- * @ORM\DiscriminatorMap({"news_comment" = "NewsComment", "video_comment" = "VideoComment", "photo_comment" = "PhotoComment", "grimoire_comment" = "GrimoireComment", "testimony_comment" = "TestimonyComment", "comment" = "Comment", "book_comment" = "BookComment", "witchcraft_tool_comment" = "WitchcraftToolComment", "event_message_comment" = "EventMessageComment", "cartography_comment" = "CartographyComment", "movie_comment" = "MovieComment", "document_comment" = "DocumentComment", "televisionserie_comment" = "TelevisionSerieComment"})
- */
+#[ORM\Table(name: 'comment')]
+#[ORM\Entity(repositoryClass: 'App\Repository\CommentRepository')]
+#[ORM\InheritanceType("JOINED")]
+#[ORM\DiscriminatorColumn(name: "discr", type: "string")]
+#[ORM\DiscriminatorMap([
+    "news_comment" => NewsComment::class,
+    "video_comment" => VideoComment::class,
+    "photo_comment" => PhotoComment::class,
+    "grimoire_comment" => GrimoireComment::class,
+    "testimony_comment" => TestimonyComment::class,
+    "comment" => Comment::class,
+    "book_comment" => BookComment::class,
+    "witchcraft_tool_comment" => WitchcraftToolComment::class,
+    "event_message_comment" => EventMessageComment::class,
+    "cartography_comment" => CartographyComment::class,
+    "movie_comment" => MovieComment::class,
+    "document_comment" => DocumentComment::class,
+    "televisionserie_comment" => TelevisionSerieComment::class
+])]
 class Comment
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var text $messageComment
-     *
-     * @ORM\Column(name="messageComment", type="text")
-     */
+	#[ORM\Column(name: 'messageComment', type: 'text')]
     private $messageComment;
 
-    /**
-     * @var string $emailComment
-     *
-     * @ORM\Column(name="emailComment", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'emailComment', type: 'string', length: 255, nullable: true)]
     private $emailComment;
 
-    /**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
+	#[ORM\JoinColumn(name: 'authorComment_id')]
     private $authorComment;
 
-    /**
-     * @var string $anonymousAuthorComment
-     *
-     * @ORM\Column(name="anonymousAuthorComment", type="string", length=255)
-     */
+	#[ORM\Column(name: 'anonymousAuthorComment', type: 'string', length: 255)]
     private $anonymousAuthorComment;
 
-    /**
-     * @var string $anonymousComment
-     *
-     * @ORM\Column(name="anonymousComment", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'anonymousComment', type: 'string', length: 255, nullable: true)]
     private $anonymousComment;
-	
-	/**
-     * @var datetime $dateComment
-     *
-     * @ORM\Column(name="dateComment", type="datetime")
-     */
+
+	#[ORM\Column(name: 'dateComment', type: 'datetime')]
     private $dateComment;
-	
-	/**
-	 * @var integer state
-	 *
-	 * @ORM\Column(name="state", type="integer", length=1, options={"default" = 0})
-	 *
-	 */
+
+	#[ORM\Column(name: 'state', type: 'integer', length: 1, options: ["default" => 0])]
 	private $state;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Comment")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Comment')]
+	#[ORM\JoinColumn(name: 'parentComment_id')]
     private $parentComment;
 
 	public static $approved = 1;
@@ -131,152 +110,77 @@ class Comment
 		$this->dateComment = new \DateTime();
 		$this->setNotChecked();
 	}
-	
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
+
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set messageComment
-     *
-     * @param text $messageComment
-     */
     public function setMessageComment($messageComment)
     {
         $this->messageComment = $messageComment;
     }
 
-    /**
-     * Get messageComment
-     *
-     * @return text 
-     */
     public function getMessageComment()
     {
         return $this->messageComment;
     }
 
-    /**
-     * Set emailComment
-     *
-     * @param string $emailComment
-     */
     public function setEmailComment($emailComment)
     {
         $this->emailComment = $emailComment;
     }
 
-    /**
-     * Get emailComment
-     *
-     * @return string 
-     */
     public function getEmailComment()
     {
         return $this->emailComment;
     }
 
-    /**
-     * Set authorComment
-     *
-     * @param string $authorComment
-     */
     public function setAuthorComment($authorComment)
     {
         $this->authorComment = $authorComment;
     }
 
-    /**
-     * Get authorComment
-     *
-     * @return string 
-     */
     public function getAuthorComment()
     {
         return $this->authorComment;
     }
 
-    /**
-     * Set anonymousAuthorComment
-     *
-     * @param string $anonymousAuthorComment
-     */
     public function setAnonymousAuthorComment($anonymousAuthorComment)
     {
         $this->anonymousAuthorComment = $anonymousAuthorComment;
     }
 
-    /**
-     * Get anonymousAuthorComment
-     *
-     * @return string 
-     */
     public function getAnonymousAuthorComment()
     {
         return $this->anonymousAuthorComment;
     }
 
-    /**
-     * Set anonymousComment
-     *
-     * @param string $anonymousComment
-     */
     public function setAnonymousComment($anonymousComment)
     {
         $this->anonymousComment = $anonymousComment;
     }
 
-    /**
-     * Get anonymousComment
-     *
-     * @return string 
-     */
     public function getAnonymousComment()
     {
         return $this->anonymousComment;
     }
-	
-    /**
-     * Set dateComment
-     *
-     * @param string $dateComment
-     */
+
     public function setDateComment($dateComment)
     {
         $this->dateComment = $dateComment;
     }
 
-    /**
-     * Get dateComment
-     *
-     * @return string 
-     */
     public function getDateComment()
     {
         return $this->dateComment;
     }
 
-    /**
-     * Set state
-     *
-     * param integer $state
-     */
     public function setState($state)
     {
         $this->state = $state;
     }
 
-    /**
-     * Get state
-     *
-     * return integer 
-     */
     public function getState()
     {
         return $this->state;

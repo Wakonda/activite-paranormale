@@ -10,7 +10,7 @@ class DatePartialTransformer implements DataTransformerInterface
         private bool $hasYear = true
     ) {}
 
-    public function transform($dateString)
+    public function transform(mixed $dateString): mixed
     {
 		$dateArray = explode("-", trim($dateString, "-"));
 
@@ -32,7 +32,7 @@ class DatePartialTransformer implements DataTransformerInterface
 		return $res;
     }
 
-    public function reverseTransform($dataPartialArray)
+    public function reverseTransform(mixed $dataPartialArray): mixed
     {
 		$month = $dataPartialArray["month"];
 		$day = $dataPartialArray["day"];

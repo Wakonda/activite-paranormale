@@ -10,14 +10,12 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 
 use App\Service\Canonicalizer;
+use App\Repository\AdminUserRepository;
 
-/**
- * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="ap_user")
- * @ORM\Entity(repositoryClass="App\Repository\AdminUserRepository")
- * @UniqueEntity(fields="username")
- */
- 
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Table(name: 'ap_user')]
+#[ORM\Entity(repositoryClass: AdminUserRepository::class)]
+#[UniqueEntity(fields: 'username')]
 class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 {
     const ROLE_ADMIN = "ROLE_ADMIN";
@@ -32,132 +30,76 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 	const ROLE_DISABLED = "ROLE_DISABLED";
 	const ROLE_DEFAULT = "ROLE_DEFAULT";
 
-	/**
-	 * @ORM\Id
-	 * @ORM\Column(type="integer")
-	 * @ORM\GeneratedValue(strategy="AUTO")
-	 */
-	 protected $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(type: 'integer')]
+	protected $id;
 
- 	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
+	#[ORM\Column(type: 'string', length: 255)]
     protected $username;
 
- 	/**
-	 * @ORM\Column(name="username_canonical", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'username_canonical', type: 'string', length: 255)]
     protected $usernameCanonical;
 
- 	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
+	#[ORM\Column(type: 'string', length: 255)]
     protected $email;
 
- 	/**
-	 * @ORM\Column(name="email_canonical", type="string", length=255)
-	 */
+	#[ORM\Column(name:'email_canonical', type: 'string', length: 255)]
     protected $emailCanonical;
 
- 	/**
-	 * @ORM\Column(type="boolean")
-	 */
+	#[ORM\Column(type: 'boolean')]
     protected $enabled;
 
- 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
+	#[ORM\Column(nullable: true, type: 'string', length: 255)]
     protected $salt;
 
- 	/**
-	 * @ORM\Column(type="string", length=255, nullable=true)
-	 */
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     protected $password;
 
-    /**
-     * @ORM\Column(name="last_login", type="datetime", length=255, nullable=true)
-     */
+	#[ORM\Column(name:'last_login', type: 'datetime', length: 255, nullable: true)]
     protected $lastLogin;
 
- 	/**
-	 * @ORM\Column(name="confirmation_token", type="string", length=255, nullable=true)
-	 */
+	#[ORM\Column(name:'confirmation_token', type: 'string', length: 255, nullable: true)]
     protected $confirmationToken;
 
-    /**
-     * @ORM\Column(name="password_requested_at", type="datetime", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'password_requested_at', type: 'datetime', length: 255, nullable: true)]
     protected $passwordRequestedAt;
 
- 	/**
-	 * @ORM\Column(type="array")
-	 */
+	#[ORM\Column(type: 'array')]
     protected $roles;
 
-    /**
-	 * @Assert\File(maxSize="6000000", groups={"test"})
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
 	 private $avatar;
-	 
-	/**
-	 * @ORM\Column(name="civility", type="string", length=255, nullable=true)
-     */
+
+	#[ORM\Column(name: 'civility', type: 'string', length: 255, nullable: true)]
     protected $civility;
 
-    /**
-     * @ORM\Column(name="inscriptionDate", type="datetime", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'inscriptionDate', type: 'datetime', length: 255, nullable: true)]
 	protected $inscriptionDate;
-	 
-	/**
-	  * @ORM\Column(name="birthDate", type="date", length=255, nullable=true)
-	  */
+
+	#[ORM\Column(name: 'birthDate', type: 'date', length: 255, nullable: true)]
 	protected $birthDate;
-	
- 	/**
-	  * var string $city
-	  *
-	  * @ORM\Column(name="city", type="string", length=255, nullable=true)
-	  */
+
+	#[ORM\Column(name:'city', type: 'string', length: 255, nullable: true)]
 	protected $city;
 
-	/**
-	  * var string $siteWeb
-	  *
-	  * @ORM\Column(name="siteWeb", type="string", length=255, nullable=true)
-	  */
+	#[ORM\Column(name:'siteWeb', type: 'string', length: 255, nullable: true)]
 	protected $siteWeb;
-	  
-	/**
-	  * var string $blog
-	  *
-	  * @ORM\Column(name="blog", type="string", length=255, nullable=true)
-	  */
+
+	#[ORM\Column(name:'blog', type: 'string', length: 255, nullable: true)]
 	protected $blog;
 
-	/**
-	  * var string $presentation
-	  *
-      * @ORM\Column(name="presentation", type="text", nullable=true)
-	  */
+	#[ORM\Column(name:'presentation', type: 'string', length: 255, nullable: true)]
 	protected $presentation;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
-     */
+
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $country;
 
-    /**
-     * @var text $donation
-     *
-     * @ORM\Column(name="donation", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'donation', type: 'text', nullable: true)]
     private $donation;
 
-    /**
-     * @ORM\Column(name="socialNetwork", type="text", nullable=true)
-     */
+	#[ORM\Column(name:'socialNetwork', type: 'text', nullable: true)]
     private $socialNetwork;
 
 	public function __construct()
@@ -167,9 +109,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 		$this->inscriptionDate = new \DateTime();
 	}
 
-    /**
-     * @return string
-     */
     public function __toString()
     {
         return (string) $this->getUsername();
@@ -244,7 +183,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -397,7 +336,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -407,16 +345,12 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadIconeLangue() {
-        // the file property can be empty if the field is not required
         if (null === $this->avatar) {
             return;
         }

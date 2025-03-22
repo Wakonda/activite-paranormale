@@ -16,6 +16,7 @@ use App\Entity\Language;
 use App\Entity\State;
 use App\Form\Type\GrimoireUserParticipationType;
 use App\Service\FunctionsLibrary;
+use Detection\MobileDetect;
 
 class WitchcraftMobileController extends AbstractController
 {
@@ -31,7 +32,7 @@ class WitchcraftMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+		if((new Mobile_etect())->isMobile() or $functionsLibrary->isApplication())
 			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);

@@ -5,6 +5,7 @@ namespace App\Service;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Detection\MobileDetect;
 
 class LocaleListener implements EventSubscriberInterface
 {
@@ -21,7 +22,7 @@ class LocaleListener implements EventSubscriberInterface
 
 		// V3
 		$session = $request->getSession();
-		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
+		if((new MobileDetect)->isTablet() or (new MobileDetect)->isMobile())
 			$session->set('v', "v3");
 		else {
 			if($request->query->has("v") and !empty($v = $request->query->get("v")))

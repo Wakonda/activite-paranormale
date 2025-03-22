@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\EventMessageCommentRepository")
- * @ORM\Table(name="eventmessagecomment")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\EventMessageCommentRepository')]
+#[ORM\Table(name: 'eventmessagecomment')]
 class EventMessageComment extends Comment
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\EventMessage')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getEntityLinked()
@@ -31,21 +27,11 @@ class EventMessageComment extends Comment
 		return 'EventMessageComment';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\EventMessage $entity
-     */
     public function setEntity(EventMessage $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\EventMessage 
-     */
     public function getEntity()
     {
         return $this->entity;

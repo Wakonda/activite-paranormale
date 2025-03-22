@@ -4,27 +4,19 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="quotationimage")
- * @ORM\Entity(repositoryClass="App\Repository\QuotationImageRepository")
- */
+#[ORM\Table(name: 'quotationimage')]
+#[ORM\Entity(repositoryClass: 'App\Repository\QuotationImageRepository')]
 class QuotationImage
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     protected $id;
 
-    /**
-    * @ORM\ManyToOne(targetEntity=Quotation::class, inversedBy="images")
-    */
+	#[ORM\ManyToOne(targetEntity: Quotation::class, inversedBy: 'images')]
     protected $quotation;
 
-    /**
-     * @ORM\Column(type="text", length=255, nullable=true)
-     */
+	#[ORM\Column(type: 'text', length: 255, nullable: true)]
     protected $image;
 
 	public function __construct(String $image = null)

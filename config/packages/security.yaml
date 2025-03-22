@@ -14,7 +14,7 @@ security:
         ROLE_SIMPLE: [ROLE_BANNED, ROLE_DISABLED]
 
     providers:
-        our_db_provider:
+        app_user_provider:
             entity:
                 class: App\Entity\User
                 property: username
@@ -27,7 +27,7 @@ security:
             user_checker: App\Security\UserChecker
             http_basic: ~
             entry_point: form_login
-            provider: our_db_provider
+            provider: app_user_provider
             form_login:
                 always_use_default_target_path: true
                 default_target_path : /profile/

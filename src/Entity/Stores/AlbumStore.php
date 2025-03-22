@@ -4,13 +4,9 @@ namespace App\Entity\Stores;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class AlbumStore extends Store {
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Album")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Album')]
     protected $album;
 
 	public function getAlbum()

@@ -10,17 +10,17 @@ use App\Filter\OrSearchFilter;
 
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * @ORM\Entity
- * @ApiResource(normalizationContext = {"groups" = {"api_book_read", "api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
- * @ApiFilter(SearchFilter::class, properties = {"book.book.theme.title" = "exact", "book.book.authors.title" = "exact", "book.book.language.abbreviation" = "exact"})
- * @ApiFilter(OrSearchFilter::class, properties={"title", "text", "book.book.authors.title", "book.book.theme.title"})
- */
+#[ORM\Entity]
+#[ApiResource(
+    normalizationContext: ['groups' => ['api_book_read', 'api_read']],
+    collectionOperations: ['GET'],
+    itemOperations: ['GET']
+)]
+#[ApiFilter(SearchFilter::class, properties: ['book.book.theme.title' => 'exact', 'book.book.authors.title' => 'exact', 'book.book.language.abbreviation' => 'exact'])]
+#[ApiFilter(OrSearchFilter::class, properties: ['title', 'text', 'book.book.authors.title', 'book.book.theme.title'])]
 class BookStore extends Store {
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\BookEdition")
-	 * @Groups("api_book_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\BookEdition')]
+	#[ORM\Groups('api_book_read')]
     protected $book;
 
 	public function getBook()

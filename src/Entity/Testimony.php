@@ -4,38 +4,22 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * App\Entity\Testimony
- *
- * @ORM\Table(name="testimony")
- * @ORM\Entity(repositoryClass="App\Repository\TestimonyRepository")
- */
+#[ORM\Table(name: 'testimony')]
+#[ORM\Entity(repositoryClass: 'App\Repository\TestimonyRepository')]
 class Testimony extends MappedSuperclassBase
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
-	
-    /**
-     * @var string $emailAuthor
-     *
-     * @ORM\Column(name="emailAuthor", type="string", length=255, nullable=true)
-     */
+
+	#[ORM\Column(name: 'emailAuthor', type: 'string', length: 255, nullable: true)]
     private $emailAuthor;
 
-    /**
-     * @ORM\Column(name="location", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'location', type: 'text', nullable: true)]
     private $location;
 
-    /**
-     * @ORM\Column(name="sightingDate", type="string", length=18, nullable=true)
-     */
+	#[ORM\Column(name: 'sightingDate', type: 'string', length: 18, nullable: true)]
     private $sightingDate;
 	
 	public function __construct()
@@ -95,11 +79,6 @@ class Testimony extends MappedSuperclassBase
 		return "extended/photo/testimony/";
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;

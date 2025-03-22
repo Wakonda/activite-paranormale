@@ -6,19 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Service\APPurifierHTML;
 use App\Entity\EntityLinkBiography;
 
-/**
- * App\Entity\MovieBiography
- *
- * @ORM\Table(name="movie_biography")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\MovieBiographyRepository")
- */
+#[ORM\Table(name: 'movie_biography')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\MovieBiographyRepository')]
 class MovieBiography extends EntityLinkBiography implements MediaInterface
 {
-	/**
-	 * @ORM\ManyToOne(targetEntity="Movie", inversedBy="movieBiographies")
-	 * @ORM\JoinColumn(name="movie_id", referencedColumnName="id")
-	 */
+	#[ORM\ManyToOne(targetEntity: 'Movie', inversedBy: 'movieBiographies')]
+	#[ORM\JoinColumn(name: 'movie_id', referencedColumnName: 'id')]
 	private $movie;
 
 	public static function getOccupations(): Array {
@@ -35,21 +29,11 @@ class MovieBiography extends EntityLinkBiography implements MediaInterface
 		];
 	}
 
-    /**
-     * Set movie
-     *
-     * @param string $movie
-     */
     public function setMovie($movie)
     {
         $this->movie = $movie;
     }
 
-    /**
-     * Get movie
-     *
-     * @return string 
-     */
     public function getMovie()
     {
         return $this->movie;

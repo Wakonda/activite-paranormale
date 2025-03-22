@@ -4,111 +4,64 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * App\Entity\Artist
- *
- * @ORM\Table(name="artist")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\ArtistRepository")
- */
+#[ORM\Table(name: 'artist')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\ArtistRepository')]
 class Artist
 {
 	use \App\Entity\GenericEntityTrait;
 
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
     private $title;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\MusicGenre")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\MusicGenre')]
     private $genre;
 
-    /**
-     * @var string $website
-     *
-     * @ORM\Column(name="website", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'website', type: 'string', length: 255, nullable: true)]
     private $website;
 
-    /**
-     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-    /**
-     * @var text $biography
-     *
-     * @ORM\Column(name="biography", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'biography', type: 'text', nullable: true)]
     private $biography;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	private $internationalName;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\ArtistBiography", mappedBy="artist", cascade={"persist"})
-     * @ORM\JoinTable(name="artist_biography",
-     *      joinColumns={@ORM\JoinColumn(name="artist_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_id", referencedColumnName="id", onDelete="cascade")}     
-     *      )
-	 */
+	#[ORM\OneToMany(targetEntity: ArtistBiography::class, mappedBy: "artist", cascade: ["persist"])]
+	#[ORM\JoinTable(
+		name: "artist_biography",
+		joinColumns: [new ORM\JoinColumn(name: "artist_id", referencedColumnName: "id", onDelete: "cascade")],
+		inverseJoinColumns: [new ORM\JoinColumn(name: "biography_id", referencedColumnName: "id", onDelete: "cascade")]
+	)]
 	private $artistBiographies;
 
-    /**
-     * @ORM\Column(name="source", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
-	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
-     */
+
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $country;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 
-    /**
-     * @ORM\Column(name="identifiers", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'identifiers', type: 'text', nullable: true)]
     private $identifiers;
 
-    /**
-     * @var text $socialNetwork
-     *
-     * @ORM\Column(name="socialNetwork", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'socialNetwork', type: 'text', nullable: true)]
     private $socialNetwork;
 
-	/**
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 	
 	public function __clone()
@@ -117,21 +70,11 @@ class Artist
 			$this->illustration = clone $this->illustration;
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
 		if(!empty($title))
@@ -140,11 +83,6 @@ class Artist
 		$this->setSlug();
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
@@ -168,61 +106,31 @@ class Artist
 		return !empty($this->slug) ? $this->slug : $this->title;
 	}
 
-    /**
-     * Set genre
-     *
-     * @param string $genre
-     */
     public function setGenre($genre)
     {
         $this->genre = $genre;
     }
 
-    /**
-     * Get genre
-     *
-     * @return string 
-     */
     public function getGenre()
     {
         return $this->genre;
     }
 
-    /**
-     * Set website
-     *
-     * @param string $website
-     */
     public function setWebsite($website)
     {
         $this->website = $website;
     }
 
-    /**
-     * Get website
-     *
-     * @return string 
-     */
     public function getWebsite()
     {
         return $this->website;
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
@@ -245,21 +153,11 @@ class Artist
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * Set biography
-     *
-     * @param text $biography
-     */
     public function setBiography($biography)
     {
         $this->biography = $biography;
     }
 
-    /**
-     * Get biography
-     *
-     * @return text 
-     */
     public function getBiography()
     {
         return $this->biography;
@@ -275,57 +173,31 @@ class Artist
         $this->language = $language;
     }
 
-    /**
-     * @param string $illustration
-     */
     public function setIllustration($illustration)
     {
         $this->illustration = $illustration;
     }
 
-    /**
-     * @return string 
-     */
     public function getIllustration()
     {
         return $this->illustration;
     }
 
-    /**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return internationalName 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;
     }
 
-    /**
-     * Set source
-     *
-     * @param string $source
-     */
     public function setSource($source)
     {
         $this->source = $source;
     }
 
-    /**
-     * Get source
-     *
-     * @return string 
-     */
     public function getSource()
     {
         return $this->source;
@@ -351,41 +223,21 @@ class Artist
 		$this->country = $country;
 	}
 
-    /**
-     * Set wikidata
-     *
-     * @param String $wikidata
-     */
     public function setWikidata($wikidata)
     {
         $this->wikidata = $wikidata;
     }
 
-    /**
-     * Get wikidata
-     *
-     * @return String
-     */
     public function getWikidata()
     {
         return $this->wikidata;
     }
 
-    /**
-     * Set identifiers
-     *
-     * @param string $identifiers
-     */
     public function setIdentifiers($identifiers)
     {
         $this->identifiers = $identifiers;
     }
 
-    /**
-     * Get identifiers
-     *
-     * @return string 
-     */
     public function getIdentifiers()
     {
         return $this->identifiers;

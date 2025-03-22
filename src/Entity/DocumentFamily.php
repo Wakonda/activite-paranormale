@@ -7,37 +7,27 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * App\Entity\DocumentFamily
  *
- * @ORM\Table(name="documentfamily")
- * @ORM\Entity(repositoryClass="App\Repository\DocumentFamilyRepository")
+#[ORM\Table(name: 'documentfamily")
+#[ORM\Entity(repositoryClass: 'App\Repository\DocumentFamilyRepository")
  */
 class DocumentFamily
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
      */
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
     private $title;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	 private $internationalName;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
     /**

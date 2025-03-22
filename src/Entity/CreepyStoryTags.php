@@ -4,16 +4,12 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="creepystorytags")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'creepystorytags')]
 class CreepyStoryTags extends Tags
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\CreepyStory")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\CreepyStory')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()
@@ -26,21 +22,11 @@ class CreepyStoryTags extends Tags
 		return 'CreepyStoryTags';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\CreepyStory $entity
-     */
     public function setEntity(CreepyStory $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\CreepyStory
-     */
     public function getEntity()
     {
         return $this->entity;

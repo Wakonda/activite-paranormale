@@ -5,13 +5,9 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * App\Entity\EventMessage
- *
- * @ORM\Table(name="eventmessage")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\EventMessageRepository")
- */
+#[ORM\Table(name: 'eventmessage')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\EventMessageRepository')]
 class EventMessage extends MappedSuperclassBase
 {
 	const BIRTH_DATE_TYPE = "birthDate";
@@ -22,119 +18,69 @@ class EventMessage extends MappedSuperclassBase
 	const SAINT_TYPE = "saint";
 	const HOROSCOPE_TYPE = "horoscope";
 	const FESTIVAL_TYPE = "festival";
-    
-	/**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
+	#[ORM\Column(name: 'abstractText', type: 'text', nullable: true)]
 	protected $abstractText;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $thumbnail;
 
-    /**
-	 * @deprecated
-     * @ORM\Column(type="string", length=12, nullable=true)
-     */
+	#[ORM\Column(name: 'dateFrom', type: 'string', length: 12, nullable: true)]
     protected $dateFrom;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+	#[ORM\Column(name: 'dayFrom', type: 'integer', nullable: true)]
     protected $dayFrom;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+	#[ORM\Column(name: 'monthFrom', type: 'integer', nullable: true)]
     protected $monthFrom;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+	#[ORM\Column(name: 'yearFrom', type: 'integer', nullable: true)]
     protected $yearFrom;
 
-    /**
-	 * @deprecated
-     * @ORM\Column(type="string", length=12, nullable=true)
-     */
+	#[ORM\Column(name: 'dateTo', type: 'string', length: 12, nullable: true)]
     protected $dateTo;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+	#[ORM\Column(name: 'dayTo', type: 'integer', nullable: true)]
     protected $dayTo;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+	#[ORM\Column(name: 'monthTo', type: 'integer', nullable: true)]
     protected $monthTo;
 
-    /**
-     * @ORM\Column(type="integer", nullable=true)
-     */
+	#[ORM\Column(name: 'yearTo', type: 'integer', nullable: true)]
     protected $yearTo;
 
 	// Longitude
-    /**
-     * @var string $longitude
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
+	#[ORM\Column(type: 'string', nullable: true)]
 	private $longitude;
 
 	// Latitude
-    /**
-     * @var string $latitude
-     *
-     * @ORM\Column(type="string", nullable=true)
-     */
+	#[ORM\Column(type: 'string', nullable: true)]
 	 private $latitude;
 
-    /**
-     * @ORM\OneToOne(targetEntity="FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-	/**
-	 * @ORM\Column(type="string", length=100)
-	 */
+	#[ORM\Column(type: 'string', length: 100)]
 	protected $type;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	private $internationalName;
 	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $country;
 	
 	public function __construct()
@@ -182,38 +128,22 @@ class EventMessage extends MappedSuperclassBase
 		return (empty($this->yearFrom) and empty($this->yearTo));
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
-	
-	/**
-     * Set photo
-     *
-     * @param string $photo
-     */
+
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -223,16 +153,12 @@ class EventMessage extends MappedSuperclassBase
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadFilePhoto() {
-        // the file property can be empty if the field is not required
         if (null === $this->photo) {
             return;
         }
@@ -265,33 +191,20 @@ class EventMessage extends MappedSuperclassBase
 			$this->setPhoto($filename);
 		}
     }
-	
-	/**
-     * Set thumbnail
-     *
-     * @param string $thumbnail
-     */
+
     public function setThumbnail($thumbnail)
     {
         $this->thumbnail = $thumbnail;
     }
 
-    /**
-     * Get thumbnail
-     *
-     * @return string 
-     */
     public function getThumbnail()
     {
         return $this->thumbnail;
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadFileThumbnail() {
-        // the file property can be empty if the field is not required
         if (null === $this->thumbnail) {
             return;
         }
@@ -324,82 +237,42 @@ class EventMessage extends MappedSuperclassBase
 			$this->setThumbnail($filename);
 		}
     }
-    /**
-     * Set dateFrom
-     *
-     * @param datetime $dateFrom
-     */
+
     public function setDateFrom($dateFrom)
     {
         $this->dateFrom = $dateFrom;
     }
 
-
-    /**
-     * Get dateFrom
-     *
-     * @return date
-     */
     public function getDateFrom()
     {
         return $this->dateFrom;
     }
 
-    /**
-     * Set dateTo
-     *
-     * @param datetime $dateTo
-     */
     public function setDateTo($dateTo)
     {
         $this->dateTo = $dateTo;
     }
 
-    /**
-     * Get dateTo
-     *
-     * @return date
-     */
     public function getDateTo()
     {
         return $this->dateTo;
     }
 
-    /**
-     * Set longitude
-     *
-     * @param decimal $longitude
-     */
     public function setLongitude($longitude)
     {
         $this->longitude = $longitude;
     }
 
-    /**
-     * Get longitude
-     *
-     * @return longitude
-     */
     public function getLongitude()
     {
         return $this->longitude;
     }
 
-    /**
-     * Set latitude
-     *
-     * @param decimal $latitude
-     */
     public function setLatitude($latitude)
     {
         $this->latitude = $latitude;
     }
 
-    /**
-     * Get latitude
-     *
-     * @return latitude
-     */
     public function getLatitude()
     {
         return $this->latitude;
@@ -415,21 +288,11 @@ class EventMessage extends MappedSuperclassBase
         return $this->abstractText;
     }
 
-    /**
-     * Set illustration
-     *
-     * @param string $illustration
-     */
     public function setIllustration($illustration)
     {
         $this->illustration = $illustration;
     }
 
-    /**
-     * Get illustration
-     *
-     * @return string 
-     */
     public function getIllustration()
     {
         return $this->illustration;
@@ -505,41 +368,21 @@ class EventMessage extends MappedSuperclassBase
         return $this->type;
     }
 
-    /**
-     * Set wikidata
-     *
-     * @param String $wikidata
-     */
     public function setWikidata($wikidata)
     {
         $this->wikidata = $wikidata;
     }
 
-    /**
-     * Get wikidata
-     *
-     * @return String
-     */
     public function getWikidata()
     {
         return $this->wikidata;
     }
 
-    /**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return internationalName 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;

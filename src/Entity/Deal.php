@@ -6,59 +6,33 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * App\Entity\Deal
- *
- * @ORM\Table(name="deal")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\DealRepository")
- */
+#[ORM\Table(name: 'deal')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\DealRepository')]
 class Deal
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var text $title
-     *
-     * @ORM\Column(name="title", type="string", nullable=true)
-     */
+	#[ORM\Column(name: 'title', type: 'string', nullable: true)]
     private $title;
 
-    /**
-     * @var text $text
-     *
-     * @ORM\Column(name="text", type="text")
-     */
+	#[ORM\Column(name: 'text', type: 'text')]
     private $text;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-    /**
-     * @var text $link
-     *
-     * @ORM\Column(name="link", type="string", nullable=true)
-     */
+	#[ORM\Column(name: 'link', type: 'string', nullable: true)]
     private $link;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: 'boolean')]
     protected $active;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
 	public function __construct() {
@@ -82,10 +56,8 @@ class Deal
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadPhoto() {
         if (null === $this->photo)
             return;

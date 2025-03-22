@@ -8,12 +8,12 @@ class EncryptType extends StringType
 {
 	const ENCRYPT_TYPE = "encrypt";
 
-    public function convertToPHPValue($value, AbstractPlatform $platform)
+    public function convertToPHPValue($value, AbstractPlatform $platform): mixed
     {
         return openssl_decrypt($value, 'aes-128-ecb', $_ENV["DB_DECRYPT_KEY"]);
     }
 
-    public function convertToDatabaseValue($value, AbstractPlatform $platform)
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return openssl_encrypt($value, 'aes-128-ecb', $_ENV["DB_DECRYPT_KEY"]);
     }

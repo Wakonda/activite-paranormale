@@ -5,12 +5,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * App\Entity\Quotation
- *
- * @ORM\Table(name="quotation")
- * @ORM\Entity(repositoryClass="App\Repository\QuotationRepository")
- */
+#[ORM\Table(name: 'quotation')]
+#[ORM\Entity(repositoryClass: 'App\Repository\QuotationRepository')]
 class Quotation
 {
 	const QUOTATION_FAMILY = "quotation";
@@ -19,81 +15,46 @@ class Quotation
 	const HUMOR_FAMILY = "humor";
 	const SAYING_FAMILY = "saying";
 
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Biography")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Biography')]
+	#[ORM\JoinColumn(name: 'authorQuotation_id')]
     private $authorQuotation;
 
-    /**
-     * @var text $title
-     *
-     * @ORM\Column(name="title", type="string", nullable=true)
-     */
+	#[ORM\Column(name: 'title', type: 'string', nullable: true)]
     private $title;
 
-    /**
-     * @var text $textQuotation
-     *
-     * @ORM\Column(name="textQuotation", type="text")
-     */
+	#[ORM\Column(name: 'textQuotation', type: 'text')]
     private $textQuotation;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-	/**
-	 * @ORM\Column(name="source", type="text", nullable=true)
-	 *
-	 */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
 	private $source;
-	
-	/**
-	 * @ORM\Column(name="explanation", type="text", nullable=true)
-	 *
-	 */
+
+	#[ORM\Column(name: 'explanation', type: 'text', nullable: true)]
 	private $explanation;
 
-    /**
-     * @ORM\OneToMany(targetEntity=QuotationImage::class, cascade={"persist", "remove"}, mappedBy="quotation", orphanRemoval=true)
-     */
+	#[ORM\OneToMany(targetEntity: QuotationImage::class, cascade: ['persist', 'remove'], mappedBy: 'quotation', orphanRemoval: true)]
     protected $images;
 
-    /**
-     * @var string $tags
-     *
-     * @ORM\Column(name="tags", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'tags', type: 'text', nullable: true)]
     private $tags;
 
-    /**
-     * @ORM\Column(name="identifier", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'identifier', type: 'text', nullable: true)]
     private $identifier;
 
-	/**
-	 * @ORM\Column(type="string", nullable=true) 
-	 */
+	#[ORM\Column(type: 'string', length: 255)]
 	protected $family;
 
-	/**
-	 * @ORM\Column(type="string", nullable=true) 
-	 */
+	#[ORM\Column(type: 'string', length: 255)]
 	protected $date;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $country;
 
 	public function __construct()
@@ -148,12 +109,7 @@ class Quotation
 	{
 		return get_called_class();
 	}
-	
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
+
     public function getId()
     {
         return $this->id;
@@ -169,21 +125,11 @@ class Quotation
         return $this->authorQuotation;
     }
 
-    /**
-     * Set textQuotation
-     *
-     * @param text $textQuotation
-     */
     public function setTextQuotation($textQuotation)
     {
         $this->textQuotation = $textQuotation;
     }
 
-    /**
-     * Get textQuotation
-     *
-     * @return text 
-     */
     public function getTextQuotation()
     {
         return html_entity_decode($this->textQuotation, ENT_QUOTES);

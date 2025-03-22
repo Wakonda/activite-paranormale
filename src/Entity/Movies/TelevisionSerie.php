@@ -8,71 +8,42 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Region;
 use App\Entity\FileManagement;
 
-/**
- * App\Entity\TelevisionSerie
- *
- * @ORM\Table(name="televisionserie")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\TelevisionSerieRepository")
- */
+#[ORM\Table(name: 'televisionserie')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\TelevisionSerieRepository')]
 class TelevisionSerie extends MappedSuperclassBase
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
+	#[ORM\Column(type: 'text', nullable: true)]
 	protected $introduction;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\FileManagement", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="illustration_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+	#[ORM\OneToOne(targetEntity: 'App\Entity\FileManagement', cascade: ['persist', 'remove'])]
+	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Movies\GenreAudiovisual")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Movies\GenreAudiovisual')]
     protected $genre;
 	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Region")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $country;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\Movies\TelevisionSerieBiography", mappedBy="televisionSerie", cascade={"persist"})
-     * @ORM\JoinTable(name="televisionserie_biography",
-     *      joinColumns={@ORM\JoinColumn(name="televisionSerie_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_id", referencedColumnName="id", onDelete="cascade")}     
-     *      )
-	 */
+	#[ORM\OneToMany(targetEntity: TelevisionSerieBiography::class, mappedBy: 'televisionSerie', cascade: ['persist'])]
+	#[ORM\JoinTable(name: 'televisionserie_biography', joinColumns: [new ORM\JoinColumn(name: 'televisionSerie_id',	referencedColumnName: 'id',	onDelete: 'cascade')],
+		inverseJoinColumns: [new ORM\JoinColumn(name: 'biography_id', referencedColumnName: 'id', onDelete: 'cascade')]
+	)]
 	private $televisionSerieBiographies;
 
-	/**
-	 * @var string $internationalName
-	 *
-	 * @ORM\Column(name="internationalName", type="string", length=255)
-	 */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
 	private $internationalName;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 
-    /**
-     * @ORM\Column(name="identifiers", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'identifiers', type: 'text', nullable: true)]
     private $identifiers;
 
 	public function __construct()
@@ -90,11 +61,6 @@ class TelevisionSerie extends MappedSuperclassBase
 		return "TelevisionSerie_Show";
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
@@ -119,21 +85,11 @@ class TelevisionSerie extends MappedSuperclassBase
 			$this->illustration = clone $this->illustration;
 	}
 
-    /**
-     * Set illustration
-     *
-     * @param string $illustration
-     */
     public function setIllustration($illustration)
     {
         $this->illustration = $illustration;
     }
 
-    /**
-     * Get illustration
-     *
-     * @return string 
-     */
     public function getIllustration()
     {
         return $this->illustration;
@@ -169,61 +125,31 @@ class TelevisionSerie extends MappedSuperclassBase
 		$this->televisionSerieBiographies = $televisionSerieBiographies;
 	}
 
-    /**
-     * Set introduction
-     *
-     * @param string $introduction
-     */
     public function setIntroduction($introduction)
     {
         $this->introduction = $introduction;
     }
 
-    /**
-     * Get introduction
-     *
-     * @return string 
-     */
     public function getIntroduction()
     {
         return $this->introduction;
     }
 
-    /**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return internationalName 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;
     }
 
-    /**
-     * Set wikidata
-     *
-     * @param String $wikidata
-     */
     public function setWikidata($wikidata)
     {
         $this->wikidata = $wikidata;
     }
 
-    /**
-     * Get wikidata
-     *
-     * @return String
-     */
     public function getWikidata()
     {
         return $this->wikidata;

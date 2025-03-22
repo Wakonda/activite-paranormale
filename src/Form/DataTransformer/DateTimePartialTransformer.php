@@ -6,7 +6,7 @@ use Symfony\Component\Form\DataTransformerInterface;
 
 class DateTimePartialTransformer implements DataTransformerInterface
 {
-    public function transform($dateString)
+    public function transform(mixed $dateString): mixed
     {
 		$timeArray = [];
 		$dateTimeArray = explode(" ", $dateString);
@@ -24,7 +24,7 @@ class DateTimePartialTransformer implements DataTransformerInterface
 		];
     }
 
-    public function reverseTransform($dataPartialArray)
+    public function reverseTransform(mixed $dataPartialArray): mixed
     {
 		$month = $dataPartialArray["month"];
 		$day = $dataPartialArray["day"];

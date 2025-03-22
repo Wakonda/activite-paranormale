@@ -6,13 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Doctrine\ORM\EntityManagerInterface;
+use Detection\MobileDetect;
 
 class IndexController extends AbstractController
 {
     public function indexAction(Request $request)
     {
 		$session = $request->getSession();
-		if((new \Mobile_Detect)->isTablet() or (new \Mobile_Detect)->isMobile())
+		if((new MobileDetect())->isTablet() or (new MobileDetect())->isMobile())
 			$session->set('v', "v3");
 		else {
 			if($request->query->has("v") and !empty($v = $request->query->get("v")))

@@ -6,143 +6,74 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * App\Entity\Language
- *
- * @ORM\Table(name="language")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\LanguageRepository")
- */
+#[ORM\Table(name: 'language')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\LanguageRepository')]
 class Language
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[ORM\Column(name: 'id', type: 'integer')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $title;
 
-    /**
-     * @var string $abbreviation
-     *
-     * @ORM\Column(name="abbreviation", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'abbreviation', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $abbreviation;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(nullable: true, type: 'string', length: 255)]
     private $logo;
 
-	/**
-	 * @ORM\Column(name="direction", type="string", length=3)
-	 *
-	 */
+	#[ORM\Column(name: 'direction', type: 'string', length: 3)]
 	private $direction;
 
-	/**
-	 * @ORM\Column(name="current", type="boolean")
-	 *
-	 */
+	#[ORM\Column(name: 'current', type: 'boolean')]
 	private $current;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set abbreviation
-     *
-     * @param string $abbreviation
-     */
     public function setAbbreviation($abbreviation)
     {
         $this->abbreviation = $abbreviation;
     }
 
-    /**
-     * Get abbreviation
-     *
-     * @return string 
-     */
     public function getAbbreviation()
     {
         return $this->abbreviation;
     }
 
-    /**
-     * Set logo
-     *
-     * @param string $logo
-     */
     public function setLogo($logo)
     {
         $this->logo = $logo;
     }
 
-    /**
-     * Get logo
-     *
-     * @return string 
-     */
     public function getLogo()
     {
         return $this->logo;
     }
-	
-	/**
-	 * Set direction
-	 *
-	 * @param string $direction
-	 */
+
 	public function setDirection($direction)
 	{
 		$this->direction = $direction;
 	}
-	
-	/**
-	 * Get direction
-	 *
-	 * @return string
-	 */
+
 	public function getDirection()
 	{
 		return $this->direction;
@@ -153,7 +84,6 @@ class Language
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -163,16 +93,12 @@ class Language
 	}
 	
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadIconeLangue() {
-        // the file property can be empty if the field is not required
         if (null === $this->logo) {
             return;
         }

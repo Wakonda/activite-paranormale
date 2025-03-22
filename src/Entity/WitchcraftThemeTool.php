@@ -8,44 +8,42 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * App\Entity\WitchcraftThemeTool
  *
- * @ORM\Table(name="witchcraftthemetool")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\WitchcraftThemeToolRepository")
+#[ORM\Table(name: 'witchcraftthemetool")
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\WitchcraftThemeToolRepository")
  */
 class WitchcraftThemeTool
 {
     /**
      * @var integer $id
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
      */
     private $id;
 
     /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255)
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255)]
      */
     private $photo;
 	
     /**
      * @var string $title
      *
-     * @ORM\Column(type="string", length=255)
+	#[ORM\Column(type: 'string', length: 255)]
      */
     private $title;
 
     /**
      * @var string $internationalName
      *
-     * @ORM\Column(name="internationalName", type="string", length=255)
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
      */
     private $internationalName;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
     /**
@@ -98,8 +96,8 @@ class WitchcraftThemeTool
     }
 
     /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
      */
     public function uploadPhoto() {
         // the file property can be empty if the field is not required

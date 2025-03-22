@@ -5,96 +5,63 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * App\Entity\Music
- *
- * @ORM\Table(name="music")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\MusicRepository")
- */
+#[ORM\Table(name: 'music')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\MusicRepository')]
 class Music
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-	 * @Assert\File(maxSize="5M")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '5M')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $musicPieceFile;
 
-    /**
-     * @var string $musicPiece
-     *
-     * @ORM\Column(name="musicPiece", type="string", length=255)
-     */
+	#[ORM\Column(name: 'musicPiece', type: 'string', length: 255)]
     private $musicPiece;
 
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 */
+	#[ORM\Column(type: 'text', nullable: true)]
 	protected $text;
 
-    /**
-     * @var string $length
-     *
-     * @ORM\Column(name="length", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'length', type: 'string', length: 255, nullable: true)]
     private $length;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Album")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Album')]
     private $album;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Artist")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Artist')]
     private $artist;
 
-	/** @ORM\Column(type="text", nullable=true) */
+	#[ORM\Column(name: 'embeddedCode', type: 'text', nullable: true)]
 	private $embeddedCode;
 
-    /**
-     * @ORM\Column(name="source", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 
-    /**
-     * @ORM\Column(name="identifiers", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'identifiers', type: 'text', nullable: true)]
     private $identifiers;
 
-	/**
-	 * @ORM\OneToMany(targetEntity="App\Entity\MusicBiography", mappedBy="music", cascade={"persist"})
-     * @ORM\JoinTable(name="music_biography",
-     *      joinColumns={@ORM\JoinColumn(name="music_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_id", referencedColumnName="id", onDelete="cascade")}     
-     *      )
-	 */
+	#[ORM\OneToMany(targetEntity: "App\Entity\MusicBiography", mappedBy: "music", cascade: ["persist"])]
+	#[ORM\JoinTable(
+		name: "music_biography",
+		joinColumns: [
+			new ORM\JoinColumn(name: "music_id", referencedColumnName: "id", onDelete: "cascade")
+		],
+		inverseJoinColumns: [
+			new ORM\JoinColumn(name: "biography_id", referencedColumnName: "id", onDelete: "cascade")
+		]
+	)]
 	private $musicBiographies;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\EventMessage")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\EventMessage')]
     private $event;
 
-	/**
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 	
 	public function getTitle(): string {
@@ -133,21 +100,11 @@ class Music
 		return get_called_class();
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set musicPieceFile
-     *
-     * @param string $musicPieceFile
-     */
     public function setMusicPiece($musicPiece)
     {
 		if(!empty($musicPiece))
@@ -189,7 +146,6 @@ class Music
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -199,17 +155,12 @@ class Music
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetMusicPath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadMpMusicPiece() {
-
-        // the file property can be empty if the field is not required
         if (null === $this->musicPieceFile) {
             return;
         }

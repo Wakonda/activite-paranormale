@@ -5,13 +5,10 @@ namespace App\Entity\Stores;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\WitchcraftTool;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class WitchcraftToolStore extends Store {
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\WitchcraftTool")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\WitchcraftTool')]
+	#[ORM\JoinColumn(name: 'witchcraftTool_id')]
     protected $witchcraftTool;
 
 	public function getWitchcraftTool()

@@ -8,94 +8,62 @@ use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Component\Serializer\Annotation\Groups;
 use App\Entity\Interfaces\SearchEngineInterface;
 
-/** @ORM\MappedSuperclass */
+#[ORM\MappedSuperclass]
 class MappedSuperclassBase implements SearchEngineInterface
 {
 	use \App\Entity\GenericEntityTrait;
 
-	/**
-	 * @ORM\Column(type="string", nullable=true) 
-	 */
+	#[ORM\Column(type: 'string', length: 255)]
 	protected $title;
 
-	/**
-	 * @ORM\Column(type="text", nullable=true)
-	 * @Groups("api_read")
-	 */
+	#[ORM\Column(type: 'text', nullable: true)]
+	#[Groups('api_read')]
 	protected $text;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\State")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\State')]
     protected $state;
 	
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Licence")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Licence')]
     protected $licence;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
+	#[Groups('api_read')]
     protected $language;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Theme")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Theme')]
+	#[Groups('api_read')]
     protected $theme;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+	#[ORM\Column(name: 'writingDate', type: 'datetime')]
     protected $writingDate;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+	#[ORM\Column(name: 'publicationDate', type: 'datetime')]
     protected $publicationDate;
 
-    /**
-	 * @ORM\ManyToOne(targetEntity="App\Entity\User")
-	 * @ORM\JoinColumn(name="author_id", referencedColumnName="id", nullable=true)
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
+	#[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id', nullable: true)]
     protected $author;
 
-    /**
-     * @ORM\Column(name="isAnonymous", type="string", length=1, nullable=true)
-     */
+	#[ORM\Column(name: 'isAnonymous', type: 'string', length: 1, nullable: true)]
     protected $isAnonymous;
-	
-	/**
-     * @ORM\Column(name="pseudoUsed", type="string", length=255, nullable=true)
-     */
+
+	#[ORM\Column(name: 'pseudoUsed', type: 'string', length: 255, nullable: true)]
     protected $pseudoUsed;
 
-	/**
-     * @ORM\Column(name="slug", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 
-    /**
-    * @ORM\OneToOne(targetEntity=History::class, cascade={"remove"})
-    * @ORM\JoinColumn(name="history_id", referencedColumnName="id", onDelete="SET NULL")
-    */
+	#[ORM\OneToOne(targetEntity: History::class, cascade: ['remove'])]
+	#[ORM\JoinColumn(name: 'history_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     protected $history;
 
-    /**
-     * @ORM\Column(name="source", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
 
-    /**
-     * @ORM\Column(name="archive", type="boolean", nullable=true)
-     */
+	#[ORM\Column(name: 'archive', type: 'boolean', nullable: true)]
     private $archive;
 
-    /**
-     * @ORM\Column(name="socialNetworkIdentifiers", type="json", nullable=true)
-     */
+	#[ORM\Column(name: 'socialNetworkIdentifiers', type: 'json', nullable: true)]
     private $socialNetworkIdentifiers;
 
 	public function __construct()
@@ -133,12 +101,7 @@ class MappedSuperclassBase implements SearchEngineInterface
     {
         return $this->title;
     }
-	
-    /**
-     * Set slug
-     *
-     * @param string $slug
-     */
+
     public function setSlug()
     {
 		if(empty($this->slug)) {
@@ -147,11 +110,6 @@ class MappedSuperclassBase implements SearchEngineInterface
 		}
     }
 
-    /**
-     * Get slug
-     *
-     * @return string 
-     */
     public function getSlug()
     {
         return $this->slug;

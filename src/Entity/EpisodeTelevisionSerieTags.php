@@ -5,16 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Movies\EpisodeTelevisionSerie;
 
-/**
- * @ORM\Entity()
- * @ORM\Table(name="episodetelevisionserietags")
- */
+#[ORM\Entity]
+#[ORM\Table(name: 'episodetelevisionserietags')]
 class EpisodeTelevisionSerieTags extends Tags
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Movies\EpisodeTelevisionSerie")
-	* @ORM\JoinColumn(nullable=false)
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Movies\EpisodeTelevisionSerie')]
+	#[ORM\JoinColumn(nullable: false)]
     private $entity;
 
 	public function getMainEntityClassName()
@@ -27,21 +23,11 @@ class EpisodeTelevisionSerieTags extends Tags
 		return 'EpisodeTelevisionSerieTags';
 	}
 
-    /**
-     * Set entity
-     *
-     * @param App\Entity\Movies\EpisodeTelevisionSerie $entity
-     */
     public function setEntity(EpisodeTelevisionSerie $entity)
     {
         $this->entity = $entity;
     }
 
-    /**
-     * Get entity
-     *
-     * @return App\Entity\Movies\EpisodeTelevisionSerie
-     */
     public function getEntity()
     {
         return $this->entity;

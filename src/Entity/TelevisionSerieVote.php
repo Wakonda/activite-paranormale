@@ -5,15 +5,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Movies\TelevisionSerie;
 
-/**
- * @ORM\Table(name="televisionserievote")
- * @ORM\Entity(repositoryClass="App\Repository\TelevisionSerieVoteRepository")
- */
+#[ORM\Table(name: 'televisionserievote')]
+#[ORM\Entity(repositoryClass: 'App\Repository\TelevisionSerieVoteRepository')]
 class TelevisionSerieVote extends Vote
 {
-   /**
-    * @ORM\ManyToOne(targetEntity="App\Entity\Movies\TelevisionSerie")
-	*/
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Movies\TelevisionSerie')]
     private $entity;
 
 	public function getMainEntityClassName()

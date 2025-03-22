@@ -27,8 +27,7 @@ use App\Entity\Licence;
 use App\Entity\Language;
 use App\Entity\FileManagement;
 use App\Form\Type\NewsUserParticipationType;
-
-require_once realpath(__DIR__."/../../../vendor/mobiledetect/mobiledetectlib/Mobile_Detect.php");
+use Detection\MobileDetect;
 
 class NewsMobileController extends AbstractController
 {
@@ -45,7 +44,7 @@ class NewsMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+		if((new MobileDetect())->isMobile() or $functionsLibrary->isApplication())
 			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);
@@ -110,7 +109,7 @@ class NewsMobileController extends AbstractController
 			$conn
 		);
 
-		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+		if((new MobileDetect())->isMobile() or $functionsLibrary->isApplication())
 			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);
@@ -137,7 +136,7 @@ class NewsMobileController extends AbstractController
 			$searchEngine->countDatas($keyword, $request->getLocale())
 		);
 
-		if((new \Mobile_Detect)->isMobile() or $functionsLibrary->isApplication())
+		if((new MobileDetect())->isMobile() or $functionsLibrary->isApplication())
 			$paginationImage->setPageRange(3);
 
 		$paginationImage->setCustomParameters(['align' => 'center']);

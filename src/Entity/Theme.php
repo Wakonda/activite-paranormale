@@ -6,76 +6,45 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * App\Entity\Theme
- *
- * @ORM\Table(name="theme")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\ThemeRepository")
- */
+#[ORM\Table(name: 'theme')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\ThemeRepository')]
 class Theme
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $title;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Theme")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Theme')]
+	#[ORM\JoinColumn(name: 'parentTheme_id')]
     private $parentTheme;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(name: 'pdfTheme', type: 'string', length: 255, nullable: true)]
     private $pdfTheme;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-    /**
-     * @var string $internationalName
-     *
-     * @ORM\Column(name="internationalName", type="string", length=255)
-     */
+	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
     private $internationalName;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $photo;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+	#[ORM\Column(type: 'text', nullable: true)]
     protected $text;
 
-	/**
-	 * @var string $wikidata
-	 *
-	 * @ORM\Column(name="wikidata", type="string", length=15, nullable=true)
-	 */
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
 
-    /**
-     * @ORM\Column(name="source", type="text", nullable=true)
-     */
+	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
 
 	public function getPropertyEntityForm()
@@ -87,51 +56,26 @@ class Theme
 		return $this->title;
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set pdfTheme
-     *
-     * @param string $pdfTheme
-     */
     public function setPdfTheme($pdfTheme)
     {
         $this->pdfTheme = $pdfTheme;
     }
 
-    /**
-     * Get pdfTheme
-     *
-     * @return string 
-     */
     public function getPdfTheme()
     {
         return $this->pdfTheme;
@@ -142,7 +86,6 @@ class Theme
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -152,16 +95,12 @@ class Theme
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadPdfTheme() {
-        // the file property can be empty if the field is not required
         if (null === $this->pdfTheme) {
             return;
         }
@@ -215,52 +154,29 @@ class Theme
         $this->language = $language;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return string 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;
     }
 
-    /**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadPhotoTheme() {
-        // the file property can be empty if the field is not required
         if (null === $this->photo) {
             return;
         }

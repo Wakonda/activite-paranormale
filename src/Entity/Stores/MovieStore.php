@@ -4,13 +4,9 @@ namespace App\Entity\Stores;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class MovieStore extends Store {
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Movies\Movie")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Movies\Movie')]
     protected $movie;
 
 	public function getMovie()

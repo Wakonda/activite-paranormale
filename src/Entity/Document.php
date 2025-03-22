@@ -6,49 +6,30 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Entity\Language;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * App\Entity\Document
- *
- * @ORM\Table(name="document")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\DocumentRepository")
- */
+#[ORM\Table(name: 'document')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\DocumentRepository')]
 class Document extends MappedSuperclassBase
 {
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $pdfDoc;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\DocumentFamily")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\DocumentFamily')]
     private $documentFamily;
 
-    /**
-     * @var string $releaseDateOfDocument
-     *
-     * @ORM\Column(name="releaseDateOfDocument", type="string", length=12, nullable=true)
-     */
+	#[ORM\Column(name: 'releaseDateOfDocument', type: 'string', length: 12, nullable: true)]
     private $releaseDateOfDocument;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Biography", inversedBy="documents", cascade={"persist"})
-     * @ORM\JoinTable(name="document_biography",
-     *      joinColumns={@ORM\JoinColumn(name="document_id", referencedColumnName="id", onDelete="cascade")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="biography_id", referencedColumnName="id", onDelete="cascade")}     
-     *      )
-     */
+	#[ORM\ManyToMany(targetEntity: 'App\Entity\Biography', inversedBy: 'documents', cascade: ['persist'])]
+	#[ORM\JoinTable(name: 'document_biography')]
+	#[ORM\JoinColumn(name: 'document_id', referencedColumnName: 'id', onDelete: 'cascade')]
+	#[ORM\InverseJoinColumn(name: 'biography_id', referencedColumnName: 'id', onDelete: 'cascade')]
 	protected $authorDocumentBiographies;
 
 	public function __construct()
@@ -77,31 +58,16 @@ class Document extends MappedSuperclassBase
 		return pathinfo($this->pdfDoc, PATHINFO_EXTENSION);
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set pdfDoc
-     *
-     * @param string $pdfDoc
-     */
     public function setPdfDoc($pdfDoc)
     {
         $this->pdfDoc = $pdfDoc;
     }
 
-    /**
-     * Get pdfDoc
-     *
-     * @return string 
-     */
     public function getPdfDoc()
     {
         return $this->pdfDoc;
@@ -112,12 +78,10 @@ class Document extends MappedSuperclassBase
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
@@ -126,12 +90,9 @@ class Document extends MappedSuperclassBase
 		return "DocumentBundle_ReadDocument";
 	}
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadPdfDoc() {
-        // the file property can be empty if the field is not required
         if (null === $this->pdfDoc) {
             return;
         }
@@ -175,61 +136,31 @@ class Document extends MappedSuperclassBase
         $this->documentFamily = $documentFamily;
     }
 
-   /**
-    * Add authorDocumentBiographies
-    *
-    * @param App\Entity\Biography $authorDocumentBiographies
-    */
 	public function addAuthorDocumentBiography(Biography $biography)
 	{
 		$this->authorDocumentBiographies[] = $biography;
 	}
 
-    /**
-     * Set authorDocumentBiographies
-     *
-     * @param string $authorDocumentBiographies
-     */
     public function setAuthorDocumentBiographies($authorDocumentBiographies)
     {
         $this->authorDocumentBiographies = $authorDocumentBiographies;
     }
 
-  /**
-    * Remove authorDocumentBiographies
-    *
-    * @param App\Entity\Biography $authorDocumentBiographies
-    */
 	public function removeAuthorDocumentBiography(Biography $biography)
 	{
 		$this->authorDocumentBiographies->removeElement($biography);
 	}
 
-  /**
-    * Get authorDocumentBiographies
-    *
-    * @return Doctrine\Common\Collections\Collection
-    */
 	public function getAuthorDocumentBiographies()
 	{
 		return $this->authorDocumentBiographies;
 	}
 
-    /**
-     * Set releaseDateOfDocument
-     *
-     * @param string $releaseDateOfDocument
-     */
     public function setReleaseDateOfDocument($releaseDateOfDocument)
     {
         $this->releaseDateOfDocument = $releaseDateOfDocument;
     }
 
-    /**
-     * Get releaseDateOfDocument
-     *
-     * @return string 
-     */
     public function getReleaseDateOfDocument()
     {
         return $this->releaseDateOfDocument;

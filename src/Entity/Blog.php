@@ -7,14 +7,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Annotation\ApiResource;
 
-/**
- * App\Entity\Blog
- *
- * @ORM\Table(name="blog")
- * @ORM\HasLifecycleCallbacks
- * @ORM\Entity(repositoryClass="App\Repository\BlogRepository")
- * @ApiResource(normalizationContext = {"groups" = {"api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
- */
+#[ORM\Table(name: 'blog')]
+#[ORM\HasLifecycleCallbacks]
+#[ORM\Entity(repositoryClass: 'App\Repository\BlogRepository')]
+#[ApiResource(
+    normalizationContext: ['groups' => ['api_read']],
+    collectionOperations: ['GET'],
+    itemOperations: ['GET']
+)]
 class Blog
 {
 	const WEBSITE_CATEGORY = "website";
@@ -22,76 +22,42 @@ class Blog
 	const STORE_CATEGORY = "store";
 	const BLOG_CATEGORY = "blog";
 
-    /**
-     * @var integer $id
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: 'id', type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @var string $title
-     *
-     * @ORM\Column(name="title", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'title', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $title;
 
-    /**
-	 * @Assert\File(maxSize="6000000")
-     * @ORM\Column(type="string", length=255, nullable=true)
-     */
+	#[Assert\File(maxSize: '6000000')]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
     private $banner;
 
-    /**
-     * @var string $link
-     *
-     * @ORM\Column(name="link", type="string", length=255)
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'link', type: 'string', length: 255)]
+	#[Groups('api_read')]
     private $link;
 
-    /**
-     * @var string $rss
-     *
-     * @ORM\Column(name="rss", type="string", length=255, nullable=true)
-     */
+	#[ORM\Column(name: 'rss', type: 'string', length: 255, nullable: true)]
     private $rss;
 
-    /**
-     * @var text $text
-     *
-     * @ORM\Column(name="text", type="text")
-	 * @Groups("api_read")
-     */
+	#[ORM\Column(name: 'text', type: 'text')]
+	#[Groups('api_read')]
     private $text;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
+	#[Groups('api_read')]
     private $language;
 
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Language")
-	 * @Groups("api_read")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
+	#[Groups('api_read')]
     private $languageOfBlog;
 
-	/**
-	 * @var bool $active
-	 *
-	 * @ORM\Column(name="active", type="boolean")
-	 */
+	#[ORM\Column(name: 'active', type: 'boolean')]
 	private $active;
 
-    /**
-     * @var string $category
-     *
-     * @ORM\Column(name="category", type="string")
-     */
+	#[ORM\Column(name: 'category', type: 'string')]
     private $category;
 	
 	public function __construct()
@@ -104,111 +70,56 @@ class Blog
 		return "extended/photo/blog/";
 	}
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Set banner
-     *
-     * @param string $banner
-     */
     public function setBanner($banner)
     {
         $this->banner = $banner;
     }
 
-    /**
-     * Get banner
-     *
-     * @return string 
-     */
     public function getBanner()
     {
         return $this->banner;
     }
 
-    /**
-     * Set link
-     *
-     * @param string $link
-     */
     public function setLink($link)
     {
         $this->link = $link;
     }
 
-    /**
-     * Get link
-     *
-     * @return string 
-     */
     public function getLink()
     {
         return $this->link;
     }
 
-    /**
-     * Set rss
-     *
-     * @param string $rss
-     */
     public function setRss($rss)
     {
         $this->rss = $rss;
     }
 
-    /**
-     * Get rss
-     *
-     * @return string 
-     */
     public function getRss()
     {
         return $this->rss;
     }
 
-    /**
-     * Set text
-     *
-     * @param text $text
-     */
     public function setText($text)
     {
         $this->text = $text;
     }
 
-    /**
-     * Get text
-     *
-     * @return text 
-     */
     public function getText()
     {
         return $this->text;
@@ -239,19 +150,15 @@ class Blog
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
-     * @ORM\PrePersist()
-     * @ORM\PreUpdate()
-     */
+	#[ORM\PrePersist]
+	#[ORM\PreUpdate]
     public function uploadBanner() {
         // the file property can be empty if the field is not required
         if (null === $this->banner) {
@@ -287,9 +194,7 @@ class Blog
 		}
     }
 
-	/**
-	 * @ORM\PostRemove
-	 */
+	#[ORM\PostRemove]
 	public function removeBanner()
 	{
 		$file = $this->getAssetImagePath().$this->banner;

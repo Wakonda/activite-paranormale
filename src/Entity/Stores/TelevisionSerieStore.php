@@ -4,13 +4,10 @@ namespace App\Entity\Stores;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class TelevisionSerieStore extends Store {
-	/**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Movies\TelevisionSerie")
-     */
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Movies\TelevisionSerie')]
+	#[ORM\JoinColumn(name: 'televisionSerie_id')]
     protected $televisionSerie;
 
 	public function getTelevisionSerie()

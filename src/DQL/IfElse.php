@@ -9,7 +9,7 @@ use Doctrine\ORM\Query\AST\Functions\FunctionNode,
 class IfElse extends FunctionNode
 {
     private $expr = array();
-    public function parse(\Doctrine\ORM\Query\Parser $parser)
+    public function parse(\Doctrine\ORM\Query\Parser $parser): void
     {
         $parser->match(Lexer::T_IDENTIFIER);
         $parser->match(Lexer::T_OPEN_PARENTHESIS);
@@ -22,7 +22,7 @@ class IfElse extends FunctionNode
         $parser->match(Lexer::T_CLOSE_PARENTHESIS);
     }
 
-    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker)
+    public function getSql(\Doctrine\ORM\Query\SqlWalker $sqlWalker): string
     {
         return sprintf('IF(%s, %s, %s)',
             $sqlWalker->walkConditionalExpression($this->expr[0]),
