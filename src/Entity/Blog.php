@@ -5,15 +5,19 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 
 #[ORM\Table(name: 'blog')]
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: 'App\Repository\BlogRepository')]
 #[ApiResource(
     normalizationContext: ['groups' => ['api_read']],
-    collectionOperations: ['GET'],
-    itemOperations: ['GET']
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
 )]
 class Blog
 {
@@ -51,6 +55,7 @@ class Blog
     private $language;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
+	#[ORM\JoinColumn(name: 'languageOfBlog_id')]
 	#[Groups('api_read')]
     private $languageOfBlog;
 

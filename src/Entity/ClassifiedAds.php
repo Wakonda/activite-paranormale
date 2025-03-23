@@ -19,10 +19,10 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
 	#[ORM\Column(type: 'float', nullable: true)]
     private $price;
 
-	#[ORM\Column(type: 'string', length: 10, nullable: true)]
+	#[ORM\Column(name: 'currencyPrice', type: 'string', length: 10, nullable: true)]
     private $currencyPrice;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(name: 'displayEmail', type: 'boolean')]
     private $displayEmail;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\ClassifiedAdsCategory')]
@@ -32,13 +32,13 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
 	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-	#[ORM\Column(type: 'string', length: 30, nullable: true)]
+	#[ORM\Column(name: 'markAs', type: 'string', length: 30, nullable: true)]
     private $markAs;
 
-	#[ORM\Column(type: 'string', nullable: true)]
+	#[ORM\Column(name: 'contactName', type: 'string', nullable: true)]
     private $contactName;
 
-	#[ORM\Column(type: 'string', nullable: true)]
+	#[ORM\Column(name: 'contactEmail', type: 'string', nullable: true)]
     private $contactEmail;
 
 	public function __construct()

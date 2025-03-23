@@ -4,21 +4,13 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * App\Entity\DocumentFamily
- *
-#[ORM\Table(name: 'documentfamily")
-#[ORM\Entity(repositoryClass: 'App\Repository\DocumentFamilyRepository")
- */
+#[ORM\Table(name: 'documentfamily')]
+#[ORM\Entity(repositoryClass: 'App\Repository\DocumentFamilyRepository')]
 class DocumentFamily
 {
-    /**
-     * @var integer $id
-     *
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-     */
     private $id;
 
 	#[ORM\Column(name: 'title', type: 'string', length: 255)]
@@ -30,51 +22,26 @@ class DocumentFamily
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }    
-	
-	/**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
+
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return string 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;

@@ -32,7 +32,7 @@ class WitchcraftMobileController extends AbstractController
 			10 /*limit per page*/
 		);
 
-		if((new Mobile_etect())->isMobile() or $functionsLibrary->isApplication())
+		if((new MobileDetect())->isMobile() or $functionsLibrary->isApplication())
 			$pagination->setPageRange(3);
 
 		$pagination->setCustomParameters(['align' => 'center']);

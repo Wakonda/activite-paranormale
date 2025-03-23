@@ -3,25 +3,29 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use App\Filter\OrSearchFilter;
 use Ausi\SlugGenerator\SlugGenerator;
 
-/**
- * App\Entity\UsefulLink
- *
-#[ORM\Table(name: 'usefullink")
-#[ORM\Entity(repositoryClass: 'App\Repository\UsefulLinkRepository")
- * @ApiResource(normalizationContext = {"groups" = {"api_read"}}, collectionOperations = {"GET"}, itemOperations = {"GET"})
- * @ApiFilter(SearchFilter::class, properties = {"category" = "exact", "usefullinkTags.title" = "exact"})
- * @ApiFilter(OrderFilter::class, properties = {"id"}, arguments = {"orderParameterName" = "order"})
- * @ApiFilter(OrSearchFilter::class, properties={"title", "text"})
- */
+#[ORM\Table(name: 'usefullink')]
+#[ORM\Entity(repositoryClass: 'App\Repository\UsefulLinkRepository')]
+#[ApiResource(
+	normalizationContext: ['groups' => ['api_read']], 
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
+)]
+#[ApiFilter(SearchFilter::class, properties: ['category' => 'exact', 'usefullinkTags.title' => 'exact'])]
+#[ApiFilter(OrderFilter::class, properties: ['id'], arguments: ['orderParameterName' => 'order'])]
+#[ApiFilter(OrSearchFilter::class, properties: ['title', 'text'])]
 class UsefulLink
 {
 	use \App\Entity\GenericEntityTrait;
@@ -78,11 +82,11 @@ class UsefulLink
 	#[Groups('api_read')]
     private $illustration;
 
-	#[ORM\Column(name: 'datetime', nullable: true)]
+	#[ORM\Column(name: 'createdAt', type: 'datetime', nullable: true)]
 	#[Groups('api_read')]
 	private $createdAt = null;
 
-	#[ORM\Column(name: 'datetime', nullable: true)]
+	#[ORM\Column(name: 'updatedAt', type: 'datetime', nullable: true)]
 	#[Groups('api_read')]
 	private $updatedAt = null;
 
@@ -91,6 +95,7 @@ class UsefulLink
 	private $slug;
 
 	#[ORM\ManyToMany(targetEntity: 'App\Entity\UsefullinkTags')]
+	#[ORM\JoinColumn(name: 'usefullinkTags_id')]
 	#[Groups('api_read')]
     private $usefullinkTags;
 

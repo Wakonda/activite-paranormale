@@ -11,7 +11,6 @@ use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Security\Core\Security;
 
 use App\Form\Type\SearchEngineType;
 use App\Service\SearchEngine;
@@ -228,7 +227,7 @@ class NewsMobileController extends AbstractController
         return $this->render('mobile/Page/page.html.twig', ['entity' => $entity]);
     }
 
-	public function newAction(Request $request, EntityManagerInterface $em, Security $security)
+	public function newAction(Request $request, EntityManagerInterface $em)
 	{
         $entity = new News();
 
@@ -242,11 +241,11 @@ class NewsMobileController extends AbstractController
         ]);
 	}
 
-	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Security $security)
+	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$entity = new News();
 
-		$user = $security->getUser();
+		$user = $this->getUser();
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ['language' => $request->getLocale()]);
         $form->handleRequest($request);
 		

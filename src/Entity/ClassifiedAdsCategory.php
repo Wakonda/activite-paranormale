@@ -20,6 +20,7 @@ class ClassifiedAdsCategory
     protected $language;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\ClassifiedAdsCategory')]
+	#[ORM\JoinColumn(name: 'parentCategory_id')]
     private $parentCategory;
 
 	public function getParentCategoryTitle()

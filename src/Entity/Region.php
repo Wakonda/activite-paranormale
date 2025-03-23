@@ -36,6 +36,7 @@ class Region
     private $family;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
+	#[ORM\JoinColumn(name: 'higherLevel_id')]
     protected $higherLevel;
 	
 	public function __toString()

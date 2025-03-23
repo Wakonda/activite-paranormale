@@ -4,7 +4,9 @@ namespace App\Entity\Stores;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
@@ -21,8 +23,10 @@ use App\Entity\Language;
 #[ORM\DiscriminatorMap(["store" => "Store", "book_store" => "BookStore", "album_store" => "AlbumStore", "movie_store" => "MovieStore", "televisionserie_store" => "TelevisionSerieStore", "witchcrafttool_store" => "WitchcraftToolStore"])]
 #[ApiResource(
     normalizationContext: ['groups' => ['api_read']],
-    collectionOperations: ['GET'],
-    itemOperations: ['GET']
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['category' => 'exact'])]
 #[ApiFilter(OrderFilter::class, properties: ['id'], arguments: ['orderParameterName' => 'order'])]

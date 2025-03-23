@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -95,7 +94,7 @@ class ClassifiedAdsController extends AbstractController
 	}
 
 	// USER PARTICIPATION
-    public function newAction(Request $request, EntityManagerInterface $em, Security $security, TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
+    public function newAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new ClassifiedAds();
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);

@@ -3,9 +3,11 @@
 namespace App\Entity\Stores;
 
 use Doctrine\ORM\Mapping as ORM;
-use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Get;
 use App\Filter\OrSearchFilter;
 
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -13,8 +15,10 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 #[ApiResource(
     normalizationContext: ['groups' => ['api_book_read', 'api_read']],
-    collectionOperations: ['GET'],
-    itemOperations: ['GET']
+    operations: [
+        new Get(),
+        new GetCollection()
+    ]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['book.book.theme.title' => 'exact', 'book.book.authors.title' => 'exact', 'book.book.language.abbreviation' => 'exact'])]
 #[ApiFilter(OrSearchFilter::class, properties: ['title', 'text', 'book.book.authors.title', 'book.book.theme.title'])]

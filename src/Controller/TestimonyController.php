@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
-use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -48,7 +47,7 @@ class TestimonyController extends AbstractController
     }
 	
 	// USER PARTICIPATION
-    public function newAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+    public function newAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new Testimony();
 
@@ -62,17 +61,17 @@ class TestimonyController extends AbstractController
         ]);
     }
 
-    public function createAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker)
+    public function createAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
-		return $this->generateCreateUpdate($request, $em, $security, $authorizationChecker);
+		return $this->generateCreateUpdate($request, $em, $authorizationChecker);
     }
 
-	public function addFileAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+	public function addFileAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		
-		$user = $security->getUser();
+		$user = $this->getUser();
 		
 		if($entity->getState()->isStateDisplayed() or (!empty($user) and !empty($entity->getAuthor()) and !$authorizationChecker->isGranted('IS_AUTHENTICATED_ANONYMOUSLY') and $user->getId() != $entity->getAuthor()->getId()) or $session->get("testimony") != $entity->getId())
 			throw new \Exception("You are not authorized to edit this document.");
@@ -103,10 +102,10 @@ class TestimonyController extends AbstractController
         ]);
     }
 
-	public function generateCreateUpdate(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
+	public function generateCreateUpdate(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id = 0)
 	{
 		$session = $request->getSession();
-		$user = $security->getUser();
+		$user = $this->getUser();
 
 		if(empty($id))
 			$entity  = new Testimony();
@@ -177,12 +176,12 @@ class TestimonyController extends AbstractController
         ));
 	}
 	
-	public function validateAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+	public function validateAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
         $entity = $em->getRepository(Testimony::class)->find($id);
 		
-		$user = $security->getUser();
+		$user = $this->getUser();
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())
 			throw new AccessDeniedHttpException("You can't edit this document.");
@@ -200,9 +199,9 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, Security $security, AuthorizationCheckerInterface $authorizationChecker, $id)
+    public function editAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
-		$user = $security->getUser();
+		$user = $this->getUser();
         $entity = $em->getRepository(Testimony::class)->find($id);
 
 		if($entity->getState()->isRefused() or $entity->getState()->isDuplicateValues())

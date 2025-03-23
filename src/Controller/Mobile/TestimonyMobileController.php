@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Security\Core\Security;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Form\Type\TestimonyType;
@@ -67,7 +66,7 @@ class TestimonyMobileController extends AbstractController
 		]);
 	}
 
-	public function newAction(Request $request, EntityManagerInterface $em, Security $security)
+	public function newAction(Request $request, EntityManagerInterface $em)
 	{
 		$entity = new Testimony();
 		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
@@ -77,10 +76,10 @@ class TestimonyMobileController extends AbstractController
 		return $this->render('mobile/Testimony/new.html.twig', ['form' => $form->createView()]);
 	}
 
-	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Security $security)
+	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$entity  = new Testimony();
-		$user = $security->getUser();
+		$user = $this->getUser();
 		$form = $this->createForm(TestimonyType::class, $entity, ['locale' => $request->getLocale()]);
 
 		$form->handleRequest($request);

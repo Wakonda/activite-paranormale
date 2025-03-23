@@ -29,7 +29,7 @@ class Movie extends MappedSuperclassBase
 	#[ORM\Column(type: 'integer', nullable: true)]
     private $duration;
 
-	#[ORM\Column(type: 'string', nullable: true)]
+	#[ORM\Column(name: 'releaseYear', type: 'string', nullable: true)]
     private $releaseYear;
 
 	#[ORM\Column(type: 'text', nullable: true)]

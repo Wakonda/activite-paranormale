@@ -29,7 +29,7 @@ class Cartography extends MappedSuperclassBase implements Interfaces\PhotoIllust
 	#[ORM\JoinColumn(name: 'illustration_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $illustration;
 
-	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[ORM\Column(name: 'linkGMaps', type: 'string', length: 255, nullable: true)]
     private $linkGMaps;
 
 	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]

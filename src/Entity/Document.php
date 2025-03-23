@@ -17,10 +17,11 @@ class Document extends MappedSuperclassBase
     private $id;
 
 	#[Assert\File(maxSize: '6000000')]
-	#[ORM\Column(type: 'string', length: 255, nullable: true)]
+	#[ORM\Column(name: 'pdfDoc', type: 'string', length: 255, nullable: true)]
     private $pdfDoc;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\DocumentFamily')]
+	#[ORM\JoinColumn(name: 'documentFamily_id')]
     private $documentFamily;
 
 	#[ORM\Column(name: 'releaseDateOfDocument', type: 'string', length: 12, nullable: true)]
