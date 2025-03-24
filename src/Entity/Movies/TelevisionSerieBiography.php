@@ -12,7 +12,7 @@ use App\Entity\EntityLinkBiography;
 class TelevisionSerieBiography extends EntityLinkBiography implements MediaInterface
 {
 	#[ORM\ManyToOne(targetEntity: 'TelevisionSerie', inversedBy: 'televisionSerieBiographies')]
-	#[ORM\JoinColumn(name: 'televisionserie_id', referencedColumnName: 'id')]
+	#[ORM\JoinColumn(referencedColumnName: 'id')]
 	private $televisionSerie;
 
 	#[ORM\ManyToOne(targetEntity: 'EpisodeTelevisionSerie', inversedBy: 'episodeTelevisionSerieBiographies')]

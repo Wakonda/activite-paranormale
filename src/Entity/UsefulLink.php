@@ -95,7 +95,7 @@ class UsefulLink
 	private $slug;
 
 	#[ORM\ManyToMany(targetEntity: 'App\Entity\UsefullinkTags')]
-	#[ORM\JoinColumn(name: 'usefullinkTags_id')]
+	#[ORM\JoinColumn(name: 'usefullinktags_id')]
 	#[Groups('api_read')]
     private $usefullinkTags;
 
