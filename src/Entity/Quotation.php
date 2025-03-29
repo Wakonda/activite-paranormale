@@ -51,7 +51,7 @@ class Quotation
 	#[ORM\Column(type: 'string', length: 255)]
 	protected $family;
 
-	#[ORM\Column(type: 'string', length: 255)]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
 	protected $date;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]

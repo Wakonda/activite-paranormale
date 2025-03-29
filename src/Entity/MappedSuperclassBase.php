@@ -13,7 +13,7 @@ class MappedSuperclassBase implements SearchEngineInterface
 {
 	use \App\Entity\GenericEntityTrait;
 
-	#[ORM\Column(type: 'string', length: 255)]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
 	protected $title;
 
 	#[ORM\Column(type: 'text', nullable: true)]
