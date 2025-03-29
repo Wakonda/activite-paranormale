@@ -35,11 +35,24 @@ class MigrateSlugifyCommand extends Command
 
 		$generator = new SlugGenerator;
 		
-		$entities = $this->em->getRepository("\App\Entity\Movies\GenreAudiovisual")->findAll();
+		$entities = $this->em->getRepository("\App\Entity\MusicGenre")->findAll();
+		
+		foreach($entities as $entity) {
+			$conn->exec("UPDATE musicgenre SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
+		
+		$entities = $this->em->getRepository("\App\Entity\Biography")->findAll();
+		
+		foreach($entities as $entity) {
+			if(empty($entity->getSlug()))
+			$conn->exec("UPDATE Biography SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
+		
+		/*$entities = $this->em->getRepository("\App\Entity\Movies\GenreAudiovisual")->findAll();
 		
 		foreach($entities as $entity) {
 			$conn->exec("UPDATE genreaudiovisual SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
-		}
+		}*/
 		
 		/*$entities = $this->em->getRepository("\App\Entity\Album")->findAll();
 		

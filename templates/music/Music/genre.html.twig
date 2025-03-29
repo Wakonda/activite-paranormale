@@ -43,7 +43,7 @@
 				<tr>
 					<td>{{ entity.title }}</td>
 					<td>{% if entity.country is not empty %}<img src="{{ asset(entity.country.getAssetImagePath())~entity.country.flag }}" alt='' width='20' height='13'> {{ entity.country.title }}{% endif %}</td>
-					<td><a href="{{ path('Music_Album', { id: entity.id, title_slug: entity.title }) }}">{{ "musicGenre.index.Read"|trans([], "validators") }}</a></td>
+					<td><a href="{{ path('Music_Album', { id: entity.id, title_slug: entity.urlSlug }) }}">{{ "musicGenre.index.Read"|trans([], "validators") }}</a></td>
 				</tr>
 			{% endfor %}
 		</tbody>

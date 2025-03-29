@@ -29,7 +29,7 @@
 	
 	<ul class="fa-ul">
 		<li><span class="fa-li"><i class="fas fa-volume-up"></i></span> <span class="fw-bold">{{ "music.album.NbrAlbum"|trans([], "validators") }}</span> {{ entities|length }}</li>
-		<li><span class="fa-li"><i class="fas fa-drum"></i></span> <span class="fw-bold">{{ "music.album.Genre"|trans([], "validators") }}</span> {% if artist.genre is not empty %}<a href="{{ path('Music_Genre', {genreId: artist.genre.id, genreTitle: artist.genre.title}) }}">{{ artist.genre.title }}</a>{% endif %}</li>
+		<li><span class="fa-li"><i class="fas fa-drum"></i></span> <span class="fw-bold">{{ "music.album.Genre"|trans([], "validators") }}</span> {% if artist.genre is not empty %}<a href="{{ path('Music_Genre', {genreId: artist.genre.id, genreTitle: artist.genre.urlSlug}) }}">{{ artist.genre.title }}</a>{% endif %}</li>
 		<li><span class="fa-li"><i class="fas fa-globe"></i></span> {% if artist.country is not empty %}<img src="{{ asset(artist.country.getAssetImagePath())~artist.country.flag }}" alt='' width='20' height='13'> {{ artist.country.title }}{% endif %}</li>
 		<li><span class="fa-li"><i class="fas fa-external-link-alt"></i></span> <a href="{{ artist.website }}" alt="" target="_blank" class="fw-bold">{{ "music.album.Website"|trans([], "validators") }}</a></li>
 	</ul>

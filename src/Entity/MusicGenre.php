@@ -37,6 +37,9 @@ class MusicGenre
 
 	#[ORM\Column(name: 'wikidata', type: 'string', length: 15, nullable: true)]
 	private $wikidata;
+
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
+    protected $slug;
 	
 	public function __clone() {
 		if(!empty($this->illustration))
@@ -56,6 +59,24 @@ class MusicGenre
     {
         return $this->title;
     }
+
+    public function setSlug()
+    {
+		if(empty($this->slug)) {
+			$generator = new \Ausi\SlugGenerator\SlugGenerator;
+			$this->slug = $generator->generate($this->title);
+		}
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+	public function getUrlSlug()
+	{
+		return !empty($this->slug) ? $this->slug : $this->title;
+	}
 
 	public function getFullPicturePath() {
         return null === $this->photo ? null : $this->getUploadRootDir(). $this->photo;
