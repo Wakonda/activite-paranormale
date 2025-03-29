@@ -1201,7 +1201,8 @@ class AdminController extends AbstractController
 	public function flickr(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Flickr $flickr, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$requestParams = $request->request;
-		
+		$flickrLimit = 1000;
+	
 		if($request->query->has("method") and $request->query->get("method") == "DELETE") {
 			$flickr->deletePhoto($request->query->get("photoId"));
 			$entity = $em->getRepository(urldecode($path))->find($id);
@@ -1218,7 +1219,7 @@ class AdminController extends AbstractController
 			return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 		}
 
-		if($flickr->getCounts() >= 1) {
+		if($flickr->getCounts() >= $flickrLimit) {
 			$photoId = $flickr->getOldestPhoto();
 			$entityNamespaces = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 			$data = null;

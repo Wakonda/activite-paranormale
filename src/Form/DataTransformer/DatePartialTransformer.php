@@ -12,9 +12,10 @@ class DatePartialTransformer implements DataTransformerInterface
 
     public function transform(mixed $dateString): mixed
     {
-		$dateArray = explode("-", trim($dateString, "-"));
+		if(empty($dateString))
+			return [];
 
-		$red = [];
+		$dateArray = explode("-", trim($dateString, "-"));
 
 		$res = [
 			"month" => (isset($dateArray[1]) and !empty($dateArray[1])) ? intval($dateArray[1]) : null,

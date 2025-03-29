@@ -1,11 +1,13 @@
 api_platform:
-    enable_docs: true
+    title: Hello API Platform
+    version: 1.0.0
     mapping:
         paths:
             - '%kernel.project_dir%/src/Entity' # default configuration for annotations
     patch_formats:
         json: ['application/merge-patch+json']
-    swagger:
-        versions: [3]
     defaults:
+        stateless: true
+        cache_headers:
+            vary: ['Content-Type', 'Authorization', 'Origin']
         pagination_items_per_page: 12 # Default value

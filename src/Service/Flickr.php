@@ -25,13 +25,13 @@ class Flickr {
 		
 		$baseUrl = 'https://api.flickr.com/services/rest/?';
 		$method = 'flickr.photos.getInfo';
-		$params = array(
+		$params = [
 			'api_key' => $this->apiKey,
 			'method' => $method,
 			'photo_id' => $photoId,
 			'format' => 'json',
 			'nojsoncallback' => 1
-		);
+		];
 
 		$requestUrl = $baseUrl . http_build_query($params);
 
@@ -517,9 +517,10 @@ class Flickr {
 
 		if ($type == "image/webp") {
 			$webpImage = imagecreatefromwebp($webpImagePath);
+			$pathInfo = pathinfo($webpImagePath);
 
 			if ($webpImage === false) {
-				return $webpImage;
+				return $webpImagePath;
 			}
 		} elseif($type == "image/jpeg") {
 			$webpImage = imagecreatefromjpeg($webpImagePath);
@@ -533,7 +534,7 @@ class Flickr {
 
 		$result = imagejpeg($webpImage, $outputImagePath, 100); // 100 is the quality
 		if ($result === false) {
-			return $webpImage;
+			return $webpImagePath;
 		}
 
 		imagedestroy($webpImage);

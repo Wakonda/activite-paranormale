@@ -323,6 +323,9 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 
     public function getLinks(): ?string
     {
+		if(empty($this->links))
+			return null;
+
 		if(empty(array_filter(array_column(!empty($d = json_decode($this->links, true)) ? $d : [], "url"))))
 			return null;
 
