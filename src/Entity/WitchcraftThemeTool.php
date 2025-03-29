@@ -5,72 +5,39 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * App\Entity\WitchcraftThemeTool
- *
-#[ORM\Table(name: 'witchcraftthemetool")
+#[ORM\Table(name: 'witchcraftthemetool')]
 #[ORM\HasLifecycleCallbacks]
-#[ORM\Entity(repositoryClass: 'App\Repository\WitchcraftThemeToolRepository")
- */
+#[ORM\Entity(repositoryClass: 'App\Repository\WitchcraftThemeToolRepository')]
 class WitchcraftThemeTool
 {
-    /**
-     * @var integer $id
-     *
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
-     */
     private $id;
 
-    /**
 	#[Assert\File(maxSize: '6000000')]
 	#[ORM\Column(type: 'string', length: 255)]
-     */
     private $photo;
-	
-    /**
-     * @var string $title
-     *
+
 	#[ORM\Column(type: 'string', length: 255)]
-     */
     private $title;
 
-    /**
-     * @var string $internationalName
-     *
 	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
-     */
     private $internationalName;
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
-    /**
-     * Get id
-     *
-     * @return integer 
-     */
     public function getId()
     {
         return $this->id;
     }
 
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     */
     public function setPhoto($photo)
     {
         $this->photo = $photo;
     }
 
-    /**
-     * Get photo
-     *
-     * @return string 
-     */
     public function getPhoto()
     {
         return $this->photo;
@@ -81,7 +48,6 @@ class WitchcraftThemeTool
     }
 
     public function getUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return $this->getTmpUploadRootDir();
     }
 
@@ -91,16 +57,12 @@ class WitchcraftThemeTool
 	}
 
     public function getTmpUploadRootDir() {
-        // the absolute directory path where uploaded documents should be saved
         return __DIR__ . '/../../public/'.$this->getAssetImagePath();
     }
 
-    /**
 	#[ORM\PrePersist]
 	#[ORM\PreUpdate]
-     */
     public function uploadPhoto() {
-        // the file property can be empty if the field is not required
         if (null === $this->photo) {
             return;
         }
@@ -134,41 +96,21 @@ class WitchcraftThemeTool
 		}
     }
 
-    /**
-     * Set title
-     *
-     * @param string $title
-     */
     public function setTitle($title)
     {
         $this->title = $title;
     }
 
-    /**
-     * Get title
-     *
-     * @return string 
-     */
     public function getTitle()
     {
         return $this->title;
     }
 
-    /**
-     * Get internationalName
-     *
-     * @return string 
-     */
     public function getInternationalName()
     {
         return $this->internationalName;
     }
 
-    /**
-     * Set internationalName
-     *
-     * @param string $internationalName
-     */
     public function setInternationalName($internationalName)
     {
         $this->internationalName = $internationalName;

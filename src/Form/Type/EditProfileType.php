@@ -48,7 +48,7 @@ class EditProfileType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				},
 			))
-			->add('birthDate', DateType::class, array('required' => false, 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'years' => range(1902, date('Y'))))
+			->add('birthDate', DateType::class, ['required' => false, 'widget' => 'choice', 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'html5' => false, 'years' => range(1902, date('Y'))])
             ->add('avatar', FileType::class, array('data_class' => null, 'required' => true))
             ->add('city')
             ->add('siteWeb')

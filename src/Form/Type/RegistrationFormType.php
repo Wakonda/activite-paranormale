@@ -68,7 +68,7 @@ class RegistrationFormType extends AbstractType
 						},
 			])
 			->add('avatar', FileType::class)
-			->add('birthDate', DateType::class, ['required' => false, 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'years' => range(1902, date('Y'))])
+			->add('birthDate', DateType::class, ['required' => false, 'widget' => 'choice', 'format' => 'dd/MM/yyyy', 'html5' => false, 'placeholder' => '', 'years' => range(1902, date('Y'))])
 			->add('city', TextType::class, ['required' => false])
 			->add('blog', TextType::class, ['required' => false, 'constraints' => [new Url()]])
 			->add('siteWeb', TextType::class, ['required' => false, 'constraints' => [new Url()]])
