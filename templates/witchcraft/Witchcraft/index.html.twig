@@ -11,7 +11,7 @@
 		<div class="card mb-3">
 			<div class="row g-0">
 				<div class="col-md-4 align-self-center text-center">
-					{{ MG.entity.photo|imgsize(null, MG.entity.getAssetImagePath(), true, {options: MG.entity.title})|raw }}
+					{{ MG.entity.photo|imgsize(null, MG.entity.getAssetImagePath(), true, {alt: MG.entity.title})|raw }}
 				</div>
 				<div class="col-md-8 content-card">
 					<div class="card-body p-2 ps-3">
