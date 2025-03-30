@@ -42,8 +42,16 @@
 					if(document.getElementById("{{ form.vars.id }}").value != "") {
 						var modal = new bootstrap.Modal(document.getElementById('previewImageModal_{{ form.vars.id }}'));
 						modal.show(document.getElementById('previewImageModal_{{ form.vars.id }}'));
-						
-						document.querySelector("#previewImageModal_{{ form.vars.id }} img").setAttribute("src", "{% if form.parent.vars.file_path is defined %}/{{ form.parent.vars.file_path }}{% endif %}" + document.getElementById("{{ form.vars.id }}").value);
+
+						var urlImg = document.getElementById("{{ form.vars.id }}").value;
+
+						{% if form.parent.vars.file_path is defined %}
+							if(/^https:\/\//.test(urlImg) == false) {
+								urlImg += "/{{ form.parent.vars.file_path }}";
+							}
+						{% endif %}
+
+						document.querySelector("#previewImageModal_{{ form.vars.id }} img").setAttribute("src", urlImg);
 					} else 
 						alert("{{ ('admin.general.NoImageCouldBeLoaded'|trans([], 'validators'))|e('js') }}");
 				});
