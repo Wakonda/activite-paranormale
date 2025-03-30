@@ -38,7 +38,7 @@ class MigratePhotosToFilemanagementCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, photo FROM tagword WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{
@@ -53,7 +53,7 @@ class MigratePhotosToFilemanagementCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, photo FROM movie WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{
@@ -68,7 +68,7 @@ class MigratePhotosToFilemanagementCommand extends Command
 		$output->writeln("Start News migration");
 
 		$sql = "SELECT id, mediaNew FROM news WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{
@@ -83,7 +83,7 @@ class MigratePhotosToFilemanagementCommand extends Command
 		$output->writeln("Start Biography migration");
 
 		$sql = "SELECT id, photo FROM biography WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{
@@ -98,7 +98,7 @@ class MigratePhotosToFilemanagementCommand extends Command
         $output->writeln("Start Photo migration");
 
 		$sql = "SELECT id, photo FROM photo WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{

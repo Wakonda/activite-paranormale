@@ -32,7 +32,7 @@ class PaginatorNativeSQL
         }
         $query .= ' LIMIT ' . $pagesize . ' OFFSET ' . $offset;
 
-        $list = $this->connection->executeQuery($query)->fetchAll();
+        $list = $this->connection->executeQuery($query)->fetchAllAssociative();
         $slidingPagination = new SlidingPagination($request->query->all());
         $slidingPagination->setCurrentPageNumber($page);
         $slidingPagination->setItemNumberPerPage($pagesize);

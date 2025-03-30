@@ -44,7 +44,7 @@ class SearchEngine {
 
 		if ($pdo) {
 			$statement = $pdo->query($query);
-			$datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+			$datas = $statement->fetchAllAssociative(PDO::FETCH_ASSOC);
 			
 			$pdoSqlite = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 
@@ -81,7 +81,7 @@ class SearchEngine {
 			if(!$statement)
 				return;
 			
-			$datas = $statement->fetchAll(PDO::FETCH_ASSOC);
+			$datas = $statement->fetchAllAssociative(PDO::FETCH_ASSOC);
 			
 			$pdoSqlite = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 
@@ -141,7 +141,7 @@ class SearchEngine {
 		
 		$pdo = null;
 		
-		$res = $statement->fetchAll(PDO::FETCH_ASSOC);
+		$res = $statement->fetchAllAssociative(PDO::FETCH_ASSOC);
 		
 		$stopTimer = microtime(true);
 		

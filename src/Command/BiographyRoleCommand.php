@@ -54,7 +54,7 @@ class BiographyRoleCommand extends Command
 		/*$stmt = $conn->prepare("SELECT movie_id, biography_id, role, occupation FROM movie_biography");
         $stmt->execute();
         
-		$datas = $stmt->fetchAll();
+		$datas = $stmt->fetchAllAssociative();
 		
 		// file_put_contents("movie_biography.txt", json_encode($datas));
 		// die(var_dump(json_encode($datas)));

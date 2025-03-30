@@ -74,7 +74,7 @@ class SocialNetworkIdentifiersFormatCommand extends Command
 		$output->writeln("Start Cartography migration");
 
 		$sql = "SELECT id, photo FROM cartography WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{

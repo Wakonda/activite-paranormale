@@ -14,6 +14,7 @@ class Quotation
 	const POEM_FAMILY = "poem";
 	const HUMOR_FAMILY = "humor";
 	const SAYING_FAMILY = "saying";
+	const LYRIC_FAMILY = "lyric";
 
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
@@ -56,6 +57,9 @@ class Quotation
 
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $country;
+
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Music')]
+    protected $music;
 
 	public function __construct()
 	{
@@ -231,7 +235,7 @@ class Quotation
 	{
 		return $this->date;
 	}
-	
+
 	public function setDate($date)
 	{
 		$this->date = $date;
@@ -240,5 +244,15 @@ class Quotation
 	public function setTitle($title)
 	{
 		$this->title = $title;
+	}
+
+	public function getMusic()
+	{
+		return $this->music;
+	}
+
+	public function qetMusic($music)
+	{
+		$this->music = $music;
 	}
 }

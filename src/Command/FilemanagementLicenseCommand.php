@@ -35,7 +35,7 @@ class FilemanagementLicenseCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, caption FROM filemanagement WHERE caption IS NOT NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{

@@ -24,7 +24,7 @@
 		&ldquo;{{ entity.textQuotation|nl2br }}&rdquo;
 	</div>
 
-	<div><i class="fa-solid fa-user"></i> <a href="{{ path('Biography_Show', { id: entity.authorQuotation.id, title_slug: entity.authorQuotation.slug }) }}" alt="{{ entity.authorQuotation.title }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></div>
+	<div><i class="fa-solid fa-user"></i> <a href="{{ path('Biography_Show', { id: entity.authorQuotation.id, title_slug: entity.authorQuotation.slug }) }}" class="fw-bold">{{ entity.authorQuotation.title }}</a></div>
 	
 	{% if entity.images is not empty %}
 		<div id="carousel-quote-read" class="carousel-pagination carousel slide mt-3" data-interval="false">

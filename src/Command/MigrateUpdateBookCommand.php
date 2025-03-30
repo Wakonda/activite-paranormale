@@ -44,7 +44,7 @@ class MigrateUpdateBookCommand extends Command
 		/*$conn->exec("UPDATE movie SET reviewScores = null WHERE reviewScores = 'undefined';");
 
 		$sql = "SELECT id, photo FROM president WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 
 		foreach($datas as $data)
 		{

@@ -37,7 +37,7 @@ class MigratePhotosGrimoireEventToFilemanagementCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, photo FROM eventmessage WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 
 		foreach($datas as $data)
 		{
@@ -50,7 +50,7 @@ class MigratePhotosGrimoireEventToFilemanagementCommand extends Command
 		echo "End eventmessage";
 
 		$sql = "SELECT id, photo FROM grimoire WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{

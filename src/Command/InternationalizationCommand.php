@@ -48,7 +48,7 @@ class InternationalizationCommand extends Command
 				from biography b
 				where nationality_id is null
 				AND b.internationalName in (select * from (select b1.internationalName from biography b1 where b1.nationality_id is not null) as t);";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 
 		foreach($datas as $data) {
 			$sqlCountry = "SELECT id AS id FROM region WHERE language_id = ".$data["language_id"]." AND internationalName = '".$data["nationality"]."'";

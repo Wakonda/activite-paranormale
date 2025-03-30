@@ -59,7 +59,7 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, photo FROM Book WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{
@@ -74,7 +74,7 @@ class MigrateBookGenreAudiovisualPhotosToFilemanagementCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, photo FROM GenreAudiovisual WHERE illustration_id IS NULL";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{

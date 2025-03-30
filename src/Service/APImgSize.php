@@ -66,7 +66,7 @@
 				$finfo = new \finfo(FILEINFO_MIME_TYPE);
 				$mime_type = $finfo->buffer($uploadedFile);
 				$img = $content = $uploadedFile;
-				$size = strlen($uploadedFile);echo "dddd";
+				$size = strlen($uploadedFile);
 			}
 
 			if(\App\Service\ImageSVG::isSVGByContent($content)) {

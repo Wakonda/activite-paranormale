@@ -70,7 +70,7 @@
 
 			$res["socialNetwork"] = ["link" => null, "twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
 
-			if(property_exists($datas->entities->$code->claims, "P2002"))
+			if(property_exists($datas->entities->$code->claims, "P2002") and property_exists($datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0], "datavalue"))
 				$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
 
 			if(property_exists($datas->entities->$code->claims, "P2397"))
@@ -82,7 +82,7 @@
 			if(property_exists($datas->entities->$code->claims, "P2003"))
 				$res["socialNetwork"]["instagram"] = "https://www.instagram.com/".$datas->entities->$code->claims->P2003[0]->mainsnak->datavalue->value;
 
-			if(property_exists($datas->entities->$code->claims, "P856"))
+			if(property_exists($datas->entities->$code->claims, "P856") and property_exists($datas->entities->$code->claims->P856[0]->mainsnak, "datavalue"))
 				$res["socialNetwork"]["link"] = $datas->entities->$code->claims->P856[0]->mainsnak->datavalue->value;
 
 			$birthDate = null;

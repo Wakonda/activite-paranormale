@@ -35,7 +35,7 @@ class MigrateDateEventCommand extends Command
 		$conn = $this->em->getConnection();
 
 		$sql = "SELECT id, datefrom, dateto FROM eventmessage";
-		$datas = $conn->fetchAll($sql);
+		$datas = $conn->fetchAllAssociative($sql);
 		
 		foreach($datas as $data)
 		{
