@@ -1,31 +1,69 @@
 {% macro social_network(textarea, locale, text) %}
-	<a href="#" id="generate{{ textarea }}" class="btn btn-primary float-start me-1"><i class="fa-solid fa-robot" id="generate_icon{{ textarea }}"></i></a>
+<div id="aiDropDown{{ textarea }}" class="btn-group float-start me-1">
+	<button type="button" id="generate{{ textarea }}" class="btn btn-primary"><i class="fa-solid fa-robot" id="generate_icon{{ textarea }}"></i></button>
+	<button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
+		<span class="visually-hidden">Toggle Dropdown</span>
+	</button>
+	<ul class="dropdown-menu">
+		<li><a class="dropdown-item" href="#">gpt-4o-mini</a></li>
+		<li><a class="dropdown-item" href="#">gpt-4o</a></li>
+		<li><a class="dropdown-item" href="#">o3-mini</a></li>
+		<li><a class="dropdown-item" href="#">o1-mini</a></li>
+		<li><a class="dropdown-item" href="#">claude-3-7-sonnet</a></li>
+		<li><a class="dropdown-item" href="#">claude-3-5-sonnet</a></li>
+		<li><a class="dropdown-item" href="#">deepseek-chat</a></li>
+		<li><a class="dropdown-item" href="#">deepseek-reasoner</a></li>
+		<li><a class="dropdown-item" href="#">gemini-2.0-flash</a></li>
+		<li><a class="dropdown-item" href="#">gemini-1.5-flash</a></li>
+		<li><a class="dropdown-item" href="#">meta-llama/Meta-Llama-3.1-8B-Instruct-Turbo</a></li>
+		<li><a class="dropdown-item" href="#">meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo</a></li>
+		<li><a class="dropdown-item" href="#">meta-llama/Meta-Llama-3.1-405B-Instruct-Turbo</a></li>
+		<li><a class="dropdown-item" href="#">mistral-large-latest</a></li>
+		<li><a class="dropdown-item" href="#">pixtral-large-latest</a></li>
+		<li><a class="dropdown-item" href="#">codestral-latest</a></li>
+		<li><a class="dropdown-item" href="#">google/gemma-2-27b-it</a></li>
+		<li><a class="dropdown-item" href="#">grok-beta</a></li>
+	</ul>
+</div>
 
-    <script src="https://js.puter.com/v2/"></script>
-    <script>
-		// https://docs.puter.com/playground/
-		document.getElementById("generate{{ textarea }}").addEventListener("click", (e) => {
-			document.getElementById("{{ textarea }}").value = "";
+<script src="https://js.puter.com/v2/"></script>
+<script>
+	var model = "gpt-4o-mini";
+	// https://docs.puter.com/playground/
+
+	document.querySelectorAll('#aiDropDown{{ textarea }} .dropdown-item').forEach(item => {
+		item.addEventListener('click', (e) => {
 			e.preventDefault();
-			document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-robot");
-			document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-arrows-rotate", "fa-spin");		
-
-			(async () => {
-				const textarea = document.getElementById('{{ textarea }}');
-
-				const chat_resp = await puter.ai.chat('Language : {{ locale }}. Write a tweet on - {{ text }}', { stream: true });
-
-				for await (const part of chat_resp) {
-					textarea.value += part?.text;
-					textarea.scrollTop = textarea.scrollHeight;
-				}
-
-				document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-robot");
-				document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-arrows-rotate", "fa-spin");
-				
-				if(document.getElementById("limit_string_{{ textarea }}") !== null)
-					document.getElementById("limit_string_{{ textarea }}").innerHTML = limit - document.getElementById("{{ textarea }}").value.length;
-			})();
+			e.stopImmediatePropagation();
+			model = e.srcElement.innerHTML;
+			const dropdownToggle = document.querySelector('#aiDropDown{{ textarea }} [data-bs-toggle="dropdown"]');
+			const dropdown = bootstrap.Dropdown.getInstance(dropdownToggle);
+			if (dropdown) dropdown.hide();
 		});
-    </script>
+	});
+
+	document.getElementById("generate{{ textarea }}").addEventListener("click", (e) => {
+		document.getElementById("{{ textarea }}").value = "";
+		e.preventDefault();
+		document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-robot");
+		document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-arrows-rotate", "fa-spin");		
+
+		(async () => {
+			const textarea = document.getElementById('{{ textarea }}');
+
+			const chat_resp = await puter.ai.chat('Language : {{ locale }}. Write a tweet on - {{ text }}', { stream: true, model: model });
+
+			for await (const part of chat_resp) {
+				textarea.value += part?.text;
+				textarea.scrollTop = textarea.scrollHeight;
+			}
+
+			document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-robot");
+			document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-arrows-rotate", "fa-spin");
+			
+			if(document.getElementById("limit_string_{{ textarea }}") !== null)
+				document.getElementById("limit_string_{{ textarea }}").innerHTML = limit - document.getElementById("{{ textarea }}").value.length;
+		})();
+	});
+</script>
 {% endmacro %}
