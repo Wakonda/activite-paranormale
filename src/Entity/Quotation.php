@@ -86,6 +86,10 @@ class Quotation
 		return $this->family == self::SAYING_FAMILY;
 	}
 
+	public function isLyricFamily(): bool {
+		return $this->family == self::LYRIC_FAMILY;
+	}
+
 	public function getTitle() {
 		if($this->isPoemFamily())
 			return $this->title;
@@ -251,7 +255,7 @@ class Quotation
 		return $this->music;
 	}
 
-	public function qetMusic($music)
+	public function setMusic($music)
 	{
 		$this->music = $music;
 	}

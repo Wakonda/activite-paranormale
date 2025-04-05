@@ -83,6 +83,19 @@
 				</tbody>
 			</table>
 		{% endif %}
+		
+		{% if lyrics is not empty %}
+			<br>
+			<h3>{{ "quotation.index.Lyric"|trans([], "validators") }}</h3>
+			<table class="table table-striped table-bordered">
+				{% for lyric in lyrics %}
+					<tr>
+						<td>{{ lyric.title }}</td>
+						<td><a href="{{ path('Lyric_Read', {id: lyric.id}) }}" class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a></td>
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
 	
 		{% if album is not empty %}
 			{% set datas = get_store_by_entity(album, "album", "AlbumStore") %}
@@ -94,8 +107,8 @@
 				{% for data in datas %}
 					{% include "store/Store/_product.html.twig" with { entity: data } %}
 				{% endfor %}
-				<hr>
 			{% endif %}
+			<hr>
 			<p class="image"><a href="" id="help_licence_link"><img src="{{ asset('extended/photo/licence/'~album.licence.logo) }}" alt="{{ album.licence.title }}" /></a></p>
 		{% endif %}
 

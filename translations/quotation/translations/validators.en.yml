@@ -5,6 +5,7 @@ quotation:
         Poem: "Poem"
         Humor: "Humor"
         Saying: "Saying"
+        Lyric: "Lyrics"
     search:
         SearchSort: "Search / Sort"
         Keywords: "Keywords"
@@ -21,6 +22,7 @@ quotation:
         Poem: "Poem"
         Humor: "Humor"
         Saying: "Saying"
+        Lyric: "Lyrics"
         Read: "Read"
     read:
         Explanation: "Explanation"
@@ -32,6 +34,7 @@ quotation:
         Poem: "Poem"
         Humor: "Humor"
         Saying: "Saying"
+        Lyric: "Lyrics"
         Source: "Source"
         Language: "Language"
         Explanation: "Explanation"

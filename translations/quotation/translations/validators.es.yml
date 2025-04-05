@@ -5,6 +5,7 @@ quotation:
         Poem: "Poesía"
         Humor: "Humor"
         Saying: "Refrán"
+        Lyric: "Lírica"
     search:
         SearchSort: "Buscar / Ordenar"
         Keywords: "Palabras clave"
@@ -21,6 +22,7 @@ quotation:
         Poem: "Poesía"
         Humor: "Humor"
         Saying: "Refrán"
+        Lyric: "Lírica"
         Read: "Leer"
     read:
         Explanation: "Explicación"
@@ -32,6 +34,7 @@ quotation:
         Poem: "Poesía"
         Humor: "Humor"
         Saying: "Refrán"
+        Lyric: "Lírica"
         Source: "Fuente"
         Language: "Lengua"
         Explanation: "Explicación"

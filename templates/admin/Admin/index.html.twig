@@ -125,6 +125,10 @@
 								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Saying"|trans([], "validators") }}</a></td>
 								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::SAYING_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
 							</tr>
+							<tr>
+								<td><a href="{{ path('Quotation_Admin_Index') }}">{{ "quotation.admin.Lyric"|trans([], "validators") }}</a></td>
+								<td><a href="{{ path('Quotation_Admin_New', { family: constant('App\\Entity\\Quotation::LYRIC_FAMILY') }) }}"><i class="fas fa-pencil-alt" aria-hidden="true"></i> {{ "admin.index.Create"|trans([], "validators") }}</a></td>
+							</tr>
 						</tbody>
 					</table>
 				</div>

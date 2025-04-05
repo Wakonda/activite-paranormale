@@ -11,6 +11,7 @@ use App\Entity\Artist;
 use App\Entity\Album;
 use App\Entity\Music;
 use App\Entity\MusicGenre;
+use App\Entity\Quotation;
 use App\Form\Type\ArtistSearchType;
 use App\Service\APImgSize;
 
@@ -108,11 +109,14 @@ class MusicController extends AbstractController
 		$entity = $em->getRepository(Music::class)->find($id);
 		$album = $entity->getAlbum();
 		$artist = !empty($album) ? $album->getArtist() : $entity->getArtist();
+		
+		$lyrics = $em->getRepository(Quotation::class)->findBy(["music" => $entity]);
 
 		return $this->render('music/Music/music.html.twig', [
 			"album" => $album,
 			'entity' => $entity,
-			'artist' => $artist
+			'artist' => $artist,
+			'lyrics' => $lyrics
 		]);
 	}
 

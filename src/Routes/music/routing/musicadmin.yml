@@ -50,6 +50,10 @@ Music_Admin_Wikidata:
     path: /wikidata
     controller: App\Controller\MusicAdminController::wikidataAction
 
+Music_Admin_Autocomplete:
+    path:  /autocomplete
+    controller: App\Controller\MusicAdminController::autocomplete
+
 Festival_Admin_Autocomplete:
     path: /festival/autocomplete
     controller: App\Controller\MusicAdminController::autocompleteFestival

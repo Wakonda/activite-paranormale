@@ -296,4 +296,31 @@ class MusicAdminController extends AdminGenericController
 
         return new JsonResponse(["results" => $results]);
 	}
+
+	public function autocomplete(Request $request, EntityManagerInterface $em)
+	{
+		$query = $request->query->get("q", null);
+		$locale = $request->query->get("locale", null);
+		$kinds = $request->query->all("kinds");
+
+		if(is_numeric($locale)) {
+			$language = $em->getRepository(Language::class)->find($locale);
+			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
+		}
+
+		$datas =  $em->getRepository(Music::class)->getAutocomplete($locale, $query);
+
+		$results = [];
+
+		foreach($datas as $data)
+		{
+			$obj = new \stdClass();
+			$obj->id = $data["id"];
+			$obj->text = $data["title"]." - ".$data["artistTitle"].(!empty($d = $data["albumTitle"]) ? " ($d)" : "");
+			
+			$results[] = $obj;
+		}
+
+        return new JsonResponse(["results" => $results]);
+	}
 }

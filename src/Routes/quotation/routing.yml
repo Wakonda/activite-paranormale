@@ -24,6 +24,16 @@ Humor_listDatatables:
     path:  /listhumordatatables
     controller: App\Controller\QuotationController::listHumorDatatables
 
+Lyric_Read:
+    path:  /lyric/read/{id}
+    controller: App\Controller\QuotationController::readLyric
+    requirements:
+        id: \d+
+
+Lyric_listDatatables:
+    path:  /listlyricdatatables
+    controller: App\Controller\QuotationController::listLyricDatatables
+
 Proverb_listDatatables:
     path:  /listproverbdatatables
     controller: App\Controller\QuotationController::listProverbDatatables

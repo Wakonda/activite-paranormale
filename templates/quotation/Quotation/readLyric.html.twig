@@ -1,0 +1,77 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "quotation.index.Lyric"|trans([], "validators") }} - {{ entity.title }}{% endblock %}
+{% block h2_title %}
+	{% set artist = (entity.music.album is not null ? entity.music.album.artist : entity.music.artist) %}
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"></span>{{ "quotation.index.Lyric"|trans([], "validators") }} - {{ artist.title }}</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/read-lyric.webp') }}" alt="Woman playing guitar" width="400"></p>
+	<hr>
+	<div id="quotation_bubble" class="alert alert-light">
+	&ldquo;{{ entity.textQuotation|nl2br }}&rdquo;
+	</div>
+	<hr>
+	<div id="author_quotation">
+		<a href="{{ path('Music_Music', { 'id' : entity.music.id, 'title_slug' : entity.music.slug }) }}" class="fw-bold">{{ entity.music.musicPiece }}</a>
+		{% set artist = (entity.music.album is not null ? entity.music.album.artist : entity.music.artist) %}
+		{% set album = entity.music.album %}
+		
+		- <i class="fas fa-microphone-lines"></i> <a href="{{ path('Music_Album', { 'id' : artist.id, 'title_slug' : artist.title }) }}">{{ artist.title }}</a> {% if album is not empty %}(<i class="fas fa-record-vinyl"></i> <a href="{{ path('Music_Listen', { id: album.id, artist: album.artist.title, artistId: album.artist.id, album: album.title }) }}">{{ album.title }})</a>{% endif %}
+	</div>
+	<hr>
+
+	{% if entity.images is not empty %}
+		<div id="carousel-quote-read" class="carousel-pagination carousel slide mt-3" data-interval="false">
+			<ol class="carousel-indicators carousel-indicators-numbers pagination">
+			{% set i = 0 %}
+			{% set j = 1 %}
+			{% for imageEntity in entity.images %}
+				<li data-bs-target="#carousel-quote-read" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
+				{% set i = i + 1 %}
+				{% set j = j + 1 %}
+			{% endfor %}
+			</ol>
+
+			<div class="carousel-inner">
+				{% set i = 0 %}
+				{% for imageEntity in entity.images %}
+					<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
+						<div>{{ imageEntity.image|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</div>
+					</div>
+					{% set i = i + 1 %}
+				{% endfor %}
+			</div>
+		</div>
+	{% endif %}
+
+	{% if entity.explanation is not empty %}
+	<br>
+	<br>
+	<h3>{{ "quotation.read.Explanation"|trans([], "validators") }}</h3>
+	{{ entity.explanation|raw }}
+	{% endif %}
+
+	{% set sources = source_document(entity.source, entity.language) %}
+	{% if sources is not empty %}
+		<h3>{{ "news.index.Sources"|trans([], "validators") }}</h3>
+		{{ sources|raw }}
+	{% endif %}
+
+	{% include 'news/Widget/socialNetwork.html.twig' with {'titleNetwork':entity.textQuotation~'('~entity.country.title~')', 'entity':entity, 'url':app.request.server.get("REQUEST_URI")} %}
+
+	{% if entity.tags is not empty %}
+		<br>
+		{% set tags = json_decode(entity.tags)|column("value") %}
+		<fieldset class="p-2">
+			<legend class="ml-2 float-none"> Tags </legend>
+			{% for tag in tags %}
+				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+			{% endfor %}
+		</fieldset>
+	{% endif %}
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

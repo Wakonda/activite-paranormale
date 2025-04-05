@@ -48,7 +48,8 @@ class QuotationAdminType extends AbstractType
 						"quotation.index.Humor" => Quotation::HUMOR_FAMILY,
 						"quotation.index.Proverb" => Quotation::PROVERB_FAMILY,
 						"quotation.index.Poem" => Quotation::POEM_FAMILY,
-						"quotation.index.Saying" => Quotation::SAYING_FAMILY
+						"quotation.index.Saying" => Quotation::SAYING_FAMILY,
+						"quotation.index.Lyric" => Quotation::LYRIC_FAMILY
 					],
 					'translation_domain' => 'validators'
 			])
@@ -63,6 +64,20 @@ class QuotationAdminType extends AbstractType
 				'page_limit' => 10,
 				'primary_key' => 'id',
 				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'required' => true,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'language' => $language
+			])
+			->add('music', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Music_Admin_Autocomplete',
+				'class' => 'App\Entity\Music',
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'musicPiece',
 				'allow_clear' => true,
 				'delay' => 250,
 				'cache' => false,

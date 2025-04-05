@@ -10,6 +10,7 @@
 		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::POEM_FAMILY') ? "active" : "" }}">{{ "quotation.index.Poem"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></a>
 		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::HUMOR_FAMILY') ? "active" : "" }}">{{ "quotation.index.Humor"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::HUMOR_FAMILY')] }}</span></a>
 		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::SAYING_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::SAYING_FAMILY') ? "active" : "" }}">{{ "quotation.index.Saying"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::SAYING_FAMILY')] }}</span></a>
+		<a href='{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::LYRIC_FAMILY') }) }}' class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::LYRIC_FAMILY') ? "active" : "" }}">{{ "quotation.index.Lyric"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ counter[constant('App\\Entity\\Quotation::LYRIC_FAMILY')] }}</span></a>
 	</div>
 
 	{% if family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') %}
@@ -22,6 +23,8 @@
 		{{ render(controller('App\\Controller\\QuotationController::listHumor')) }}
 	{% elseif family == constant('App\\Entity\\Quotation::SAYING_FAMILY') %}
 		{{ render(controller('App\\Controller\\QuotationController::listSaying')) }}
+	{% elseif family == constant('App\\Entity\\Quotation::LYRIC_FAMILY') %}
+		{{ render(controller('App\\Controller\\QuotationController::listLyric')) }}
 	{% endif %}
 	<br>
 	<br>

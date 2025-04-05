@@ -13,6 +13,9 @@
 <div class="form-table-cell form-table-cell-head countryContainer">{{ form_label(form.country, "quotation.admin.Country"|trans([], "validators")) }}</div>
 <div class="form-table-cell countryContainer">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head musicContainer">{{ form_label(form.music, "quotation.admin.Lyric"|trans([], "validators")) }}</div>
+<div class="form-table-cell musicContainer">{{ form_errors(form.music) }}{{ form_widget(form.music, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head dateContainer">{{ form_label(form.date, "quotation.admin.Date"|trans([], "validators")) }}</div>
 <div class="form-table-cell dateContainer">{{ form_errors(form.date) }}{{ form_widget(form.date, { 'attr': {'class': 'form-control'} }) }}</div>
 
@@ -48,6 +51,8 @@
 			element.style.display="none";
 		for (let element of document.getElementsByClassName("dateContainer"))
 			element.style.display="none";
+		for (let element of document.getElementsByClassName("musicContainer"))
+			element.style.display="none";
 
 		if(value == "{{ constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}")
 			for (let element of document.getElementsByClassName("authorContainer"))
@@ -63,6 +68,10 @@
 
 		if(value == "{{ constant('App\\Entity\\Quotation::PROVERB_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::SAYING_FAMILY') }}")
 			for (let element of document.getElementsByClassName("countryContainer"))
+				element.style.display="block";
+
+		if(value == "{{ constant('App\\Entity\\Quotation::LYRIC_FAMILY') }}" || value == "{{ constant('App\\Entity\\Quotation::LYRIC_FAMILY') }}")
+			for (let element of document.getElementsByClassName("musicContainer"))
 				element.style.display="block";
 	}
 </script>

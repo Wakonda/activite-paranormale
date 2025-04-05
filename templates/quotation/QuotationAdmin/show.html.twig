@@ -37,6 +37,19 @@
 		<div class="form-table-cell">{% if entity.country is not empty %}<img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="" width="20" height="13" />{% endif %}</div>
 	{% endif %}
 
+	{% if entity.isProverbFamily() or entity.isLyricFamily() %}
+		<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Lyric"|trans([], "validators") }}</div>
+		<div class="form-table-cell">
+		{% if entity.music is not empty %}
+			{{ entity.music.musicPiece }}
+			{% set artist = (entity.music.album is not null ? entity.music.album.artist.title : entity.music.artist.title) %}
+			{% set album = entity.music.album %}
+			
+			- {{ artist }} {% if album is not empty %}({{ album.title }}){% endif %}
+		{% endif %}
+		</div>
+	{% endif %}
+
 	{% if entity.isSayingFamily() %}
 		<div class="form-table-cell form-table-cell-head">{{ "quotation.admin.Date"|trans([], "validators") }}</div>
 		<div class="form-table-cell">{{ entity.date|doPartialDate(app.request.locale, "MMMMd") }}</div>

@@ -52,6 +52,12 @@ class QuotationController extends AbstractController
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::SAYING_FAMILY]);
         return $this->render('quotation/Quotation/listSaying.html.twig', ["family" => Quotation::SAYING_FAMILY, "form" => $form->createView()]);
     }
+
+    public function listLyric(Request $request)
+    {
+		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::LYRIC_FAMILY]);
+        return $this->render('quotation/Quotation/listLyric.html.twig', ["family" => Quotation::LYRIC_FAMILY, "form" => $form->createView()]);
+    }
 	
 	public function listHumorDatatables(Request $request, EntityManagerInterface $em)
     {
@@ -146,6 +152,62 @@ class QuotationController extends AbstractController
 			$row[] = "<i>".$entity->getTextQuotation()."</i>";
 			$row[] = "<a href='".$this->generateUrl('Biography_Show', ['id' => $entity->getAuthorQuotation()->getId(), 'title_slug' => $entity->getAuthorQuotation()->getSlug()])."'>".$entity->getAuthorQuotation()."</a>";
 			$row[] = "<a href='".$this->generateUrl('Quotation_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
+
+			$output['data'][] = $row;
+		}
+
+		$response = new Response(json_encode($output));
+		$response->headers->set('Content-Type', 'application/json');
+
+		return $response;
+    }
+	
+	public function listLyricDatatables(Request $request, EntityManagerInterface $em)
+    {
+		$language = $request->getLocale();
+
+		$iDisplayStart = $request->query->get('start');
+		$iDisplayLength = $request->query->get('length');
+		$sSearch = $request->query->all('search')["value"];
+
+		$sortByColumn = [];
+		$sortDirColumn = [];
+
+		for($i=0 ; $i<intval($order = $request->query->all('order')); $i++)
+		{
+			$sortByColumn[] = $order[$i]['column'];
+			$sortDirColumn[] = $order[$i]['dir'];
+		}
+
+		$form = $this->createForm(QuotationSearchType::class, null, ["locale" => $request->getLocale(), "family" => Quotation::LYRIC_FAMILY]);
+		parse_str($request->query->get($form->getName()), $datas);
+		$form->submit($datas[$form->getName()]);
+
+		$datas = $form->getData();
+
+		if($request->query->has("action") and $request->query->get("action") == "reset")
+			$datas = [];
+
+        $entities = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::LYRIC_FAMILY, $language, $datas);
+		$iTotal = $em->getRepository(Quotation::class)->getDatatablesForIndex($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, Quotation::LYRIC_FAMILY, $language, $datas, true);
+
+		$output = [
+			"recordsTotal" => $iTotal,
+			"recordsFiltered" => $iTotal,
+			"data" => []
+		];
+
+		foreach($entities as $entity)
+		{
+			$artist = (!empty($entity->getMusic()->getAlbum()) ? $entity->getMusic()->getAlbum()->getArtist() : $entity->getMusic()->getArtist());
+			// $album = $entity->getMusic()->getAlbum();
+			
+			$row = [];
+			$row[] = $entity->getId();
+			$row[] = "<i>".$entity->getTextQuotation()."</i>";
+			$row[] = "<a href='".$this->generateUrl('Music_Music', ['id' => $entity->getMusic()->getId(), 'title_slug' => $entity->getMusic()->getUrlSlug()])."'>".$entity->getMusic()->getMusicPiece()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Music_Album', ['id' => $artist->getId(), 'title_slug' => $artist->getUrlSlug()])."'>".$artist->getTitle()."</a>";
+			$row[] = "<a href='".$this->generateUrl('Lyric_Read', ['id' => $entity->getId()])."' class='btn btn-info btn-sm'><i class='fa-solid fa-info fa-fw'></i></a>";
 
 			$output['data'][] = $row;
 		}
@@ -439,6 +501,13 @@ class QuotationController extends AbstractController
 		$entity = $em->getRepository(Quotation::class)->find($id);
 
 		return $this->render("quotation/Quotation/readPoem.html.twig", ['entity' => $entity]);
+	}
+
+	public function readLyric(EntityManagerInterface $em, $id)
+	{
+		$entity = $em->getRepository(Quotation::class)->find($id);
+
+		return $this->render("quotation/Quotation/readLyric.html.twig", ['entity' => $entity]);
 	}
 	
 	public function quotationsServerSide(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $authorId, $page)

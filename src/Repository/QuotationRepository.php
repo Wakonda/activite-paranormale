@@ -86,6 +86,13 @@ class QuotationRepository extends EntityRepository
 			$qb->join('c.country', 'a');
 		} elseif($family == Quotation::HUMOR_FAMILY) {
 			$aColumns = ['c.id', 'c.textQuotation'];
+		} elseif($family == Quotation::LYRIC_FAMILY) {
+			$qb->join("c.music", "m")
+			   ->leftjoin("m.album", "a")
+			   ->leftjoin("m.artist", "ar")
+			   ->leftjoin("a.artist", "ara");
+
+			$aColumns = ['c.id', 'c.textQuotation', 'm.musicPiece', 'IF(ara.id IS NOT NULL, ara.title, ar.title)'];
 		}
 
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);

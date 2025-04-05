@@ -103,6 +103,39 @@ class MusicRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
+	public function getAutocomplete($locale, $query)
+	{
+		$qb = $this->createQueryBuilder("b");
+		
+		$qb->select("b.musicPiece AS title")
+		   ->addSelect("b.id AS id")
+		   ->addSelect("a.title AS albumTitle")
+		   ->addSelect("IF(ara.id IS NOT NULL, ara.title, ar.title) AS artistTitle")
+		   ->leftjoin("b.album", "a")
+		   ->leftjoin("b.artist", "ar")
+		   ->leftjoin("a.artist", "ara");
+		
+		if(!empty($locale)) {
+			$qb
+			   ->leftjoin("a.language", "la")
+			   ->leftjoin("ar.language", "lar")
+			   ->where('(a IS NOT NULL AND la.abbreviation = :locale) OR (ar IS NOT NULL AND lar.abbreviation = :locale)')
+			   ->setParameter('locale', $locale);
+		}
+
+		if(!empty($query)) {
+			$query = is_array($query) ? "%".$query[0]."%" : "%".$query."%";
+			$query = "%".$query."%";
+			$qb->andWhere("b.musicPiece LIKE :query")
+			   ->setParameter("query", $query);
+		}
+
+		$qb->orderBy("b.musicPiece", "ASC")
+		   ->setMaxResults(15);
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function getDatatablesForIndexByAlbumAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $albumId, $count = false)
 	{
 		$aColumns = ['c.musicPiece', 'c.id'];

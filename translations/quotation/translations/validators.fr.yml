@@ -5,6 +5,7 @@ quotation:
         Poem: "Poésie"
         Humor: "Humour"
         Saying: "Dicton"
+        Lyric: "Parole"
     search:
         SearchSort: "Rechercher / Trier"
         Keywords: "Mots-clés"
@@ -21,6 +22,7 @@ quotation:
         Poem: "Poésie"
         Humor: "Humour"
         Saying: "Dicton"
+        Lyric: "Parole"
         Read: "Lire"
     read:
         Explanation: "Explication"
@@ -32,6 +34,7 @@ quotation:
         Poem: "Poésie"
         Humor: "Humour"
         Saying: "Dicton"
+        Lyric: "Parole"
         Source: "Source"
         Language: "Langue"
         Explanation: "Explication"
