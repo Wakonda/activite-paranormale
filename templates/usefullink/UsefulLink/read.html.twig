@@ -15,10 +15,10 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
+	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { entity: entity } %}
 
 	{% if entity.photoIllustrationFilename is not empty %}
-		<p class="image mb-2">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, entity.photoIllustrationCaption)|raw }}</p>
+		<p class="image mb-2">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { class: 'mx-auto d-block img-fluid', alt: entity.title }, entity.photoIllustrationCaption)|raw }}</p>
 	{% endif %}
 
 	<div>
