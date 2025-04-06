@@ -195,7 +195,7 @@ class QuotationRepository extends EntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = ['c.id', "IF(co.title IS NOT NULL, co.title, a.title)", 'c.textQuotation', 'l.title', 'c.family', 'c.id'];
+		$aColumns = ['c.id', "IF(co.title IS NOT NULL, co.title, a.title)", 'c.textQuotation', 'c.family', 'l.title', 'c.id'];
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
@@ -213,6 +213,19 @@ class QuotationRepository extends EntityRepository
 
 			$qb->andWhere(implode(" OR ", $orWhere))
 			   ->setParameter('search', $search);
+		}
+
+		if(!empty($searchByColumns))
+		{
+			foreach($aColumns as $i => $aSearchColumn)
+			{
+				if(!empty($searchByColumns[$i]) and isset($searchByColumns[$i]["value"]) and !empty($value = $searchByColumns[$i]["value"]))
+				{
+					$search = "%".$value."%";
+					$qb->andWhere($aSearchColumn." LIKE :searchByColumn".$i)
+					   ->setParameter("searchByColumn".$i, $search);
+				}
+			}
 		}
 
 		if($count)

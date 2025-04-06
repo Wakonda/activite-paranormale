@@ -5,6 +5,34 @@
 {% block new_admin_route %}{{ path('Quotation_Admin_New') }}{% endblock %}
 {% block indexdatatables_admin_route %}{{ path('Quotation_Admin_IndexDatatables') }}{% endblock %}
 
+{% block js_edit_additional %}
+	document.querySelector("select#selected_family").addEventListener("change", (e) => {
+		oTable.columns(3).search(e.target.value).draw();
+	});
+
+	{% if app.request.query.has('family') %}
+		document.addEventListener('DOMContentLoaded', function () {
+			oTable.columns(3).search("{{ app.request.query.get('family') }}").draw();
+		});
+	{% endif %}
+{% endblock %}
+
+{% block body_main_additional %}
+	<div class="container-fluid mt-3">
+		<label>{{ "quotation.admin.Family"|trans([], "validators") }}</label>
+		<select id="selected_family" class="form-select">
+			<option value=""></option>
+			<option value="{{ constant('App\\Entity\\Quotation::QUOTATION_FAMILY') }}" {% if app.request.query.get('family') == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') %}selected{% endif %}>{{ ("quotation.index." ~ constant('App\\Entity\\Quotation::QUOTATION_FAMILY')|ucfirst)|trans([], 'validators') }}</option>
+			<option value="{{ constant('App\\Entity\\Quotation::HUMOR_FAMILY') }}" {% if app.request.query.get('family') == constant('App\\Entity\\Quotation::HUMOR_FAMILY') %}selected{% endif %}>{{ ("quotation.index." ~ constant('App\\Entity\\Quotation::HUMOR_FAMILY')|ucfirst)|trans([], 'validators') }}</option>
+			<option value="{{ constant('App\\Entity\\Quotation::PROVERB_FAMILY') }}" {% if app.request.query.get('family') == constant('App\\Entity\\Quotation::PROVERB_FAMILY') %}selected{% endif %}>{{ ("quotation.index." ~ constant('App\\Entity\\Quotation::PROVERB_FAMILY')|ucfirst)|trans([], 'validators') }}</option>
+			<option value="{{ constant('App\\Entity\\Quotation::POEM_FAMILY') }}" {% if app.request.query.get('family') == constant('App\\Entity\\Quotation::POEM_FAMILY') %}selected{% endif %}>{{ ("quotation.index." ~ constant('App\\Entity\\Quotation::POEM_FAMILY')|ucfirst)|trans([], 'validators') }}</option>
+			<option value="{{ constant('App\\Entity\\Quotation::SAYING_FAMILY') }}" {% if app.request.query.get('family') == constant('App\\Entity\\Quotation::SAYING_FAMILY') %}selected{% endif %}>{{ ("quotation.index." ~ constant('App\\Entity\\Quotation::SAYING_FAMILY')|ucfirst)|trans([], 'validators') }}</option>
+			<option value="{{ constant('App\\Entity\\Quotation::LYRIC_FAMILY') }}" {% if app.request.query.get('family') == constant('App\\Entity\\Quotation::LYRIC_FAMILY') %}selected{% endif %}>{{ ("quotation.index." ~ constant('App\\Entity\\Quotation::LYRIC_FAMILY')|ucfirst)|trans([], 'validators') }}</option>
+		</select>
+		<hr>
+	</div>
+{% endblock %}
+
 {% block thead_admin_table %}
 	<th class="label_form">Id</th>
 	<th class="label_form">{{ "quotation.admin.Author"|trans([], "validators") }}</th>
