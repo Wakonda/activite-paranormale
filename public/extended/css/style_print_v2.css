@@ -1,6 +1,10 @@
-#templatemo_footer, #side_column, #comment_doc, #templatemo_banner, .vote_list, .icone, #social_network, .hidden_for_print, embed, iframe
+#templatemo_footer, #side_column, #comment_doc, #templatemo_banner, .vote_list, .icone, #social_network, .hidden_for_print, embed, iframe, .d-print-none
 {
-	display: none;
+	display: none !important;
+}
+
+#main_column {
+	width: 100%;
 }
 
 h2, p.image, .center, .hr2

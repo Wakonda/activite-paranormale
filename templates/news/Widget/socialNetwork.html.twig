@@ -1,4 +1,4 @@
-<div id="social_network" class="d-flex justify-content-between justify-content-md-start flex-wrap">
+<div id="social_network" class="d-flex justify-content-between justify-content-md-start flex-wrap d-print-none">
 	{% if entity.getPdfVersionRoute() is defined %}
 	<div class="d-none d-sm-inline pe-1 pb-1">
 		<a href="{{ path(entity.getPdfVersionRoute(), {'id':entity.id} ) }}"><img src="{{ asset('extended/photo/pdf.svg') }}" width="40" alt="PDF version" class="social_network_to_select"></a>

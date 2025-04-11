@@ -64,7 +64,7 @@
 
 		private function initFeed()
 		{
-			return new \DOMDocument("1.0", "ISO-8859-15");
+			return new \DOMDocument("1.0", "UTF-8");
 		}
 
 		private function headerFeed($xml)
