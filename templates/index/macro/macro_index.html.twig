@@ -929,11 +929,8 @@
 			plugins: 'lists link image charmap media code fullscreen',
 			valid_elements: '*[*]',
 			paste_preprocess : function(pl, o) {
-				o.content = o.content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/gi, '');
 				o.content = o.content.replace(/<(\w+)\s*(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)(?:(?:(?:(?!href=|alt=)[^>]))*((?:href|alt)=['"][^'"]*['"]\s*)?)[^>]*>/gi, '<$1 $2$3$4>');
 				o.content = o.content.replace(/<[a-z][a-z0-9]*\s*?>\s*<\/[a-z][a-z0-9]*>/gi, '');
-				o.content = o.content.replace(/(<|&lt;)br\s*\/*(>|&gt;)/gi, '');
-				o.content = o.content.replace(/<p>[\n\r]+<\/p>/g, '');
 				o.content = o.content.replace(/(<p>\s*<\/p>)*/gi, '');
 			},
 			setup: function (editor) {
