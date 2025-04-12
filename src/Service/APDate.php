@@ -158,11 +158,39 @@
 				$skeleton .= (str_starts_with($year, "-") ? " G" : "");
 
 			$pattern = $this->getFormat($locale, $skeleton);
-			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::GREGORIAN, $pattern);
-			
+			$fmt = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::TRADITIONAL, $pattern);
+
 			if(empty($year))
 				$year = date("Y");
-			
+
+			if(empty(intval($day)))
+				$day = "01";
+
+			if($year <= 1582) {
+				$d = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::TRADITIONAL, "d");
+				$m = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::TRADITIONAL, "MMMM");
+				$y = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::TRADITIONAL, "YYYY");
+				$g = new \IntlDateFormatter($locale, \IntlDateFormatter::LONG, \IntlDateFormatter::NONE, \date_default_timezone_get(), \IntlDateFormatter::TRADITIONAL, "G");
+// dump();
+				$isBC = str_starts_with($year, "-");
+				$year = str_pad(ltrim($year, "-"), 4, "0", STR_PAD_LEFT);
+				$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+				$day = str_pad($day, 2, "0", STR_PAD_LEFT);
+				
+				$dateString = rtrim(($isBC ? "-" : "").$year."-".$month."-".$day, "-");
+
+				$date = str_replace("YYYY", ltrim($y->format(new \DateTime($dateString)), "-0"), $pattern);
+				$date = str_replace("G", $g->format(new \DateTime($dateString)), $date);
+				
+				$dateString = rtrim("2000-".$month."-".$day, "-");
+				$date = preg_replace("/(?<![a-zA-Z])d(?![a-zA-Z])/", $d->format(new \DateTime($dateString)), $date);
+
+				$date = str_replace("MMMM", $m->format(new \DateTime($dateString)), $date);
+				$date = str_replace("'", "", $date);
+
+				return $date;
+			}
+
 			$dateString = rtrim($year."-".$month."-".$day, "-");
 
 			return $this->removeZero(ucfirst($fmt->format(new \DateTime($dateString))));
