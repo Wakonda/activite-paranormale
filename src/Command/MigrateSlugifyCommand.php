@@ -48,6 +48,13 @@ class MigrateSlugifyCommand extends Command
 			$conn->exec("UPDATE Biography SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
 		}
 		
+		$entities = $this->em->getRepository("\App\Entity\Cartography")->findAll();
+		
+		foreach($entities as $entity) {
+			if(empty($entity->getSlug()))
+			$conn->exec("UPDATE Cartography SET slug = '".$generator->generate($entity->getTitle())."' WHERE id = ".$entity->getId());
+		}
+		
 		/*$entities = $this->em->getRepository("\App\Entity\Movies\GenreAudiovisual")->findAll();
 		
 		foreach($entities as $entity) {
