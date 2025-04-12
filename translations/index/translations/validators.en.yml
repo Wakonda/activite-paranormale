@@ -143,6 +143,7 @@ language:
         Direction: "Writing system"
         RightToLeft: "From right to left"
         LeftToRight: "From left to right"
+        Current: "Site language"
 licence:
     showColorbox:
         WhatLicensesChoose: "What licenses choose?"

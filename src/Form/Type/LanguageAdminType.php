@@ -9,6 +9,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 
 class LanguageAdminType extends AbstractType
 {
@@ -20,6 +21,7 @@ class LanguageAdminType extends AbstractType
             ->add('logo', FileType::class, ["required" => true, 'data_class' => null])
 			->add('photo_selector', FileSelectorType::class, ['required' => false, 'mapped' => false, 'data' => $builder->getData()->getLogo()])
 			->add('direction', ChoiceType::class, ['constraints' => [new NotBlank()], 'expanded' => true, 'multiple' => false, 'choices' => ['language.admin.RightToLeft' => 'rtl', 'language.admin.LeftToRight' => 'ltr'], 'translation_domain' => 'validators'])
+			->add('current', CheckboxType::class, ["required" => false])
         ;
     }
 
