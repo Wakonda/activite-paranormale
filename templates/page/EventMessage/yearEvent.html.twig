@@ -19,7 +19,7 @@
 
 	<p id="media_duration">
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="" width="25" class="align-middle" />
-		<span class="align-middle"><b>{{ currentDate|date("Y") }}</b></span>
+		<span class="align-middle"><b>{{ currentDate|date("Y")|number_format }}</b></span>
 	</p>
 
 	{% for theme, data in res %}
