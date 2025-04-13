@@ -12,6 +12,12 @@
 			});
 		</script>
 	</div>
+	{% if entity.title is defined %}
+		<div class="pe-1 pb-1">
+			{% set email = "Activité-Paranormale - " ~ entity.title ~ "\r\n\r\n" ~ ("admin.general.Read"|trans([], "validators")) ~ " : " ~ app.request.uri %}
+			<a href="mailto:?subject={{ email|url_encode }}" class="btn social-share share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Email" style="background: darkmagenta;"><i class="fab fa-at fa-lg fa-fw"></i></a>
+		</div>
+	{% endif %}
 	<div class="pe-1 pb-1">
 		<a href="#" class="btn social-share facebook share-data {{ is_mobile() ? 'btn-sm' : '' }}" title="Facebook"><i class="fab fa-facebook-f fa-lg fa-fw"></i></a>
 	</div>
