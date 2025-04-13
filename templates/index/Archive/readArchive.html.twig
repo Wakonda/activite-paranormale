@@ -23,6 +23,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
+	<div class="alert alert-danger">{{ "admin.general.EntryArchived"|trans([], "validators") }}</div>
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	{% include 'index/Archive/readArchive'~className~'.html.twig' %}
 {% endblock %}

@@ -1,5 +1,3 @@
-{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
-
 <p id="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), 'imgGalery', { 'id': 'img_zoomed' }, null, true, true)|raw }}</p>
 <div>
 <p>{{ entity.text|raw }}</p>	

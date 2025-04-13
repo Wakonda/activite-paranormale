@@ -1,6 +1,5 @@
-{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 <p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption, true, true)|raw }}</p>
-<br />
+<br>
 {% set dir = entity.language.direction %}
 <div dir="{{ dir }}">{{ entity.abstractText|raw }}</div>
 <div dir="{{ dir }}">{{ (entity.text|displayPrivateFile)|raw }}</div>

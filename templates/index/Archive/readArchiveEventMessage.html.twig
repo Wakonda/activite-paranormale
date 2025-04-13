@@ -1,24 +1,23 @@
 {% if entity.longitude is not empty and entity.latitude is not empty %}
-<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
-<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet' />
-<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
-<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
-<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+	<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+	<link href="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}" rel='stylesheet' />
+	<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+	<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+	<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
 
-<script>
-	var map = L.map('map-canvas').setView([{{ entity.latitude }}, {{ entity.longitude }}], 15);
+	<script>
+		var map = L.map('map-canvas').setView([{{ entity.latitude }}, {{ entity.longitude }}], 15);
 
-	L.marker([{{ entity.latitude }}, {{ entity.longitude }}]).addTo(map);
+		L.marker([{{ entity.latitude }}, {{ entity.longitude }}]).addTo(map);
 
-	L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-	}).addTo(map);
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
 
-	map.addControl(new L.Control.Fullscreen());
-</script>
+		map.addControl(new L.Control.Fullscreen());
+	</script>
 {% endif %}
 
-{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 <p class="image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 <p id="media_duration">
 	<a href="{{ path('EventMessage_Calendar') }}" alt="">

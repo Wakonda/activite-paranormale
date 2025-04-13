@@ -1,4 +1,3 @@
-{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 <p>{{ entity.text|raw }}</p>
 <br>
 {{ render(controller("App\\Controller\\FileManagementController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}

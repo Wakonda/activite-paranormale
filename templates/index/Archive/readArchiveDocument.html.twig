@@ -1,5 +1,3 @@
-{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
-
 {{ (asset(entity.getAssetImagePath()) ~ entity.pdfDoc)|displayPrivatePDF }}
 
 <hr>
