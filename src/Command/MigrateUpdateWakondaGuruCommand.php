@@ -38,7 +38,7 @@ class MigrateUpdateWakondaGuruCommand extends Command
 		
 		$conn = $this->em->getConnection();
 		
-		$conn->exec("update usefullink set id = CONCAT('888', id)");
+		/*$conn->exec("update usefullink set id = CONCAT('888', id)");
 		
 		$conn->exec("UPDATE usefullink SET id = 1 WHERE slug = 'calculer-le-temps-d-execution-d-un-script-php';");
 		$conn->exec("UPDATE usefullink SET id = 2 WHERE slug = 'fonction-in_array-en-jquery';");
@@ -392,7 +392,7 @@ JS - Récupérer le dernier élément d\'un tableau#@#2024-02-08 00:10:41.456718
 			$this->em->persist($entity);
 		}
 
-		$this->em->flush();
+		$this->em->flush();*/
 
 		$currentTags = 'Calculer le temps d’exécution d’un script PHP#@#PHP
 Fonction « in_array » en JQuery#@#jQuery
@@ -551,7 +551,7 @@ Créer un APK ou un AAB en ligne de commandes#@#Android';
 		
 		$tags = array_filter(array_unique($tags));
 		sort($tags);
-
+dd("kkk");
 		foreach($tags as $tag) {
 			$entity = $this->em->getRepository(UsefullinkTags::class)->findOneBy(["title" => $tag]);
 			

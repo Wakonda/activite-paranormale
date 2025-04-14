@@ -18,6 +18,9 @@ class UsefullinkTags
 	#[Groups('api_read')]
     private $title;
 
+	#[ORM\ManyToMany(targetEntity: 'App\Entity\UsefulLink', mappedBy: 'usefulLinkTags')]
+    private $usefulLinks;
+
     public function getId()
     {
         return $this->id;
@@ -33,5 +36,17 @@ class UsefullinkTags
     public function getTitle()
     {
         return $this->title;
+    }
+
+    public function setUsefulLinks(string $usefulLinks)
+    {
+        $this->usefulLinks = $usefulLinks;
+
+        return $this;
+    }
+
+    public function getUsefulLinks()
+    {
+        return $this->usefulLinks;
     }
 }

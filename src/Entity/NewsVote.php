@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 class NewsVote extends Vote
 {
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\News')]
-	#[ORM\JoinColumn(name: 'news_id', nullable: false)]
+	#[ORM\JoinColumn(name: 'news_id', nullable: true)]
     private $entity;
 
 	public function getMainEntityClassName()
