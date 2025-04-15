@@ -30,7 +30,7 @@ class TwitterAPI
 
 		$parameters['text'] = $message;
 
-		return $connection->post('tweets', $parameters, true);
+		return $connection->post('tweets', $parameters);
 	}
 
 	public function postLink(string $message, string $locale)
@@ -43,7 +43,7 @@ class TwitterAPI
 
 		$parameters['text'] = $message;
 
-		return $connection->post('tweets', $parameters, true);
+		return $connection->post('tweets', $parameters);
 	}
 
 	public function retweet(string $tweet_id, string $locale)
@@ -58,7 +58,7 @@ class TwitterAPI
 
 		$parameters['tweet_id'] = $tweet_id;
 
-		return $connection->post('users/'.$userId.'/retweets', $parameters, true);
+		return $connection->post('users/'.$userId.'/retweets', $parameters);
 	}
 
 	public function getUsernameById(string $id, string $locale)
