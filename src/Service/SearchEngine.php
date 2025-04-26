@@ -67,7 +67,7 @@ class SearchEngine {
 				$pdoSqlite->exec("INSERT INTO doclist (id, classname, searchText, language) VALUES ({$id}, '{$classname}', '{$text}', '{$language}')");
 			}
 		}
-		
+
 		$pdo = null;
 		$pdoSqlite = null;
 	}
@@ -88,12 +88,12 @@ class SearchEngine {
 			foreach($datas as $data) {
 				if(!isset($data["id"]))
 					throw new Exception("Field 'id' must be specified");
-				
+
 				$id = $data["id"];
-				
+
 				if(!isset($data["language"]))
 					throw new Exception("Field 'language' must be specified");
-				
+
 				$language = $data["language"];
 
 				unset($data["id"]);
@@ -114,66 +114,66 @@ class SearchEngine {
 				}
 			}
 		}
-		
+
 		$pdo = null;
 		$pdoSqlite = null;
 	}
-	
+
 	public function search(?string $keyword = null, ?string $language = null, ?string $classname = null, ?int $pageNumber = 0) {
 		$this->type = "text";
 		return $this->genericSearch($keyword, $language, $classname, $pageNumber);
 	}
-	
+
 	public function searchImage(?string $keyword = null, ?string $language = null, ?string $classname = null, ?int $pageNumber = 0) {
 		$this->type = "image";
 		return $this->genericSearch($keyword, $language, $classname, $pageNumber);
 	}
-		
+
 	private function genericSearch(?string $keyword = null, ?string $language = null, ?string $classname = null, ?int $pageNumber = 0) {
 		$startTimer = microtime(true);
-		
+
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
-		
+
 		$sql = $this->createSearchQuery($keyword, $language, $classname, $pageNumber);
 
 		$statement = $pdo->prepare($sql);
 		$statement->execute();
-		
+
 		$pdo = null;
-		
+
 		$res = $statement->fetchAllAssociative(PDO::FETCH_ASSOC);
-		
+
 		$stopTimer = microtime(true);
-		
+
 		return ["datas" => $res, "execution_time" => round($stopTimer - $startTimer, 7) * 1000];
 	}
 	
 	public function countDatas(?string $keyword = null, ?string $language = null, ?string $classname = null) {
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
-		
+
 		$sql = $this->createSearchQuery($keyword, $language, $classname, null, true);
-		
+
 		$statement = $pdo->query($sql);
-		
+
 		$pdo = null;
-		
+
 		return $statement->fetchColumn();
 	}
-	
+
 	public function getSQLQuery(?string $keyword = null, ?string $language = null, ?string $classname = null, string $select = "*"): String {
 		$params = [];
-		
+
 		if(!empty($keyword))
 			$params[] = "searchText:".SQLite3::escapeString($keyword);
-		
+
 		if(!empty($language))
 			$params[] = "language:".SQLite3::escapeString($language);
-		
+
 		if(!empty($classname))
 			$params[] = "classname:".SQLite3::escapeString($classname);
-		
+
 		$paramsString = implode(" AND ", $params);
-		
+
 		if($this->type == "image") {
 			$query = "SELECT {$select} FROM imageList WHERE id || classname IN (SELECT id || classname FROM doclist WHERE doclist MATCH '{$paramsString}')";
 		} else {
@@ -182,31 +182,31 @@ class SearchEngine {
 
 		return $query;
 	}
-	
+
 	private function createSearchQuery(?string $keyword = null, ?string $language = null, ?string $classname = null, ?int $pageNumber = 0, ?bool $count = false): string {
 		$limitString = "";
-		
+
 		if(!empty($this->perPage) and !empty($pageNumber)) {
 			$limit = $this->perPage;
 			$offset = ($pageNumber - 1) * $limit;
-			
+
 			$limitString = " LIMIT {$limit} OFFSET {$offset}";
 		}
-		
+
 		$query = null;
 		$select = $count ? "COUNT(*)" : "*";
-		
+
 		$query = $this->getSQLQuery($keyword, $language, $classname, $select)." ".$limitString;
 
 		return $query;
 	}
-	
+
 	public function insertImage(array $data) {
 		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 
 		if(!isset($data["id"]))
 			throw new Exception("Field 'id' must be specified");
-		
+	
 		$id = $data["id"];
 		
 		if(!isset($data["language"]))

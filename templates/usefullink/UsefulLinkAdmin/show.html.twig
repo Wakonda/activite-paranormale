@@ -50,14 +50,14 @@
 		<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Website"|trans([], "validators") }}</div>
 		<div class="form-table-cell">{{ entity.website.title }}</div>
 	{% endif %}
-	
+
 	{% if entity.tags is not empty %}
 		<div class="form-table-cell form-table-cell-head">{{ "usefullink.admin.Tags"|trans([], "validators") }}</div>
 		<div class="form-table-cell">
 			<ul>
-			{% for data in json_decode(entity.tags) %}
-				<li>{{ data.value }}</li>
-			{% endfor %}
+				{% for tag in entity.usefullinkTags %}
+					<li>{{ tag.title }}</li>
+				{% endfor %}
 			</ul>
 		</div>
 	{% endif %}
