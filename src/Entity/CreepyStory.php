@@ -37,6 +37,11 @@ class CreepyStory extends MappedSuperclassBase
 		return "CreepyStory_Read";
 	}
 
+	public function getPdfVersionRoute()
+	{
+		return "CreepyStory_Pdfversion";
+	}
+
     public function getId()
     {
         return $this->id;

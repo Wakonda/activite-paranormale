@@ -102,7 +102,6 @@ class APExtension extends AbstractExtension
 			new TwigFunction('blogger_id', array($this, 'getBloggerId')),
 			new TwigFunction('flickr_id', [$this, 'getFlickrId']),
 			new TwigFunction('slug', array($this, 'slugifyUrl')),
-			new TwigFunction('img_size_html2pdf', array($this, 'getImageSizeHTML2PDF')),
 			new TwigFunction('entities_other_languages', array($this, 'getEntitiesOtherLanguages')),
 			new TwigFunction('isTwitterAvailable', array($this, 'isTwitterAvailable')),
 			new TwigFunction('isBlueskyAvailable', array($this, 'isBlueskyAvailable')),
@@ -855,21 +854,6 @@ class APExtension extends AbstractExtension
 		$title = preg_replace("/[.]/", "", $title);
 
 		return $title;
-	}
-
-	public function getImageSizeHTML2PDF($url)
-	{
-		$img_size = getimagesize($url);
-		$max_width = 550;
-		$new_width = $img_size[0];
-		$new_height = $img_size[1];
-		
-		if($img_size[0] > $max_width) {
-			$new_height = ($max_width * $img_size[1]) / $img_size[0];
-			$new_width = $max_width;
-		}
-
-		return array("width" => $new_width, "height" => $new_height);
 	}
 
 	public function getimagesize($file, $path)
