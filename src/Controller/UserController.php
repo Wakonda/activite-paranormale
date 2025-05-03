@@ -285,7 +285,7 @@ class UserController extends AbstractController
         ]);
     }
 
-	public function resendEmailConfirmationAction(TranslatorInterface $translator, EntityManagerInterface $em, MailerInterface $mailer, $id)
+	public function resendEmailConfirmationAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerInterface $mailer, $id)
 	{
 		$session = $request->getSession();
 		$user = $em->getRepository(User::class)->find($id);

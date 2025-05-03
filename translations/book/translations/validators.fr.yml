@@ -103,6 +103,7 @@ publisher:
         Language: "Langue"
         InternationalName: "Nom international"
         Source: "Source"
+        SocialNetworks: "Réseaux sociaux"
 biographies:
     admin:
         Translator: "Traducteur"

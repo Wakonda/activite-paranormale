@@ -23,3 +23,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.source, "publisher.admin.Source"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.source) }}{{ form_widget(form.source) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.socialNetwork, "publisher.admin.SocialNetworks"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.socialNetwork) }}{{ form_widget(form.socialNetwork, { 'attr': {'class': 'form-control'} }) }}</div>

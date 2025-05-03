@@ -49,6 +49,9 @@ class Publisher
 	#[ORM\Column(name: 'source', type: 'text', nullable: true)]
     private $source;
 
+	#[ORM\Column(name: 'socialNetwork', type: 'text', nullable: true)]
+    private $socialNetwork;
+
     public function getId()
     {
         return $this->id;
@@ -172,4 +175,27 @@ class Publisher
     {
         return $this->source;
     }
+
+    public function setSocialNetwork($socialNetwork)
+    {
+        $this->socialNetwork = $socialNetwork;
+    }
+
+    public function getSocialNetwork()
+    {
+        return $this->socialNetwork;
+    }
+
+	public function getSocialNetworkUsername(string $socialNetwork) {
+		if(empty($this->socialNetwork))
+			return null;
+	
+		$res = "";
+		foreach(json_decode($this->socialNetwork, true) as $sn) {
+			if(!empty($sn["url"]) and strtolower($sn["socialNetwork"]) == strtolower($socialNetwork))
+				$res = "@".ltrim(parse_url($sn["url"], PHP_URL_PATH), "@/");
+		}
+
+		return $res;
+	}
 }

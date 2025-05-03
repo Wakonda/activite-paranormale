@@ -43,6 +43,7 @@
 	});
 
 	document.getElementById("generate{{ textarea }}").addEventListener("click", (e) => {
+		let originalValue = document.getElementById('{{ textarea }}').value;
 		document.getElementById("{{ textarea }}").value = "";
 		e.preventDefault();
 		document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-robot");
@@ -50,8 +51,7 @@
 
 		(async () => {
 			const textarea = document.getElementById('{{ textarea }}');
-
-			const chat_resp = await puter.ai.chat('Language : {{ locale }}. Write a tweet on - {{ text }}', { stream: true, model: model });
+			const chat_resp = await puter.ai.chat('Language : {{ locale }}. Write a tweet on - ' + originalValue, { stream: true, model: model });
 
 			for await (const part of chat_resp) {
 				textarea.value += part?.text;

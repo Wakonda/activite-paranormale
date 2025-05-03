@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Form\Field\SocialNetworkEditType;
 use App\Form\EventListener\InternationalNameFieldListener;
 
 class PublisherAdminType extends AbstractType
@@ -39,6 +40,7 @@ class PublisherAdminType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				},
 			])
+            ->add('socialNetwork', SocialNetworkEditType::class, ['required' => false])
 			->add('source', SourceEditType::class, ['required' => false])
 		;
 		
