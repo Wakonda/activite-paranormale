@@ -133,7 +133,8 @@ class APExtension extends AbstractExtension
 			new TwigFunction('main_request', [$this, 'getMainRequest'], ['is_safe' => ['html']]),
 			new TwigFunction('partners', [$this, 'getPartners'], ['is_safe' => ['html']]),
 			new TwigFunction('fileManagements', [$this, 'getFileManagements'], ['is_safe' => ['html']]),
-			new TwigFunction('isImageExists', [$this, 'isImageExists'], ['is_safe' => ['html']])
+			new TwigFunction('isImageExists', [$this, 'isImageExists'], ['is_safe' => ['html']]),
+			new TwigFunction('isURLAvailable', [$this, 'isURLAvailable'], ['is_safe' => ['html']])
 		);
 	}
 	
@@ -786,19 +787,19 @@ class APExtension extends AbstractExtension
 		curl_close($ch);
 
 		preg_match("/cat\((.*?)\)/s", $tags, $matches);
-
+// dd("ooo", !isset($matches[1]));
 		if(!isset($matches[1]))
 			return [];
 		
 		$tagsObject = json_decode($matches[1]);
 		$tagsArray = [];
-		
+
 		if(!property_exists($tagsObject->feed, "category"))
 			return $tagsArray;
 		
 		foreach($tagsObject->feed->category as $tag)
 			$tagsArray[] = $tag->term;
-		
+// dd($tagsArray, $tagsObject, !property_exists($tagsObject->feed, "category"));		
 		sort($tagsArray);
 
 		return $tagsArray;
@@ -1125,6 +1126,31 @@ class APExtension extends AbstractExtension
 
 	public function getFileManagements($entity) {
 		return $this->em->getRepository(get_class($entity)."FileManagement")->getAllFilesByIdClassName($entity->getId());
+	}
+
+	public function isURLAvailable($url) {
+		$timeout = 2;
+		$ch = curl_init($url);
+
+		curl_setopt_array($ch, [
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_NOBODY         => true, // on ne télécharge pas le contenu
+			CURLOPT_TIMEOUT        => $timeout,
+			CURLOPT_CONNECTTIMEOUT => $timeout,
+		]);
+
+		curl_exec($ch);
+
+		$errNo = curl_errno($ch);
+		curl_close($ch);
+
+		if(empty($res))
+			return false;
+
+		if($errNo === 28)
+			return false;
+		
+		return true;
 	}
 
 	public function getName()

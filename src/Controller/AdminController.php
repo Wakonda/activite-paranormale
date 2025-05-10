@@ -260,6 +260,21 @@ class AdminController extends AbstractController
 			$tagsLinkString = "";
 			$tagsEntity = $em->getRepository(\App\Entity\Tags::class)->findBy(['idClass' => $entity->getId(), 'nameClass' => $entity->getRealClass()]);
 
+			$storeButton = "";
+
+			if(in_array(Store::class, [get_class($entity), get_parent_class($entity)])) {
+				$language = $entity->getLanguage()->getAbbreviation();
+
+				if(Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
+					$storeButton = '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #E52F20; padding: 0.375rem 0.75rem;background-color: #E52F20;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
+				elseif(Store::AMAZON_PLATFORM == $entity->getPlatform())
+					$storeButton = '<div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
+				elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
+					$storeButton = '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
+				elseif(Store::TEMU_PLATFORM == $entity->getPlatform())
+					$storeButton = '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff6d00; padding: 0.375rem 0.75rem;background-color: #ff6d00;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
+			}
+
 			if(!empty($tagsEntity))
 				foreach($tagsEntity as $tag)
 					$tagsLinks[] = '<a href="'.$this->generateUrl('ap_tags_search', ['id' => $tag->getTagWord()->getId(), 'title_slug' => $tag->getTagWord()->getSlug()]).'">'.$tag->getTagWord()->getTitle().'</a>';
@@ -414,6 +429,10 @@ class AdminController extends AbstractController
 					}
 
 					$text = $entity->getText()."<br>";
+					
+					if(!empty($storeButton))
+						$text .= $storeButton."<br>";
+
 					$language = $entity->getBook()->getBook()->getLanguage()->getAbbreviation();
 					$title = $translator->trans('book.index.Book', [], 'validators', $language)." - ".$entity->getTitle();
 
@@ -567,17 +586,11 @@ class AdminController extends AbstractController
 					break;
 			}
 
-			if(in_array(Store::class, [get_class($entity), get_parent_class($entity)])) {
+			if(in_array(Store::class, [get_class($entity), get_parent_class($entity)]) and !empty($storeButton)) {
 				$language = $entity->getLanguage()->getAbbreviation();
 				$text .= "<hr>";
-				if(Store::ALIEXPRESS_PLATFORM == $entity->getPlatform())
-					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #E52F20; padding: 0.375rem 0.75rem;background-color: #E52F20;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
-				elseif(Store::AMAZON_PLATFORM == $entity->getPlatform())
-					$text .= '<div style="text-align: center"><a href="'.$entity->getExternalAmazonStoreLink().'" style="border: 1px solid #ff9900; padding: 0.375rem 0.75rem;background-color: #ff9900;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAmazon', [], 'validators', $language).'</a></div>';
-				elseif(Store::SPREADSHOP_PLATFORM == $entity->getPlatform())
-					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #a73c9e; padding: 0.375rem 0.75rem;background-color: #a73c9e;border-radius: 0.25rem;color: white !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnSpreadshop', [], 'validators', $language).'</a></div>';
-				elseif(Store::TEMU_PLATFORM == $entity->getPlatform())
-					$text .= '<div style="text-align: center"><a href="'.$entity->getUrl().'" style="border: 1px solid #ff6d00; padding: 0.375rem 0.75rem;background-color: #ff6d00;border-radius: 0.25rem;color: black !important;text-decoration: none;">'.$translator->trans('store.index.BuyOnAliexpress', [], 'validators', $language).'</a></div>';
+
+				$text .= $storeButton;
 			}
 
 			$baseurl = "";
@@ -647,6 +660,11 @@ class AdminController extends AbstractController
 			$session->getFlashBag()->add('error', $translator->trans('admin.blogger.Error', ["%code%" => $response["http_code"]], 'validators'));
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+	}
+	
+	// AI
+	public function ai(Request $request, \App\Service\AI $ai) {
+		return new JsonResponse(["message" => $ai->gemini($request->query->get("text"), $request->query->get("format"), $request->query->get("locale"))]);
 	}
 
 	// Diaspora
@@ -1178,21 +1196,10 @@ class AdminController extends AbstractController
 	// Facebook
 	public function facebookAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
-		$requestParams = $request->request;
-
 		$path = urldecode($path);
-
 		$entity = $em->getRepository($path)->find($id);
-		$image = false;
-		$url = $requestParams->get("facebook_url", null);
 
-		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
-
-		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
-
-		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
-
-		$this->addFlash($message["state"], $message["message"], [], 'validators');
+		$this->sendFacebook($request, $em, $id, $path, $router, $facebook, $translator);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
@@ -1357,7 +1364,7 @@ class AdminController extends AbstractController
 	}
 
 	// Mastodon
-	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
+	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
 		$socialNetworks = explode("|", $family);
 
 		if(in_array("twitter", $socialNetworks))
@@ -1366,8 +1373,28 @@ class AdminController extends AbstractController
 			$this->sendMastodon($request, $em, $id, $path, $router, $mastodon, $translator, $socialNetwork);
 		if(in_array("bluesky", $socialNetworks))
 			$this->sendBluesky($request, $em, $id, $path, $router, $bluesky, $translator, $socialNetwork);
+		if(in_array("facebook", $socialNetworks))
+			$this->sendFacebook($request, $em, $id, $path, $router, $facebook, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
+	}
+
+	private function sendFacebook($request, $em, $id, $path, $router, $facebook,  $translator, $fieldName = "facebook") {
+		$requestParams = $request->request;
+
+		$path = urldecode($path);
+
+		$entity = $em->getRepository($path)->find($id);
+		$image = false;
+		$url = $requestParams->get($fieldName."_url", null);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
+
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
+
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
 	}
 
 	private function sendMastodon($request, $em, $id, $path, $router, $mastodon, $translator, $fieldName = "mastodon") {

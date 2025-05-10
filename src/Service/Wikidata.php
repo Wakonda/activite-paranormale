@@ -1173,6 +1173,12 @@ class Wikidata {
 		$res = file_get_contents("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title");
 		$res = json_decode($res, true);
 
+		if(empty($res["query"]["pages"])) {
+			$title = urlencode(str_replace("https://$locale.wikipedia.org/wiki/", "", $url));
+			$res = file_get_contents("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title");
+			$res = json_decode($res, true);
+		}
+
 		return $res["query"]["pages"][array_key_first($res["query"]["pages"])]["pageprops"]["wikibase_item"];
 	}
 }

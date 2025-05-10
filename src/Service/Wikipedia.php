@@ -13,7 +13,8 @@ class Wikipedia {
 		$urlParse = parse_url($url);
 
 		$this->locale = explode(".", $urlParse["host"])[0];
-		$this->page = array_reverse(explode("/", $urlParse["path"]))[0];
+		// $this->page = array_reverse(explode("/", $urlParse["path"]))[0];
+		$this->page = str_replace("https://{$this->locale}.wikipedia.org/wiki/", "", $url);
 	}
 	
 	public function getContentBySection(Int $sectionIndex = null): String {

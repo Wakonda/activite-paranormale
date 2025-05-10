@@ -738,6 +738,9 @@
 						{% if isMastodonAvailable(entity) and isBlueskyAvailable(entity) %}
 							<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon + Bluesky" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter', family: 'twitter|mastodon|bluesky' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
 						{% endif %}
+						{% if isMastodonAvailable(entity) and isBlueskyAvailable(entity) and isFacebookAvailable(entity) %}
+							<input value="{{ "admin.general.Send"|trans([], "validators") }} Twitter + Mastodon + Bluesky + Facebook" data-url="{{ path('Admin_TwitterMastodonBluesky', { 'id' : entity.id, 'path': entity.entityName|url_encode, 'routeToRedirect' : app.request.attributes.get('_route'), socialNetwork: 'twitter', family: 'twitter|mastodon|bluesky|facebook' }) }}" id="tweetMastodon" type="submit" class="btn btn-outline-secondary" />
+						{% endif %}
 					</form>
 				</div>
 			</div>

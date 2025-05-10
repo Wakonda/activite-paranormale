@@ -137,6 +137,10 @@ Admin_RePost:
     path: /admin/publish/repost
     controller: App\Controller\AdminController::rePost
 
+Admin_AI:
+    path: /admin/ai
+    controller: App\Controller\AdminController::ai
+
 # Backup
 Backup_Admin_Index:
     path: /admin/backup/index
