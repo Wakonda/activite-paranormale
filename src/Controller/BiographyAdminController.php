@@ -372,7 +372,7 @@ class BiographyAdminController extends AdminGenericController
 		$internationalName = $request->query->get("internationalName");
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
-// dd($locale, is_numeric("fr"), is_numeric($locale));
+
 		if(is_numeric($locale))
 			$language = $em->getRepository(Language::class)->find($locale);
 		else
