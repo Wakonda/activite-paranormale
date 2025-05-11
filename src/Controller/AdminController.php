@@ -979,7 +979,7 @@ class AdminController extends AbstractController
 
 		$image = null;
 		$text = null;
-		
+
 		switch($entity->getRealClass())
 		{
 			case "Video":
@@ -1390,7 +1390,7 @@ class AdminController extends AbstractController
 
 		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("facebook_area"), $entity->getLanguage()->getAbbreviation()));
+		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("$fieldName_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
 
