@@ -372,8 +372,11 @@ class BiographyAdminController extends AdminGenericController
 		$internationalName = $request->query->get("internationalName");
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
-
-		$language = $em->getRepository(Language::class)->find($locale);
+// dd($locale, is_numeric("fr"), is_numeric($locale));
+		if(is_numeric($locale))
+			$language = $em->getRepository(Language::class)->find($locale);
+		else
+			$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $locale]);
 
 		$entityToCopy = null;
 
@@ -416,7 +419,7 @@ class BiographyAdminController extends AdminGenericController
 		$entity->setWikidata($wikidataCode);
 		$entity->setInternationalName($internationalName);
 		
-		$form = $this->createForm($formType, $entity, ['action' => 'new', 'locale' => $request->getLocale()]);
+		$form = $this->createForm($formType, $entity, ['action' => 'new', 'locale' => $language->getAbbreviation()]);
 
 		if ($request->isMethod(Request::METHOD_POST)) {
 			$form->handleRequest($request);
@@ -439,6 +442,6 @@ class BiographyAdminController extends AdminGenericController
 			}
 		}
 
-		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'internationalName' => $internationalName, 'locale' => $request->getLocale(), "title" => $title, "wikidata" => $wikidataCode]);
+		return $this->render("quotation/BiographyAdmin/quick.html.twig", ["form" => $form->createView(), 'internationalName' => $internationalName, 'locale' => $language->getId(), "title" => $title, "wikidata" => $wikidataCode]);
 	}
 }
