@@ -11,10 +11,9 @@
 				<li class="nav-item"><a class="nav-link" href="{% block archive_admin_route %}{% endblock %}"><i class="fas fa-archive" aria-hidden="true"></i> {{ "admin.general.Recover"|trans([], "validators") }}</a></li>
 			{% else %}
 				<li class="nav-item"><a class="nav-link" href="{{ block('archive_admin_route') }}"><i class="fas fa-archive" aria-hidden="true"></i> {{ "admin.general.Archive"|trans([], "validators") }}</a></li>
-	
-				{% if block("edit_admin_route") %}
-					<li class="nav-item"><a class="nav-link" href="{% block edit_admin_route %}{% endblock %}" title="Edit"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a></li>
-				{% endif %}
+			{% endif %}
+			{% if block("edit_admin_route") %}
+				<li class="nav-item"><a class="nav-link" href="{% block edit_admin_route %}{% endblock %}" title="Edit"><i class="fas fa-sync-alt" aria-hidden="true"></i> {{ "admin.general.Update"|trans([], "validators") }}</a></li>
 			{% endif %}
 		{% endif %}
 	{% else %}
