@@ -1,0 +1,52 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}
+	{{ "deal.index.Deal"|trans([], "validators") }}
+{% endblock %}
+
+{% block h2_title %}
+	<h2>
+		<span class="float-start"><img src="{{ asset('extended/photo/book-index.svg') }}" width="25" class="mt-1" alt="Book"></span>{{ "deal.index.Deal"|trans([], "validators") }}
+	</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image">{{ "deal-index.webp"|imgsize(550, 'extended/photo/', true, {"class": "mx-auto d-block img-fluid", alt: "Cute monster" })|raw }}</p>
+
+	<div class="alert alert-info"><i class="fa-brands fa-ethereum"></i> {{ "deal.index.Text"|trans([], "validators") }}</div>
+
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+			<div class="row g-0">
+				<div class="col-md-4 align-self-center text-center">
+					{{ entity.photo|imgsize(180, entity.getAssetImagePath(), true, {alt: entity.title})|raw }}
+				</div>
+				<div class="col-md-8 content-card">
+					<div class="card-body">
+						<h5 class="card-title text-center">{{ entity.title }}</h5>
+						<hr>
+						{{ (entity.text|split(".")[0])|striptags }}
+						<hr>
+					</div>
+					<div class="card-footer text-center">
+						<a class="btn read" href="{{ path('Deal_Show', {'id': entity.id}) }}">
+							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
+							<b class="align-middle">{{ "deal.index.Read"|trans([], "validators") }}</b>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div class="alert alert-danger fst-italic text-center">{{ "deal.index.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

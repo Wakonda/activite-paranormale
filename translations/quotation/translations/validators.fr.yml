@@ -157,6 +157,8 @@ biography:
         InstagramAccount: "Compte Instagram"
         PinterestAccount: "Compte Pinterest"
         LinkedInAccount: "Compte LinkedIn"
+        PatreonAccount: "Page Patreon"
+        TikTokAccount: "Compte TikTok"
     form:
         Person: "Personne"
         FictionalCharacter: "Personnage de fiction"

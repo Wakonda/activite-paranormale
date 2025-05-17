@@ -143,7 +143,7 @@
 			{% set linkArray = json_decode(artist.socialNetwork) %}
 			{% for sn in linkArray %}
 				{% if sn.url is not empty %}
-					<a href="{{ sn.url }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" title="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/webdirectory/social_network/'~ (sn.socialNetwork|lower)~'.png') }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" width="50"></a>
+					<a href="{{ sn.url }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" title="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/social_network/'~ (sn.socialNetwork|lower)~'.png') }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" width="50"></a>
 				{% endif %}
 			{% endfor %}
 			<br>

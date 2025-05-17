@@ -1,0 +1,14 @@
+deal:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Active: "Activo"
+        Link: "Enlace"
+        Language: "Idioma"
+        Photo: "Foto"
+    index:
+        Deal: "Buen trato"
+        Link: "Enlace"
+        Read: "Leer"
+        NoMatchingRecordsFound: "No se encontraron resultados"
+        Text: "Esta página te permite descubrir buenas ofertas. Nos tomamos el cuidado de probar las ofertas que te proponemos para minimizar al máximo las estafas. Si alguna oferta se nos ha pasado por alto, contáctanos. Si conoces otras buenas ofertas, no dudes en informarnos para que las publiquemos en esta sección."

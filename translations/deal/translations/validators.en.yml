@@ -1,0 +1,14 @@
+deal:
+    admin:
+        Title: "Title"
+        Text: "Text"
+        Active: "Active"
+        Link: "Link"
+        Language: "Language"
+        Photo: "Photo"
+    index:
+        Deal: "Good deal"
+        Link: "Link"
+        Read: "Read"
+        NoMatchingRecordsFound: "No matching records found"
+        Text: "This page allows you to discover great deals. We take care to test the deals we offer you to minimize scams as much as possible. If any deals have slipped through our vigilance, please contact us. If you know of other great deals, feel free to let us know so we can post them in this section."

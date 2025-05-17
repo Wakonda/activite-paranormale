@@ -1,0 +1,14 @@
+deal:
+    admin:
+        Title: "Titre"
+        Text: "Texte"
+        Active: "Actif"
+        Link: "Lien"
+        Language: "Langue"
+        Photo: "Photo"
+    index:
+        Deal: "Bon plan"
+        Link: "Lien"
+        Read: "Lire"
+        NoMatchingRecordsFound: "Aucun élément à afficher"
+        Text: "Cette page vous permet de découvrir des bons plans. Nous prenons soin de tester les bons plans que nous vons proposons afin d'écarter au maximum les arnaques. Si certains bons plans ont échappé à notre vigilance, contactez-nous. Si vous connaissez d'autres bons plans, n'hésitez pas à nous le signaler afin que nous le postions dans cette section."
