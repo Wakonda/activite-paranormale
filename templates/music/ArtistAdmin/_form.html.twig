@@ -3,6 +3,9 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.title, "artist.admin.Title"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.title) }}{{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "artist.admin.Language"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'}} ) }}</div>
+
 {{ macro_admin.wikidata_html_generic(form) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.website, "artist.admin.Website"|trans([], "validators")) }}</div>
@@ -10,9 +13,6 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.illustration, "artist.admin.Image"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.illustration) }}{{ form_widget(form.illustration) }}</div>
-
-<div class="form-table-cell form-table-cell-head">{{ form_label(form.language, "artist.admin.Language"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.language) }}{{ form_widget(form.language, { 'attr': {'class': 'form-select'}} ) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.biography, "artist.admin.Biography"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
