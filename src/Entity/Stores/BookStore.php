@@ -24,7 +24,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ApiFilter(OrSearchFilter::class, properties: ['title', 'text', 'book.book.authors.title', 'book.book.theme.title'])]
 class BookStore extends Store {
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\BookEdition')]
-	#[ORM\Groups('api_book_read')]
+	#[Groups('api_book_read')]
     protected $book;
 
 	public function getBook()

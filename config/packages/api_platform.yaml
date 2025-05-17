@@ -7,7 +7,7 @@ api_platform:
     patch_formats:
         json: ['application/merge-patch+json']
     defaults:
-        stateless: true
+        stateless: false
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
         pagination_items_per_page: 12 # Default value
