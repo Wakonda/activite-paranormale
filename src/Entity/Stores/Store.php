@@ -7,10 +7,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
-use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use Symfony\Component\Serializer\Annotation\Groups;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
+use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\Filter\OrderFilter;
 use App\Filter\OrSearchFilter;
 use Ausi\SlugGenerator\SlugGenerator;
 
@@ -34,7 +34,7 @@ use App\Entity\Language;
 class Store
 {
 	use \App\Entity\GenericEntityTrait;
-	
+
 	const ALIEXPRESS_PLATFORM = "aliexpress";
 	const AMAZON_PLATFORM = "amazon";
 	const SPREADSHOP_PLATFORM = "spreadshop";

@@ -3,27 +3,28 @@
 
 namespace App\Filter;
 
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Util\QueryNameGeneratorInterface;
+use ApiPlatform\Doctrine\Orm\Util\QueryNameGeneratorInterface;
 use DoctrineORMQueryBuilder;
 use DoctrinePersistenceManagerRegistry;
 use PsrLogLoggerInterface;
 use SymfonyComponentHttpFoundationRequestStack;
 use SymfonyComponentSerializerNameConverterNameConverterInterface;
 use ApiPlatformCoreExceptionInvalidArgumentException;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\AbstractContextAwareFilter;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\Common\Annotations\AnnotationReader;
 use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\ORM\EntityManagerInterface;
+use ApiPlatform\Doctrine\Orm\Filter\AbstractFilter;
+use ApiPlatform\Metadata\Operation;
 
-final class OrSearchFilter extends AbstractContextAwareFilter
+final class OrSearchFilter extends AbstractFilter
 {
     private $searchParameterName;
     private $em;
 
-    protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, string $operationName = null, array $context = [])
+	protected function filterProperty(string $property, $value, QueryBuilder $queryBuilder, QueryNameGeneratorInterface $queryNameGenerator, string $resourceClass, ?Operation $operationName = null, array $context = []): void
     {
 		if($property != "or_search")
 			return;
@@ -126,7 +127,7 @@ final class OrSearchFilter extends AbstractContextAwareFilter
 		return $description;
     }
 	
-    protected function isPropertyNested(string $property): bool
+    protected function isPropertyNested(string $property, string $resourceClass): bool
     {
         if (\func_num_args() > 1) {
             $resourceClass = (string) func_get_arg(1);
