@@ -1334,37 +1334,13 @@ class AdminController extends AbstractController
 	// Instagram
 	public function instagramAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
-		$requestParams = $request->request;
-
-		$path = urldecode($path);
-
-		$entity = $em->getRepository($path)->find($id);
-
-		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
-
-		$url = $requestParams->get("instagram_url");
-
-		switch($entity->getRealClass())
-		{
-			case "Store":
-				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getPhoto();
-				break;
-			default:
-				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
-				break;
-		}
-
-		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area"), $entity->getLanguage()->getAbbreviation()));
-
-		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
-
-		$this->addFlash($message["state"], $message["message"], [], 'validators');
+		$this->sendInstagram($request, $em, $id, $path, $router, $instagram, $translator, "instagram");
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 
 	// Mastodon
-	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
+	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
 		$socialNetworks = explode("|", $family);
 
 		if(in_array("twitter", $socialNetworks))
@@ -1375,6 +1351,8 @@ class AdminController extends AbstractController
 			$this->sendBluesky($request, $em, $id, $path, $router, $bluesky, $translator, $socialNetwork);
 		if(in_array("facebook", $socialNetworks))
 			$this->sendFacebook($request, $em, $id, $path, $router, $facebook, $translator, $socialNetwork);
+		if(in_array("instagram", $socialNetworks))
+			$this->sendInstagram($request, $em, $id, $path, $router, $instagram, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
@@ -1393,6 +1371,34 @@ class AdminController extends AbstractController
 		$res = json_decode($facebook->postMessage($currentURL, $request->request->get("{$fieldName}_area"), $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.facebook.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.facebook.Success', [], 'validators')];
+
+		$this->addFlash($message["state"], $message["message"], [], 'validators');
+	}
+
+	private function sendInstagram($request, $em, $id, $path, $router, $facebook,  $translator, $fieldName = "Instagram") {
+		$requestParams = $request->request;
+
+		$path = urldecode($path);
+
+		$entity = $em->getRepository($path)->find($id);
+
+		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
+
+		$url = $requestParams->get("$fieldName_url");
+
+		switch($entity->getRealClass())
+		{
+			case "Store":
+				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getPhoto();
+				break;
+			default:
+				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
+				break;
+		}
+
+		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area")." ".$url, $entity->getLanguage()->getAbbreviation()));
+
+		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
 
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 	}
