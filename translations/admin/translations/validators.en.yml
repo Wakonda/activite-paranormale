@@ -29,6 +29,7 @@ admin:
         DeselectVisibleItems: "Deselect visible items"
         EntryArchived: "This entry has been archived!"
         NoImageCouldBeLoaded: "No image could be loaded."
+        Website: "Website"
     index:
         Welcome: "Welcome"
         InfoGene: "General information"

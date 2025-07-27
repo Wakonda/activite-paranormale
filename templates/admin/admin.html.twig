@@ -45,7 +45,10 @@
 							<li class="nav-item py-2"><span class="navbar-text"><i class="fas fa-user" aria-hidden="true"></i> <b>{{ app.user.username }}</b></span></li>
 						</ul>
 						<ul class="nav navbar-nav navbar-right">
-							<li class="nav-item"><button onclick="self.location.href='{{ path('Security_Logout') }}'" type="button" class="btn btn-danger navbar-btn">{{ "index.leftMenu.Logout"|trans([], "validators") }} <i class="fas fa-sign-out-alt" aria-hidden="true"></i></button></li>
+							<li class="nav-item"><button onclick="window.open('{{ path('Index_Index') }}', '_blank').focus()" type="button" class="btn btn-warning navbar-btn">{{ "admin.general.Website"|trans([], "validators") }} <i class="fa-solid fa-satellite"></i></i></button></li>
+						</ul>
+						<ul class="nav navbar-nav navbar-right">
+							<li class="nav-item"><button onclick="self.location.href='{{ path('Security_Logout') }}'" type="button" class="btn btn-danger navbar-btn">{{ "index.leftMenu.Logout"|trans([], "validators") }} <i class="fas fa-sign-out-alt"></i></button></li>
 						</ul>
 					</div>
 				</div>

@@ -95,23 +95,31 @@ class TwitterAPI
 				$this->CONSUMER_SECRET = $_ENV["TWITTER_FR_CONSUMER_SECRET"];
 				$this->OAUTH_TOKEN = $_ENV["TWITTER_FR_OAUTH_TOKEN"];
 				$this->OAUTH_TOKEN_SECRET = $_ENV["TWITTER_FR_OAUTH_TOKEN_SECRET"];
+				break;
 			case "pt":
 				$this->CONSUMER_KEY = $_ENV["TWITTER_PT_CONSUMER_KEY"];
 				$this->CONSUMER_SECRET = $_ENV["TWITTER_PT_CONSUMER_SECRET"];
 				$this->OAUTH_TOKEN_SECRET = $_ENV["TWITTER_PT_OAUTH_TOKEN_SECRET"];
 				$this->OAUTH_TOKEN = $_ENV["TWITTER_PT_OAUTH_TOKEN"];
 				break;
+			case "ru":
+				$this->CONSUMER_KEY = $_ENV["TWITTER_RU_CONSUMER_KEY"];
+				$this->CONSUMER_SECRET = $_ENV["TWITTER_RU_CONSUMER_SECRET"];
+				$this->OAUTH_TOKEN_SECRET = $_ENV["TWITTER_RU_OAUTH_TOKEN_SECRET"];
+				$this->OAUTH_TOKEN = $_ENV["TWITTER_RU_OAUTH_TOKEN"];
+				break;
 			case "magic_fr":
 				$this->CONSUMER_KEY = $_ENV["TWITTER_MAGIC_FR_CONSUMER_KEY"];
 				$this->CONSUMER_SECRET = $_ENV["TWITTER_MAGIC_FR_CONSUMER_SECRET"];
 				$this->OAUTH_TOKEN = $_ENV["TWITTER_MAGIC_FR_OAUTH_TOKEN"];
 				$this->OAUTH_TOKEN_SECRET = $_ENV["TWITTER_MAGIC_FR_OAUTH_TOKEN_SECRET"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["en", "es", "fr", "pt", "magic_fr"];
+		return ["en", "es", "fr", "pt", "ru", "magic_fr"];
 	}
 
 	public function getLanguagesCanonical()
@@ -121,6 +129,7 @@ class TwitterAPI
 			"Twitter (español)" => "twitter_es",
 			"Twitter (français)" => "twitter_fr",
 			"Twitter (português)" => "twitter_pt",
+			"Twitter (русский)" => "twitter_ru",
 			"Twitter (français - magie)" => "twitter_magic_fr"
 		];
 	}
