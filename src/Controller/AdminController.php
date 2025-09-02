@@ -1375,7 +1375,7 @@ class AdminController extends AbstractController
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 	}
 
-	private function sendInstagram($request, $em, $id, $path, $router, $facebook,  $translator, $fieldName = "Instagram") {
+	private function sendInstagram($request, $em, $id, $path, $router, $instagram,  $translator, $fieldName = "Instagram") {
 		$requestParams = $request->request;
 
 		$path = urldecode($path);
@@ -1386,15 +1386,21 @@ class AdminController extends AbstractController
 
 		$url = $requestParams->get("$fieldName_url");
 
+		$image_url = null;
+
 		switch($entity->getRealClass())
 		{
 			case "Store":
+			case "BookStore":
 				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getPhoto();
 				break;
 			default:
 				$image_url = $baseurl."/".$entity->getAssetImagePath().$entity->getIllustration()->getRealNameFile();
 				break;
 		}
+		
+		if(empty($image_url))
+			return;
 
 		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area")." ".$url, $entity->getLanguage()->getAbbreviation()));
 
@@ -1479,6 +1485,13 @@ class AdminController extends AbstractController
 				"user" => "Grok",
 				"license" => "CC0",
 				"source" => "https://x.com/",
+				"description" => ""];
+		} elseif(str_contains($urlHost, "gemini")) {
+			$res = [
+				"url" => "",
+				"user" => "Gemini",
+				"license" => "CC0",
+				"source" => "https://google.gemini.com/",
 				"description" => ""];
 		}
 

@@ -227,13 +227,16 @@
 			return (bool) preg_match($pattern, $url);
 		}
 	
-		public function getContentURL($url, $proxy = null)
+		public function getContentURL($url, $proxy = null, $sanitizeUrl = true)
 		{
-			$urlArray = explode("/", $url);
-			$urlArray[count($urlArray) - 1] = urlencode(end($urlArray));
-			$url = implode("/", $urlArray);
-			
-			$proxyArray = explode(":", $proxy);
+			if($sanitizeUrl) {
+				$urlArray = explode("/", $url);
+				$urlArray[count($urlArray) - 1] = urlencode(end($urlArray));
+				$url = implode("/", $urlArray);
+				
+				$proxyArray = explode(":", $proxy);
+			}
+
 			$curl = curl_init();
 			$timeout = 30;
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);

@@ -26,7 +26,8 @@ class Wikidata {
 
 		$code = $this->getCodeFromURL($code);
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
 
 		$datas = json_decode($content);
 
@@ -37,7 +38,7 @@ class Wikidata {
 		$url = null;
 
 		if(!property_exists($datas->entities->$code->labels, $language)) {
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids={$code}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+			$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids={$code}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
 
 			$datas = json_decode($content);
 			$titleArray = (array) $datas->entities->$code->labels;
@@ -64,7 +65,8 @@ class Wikidata {
 
 		$languageWiki = $language."wiki";
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -196,7 +198,8 @@ class Wikidata {
 	public function getImageInfos($filename): array {
 		$maxWidth = 500;
 
-		$image = json_decode(file_get_contents("https://www.mediawiki.org/w/api.php?action=query&titles=File:{$filename}&prop=imageinfo&iilimit=50&iiurlwidth={$maxWidth}&iiprop=timestamp%7Cuser%7Curl|size|extmetadata&format=json"));
+		$parser = new \App\Service\APParseHTML();
+		$image = json_decode($parser->getContentURL("https://www.mediawiki.org/w/api.php?action=query&titles=File:{$filename}&prop=imageinfo&iilimit=50&iiurlwidth={$maxWidth}&iiprop=timestamp%7Cuser%7Curl|size|extmetadata&format=json", null, false));
 		$imageProperty = $image->query->pages->{'-1'}->imageinfo[0];
 		$url = null;
 
@@ -232,7 +235,8 @@ class Wikidata {
 		if(empty($res))
 			return [];
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -249,7 +253,8 @@ class Wikidata {
 		$res = $this->getTitleAndUrl($code, $language);
 		$languageWiki = $language."wiki";
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -340,7 +345,8 @@ class Wikidata {
 	{
 		$res = [];
 		$languageWiki = $language."wiki";
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
 
 		$datas = json_decode($content);
 
@@ -364,7 +370,8 @@ class Wikidata {
 	private function getMusicByIdSong(string $idSong, string $language): array
 	{
 		$languageWiki = $language."wiki";
-		$contentSong = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSong}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$contentSong = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSong}&sitefilter={$languageWiki}", null, false);
 		$dataSong = json_decode($contentSong);
 
 		$res = [];
@@ -375,7 +382,7 @@ class Wikidata {
 		// recording or performance of
 		if(property_exists($dataSong->entities->$idSong->claims, "P2550")) {
 			$id = $dataSong->entities->$idSong->claims->P2550[0]->mainsnak->datavalue->value->id;
-			$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$id}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels");
+			$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$id}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
 
 			$datas = json_decode($content);
 
@@ -450,8 +457,9 @@ class Wikidata {
 	{
 		$res = $this->getTitleAndUrl($code, $language);
 		$languageWiki = $language."wiki";
-		
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 		$res["origin"]["country"]["id"] = null;
@@ -551,7 +559,7 @@ class Wikidata {
 				}
 
 				$codeMember = $member->mainsnak->datavalue->value->id;
-				$contentMember = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$codeMember}&sitefilter={$languageWiki}");
+				$contentMember = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$codeMember}&sitefilter={$languageWiki}", null, false);
 				$datasMember = json_decode($contentMember);
 				$rolesArray = [];
 				$occupations = \App\Entity\MusicBiography::getOccupations();
@@ -597,8 +605,9 @@ class Wikidata {
 			return [];
 		
 		$languageWiki = $language."wiki";
-		
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 		
@@ -636,7 +645,8 @@ class Wikidata {
 		$res = $this->getTitleAndUrl($code, $language);
 		$languageWiki = $language."wiki";
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -696,7 +706,7 @@ class Wikidata {
 
 		if(property_exists($datas->entities->$code->claims, "P275")) {
 			$id = $datas->entities->$code->claims->P275[0]->mainsnak->datavalue->value->id;
-			$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json"));
+			$data = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json", null, false));
 
 			if(property_exists($data->entities, "Q18810333") and property_exists($data->entities->Q18810333->labels, $language)) {
 				$languageEntity = $this->em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -715,7 +725,8 @@ class Wikidata {
 		$res = $this->getTitleAndUrl($code, $language);
 		$languageWiki = $language."wiki";
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -859,7 +870,8 @@ class Wikidata {
 		$res = $this->getTitleAndUrl($code, $language);
 		$languageWiki = $language."wiki";
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -870,7 +882,7 @@ class Wikidata {
 		if(property_exists($datas->entities->$code->claims, "P4908")) {
 			$idSeason = $datas->entities->$code->claims->P4908[0]->mainsnak->datavalue->value->id;
 			
-			$datasSeason = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSeason}&sitefilter={$languageWiki}"));
+			$datasSeason = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSeason}&sitefilter={$languageWiki}", null, false));
 
 			$res["season"] = $datasSeason->entities->$idSeason->claims->P179[0]->qualifiers->P1545[0]->datavalue->value;
 		}
@@ -920,7 +932,8 @@ class Wikidata {
 		$res = $this->getTitleAndUrl($code, $language);
 		$languageWiki = $language."wiki";
 
-		$content = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}");
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
 
@@ -988,13 +1001,13 @@ class Wikidata {
 			foreach($seasons->P527 as $season) {
 				$idSeason = $season->mainsnak->datavalue->value->id;
 
-				$contentEpisode = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSeason}&sitefilter={$languageWiki}");
+				$contentEpisode = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idSeason}&sitefilter={$languageWiki}", null, false);
 				$dataEpisode = json_decode($contentEpisode);
 				
 				if(method_exists($dataEpisode->entities->$idSeason->claims, "P527")) {
 					foreach($dataEpisode->entities->$idSeason->claims->P527 as $e) {
 						$idEpisode = $e->mainsnak->datavalue->value->id;
-						$contentEpisodeDetail = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idEpisode}&sitefilter={$languageWiki}");
+						$contentEpisodeDetail = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idEpisode}&sitefilter={$languageWiki}", null, false);
 						$contentEpisodeDetailContent = json_decode($contentEpisodeDetail);
 
 						if(property_exists($contentEpisodeDetailContent->entities->$idEpisode->labels, $language)) {
@@ -1057,13 +1070,15 @@ class Wikidata {
 	private function getCurrencyIso4217(string $url, string $language = "en"): ?string {
 		$id = array_reverse(explode("/", $url))[0];
 
-		$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&ids={$id}&languages={$language}&format=json"));
+		$parser = new \App\Service\APParseHTML();
+		$data = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&ids={$id}&languages={$language}&format=json", null, false));
 
 		return $data->entities->$id->claims->P498[0]->mainsnak->datavalue->value;
 	}
 
 	private function getPageTitle(string $id, string $language) {
-		$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json"));
+		$parser = new \App\Service\APParseHTML();
+		$data = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json", null, false));
 
 		return (property_exists($data->entities->$id->labels, $language)) ? $data->entities->$id->labels->$language->value : null;
 	}
@@ -1102,7 +1117,8 @@ class Wikidata {
 	}
 
 	private function getPropertyValue(string $id, string $language = "en"): ?string {
-		$data = json_decode(file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json"));
+		$parser = new \App\Service\APParseHTML();
+		$data = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json", null, false));
 
 		return $data->entities->$id->labels->$language->value;
 	}
@@ -1117,7 +1133,8 @@ class Wikidata {
 		if(property_exists($datas->entities->$code->claims, $countryId)) {
 			$idCountry = $datas->entities->$code->claims->$countryId[0]->mainsnak->datavalue->value->id;
 
-			$contentCountry = file_get_contents("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idCountry}");
+			$parser = new \App\Service\APParseHTML();
+			$contentCountry = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$idCountry}", null, false);
 			$datasCountry = json_decode($contentCountry);
 
 			if(empty($datasCountry->entities->$idCountry->claims->P297[0]))
@@ -1150,7 +1167,8 @@ class Wikidata {
 	public function getWikidataId(string $title, string $language) {
 		$url = "https://{$language}.wikipedia.org/w/api.php?action=query&prop=pageprops&titles=" . urlencode($title) . "&format=json";
 		
-		$json = file_get_contents($url);
+		$parser = new \App\Service\APParseHTML();
+		$json = $parser->getContentURL($url, null, false);
 		$data = json_decode($json, true);
 		$pageId = key($data['query']['pages']);
 		
@@ -1170,12 +1188,13 @@ class Wikidata {
 
 		$title = urlencode(basename(parse_url($url, PHP_URL_PATH)));
 
-		$res = file_get_contents("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title");
+		$parser = new \App\Service\APParseHTML();
+		$res = $parser->getContentURL("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title", null, false);
 		$res = json_decode($res, true);
 
 		if(empty($res["query"]["pages"])) {
 			$title = urlencode(str_replace("https://$locale.wikipedia.org/wiki/", "", $url));
-			$res = file_get_contents("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title");
+			$res = $parser->getContentURL("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title", null, false);
 			$res = json_decode($res, true);
 		}
 

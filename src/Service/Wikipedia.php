@@ -20,7 +20,8 @@ class Wikipedia {
 	public function getContentBySection(Int $sectionIndex = null): String {
 		$url = "https://{$this->locale}.wikipedia.org/w/api.php?action=parse&format=json&page={$this->page}&prop=text".($sectionIndex !== null ? "&section={$sectionIndex}" : "");
 
-		$content = json_decode(file_get_contents($url), true);
+		$parser = new \App\Service\APParseHTML();
+		$content = json_decode($parser->getContentURL($url, null, false), true);
 
 		return $this->wikiTextToHTML($content["parse"]["text"]["*"]);
 	}
@@ -44,7 +45,8 @@ class Wikipedia {
 	}
 	
 	public function getSections(Int $toclevel = 1): Array {
-		$sections = json_decode(file_get_contents("https://".$this->locale.".wikipedia.org/w/api.php?action=parse&format=json&page=".$this->page."&prop=sections&disabletoc=1"));
+		$parser = new \App\Service\APParseHTML();
+		$sections = json_decode($parser->getContentURL("https://".$this->locale.".wikipedia.org/w/api.php?action=parse&format=json&page=".$this->page."&prop=sections&disabletoc=1", null, false));
 		
 		$res = [];
 		
@@ -57,7 +59,8 @@ class Wikipedia {
 	}
 	
 	public function getAllSections(): Array {
-		$sections = json_decode(file_get_contents("https://".$this->locale.".wikipedia.org/w/api.php?action=parse&format=json&page=".$this->page."&prop=sections&disabletoc=1"));
+		$parser = new \App\Service\APParseHTML();
+		$sections = json_decode($parser->getContentURL("https://".$this->locale.".wikipedia.org/w/api.php?action=parse&format=json&page=".$this->page."&prop=sections&disabletoc=1", null, false));
 		
 		return $sections->parse->sections;
 		$res = [];
