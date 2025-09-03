@@ -1342,7 +1342,6 @@ class AdminController extends AbstractController
 	// Mastodon
 	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
 		$socialNetworks = explode("|", $family);
-
 		if(in_array("twitter", $socialNetworks))
 			$this->sendTwitter($request, $em, $id, $path, $router, $twitter, $translator, $socialNetwork);
 		if(in_array("mastodon", $socialNetworks))
@@ -1384,7 +1383,7 @@ class AdminController extends AbstractController
 
 		$baseurl = $request->getSchemeAndHttpHost().$request->getBasePath();
 
-		$url = $requestParams->get("$fieldName_url");
+		$url = $requestParams->get($fieldName."_url");
 
 		$image_url = null;
 
@@ -1402,7 +1401,7 @@ class AdminController extends AbstractController
 		if(empty($image_url))
 			return;
 
-		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get("instagram_area")." ".$url, $entity->getLanguage()->getAbbreviation()));
+		$res = json_decode($instagram->addMediaMessage($image_url, $request->request->get($fieldName."_area")." ".$url, $entity->getLanguage()->getAbbreviation()));
 
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.instagram.Failed', [], 'validators'). "(".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.instagram.Success', [], 'validators')];
 
