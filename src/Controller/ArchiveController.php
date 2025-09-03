@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,6 +31,7 @@ class ArchiveController extends AbstractController
 		return "";
 	}
 
+	#[Route('/archive/{language}', name: 'Archive_Index', defaults: ['language' => null])]
 	public function archiveAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $language)
 	{
 		$languages = $em->getRepository(Language::class)->findAll();
@@ -60,7 +62,8 @@ class ArchiveController extends AbstractController
 			'currentLanguage' => $currentLanguage
 		]);
 	}
-	
+
+	#[Route('/archive/theme/{className}/{language}', name: 'Archive_Theme', defaults: ['Language' => null])]
 	public function archiveThemesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $className, $language)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
@@ -87,7 +90,8 @@ class ArchiveController extends AbstractController
 			'title' => $translator->trans("index.className.".(new \ReflectionClass(new $className()))->getShortName(), [], 'validators')
 		]);
 	}
-	
+
+	#[Route('/archive/witchcraft/{className}/{language}', name: 'Archive_Witchcraft', defaults: ['Language' => null])]
 	public function archiveWitchcraftsAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, $className, $language)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
@@ -117,6 +121,7 @@ class ArchiveController extends AbstractController
 		]);
 	}
 
+	#[Route('/archive/tab/{id}/{theme}/{className}', name: 'Archive_Tab', requirements: ['theme' => ".+"])]
 	public function tabarchiveAction(Request $request, $id, $theme, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
@@ -129,6 +134,7 @@ class ArchiveController extends AbstractController
 		]);
 	}
 
+	#[Route('/tabarchivedatatables/{themeId}/{className}', name: 'Archive_Datatables')]
 	public function tabarchiveDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
@@ -170,6 +176,7 @@ class ArchiveController extends AbstractController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/archive/read/{id}/{className}', name: 'Archive_Read')]
 	public function readAction(EntityManagerInterface $em, $id, $className)
 	{
 		if(!$this->isGranted('ROLE_ARCHIVIST'))
@@ -184,7 +191,7 @@ class ArchiveController extends AbstractController
 			"className" => (new \ReflectionClass(new $className()))->getShortName()
 		]);
 	}
-	
+
 	public function nbrArchiveAction(Request $request, EntityManagerInterface $em)
 	{
 		$res = [];

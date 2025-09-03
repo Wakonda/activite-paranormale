@@ -4,12 +4,15 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Detection\MobileDetect;
 
 class IndexController extends AbstractController
 {
+	#[Route('/', name: 'Index_Index')]
+	#[Route('/index', name: 'Index_Index_Simple')]
     public function indexAction(Request $request)
     {
 		$session = $request->getSession();
@@ -23,15 +26,18 @@ class IndexController extends AbstractController
         return $this->render('index/Index/index.html.twig');
     }
 
+	#[Route('/application', name: 'Index_Application')]
 	public function application() {
 		return $this->render("index/Index/application.html.twig");
 	}
 
+	#[Route('/application/download', name: 'Index_DownloadApplication')]
 	public function downloadApplication() {
 		$file = $this->getParameter('kernel.project_dir') . '/public/extended/photo/application/activite-paranormale-1.0.0.apk';
 		return $this->file($file, 'activite-paranormale-1.0.0.apk');
 	}
 
+	#[Route('/selectLanguage/{lang}', name: 'Index_SelectLanguage')]
 	public function selectLanguageAction(Request $request, $lang)
     {
 		$session = $request->getSession();
@@ -57,6 +63,7 @@ class IndexController extends AbstractController
 		]);
 	}
 
+	#[Route('/magic', name: 'Index_Magic')]
 	public function magic() {
 		return $this->render("index/Index/magic.html.twig");
 	}

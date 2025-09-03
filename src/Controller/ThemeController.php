@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -28,6 +29,7 @@ use Ausi\SlugGenerator\SlugGenerator;
  */
 class ThemeController extends AbstractController
 {
+	#[Route('/theme', name: 'Theme_Index')]
 	public function indexAction(Request $request, EntityManagerInterface $em)
 	{
 		$locale = $request->getLocale();
@@ -42,7 +44,8 @@ class ThemeController extends AbstractController
 			'theme' => $theme
 		]);
 	}	
-	
+
+	#[Route('/theme/show/{id}/{theme}', name: 'Theme_Show', requirements: ['theme' => '.+'])]
 	public function showAction(TranslatorInterface $translator, EntityManagerInterface $em, Request $request, $theme, $id)
 	{
 		$theme = str_replace('-', '/', $theme);
@@ -116,6 +119,7 @@ class ThemeController extends AbstractController
 		]);
 	}	
 
+	#[Route('/theme/save/{id}/{theme}', name: 'Theme_Save', requirements: ['theme' => '.+'])]
 	public function saveAction(EntityManagerInterface $em, $theme, $id)
 	{
 		$theme = str_replace('-', '/', $theme);
@@ -127,6 +131,7 @@ class ThemeController extends AbstractController
 		]);
 	}
 
+	#[Route('/theme/download/{id}', name: 'Theme_Download')]
 	public function downloadAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Theme::class)->find($id);
