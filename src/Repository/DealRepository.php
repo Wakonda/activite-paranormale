@@ -74,7 +74,8 @@ class DealRepository extends EntityRepository
 		$qb = $this->createQueryBuilder("b");
 		$qb->innerjoin("b.language", "l")
 		   ->where("l.abbreviation = :abbreviation")
-		   ->setParameter("abbreviation", $locale);
+		   ->setParameter("abbreviation", $locale)
+		   ->orderBy("b.id", "desc");
 
 		return $qb->getQuery();
 	}
