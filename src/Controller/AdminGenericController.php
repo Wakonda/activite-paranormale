@@ -64,8 +64,13 @@ abstract class AdminGenericController extends AbstractController
 			"es" => "Scipius",
 			default => "Wakonda"
 		};
-		if(method_exists($entity, "setPseudoUsed"))
-		$entity->setPseudoUsed($pseudoUsed);
+
+		if(method_exists($entity, "setPseudoUsed")) {
+			// if(empty($entity->getPseudoUsed()) and empty($entity->getAuthor())) {
+				$entity->setPseudoUsed($pseudoUsed);
+				$entity->setAuthor($em->getRepository(\App\Entity\User::class)->findOneBy(["username" => $pseudoUsed]));
+			// }
+		}
 		// TEMP
 	}
 	
@@ -142,7 +147,7 @@ abstract class AdminGenericController extends AbstractController
     {
 		$this->defaultValueForMappedSuperclassBase($request, $em, $entity);
         $form = $this->createForm($formType, $entity, $options);
-// dd($entity);
+
         return $this->render($twig, [
             'entity' => $entity,
             'form'   => $form->createView()
@@ -163,6 +168,7 @@ abstract class AdminGenericController extends AbstractController
 
         if ($form->isValid()) {
 			$this->uploadFile($entity, $form);
+			$this->defaultValueForMappedSuperclassBase($request, $em, $entity);
 
             $em->persist($entity);
             $em->flush();

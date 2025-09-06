@@ -1316,10 +1316,9 @@ class AdminController extends AbstractController
 
 			$entity = $em->getRepository($path)->find($id);
 			$url = $session->get("vk_url");
-			$area = 
 
 			$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
-
+// dd($session->get("vk_area"), $currentURL);
 			$res = $vk->postMessage($session->get("vk_area"), $currentURL);
 
 			$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.vk.Failed', [], 'validators'). "(".$res->error->error_msg.")"] : ['state' => 'success', 'message' => $translator->trans('admin.vk.Success', [], 'validators')];
