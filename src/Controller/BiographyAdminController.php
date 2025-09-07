@@ -98,12 +98,15 @@ class BiographyAdminController extends AdminGenericController
 			$datas["identifiers"] = array_map("unserialize", array_unique(array_map("serialize", $datas["identifiers"])));
 
 		foreach ($biographies as $biography) {
+
 			if(isset($datas["birthDate"]))
 				$biography->setBirthDate($datas["birthDate"]);
 			if(isset($datas["deathDate"]))
 				$biography->setDeathDate($datas["deathDate"]);
-			if(isset($datas["nationality"]))
-				$biography->setNationality($datas["nationality"]);
+			if(isset($datas["nationality"])) {
+				$nationality = $em->getRepository(Region::class)->findOneBy(["language" => $biography->getLanguage(), "internationalName" => $datas["nationality"]->getInternationalName()]);
+				$biography->setNationality($nationality);
+			}
 			if(isset($datas["wikidata"]))
 				$biography->setWikidata($datas["wikidata"]);
 			if(isset($datas["gender"]))
