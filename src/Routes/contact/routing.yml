@@ -1,31 +1,3 @@
-Contact_Index:
-    path:  /contact
-    controller: App\Controller\ContactController::indexAction
-
-Contact_Send:
-    path:  /contact/send
-    controller: App\Controller\ContactController::sendAction
-
-Contact_SendPrivateMessage:
-    path:  /contact/sendPrivateMessage/{userId}/{initialMessageId}/{idClassName}/{className}
-    controller: App\Controller\ContactController::sendPrivateMessage
-    defaults:
-        initialMessageId: null
-        idClassName: null
-        className: null
-
-Contact_IndexPrivateMessage:
-    path:  /contact/indexPrivateMessage
-    controller: App\Controller\ContactController::indexPrivateMessage
-
-Contact_PrivateMessageDatatables:
-    path: /contact/privateMessageDatatables/{type}
-    controller: App\Controller\ContactController::privateMessageDatatables
-
-Contact_ReadPrivateMessage:
-    path:  /contact/readPrivateMessage/{messageId}/{initialMessageId}
-    controller: App\Controller\ContactController::readPrivateMessage
-
 # Administration
 Contact_Admin:
     resource: "routing/contactadmin.yml"

@@ -1,20 +1,3 @@
-UsefulLink_Index:
-    path:  /usefullink/{page}/{tag}
-    controller: App\Controller\UsefulLinkController::index
-    defaults:
-        page: 1
-        tag: null
-    requirements:
-       page: \d+
-
-UsefulLink_Read:
-    path:  /usefullink/read/{id}
-    controller: App\Controller\UsefulLinkController::read
-
-UsefulLink_Counter:
-    path:  /usefullink/counter
-    controller: App\Controller\UsefulLinkController::counter
-
 # Administration
 UsefulLink_Admin:
     resource: "routing/usefullinkadmin.yml"

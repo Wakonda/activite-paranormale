@@ -1,17 +1,3 @@
-Deal_Index:
-    path: /deal/{page}
-    controller: App\Controller\DealController::index
-    defaults:
-        page: 1
-    requirements:
-        page: \d+
-
-Deal_Show:
-    path: /deal/read/{id}
-    controller: App\Controller\DealController::show
-    requirements:
-        id: \d+
-
 # Administration
 Deal_Admin:
     resource: "routing/dealadmin.yml"

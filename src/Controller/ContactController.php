@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,6 +22,7 @@ use App\Form\Type\ContactPrivateMessageType;
 
 class ContactController extends AbstractController
 {
+	#[Route('/contact', name: 'Contact_Index')]
     public function indexAction()
     {
         $entity = new Contact();
@@ -32,6 +34,7 @@ class ContactController extends AbstractController
         ]);
     }
 
+	#[Route('/contact/send', name: 'Contact_Send')]
     public function sendAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
         $entity  = new Contact();
@@ -76,6 +79,7 @@ class ContactController extends AbstractController
         ]);
     }
 
+	#[Route('/contact/sendPrivateMessage/{userId}/{initialMessageId}/{idClassName}/{className}', name: 'Contact_SendPrivateMessage', defaults: ['initialMessageId' => null, 'idClassName' => null, 'className' => null])]
 	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $userId, $initialMessageId = null, $idClassName = null, $className = null) {
         $entity = new Contact();
 		$recipient = $em->getRepository(User::class)->find($userId);
@@ -167,6 +171,7 @@ class ContactController extends AbstractController
         ]);
 	}
 
+	#[Route('/contact/indexPrivateMessage', name: 'Contact_IndexPrivateMessage')]
 	public function indexPrivateMessage(EntityManagerInterface $em) {
 		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		$unreadMessage = $em->getRepository(Contact::class)->countUnreadMessage($this->getUser());
@@ -174,6 +179,7 @@ class ContactController extends AbstractController
 		return $this->render("contact/Contact/indexPrivateMessage.html.twig", ["unreadMessage" => $unreadMessage]);
 	}
 
+	#[Route('/contact/readPrivateMessage/{messageId}/{initialMessageId}', name: 'Contact_ReadPrivateMessage')]
 	public function readPrivateMessage(EntityManagerInterface $em, $messageId, $initialMessageId) {
 		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		$initialMessage = $em->getRepository(Contact::class)->find($initialMessageId);
@@ -189,6 +195,7 @@ class ContactController extends AbstractController
 		return $this->render("contact/Contact/readPrivateMessage.html.twig", ["entities" => $entities, "initialMessage" => $initialMessage]);
 	}
 
+	#[Route('/contact/privateMessageDatatables/{type}', name: 'Contact_PrivateMessageDatatables')]
 	public function privateMessageDatatables(Request $request, EntityManagerInterface $em, APDate $date, $type)
 	{
 		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
