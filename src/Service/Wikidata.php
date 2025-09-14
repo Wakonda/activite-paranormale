@@ -72,8 +72,13 @@ class Wikidata {
 
 		$res["socialNetwork"] = ["link" => null, "twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
 
-		if(property_exists($datas->entities->$code->claims, "P2002") and property_exists($datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0], "datavalue"))
-			$res["socialNetwork"]["twitter"] = "https://twitter.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
+		if(property_exists($datas->entities->$code->claims, "P2002")) {
+			$username = $datas->entities->$code->claims->P2002[0]->mainsnak->datavalue->value;
+			if(!empty($username))
+				$res["socialNetwork"]["twitter"] = "https://x.com/{$username}";
+			elseif(property_exists($datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0], "datavalue"))
+				$res["socialNetwork"]["twitter"] = "https://x.com/i/user/".$datas->entities->$code->claims->P2002[0]->qualifiers->P6552[0]->datavalue->value;
+		}
 
 		if(property_exists($datas->entities->$code->claims, "P2397"))
 			$res["socialNetwork"]["youtube"] = "https://www.youtube.com/channel/".$datas->entities->$code->claims->P2397[0]->mainsnak->datavalue->value;
