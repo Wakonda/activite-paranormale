@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -79,6 +80,7 @@ class VoteController extends AbstractController
 		return [$entity, $className];
 	}
 
+	#[Route('/vote/{className}/{idClassName}', name: 'Vote_Index')]
     public function indexAction(Request $request, EntityManagerInterface $em, $className, $idClassName)
     {
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
@@ -100,7 +102,8 @@ class VoteController extends AbstractController
 			'favoriteEntity' => $favorite
 		]);
     }
-	
+
+	#[Route('/vote/edit/{idClassName}/{className}', name: 'Vote_Edit')]
 	public function editAction(Request $request, EntityManagerInterface $em, $className, $idClassName)
     {
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
@@ -127,10 +130,12 @@ class VoteController extends AbstractController
 		return new JsonResponse(['averageVote' => round($averageVote, 1), 'countVoteByClassName' => $countVoteByClassName]);
     }
 
+	#[Route('/vote/list/user/{authorId}', name: 'Vote_ListVoteBtUser')]
 	public function listVoteByUser($authorId) {
 		return $this->render("vote/Vote/index_user.html.twig");
 	}
 
+	#[Route('/listVoteByUserDatatables/{authorId}', name: 'Vote_ListVoteByUserDatatables')]
 	public function listVoteByUserDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $authorId) {
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -173,6 +178,7 @@ class VoteController extends AbstractController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/favorite/list/user/{authorId}', name: 'Vote_ListFavoriteByUser')]
 	public function listFavoriteByUser($authorId) {
 		if(!empty($user = $this->getUser()) and $user->getId() != $authorId)
 			throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException('You have not access to this section.');
@@ -180,6 +186,7 @@ class VoteController extends AbstractController
 		return $this->render("vote/Vote/index_favorite_user.html.twig");
 	}
 
+	#[Route('/listFavoriteByUserDatatables/{authorId}', name: 'Vote_ListFavoriteByUserDatatables')]
 	public function listFavoriteByUserDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $authorId) {
 		if(!empty($user = $this->getUser()) and $user->getId() != $authorId)
 			throw new \Symfony\Component\Security\Core\Exception\AccessDeniedException('You have not access to this section.');
@@ -217,6 +224,7 @@ class VoteController extends AbstractController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/favorite/post/user/{idClassName}/{className}', name: 'Vote_PostFavorite')]
 	public function postFavorite(Request $request, EntityManagerInterface $em, $idClassName, $className) {
 		if(empty($this->getUser()))
 			return new JsonResponse(["error" => "You must be logged in"]);

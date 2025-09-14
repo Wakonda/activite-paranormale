@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -16,6 +17,7 @@ use App\Form\Type\WebDirectoryUserParticipationType;
 
 class WebDirectoryController extends AbstractController
 {
+	#[Route('/directory', name: 'WebDirectory_Index')]
     public function indexAction(EntityManagerInterface $em)
     {
 		$entities = $em->getRepository(WebDirectory::class)->findAll();
@@ -24,7 +26,8 @@ class WebDirectoryController extends AbstractController
 			'entities' => $entities
 		]);
     }
-	
+
+	#[Route('/directory/read/{id}/{title}', name: 'WebDirectory_Read')]
 	public function readAction(EntityManagerInterface $em, $id, $title)
 	{
 		$entity = $em->getRepository(WebDirectory::class)->find($id);
@@ -34,6 +37,7 @@ class WebDirectoryController extends AbstractController
 		]);
 	}
 
+	#[Route('/searchdatatables', name: 'WebDirectory_SearchDatatables')]
 	public function searchDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APImgSize $imgSize)
 	{
 		$language = $request->getLocale();
@@ -79,6 +83,7 @@ class WebDirectoryController extends AbstractController
 	}
 
 	// USER PARTICIPATION
+	#[Route('/directory/published', name: 'WebDirectory_User_New')]
     public function newAction(Request $request)
     {
         $entity = new WebDirectory();
@@ -90,7 +95,8 @@ class WebDirectoryController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-	
+
+	#[Route('/directory/published/create', name: 'WebDirectory_User_Create')]
 	public function createAction(Request $request, EntityManagerInterface $em)
     {
 		return $this->genericCreateUpdate($request, $em);

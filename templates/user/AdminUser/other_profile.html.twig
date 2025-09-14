@@ -90,7 +90,7 @@
 					</div>
 					<br>
 					<div class="text-center">
-						<a href="{{ path('Vote_ListFavoriteBtUser', { authorId: user.id }) }}" class="btn btn-danger"><i class="fa-regular fa-heart"></i> {{ "vote.index.ShowMyFavorites"|trans([], "validators") }}</a>
+						<a href="{{ path('Vote_ListFavoriteByUser', { authorId: user.id }) }}" class="btn btn-danger"><i class="fa-regular fa-heart"></i> {{ "vote.index.ShowMyFavorites"|trans([], "validators") }}</a>
 					</div>
 				{% endif %}
 			{% endif %}

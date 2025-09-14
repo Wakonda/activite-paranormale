@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -23,6 +24,7 @@ use App\Form\Type\ClassifiedAdsSearchType;
 
 class ClassifiedAdsController extends AbstractController
 {
+	#[Route('/classifiedads/{page}/{idCategory}', name: 'ClassifiedAds_Index', defaults: ['page' => 1, 'idCategory' => null], requirements: ['page' => "\d+"])]
     public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idCategory)
     {
 		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
@@ -69,6 +71,7 @@ class ClassifiedAdsController extends AbstractController
 		return $this->render('classifiedAds/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView(), "counters" => $counters]);
     }
 
+	#[Route('/classifiedads/read/{id}/{title_slug}', name: 'ClassifiedAds_Read', defaults: ['title_slug' => null], requirements: ['id' => "\d+"])]
 	public function read(EntityManagerInterface $em, $id, $title_slug) {
 		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
 		
@@ -81,6 +84,7 @@ class ClassifiedAdsController extends AbstractController
 		return new Response($em->getRepository(ClassifiedAds::class)->countByLanguage($request->getLocale()));
 	}
 
+	#[Route('/classifiedads/markas/{id}', name: 'ClassifiedAds_MarkAs', requirements: ['id' => "\d+"])]
 	public function markAs(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id) {
 		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
 
@@ -94,6 +98,7 @@ class ClassifiedAdsController extends AbstractController
 	}
 
 	// USER PARTICIPATION
+	#[Route('/classifiedads/new', name: 'ClassifiedAds_New')]
     public function newAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new ClassifiedAds();
@@ -105,6 +110,7 @@ class ClassifiedAdsController extends AbstractController
         ]);
     }
 
+	#[Route('/classifiedads/create', name: 'ClassifiedAds_Create')]
     public function create(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
     {
         $entity  = new ClassifiedAds();
@@ -148,11 +154,13 @@ class ClassifiedAdsController extends AbstractController
         ]);
     }
 
+	#[Route('/classifiedads/validate', name: 'ClassifiedAds_Validate')]
     public function validate()
     {
 		return $this->render('classifiedAds/ClassifiedAds/validate.html.twig');
     }
 
+	#[Route('/classifiedads/state/{id}/{state}', name: 'ClassifiedAds_State')]
     public function state(Request $request, EntityManagerInterface $em, $id, $state)
     {
 		$entity = $em->getRepository(ClassifiedAds::class)->find($id);

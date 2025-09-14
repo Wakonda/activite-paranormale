@@ -1,11 +1,3 @@
-WebDirectorySEO_Index:
-    path:  /directory/seo
-    controller: App\Controller\WebDirectorySEOController::index
-
-WebDirectorySEO_Show:
-    path:  /directory/seo/{id}
-    controller: App\Controller\WebDirectorySEOController::show
-
 # Administration
 WebDirectorySEO_Admin:
     resource: "routing/webdirectoryseoadmin.yml"
