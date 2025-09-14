@@ -14,10 +14,6 @@ APFileManagementBundle:
     resource: "../src/Routes/filemanagement/routing.yml"
     prefix:   /
 
-APSearchBundle:
-    resource: "../src/Routes/search/routing.yml"
-    prefix:   /
-
 APTestimonyBundle:
     resource: "../src/Routes/testimony/routing.yml"
     prefix:   /

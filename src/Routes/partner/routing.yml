@@ -1,9 +1,3 @@
-Partner_Index:
-    path:  /partner/{page}
-    controller: App\Controller\PartnerController::indexAction
-    defaults:
-        page: 1
-
 # Administration
 Partner_Admin:
     resource: "routing/partneradmin.yml"

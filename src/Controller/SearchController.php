@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +15,8 @@ use App\Service\PaginatorNativeSQL;
 
 class SearchController extends AbstractController
 {
-	public function searchAction(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
+	#[Route('/search_query', name: 'Search_Query')]
+	public function search(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator)
 	{
         $form = $this->createForm(SearchEngineType::class);
 		$form->handleRequest($request);
@@ -59,9 +61,8 @@ class SearchController extends AbstractController
 		foreach($pagination->getItems() as $result) {
 			$datas[$result["id"]."_".$result["classname"]] = $em->getRepository($this->getClassNameFromTableName($em, $result["classname"]))->find($result["id"]);
 		}
-		
-		$stopTimer = microtime(true);
 
+		$stopTimer = microtime(true);
 		$execution_time = round($stopTimer - $startTimer, 7) * 1000;
 
 		// Image
@@ -112,7 +113,6 @@ class SearchController extends AbstractController
 	{
 		$classNames = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 		foreach ($classNames as $className) {
-			
 			$classMetaData = $em->getClassMetadata($className);
 			if ($table == $classMetaData->getTableName()) {
 				return $classMetaData->getName();
