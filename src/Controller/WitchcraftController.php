@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,7 +27,8 @@ use App\Form\Type\WitchcraftToolSearchType;
 
 class WitchcraftController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
+	#[Route('/grimoire/{page}', name: 'Witchcraft_Index', requirements: ['page' => '\d+'], defaults: ['page' => 1])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
 		$menuGrimoires = $em->getRepository(SurThemeGrimoire::class)->getParentThemeByLanguage($request->getLocale());
 		$countTheme = $em->getRepository(SurThemeGrimoire::class)->countGrimoireByParentTheme($request->getLocale());
@@ -59,8 +61,9 @@ class WitchcraftController extends AbstractController
 			"pagination" => $pagination
 		]);
     }    
-	
-	public function tabGrimoireAction(Request $request, EntityManagerInterface $em, $theme, $id, $surtheme)
+
+	#[Route('/grimoire/tab/{surtheme}/{id}/{theme}', name: 'Witchcraft_TabGrimoire', requirements: ['theme' => ".+", 'id' => '\d+'])]
+	public function tabGrimoire(Request $request, EntityManagerInterface $em, $theme, $id, $surtheme)
     {
 		$fob = $em->getRepository(SurThemeGrimoire::class)->recupTheme($request->getLocale(), $id);
 
@@ -70,7 +73,8 @@ class WitchcraftController extends AbstractController
 		]);
     }
 
-	public function tabGrimoireDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, $themeId)
+	#[Route('/tabgrimoiredatatables/{themeId}', name: 'Witchcraft_TabGrimoireDatatables')]
+	public function tabGrimoireDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, $themeId)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -111,8 +115,9 @@ class WitchcraftController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
-	public function readGrimoireAction(Request $request, EntityManagerInterface $em, $id, $surtheme)
+
+	#[Route('/grimoire/read/{surtheme}/{id}/{title_slug}', name: 'Witchcraft_ReadGrimoire', requirements: ['surtheme' => ".+", 'title_slug' => '.+'])]
+	public function readGrimoire(Request $request, EntityManagerInterface $em, $id, $surtheme)
     {
 		$entity = $em->getRepository(Grimoire::class)->findByDisplayState($id);
 
@@ -129,7 +134,8 @@ class WitchcraftController extends AbstractController
 			'entity' => $entity
 		]);
     }
-	
+
+	#[Route('/grimoire/read_simple/{id}/{title_slug}', name: 'Witchcraft_ReadGrimoire_Simple', requirements: ['title_slug' => null])]
 	public function readGrimoireSimple(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
 		$entity = $em->getRepository(Grimoire::class)->findByDisplayState($id);
@@ -159,14 +165,16 @@ class WitchcraftController extends AbstractController
 	}
 	
 	/********* Début fonction de comptage *********/
-	public function countRitualAction(EntityManagerInterface $em, $id)
+	#[Route('/grimoire/count/{id}', name: 'Witchcraft_CountRitual', requirements: ['id' => "\d+"])]
+	public function countRitual(EntityManagerInterface $em, $id)
 	{
 		$nbrRitual = $em->getRepository(Grimoire::class)->countEntree($id);
 		return new Response($nbrRitual);
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
+	#[Route('/grimoire/pdfversion/{id}', name: 'Witchcraft_Pdfversion')]
+	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(Grimoire::class)->find($id);
 
@@ -182,6 +190,7 @@ class WitchcraftController extends AbstractController
 	}
 
 	// USER PARTICIPATION
+	#[Route('/grimoire/new', name: 'Witchcraft_New')]
     public function newAction(Request $request)
     {
         $entity = new Grimoire();
@@ -194,6 +203,7 @@ class WitchcraftController extends AbstractController
         ]);
     }
 
+	#[Route('/grimoire/create', name: 'Witchcraft_Create')]
 	public function createAction(Request $request, EntityManagerInterface $em)
     {
 		$user = $this->getUser();
@@ -245,6 +255,7 @@ class WitchcraftController extends AbstractController
         ]);
     }
 
+	#[Route('/grimoire/waiting/{id}', name: 'Witchcraft_Waiting')]
 	public function waitingAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Grimoire::class)->find($id);
@@ -256,7 +267,8 @@ class WitchcraftController extends AbstractController
         ]);
 	}
 
-	public function validateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/grimoire/validate/{id}', name: 'Witchcraft_Validate')]
+	public function validate(Request $request, EntityManagerInterface $em, $id)
 	{
         $entity = $em->getRepository(Grimoire::class)->find($id);
 		
@@ -278,7 +290,8 @@ class WitchcraftController extends AbstractController
 		return $this->render('witchcraft/Witchcraft/validate_externaluser_text.html.twig');
 	}
 
-	public function indexWitchcraftToolAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
+	#[Route('/witchcrafttool/{page}', name: 'WitchcraftTool_Index', defaults: ['page' => 1], requirements: ['page' => '\d+'])]
+	public function indexWitchcraftTool(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
 	{
 		$form = $this->createForm(WitchcraftToolSearchType::class, null, ["locale" => $request->getLocale()]);
 		$form->handleRequest($request);
@@ -308,6 +321,7 @@ class WitchcraftController extends AbstractController
 		return $this->render('witchcraft/WitchcraftTool/indexWitchcraft.html.twig', ['pagination' => $pagination, 'form' => $form->createView(), "themes" => $themes]);
 	}
 
+	#[Route('/witchcrafttool/{id}/{title_slug}', name: 'WitchcraftTool_Show', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
 	public function showWitchcraftToolAction(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(WitchcraftTool::class)->find($id);
@@ -315,7 +329,8 @@ class WitchcraftController extends AbstractController
 		return $this->render('witchcraft/WitchcraftTool/showWitchcraft.html.twig', ['entity' => $entity]);
 	}
 
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+	#[Route('/grimoire/world/{language}/{themeId}/{theme}', name: 'Witchcraft_World', requirements: ['theme' => '.+'], defaults: ['language' => 'all', 'themeId': 0, 'theme': null])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -340,7 +355,8 @@ class WitchcraftController extends AbstractController
 		]);
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+	#[Route('/grimoire/worlddatatables/{language}/{themeId}', name: 'Witchcraft_WorldDatatables', defaults: ['language' => 'all', 'themeId': 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -382,7 +398,8 @@ class WitchcraftController extends AbstractController
 		return $response;
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
+	#[Route('/grimoire/selectThemeForIndexWorldAction/{language}', name: 'Witchcraft_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
+	public function selectThemeForIndexWorld(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
@@ -399,6 +416,7 @@ class WitchcraftController extends AbstractController
 		return $this->render("witchcraft/Witchcraft/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
 
+	#[Route('/grimoire/theme/{id}/{slug}', name: 'Witchcraft_Theme', requirements: ['id' => '\d+'])]
 	public function theme(EntityManagerInterface $em, $id) {
 		$menuGrimoire = $em->getRepository(SurThemeGrimoire::class)->find($id);
 		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->findBy(["parentTheme" => $menuGrimoire]);

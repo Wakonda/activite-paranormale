@@ -47,7 +47,7 @@ class EventMessageAdminController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrationThumbnails);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new EventMessageTags(), $entityBindded);
 	}
@@ -55,13 +55,13 @@ class EventMessageAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'page/EventMessageAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'page/EventMessageAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -70,7 +70,7 @@ class EventMessageAdminController extends AdminGenericController
 		$entity = new EventMessage();
 
 		$twig = 'page/EventMessageAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -79,7 +79,7 @@ class EventMessageAdminController extends AdminGenericController
 		$entity = new EventMessage();
 
 		$twig = 'page/EventMessageAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
@@ -88,7 +88,7 @@ class EventMessageAdminController extends AdminGenericController
 		$formType = EventMessageAdminType::class;
 
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -96,7 +96,7 @@ class EventMessageAdminController extends AdminGenericController
 		$formType = EventMessageAdminType::class;
 		
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -106,7 +106,7 @@ class EventMessageAdminController extends AdminGenericController
 		$votes = $em->getRepository("\App\Entity\EventMessageVote")->findBy(["entity" => $id]);
 		foreach($votes as $entity) {$em->remove($entity); }
 
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 	
 	public function archiveAction(EntityManagerInterface $em, $id)
@@ -116,7 +116,7 @@ class EventMessageAdminController extends AdminGenericController
 	
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -149,17 +149,17 @@ class EventMessageAdminController extends AdminGenericController
 		$formType = EventMessageAdminType::class;
 
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType);
+		return $this->editGeneric($em, $id, $twig, $formType);
 	}
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('EventMessage_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('EventMessage_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
 	public function countByStateAction(EntityManagerInterface $em, $state)
@@ -254,7 +254,7 @@ class EventMessageAdminController extends AdminGenericController
 		$entity->setLongitude($entityToCopy->getLongitude());
 
 		$twig = 'page/EventMessageAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
 	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)

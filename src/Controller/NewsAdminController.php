@@ -46,7 +46,7 @@ class NewsAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new NewsTags(), $entityBindded);
 	}
@@ -54,13 +54,13 @@ class NewsAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'news/NewsAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'news/NewsAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -69,7 +69,7 @@ class NewsAdminController extends AdminGenericController
 		$entity = new News();
 
 		$twig = 'news/NewsAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -79,7 +79,7 @@ class NewsAdminController extends AdminGenericController
 
 		$twig = 'news/NewsAdmin/new.html.twig';
 
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
@@ -88,7 +88,7 @@ class NewsAdminController extends AdminGenericController
 		$formType = NewsAdminType::class;
 
 		$twig = 'news/NewsAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -96,7 +96,7 @@ class NewsAdminController extends AdminGenericController
 		$formType = NewsAdminType::class;
 
 		$twig = 'news/NewsAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -108,7 +108,7 @@ class NewsAdminController extends AdminGenericController
 		$tags = $em->getRepository(NewsTags::class)->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
 
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
 	/* FONCTION DE COMPTAGE */
@@ -120,7 +120,7 @@ class NewsAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
@@ -208,12 +208,12 @@ class NewsAdminController extends AdminGenericController
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('News_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('News_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
 	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
@@ -291,7 +291,7 @@ class NewsAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'news/NewsAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)

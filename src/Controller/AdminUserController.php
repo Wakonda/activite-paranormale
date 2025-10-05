@@ -35,19 +35,19 @@ class AdminUserController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 	
     public function index()
     {
 		$twig = 'user/AdminUser/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 
 	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
@@ -92,7 +92,7 @@ class AdminUserController extends AdminGenericController
 		$entity = new User();
 
 		$twig = 'user/AdminUser/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -101,7 +101,7 @@ class AdminUserController extends AdminGenericController
 		$entity = new User();
 
 		$twig = 'user/AdminUser/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $request->getLocale()]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $request->getLocale()]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
@@ -110,7 +110,7 @@ class AdminUserController extends AdminGenericController
 		$formType = UserAdminType::class;
 
 		$twig = 'user/AdminUser/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -118,7 +118,7 @@ class AdminUserController extends AdminGenericController
 		$formType = UserAdminType::class;
 		$twig = 'user/AdminUser/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
     }
 	
 	public function userListingAction(EntityManagerInterface $em)

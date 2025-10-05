@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -20,7 +21,8 @@ use App\Form\Type\BiographySearchType;
 
 class BiographyController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em)
+	#[Route('/biography', name: 'Biography_Index')]
+    public function index(Request $request, EntityManagerInterface $em)
     {
 		$datas = [];
 		
@@ -33,7 +35,8 @@ class BiographyController extends AbstractController
         return $this->render('quotation/Biography/index.html.twig', ["entities" => $entities, "form" => $form->createView()]);
     }
 
-	public function readAction(EntityManagerInterface $em, $id)
+	#[Route('/biography/{id}/{title_slug}', name: 'Biography_Show', defaults: ['title_slug' => null], requirements: ['id' => "\d+"])]
+	public function read(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Biography::class)->find($id);
 
@@ -56,7 +59,8 @@ class BiographyController extends AbstractController
 		]);	
 	}
 
-	public function listDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
+	#[Route('/biograpgy/listdatatables', name: 'Biography_ListDatatables')]
+	public function listDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -106,6 +110,7 @@ class BiographyController extends AbstractController
 	}
 
 	// Biography of the world
+	#[Route('/biography/world/{language}', name: 'Biography_World', defaults: ['language' => "all"], requirements: ['theme' => ".+"])]
 	public function worldAction(EntityManagerInterface $em, $language)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
@@ -123,6 +128,7 @@ class BiographyController extends AbstractController
 		]);
 	}
 
+	#[Route('/biography/worlddatatables/{language}', name: 'Biography_WorldDatatables', defaults: ['language' => "all"])]
 	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, $language)
 	{
 		$iDisplayStart = $request->query->get('start');

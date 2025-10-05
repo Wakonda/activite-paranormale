@@ -28,7 +28,7 @@ class KnowledgeBaseAdminController extends AdminGenericController
 	{
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$entityBindded->setCategory(UsefulLink::RESOURCE_FAMILY);
 
@@ -52,13 +52,13 @@ class KnowledgeBaseAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'usefullink/KnowledgeBaseAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'usefullink/KnowledgeBaseAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -67,7 +67,7 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -76,7 +76,7 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
@@ -85,7 +85,7 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$formType = KnowledgeBaseAdminType::class;
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -93,12 +93,12 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$formType = KnowledgeBaseAdminType::class;
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)

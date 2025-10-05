@@ -13,7 +13,7 @@ use App\Entity\Language;
 class LicenceController extends AbstractController
 {
 	#[Route('/showcolorbox', name: 'Licence_ShowColorbox')]
-    public function showColorboxAction(Request $request, EntityManagerInterface $em)
+    public function showColorbox(Request $request, EntityManagerInterface $em)
     {
 		$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => $request->getLocale()]);
 		$entities = $em->getRepository(Licence::class)->findBy(['language' => $language]);
@@ -25,7 +25,7 @@ class LicenceController extends AbstractController
     }
 
 	#[Route('/showcolorboxbylicence/{id}', name: 'Licence_ShowColorboxByLicence')]
-    public function showColorboxByLicenceAction(Request $request, EntityManagerInterface $em, $id)
+    public function showColorboxByLicence(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Licence::class)->find($id);
 

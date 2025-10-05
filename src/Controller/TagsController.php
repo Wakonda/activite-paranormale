@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -16,10 +17,12 @@ use App\Service\APImgSize;
 
 class TagsController extends AbstractController
 {
+	#[Route('/tags/index', name: 'ap_tags_index')]
 	public function index() {
 		return $this->render("tags/Tags/index.html.twig");
 	}
 
+	#[Route('/tags/listdatatables', name: 'ap_tags_ListDatatables')]
 	public function listDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
 		$iDisplayStart = $request->query->get('start');
@@ -61,6 +64,7 @@ class TagsController extends AbstractController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/searchtags/{id}/{title_slug}', name: 'ap_tags_search', defaults: ['title_slug' => null])]
     public function search(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
 		$entity = $em->getRepository(TagWord::class)->find($id);
@@ -69,7 +73,8 @@ class TagsController extends AbstractController
         return $this->render('tags/Tags/search.html.twig', ['entity' => $entity, 'countEntities' => $countEntities]);
     }
 
-	public function searchDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date, $id, $title)
+	#[Route('/searchtagsdatatables/{id}/{title}', name: 'ap_tags_searchdatatables')]
+	public function searchDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date, $id, $title)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -101,7 +106,8 @@ class TagsController extends AbstractController
 		return new JsonResponse($output);
 	}
 	
-	public function TagsAvailableEditAction(Request $request, EntityManagerInterface $em)
+	#[Route('/tagsavailableedit', name: 'ap_tags_tagsavailableedit')]
+	public function tagsAvailableEdit(Request $request, EntityManagerInterface $em)
 	{
 		$language = null;
 		if($request->query->has('locale') and !empty($locale = $request->query->get('locale')))

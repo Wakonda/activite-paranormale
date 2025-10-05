@@ -44,7 +44,7 @@ class BiographyAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$biographies = $em->getRepository($this->className)->findBy(["internationalName" => $entityBindded->getInternationalName()]);
 
@@ -142,13 +142,13 @@ class BiographyAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'quotation/BiographyAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'quotation/BiographyAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -157,7 +157,7 @@ class BiographyAdminController extends AdminGenericController
 		$entity = new Biography();
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
     }
 
     public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
@@ -219,7 +219,7 @@ class BiographyAdminController extends AdminGenericController
 		$roles = $em->getRepository(\App\Entity\EntityLinkBiography::class)->getOccupationsByBiography($entityToCopy->getId());
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation(), "default_roles" => $roles]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation(), "default_roles" => $roles]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -228,7 +228,7 @@ class BiographyAdminController extends AdminGenericController
 		$entity = new Biography();
 
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
@@ -237,7 +237,7 @@ class BiographyAdminController extends AdminGenericController
 		$formType = BiographyAdminType::class;
 
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -245,22 +245,22 @@ class BiographyAdminController extends AdminGenericController
 		$formType = BiographyAdminType::class;
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('Biography_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('Biography_Admin_LoadImageSelectorColorbox');
 	}
 
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)

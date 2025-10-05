@@ -42,7 +42,7 @@ class CreepyStoryAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new CreepyStoryTags(), $entityBindded);
 	}
@@ -50,13 +50,13 @@ class CreepyStoryAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'creepyStory/CreepyStoryAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'creepyStory/CreepyStoryAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -65,7 +65,7 @@ class CreepyStoryAdminController extends AdminGenericController
 		$entity = new CreepyStory();
 
 		$twig = 'creepyStory/CreepyStoryAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -74,7 +74,7 @@ class CreepyStoryAdminController extends AdminGenericController
 		$entity = new CreepyStory();
 
 		$twig = 'creepyStory/CreepyStoryAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
@@ -83,7 +83,7 @@ class CreepyStoryAdminController extends AdminGenericController
 		$formType = CreepyStoryAdminType::class;
 
 		$twig = 'creepyStory/CreepyStoryAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -91,7 +91,7 @@ class CreepyStoryAdminController extends AdminGenericController
 		$formType = CreepyStoryAdminType::class;
 		$twig = 'creepyStory/CreepyStoryAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
@@ -99,7 +99,7 @@ class CreepyStoryAdminController extends AdminGenericController
 		$tags = $em->getRepository(CreepyStoryTags::class)->findBy(["entity" => $id]);
 		foreach($tags as $entity) {$em->remove($entity); }
 
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 	
 	public function archiveAction(EntityManagerInterface $em, $id)
@@ -109,7 +109,7 @@ class CreepyStoryAdminController extends AdminGenericController
 	
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -175,12 +175,12 @@ class CreepyStoryAdminController extends AdminGenericController
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('CreepyStory_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('CreepyStory_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
 	public function internationalization(Request $request, EntityManagerInterface $em, $id)
@@ -221,6 +221,6 @@ class CreepyStoryAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'creepyStory/CreepyStoryAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 }

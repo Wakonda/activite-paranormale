@@ -31,7 +31,7 @@ class ContactAdminController extends AdminGenericController
 	{
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
@@ -42,7 +42,7 @@ class ContactAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'contact/ContactAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 
     /**
@@ -103,7 +103,7 @@ class ContactAdminController extends AdminGenericController
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)

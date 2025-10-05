@@ -96,36 +96,6 @@ Quotation_quotationsServerSide:
     requirements:
         authorId: \d+
 
-Biography_Index:
-    path: /biography
-    controller: App\Controller\BiographyController::indexAction
-
-Biography_Show:
-    path: /biography/{id}/{title_slug}
-    controller: App\Controller\BiographyController::readAction
-    defaults:
-        title_slug: null
-    requirements:
-        id: \d+
-
-Biography_ListDatatables:
-    path: /biograpgy/listdatatables
-    controller: App\Controller\BiographyController::listDatatablesAction
-
-Biography_World:
-    path: /biography/world/{language}
-    controller: App\Controller\BiographyController::worldAction
-    defaults:
-        language: all
-    requirements:
-        theme: ".+"
-
-Biography_WorldDatatables:
-    path: /biography/worlddatatables/{language}
-    controller: App\Controller\BiographyController::worldDatatablesAction
-    defaults:
-        language: all
-
 # Administration
 Quotation_Admin:
     resource: "routing/quotationadmin.yml"

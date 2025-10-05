@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +20,7 @@ use App\Entity\FileManagement;
 use App\Form\Type\WitchcraftToolAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * WitchcraftTool controller.
- *
- */
+#[Route('/admin/witchcrafttool')]
 class WitchcraftToolAdminController extends AdminGenericController
 {
 	protected $entityName = 'WitchcraftTool';
@@ -53,65 +51,73 @@ class WitchcraftToolAdminController extends AdminGenericController
 		$entityBindded->setState($state);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'WitchcraftTool_Admin_Index')]
+    public function index()
     {
 		$twig = 'witchcraft/WitchcraftToolAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
-    }
-	
-    public function showAction(EntityManagerInterface $em, $id)
-    {
-		$twig = 'witchcraft/WitchcraftToolAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->indexGeneric($twig);
     }
 
+	#[Route('/{id}/show', name: 'WitchcraftTool_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
+    {
+		$twig = 'witchcraft/WitchcraftToolAdmin/show.html.twig';
+		return $this->showGeneric($em, $id, $twig);
+    }
+
+	#[Route('/new', name: 'WitchcraftTool_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = WitchcraftToolAdminType::class;
 		$entity = new WitchcraftTool();
 
 		$twig = 'witchcraft/WitchcraftToolAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'WitchcraftTool_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = WitchcraftToolAdminType::class;
 		$entity = new WitchcraftTool();
 
 		$twig = 'witchcraft/WitchcraftToolAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'WitchcraftTool_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = WitchcraftToolAdminType::class;
 
 		$twig = 'witchcraft/WitchcraftToolAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'WitchcraftTool_Admin_Update', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = WitchcraftToolAdminType::class;
 		$twig = 'witchcraft/WitchcraftToolAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
-    }
-	
-    public function deleteAction(EntityManagerInterface $em, $id)
-    {
-		return $this->deleteGenericAction($em, $id);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/{id}/delete', name: 'WitchcraftTool_Admin_Delete')]
+    public function deleteAction(EntityManagerInterface $em, $id)
+    {
+		return $this->deleteGeneric($em, $id);
+    }
+
+	#[Route('/datatables', name: 'WitchcraftTool_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -131,7 +137,8 @@ class WitchcraftToolAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reloadlistsbylanguage', name: 'WitchcraftTool_Admin_ReloadListsByLanguage')]
+	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -151,8 +158,9 @@ class WitchcraftToolAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'WitchcraftTool_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = WitchcraftToolAdminType::class;
 		$entity = new WitchcraftTool();
@@ -214,16 +222,18 @@ class WitchcraftToolAdminController extends AdminGenericController
 		}
 
 		$twig = 'witchcraft/WitchcraftToolAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'WitchcraftTool_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
-		return $this->showImageSelectorColorboxGenericAction('WitchcraftTool_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('WitchcraftTool_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'WitchcraftTool_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 }

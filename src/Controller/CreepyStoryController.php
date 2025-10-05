@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,7 +18,8 @@ use App\Service\APHtml2Pdf;
 
 class CreepyStoryController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em)
+	#[Route('/creepy_story', name: 'CreepyStory_Index')]
+    public function index(Request $request, EntityManagerInterface $em)
     {
 		$locale = $request->getLocale();
 
@@ -36,8 +38,9 @@ class CreepyStoryController extends AbstractController
 			'nbr' => $nbr
 		]);
     }
-	
-	public function tabAction(Request $request, $id, $theme)
+
+	#[Route('/creepy_story/tab/{id}/{theme}', name: 'CreepyStory_Tab', requirements: ['theme' => ".+"])]
+	public function tab(Request $request, $id, $theme)
 	{
 		return $this->render('creepyStory/CreepyStory/tab.html.twig', [
 			'themeDisplay' => $theme,
@@ -45,7 +48,8 @@ class CreepyStoryController extends AbstractController
 		]);
 	}
 
-	public function tabDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
+	#[Route('/creepy_story/tabdatatables/{themeId}', name: 'CreepyStory_TabDatatables')]
+	public function tabDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -86,8 +90,9 @@ class CreepyStoryController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
-	public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
+
+	#[Route('/creepy_story/read/{id}/{title_slug}', name: 'CreepyStory_Read', defaults: ['title_slug' => null])]
+	public function read(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 
@@ -105,7 +110,8 @@ class CreepyStoryController extends AbstractController
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
+	#[Route('/creepy_story/pdfversion/{id}', name: 'CreepyStory_Pdfversion')]
+	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 
@@ -134,6 +140,7 @@ class CreepyStoryController extends AbstractController
 		return $this->render("creepyStory/CreepyStory/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
 
+	#[Route('/creepy_story/random', name: 'CreepyStory_LoadRandom')]
 	public function random() {
 		return $this->render("creepyStory/CreepyStory/random.html.twig");
 	}

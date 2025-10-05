@@ -35,20 +35,20 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
     public function indexAction()
     {
 		$twig = 'usefullink/UsefullinkTagsAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'usefullink/UsefullinkTagsAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -57,7 +57,7 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$entity = new UsefullinkTags();
 
 		$twig = 'usefullink/UsefullinkTagsAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'new']);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'new']);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -66,7 +66,7 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$entity = new UsefullinkTags();
 
 		$twig = 'usefullink/UsefullinkTagsAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new']);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new']);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
@@ -75,7 +75,7 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$formType = UsefullinkTagsAdminType::class;
 
 		$twig = 'usefullink/UsefullinkTagsAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['action' => 'edit']);
+		return $this->editGeneric($em, $id, $twig, $formType, ['action' => 'edit']);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -83,12 +83,12 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$formType = UsefullinkTagsAdminType::class;
 		$twig = 'usefullink/UsefullinkTagsAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit']);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit']);
     }
 
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)

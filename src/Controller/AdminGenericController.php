@@ -34,7 +34,7 @@ abstract class AdminGenericController extends AbstractController
 	protected $parser;
 
 	abstract public function validationForm(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $form, $entityBindded, $entityOriginal);
-	abstract public function postValidationAction($form, EntityManagerInterface $em, $entityBindded);
+	abstract public function postValidation($form, EntityManagerInterface $em, $entityBindded);
 
 	public function __construct(APParseHTML $parser) {
 		$this->parser = $parser;
@@ -98,7 +98,7 @@ abstract class AdminGenericController extends AbstractController
 		return [$iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns];
 	}
 	
-	public function indexDatatablesGenericAction($request, EntityManagerInterface $em)
+	public function indexDatatablesGeneric($request, EntityManagerInterface $em)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
@@ -114,16 +114,12 @@ abstract class AdminGenericController extends AbstractController
 		return ['entities' => $entities, 'output' => $output];
 	}
 	
-    public function indexGenericAction($twig)
+    public function indexGeneric($twig)
     {
         return $this->render($twig);
     }
 
-    /**
-     * Finds and displays a entity.
-     *
-     */
-    public function showGenericAction(EntityManagerInterface $em, $id, $twig, $optionsRender = [])
+    public function showGeneric(EntityManagerInterface $em, $id, $twig, $optionsRender = [])
     {
         $entity = $em->getRepository($this->className)->find($id);
 
@@ -138,12 +134,8 @@ abstract class AdminGenericController extends AbstractController
             'delete_form' => $deleteForm->createView(),
         ]));
     }
-	
-    /**
-     * Displays a form to create a new entity.
-     *
-     */
-    public function newGenericAction(Request $request, $em, $twig, $entity, $formType, $options = [])
+
+    public function newGeneric(Request $request, $em, $twig, $entity, $formType, $options = [])
     {
 		$this->defaultValueForMappedSuperclassBase($request, $em, $entity);
         $form = $this->createForm($formType, $entity, $options);
@@ -154,11 +146,7 @@ abstract class AdminGenericController extends AbstractController
         ]);
     }
 
-    /**
-     * Creates a new entity.
-     *
-     */
-    public function createGenericAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, $translator, $twig, $entity, $formType, $options = [])
+    public function createGeneric(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, $translator, $twig, $entity, $formType, $options = [])
     {
         $form = $this->createForm($formType, $entity, $options);
 
@@ -173,7 +161,7 @@ abstract class AdminGenericController extends AbstractController
             $em->persist($entity);
             $em->flush();
 
-			$this->postValidationAction($form, $em, $entity);
+			$this->postValidation($form, $em, $entity);
 
             return $this->redirect($this->generateUrl($this->showRoute, ['id' => $entity->getId()]));
         }
@@ -184,11 +172,7 @@ abstract class AdminGenericController extends AbstractController
         ]);
     }
 
-    /**
-     * Displays a form to edit an existing entity.
-     *
-     */
-    public function editGenericAction(EntityManagerInterface $em, $id, $twig, $formType, $options = [])
+    public function editGeneric(EntityManagerInterface $em, $id, $twig, $formType, $options = [])
     {
         $entity = $em->getRepository($this->className)->find($id);
 
@@ -206,11 +190,7 @@ abstract class AdminGenericController extends AbstractController
         ]);
     }
 
-    /**
-     * Edits an existing entity.
-     *
-     */
-    public function updateGenericAction($request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, $translator, $id, $twig, $formType, $options = [])
+    public function updateGeneric($request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, $translator, $id, $twig, $formType, $options = [])
     {
         $entity = $em->getRepository($this->className)->find($id);
 		$entityOriginal = clone $entity;
@@ -230,7 +210,7 @@ abstract class AdminGenericController extends AbstractController
             $em->persist($entity);
             $em->flush();
 			
-			$this->postValidationAction($editForm, $em, $entity);
+			$this->postValidation($editForm, $em, $entity);
 
             return $this->redirect($this->generateUrl($this->showRoute, ['id' => $id]));
         }
@@ -242,11 +222,7 @@ abstract class AdminGenericController extends AbstractController
         ]);
     }
 
-    /**
-     * Deletes a entity.
-     *
-     */
-    public function deleteGenericAction(EntityManagerInterface $em, $id)
+    public function deleteGeneric(EntityManagerInterface $em, $id)
     {
         $entity = $em->getRepository($this->className)->find($id);
 
@@ -265,7 +241,7 @@ abstract class AdminGenericController extends AbstractController
         ;
     }
 
-    public function WYSIWYGUploadFileGenericAction(Request $request, APImgSize $imgSize, $entity)
+    public function WYSIWYGUploadFileGeneric(Request $request, APImgSize $imgSize, $entity)
     {
 		$file = $request->files->get('image');
 
@@ -284,12 +260,12 @@ abstract class AdminGenericController extends AbstractController
 		return new JsonResponse(["title" => "Error"]);
     }
 
-    public function showImageSelectorColorboxGenericAction($urlAjax)
+    public function showImageSelectorColorboxGeneric($urlAjax)
     {
 		return $this->render('index/Form/showImageSelectorColorbox.html.twig', ['url_ajax' => $urlAjax]);
     }
 
-    public function loadImageSelectorColorboxGenericAction(Request $request, EntityManagerInterface $em)
+    public function loadImageSelectorColorboxGeneric(Request $request, EntityManagerInterface $em)
     {
 		$current_page = $request->request->get('page');
 		$search = $request->request->get('search');
@@ -405,7 +381,7 @@ abstract class AdminGenericController extends AbstractController
 			}
 		}
 	}
-	
+
 	public function archiveGenericArchive(EntityManagerInterface $em, $id, $additionalFiles = [])
 	{
         $entity = $em->getRepository($this->className)->find($id);
@@ -421,7 +397,7 @@ abstract class AdminGenericController extends AbstractController
 
 		return $this->redirect($this->generateUrl($this->showRoute, ['id' => $id]));
 	}
-	
+
 	private function moveFiles($baseFrom, $baseTo, $entity, $additionalFiles = []): void
 	{
 		$basePath = $this->getParameter('kernel.project_dir').DIRECTORY_SEPARATOR;
@@ -442,7 +418,7 @@ abstract class AdminGenericController extends AbstractController
 			if(file_exists($basePath.$baseFrom.DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$filename))
 				rename($basePath.$baseFrom.DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$filename, $basePath.$baseTo.DIRECTORY_SEPARATOR.$entity->getAssetImagePath().$filename);
 		}
-		
+
 		foreach($additionalFiles as $filename)
 		{
 			if(empty($filename))
@@ -466,7 +442,7 @@ abstract class AdminGenericController extends AbstractController
 			}
 		}
 	}
-	
+
 	protected function saveNewBiographies(EntityManagerInterface $em, &$entityBindded, $form, string $field)
 	{
 		foreach ($form->get($field) as $formChild)

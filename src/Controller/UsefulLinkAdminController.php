@@ -31,7 +31,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$ccv->fileManagementConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$dom = new \DOMDocument();
 		$dom->loadHTML(mb_convert_encoding($entityBindded->getText(), 'HTML-ENTITIES', 'UTF-8'), LIBXML_HTML_NODEFDTD);
@@ -53,13 +53,13 @@ class UsefulLinkAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'usefullink/UsefulLinkAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'usefullink/UsefulLinkAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -68,7 +68,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -77,7 +77,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$entity = new UsefulLink();
 
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
@@ -86,7 +86,7 @@ class UsefulLinkAdminController extends AdminGenericController
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -94,12 +94,12 @@ class UsefulLinkAdminController extends AdminGenericController
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
@@ -188,11 +188,11 @@ class UsefulLinkAdminController extends AdminGenericController
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('UsefulLink_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('UsefulLink_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 }

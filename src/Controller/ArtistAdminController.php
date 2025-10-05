@@ -55,7 +55,7 @@ class ArtistAdminController extends AdminGenericController
 			$this->saveNewBiographies($em, $entityBindded, $form, "artistBiographies");
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		$originalBiographies = new ArrayCollection($em->getRepository(ArtistBiography::class)->findBy(["artist" => $entityBindded->getId()]));
 
@@ -81,13 +81,13 @@ class ArtistAdminController extends AdminGenericController
     public function indexAction()
     {
 		$twig = 'music/ArtistAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'music/ArtistAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -96,7 +96,7 @@ class ArtistAdminController extends AdminGenericController
 		$entity = new Artist();
 
 		$twig = 'music/ArtistAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -105,7 +105,7 @@ class ArtistAdminController extends AdminGenericController
 		$entity = new Artist();
 
 		$twig = 'music/ArtistAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function editAction(EntityManagerInterface $em, $id)
@@ -114,7 +114,7 @@ class ArtistAdminController extends AdminGenericController
 		$formType = ArtistAdminType::class;
 
 		$twig = 'music/ArtistAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -122,17 +122,17 @@ class ArtistAdminController extends AdminGenericController
 		$formType = ArtistAdminType::class;
 		$twig = 'music/ArtistAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -182,12 +182,12 @@ class ArtistAdminController extends AdminGenericController
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('Artist_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('Artist_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 	
     public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
@@ -268,7 +268,7 @@ class ArtistAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'music/ArtistAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
 	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)

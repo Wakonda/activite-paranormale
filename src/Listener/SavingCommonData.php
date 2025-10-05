@@ -162,8 +162,8 @@ class SavingCommonData
 					$parser = new APParseHTML();
 					$text = $parser->centerImageInHTML($text, $entity);
 
-					// Replace "test:test" by "test: test" if needed
-					$text = preg_replace('/:(?!\s)/', ': ', $text);
+					// Replace "test:test" by "test: test" if needed	
+					$text = preg_replace('/:(?![\/\s])/', ': ', $text);
 
 					$entity->$setterMethod($text);
 				}

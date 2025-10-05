@@ -45,20 +45,20 @@ class WebDirectoryAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
     public function indexAction()
     {
 		$twig = 'webdirectory/WebDirectoryAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'webdirectory/WebDirectoryAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em)
@@ -67,7 +67,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$entity = new WebDirectory();
 
 		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
@@ -76,7 +76,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$entity = new WebDirectory();
 
 		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function editAction(EntityManagerInterface $em, $id)
@@ -85,7 +85,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$formType = WebDirectoryAdminType::class;
 
 		$twig = 'webdirectory/WebDirectoryAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -93,17 +93,17 @@ class WebDirectoryAdminController extends AdminGenericController
 		$formType = WebDirectoryAdminType::class;
 		$twig = 'webdirectory/WebDirectoryAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 	
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -206,17 +206,17 @@ class WebDirectoryAdminController extends AdminGenericController
 		}
 
 		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('WebDirectory_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('WebDirectory_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
 	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
@@ -249,7 +249,7 @@ class WebDirectoryAdminController extends AdminGenericController
 		$formType = WebDirectoryAdminType::class;
 
 		$twig = 'webdirectory/WebDirectoryAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType);
+		return $this->editGeneric($em, $id, $twig, $formType);
 	}
 
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)

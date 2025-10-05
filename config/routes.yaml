@@ -46,10 +46,6 @@ APQuotationBundle:
     resource: "../src/Routes/quotation/routing.yml"
     prefix:   /
 
-APWitchcraftBundle:
-    resource: "../src/Routes/witchcraft/routing.yml"
-    prefix:   /
-
 APBookBundle:
     resource: "../src/Routes/book/routing.yml"
     prefix:   /

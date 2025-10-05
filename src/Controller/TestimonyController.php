@@ -23,7 +23,7 @@ use App\Service\TagsManagingGeneric;
 
 class TestimonyController extends AbstractController
 {
-	public function postValidationAction(EntityManagerInterface $em, $form, $entityBindded)
+	public function postValidation(EntityManagerInterface $em, $form, $entityBindded)
 	{
 		(new TagsManagingGeneric($em))->saveTags($form, Testimony::class, 'Testimony', new TestimonyTags(), $entityBindded);
 	}
@@ -145,7 +145,7 @@ class TestimonyController extends AbstractController
 			$em->persist($entity);
 			$em->flush();
 
-			$this->postValidationAction($em, $form, $entity);
+			$this->postValidation($em, $form, $entity);
 
 			if($authorizationChecker->isGranted('IS_AUTHENTICATED_FULLY') and $form->get('preview')->isClicked())
 				return $this->redirect($this->generateUrl('Testimony_Waiting', array('id' => $entity->getId())));

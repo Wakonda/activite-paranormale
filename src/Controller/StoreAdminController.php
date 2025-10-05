@@ -102,20 +102,20 @@ class StoreAdminController extends AdminGenericController
 		$ccv->fileConstraintValidator($form, $entityBindded, $entityOriginal, $this->illustrations);
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
     public function indexAction()
     {
 		$twig = 'store/StoreAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
+		return $this->indexGeneric($twig);
     }
 	
     public function showAction(EntityManagerInterface $em, $id)
     {
 		$twig = 'store/StoreAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->showGeneric($em, $id, $twig);
     }
 
     public function newAction(Request $request, EntityManagerInterface $em, String $category)
@@ -133,7 +133,7 @@ class StoreAdminController extends AdminGenericController
 		}
 
 		$twig = 'store/StoreAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
     }
 	
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
@@ -144,7 +144,7 @@ class StoreAdminController extends AdminGenericController
 		$entity->setCategory($category);
 
 		$twig = 'store/StoreAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
 	
     public function editAction(Request $request, EntityManagerInterface $em, $id)
@@ -154,7 +154,7 @@ class StoreAdminController extends AdminGenericController
 		$formType = StoreAdminType::class;
 
 		$twig = 'store/StoreAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation(), "data_class" => $class]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation(), "data_class" => $class]);
     }
 	
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
@@ -164,12 +164,12 @@ class StoreAdminController extends AdminGenericController
 		$formType = StoreAdminType::class;
 		
 		$twig = 'store/StoreAdmin/edit.html.twig';
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
 	
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 	
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, String $type)
@@ -264,11 +264,11 @@ class StoreAdminController extends AdminGenericController
 
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('Store_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('Store_Admin_LoadImageSelectorColorbox');
 	}
 	
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 }

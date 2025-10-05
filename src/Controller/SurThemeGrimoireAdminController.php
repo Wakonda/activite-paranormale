@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\SurThemeGrimoire;
@@ -13,10 +14,7 @@ use App\Entity\Language;
 use App\Form\Type\SurThemeGrimoireAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * surThemeGrimoire controller.
- *
- */
+#[Route('/admin/grimoire')]
 class SurThemeGrimoireAdminController extends AdminGenericController
 {
 	protected $entityName = 'SurThemeGrimoire';
@@ -40,64 +38,72 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 			$form->get('title')->addError(new FormError($translator->trans('admin.error.Doublon', [], 'validators')));
 	}
 
-	public function postValidationAction($form, EntityManagerInterface $em, $entityBindded)
+	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
 
-    public function indexAction()
+	#[Route('/index', name: 'SurThemeGrimoire_Admin_Index')]
+    public function index()
     {
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/index.html.twig';
-		return $this->indexGenericAction($twig);
-    }
-	
-    public function showAction(EntityManagerInterface $em, $id)
-    {
-		$twig = 'witchcraft/SurThemeGrimoireAdmin/show.html.twig';
-		return $this->showGenericAction($em, $id, $twig);
+		return $this->indexGeneric($twig);
     }
 
+	#[Route('/{id}/show', name: 'SurThemeGrimoire_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
+    {
+		$twig = 'witchcraft/SurThemeGrimoireAdmin/show.html.twig';
+		return $this->showGeneric($em, $id, $twig);
+    }
+
+	#[Route('/new', name: 'SurThemeGrimoire_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = SurThemeGrimoireAdminType::class;
 		$entity = new SurThemeGrimoire();
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'SurThemeGrimoire_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = SurThemeGrimoireAdminType::class;
 		$entity = new SurThemeGrimoire();
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/new.html.twig';
-		return $this->createGenericAction($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'SurThemeGrimoire_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = SurThemeGrimoireAdminType::class;
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/edit.html.twig';
-		return $this->editGenericAction($em, $id, $twig, $formType, ['locale' => $request->getLocale()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $request->getLocale()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'SurThemeGrimoire_Admin_Update', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = SurThemeGrimoireAdminType::class;
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/edit.html.twig';
 
-		return $this->updateGenericAction($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
+		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'SurThemeGrimoire_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
-		return $this->deleteGenericAction($em, $id);
+		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/datatables', name: 'SurThemeGrimoire_Admin_IndexDatatables', requirements: ['_method' => "get"])]
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
-		$informationArray = $this->indexDatatablesGenericAction($request, $em);
+		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
 
 		foreach($informationArray['entities'] as $entity)
@@ -119,7 +125,8 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reloadlistsbylanguage', name: 'SurThemeGrimoire_Admin_ReloadListsByLanguage')]
+	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -144,8 +151,9 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 		$entity->setLanguage($language);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'SurThemeGrimoire_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = SurThemeGrimoireAdminType::class;
 		$entity = new SurThemeGrimoire();
@@ -167,16 +175,18 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/new.html.twig';
-		return $this->newGenericAction($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
     }
 
+	#[Route('/showImageSelectorColorbox', name: 'SurThemeGrimoire_Admin_ShowImageSelectorColorbox')]
 	public function showImageSelectorColorboxAction()
 	{
-		return $this->showImageSelectorColorboxGenericAction('SurThemeGrimoire_Admin_LoadImageSelectorColorbox');
+		return $this->showImageSelectorColorboxGeneric('SurThemeGrimoire_Admin_LoadImageSelectorColorbox');
 	}
-	
+
+	#[Route('/loadImageSelectorColorbox', name: 'SurThemeGrimoire_Admin_LoadImageSelectorColorbox')]
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
-		return $this->loadImageSelectorColorboxGenericAction($request, $em);
+		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 }
