@@ -1,4 +1,0 @@
-# Administration
-TagWord_Admin:
-    resource: "routing/tagwordadmin.yml"
-    prefix:   /admin/tagword
