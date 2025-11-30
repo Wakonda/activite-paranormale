@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Detection\MobileDetect;
+use App\Cache\MenuService;
 
 class IndexController extends AbstractController
 {
@@ -66,5 +67,9 @@ class IndexController extends AbstractController
 	#[Route('/magic', name: 'Index_Magic')]
 	public function magic() {
 		return $this->render("index/Index/magic.html.twig");
+	}
+
+	public function counter(MenuService $menuService) {
+		return new \Symfony\Component\HttpFoundation\JsonResponse($menuService->getCounters());
 	}
 }
