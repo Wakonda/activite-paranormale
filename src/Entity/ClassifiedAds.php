@@ -114,7 +114,7 @@ class ClassifiedAds extends MappedSuperclassBase implements Interfaces\PhotoIllu
 
     public function setLocation($location)
     {
-        $this->location = $location;
+        $this->location = preg_replace('/\s+/', ' ', preg_replace('~[[:cntrl:]]~', ' ', strip_tags($location)));
     }
 
     public function getLocation()
