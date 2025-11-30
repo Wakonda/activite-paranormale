@@ -8,12 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 use Ifsnop\Mysqldump as IMysqldump;
 
 class BackupAdminController extends AbstractController
 {
-    public function indexAction()
+	#[Route('/admin/backup/index', name: 'Backup_Admin_Index')]
+    public function index()
     {
 		$files = [];
 		
@@ -31,7 +33,8 @@ class BackupAdminController extends AbstractController
 
         return $this->render('admin/BackupAdmin/index.html.twig', ["files" => $files]);
     }
-	
+
+	#[Route('/admin/backup/download/{filename}', name: 'Backup_Admin_Download')]
 	public function downloadAction($filename)
 	{
 		$response = new BinaryFileResponse($this->getPath().DIRECTORY_SEPARATOR.$filename);
@@ -39,7 +42,8 @@ class BackupAdminController extends AbstractController
 
 		return $response;
 	}
-	
+
+	#[Route('/admin/backup/delete/{filename}', name: 'Backup_Admin_Delete')]
 	public function deleteAction(TranslatorInterface $translator, $filename)
 	{
 		unlink($this->getPath().DIRECTORY_SEPARATOR.$filename);
@@ -48,8 +52,9 @@ class BackupAdminController extends AbstractController
 		
 		return $this->redirect($this->generateUrl("Backup_Admin_Index"));
 	}
-	
-	public function generateAction(TranslatorInterface $translator)
+
+	#[Route('/admin/backup/generate', name: 'Backup_Admin_Generate')]
+	public function generate(TranslatorInterface $translator)
 	{
 		try {
 			$dsn = "mysql:host=".$_ENV['DB_HOST'].";dbname=".$_ENV['DB_NAME'];

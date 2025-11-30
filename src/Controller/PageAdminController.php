@@ -92,12 +92,12 @@ class PageAdminController extends AdminGenericController
 		return $this->deleteGeneric($em, $id);
     }
 
-    public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
+    public function WYSIWYGUploadFile(Request $request, APImgSize $imgSize)
     {
-		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new Page());
+		return $this->WYSIWYGUploadFileGeneric($request, $imgSize, new Page());
     }
 	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];

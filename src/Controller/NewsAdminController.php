@@ -153,12 +153,12 @@ class NewsAdminController extends AdminGenericController
 		return $response;
 	}
 
-    public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
+    public function WYSIWYGUploadFile(Request $request, APImgSize $imgSize)
     {
-		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new News());
+		return $this->WYSIWYGUploadFileGeneric($request, $imgSize, new News());
     }
 
-	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
+	public function reloadThemeByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];

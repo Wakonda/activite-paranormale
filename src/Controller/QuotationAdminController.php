@@ -140,12 +140,12 @@ class QuotationAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-    public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
+    public function WYSIWYGUploadFile(Request $request, APImgSize $imgSize)
     {
-		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new Quotation());
+		return $this->WYSIWYGUploadFileGeneric($request, $imgSize, new Quotation());
     }
 
-	public function createSameAuthorAction(Request $request, EntityManagerInterface $em, $biographyId)
+	public function createSameAuthor(Request $request, EntityManagerInterface $em, $biographyId)
 	{
 		$formType = QuotationAdminType::class;
 		$entity = new Quotation();

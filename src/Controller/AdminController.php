@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Language;
 use App\Service\APImgSize;
@@ -37,12 +38,14 @@ use App\Service\PaginatorNativeSQL;
 
 class AdminController extends AbstractController
 {
-    public function indexAction()
+	#[Route('/admin/index', name: 'Admin_Index')]
+    public function index()
     {
         return $this->render('admin/Admin/index.html.twig');
     }
 
-	public function selectLanguageAction(Request $request, $language)
+	#[Route('/admin/selectLanguage/{language}', name: 'Admin_SelectLanguage', defaults: ['language' => 'fr'])]
+	public function selectLanguage(Request $request, $language)
     {
 		$session = $request->getSession();
 		$request->setLocale($language);
@@ -51,13 +54,14 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl('Admin_Index'));
     }
 
+	#[Route('/admin/phpinfo', name: 'Admin_Phpinfo')]
 	public function phpinfoAction()
 	{
 		phpinfo();
 		return new Response();
 	}
 
-	public function internationalizationSelectGenericAction(EntityManagerInterface $em, $entity, String $route, String $showRoute, String $editRoute)
+	public function internationalizationSelectGeneric(EntityManagerInterface $em, $entity, String $route, String $showRoute, String $editRoute)
 	{
 		$locales = [];
 
@@ -87,7 +91,8 @@ class AdminController extends AbstractController
 		]);
 	}
 
-	public function maintenanceAction(Request $request, ParameterBagInterface $parameterBag, $mode)
+	#[Route('/admin/maintenance/{mode}', name: 'Admin_Maintenance', defaults: ['mode' => ''])]
+	public function maintenance(Request $request, ParameterBagInterface $parameterBag, $mode)
 	{
 		if(!file_exists("sitemaps"))
 			mkdir("sitemaps");
@@ -135,7 +140,8 @@ class AdminController extends AbstractController
 		return $ip;
 	}
 
-	public function loadWikipediaSectionsPageAction(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $data)
+	#[Route('/admin/loadWikipediaSectionsPage', name: 'Admin_WikipediaSections')]
+	public function loadWikipediaSectionsPage(Request $request, TranslatorInterface $translator, \App\Service\Wikipedia $data)
 	{
 		$url = $request->query->get("url");
 
@@ -153,8 +159,9 @@ class AdminController extends AbstractController
 
 		return new JsonResponse($res);
 	}
-	
-	public function importWikipediaAction(Request $request, \App\Service\Wikipedia $data)
+
+	#[Route('/admin/import', name: 'Admin_ImportWikipedia')]
+	public function importWikipedia(Request $request, \App\Service\Wikipedia $data)
 	{
 		$url = $request->request->get("url");
 
@@ -171,7 +178,8 @@ class AdminController extends AbstractController
 	}
 
 	// Blogger
-	public function bloggerTagsAction(Request $request, EntityManagerInterface $em, APExtension $apExtension, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
+	#[Route('/admin/bloggertags/{id}/{path}/{routeToRedirect}', name: 'Admin_BloggerTags')]
+	public function bloggerTags(Request $request, EntityManagerInterface $em, APExtension $apExtension, GoogleBlogger $blogger, $id, $path, $routeToRedirect)
 	{
 		$type = $request->query->get("type");
 		$tags = $apExtension->getBloggerTags($type);
@@ -203,7 +211,8 @@ class AdminController extends AbstractController
 		return new JsonResponse(["obj" => $obj, "theme" => $theme, "method" => $method, "tags" => $tags, "urlAddUpdate" => $urlAddUpdate, "urlDelete" => $urlDelete]);
 	}
 
-	public function bloggerAction(Request $request, EntityManagerInterface $em, GoogleBlogger $blogger, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type, $method)
+	#[Route('/admin/blogger/{id}/{path}/{routeToRedirect}/{type}/{method}', name: 'Admin_Blogger', defaults: ['type' => 'test', 'method' => 'POST'])]
+	public function blogger(Request $request, EntityManagerInterface $em, GoogleBlogger $blogger, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type, $method)
 	{
 		$session = $request->getSession();
 		$session->set("id_blogger", $id);
@@ -228,7 +237,8 @@ class AdminController extends AbstractController
 		return new Response();
 	}
 
-	public function bloggerPostAction(Request $request, EntityManagerInterface $em, APExtension $apExtension, APImgSize $imgSize, APParseHTML $parser, GoogleBlogger $blogger, TranslatorInterface $translator, UrlGeneratorInterface $router)
+	#[Route('/admin/bloggerpost', name: 'Admin_BloggerPost')]
+	public function bloggerPost(Request $request, EntityManagerInterface $em, APExtension $apExtension, APImgSize $imgSize, APParseHTML $parser, GoogleBlogger $blogger, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$code = $request->query->get("code");
 		$session = $request->getSession();
@@ -663,12 +673,14 @@ class AdminController extends AbstractController
 	}
 	
 	// AI
+	#[Route('/admin/ai', name: 'Admin_AI')]
 	public function ai(Request $request, \App\Service\AI $ai) {
 		return new JsonResponse(["message" => $ai->gemini($request->query->get("text"), $request->query->get("format"), $request->query->get("locale"))]);
 	}
 
 	// Diaspora
-	public function diasporaAction(Request $request, EntityManagerInterface $em, Diaspora $diaspora, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	#[Route('/admin/diaspora/{id}/{path}/{routeToRedirect}', name: 'Admin_Diaspora', defaults: ['method' => 'POST'])]
+	public function diaspora(Request $request, EntityManagerInterface $em, Diaspora $diaspora, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
 		// dump($diaspora->getClients("https://activite-paranormale.net/admin/diasporapost", "pt"));
 		// dd($diaspora->getOpenIDConfiguration("pt"));
@@ -718,7 +730,8 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl('Admin_DiasporaPost'));
 	}
 
-	public function diasporaPostAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, Diaspora $diaspora, TranslatorInterface $translator, UrlGeneratorInterface $router)
+    #[Route('/admin/diasporapost', name: 'Admin_DiasporaPost')]
+	public function diasporaPost(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, Diaspora $diaspora, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$session = $request->getSession();
 
@@ -747,6 +760,7 @@ class AdminController extends AbstractController
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
 	}
 
+    #[Route('/admin/telegram/{id}/{path}/{routeToRedirect}', name: 'Admin_Telegram', defaults: ['method' => 'POST'])]
 	public function telegram(Request $request, EntityManagerInterface $em, Telegram $telegram, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
 		$session = $request->getSession();
@@ -765,7 +779,8 @@ class AdminController extends AbstractController
 	}
 
 	// Shopify
-	public function shopifyAction(Request $request, EntityManagerInterface $em, Shopify $shopify, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type)
+	#[Route('/admin/shopify/{id}/{path}/{routeToRedirect}/{type}', name: 'Admin_Shopify')]
+	public function shopify(Request $request, EntityManagerInterface $em, Shopify $shopify, UrlGeneratorInterface $router, $id, $path, $routeToRedirect, $type)
 	{
 		$session = $request->getSession();
 		$session->set("id_shopify", $id);
@@ -787,7 +802,8 @@ class AdminController extends AbstractController
 		return new Response();
 	}
 
-	public function shopifyPostAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, Shopify $shopify, TranslatorInterface $translator, UrlGeneratorInterface $router)
+    #[Route('/admin/shopifypost', name: 'Admin_ShopifyPost')]
+	public function shopifyPost(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, Shopify $shopify, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$code = $request->query->get("code");
 
@@ -877,7 +893,8 @@ class AdminController extends AbstractController
 	}
 
 	// Pinterest
-	public function pinterestAction(Request $request, EntityManagerInterface $em, PinterestAPI $pinterest, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
+	#[Route('/admin/pinterest/{id}/{path}/{routeToRedirect}', name: 'Admin_Pinterest')]
+	public function pinterest(Request $request, EntityManagerInterface $em, PinterestAPI $pinterest, TranslatorInterface $translator, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
 		$requestParams = $request->request;
 
@@ -967,6 +984,7 @@ class AdminController extends AbstractController
 	}
 
 	//Wordpress
+	#[Route('/admin/wordpress/{id}/{path}/{routeToRedirect}', name: 'Admin_Wordpress')]
 	public function wordpress(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$entity = $em->getRepository(urldecode($path))->find($id);
@@ -1013,7 +1031,8 @@ class AdminController extends AbstractController
 	}
 
 	// Muse
-	public function museAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
+	#[Route('/admin/muse/{id}/{path}/{routeToRedirect}', name: 'Admin_Muse')]
+	public function muse(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, int $id, string $path, string $routeToRedirect)
 	{
 		$entity = $em->getRepository(urldecode($path))->find($id);
 
@@ -1116,7 +1135,8 @@ class AdminController extends AbstractController
 	}
 
 	// Tumblr
-	public function tumblrAction(Request $request, TumblrAPI $tumblr, $id, $path, $routeToRedirect)
+	#[Route('/admin/tumblr/{id}/{path}/{routeToRedirect}', name: 'Admin_Tumblr')]
+	public function tumblr(Request $request, TumblrAPI $tumblr, $id, $path, $routeToRedirect)
 	{
 		$session = $request->getSession();
 		$session->set("id_tumblr", $id);
@@ -1131,7 +1151,8 @@ class AdminController extends AbstractController
 		exit();
 	}
 
-	public function tumblrPostAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, TumblrAPI $tumblr, TranslatorInterface $translator)
+	#[Route('/admin/tumblrpost', name: 'Admin_TumblrPost')]
+	public function tumblrPost(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, TumblrAPI $tumblr, TranslatorInterface $translator)
 	{
 		$session = $request->getSession();
 
@@ -1194,7 +1215,8 @@ class AdminController extends AbstractController
 	}
 
 	// Facebook
-	public function facebookAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	#[Route('/admin/facebook/{id}/{path}/{routeToRedirect}', name: 'Admin_Facebook')]
+	public function facebook(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Facebook $facebook, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$path = urldecode($path);
 		$entity = $em->getRepository($path)->find($id);
@@ -1205,6 +1227,7 @@ class AdminController extends AbstractController
 	}
 
 	// Flickr
+	#[Route('/admin/flickr/{id}/{path}/{routeToRedirect}', name: 'Admin_Flickr')]
 	public function flickr(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Flickr $flickr, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$requestParams = $request->request;
@@ -1294,6 +1317,7 @@ class AdminController extends AbstractController
 	}
 
 	// vk
+	#[Route('/admin/vk/{id}/{path}/{routeToRedirect}', name: 'Admin_VK')]
 	public function vk(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, VK $vk, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$session = $request->getSession();
@@ -1331,7 +1355,8 @@ class AdminController extends AbstractController
 	}
 
 	// Instagram
-	public function instagramAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
+	#[Route('/admin/instagram/{id}/{path}/{routeToRedirect}', name: 'Admin_Instagram')]
+	public function instagram(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect)
 	{
 		$this->sendInstagram($request, $em, $id, $path, $router, $instagram, $translator, "instagram");
 
@@ -1339,6 +1364,7 @@ class AdminController extends AbstractController
 	}
 
 	// Mastodon
+    #[Route('/admin/twittermastodonbluesky/{id}/{path}/{routeToRedirect}/{socialNetwork}/{family}', name: 'Admin_TwitterMastodonBluesky')]
 	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
 		$socialNetworks = explode("|", $family);
 		if(in_array("twitter", $socialNetworks))
@@ -1434,8 +1460,9 @@ class AdminController extends AbstractController
 
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
 	}
-	
-	public function wikidataGenericAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+
+	#[Route('/admin/wikidata_generic', name: 'Admin_WikidataGeneric')]
+	public function wikidataGeneric(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
@@ -1444,8 +1471,9 @@ class AdminController extends AbstractController
 
 		return new JsonResponse($res);
 	}
-	
-	public function wikidataGenericLoadImageAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+
+	#[Route('/admin/wikidata_generic_load_image', name: 'Admin_WikidataGenericLoadImage')]
+	public function wikidataGenericLoadImage(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$url = $request->query->get("url");
 
@@ -1496,6 +1524,7 @@ class AdminController extends AbstractController
 		return new JsonResponse($res);
 	}
 
+	#[Route('/admin/amazon_image', name: 'Admin_AmazonImage')]
 	public function amazonImage(Request $request, Amazon $amazon) {
 		$itemId = $request->query->get("paste");
 
@@ -1537,6 +1566,7 @@ class AdminController extends AbstractController
 		return null;
 	}
 
+	#[Route('/admin/sitemap', name: 'Admin_Sitemap')]
 	public function generateSitemap(Request $request, EntityManagerInterface $em)
 	{
 		$urls = $em->getRepository(\App\Entity\News::class)->getDatasForSitemap((new \App\Entity\News())->getShowRoute());
@@ -1574,6 +1604,7 @@ class AdminController extends AbstractController
 		$xml->save('sitemaps/sitemap_'.$filename.'.xml');
 	}
 
+	#[Route('/admin/sqlExplorer', name: 'Admin_SQLExplorer')]
     public function sqlExplorer(Request $request, EntityManagerInterface $em, PaginatorNativeSQL $paginator)
     {
 		$conn = $em->getConnection();
@@ -1719,6 +1750,7 @@ class AdminController extends AbstractController
 		return str_starts_with(strtolower($sql), "select ");
 	}
 
+	#[Route('/admin/publish/social_network', name: 'Admin_PublishSocialNetwork')]
 	public function publishSocialNetwork(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI, Bluesky $bluesky, Mastodon $mastodon, Facebook $facebook, Diaspora $diaspora) {
 		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
 		$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
@@ -1771,6 +1803,7 @@ class AdminController extends AbstractController
 		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView(), "rePostForm" => $rePostForm->createView()]);
 	}
 
+	#[Route('/admin/publish/repost', name: 'Admin_RePost')]
 	public function rePost(Request $request, TranslatorInterface $translator, TwitterAPI $twitterAPI) {
 		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
 		$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
@@ -1805,6 +1838,7 @@ class AdminController extends AbstractController
 		return $this->render("admin/Admin/socialNetwork.html.twig", ["form" => $form->createView(), "rePostForm" => $rePostForm->createView()]);
 	}
 
+	#[Route('/admin/account', name: 'Admin_Account')]
 	public function account() {
 		return $this->render("admin/Admin/account.html.twig");
 	}

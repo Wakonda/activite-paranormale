@@ -223,9 +223,9 @@ class GrimoireAdminController extends AdminGenericController
 	}
 
 	#[Route('/wysiwyg_uploadfile', name: 'Grimoire_Admin_WYSIWYG_UploadFile')]
-    public function WYSIWYGUploadFileAction(Request $request, APImgSize $imgSize)
+    public function WYSIWYGUploadFile(Request $request, APImgSize $imgSize)
     {
-		return $this->WYSIWYGUploadFileGenericAction($request, $imgSize, new Grimoire());
+		return $this->WYSIWYGUploadFileGeneric($request, $imgSize, new Grimoire());
     }
 
 	#[Route('/showImageSelectorColorbox', name: 'Grimoire_Admin_ShowImageSelectorColorbox')]
@@ -235,7 +235,7 @@ class GrimoireAdminController extends AdminGenericController
 	}
 
 	#[Route('/loadImageSelectorColorbox', name: 'Grimoire_Admin_LoadImageSelectorColorbox')]
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
