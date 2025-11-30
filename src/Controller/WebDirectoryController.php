@@ -20,11 +20,7 @@ class WebDirectoryController extends AbstractController
 	#[Route('/directory', name: 'WebDirectory_Index')]
     public function indexAction(EntityManagerInterface $em)
     {
-		$entities = $em->getRepository(WebDirectory::class)->findAll();
-
-        return $this->render('webdirectory/WebDirectory/index.html.twig', [
-			'entities' => $entities
-		]);
+        return $this->render('webdirectory/WebDirectory/index.html.twig');
     }
 
 	#[Route('/directory/read/{id}/{title}', name: 'WebDirectory_Read')]

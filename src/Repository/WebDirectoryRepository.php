@@ -35,24 +35,21 @@ class WebDirectoryRepository extends EntityRepository
 		
 		$subQb->select("wd2.internationalName")
 		      ->join("wd2.language", "l2")
-			  ->where("l2.abbreviation = :language")
-			  ->andWhere("wd2.internationalName = wd.internationalName");
+			  ->where("l2.abbreviation = :language");
 			  
 		$qb->andWhere("l.abbreviation = :language OR wd.internationalName NOT IN (".$subQb->getDQL().")");
 		
 		$qb->setParameter("language", $language);
 
-		if(!empty($sortDirColumn))
+		if(!$count and !empty($sortDirColumn))
 		   $qb->orderBy($aColumns[1], $sortDirColumn[0]);
 		
-		if(!empty($sSearch))
-		{
+		if(!empty($sSearch)) {
 			$search = "%".$sSearch."%";
 			$qb->andWhere('wd.title LIKE :search')
 			   ->setParameter('search', $search);
 		}
-		if($count)
-		{
+		if($count) {
 			$qb->select("count(wd)");
 			return $qb->getQuery()->getSingleScalarResult();
 		}

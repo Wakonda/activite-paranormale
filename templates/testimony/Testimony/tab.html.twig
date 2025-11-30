@@ -1,7 +1,7 @@
 {% extends "content_layout.html.twig" %}
 
 {% block title %}{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}{% endblock %}
-{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/superman.png') }}" width="25" class="mt-1" alt="Monsterspan>{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}</h2>{% endblock h2_title %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/superman.png') }}" width="25" class="mt-1" alt="Monsterspan"></span>{{ "testimony.index.Testimony"|trans([], "validators") }} - {{ themeDisplay }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
@@ -35,7 +35,7 @@
 				<tr class="trGene">
 					<td class="tdGene"><a href="{{ path('Testimony_Show', {'id' : entity.id, 'title_slug' : entity.getUrlSlug() })}}" >{{ entity.title }}</a></td>
 					<td class="tdGene"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13"></td>
-					<td class="tdGene" data-order="{{ entity.writingDate|date("U") }}">{{ entity.writingDate|dodate(false, app.request.locale) }}</td>
+					<td class="tdGene" data-order="{{ entity.writingDate|date('U') }}">{{ entity.writingDate|dodate(false, app.request.locale) }}</td>
 				</tr>
 			{% endfor %}
 		</tbody>

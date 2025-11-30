@@ -15,7 +15,7 @@
 				<li>
 					<span class="fa-li"><i class="far fa-arrow-alt-circle-right"></i></span>
 					<a href="{{ path('Witchcraft_TabGrimoire', { 'surtheme': menuGrimoire.slug, 'id': surThemeGrimoire.id, 'theme' : surThemeGrimoire.slug })}}">{{ surThemeGrimoire.title }}</a>
-					[{{ render(controller("App\\Controller\\WitchcraftController::countRitualAction", {'id': surThemeGrimoire.id })) }}]
+					[{{ render(controller("App\\Controller\\WitchcraftController::countRitual", {id: surThemeGrimoire.id })) }}]
 				</li>
 		{% endfor %}
 		</ul>
