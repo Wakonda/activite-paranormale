@@ -585,6 +585,7 @@ class APExtension extends AbstractExtension
 		$subBannerArray['width'] = round($width);
 		$subBannerArray['height'] = round($height);
 		$subBannerArray['link'] = $entity->getLink();
+		$subBannerArray['title'] = $entity->getTitle();
 
 		return $subBannerArray;
 	}

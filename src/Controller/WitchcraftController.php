@@ -135,7 +135,7 @@ class WitchcraftController extends AbstractController
 		]);
     }
 
-	#[Route('/grimoire/read_simple/{id}/{title_slug}', name: 'Witchcraft_ReadGrimoire_Simple', requirements: ['title_slug' => null])]
+	#[Route('/grimoire/read_simple/{id}/{title_slug}', name: 'Witchcraft_ReadGrimoire_Simple', defaults: ['title_slug' => null])]
 	public function readGrimoireSimple(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
 		$entity = $em->getRepository(Grimoire::class)->findByDisplayState($id);
@@ -329,7 +329,7 @@ class WitchcraftController extends AbstractController
 		return $this->render('witchcraft/WitchcraftTool/showWitchcraft.html.twig', ['entity' => $entity]);
 	}
 
-	#[Route('/grimoire/world/{language}/{themeId}/{theme}', name: 'Witchcraft_World', requirements: ['theme' => '.+'], defaults: ['language' => 'all', 'themeId': 0, 'theme': null])]
+	#[Route('/grimoire/world/{language}/{themeId}/{theme}', name: 'Witchcraft_World', requirements: ['theme' => '.+'], defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null])]
 	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
@@ -355,7 +355,7 @@ class WitchcraftController extends AbstractController
 		]);
 	}
 
-	#[Route('/grimoire/worlddatatables/{language}/{themeId}', name: 'Witchcraft_WorldDatatables', defaults: ['language' => 'all', 'themeId': 0])]
+	#[Route('/grimoire/worlddatatables/{language}/{themeId}', name: 'Witchcraft_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
 	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");

@@ -2,10 +2,6 @@ ap_mobile:
     resource: "../src/Routes/mobile/routing.yml"
     prefix:   /
 
-ap_tags:
-    resource: "../src/Routes/tags/routing.yml"
-    prefix:   /
-
 ap_useful_link:
     resource: "../src/Routes/usefullink/routing.yml"
     prefix:   /
