@@ -1,0 +1,102 @@
+grimoire:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Theme: "Tema"
+        WritingDate: "Data de redação"
+        Source: "Fonte"
+        State: "Estado"
+        Language: "Idioma"
+        Photo: "Foto"
+        Author: "Autor"
+        Validate: "Validar"
+        Refuse: "Recusar"
+        RitualPublished: "Ritual publicado"
+        RitualRefused: "Ritual recusado"
+
+magicbookmenu:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Picture: "Imagem"
+        Language: "Idioma"
+        InternationalName: "Nome internacional"
+
+magicbooktheme:
+    admin:
+        Title: "Título"
+        Theme: "Tema"
+        Definition: "Definição"
+        Picture: "Imagem"
+        Language: "Idioma"
+        InternationalName: "Nome internacional"
+        WitchcraftMenu: "Menu grimório"
+
+witchcraft:
+    admin:
+        Witchcraft: "Bruxaria"
+    index:
+        Witchcraft: "Bruxaria"
+        MagicPrayer: "Magia - Oração"
+        MoonPhase: "Fase da lua em %date%"
+        Read: "Ler"
+    tabGrimoire:
+        Title: "Título"
+        Source: "Fonte"
+        Language: "Idioma"
+        Photo: "Foto"
+    read:
+        Source: "Fonte"
+    new:
+        AddRitual: "Propor um ritual"
+        Title: "Título"
+        Text: "Texto"
+        Theme: "Tema"
+        Pseudo: "Pseudônimo"
+        IsAnonymous: "Publicado anonimamente?"
+        Validate: "Validar"
+        PublishedAnonymously: "Publicado anonimamente"
+        PostedWithMyUserAccount: "Publicado com a minha conta de usuário"
+        AnonymousMessage: "Ao publicar anonimamente, o seu artigo não aparecerá na sua conta de usuário quando for validado pelos nossos moderadores."
+    validate:
+        Validation: "Confirmação"
+        ThankForYourParticipation: "Obrigado pela sua participação!"
+        ThankForYourParticipationText: "O seu ritual foi enviado com sucesso. Ele será publicado no nosso site assim que for validado por um moderador."
+
+witchcraftTool:
+    index:
+        WitchcraftTool: "Ferramentas de bruxaria"
+        Sources: "Fontes"
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        Text: "Texto"
+        PublicationDate: "Data de publicação"
+        WitchcraftThemeTool: "Tema"
+        Language: "Idioma"
+        State: "Estado"
+        Source: "Fonte"
+        InternationalName: "Nome internacional"
+        Licence: "Licença"
+    search:
+        SearchSort: "Pesquisar / Ordenar"
+        Keywords: "Palavras-chave"
+        Theme: "Tema"
+        PublicationDate: "Data de publicação"
+        PublicationDateUp: "Data de publicação ↑"
+        PublicationDateDown: "Data de publicação ↓"
+        Sort: "Ordenar por"
+        Read: "Ler"
+        NoMatchingRecordsFound: "Nenhum item encontrado"
+        MoreDetails: "Mais detalhes"
+    read:
+        Theme: "Categoria"
+        Description: "Descrição"
+        PublishedOn: "Publicado em"
+
+witchcraftThemeTool:
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        InternationalName: "Nome internacional"
+        Language: "Idioma"

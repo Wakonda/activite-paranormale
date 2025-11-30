@@ -1,0 +1,34 @@
+usefullink:
+    admin:
+        UsefulLink: "Link útil"
+        Title: "Título"
+        Text: "Texto"
+        Link: "Link"
+        Category: "Categoria"
+        Tags: "Tags"
+        Development: "Desenvolvimento"
+        Resource: "Recurso"
+        GenerateLinkProduct: "Gerar link do produto"
+        Search: "Pesquisar"
+        Language: "Idioma"
+        Licence: "Licença"
+        Photo: "Foto"
+        Website: "Site"
+        Technical: "Informação técnica"
+        Tool: "Ferramenta"
+    index:
+        Copy: "Copiar"
+        Copied: "Copiado!"
+        Error: "Pressione Ctrl+C para copiar"
+        Licence: "Licença"
+        TipsAndTricks: "Dicas e truques"
+        Sources: "Fontes"
+        NoMatchingRecordsFound: "Nenhum resultado encontrado"
+        ShowAll: "Mostrar tudo"
+        Title: "Título"
+        Tags: "Tags"
+
+usefullinktags:
+    admin:
+        UsefullinkTags: "Link útil - Tags"
+        Title: "Título"

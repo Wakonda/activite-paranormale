@@ -1,0 +1,19 @@
+vote:
+    edit:
+        Vote: >-
+            {number, plural,
+                one   {voto}
+                other {votos}
+            }
+        VoteSubmit: "Votar"
+    index:
+        AverageScore: "Nota:"
+        Section: "Seção"
+        Title: "Título"
+        Value: "Nota"
+        Vote: "Voto"
+        NumberOf: "Número de votos:"
+        TotalVotes: "Número total de votos"
+        Favorite: "Favorito"
+        NumberOfFavorites: "Número de favoritos:"
+        ShowMyFavorites: "Ver meus favoritos"
