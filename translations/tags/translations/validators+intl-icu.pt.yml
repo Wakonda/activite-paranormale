@@ -1,3 +1,27 @@
 tag:
+    index:
+        Tag: "Tag"
+        Photo: "Foto"
+        Number: "Número: "
+        Total: "Total"
+    search:
+        ArticleTagged: >-
+            {number, plural,
+                one   {artigo marcado}
+                other {artigos marcados}
+            }
+        Section: "Seção"
+        Title: "Título"
+        Theme: "Tema"
+        PublicationDate: "Data de publicação"
+        Sources: "Fontes"
     admin:
-        Tags: "Etiquetas"
+        Tags: "Tags"
+tagWord:
+    admin:
+        Title: "Título"
+        Language: "Idioma"
+        InternationalName: "Nome internacional"
+        Text: "Texto"
+        Photo: "Foto"
+        Sources: "Fontes"

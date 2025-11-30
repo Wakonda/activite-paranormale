@@ -70,10 +70,6 @@ APDocumentBundle:
     resource: "../src/Routes/document/routing.yml"
     prefix:   /
 
-APVideoBundle:
-    resource: "../src/Routes/video/routing.yml"
-    prefix:   /
-
 APNewsBundle:
     resource: "../src/Routes/news/routing.yml"
     prefix:   /

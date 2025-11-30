@@ -35,7 +35,7 @@
 	{% set bannerArray = ""|random_banner %}
 
 	{% if bannerArray is not null %}
-		<p class="image"><a href="{{ bannerArray['link'] }}" target="_blank"><img src="{{ asset('extended/photo/banner/') }}{{ bannerArray['name'] }}" width = "{{ bannerArray['width'] }}" height = "{{ bannerArray['height'] }}" alt="" class=" mx-auto d-block img-fluid"></a></p>
+		<p class="image"><a href="{{ bannerArray.link }}" alt="{{ bannerArray.title }}" target="_blank"><img src="{{ asset('extended/photo/banner/') }}{{ bannerArray.name }}" width = "{{ bannerArray.width }}" height = "{{ bannerArray.height }}" alt="" class=" mx-auto d-block img-fluid"></a></p>
 	{% endif %}
 	
 	{{ render(controller('App\\Controller\\PageController::wordPresidentAction')) }}

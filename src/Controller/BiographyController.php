@@ -29,10 +29,9 @@ class BiographyController extends AbstractController
 		if($request->query->has("country") and !empty($c = $request->query->get("country")))
 			$datas["country"] = $em->getRepository(\App\Entity\Region::class)->find($c);
 
-		$entities = $em->getRepository(Biography::class)->getBiographies($request->getLocale());
 		$form = $this->createForm(BiographySearchType::class, $datas, ["locale" => $request->getLocale()]);
 		
-        return $this->render('quotation/Biography/index.html.twig', ["entities" => $entities, "form" => $form->createView()]);
+        return $this->render('quotation/Biography/index.html.twig', ["form" => $form->createView()]);
     }
 
 	#[Route('/biography/{id}/{title_slug}', name: 'Biography_Show', defaults: ['title_slug' => null], requirements: ['id' => "\d+"])]

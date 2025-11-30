@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Mailer\MailerInterface;
@@ -25,7 +26,8 @@ use App\Form\Type\VideoUserParticipationType;
 
 class VideoController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em)
+	#[Route('/video', name: 'Video_Index')]
+    public function index(Request $request, EntityManagerInterface $em)
     {
 		$locale = $request->getLocale();
 
@@ -42,8 +44,9 @@ class VideoController extends AbstractController
 			'nbr' => $nbr
 		]);
     }
-	
-	public function tabVideoAction($id, $theme)
+
+	#[Route('/video/tab/{id}/{theme}', name: 'Video_Tab', requirements: ['theme' => ".+"])]
+	public function tabVideo($id, $theme)
 	{
 		return $this->render('video/Video/tabVideo.html.twig', [
 			'themeDisplay' => $theme,
@@ -51,7 +54,8 @@ class VideoController extends AbstractController
 		]);	
 	}
 
-	public function tabVideoDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
+	#[Route('/video/tabvideodatatables/{themeId}', name: 'Video_TabVideoDatatables')]
+	public function tabVideoDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -100,7 +104,8 @@ class VideoController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
+
+	#[Route('/video/read/{id}/{title_slug}', name: 'Video_Read', defaults: ['title_slug' => null])]
 	public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Video::class)->find($id);
@@ -134,8 +139,9 @@ class VideoController extends AbstractController
 			'form' => $form->createView()
 		]);
 	}
-	
-	public function notifyDeletedVideoAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $id)
+
+	#[Route('/video/notifydeleted/{id}', name: 'Video_Notify')]
+	public function notifyDeletedVideo(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $id)
 	{
 		$video = $em->getRepository(Video::class)->find($id);
 		
@@ -192,7 +198,8 @@ class VideoController extends AbstractController
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
+	#[Route('/video/pdfversion/{id}', name: 'Video_Pdfversion')]
+	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(Video::class)->find($id);
 		
@@ -206,8 +213,9 @@ class VideoController extends AbstractController
 
 		return $html2pdf->generatePdf($content->getContent());
 	}
-	
-	public function embeddedAction(EntityManagerInterface $em, $id)
+
+	#[Route('/video/embedded/{id}/{title}', name: 'Video_Export')]
+	public function embedded(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Video::class)->find($id);
 		
@@ -273,7 +281,8 @@ class VideoController extends AbstractController
 	}
 
 	// Video of the world
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+	#[Route('/video/world/{language}/{themeId}/{theme}', name: 'Video_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => ".+"])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -298,7 +307,8 @@ class VideoController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
+	#[Route('/video/selectThemeForIndexWorldAction/{language}', name: 'Video_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
+	public function selectThemeForIndexWorld(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
@@ -307,7 +317,8 @@ class VideoController extends AbstractController
 		return new Response($this->generateUrl('Video_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+	#[Route('/video/worlddatatables/{language}/{themeId}', name: 'Video_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -357,6 +368,7 @@ class VideoController extends AbstractController
 		return $this->render("video/Video/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
 
+	#[Route('/video/displayThumbnail/{file}', name: 'Video_DisplayImage')]
 	public function displayThumbnail(Request $request, $file)
 	{
 		$sourceImage = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.'extended'.DIRECTORY_SEPARATOR.'photo'.DIRECTORY_SEPARATOR.'video'.DIRECTORY_SEPARATOR.'play.png';
@@ -376,6 +388,7 @@ class VideoController extends AbstractController
 	}
 
 	// USER PARTICIPATION
+	#[Route('/video/new', name: 'Video_New')]
     public function newAction(Request $request)
     {
         $entity = new Video();
@@ -387,8 +400,9 @@ class VideoController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-	
-	public function createAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/video/create', name: 'Video_Create')]
+	public function create(Request $request, EntityManagerInterface $em)
     {
 		return $this->genericCreateUpdate($request, $em);
     }
@@ -448,7 +462,8 @@ class VideoController extends AbstractController
         ]);
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/video/edit/{id}', name: 'Video_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$user = $this->getUser();
 
@@ -468,11 +483,13 @@ class VideoController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/video/update/{id}', name: 'Video_Update')]
+	public function update(Request $request, EntityManagerInterface $em, $id)
     {
 		return $this->genericCreateUpdate($request, $em, $id);
     }
 
+	#[Route('/video/validate/{id}', name: 'Video_Validate')]
 	public function validateAction(Request $request, EntityManagerInterface $em, $id)
 	{
         $entity = $em->getRepository(Video::class)->find($id);

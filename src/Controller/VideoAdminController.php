@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,10 +22,7 @@ use App\Form\Type\VideoAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * Video controller.
- *
- */
+#[Route('/admin/video')]
 class VideoAdminController extends AdminGenericController
 {
 	protected $entityName = 'Video';
@@ -57,18 +55,21 @@ class VideoAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new VideoTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Video_Admin_Index')]
+    public function index()
     {
 		$twig = 'video/VideoAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Video_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'video/VideoAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Video_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = VideoAdminType::class;
@@ -77,8 +78,9 @@ class VideoAdminController extends AdminGenericController
 		$twig = 'video/VideoAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["locale" => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Video_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = VideoAdminType::class;
 		$entity = new Video();
@@ -86,8 +88,9 @@ class VideoAdminController extends AdminGenericController
 		$twig = 'video/VideoAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ["locale" => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Video_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = VideoAdminType::class;
@@ -95,15 +98,17 @@ class VideoAdminController extends AdminGenericController
 		$twig = 'video/VideoAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ["locale" => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Video_Admin_Update', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = VideoAdminType::class;
 		$twig = 'video/VideoAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ["locale" => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Video_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\VideoComment")->findBy(["entity" => $id]);
@@ -115,13 +120,15 @@ class VideoAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive/{id}', name: 'Video_Admin_Archive', requirements: ['id' => "\d+"])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+
+	#[Route('/datatables', name: 'Video_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -160,7 +167,8 @@ class VideoAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reloadlistsbylanguage', name: 'Video_Admin_ReloadListsByLanguage')]
+	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -205,12 +213,14 @@ class VideoAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
-	public function getVideoDuraction(Request $request) {
+	#[Route('/video_duration', name: 'Video_Admin_VideoDuration')]
+	public function getVideoDuration(Request $request) {
 		$videoService = new \App\Service\Video(base64_decode($request->query->get("embeddedCode")));
 		return new JsonResponse($videoService->getDuration());
 	}
 
-	public function chooseExistingFileAction()
+	#[Route('/chooseexistingfile', name: 'Video_Admin_ChooseExistingFile')]
+	public function chooseExistingFile()
     {
 		$webPath = $this->getParameter('kernel.project_dir').'/public/extended/flash/Video/KAWAplayer_v1/videos/';
 	
@@ -226,17 +236,20 @@ class VideoAdminController extends AdminGenericController
 		]);
     }
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Video_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Video_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'Video_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/internationalization/{id}', name: 'Video_Admin_Internationalization')]
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = VideoAdminType::class;
 		$entity = new Video();
@@ -277,6 +290,7 @@ class VideoAdminController extends AdminGenericController
 		return new Response($countByStateAdmin);
 	}
 
+	#[Route('/delete_multiple', name: 'Video_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));
@@ -291,7 +305,8 @@ class VideoAdminController extends AdminGenericController
 		return new Response();
 	}
 
-	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+	#[Route('/change_state/{id}/{state}', name: 'Video_Admin_ChangeState', requirements: ['id' => "\d+"])]
+	public function changeState(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
 
