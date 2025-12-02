@@ -38,10 +38,6 @@ APQuotationBundle:
     resource: "../src/Routes/quotation/routing.yml"
     prefix:   /
 
-APBookBundle:
-    resource: "../src/Routes/book/routing.yml"
-    prefix:   /
-
 APCartographyBundle:
     resource: "../src/Routes/cartography/routing.yml"
     prefix:   /
@@ -68,10 +64,6 @@ APDocumentBundle:
 
 APNewsBundle:
     resource: "../src/Routes/news/routing.yml"
-    prefix:   /
-
-APBlogBundle:
-    resource: "../src/Routes/blog/routing.yml"
     prefix:   /
 
 APUserAdminBundle:

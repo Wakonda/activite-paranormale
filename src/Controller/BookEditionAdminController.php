@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 use App\Entity\Book;
 use App\Entity\BookEdition;
@@ -17,10 +18,7 @@ use App\Form\Type\BookEditionAdminType;
 use App\Service\ConstraintControllerValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * BookEditionAdmin controller.
- *
- */
+#[Route('/admin/bookedition')]
 class BookEditionAdminController extends AdminGenericController
 {
 	protected $entityName = 'BookEdition';
@@ -81,18 +79,21 @@ class BookEditionAdminController extends AdminGenericController
 		$em->flush();
 	}
 
-    public function indexAction(Int $bookId)
+	#[Route('/{bookId}', name: 'BookEdition_Admin_Index', requirements: ['bookId' => "\d+"])]
+    public function index(Int $bookId)
     {
 		$twig = 'book/BookEditionAdmin/index.html.twig';
 		return $this->render($twig, ["bookId" => $bookId]);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'BookEdition_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'book/BookEditionAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'BookEdition_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em, Int $bookId)
     {
 		$formType = BookEditionAdminType::class;
@@ -104,8 +105,9 @@ class BookEditionAdminController extends AdminGenericController
 		$twig = 'book/BookEditionAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $book->getLanguage()->getAbbreviation()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $bookId)
+
+	#[Route('/create', name: 'BookEdition_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $bookId)
     {
 		$formType = BookEditionAdminType::class;
 		$entity = new BookEdition();
@@ -116,8 +118,9 @@ class BookEditionAdminController extends AdminGenericController
 		$twig = 'book/BookEditionAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ["locale" => $book->getLanguage()->getAbbreviation()]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'BookEdition_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(BookEdition::class)->find($id);
 		$formType = BookEditionAdminType::class;
@@ -125,8 +128,9 @@ class BookEditionAdminController extends AdminGenericController
 		$twig = 'book/BookEditionAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ["locale" => $entity->getBook()->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'BookEdition_Admin_Delete', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$entity = $em->getRepository(BookEdition::class)->find($id);
 		$formType = BookEditionAdminType::class;
@@ -135,12 +139,14 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ["locale" => $entity->getBook()->getLanguage()->getAbbreviation()]);
     }
 
+	#[Route('/{id}/delete', name: 'Book_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $bookId)
+	#[Route('/datatables', name: 'BookEdition_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $bookId)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
@@ -170,17 +176,8 @@ class BookEditionAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
-	{
-		return $this->showImageSelectorColorboxGeneric('BookEdition_Admin_LoadImageSelectorColorbox');
-	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
-	{
-		return $this->loadImageSelectorColorboxGeneric($request, $em);
-	}
-
-	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_theme_by_language', name: 'BookEdition_Admin_ReloadThemeByLanguage')]
+	public function reloadThemeByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -212,87 +209,9 @@ class BookEditionAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
-	
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
-	{
-		$query = $request->query->get("q", null);
-		$locale = $request->query->get("locale", null);
-		
-		if(is_numeric($locale)) {
-			$language = $em->getRepository(Language::class)->find($locale);
-			$locale = (!empty($language)) ? $language->getAbbreviation() : null;
-		}
 
-		$datas =  $em->getRepository(BookEdition::class)->getAutocomplete($locale, $query);
-
-		$results = [];
-
-		foreach($datas as $data)
-		{
-			$obj = new \stdClass();
-			$obj->id = $data->getId();
-			$obj->text = $data->getTitle();
-
-			$results[] = $obj;
-		}
-
-        return new JsonResponse(["results" => $results]);
-	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
-    {
-		$formType = BookEditionAdminType::class;
-		$entity = new BookEdition();
-
-		$entityToCopy = $em->getRepository(BookEdition::class)->find($id);
-		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
-
-		$country = null;
-		
-		if(!empty($entityToCopy->getCountry()))
-			$country = $em->getRepository(Region::class)->findOneBy(["internationalName" => $entityToCopy->getCountry()->getInternationalName(), "language" => $language]);
-		
-		$entity->setCountry($country);
-
-		$theme = null;
-
-		if(!empty($entityToCopy->getTheme()))
-			$theme = $em->getRepository(Theme::class)->findOneBy(["internationalName" => $entityToCopy->getTheme()->getInternationalName(), "language" => $language]);
-
-		$entity->setTheme($theme);
-
-		if(!empty($entityToCopy->getGenre())) {			
-			$genre = $em->getRepository(GenreAudiovisual::class)->findOneBy(["internationalName" => $entityToCopy->getGenre()->getInternationalName(), "language" => $language]);
-			
-			if(!empty($genre))
-				$entity->setGenre($genre);
-		}
-
-		$entity->setInternationalName($entityToCopy->getInternationalName());
-		$entity->setTitle($entityToCopy->getTitle());
-		$entity->setTrailer($entityToCopy->getTrailer());
-		$entity->setDuration($entityToCopy->getDuration());
-		$entity->setReleaseYear($entityToCopy->getReleaseYear());
-		
-		if(!empty($ci = $entityToCopy->getIllustration())) {
-			$illustration = new FileManagement();
-			$illustration->setTitleFile($ci->getTitleFile());
-			$illustration->setRealNameFile($ci->getRealNameFile());
-			$illustration->setCaption($ci->getCaption());
-			$illustration->setLicense($ci->getLicense());
-			$illustration->setAuthor($ci->getAuthor());
-			$illustration->setUrlSource($ci->getUrlSource());
-			
-			$entity->setIllustration($illustration);
-		}
-
-		$request->setLocale($language->getAbbreviation());
-
-		$twig = 'movie/TelevisionSerieAdmin/new.html.twig';
-		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
-    }
-	
-	public function googleBookAction(Request $request, EntityManagerInterface $em, \App\Service\GoogleBook $googleBook)
+	#[Route('/google_book', name: 'BookEdition_Admin_GoogleBook')]
+	public function googleBook(Request $request, EntityManagerInterface $em, \App\Service\GoogleBook $googleBook)
 	{
 		$isbn = $request->query->get("isbn");
 		

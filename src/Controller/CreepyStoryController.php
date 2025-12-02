@@ -140,11 +140,11 @@ class CreepyStoryController extends AbstractController
 		return $this->render("creepyStory/CreepyStory/sameTopics.html.twig", ["sameTopics" => $sameTopics]);
 	}
 
-	#[Route('/creepy_story/random', name: 'CreepyStory_LoadRandom')]
 	public function random() {
 		return $this->render("creepyStory/CreepyStory/random.html.twig");
 	}
 
+	#[Route('/creepy_story/random', name: 'CreepyStory_LoadRandom')]
 	public function loadRandom(Request $request, EntityManagerInterface $em, APDate $date, APImgSize $imgSize) {
 		$locale = $request->getLocale();
 		$entity = $em->getRepository(CreepyStory::class)->getRandom($locale);

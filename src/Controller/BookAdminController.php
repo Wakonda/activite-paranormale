@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 use App\Entity\Book;
 use App\Entity\Language;
@@ -19,10 +20,7 @@ use App\Form\Type\BookAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * Book controller.
- *
- */
+#[Route('/admin/book')]
 class BookAdminController extends AdminGenericController
 {
 	protected $entityName = 'Book';
@@ -65,18 +63,21 @@ class BookAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new BookTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Book_Admin_Index')]
+    public function index()
     {
 		$twig = 'book/BookAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Book_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'book/BookAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Book_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = BookAdminType::class;
@@ -85,8 +86,9 @@ class BookAdminController extends AdminGenericController
 		$twig = 'book/BookAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Book_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = BookAdminType::class;
 		$entity = new Book();
@@ -94,8 +96,9 @@ class BookAdminController extends AdminGenericController
 		$twig = 'book/BookAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Book_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Book::class)->find($id);
 		$formType = BookAdminType::class;
@@ -104,14 +107,16 @@ class BookAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	#[Route('/{id}/update', name: 'Book_Admin_Update', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BookAdminType::class;
 		$twig = 'book/BookAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Book_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$votes = $em->getRepository("\App\Entity\BookVote")->findBy(["entity" => $id]);
@@ -121,8 +126,9 @@ class BookAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive', name: 'Book_Admin_Archive', requirements: ['id' => "\d+"])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		$additionalFiles = [];
 
@@ -134,17 +140,20 @@ class BookAdminController extends AdminGenericController
 		return $this->archiveGenericArchive($em, $id, $additionalFiles);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Book_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Book_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'Book_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Book_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -166,7 +175,8 @@ class BookAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_by_language', name: 'Book_Admin_ReloadByLanguage')]
+	public function reloadByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -204,8 +214,9 @@ class BookAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'Book_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = BookAdminType::class;
 		$entity = new Book();

@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 use App\Entity\LiteraryGenre;
 use App\Entity\Language;
@@ -15,10 +16,7 @@ use App\Entity\FileManagement;
 use App\Form\Type\LiteraryGenreAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * LiteraryGenre controller.
- *
- */
+#[Route('/admin/literarygenre')]
 class LiteraryGenreAdminController extends AdminGenericController
 {
 	protected $entityName = 'LiteraryGenre';
@@ -47,18 +45,21 @@ class LiteraryGenreAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'LiteraryGenre_Admin_Index')]
+    public function index()
     {
 		$twig = 'book/LiteraryGenreAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'LiteraryGenre_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'book/LiteraryGenreAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'LiteraryGenre_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = LiteraryGenreAdminType::class;
@@ -67,8 +68,9 @@ class LiteraryGenreAdminController extends AdminGenericController
 		$twig = 'book/LiteraryGenreAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'LiteraryGenre_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = LiteraryGenreAdminType::class;
 		$entity = new LiteraryGenre();
@@ -76,29 +78,33 @@ class LiteraryGenreAdminController extends AdminGenericController
 		$twig = 'book/LiteraryGenreAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'LiteraryGenre_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = LiteraryGenreAdminType::class;
 
 		$twig = 'book/LiteraryGenreAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'LiteraryGenre_Admin_Update', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = LiteraryGenreAdminType::class;
 		$twig = 'book/LiteraryGenreAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'LiteraryGenre_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'LiteraryGenre_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -119,16 +125,19 @@ class LiteraryGenreAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'LiteraryGenre_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('LiteraryGenre_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'LiteraryGenre_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
+
+	#[Route('/internationalization/{id}', name: 'LiteraryGenre_Admin_Internationalization')]
     public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = LiteraryGenreAdminType::class;

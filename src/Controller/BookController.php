@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 use App\Entity\Book;
 use App\Entity\BookEdition;
@@ -25,7 +26,8 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class BookController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
+    #[Route('/book/{page}/{idTheme}/{theme}', name: 'Book_Index', defaults: ['page' => 1, 'theme' => null, 'idTheme' => null], requirements: ['page' => '\d+', 'theme' => '.+', 'idTheme' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
     {
 		$datas = [];
 
@@ -53,8 +55,9 @@ class BookController extends AbstractController
 
 		return $this->render('book/Book/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
-	
-	public function showAction(EntityManagerInterface $em, $id, $title_slug)
+
+    #[Route('/book/read/{id}/{title_slug}', name: 'Book_Show', defaults: ['title_slug' => null], requirements: ['id' => '\d+', 'title_slug' => '.+'])]
+	public function show(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Book::class)->find($id);
 
@@ -64,7 +67,8 @@ class BookController extends AbstractController
 		return $this->render('book/Book/show.html.twig', ['entity' => $entity]);
 	}
 
-	public function byPublisherAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idPublisher, $titlePublisher, $page)
+    #[Route('/book/bypublisher/{idPublisher}/{titlePublisher}/{page}', name: 'ByPublisherBook_Index', defaults: ['page' => 1], requirements: ['idPublisher' => '\d+', 'page' => '\d+'])]
+	public function byPublisher(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idPublisher, $titlePublisher, $page)
 	{
 		$nbMessageByPage = 12;
 		$publisher = $em->getRepository(Publisher::class)->find($idPublisher);
@@ -81,7 +85,8 @@ class BookController extends AbstractController
 		return $this->render("book/Book/byPublisher.html.twig", ['pagination' => $pagination, "publisher" => $publisher]);
 	}
 
-	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
+    #[Route('/book/genre/{idGenre}/{titleGenre}/{page}', name: 'ByGenreBook_Index', defaults: ['page' => 1], requirements: ['idGenre' => '\d+'])]
+	public function byGenre(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
 	{
 		$nbMessageByPage = 12;
 
@@ -100,7 +105,8 @@ class BookController extends AbstractController
 	}
 
 	// Book of the world
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+    #[Route('/book/world/{language}/{themeId}/{theme}', name: 'Book_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(array("abbreviation" => $language));
@@ -125,7 +131,8 @@ class BookController extends AbstractController
 		));
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
+    #[Route('/book/selectThemeForIndexWorldAction/{language}', name: 'Book_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
+	public function selectThemeForIndexWorld(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
@@ -134,7 +141,8 @@ class BookController extends AbstractController
 		return new Response($this->generateUrl('Book_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+    #[Route('/book/worlddatatables/{language}/{themeId}', name: 'Book_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -175,8 +183,9 @@ class BookController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
-	public function saveAction(EntityManagerInterface $em, int $id, string $title_slug)
+
+    #[Route('/book/save/{id}/{title_slug}', name: 'BookEdition_Save')]
+	public function save(EntityManagerInterface $em, int $id, string $title_slug)
 	{
 		$entity = $em->getRepository(BookEdition::class)->find($id);
 		
@@ -185,6 +194,7 @@ class BookController extends AbstractController
 		]);
 	}
 
+    #[Route('/book/download/{id}', name: 'BookEdition_Download')]
 	public function downloadAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(BookEdition::class)->find($id);

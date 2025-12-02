@@ -1,4 +1,0 @@
-# Administration
-Blog_Admin:
-    resource: "routing/blogadmin.yml"
-    prefix: /admin/blog

@@ -6,11 +6,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 use App\Entity\Blog;
 use App\Form\Type\BlogAdminType;
 use App\Service\ConstraintControllerValidator;
 
+#[Route('/admin/blog')]
 class BlogAdminController extends AdminGenericController
 {
 	protected $entityName = 'Blog';
@@ -32,18 +34,21 @@ class BlogAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Blog_Admin_Index')]
+    public function index()
     {
 		$twig = 'blog/BlogAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Blog_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'blog/BlogAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Blog_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = BlogAdminType::class;
@@ -52,8 +57,9 @@ class BlogAdminController extends AdminGenericController
 		$twig = 'blog/BlogAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Blog_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = BlogAdminType::class;
 		$entity = new Blog();
@@ -61,29 +67,33 @@ class BlogAdminController extends AdminGenericController
 		$twig = 'blog/BlogAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Blog_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = BlogAdminType::class;
 
 		$twig = 'blog/BlogAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Blog_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BlogAdminType::class;
 
 		$twig = 'blog/BlogAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Blog_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Blog_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
