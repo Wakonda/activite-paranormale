@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Form\Type\CartographyType;
@@ -17,7 +18,8 @@ use App\Form\Type\CartographySearchType;
 
 class CartographyController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, $idTheme)
+    #[Route('/cartography/{idTheme}/{theme}', name: 'Cartography_Index', defaults: ['theme' => null, 'idTheme' => null], requirements: ['theme' => '.+', 'idTheme' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $em, $idTheme)
     {
 		$theme = null;
 		
@@ -34,7 +36,8 @@ class CartographyController extends AbstractController
 		]);
     }
 
-	public function showAction(EntityManagerInterface $em, $id)
+    #[Route('/cartography/show/{id}/{title_slug}', name: 'Cartography_Show', defaults: ['title_slug' => null], requirements: ['title_slug' => '.+'])]
+	public function show(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Cartography::class)->find($id);
 		
@@ -52,7 +55,8 @@ class CartographyController extends AbstractController
 	}
 
 	// Cartography of the world
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+    #[Route('/cartography/world/{language}/{themeId}/{theme}', name: 'Cartography_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -76,6 +80,7 @@ class CartographyController extends AbstractController
 		]);
 	}
 
+    #[Route('/cartography/selectThemeForIndexWorldAction/{language}', name: 'Cartography_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
 	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
@@ -85,7 +90,8 @@ class CartographyController extends AbstractController
 		return new Response($this->generateUrl('Cartography_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+    #[Route('/cartography/worlddatatables/{language}/{themeId}', name: 'Cartography_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -127,7 +133,8 @@ class CartographyController extends AbstractController
 		return $response;
 	}
 
-	public function listDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
+    #[Route('/cartography/datatables', name: 'Cartography_ListDatatables')]
+	public function listDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');

@@ -38,10 +38,6 @@ APQuotationBundle:
     resource: "../src/Routes/quotation/routing.yml"
     prefix:   /
 
-APCartographyBundle:
-    resource: "../src/Routes/cartography/routing.yml"
-    prefix:   /
-
 APPartnerBundle:
     resource: "../src/Routes/partner/routing.yml"
     prefix:   /

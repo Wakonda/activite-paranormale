@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 use App\Entity\Cartography;
 use App\Entity\CartographyTags;
@@ -18,10 +19,7 @@ use App\Form\Type\CartographyAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * Cartography controller.
- *
- */
+#[Route('/admin/cartography')]
 class CartographyAdminController extends AdminGenericController
 {
 	protected $entityName = 'Cartography';
@@ -46,18 +44,21 @@ class CartographyAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new CartographyTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Cartography_Admin_Index')]
+    public function index()
     {
 		$twig = 'cartography/CartographyAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Cartography_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'cartography/CartographyAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Cartography_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = CartographyAdminType::class;
@@ -66,8 +67,9 @@ class CartographyAdminController extends AdminGenericController
 		$twig = 'cartography/CartographyAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Cartography_Admin_Create', requirements: ['_method' => "post"])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = CartographyAdminType::class;
 		$entity = new Cartography();
@@ -76,8 +78,9 @@ class CartographyAdminController extends AdminGenericController
 
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Cartography_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Cartography::class)->find($id);
 		$formType = CartographyAdminType::class;
@@ -85,15 +88,17 @@ class CartographyAdminController extends AdminGenericController
 		$twig = 'cartography/CartographyAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Cartography_Admin_Update', requirements: ['_method' => "post"])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = CartographyAdminType::class;
 		
 		$twig = 'cartography/CartographyAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Cartography_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\CartographyComment")->findBy(["entity" => $id]);
@@ -103,8 +108,9 @@ class CartographyAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+
+	#[Route('/datatables', name: 'Cartography_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -130,7 +136,8 @@ class CartographyAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reloadlistsbylanguage', name: 'Cartography_Admin_ReloadListsByLanguage')]
+	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -176,8 +183,9 @@ class CartographyAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
-	
-	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'Cartography_Admin_Internationalization')]
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = CartographyAdminType::class;
 		$entity = new Cartography();
@@ -240,17 +248,20 @@ class CartographyAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Cartography_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Cartography_Admin_LoadImageSelectorColorbox');
 	}
 
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+	#[Route('/loadImageSelectorColorbox', name: 'Cartography_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive/{id}', name: 'Cartography_Admin_Archive', requirements: ['id' => "\d+"])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}

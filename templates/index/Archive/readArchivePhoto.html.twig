@@ -4,7 +4,7 @@
 </div>
 
 <h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
-{{ entity.photoIllustrationCaption|raw }}
+{{ (entity.photoIllustrationCaption|imgCaption( asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)))|raw }}
 
 <hr class="hr2">
 <p>
