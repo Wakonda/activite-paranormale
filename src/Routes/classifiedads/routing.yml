@@ -1,8 +1,0 @@
-# Administration
-ClassifiedAdsCategory_Admin:
-    resource: "routing/classifiedadscategoryadmin.yml"
-    prefix:   /admin/classifiedadscategory
-
-ClassifiedAds_Admin:
-    resource: "routing/classifiedadsadmin.yml"
-    prefix:   /admin/classifiedads

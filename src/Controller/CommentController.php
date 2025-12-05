@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -110,7 +111,8 @@ class CommentController extends AbstractController
 		return [$entity, $path, $className];
 	}
 
-    public function indexAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
+	#[Route('/{idClassName}/{className}', name: 'APCommentBundle_homepage')]
+    public function index(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
@@ -143,24 +145,24 @@ class CommentController extends AbstractController
 			'path' => $path
 		]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
+
+	#[Route('/create/{idClassName}/{className}', name: 'APCommentBundle_create', methods: ['POST', 'GET'])]
+    public function create(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
 		$user = $this->getUser();
         
 		if(!is_object($user))
-		{
 			$anonymousComment = true;
-		}
-		else {
+		else
 			$anonymousComment = false;
-		}
 
 		$commentType = $this->createForm(CommentType::class, $entity, ['userType' => $anonymousComment]);
         
         $commentType->handleRequest($request);
+		
+		$entities = [];
 
 		if($request->isXmlHttpRequest())
 		{
@@ -204,6 +206,7 @@ class CommentController extends AbstractController
 		]);
     }
 
+	#[Route('/reply/{idClassName}/{className}', name: 'APCommentBundle_reply', methods: ['POST', 'GET'])]
 	public function reply(Request $request, EntityManagerInterface $em, FormFactoryInterface $formFactory, $idClassName, $className) {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 
@@ -288,7 +291,8 @@ class CommentController extends AbstractController
 		]);
 	}
 
-	public function paginationAction(Request $request, EntityManagerInterface $em, $idClassName, $className) {
+	#[Route('/pagination/{idClassName}/{className}', name: 'APCommentBundle_pagination')]
+	public function pagination(Request $request, EntityManagerInterface $em, $idClassName, $className) {
 		list($entity, $path, $classNameComment) = $this->getNewEntity($em, $className, $idClassName);
 		$countComment = $em->getRepository($classNameComment)->countComment($idClassName);
 		$nbrOfPages = ceil($countComment/self::$nbrMessageByPage);

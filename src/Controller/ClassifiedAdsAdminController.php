@@ -9,6 +9,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 use App\Entity\ClassifiedAds;
 use App\Entity\Language;
@@ -20,6 +21,7 @@ use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 use App\Service\APImgSize;
 
+#[Route('/admin/classifiedads')]
 class ClassifiedAdsAdminController extends AdminGenericController
 {
 	protected $entityName = 'ClassifiedAds';
@@ -43,18 +45,21 @@ class ClassifiedAdsAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/index/{state}/{display}', name: 'ClassifiedAds_Admin_Index', defaults: ['state' => null, "display" => 1])]
+    public function index()
     {
 		$twig = 'classifiedAds/ClassifiedAdsAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'ClassifiedAds_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'classifiedAds/ClassifiedAdsAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'ClassifiedAds_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = ClassifiedAdsAdminType::class;
@@ -63,8 +68,9 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		$twig = 'classifiedAds/ClassifiedAdsAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'ClassifiedAds_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = ClassifiedAdsAdminType::class;
 		$entity = new ClassifiedAds();
@@ -73,8 +79,9 @@ class ClassifiedAdsAdminController extends AdminGenericController
 
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'ClassifiedAds_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = ClassifiedAdsAdminType::class;
@@ -83,14 +90,16 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	#[Route('/{id}/update', name: 'ClassifiedAds_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = ClassifiedAdsAdminType::class;
 
 		$twig = 'classifiedAds/ClassifiedAdsAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'ClassifiedAds_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$votes = $em->getRepository("\App\Entity\ClassifiedAdsVote")->findBy(["entity" => $id]);
@@ -99,7 +108,8 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+	#[Route('/datatables', name: 'ClassifiedAds_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -140,6 +150,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		return new Response($countByStateAdmin);
 	}
 
+	#[Route('/reloadlistsbylanguage', name: 'ClassifiedAds_Admin_ReloadListsByLanguage')]
 	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
@@ -180,7 +191,8 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		return $response;
 	}
 
-	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+	#[Route('/change_state/{id}/{state}', name: 'ClassifiedAds_Admin_ReloadListsByLanguage')]
+	public function changeState(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
 
@@ -206,6 +218,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		return $this->redirect($this->generateUrl('ClassifiedAds_Admin_Show', ['id' => $id]));
 	}
 
+	#[Route('/delete_multiple', name: 'ClassifiedAds_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));

@@ -5,6 +5,7 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Comment;
@@ -12,10 +13,7 @@ use App\Entity\Language;
 use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Commentaire controller.
- *
- */
+#[Route('/admin/comment')]
 class CommentAdminController extends AdminGenericController
 {
 	protected $entityName = 'Comment';
@@ -35,11 +33,8 @@ class CommentAdminController extends AdminGenericController
 	{
 	}
 	
-    /**
-     * Lists all Commentaire entities.
-     *
-     */
-    public function indexAction(EntityManagerInterface $em)
+    #[Route('/', name: 'Comment_Admin_Index')]
+    public function index(EntityManagerInterface $em)
     {
         $entities = $em->getRepository(Comment::class)->findAll();
 
@@ -48,10 +43,7 @@ class CommentAdminController extends AdminGenericController
         ]);
     }
 
-    /**
-     * Finds and displays a Commentaire entity.
-     *
-     */
+    #[Route('/{id}/show', name: 'Comment_Admin_Show')]
     public function showAction(EntityManagerInterface $em, $id)
     {
         $entity = $em->getRepository(Comment::class)->find($id);
@@ -67,8 +59,9 @@ class CommentAdminController extends AdminGenericController
             'delete_form' => $deleteForm->createView(),
         ]);
     }
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+
+	#[Route('/datatables', name: 'Comment_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -102,10 +95,7 @@ class CommentAdminController extends AdminGenericController
 		return $response;
 	}
 
-    /**
-     * Deletes a Commentaire entity.
-     *
-     */
+    #[Route('/{id}/delete', name: 'Comment_Admin_Delete', methods: ['POST'])]
     public function deleteAction(Request $request, EntityManagerInterface $em, $id)
     {
         $form = $this->createDeleteForm($id);
@@ -132,8 +122,9 @@ class CommentAdminController extends AdminGenericController
 
 		return new Response($total);
 	}
-	
-	public function changeStateAction(EntityManagerInterface $em, $id, $state)
+
+    #[Route('/change_state/{id}/{state}', name: 'Comment_Admin_ChangeState', methods: ['GET'])]
+	public function changeState(EntityManagerInterface $em, $id, $state)
 	{
 		$entity = $em->getRepository(Comment::class)->find($id);
 		
@@ -153,6 +144,7 @@ class CommentAdminController extends AdminGenericController
         ;
     }
 
+    #[Route('/delete_multiple', name: 'Comment_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));

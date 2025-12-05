@@ -22,10 +22,6 @@ APPageBundle:
     resource: "../src/Routes/page/routing.yml"
     prefix:   /
 
-APCommentBundle:
-    resource: "../src/Routes/comment/routing.yml"
-    prefix:   /
-
 APContactBundle:
     resource: "../src/Routes/contact/routing.yml"
     prefix:   /
@@ -80,10 +76,6 @@ Store:
 
 CreepyStory:
     resource: "../src/Routes/creepystory/routing.yml"
-    prefix:   /
-
-ClassifiedAds:
-    resource: "../src/Routes/classifiedads/routing.yml"
     prefix:   /
 
 Deal:
