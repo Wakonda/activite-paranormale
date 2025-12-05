@@ -53,5 +53,5 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'WitchcraftTool' })) }}
+	{{ render(controller("App\\Controller\\CommentController::index", { 'idClassName' : entity.id, 'className': 'WitchcraftTool' })) }}
 {% endblock %}

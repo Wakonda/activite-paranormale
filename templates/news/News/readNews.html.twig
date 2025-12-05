@@ -87,6 +87,6 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'News' })) }}
+	{{ render(controller("App\\Controller\\CommentController::index", { 'idClassName' : entity.id, 'className': 'News' })) }}
 	{{ render(controller("App\\Controller\\NewsController::getSameTopicsAction", { 'id' : entity.id })) }}
 {% endblock %}

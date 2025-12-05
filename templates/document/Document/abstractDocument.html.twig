@@ -144,5 +144,5 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Document' })) }}
+	{{ render(controller("App\\Controller\\CommentController::index", { 'idClassName' : entity.id, 'className': 'Document' })) }}
 {% endblock %}

@@ -57,6 +57,6 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Grimoire' })) }}
+	{{ render(controller("App\\Controller\\CommentController::index", { 'idClassName' : entity.id, 'className': 'Grimoire' })) }}
 	{{ render(controller("App\\Controller\\WitchcraftController::getSameTopics", { 'id' : entity.id })) }}
 {% endblock %}

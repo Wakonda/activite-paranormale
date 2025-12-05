@@ -69,6 +69,6 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CommentController::indexAction", { 'idClassName' : entity.id, 'className': 'Photo' })) }}
+	{{ render(controller("App\\Controller\\CommentController::index", { 'idClassName' : entity.id, 'className': 'Photo' })) }}
 	{{ render(controller("App\\Controller\\PhotoController::getSameTopicsAction", { 'id' : entity.id })) }}
 {% endblock %}
