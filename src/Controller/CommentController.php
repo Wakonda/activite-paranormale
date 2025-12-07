@@ -26,6 +26,7 @@ use App\Form\Type\CommentType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+#[Route('/comment')]
 class CommentController extends AbstractController
 {
 	public static $nbrMessageByPage = 7;
@@ -107,7 +108,8 @@ class CommentController extends AbstractController
 				$className = DocumentComment::class;
 				break;
 		}
-
+if(empty($entity))
+	dd($className, $idClassName);
 		return [$entity, $path, $className];
 	}
 
