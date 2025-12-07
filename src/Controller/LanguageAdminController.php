@@ -8,16 +8,14 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Language;
 use App\Form\Type\LanguageAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Language controller.
- *
- */
+#[Route('/admin/language')]
 class LanguageAdminController extends AdminGenericController
 {
 	protected $entityName = 'Language';
@@ -44,18 +42,21 @@ class LanguageAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Language_Admin_Index')]
+    public function index()
     {
 		$twig = 'index/LanguageAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Language_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'index/LanguageAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Language_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = LanguageAdminType::class;
@@ -64,8 +65,9 @@ class LanguageAdminController extends AdminGenericController
 		$twig = 'index/LanguageAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Language_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = LanguageAdminType::class;
 		$entity = new Language();
@@ -73,29 +75,33 @@ class LanguageAdminController extends AdminGenericController
 		$twig = 'index/LanguageAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Language_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = LanguageAdminType::class;
 
 		$twig = 'index/LanguageAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Language_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = LanguageAdminType::class;
 
 		$twig = 'index/LanguageAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Language_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Language_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];

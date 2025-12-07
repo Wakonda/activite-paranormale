@@ -32,7 +32,7 @@ class CommentAdminController extends AdminGenericController
 	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
-	
+
     #[Route('/', name: 'Comment_Admin_Index')]
     public function index(EntityManagerInterface $em)
     {

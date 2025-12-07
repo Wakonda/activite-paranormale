@@ -478,13 +478,13 @@
 		</div>
 		
 		<div class="card mb-2">
-			{% set countNewsByStateWaiting = render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Waiting'})) %}
-			{% set countNewsByStateWarned = render(controller('App\\Controller\\NewsAdminController::countNewsByStateAction', {'state':'Warned'})) %}
+			{% set countNewsByStateWaiting = render(controller('App\\Controller\\NewsAdminController::countNewsByState', {'state':'Waiting'})) %}
+			{% set countNewsByStateWarned = render(controller('App\\Controller\\NewsAdminController::countNewsByState', {'state':'Warned'})) %}
 			{% set countGrimoireByStateWaiting = render(controller('App\\Controller\\GrimoireAdminController::countByStateAction', {'state':'Waiting'})) %}
 			{% set countEventMessageByStateWaiting = render(controller('App\\Controller\\EventMessageAdminController::countByStateAction', {'state':'Waiting'})) %}
 			{% set countWebDirectoryByStateWaiting = render(controller('App\\Controller\\WebDirectoryAdminController::countByStateAction', {'state':'Waiting'})) %}
 			{% set countCommentByStateWaiting = render(controller("App\\Controller\\CommentAdminController::countToModerateCommentsAction")) %}
-			{% set countContactByStateWaiting = render(controller("App\\Controller\\ContactAdminController::countNonReadAction")) %}
+			{% set countContactByStateWaiting = render(controller("App\\Controller\\ContactAdminController::countNonRead")) %}
 			{% set countTestimonyByStateWaiting = render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Waiting'})) %}
 			{% set countTestimonyByStateWarned = render(controller('App\\Controller\\TestimonyAdminController::countTestimonyAction', {'state':'Warned'})) %}
 			{% set countClassifiedAdsByStateWaiting = render(controller('App\\Controller\\ClassifiedAdsAdminController::countByState', {'state':'Waiting'})) %}

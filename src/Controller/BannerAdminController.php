@@ -7,16 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Banner;
 use App\Form\Type\BannerAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Banner controller.
- *
- */
+#[Route('/admin/banner')]
 class BannerAdminController extends AdminGenericController
 {
 	protected $entityName = 'Banner';
@@ -43,18 +41,21 @@ class BannerAdminController extends AdminGenericController
 	{
 	}
 
+	#[Route('/', name: 'Banner_Admin_Index')]
     public function indexAction()
     {
 		$twig = 'index/BannerAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Banner_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'index/BannerAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Banner_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = BannerAdminType::class;
@@ -63,8 +64,9 @@ class BannerAdminController extends AdminGenericController
 		$twig = 'index/BannerAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Banner_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = BannerAdminType::class;
 		$entity = new Banner();
@@ -72,29 +74,33 @@ class BannerAdminController extends AdminGenericController
 		$twig = 'index/BannerAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Banner_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = BannerAdminType::class;
 
 		$twig = 'index/BannerAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Banner_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BannerAdminType::class;
 		
 		$twig = 'index/BannerAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Banner_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Banner_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];

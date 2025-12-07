@@ -112,7 +112,7 @@ class NewsAdminController extends AdminGenericController
     }
 
 	/* FONCTION DE COMPTAGE */
-	public function countNewsByStateAction(EntityManagerInterface $em, $state)
+	public function countNewsByState(EntityManagerInterface $em, $state)
 	{
 		$countNewsByStateAdmin = $em->getRepository($this->className)->countNewsByStateAdmin($state);
 		return new Response($countNewsByStateAdmin);

@@ -1,4 +1,0 @@
-# Administration
-Contact_Admin:
-    resource: "routing/contactadmin.yml"
-    prefix:   /admin/contact

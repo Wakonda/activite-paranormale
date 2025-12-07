@@ -5,6 +5,7 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Contact;
@@ -12,10 +13,7 @@ use App\Form\Type\ContactAdminType;
 use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Contact controller.
- *
- */
+#[Route('/admin/contact')]
 class ContactAdminController extends AdminGenericController
 {
 	protected $entityName = 'Contact';
@@ -35,21 +33,15 @@ class ContactAdminController extends AdminGenericController
 	{
 	}
 
-    /**
-     * Lists all Contact entities.
-     *
-     */
-    public function indexAction()
+    #[Route('/', name: 'Contact_Admin_Index')]
+    public function index()
     {
 		$twig = 'contact/ContactAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
-    /**
-     * Finds and displays a Contact entity.
-     *
-     */
-    public function showAction(EntityManagerInterface $em, $id)
+    #[Route('/{id}/show', name: 'Contact_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
         $entity = $em->getRepository($this->className)->find($id);
 
@@ -70,16 +62,13 @@ class ContactAdminController extends AdminGenericController
         ]);
     }
 
-	 public function countNonReadAction(EntityManagerInterface $em)
+	 public function countNonRead(EntityManagerInterface $em)
 	 {
 		$countNonRead = $em->getRepository($this->className)->count(['stateContact' => '0']);
 		return new Response($countNonRead);
 	 }
 
-    /**
-     * Deletes a Contact entity.
-     *
-     */
+    #[Route('/{id}/delete', name: 'Contact_Admin_Delete', methods: ['POST'])]
     public function deleteAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
@@ -101,7 +90,8 @@ class ContactAdminController extends AdminGenericController
         ;
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+	#[Route('/datatables', name: 'Contact_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -132,6 +122,7 @@ class ContactAdminController extends AdminGenericController
 		return $response;
 	}
 
+    #[Route('/delete_multiple', name: 'Contact_Admin_DeleteMultiple', methods: ['POST'])]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));

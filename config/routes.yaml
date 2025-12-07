@@ -22,24 +22,12 @@ APPageBundle:
     resource: "../src/Routes/page/routing.yml"
     prefix:   /
 
-APContactBundle:
-    resource: "../src/Routes/contact/routing.yml"
-    prefix:   /
-
-APIndexBundle:
-    resource: "../src/Routes/index/routing.yml"
-    prefix:   /
-
 APQuotationBundle:
     resource: "../src/Routes/quotation/routing.yml"
     prefix:   /
 
 APPartnerBundle:
     resource: "../src/Routes/partner/routing.yml"
-    prefix:   /
-
-APWebDirectorySEOBundle:
-    resource: "../src/Routes/webdirectoryseo/routing.yml"
     prefix:   /
 
 APWebDirectoryBundle:

@@ -1,4 +1,0 @@
-# Administration
-WebDirectorySEO_Admin:
-    resource: "routing/webdirectoryseoadmin.yml"
-    prefix:   /admin/directoryseo

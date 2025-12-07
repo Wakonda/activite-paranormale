@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\State;
@@ -14,10 +15,7 @@ use App\Entity\Language;
 use App\Form\Type\StateAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * State controller.
- *
- */
+#[Route('/admin/state')]
 class StateAdminController extends AdminGenericController
 {
 	protected $entityName = 'State';
@@ -41,18 +39,21 @@ class StateAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'State_Admin_Index')]
+    public function index()
     {
 		$twig = 'index/StateAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'State_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'index/StateAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'State_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = StateAdminType::class;
@@ -61,8 +62,9 @@ class StateAdminController extends AdminGenericController
 		$twig = 'index/StateAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'State_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = StateAdminType::class;
 		$entity = new State();
@@ -70,28 +72,32 @@ class StateAdminController extends AdminGenericController
 		$twig = 'index/StateAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'State_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = StateAdminType::class;
 
 		$twig = 'index/StateAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'State_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = StateAdminType::class;
 		$twig = 'index/StateAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'State_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/datatables', name: 'State_Admin_IndexDatatables', methods: ['GET'])]
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
@@ -112,7 +118,8 @@ class StateAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
+
+	#[Route('/internationalization/{id}', name: 'State_Admin_Internationalization')]
     public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = StateAdminType::class;
