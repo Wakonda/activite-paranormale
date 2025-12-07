@@ -117,7 +117,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Movie_Admin_Internationalization", "showRoute": "Movie_Admin_Show", "editRoute": "Movie_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Movie_Admin_Internationalization", "showRoute": "Movie_Admin_Show", "editRoute": "Movie_Admin_Edit"})) }}
 
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}

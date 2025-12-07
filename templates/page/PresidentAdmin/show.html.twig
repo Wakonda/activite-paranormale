@@ -55,7 +55,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "President_Admin_Internationalization", "showRoute": "President_Admin_Show", "editRoute": "President_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "President_Admin_Internationalization", "showRoute": "President_Admin_Show", "editRoute": "President_Admin_Edit"})) }}
 	
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}

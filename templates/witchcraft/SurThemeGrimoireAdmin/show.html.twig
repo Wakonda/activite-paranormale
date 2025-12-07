@@ -36,5 +36,5 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "SurThemeGrimoire_Admin_Internationalization", "showRoute": "SurThemeGrimoire_Admin_Show", "editRoute": "SurThemeGrimoire_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "SurThemeGrimoire_Admin_Internationalization", "showRoute": "SurThemeGrimoire_Admin_Show", "editRoute": "SurThemeGrimoire_Admin_Edit"})) }}
 {% endblock %}

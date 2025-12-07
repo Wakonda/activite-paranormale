@@ -115,5 +115,5 @@
 		{{ render(controller('App\\Controller\\AlbumAdminController::indexByArtistAction', {artistId: entity.id})) }}
 	</div>
 	
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Artist_Admin_Internationalization", "showRoute": "Artist_Admin_Show", "editRoute": "Artist_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Artist_Admin_Internationalization", "showRoute": "Artist_Admin_Show", "editRoute": "Artist_Admin_Edit"})) }}
 {% endblock %}

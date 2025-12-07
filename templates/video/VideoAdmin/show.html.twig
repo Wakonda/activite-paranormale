@@ -87,7 +87,7 @@
 		<a href="{{ path('Video_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "eventMessage.admin.Validate"|trans([], "validators") }}</a>
 		<a href="{{ path('Video_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "eventMessage.admin.Refuse"|trans([], "validators") }}</a>
 	{% else %}
-		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Video_Admin_Internationalization", "showRoute": "Video_Admin_Show", "editRoute": "Video_Admin_Edit"})) }}
+		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Video_Admin_Internationalization", "showRoute": "Video_Admin_Show", "editRoute": "Video_Admin_Edit"})) }}
 	{% endif %}
 
 	<hr>

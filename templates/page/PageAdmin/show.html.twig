@@ -41,5 +41,5 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Page_Admin_Internationalization", "showRoute": "Page_Admin_Show", "editRoute": "Page_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Page_Admin_Internationalization", "showRoute": "Page_Admin_Show", "editRoute": "Page_Admin_Edit"})) }}
 {% endblock %}

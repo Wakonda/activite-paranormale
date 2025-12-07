@@ -48,7 +48,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Grimoire_Admin_Internationalization", "showRoute": "Grimoire_Admin_Show", "editRoute": "Grimoire_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Grimoire_Admin_Internationalization", "showRoute": "Grimoire_Admin_Show", "editRoute": "Grimoire_Admin_Edit"})) }}
 
 	{% if entity.state.isStateDisplayed() %}
 		{% if entity.archive == false %}

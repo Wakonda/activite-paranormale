@@ -68,6 +68,6 @@
 		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "directory.admin.Validate"|trans([], "validators") }}</a>
 		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "directory.admin.Refuse"|trans([], "validators") }}</a>
 	{% else %}
-		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "WebDirectory_Admin_Internationalization", "showRoute": "WebDirectory_Admin_Show", "editRoute": "WebDirectory_Admin_Edit"})) }}
+		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "WebDirectory_Admin_Internationalization", "showRoute": "WebDirectory_Admin_Show", "editRoute": "WebDirectory_Admin_Edit"})) }}
 	{% endif %}
 {% endblock %}

@@ -99,7 +99,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Biography_Admin_Internationalization", "showRoute": "Biography_Admin_Show", "editRoute": "Biography_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Biography_Admin_Internationalization", "showRoute": "Biography_Admin_Show", "editRoute": "Biography_Admin_Edit"})) }}
 
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 

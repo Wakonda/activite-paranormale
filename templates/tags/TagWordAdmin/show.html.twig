@@ -44,7 +44,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "TagWord_Admin_Internationalization", "showRoute": "TagWord_Admin_Show", "editRoute": "TagWord_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "TagWord_Admin_Internationalization", "showRoute": "TagWord_Admin_Show", "editRoute": "TagWord_Admin_Edit"})) }}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 
 	{{ macro_index.twitter_form(entity) }}

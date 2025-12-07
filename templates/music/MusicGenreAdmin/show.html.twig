@@ -39,5 +39,5 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "MusicGenre_Admin_Internationalization", "showRoute": "MusicGenre_Admin_Show", "editRoute": "MusicGenre_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "MusicGenre_Admin_Internationalization", "showRoute": "MusicGenre_Admin_Show", "editRoute": "MusicGenre_Admin_Edit"})) }}
 {% endblock %}

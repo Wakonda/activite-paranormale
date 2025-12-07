@@ -81,7 +81,7 @@
 		{{ render(controller('App\\Controller\\EpisodeTelevisionSerieAdminController::indexAction', {televisionSerieId: entity.id})) }}
 	</div>
 	<hr>
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "TelevisionSerie_Admin_Internationalization", "showRoute": "TelevisionSerie_Admin_Show", "editRoute": "TelevisionSerie_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "TelevisionSerie_Admin_Internationalization", "showRoute": "TelevisionSerie_Admin_Show", "editRoute": "TelevisionSerie_Admin_Edit"})) }}
 	
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}

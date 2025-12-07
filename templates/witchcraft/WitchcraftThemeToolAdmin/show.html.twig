@@ -25,5 +25,5 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "WitchcraftThemeTool_Admin_Internationalization", "showRoute": "WitchcraftThemeTool_Admin_Show", "editRoute": "WitchcraftThemeTool_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "WitchcraftThemeTool_Admin_Internationalization", "showRoute": "WitchcraftThemeTool_Admin_Show", "editRoute": "WitchcraftThemeTool_Admin_Edit"})) }}
 {% endblock %}

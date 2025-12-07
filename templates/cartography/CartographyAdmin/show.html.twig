@@ -69,7 +69,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGenericAction', {entity: entity, route: "Cartography_Admin_Internationalization", "showRoute": "Cartography_Admin_Show", "editRoute": "Cartography_Admin_Edit"})) }}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Cartography_Admin_Internationalization", "showRoute": "Cartography_Admin_Show", "editRoute": "Cartography_Admin_Edit"})) }}
 
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
