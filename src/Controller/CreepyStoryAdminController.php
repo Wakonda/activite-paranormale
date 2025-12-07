@@ -5,6 +5,7 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\CreepyStory;
@@ -19,10 +20,7 @@ use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * CreepyStory controller.
- *
- */
+#[Route('/admin/creepystory')]
 class CreepyStoryAdminController extends AdminGenericController
 {
 	protected $entityName = 'CreepyStory';
@@ -47,18 +45,21 @@ class CreepyStoryAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new CreepyStoryTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'CreepyStory_Admin_Index')]
+    public function index()
     {
 		$twig = 'creepyStory/CreepyStoryAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'CreepyStory_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'creepyStory/CreepyStoryAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'CreepyStory_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = CreepyStoryAdminType::class;
@@ -67,8 +68,9 @@ class CreepyStoryAdminController extends AdminGenericController
 		$twig = 'creepyStory/CreepyStoryAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'CreepyStory_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = CreepyStoryAdminType::class;
 		$entity = new CreepyStory();
@@ -76,8 +78,9 @@ class CreepyStoryAdminController extends AdminGenericController
 		$twig = 'creepyStory/CreepyStoryAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'CreepyStory_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = CreepyStoryAdminType::class;
@@ -85,15 +88,17 @@ class CreepyStoryAdminController extends AdminGenericController
 		$twig = 'creepyStory/CreepyStoryAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'CreepyStory_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = CreepyStoryAdminType::class;
 		$twig = 'creepyStory/CreepyStoryAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'CreepyStory_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$tags = $em->getRepository(CreepyStoryTags::class)->findBy(["entity" => $id]);
@@ -101,13 +106,9 @@ class CreepyStoryAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
-	{
-		return $this->archiveGenericArchive($em, $id);
-	}
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+
+	#[Route('/datatables', name: 'CreepyStory_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -133,56 +134,19 @@ class CreepyStoryAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
-	{
-		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = [];
-		
-		if(!empty($language))
-		{
-			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
-			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
-		}
-		else
-		{
-			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
-			$states = $em->getRepository(State::class)->findAll();
-			$licences = $em->getRepository(Licence::class)->findAll();
-		}
-
-		$themeArray = [];
-		$stateArray = [];
-		$licenceArray = [];
-		
-		foreach($themes as $theme)
-			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
-
-		$translateArray['theme'] = $themeArray;
-
-		foreach($states as $state)
-			$stateArray[] = ["id" => $state->getId(), "title" => $state->getTitle()];
-
-		$translateArray['state'] = $stateArray;
-
-		foreach($licences as $licence)
-			$licenceArray[] = ["id" => $licence->getId(), "title" => $licence->getTitle()];
-
-		$translateArray['licence'] = $licenceArray;
-
-		return new JsonResponse($translateArray);
-	}
-
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'CreepyStory_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('CreepyStory_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'CreepyStory_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
+	#[Route('/internationalization/{id}', name: 'CreepyStory_Admin_Internationalization')]
 	public function internationalization(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = CreepyStoryAdminType::class;

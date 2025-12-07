@@ -30,10 +30,6 @@ APPartnerBundle:
     resource: "../src/Routes/partner/routing.yml"
     prefix:   /
 
-APWebDirectoryBundle:
-    resource: "../src/Routes/webdirectory/routing.yml"
-    prefix:   /
-
 APMusicBundle:
     resource: "../src/Routes/music/routing.yml"
     prefix:   /
@@ -60,12 +56,4 @@ Movie:
 
 Store:
     resource: "../src/Routes/store/routing.yml"
-    prefix:   /
-
-CreepyStory:
-    resource: "../src/Routes/creepystory/routing.yml"
-    prefix:   /
-
-Deal:
-    resource: "../src/Routes/deal/routing.yml"
     prefix:   /

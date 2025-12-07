@@ -1,4 +1,0 @@
-# Administration
-Deal_Admin:
-    resource: "routing/dealadmin.yml"
-    prefix:   /admin/deal

@@ -1,4 +1,0 @@
-# Admin
-WebDirectory_Admin:
-    resource: "routing/webdirectoryadmin.yml"
-    prefix:   /admin/directory
