@@ -138,8 +138,12 @@ class SavingCommonData
 				$setterMethod = "set".ucfirst($field);
 				$getterMethod = "get".ucfirst($field);
 				if(method_exists($entity, $setterMethod))
-				{
+				{					
 					$text = $entity->$getterMethod();
+
+					if($this->isJson($entity->$getterMethod()))
+						continue;	
+
 					$text = $this->purifierText($text);
 
 					if(method_exists($entity, 'getAssetImagePath'))
@@ -169,5 +173,14 @@ class SavingCommonData
 				}
             }
         }
+	}
+
+	private function isJson(?string $string): bool
+	{
+		if(empty($string))
+			return false;
+
+		json_decode($string);
+		return json_last_error() === JSON_ERROR_NONE;
 	}
 }

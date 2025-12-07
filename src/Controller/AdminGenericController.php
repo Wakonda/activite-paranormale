@@ -203,13 +203,14 @@ abstract class AdminGenericController extends AbstractController
         $deleteForm = $this->createDeleteForm($id);
 
 		$editForm->handleRequest($request);
+
 		$this->validationForm($request, $em, $ccv, $translator, $editForm, $entity, $entityOriginal);
 
         if ($editForm->isValid()) {
 			$this->uploadFile($entity, $editForm, $entityOriginal);
             $em->persist($entity);
             $em->flush();
-			
+
 			$this->postValidation($editForm, $em, $entity);
 
             return $this->redirect($this->generateUrl($this->showRoute, ['id' => $id]));

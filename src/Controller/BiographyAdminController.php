@@ -90,7 +90,7 @@ class BiographyAdminController extends AdminGenericController
 					if(!empty($identifier["value"]))
 						$datas["identifiers"][] = ["identifier" => $identifier["identifier"], "value" => $identifier["value"]];
 		}
-		
+dd($datas["links"]);
 		if(isset($datas["links"]))
 			$datas["links"] = array_map("unserialize", array_unique(array_map("serialize", $datas["links"])));
 
@@ -244,7 +244,7 @@ class BiographyAdminController extends AdminGenericController
     {
 		$formType = BiographyAdminType::class;
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
-
+// dd($_POST);
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 

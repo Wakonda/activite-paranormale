@@ -326,10 +326,10 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 		if(empty($this->links))
 			return null;
 
-		if(empty(array_filter(array_column(!empty($d = json_decode($this->links, true)) ? $d : [], "url"))))
+		if(empty(array_filter(array_column(!empty($d = json_decode(strip_tags($this->links), true)) ? $d : [], "url"))))
 			return null;
 
-        return $this->links;
+        return trim(strip_tags($this->links));
     }
 
     public function setIdentifiers($identifiers)

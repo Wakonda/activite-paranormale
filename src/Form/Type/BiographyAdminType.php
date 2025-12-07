@@ -140,7 +140,8 @@ class BiographyAdminType extends AbstractType
 
 		if($builder->getData()->getLinks() != null)
 		{
-			$socialNetworkArray = json_decode($builder->getData()->getLinks());
+			// dd($builder->getData()->getLinks());
+			$socialNetworkArray = json_decode(strip_tags($builder->getData()->getLinks()));
 
 			foreach($socialNetworkArray as $socialNetwork)
 			{
@@ -201,7 +202,7 @@ class BiographyAdminType extends AbstractType
 		];
 
 		$data["links"] = json_encode($linkJson);
-		
+
 		$event->setData($data);
 	}
 
