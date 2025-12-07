@@ -1,0 +1,35 @@
+photo:
+    index:
+        Photo: "Fotografia"
+        NbrPhoto: "Número total de fotografias: "
+        Theme: "Tema"
+        Number: "Número"
+    tab:
+        Title: "Título"
+        PublicationDate: "Data de publicação"
+        Photo: "Fotografia"
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Photo: "Fotografia"
+        Language: "Idioma"
+        Theme: "Tema"
+        PseudoUsed: "Pseudónimo utilizado"
+        PublicationDate: "Data de publicação"
+        State: "Estado"
+        Licence: "Licença"
+        WritingDate: "Data de redação"
+    new:
+        AddPhoto: "Propor uma fotografia"
+        Photo: "Fotografia"
+        Text: "Texto"
+    read:
+        SourcePhoto: "Fonte da fotografia"
+    slider:
+        More: "Mais"
+    world:
+        WorldPhoto: "Fotografia multilíngue"
+    validate:
+        Validation: "Confirmação"
+        ThankForYourParticipation: "Obrigado pela sua participação!"
+        ThankForYourParticipationText: "A sua fotografia foi enviada com sucesso. Será publicada no nosso site assim que for validada por um moderador."

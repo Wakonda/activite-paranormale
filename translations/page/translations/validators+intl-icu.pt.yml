@@ -1,0 +1,149 @@
+page:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        InternationalName: "Nome internacional"
+        Language: "Idioma"
+        PseudoUsed: "Pseudónimo utilizado"
+        Licence: "Licença"
+        State: "Estado"
+        WritingDate: "Data de redação"
+        PublicationDate: "Data de publicação"
+    participation:
+        Charter: "Ao contribuir para <b>Activité-Paranormale</b>, aceita a sua carta de publicação."
+        ConsultCharter: "Consultar a carta"
+president:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Photo: "Fotografia"
+        Language: "Idioma"
+        Licence: "Licença"
+        State: "Estado"
+        PseudoUsed: "Pseudónimo utilizado"
+        WritingDate: "Data de redação"
+        PublicationDate: "Data de publicação"
+        NumberOfDays: "Número de dias"
+        Logo: "Logótipo"
+    index:
+        ArchivedMessages: "Mensagens arquivadas"
+    tab:
+        Title: "Título"
+        PublicationDate: "Data de publicação"
+        ArchivedMessage: "Mensagem arquivada"
+eventMessage:
+    menu:
+        Events: "Eventos"
+        Calendar: "Calendário"
+    calendar:
+        Events: "Eventos"
+        List: "Lista"
+    index:
+        Event: "Evento"
+        Sources: "Fontes"
+        OnThisDay: "Efeméride"
+        Today: "Hoje"
+        Until: "até"
+    tab:
+        Photo: "Fotografia"
+        Title: "Título"
+        Date: "Data"
+    admin:
+        Title: "Título"
+        AbstractText: "Resumo"
+        Text: "Texto"
+        Language: "Idioma"
+        DateFrom: "Data de início"
+        DateTo: "Data de fim"
+        PseudoUsed: "Pseudónimo utilizado"
+        Licence: "Licença"
+        State: "Estado"
+        Photo: "Fotografia"
+        Thumbnail: "Miniatura"
+        Theme: "Tema"
+        Type: "Tipo"
+        Longitude: "Longitude"
+        Latitude: "Latitude"
+        Source: "Fontes"
+        Country: "País"
+        Validate: "Validar"
+        Refuse: "Recusar"
+    slider:
+        MoreInformation: "Mais informações"
+    new:
+        AddEvents: "Propor um evento"
+        Title: "Título"
+        Text: "Texto"
+        Photo: "Fotografia"
+        Pseudo: "Pseudónimo"
+        DateFrom: "Data de início"
+        DateTo: "Data de fim"
+        Location: "Morada"
+        FileSizeLimit: "Tamanho máximo"
+        AcceptedFormat: "Formatos aceites"
+        IsAnonymous: "Publicado anonimamente?"
+        Validate: "Validar"
+        ClickHereToLocateOnMap: "Clique no mapa para localizar o local do evento"
+        PublishedAnonymously: "Publicado anonimamente"
+        PostedWithMyUserAccount: "Publicado com a minha conta de utilizador"
+        AnonymousMessage: "Ao publicar anonimamente, o seu evento não aparecerá na sua conta de utilizador quando for validado pelos nossos moderadores."
+    error:
+        FileSizeError: "O ficheiro é demasiado grande"
+        FileFormat: "O tipo de ficheiro é inválido"
+        StartDateSuperiorEndDate: "A data de início não pode ser posterior à data de fim"
+    waiting:
+        Edit: "Modificar"
+        Validate: "Validar"
+    validate:
+        Validation: "Confirmação"
+        ThankForYourParticipation: "Obrigado pela sua participação!"
+        ThankForYourParticipationText: "O seu evento foi enviado com sucesso. Será publicado no nosso site assim que for validado por um moderador."
+    world:
+        WorldEventMessage: "Evento multilíngue"
+    dayMonth:
+        Century: >-
+            {number, plural,
+                =1 {{romanNumber}<sup>º</sup> século}
+                other {{romanNumber}<sup>º</sup> século}
+            }
+        BC: "a.C."
+        BirthDate: "Nascimentos"
+        DeathDate: "Falecimentos"
+        Event: "Evento"
+        Celebration: "Celebração"
+        Horoscope: "Horóscopo"
+        Convention: "Conferência"
+        Festival: "Festival"
+        Saint: "Santo"
+        Saying: "Ditado"
+        NoEventToday: "Nenhum evento neste dia"
+        NoEvent: "Nenhum evento"
+rssFeed:
+    menu:
+        RSSFeeds: "Feeds RSS"
+        SubscribeToRSSFeeds: "Subscrever o feed RSS"
+    index:
+        SubscribeToRSSFeeds: "Subscrever o feed RSS"
+        WhatIsItTitle: "O que é um feed RSS?"
+        WhatIsItText: "Os feeds RSS permitem-lhe subscrever um canal de informações. Uma vez subscrito, pode acompanhar as novidades do site através de um leitor, de forma rápida e sem necessidade de o consultar diretamente. Assim, será imediatamente avisado quando um novo artigo for publicado!"
+        CustomizeYourRSSFeed: "Personalize o seu feed RSS"
+        RSSFeedCreatedTitle: "Feed RSS gerado"
+        RSSFeedCreatedText: "Para subscrever o feed RSS de Activité-Paranormale, copie a ligação abaixo e cole-a no seu leitor favorito!"
+        Category: "Categoria"
+        Language: "Idioma"
+        Number: "Número"
+        News: "Atualidade"
+        Document: "Documento"
+        Photo: "Fotografia"
+        Testimony: "Testemunho"
+        Video: "Vídeo"
+    read:
+        CopyToClipboard: "Copiar"
+        CodeCopiedWithSuccess: "O código foi copiado com sucesso"
+copyright:
+    table:
+        UsedPhotos: "Fotografias utilizadas"
+        Photo: "Fotografia"
+        License: "Licença"
+        Author: "Autor"
+        Link: "Ligação"

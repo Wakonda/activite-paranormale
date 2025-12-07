@@ -1,0 +1,7 @@
+search:
+    index:
+        Search: "Pesquisar"
+        NoResult: "Nenhum documento corresponde aos termos de pesquisa especificados"
+        Results: "resultados"
+        Read: "Consultar"
+        Image: "Imagem"

@@ -1,0 +1,14 @@
+partner:
+    index:
+        Partner: "Siga-nos"
+        Inactive: "Inativo"
+        Display: "Mostrar"
+    admin:
+        Title: "Título"
+        Link: "Ligação"
+        Logo: "Logótipo"
+        Language: "Idioma"
+        Active: "Ativo"
+        DisplayPage: "Mostrar na página inicial"
+        Color: "Cor"
+        Icon: "Ícone"
