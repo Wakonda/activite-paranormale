@@ -41,7 +41,7 @@ class BiographyAdminType extends AbstractType
     ) {
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$action = $options['action'];
 		$language = $options['locale'];
@@ -206,12 +206,12 @@ class BiographyAdminType extends AbstractType
 		$event->setData($data);
 	}
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_quotation_biographyadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Biography',

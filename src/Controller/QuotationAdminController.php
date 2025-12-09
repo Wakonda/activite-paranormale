@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,10 +24,7 @@ use App\Service\APParseHTML;
 use App\Service\PHPImage;
 use App\Service\APImgSize;
 
-/**
- * Quotation controller.
- *
- */
+#[Route('/admin/quotation')]
 class QuotationAdminController extends AdminGenericController
 {
 	protected $entityName = 'Quotation';
@@ -57,19 +55,22 @@ class QuotationAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/{page}', name: 'Quotation_Admin_Index', defaults: ['page' => 1], requirements: ['page' => '\d+'])]
+    public function index()
     {
 		$twig = 'quotation/QuotationAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Quotation_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$form = $this->createForm(QuotationImageGeneratorType::class);
 		$twig = 'quotation/QuotationAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig, ["imageGeneratorForm" => $form->createView()]);
     }
 
+	#[Route('/new/{family}', name: 'Quotation_Admin_New', defaults: ['family' => 'quotation'])]
     public function newAction(Request $request, EntityManagerInterface $em, $family)
     {
 		$formType = QuotationAdminType::class;
@@ -79,8 +80,9 @@ class QuotationAdminController extends AdminGenericController
 		$twig = 'quotation/QuotationAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Quotation_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = QuotationAdminType::class;
 		$entity = new Quotation();
@@ -88,8 +90,9 @@ class QuotationAdminController extends AdminGenericController
 		$twig = 'quotation/QuotationAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Quotation_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = QuotationAdminType::class;
@@ -97,21 +100,24 @@ class QuotationAdminController extends AdminGenericController
 		$twig = 'quotation/QuotationAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Quotation_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = QuotationAdminType::class;
 		
 		$twig = 'quotation/QuotationAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Quotation_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Quotation_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -140,11 +146,13 @@ class QuotationAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/wysiwyg_uploadfile', name: 'Quotation_Admin_WYSIWYG_UploadFile')]
     public function WYSIWYGUploadFile(Request $request, APImgSize $imgSize)
     {
 		return $this->WYSIWYGUploadFileGeneric($request, $imgSize, new Quotation());
     }
 
+	#[Route('/create_same_author/{biographyId}', name: 'Quotation_Admin_CreateSameAuthor')]
 	public function createSameAuthor(Request $request, EntityManagerInterface $em, $biographyId)
 	{
 		$formType = QuotationAdminType::class;
@@ -162,8 +170,9 @@ class QuotationAdminController extends AdminGenericController
             'form'   => $form->createView()
         ]);
 	}
-	
-	public function generateImageAction(Request $request, EntityManagerInterface $em, PHPImage $image, $id)
+
+	#[Route('/generate_image/{id}', name: 'Quotation_Admin_GenerateImage')]
+	public function generateImage(Request $request, EntityManagerInterface $em, PHPImage $image, $id)
 	{
 		$entity = $em->getRepository($this->className)->find($id);
         $imageGeneratorForm = $this->createForm(QuotationImageGeneratorType::class);
@@ -232,6 +241,7 @@ class QuotationAdminController extends AdminGenericController
 		return $this->showGeneric($em, $id, $twig, ["imageGeneratorForm" => $imageGeneratorForm->createView()]);
 	}
 
+	#[Route('/generate_image_ajax/{id}', name: 'Quotation_Admin_GenerateImageAjax')]
 	public function generateImageAjaxAction(Request $request, EntityManagerInterface $em, PHPImage $image, $id)
 	{
 		$entity = $em->getRepository($this->className)->find($id);
@@ -291,7 +301,8 @@ class QuotationAdminController extends AdminGenericController
 		return new JsonResponse(["content" => $image_data_base64]);
 	}
 
-	public function removeImageAction(Request $request, EntityManagerInterface $em, $id, $quotationImageId)
+	#[Route('/remove_image/{id}/{quotationImageId}', name: 'Quotation_Admin_RemoveImage')]
+	public function removeImage(Request $request, EntityManagerInterface $em, $id, $quotationImageId)
 	{
 		$entity = $em->getRepository(Quotation::class)->find($id);
 
@@ -312,6 +323,7 @@ class QuotationAdminController extends AdminGenericController
 		return $this->redirect($redirect);
 	}
 
+	#[Route('/reload_by_language', name: 'Quotation_Admin_ReloadByLanguage')]
 	public function reloadByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));

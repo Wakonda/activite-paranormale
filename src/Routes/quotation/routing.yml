@@ -95,12 +95,3 @@ Quotation_quotationsServerSide:
         page: 1
     requirements:
         authorId: \d+
-
-# Administration
-Quotation_Admin:
-    resource: "routing/quotationadmin.yml"
-    prefix:   /admin/quotation
-
-Biography_Admin:
-    resource: "routing/biographyadmin.yml"
-    prefix:   /admin/biography

@@ -29,7 +29,7 @@ class Video extends MappedSuperclassBase
 	#[ORM\Column(name: 'embeddedCode', type: 'text', nullable: true)]
 	private $embeddedCode;
 
-	#[ORM\Column(type: 'text', nullable: true)]
+	#[ORM\Column(type: 'string', length: 255, nullable: true)]
 	protected $duration;
 
 	#[ORM\Column(type: 'boolean')]

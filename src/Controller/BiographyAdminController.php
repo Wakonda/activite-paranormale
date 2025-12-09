@@ -5,6 +5,7 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
@@ -15,10 +16,7 @@ use App\Entity\Region;
 use App\Form\Type\BiographyAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Biography controller.
- *
- */
+#[Route('/admin/biography')]
 class BiographyAdminController extends AdminGenericController
 {
 	protected $entityName = 'Biography';
@@ -90,7 +88,7 @@ class BiographyAdminController extends AdminGenericController
 					if(!empty($identifier["value"]))
 						$datas["identifiers"][] = ["identifier" => $identifier["identifier"], "value" => $identifier["value"]];
 		}
-dd($datas["links"]);
+
 		if(isset($datas["links"]))
 			$datas["links"] = array_map("unserialize", array_unique(array_map("serialize", $datas["links"])));
 
@@ -139,18 +137,21 @@ dd($datas["links"]);
 		$em->flush();
 	}
 
-    public function indexAction()
+	#[Route('/index/{page}', name: 'Biography_Admin_Index', defaults: ['page' => 1], requirements: ['page' => '\d+'])]
+    public function index()
     {
 		$twig = 'quotation/BiographyAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Biography_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'quotation/BiographyAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Biography_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = BiographyAdminType::class;
@@ -160,7 +161,8 @@ dd($datas["links"]);
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
     }
 
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/internationalization/{id}', name: 'Biography_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
@@ -221,8 +223,9 @@ dd($datas["links"]);
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation(), "default_roles" => $roles]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Biography_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = BiographyAdminType::class;
 		$entity = new Biography();
@@ -230,8 +233,9 @@ dd($datas["links"]);
 		$twig = 'quotation/BiographyAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Biography_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Biography::class)->find($id);
 		$formType = BiographyAdminType::class;
@@ -239,31 +243,36 @@ dd($datas["links"]);
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Biography_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = BiographyAdminType::class;
 		$twig = 'quotation/BiographyAdmin/edit.html.twig';
-// dd($_POST);
+
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
+	#[Route('/{id}/delete', name: 'Biography_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Biography_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Biography_Admin_LoadImageSelectorColorbox');
 	}
 
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+	#[Route('/loadImageSelectorColorbox', name: 'Biography_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Biography_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 		
@@ -294,8 +303,9 @@ dd($datas["links"]);
 
 		return new JsonResponse($output);
 	}
-	
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/autocomplete', name: 'Biography_Admin_Autocomplete')]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
@@ -325,7 +335,8 @@ dd($datas["links"]);
         return new JsonResponse(["results" => $results]);
 	}
 
-	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_by_language', name: 'Biography_Admin_ReloadByLanguage')]
+	public function reloadByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -345,7 +356,8 @@ dd($datas["links"]);
 		return new JsonResponse($translateArray);
 	}
 
-	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+	#[Route('/wikidata', name: 'Biography_Admin_Wikidata')]
+	public function wikidata(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
@@ -355,7 +367,8 @@ dd($datas["links"]);
 		return new JsonResponse($res);
 	}
 
-	public function validateBiographyAction(Request $request, EntityManagerInterface $em)
+	#[Route('/validate', name: 'Biography_Admin_Validate')]
+	public function validateBiography(Request $request, EntityManagerInterface $em)
 	{
 		$wikidata = $request->query->get("wikidata");
 		$title = $request->query->get("title");
@@ -368,7 +381,8 @@ dd($datas["links"]);
 
 		return $this->render("quotation/BiographyAdmin/_validateBiography.html.twig", ["entities" => $entities, "path" => $path, "language" => $language, "wikidata" => $wikidata, "title" => $title, "internationalName" => $internationalName]);
 	}
-	
+
+	#[Route('/quick/{locale}/{title}', name: 'Biography_Admin_Quick')]
 	public function quickAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $locale, $title)
 	{
 		$wikidataCode = $request->query->get("wikidata");
