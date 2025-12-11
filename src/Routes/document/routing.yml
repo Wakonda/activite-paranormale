@@ -33,12 +33,3 @@ DocumentBundle_DownloadDocument:
 Document_ListDatatables:
     path: /document/listdatatables
     controller: App\Controller\DocumentController::listDatatablesAction
-
-# Administration
-Document_Admin:
-    resource: "routing/documentadmin.yml"
-    prefix:   /admin/document
-
-DocumentFamily_Admin:
-    resource: "routing/documentfamilyadmin.yml"
-    prefix:   /admin/documentfamily

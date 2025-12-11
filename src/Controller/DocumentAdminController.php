@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Document;
@@ -19,10 +20,7 @@ use App\Form\Type\DocumentAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * Document controller.
- *
- */
+#[Route('/admin/document')]
 class DocumentAdminController extends AdminGenericController
 {
 	protected $entityName = 'Document';
@@ -51,18 +49,21 @@ class DocumentAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new DocumentTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Document_Admin_Index')]
+    public function index()
     {
 		$twig = 'document/DocumentAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Document_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'document/DocumentAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Document_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = DocumentAdminType::class;
@@ -71,8 +72,9 @@ class DocumentAdminController extends AdminGenericController
 		$twig = 'document/DocumentAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Document_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = DocumentAdminType::class;
 		$entity = new Document();
@@ -80,8 +82,9 @@ class DocumentAdminController extends AdminGenericController
 		$twig = 'document/DocumentAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Document_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = DocumentAdminType::class;
@@ -89,15 +92,17 @@ class DocumentAdminController extends AdminGenericController
 		$twig = 'document/DocumentAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Document_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = DocumentAdminType::class;
 		
 		$twig = 'document/DocumentAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Document_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\DocumentComment")->findBy(["entity" => $id]);
@@ -107,13 +112,15 @@ class DocumentAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive/{id}', name: 'Document_Admin_Archive', requirements: ['id' => '\d+'])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Document_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -148,7 +155,8 @@ class DocumentAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadDocumentFamilyByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_document_family_by_language', name: 'Document_Admin_ReloadDocumentFamilyByLanguage')]
+	public function reloadDocumentFamilyByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\DocumentFamily;
@@ -14,10 +15,7 @@ use App\Entity\Language;
 use App\Form\Type\DocumentFamilyAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * DocumentFamily controller.
- *
- */
+#[Route('/admin/documentfamily')]
 class DocumentFamilyAdminController extends AdminGenericController
 {
 	protected $entityName = 'DocumentFamily';
@@ -41,18 +39,21 @@ class DocumentFamilyAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'DocumentFamily_Admin_Index')]
+    public function index()
     {
 		$twig = 'document/DocumentFamilyAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'DocumentFamily_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'document/DocumentFamilyAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'DocumentFamily_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = DocumentFamilyAdminType::class;
@@ -61,8 +62,9 @@ class DocumentFamilyAdminController extends AdminGenericController
 		$twig = 'document/DocumentFamilyAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'DocumentFamily_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = DocumentFamilyAdminType::class;
 		$entity = new DocumentFamily();
@@ -70,29 +72,33 @@ class DocumentFamilyAdminController extends AdminGenericController
 		$twig = 'document/DocumentFamilyAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'DocumentFamily_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = DocumentFamilyAdminType::class;
 
 		$twig = 'document/DocumentFamilyAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'DocumentFamily_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = DocumentFamilyAdminType::class;
 		
 		$twig = 'document/DocumentFamilyAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'DocumentFamily_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'DocumentFamily_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -114,21 +120,4 @@ class DocumentFamilyAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
-    {
-		$formType = DocumentFamilyAdminType::class;
-		$entity = new DocumentFamily();
-
-		$entityToCopy = $em->getRepository(DocumentFamily::class)->find($id);
-		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
-
-		$entity->setInternationalName($entityToCopy->getInternationalName());
-		$entity->setLanguage($language);
-
-		$request->setLocale($language->getAbbreviation());
-
-		$twig = 'document/DocumentFamilyAdmin/new.html.twig';
-		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
-    }
 }
