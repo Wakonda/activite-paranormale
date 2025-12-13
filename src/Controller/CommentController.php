@@ -108,8 +108,7 @@ class CommentController extends AbstractController
 				$className = DocumentComment::class;
 				break;
 		}
-if(empty($entity))
-	dd($className, $idClassName);
+
 		return [$entity, $path, $className];
 	}
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -17,7 +18,8 @@ use App\Service\APDate;
 
 class DocumentController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, $themeId, $theme)
+	#[Route('/document/{themeId}/{theme}', name: 'Document_Index', defaults: ['themeId' => 0, 'theme' => null], requirements: ['themeId' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, $themeId, $theme)
     {
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 		$obj = new \stdclass();
@@ -31,6 +33,7 @@ class DocumentController extends AbstractController
 		]);
     }
 
+	#[Route('/document/listdatatables', name: 'Document_ListDatatables')]
 	public function listDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$iDisplayStart = $request->query->get('start');
@@ -93,16 +96,8 @@ class DocumentController extends AbstractController
 		return $response;
 	}
 
-	public function selectThemeForIndexAction(Request $request, EntityManagerInterface $em)
-	{
-		$themeId = $request->request->get('theme_id');
-
-		$theme = $em->getRepository(Theme::class)->find($themeId);
-
-		return new Response($this->generateUrl('Document_Index', ['themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
-	}
-	
-	public function abstractDocumentAction(EntityManagerInterface $em, $id, $title_slug)
+	#[Route('/document/abstract/{id}/{title_slug}', name: 'DocumentBundle_AbstractDocument', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function abstractDocument(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Document::class)->find($id);
 		
@@ -113,8 +108,9 @@ class DocumentController extends AbstractController
 			"entity" => $entity
 		]);
 	}
-	
-	public function downloadDocumentAction(EntityManagerInterface $em, $id)
+
+	#[Route('/document/download/{id}', name: 'DocumentBundle_DownloadDocument', requirements: ['id' => '\d+'])]
+	public function downloadDocument(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Document::class)->find($id);
 		
@@ -130,8 +126,9 @@ class DocumentController extends AbstractController
 		
 		return $response;
 	}
-	
-	public function readDocumentAction(EntityManagerInterface $em, $id, $title_slug)
+
+	#[Route('/document/read/{id}/{title_slug}', name: 'DocumentBundle_ReadDocument', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function readDocument(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Document::class)->find($id);
 		

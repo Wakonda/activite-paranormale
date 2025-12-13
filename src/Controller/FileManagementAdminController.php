@@ -6,17 +6,20 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\TestimonyFileManagement;
 use App\Form\Type\FileManagementEditType;
 use App\Service\APImgSize;
 use App\Service\ResmushIt;
 
+#[Route('/admin/filemanagement')]
 class FileManagementAdminController extends AbstractController
 {
 	private $mimeTypes = ['image/png', 'image/jpg', 'image/gif', 'image/jpeg', 'image/pjpeg', 'image/webp', "video/webm"];
-	
-	public function listFilesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
+
+	#[Route('/list_files', name: 'FileManagement_Admin_ListFiles')]
+	public function listFiles(Request $request, EntityManagerInterface $em, APImgSize $imgSize)
 	{
 		$limit = 9;
 
@@ -319,15 +322,17 @@ class FileManagementAdminController extends AbstractController
 			"mimeTypes" => $this->mimeTypes
 		]); 
 	}
-	
-	public function deleteFileAction(Request $request)
+
+	#[Route('/delete_file', name: 'FileManagement_Admin_DeleteFile')]
+	public function deleteFile(Request $request)
 	{
 		unlink($request->query->get("pathFile"));
 		
 		return $this->redirect($this->generateUrl("FileManagement_Admin_ListFiles", ["page" => $request->query->get("page"), "folder" => $request->query->get("folder")]));
 	}
-	
-	public function moveFileAction(Request $request, $rootFolder)
+
+	#[Route('/move_file/{rootFolder}', name: 'FileManagement_Admin_MoveFile')]
+	public function moveFile(Request $request, $rootFolder)
 	{
 		$file = $request->query->get("pathFile");
 		$newFile = str_replace(DIRECTORY_SEPARATOR.($rootFolder == "public" ? "private" : "public").DIRECTORY_SEPARATOR, DIRECTORY_SEPARATOR.$rootFolder.DIRECTORY_SEPARATOR, $file);
@@ -340,7 +345,8 @@ class FileManagementAdminController extends AbstractController
 		return $this->redirect($this->generateUrl("FileManagement_Admin_ListFiles", ["page" => $request->query->get("page"), "folder" => $request->query->get("folder")]));
 	}
 
-    public function showImageAction(EntityManagerInterface $em, $idClassName, $className)
+	#[Route('/compress_file', name: 'FileManagement_Admin_CompressFile')]
+    public function showImage(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName);

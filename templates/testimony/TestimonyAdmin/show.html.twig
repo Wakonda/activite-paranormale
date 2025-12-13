@@ -57,7 +57,7 @@
 {% endblock %}
 
 {% block data_bottom %}
-	{{ render(controller("App\\Controller\\FileManagementAdminController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+	{{ render(controller("App\\Controller\\FileManagementAdminController::showImage", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
 	
 	{% if entity.state.isStateDisplayed() %}
 		{% import "index/macro/macro_index.html.twig" as macro_index %}

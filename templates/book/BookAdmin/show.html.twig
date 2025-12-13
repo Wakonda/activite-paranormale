@@ -80,7 +80,7 @@
 
 {% block data_bottom %}
 	<div class="mb-3">
-		{{ render(controller('App\\Controller\\BookEditionAdminController::indexAction', { bookId: entity.id })) }}
+		{{ render(controller('App\\Controller\\BookEditionAdminController::index', { bookId: entity.id })) }}
 	</div>
 	<hr>
 	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Book_Admin_Internationalization", "showRoute": "Book_Admin_Show", "editRoute": "Book_Admin_Edit"})) }}

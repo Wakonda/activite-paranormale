@@ -1,4 +1,0 @@
-# Administration
-Partner_Admin:
-    resource: "routing/partneradmin.yml"
-    prefix:   /admin/partner

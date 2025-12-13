@@ -6,10 +6,6 @@ ap_useful_link:
     resource: "../src/Routes/usefullink/routing.yml"
     prefix:   /
 
-APFileManagementBundle:
-    resource: "../src/Routes/filemanagement/routing.yml"
-    prefix:   /
-
 APTestimonyBundle:
     resource: "../src/Routes/testimony/routing.yml"
     prefix:   /
@@ -26,16 +22,8 @@ APQuotationBundle:
     resource: "../src/Routes/quotation/routing.yml"
     prefix:   /
 
-APPartnerBundle:
-    resource: "../src/Routes/partner/routing.yml"
-    prefix:   /
-
 APMusicBundle:
     resource: "../src/Routes/music/routing.yml"
-    prefix:   /
-
-APDocumentBundle:
-    resource: "../src/Routes/document/routing.yml"
     prefix:   /
 
 APNewsBundle:

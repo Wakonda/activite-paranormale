@@ -9,9 +9,11 @@ use App\Entity\TestimonyFileManagement;
 use App\Form\Type\FileManagementType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
+#[Route('/filemanagement')]
 class FileManagementController extends AbstractController
 {
     private function getNewEntity($em, $className, $idClassName)
@@ -27,7 +29,8 @@ class FileManagementController extends AbstractController
 		return [$entity, $className];
 	}
 
-    public function indexAction(EntityManagerInterface $em, $idClassName, $className)
+	#[Route('/{idClassName}/{className}', name: 'FileManagement_Index', requirements: ['idClassName' => '\d+'])]
+    public function index(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		
@@ -43,8 +46,9 @@ class FileManagementController extends AbstractController
 			'className' =>$className
         ));
     }
-	
-	public function createAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
+
+	#[Route('/create/{idClassName}/{className}', name: 'FileManagement_Create')]
+	public function create(Request $request, EntityManagerInterface $em, $idClassName, $className)
 	{
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		
@@ -77,7 +81,8 @@ class FileManagementController extends AbstractController
 			'className' =>$className
 		]);
 	}
-	
+
+	#[Route('/delete', name: 'FileManagement_Delete')]
     public function deleteAction(Request $request, EntityManagerInterface $em)
     {
 		$id = $request->get('selectedId');
@@ -96,8 +101,9 @@ class FileManagementController extends AbstractController
 
         return new Response();
     }
-	
-    public function uploadFileAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $idClassName, $className)
+
+	#[Route('/uploadfile/{idClassName}/{className}', name: 'FileManagement_Uploadfile', requirements: ['idClassName' => '\d+'])]
+    public function uploadFile(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $idClassName, $className)
     {
 		$newNameFile = "";
 		$file = $request->files->all();
@@ -122,7 +128,7 @@ class FileManagementController extends AbstractController
 		<script>window.top.window.uploadEnd('".$errorMsg."', '".$newNameFile."');</script>");
     }
 
-    public function showImageAction(EntityManagerInterface $em, $idClassName, $className)
+    public function showImage(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName);
@@ -134,8 +140,9 @@ class FileManagementController extends AbstractController
 			'mainEntity' => $em->getRepository($entity->getMainEntityClassName())->find($idClassName)
         ]);
     }
-	
-    public function uploadFileDropzoneAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
+
+	#[Route('/uploadfiledropzone/{idClassName}/{className}', name: 'FileManagement_UploadfileDropzone', requirements: ['idClassName' => '\d+'])]
+    public function uploadFileDropzone(Request $request, EntityManagerInterface $em, $idClassName, $className)
     {
 		$file = $request->files->all();
 		$title = $request->request->all()["title"];
@@ -167,8 +174,9 @@ class FileManagementController extends AbstractController
 			'className' =>$className
         ]);
     }
-	
-    public function downloadAction(EntityManagerInterface $em, $id, $path, $folder)
+
+	#[Route('/download/{id}/{path}/{folder}', name: 'FileManagement_Download', requirements: ['id' => '\d+'], defaults: ['folder' => 'public'])]
+    public function download(EntityManagerInterface $em, $id, $path, $folder)
     {
 		$entity = $em->getRepository(FileManagement::class)->find($id);
 
@@ -178,7 +186,8 @@ class FileManagementController extends AbstractController
     }
 
 	// WPAINT
-	public function saveImagePaintAction(Request $request, EntityManagerInterface $em, $idClassName, $className)
+	#[Route('/saveImagePaint/{idClassName}/{className}', name: 'FileManagement_SaveImagePaint')]
+	public function saveImagePaint(Request $request, EntityManagerInterface $em, $idClassName, $className)
 	{
 		$testimony = $em->getRepository(Testimony::class)->find($idClassName);
 

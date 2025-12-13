@@ -37,10 +37,10 @@
 	</div>
 	<div id="tab_content">
 		<div id="add_file_section">
-			{{ render(controller("App\\Controller\\FileManagementController::indexAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+			{{ render(controller("App\\Controller\\FileManagementController::index", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
 		</div>
 		<div id="add_drawing_section">
-			{{ render(controller("App\\Controller\\FileManagementController::drawingPaintAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+			{{ render(controller("App\\Controller\\FileManagementController::drawingPaint", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
 		</div>
 	</div>
 	

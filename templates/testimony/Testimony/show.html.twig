@@ -48,7 +48,7 @@
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p>{{ entity.text|raw }}</p>
 	<br>
-	{{ render(controller("App\\Controller\\FileManagementController::showImageAction", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
+	{{ render(controller("App\\Controller\\FileManagementController::showImage", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
 	
 	{% if entity.sightingDate is not empty %}
 		<p><b>{{ "testimony.read.SightingDate"|trans([], "validators") }}</b> : {{ entity.sightingDate|doPartialDateTime(app.request.locale) }}</p>

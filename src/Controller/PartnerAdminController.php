@@ -7,16 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Partner;
 use App\Form\Type\PartnerAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Partner controller.
- *
- */
+#[Route('/admin/partner')]
 class PartnerAdminController extends AdminGenericController
 {
 	protected $entityName = 'Partner';
@@ -43,18 +41,21 @@ class PartnerAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Partner_Admin_Index')]
+    public function index()
     {
 		$twig = 'partner/PartnerAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Partner_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'partner/PartnerAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Partner_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = PartnerAdminType::class;
@@ -63,8 +64,9 @@ class PartnerAdminController extends AdminGenericController
 		$twig = 'partner/PartnerAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Partner_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = PartnerAdminType::class;
 		$entity = new Partner();
@@ -72,28 +74,32 @@ class PartnerAdminController extends AdminGenericController
 		$twig = 'partner/PartnerAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Partner_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = PartnerAdminType::class;
 
 		$twig = 'partner/PartnerAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Partner_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = PartnerAdminType::class;
 		$twig = 'partner/PartnerAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Partner_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/datatables', name: 'Partner_Admin_IndexDatatables', methods: ['GET'])]
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
