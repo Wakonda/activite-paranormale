@@ -5,6 +5,7 @@ namespace App\Controller\Mobile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -22,7 +23,8 @@ use Detection\MobileDetect;
 
 class TestimonyMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
+    #[Route('/mobile/testimony/{page}/{theme}', name: 'ap_testimonymobile_index', defaults: ['page' => 1, 'theme' => null], requirements: ['page' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -47,7 +49,8 @@ class TestimonyMobileController extends AbstractController
 		]);
     }
 
-	public function selectThemeForIndexTestimonyAction(Request $request, EntityManagerInterface $em)
+    #[Route('/mobile/testimony/selectThemeForIndexTestimony', name: 'ap_testimonymobile_selectthemeforindextestimony')]
+	public function selectThemeForIndexTestimony(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
 		$theme = $em->getRepository(Theme::class)->find($themeId);
@@ -55,7 +58,8 @@ class TestimonyMobileController extends AbstractController
 		return new Response($this->generateUrl('ap_testimonymobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
-	public function readAction(EntityManagerInterface $em, $id)
+    #[Route('/mobile/testimony/read/{id}', name: 'ap_testimonymobile_read', requirements: ['id' => '\d+'])]
+	public function read(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		$files = $em->getRepository(TestimonyFileManagement::class)->getAllFilesByIdClassName($entity->getId());
@@ -66,6 +70,7 @@ class TestimonyMobileController extends AbstractController
 		]);
 	}
 
+	#[Route('/mobile/testimony/new', name: 'ap_testimonymobile_new')]
 	public function newAction(Request $request, EntityManagerInterface $em)
 	{
 		$entity = new Testimony();
@@ -76,7 +81,8 @@ class TestimonyMobileController extends AbstractController
 		return $this->render('mobile/Testimony/new.html.twig', ['form' => $form->createView()]);
 	}
 
-	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/mobile/testimony/create', name: 'ap_testimonymobile_create')]
+	public function create(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$entity  = new Testimony();
 		$user = $this->getUser();
@@ -115,12 +121,14 @@ class TestimonyMobileController extends AbstractController
 		return $this->render('mobile/Testimony/new.html.twig', array('form' => $form->createView()));
 	}
 
-	public function addFileAction(EntityManagerInterface $em, $id)
+    #[Route('/mobile/testimony/file/{id}', name: 'ap_testimonymobile_addfile')]
+	public function addFile(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		return $this->render('mobile/Testimony/addFile.html.twig', array('entity' => $entity));
 	}
 
+    #[Route('/mobile/testimony/validatefile', name: 'ap_testimonymobile_validatefile')]
 	public function validateFileAction(TranslatorInterface $translator)
 	{
 		$this->addFlash('success', $translator->trans('testimony.validate.ThankForYourParticipationText', [], 'validators'));

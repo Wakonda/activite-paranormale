@@ -5,6 +5,7 @@ namespace App\Controller\Mobile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -16,7 +17,8 @@ use Detection\MobileDetect;
 
 class VideoMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
+	#[Route('/mobile/video/{page}/{theme}', name: 'ap_videomobile_index', defaults: ['page' => 1, 'theme' => null], requirements: ['page' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -40,8 +42,9 @@ class VideoMobileController extends AbstractController
 			'pagination' => $pagination
 		]);
     }
-	
-	public function selectThemeForIndexNewAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/mobile/video/selectThemeForIndex', name: 'ap_videomobile_selectthemeforindex')]
+	public function selectThemeForIndexNew(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
 		$theme = $em->getRepository(Theme::class)->find($themeId);
@@ -49,6 +52,7 @@ class VideoMobileController extends AbstractController
 		return new Response($this->generateUrl('ap_videomobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
+    #[Route('/mobile/video/read/{id}', name: 'ap_videomobile_read', requirements: ['id' => '\d+'])]
 	public function readAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Video::class)->find($id);

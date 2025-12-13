@@ -5,16 +5,14 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use App\Entity\UsefullinkTags;
 use App\Form\Type\UsefullinkTagsAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * UsefullinkTags controller.
- *
- */
+#[Route('/admin/usefullinktags')]
 class UsefullinkTagsAdminController extends AdminGenericController {
 	protected $entityName = 'UsefullinkTags';
 	protected $className = UsefullinkTags::class;
@@ -39,18 +37,21 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'UsefullinkTags_Admin_Index')]
+    public function index()
     {
 		$twig = 'usefullink/UsefullinkTagsAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'UsefullinkTags_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'usefullink/UsefullinkTagsAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'UsefullinkTags_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = UsefullinkTagsAdminType::class;
@@ -59,8 +60,9 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$twig = 'usefullink/UsefullinkTagsAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'new']);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'UsefullinkTags_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = UsefullinkTagsAdminType::class;
 		$entity = new UsefullinkTags();
@@ -68,8 +70,9 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$twig = 'usefullink/UsefullinkTagsAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new']);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'UsefullinkTags_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(UsefullinkTags::class)->find($id);
 		$formType = UsefullinkTagsAdminType::class;
@@ -77,8 +80,9 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		$twig = 'usefullink/UsefullinkTagsAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['action' => 'edit']);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'UsefullinkTags_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = UsefullinkTagsAdminType::class;
 		$twig = 'usefullink/UsefullinkTagsAdmin/edit.html.twig';
@@ -86,12 +90,14 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit']);
     }
 
+	#[Route('/{id}/delete', name: 'UsefullinkTags_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'UsefullinkTags_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
@@ -119,8 +125,9 @@ class UsefullinkTagsAdminController extends AdminGenericController {
 
 		return new JsonResponse($output);
 	}
-	
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/autocomplete', name: 'UsefullinkTags_Admin_Autocomplete')]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$datas = $em->getRepository(UsefullinkTags::class)->getAutocomplete($query);

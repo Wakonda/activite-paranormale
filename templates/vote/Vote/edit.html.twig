@@ -20,7 +20,7 @@
 				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</button>
 			</div>
 		</div>
-		<div class="alert alert-dark g-0 p-3"><a href="#" class="btn btn-danger" id="post_favorite"><i class="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}fa-solid{% else %}fa-regular{% endif %} fa-heart" id="favorite_icon"></i> </a></div>
+		<div class="alert alert-dark g-0 p-3"><a href="#" class="btn btn-danger" id="post_favorite" title="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}{{ 'vote.index.ThisArticleIsInYourFavorites'|trans([], 'validators') }}{% else %}{{ 'vote.index.AddThisArticleToYourFavorites'|trans([], 'validators') }}{% endif %}"><i class="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}fa-solid{% else %}fa-regular{% endif %} fa-heart" id="favorite_icon"></i> </a></div>
 	{{ form_end(form) }}
 </div>
 
@@ -80,6 +80,7 @@
 					if (xhr.readyState === 4 && xhr.status === 200) {
 						var data = JSON.parse(xhr.responseText);
 						var icon = document.getElementById("favorite_icon");
+						var link = document.getElementById("post_favorite");
 
 						document.querySelector("#favorite_icon").classList.remove("fa-arrows-rotate", "fa-spin");
 						document.querySelector("#favorite_icon").classList.add("fa-heart");
@@ -87,9 +88,11 @@
 						if(data.favorite == true) {
 							icon.classList.remove("fa-regular");
 							icon.classList.add("fa-solid");
+							link.setAttribute("title", '{{ "vote.index.ThisArticleIsInYourFavorites"|trans([], "validators") }}');
 						} else {
 							icon.classList.remove("fa-solid");
 							icon.classList.add("fa-regular");
+							link.setAttribute("title", '{{ "vote.index.AddThisArticleToYourFavorites"|trans([], "validators") }}');
 						}
 					}
 				};

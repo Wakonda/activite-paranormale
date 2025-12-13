@@ -5,6 +5,7 @@ namespace App\Controller\Mobile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,7 +16,8 @@ use Detection\MobileDetect;
 
 class PhotoMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
+    #[Route('/mobile/photo/{page}/{theme}', name: 'ap_photomobile_index', defaults: ['page' => 1, 'theme' => null], requirements: ['page' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -39,7 +41,8 @@ class PhotoMobileController extends AbstractController
 			'themes' => $themes
 		]);
     }
-	
+
+    #[Route('/mobile/photo/selectThemeForIndexPhoto', name: 'ap_photomobile_selectthemeforindexphoto')]
 	public function selectThemeForIndexPhotoAction(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
@@ -48,6 +51,7 @@ class PhotoMobileController extends AbstractController
 		return new Response($this->generateUrl('ap_photomobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
+    #[Route('/mobile/photo/read/{id}', name: 'ap_photomobile_read', requirements: ['id' => '\d+'])]
 	public function readAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Photo::class)->find($id);

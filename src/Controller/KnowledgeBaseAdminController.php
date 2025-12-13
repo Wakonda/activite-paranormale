@@ -6,12 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\UsefulLink;
 use App\Form\Type\KnowledgeBaseAdminType;
 use App\Service\ConstraintControllerValidator;
 
+#[Route('/admin/knowledgebase')]
 class KnowledgeBaseAdminController extends AdminGenericController
 {
 	protected $entityName = 'UsefulLink';
@@ -49,18 +51,21 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$em->flush();
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'KnowledgeBase_Admin_Index')]
+    public function index()
     {
 		$twig = 'usefullink/KnowledgeBaseAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'KnowledgeBase_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'usefullink/KnowledgeBaseAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'KnowledgeBase_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = KnowledgeBaseAdminType::class;
@@ -69,8 +74,9 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$twig = 'usefullink/KnowledgeBaseAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'KnowledgeBase_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = KnowledgeBaseAdminType::class;
 		$entity = new UsefulLink();
@@ -79,7 +85,8 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-    public function editAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'KnowledgeBase_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = KnowledgeBaseAdminType::class;
@@ -87,21 +94,24 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		$twig = 'usefullink/KnowledgeBaseAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'KnowledgeBase_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = KnowledgeBaseAdminType::class;
 
 		$twig = 'usefullink/KnowledgeBaseAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'KnowledgeBase_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'KnowledgeBase_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
@@ -129,13 +139,5 @@ class KnowledgeBaseAdminController extends AdminGenericController
 		}
 
 		return new JsonResponse($output);
-	}
-	
-	public function generateStoreLinkAction(Request $request)
-	{
-		$form = $this->createForm(\App\Form\Type\GenerateLinkStoreAdminType::class);
-		$partnerId = \App\Entity\Stores\Store::partnerId;
-		
-		return $this->render('usefullink/KnowledgeBaseAdmin/generateLinkStore.html.twig', ['form' => $form->createView(), "partnerId" => $partnerId]);
 	}
 }

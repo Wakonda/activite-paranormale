@@ -5,6 +5,7 @@ namespace App\Controller\Mobile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -20,7 +21,8 @@ use Detection\MobileDetect;
 
 class WitchcraftMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
+    #[Route('/mobile/witchcraft/{page}/{theme}', name: 'ap_witchcraftmobile_index', defaults: ['page' => 1, 'theme' => null], requirements: ['page' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -64,7 +66,8 @@ class WitchcraftMobileController extends AbstractController
 		]);
     }
 
-	public function selectThemeForIndexWitchcraftAction(Request $request, EntityManagerInterface $em)
+    #[Route('/mobile/witchcraft/selectThemeForIndexWitchcraft', name: 'ap_witchcraftmobile_selectthemeforindexwitchcraft')]
+	public function selectThemeForIndexWitchcraft(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
 		$theme = $em->getRepository(SurThemeGrimoire::class)->find($themeId);
@@ -72,6 +75,7 @@ class WitchcraftMobileController extends AbstractController
 		return new Response($this->generateUrl('ap_witchcraftmobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
+    #[Route('/mobile/witchcraft/read/{id}', name: 'ap_witchcraftmobile_read', requirements: ['id' => '\d+'])]
 	public function readAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Grimoire::class)->find($id);
@@ -81,6 +85,7 @@ class WitchcraftMobileController extends AbstractController
 		]);
 	}
 
+	#[Route('/mobile/witchcraft/new', name: 'ap_witchcraftmobile_new')]
 	public function newAction(Request $request)
 	{
         $entity = new Grimoire();
@@ -90,7 +95,8 @@ class WitchcraftMobileController extends AbstractController
 		return $this->render('mobile/Witchcraft/new.html.twig', ['form' => $form->createView()]);
 	}
 
-	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/mobile/witchcraft/create', name: 'ap_witchcraftmobile_create')]
+	public function create(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$user = $this->getUser();
 		$entity  = new Grimoire();

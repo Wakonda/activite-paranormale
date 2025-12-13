@@ -6,12 +6,14 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\UsefulLink;
 use App\Form\Type\UsefulLinkAdminType;
 use App\Service\ConstraintControllerValidator;
 
+#[Route('/admin/usefullink')]
 class UsefulLinkAdminController extends AdminGenericController
 {
 	protected $entityName = 'UsefulLink';
@@ -50,18 +52,21 @@ class UsefulLinkAdminController extends AdminGenericController
 		$em->flush();
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'UsefulLink_Admin_Index')]
+    public function index()
     {
 		$twig = 'usefullink/UsefulLinkAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'UsefulLink_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'usefullink/UsefulLinkAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'UsefulLink_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = UsefulLinkAdminType::class;
@@ -70,8 +75,9 @@ class UsefulLinkAdminController extends AdminGenericController
 		$twig = 'usefullink/UsefulLinkAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'UsefulLink_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = UsefulLinkAdminType::class;
 		$entity = new UsefulLink();
@@ -80,7 +86,8 @@ class UsefulLinkAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-    public function editAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'UsefulLink_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = UsefulLinkAdminType::class;
@@ -88,20 +95,23 @@ class UsefulLinkAdminController extends AdminGenericController
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => (!empty($l = $entity->getLanguage()) ? $l->getAbbreviation() : null)]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'UsefulLink_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = UsefulLinkAdminType::class;
 
 		$twig = 'usefullink/UsefulLinkAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'UsefulLink_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/datatables', name: 'UsefulLink_Admin_IndexDatatables', methods: ['GET'])]
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
@@ -151,8 +161,9 @@ class UsefulLinkAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-	public function generateStoreLinkAction(Request $request)
+
+	#[Route('/generate_link_store', name: 'UsefulLink_Admin_GenerateLinkStore')]
+	public function generateStoreLink(Request $request)
 	{
 		$form = $this->createForm(\App\Form\Type\GenerateLinkStoreAdminType::class);
 		$partnerId = \App\Entity\Stores\Store::partnerId;
@@ -160,7 +171,8 @@ class UsefulLinkAdminController extends AdminGenericController
 		return $this->render('usefullink/UsefulLinkAdmin/generateLinkStore.html.twig', ['form' => $form->createView(), "partnerId" => $partnerId]);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_theme_by_language', name: 'UsefulLink_Admin_ReloadThemeByLanguage')]
+	public function reloadThemeByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -186,12 +198,14 @@ class UsefulLinkAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'UsefulLink_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('UsefulLink_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'UsefulLink_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}

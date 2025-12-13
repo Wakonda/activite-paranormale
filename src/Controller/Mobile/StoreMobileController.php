@@ -4,6 +4,7 @@ namespace App\Controller\Mobile;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Stores\Store;
@@ -14,6 +15,7 @@ use Detection\MobileDetect;
 
 class StoreMobileController extends AbstractController
 {
+    #[Route('/mobile/store/{page}', name: 'ap_storemobile_index', defaults: ['page' => 1], requirements: ['page' => '\d+'])]
     public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page)
     {
 		$nbMessageByPage = 12;
@@ -47,6 +49,7 @@ class StoreMobileController extends AbstractController
 		return $this->render('mobile/Store/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 
+    #[Route('/mobile/store/read/{id}', name: 'ap_storemobile_read', requirements: ['id' => '\d+'])]
 	public function showAction(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Store::class)->find($id);

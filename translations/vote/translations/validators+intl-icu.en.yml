@@ -18,3 +18,5 @@ vote:
         Favorite: "Favorite"
         NumberOfFavorites: "Number of favorites:"
         ShowMyFavorites: "Show my favorites"
+        ThisArticleIsInYourFavorites: "This article is in your favorites"
+        AddThisArticleToYourFavorites: "Add this article to your favorites"

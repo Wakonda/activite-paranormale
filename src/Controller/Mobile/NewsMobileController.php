@@ -5,6 +5,7 @@ namespace App\Controller\Mobile;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -30,7 +31,8 @@ use Detection\MobileDetect;
 
 class NewsMobileController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
+	#[Route('/mobile/index/{page}/{theme}', name: 'ap_newsmobile_index', defaults: ['page' => 1, 'theme' => null], requirements: ['page' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, FunctionsLibrary $functionsLibrary, $page, $theme)
     {
 		$locale = $request->getLocale();
 
@@ -54,8 +56,9 @@ class NewsMobileController extends AbstractController
 			'pagination' => $pagination
 		]);
     }
-	
-	public function selectThemeForIndexNewAction(Request $request, EntityManagerInterface $em)
+
+    #[Route('/mobile/selectThemeForIndexNew', name: 'ap_newsmobile_selectthemeforindexnew')]
+	public function selectThemeForIndexNew(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
 		$theme = $em->getRepository(Theme::class)->find($themeId);
@@ -63,7 +66,8 @@ class NewsMobileController extends AbstractController
 		return new Response($this->generateUrl('ap_newsmobile_index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
 
-	public function readAction(EntityManagerInterface $em, $id)
+    #[Route('/mobile/read/{id}', name: 'ap_newsmobile_read', requirements: ['id' => '\d+'])]
+	public function read(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(News::class)->find($id);
 
@@ -75,7 +79,8 @@ class NewsMobileController extends AbstractController
 		]);
 	}
 
-	public function searchAction(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator, FunctionsLibrary $functionsLibrary)
+	#[Route('/mobile/search', name: 'ap_newsmobile_search')]
+	public function search(Request $request, EntityManagerInterface $em, SearchEngine $searchEngine, ParameterBagInterface $parameterBag, PaginatorNativeSQL $paginator, FunctionsLibrary $functionsLibrary)
 	{
         $form = $this->createForm(SearchEngineType::class);
 		$form->handleRequest($request);
@@ -212,7 +217,8 @@ class NewsMobileController extends AbstractController
 		return null;
 	}
 
-	public function selectLanguageAction(Request $request, $language)
+    #[Route('/mobile/selectlanguage/{language}', name: 'ap_newsmobile_selectlanguage')]
+	public function selectLanguage(Request $request, $language)
     {
 		$session = $request->getSession();
 		$request->setLocale($language);
@@ -220,13 +226,15 @@ class NewsMobileController extends AbstractController
 		return $this->redirect($this->generateUrl('ap_newsmobile_index', ["page" => 1]));
     }
 
-	public function pageAction(Request $request, EntityManagerInterface $em, String $page)
+	#[Route('/mobile/page/{page}', name: 'ap_pagemobile_page')]
+	public function page(Request $request, EntityManagerInterface $em, String $page)
     {
 		$entity = $em->getRepository(Page::class)->getPageByLanguageAndType($request->getLocale(), $page);
 
         return $this->render('mobile/Page/page.html.twig', ['entity' => $entity]);
     }
 
+	#[Route('/mobile/news/new', name: 'ap_newsmobile_new')]
 	public function newAction(Request $request, EntityManagerInterface $em)
 	{
         $entity = new News();
@@ -241,7 +249,8 @@ class NewsMobileController extends AbstractController
         ]);
 	}
 
-	public function createAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/mobile/news/create', name: 'ap_newsmobile_create')]
+	public function create(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$entity = new News();
 
