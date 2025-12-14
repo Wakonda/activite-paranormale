@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Movies\Movie;
@@ -16,7 +17,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class MovieController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
+	#[Route('/movie/{page}/{idTheme}/{theme}', name: 'Movie_Index', defaults: ['page' => 1, 'theme' => null, 'idTheme' => null], requirements: ['page' => '\d+', 'theme' => '.+', 'idTheme' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
     {
 		$datas = [];
 
@@ -44,8 +46,9 @@ class MovieController extends AbstractController
 
 		return $this->render('movie/Movie/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
-	
-	public function showAction(EntityManagerInterface $em, $id, $title_slug)
+
+	#[Route('/movie/read/{id}/{title_slug}', name: 'Movie_Show', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function show(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Movie::class)->find($id);
 		
@@ -55,7 +58,8 @@ class MovieController extends AbstractController
 		return $this->render('movie/Movie/show.html.twig', ['entity' => $entity]);
 	}
 
-	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $title_slug, $page)
+	#[Route('/movie/genre/{idGenre}/{title_slug}/{page}', name: 'ByGenreMovie_Index', defaults: ['page' => 1], requirements: ['idGenre' => '\d+'])]
+	public function byGenre(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $title_slug, $page)
 	{
 		$nbMessageByPage = 12;
 

@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Movies\Movie;
@@ -23,10 +24,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\TagsManagingGeneric;
 use App\Service\FunctionsLibrary;
 
-/**
- * Movie controller.
- *
- */
+#[Route('/admin/movie')]
 class MovieAdminController extends AdminGenericController
 {
 	protected $entityName = 'Movie';
@@ -89,18 +87,21 @@ class MovieAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new MovieTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Movie_Admin_Index')]
+    public function index()
     {
 		$twig = 'movie/MovieAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
-    public function showAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/show', name: 'Movie_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'movie/MovieAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Movie_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = MovieAdminType::class;
@@ -110,7 +111,8 @@ class MovieAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+	#[Route('/create', name: 'Movie_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = MovieAdminType::class;
 		$entity = new Movie();
@@ -119,7 +121,8 @@ class MovieAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'Movie_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Movie::class)->find($id);
 		$formType = MovieAdminType::class;
@@ -128,6 +131,7 @@ class MovieAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
+	#[Route('/{id}/update', name: 'Movie_Admin_Update', methods: ['POST'])]
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = MovieAdminType::class;
@@ -136,6 +140,7 @@ class MovieAdminController extends AdminGenericController
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
+	#[Route('/{id}/delete', name: 'Movie_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\MovieComment")->findBy(["entity" => $id]);
@@ -148,12 +153,14 @@ class MovieAdminController extends AdminGenericController
 		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/archive/{id}', name: 'Movie_Admin_Archive', requirements: ['id' => '\d+'])]
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Movie_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -175,17 +182,20 @@ class MovieAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Movie_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Movie_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'Movie_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_theme_by_language', name: 'Movie_Admin_ReloadThemeByLanguage')]
+	public function reloadThemeByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -218,7 +228,8 @@ class MovieAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
+	#[Route('/autocomplete', name: 'Movie_Admin_Autocomplete')]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
@@ -244,8 +255,9 @@ class MovieAdminController extends AdminGenericController
 
         return new JsonResponse(["results" => $results]);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, FunctionsLibrary $functionsLibrary, $id)
+
+	#[Route('/internationalization/{id}', name: 'Movie_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, FunctionsLibrary $functionsLibrary, $id)
     {
 		$formType = MovieAdminType::class;
 		$entity = new Movie();
@@ -362,7 +374,8 @@ class MovieAdminController extends AdminGenericController
 		$twig = 'movie/MovieAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
-	
+
+	#[Route('/wikidata', name: 'Movie_Admin_Wikidata')]
 	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));

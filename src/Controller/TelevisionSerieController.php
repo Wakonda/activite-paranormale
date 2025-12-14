@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 
 use App\Entity\Movies\TelevisionSerie;
@@ -17,7 +18,8 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class TelevisionSerieController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
+	#[Route('/television_serie/{page}/{idTheme}/{theme}', name: 'TelevisionSerie_Index', defaults: ['page' => 1, 'theme' => null, 'idTheme' => null], requirements: ['page' => '\d+', 'theme' => '.+', 'idTheme' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $idTheme)
     {
 		$datas = [];
 
@@ -45,8 +47,9 @@ class TelevisionSerieController extends AbstractController
 
 		return $this->render('movie/TelevisionSerie/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
-	
-	public function showAction(EntityManagerInterface $em, $id, $title_slug)
+
+	#[Route('/television_serie/{id}/{title_slug}', name: 'TelevisionSerie_Show', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function show(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(TelevisionSerie::class)->find($id);
 		
@@ -55,8 +58,9 @@ class TelevisionSerieController extends AbstractController
 		
 		return $this->render('movie/TelevisionSerie/show.html.twig', ['entity' => $entity]);
 	}
-	
-	public function episodeAction(EntityManagerInterface $em, $id, $title_slug)
+
+	#[Route('/television_serie/episode/{id}/{title_slug}', name: 'TelevisionSerie_Episode', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function episode(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(EpisodeTelevisionSerie::class)->find($id);
 		
@@ -66,7 +70,8 @@ class TelevisionSerieController extends AbstractController
 		return $this->render('movie/TelevisionSerie/showEpisode.html.twig', ['entity' => $entity]);
 	}
 
-	public function byGenreAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
+	#[Route('/television_serie/genre/{idGenre}/{titleGenre}/{page}', name: 'ByGenreTelevisionSerie_Index', defaults: ['page' => 1], requirements: ['idGenre' => '\d+'])]
+	public function byGenre(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $idGenre, $titleGenre, $page)
 	{
 		$nbMessageByPage = 12;
 
@@ -90,8 +95,9 @@ class TelevisionSerieController extends AbstractController
 	{
 		return new Response($em->getRepository(TelevisionSerie::class)->countByLanguage($request->getLocale()));
 	}
-	
-	public function seasonAction(EntityManagerInterface $em, Int $id, String $title_slug, Int $season)
+
+	#[Route('/television_serie/{id}/{title_slug}/season/{season}', name: 'TelevisionSerie_Season', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function season(EntityManagerInterface $em, Int $id, String $title_slug, Int $season)
 	{
 		$televisionSerie = $em->getRepository(TelevisionSerie::class)->find($id);
 		$entities = $em->getRepository(EpisodeTelevisionSerie::class)->findBy(["televisionSerie" => $televisionSerie, "season" => $season], ["episodeNumber" => "ASC"]);
