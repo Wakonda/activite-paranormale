@@ -78,6 +78,6 @@
 
 {% block data_bottom %}
 	<div class="mb-3">
-		{{ render(controller('App\\Controller\\MusicAdminController::indexByAlbumAction', { albumId: entity.id })) }}
+		{{ render(controller('App\\Controller\\MusicAdminController::indexByAlbum', { albumId: entity.id })) }}
 	</div
 {% endblock %}

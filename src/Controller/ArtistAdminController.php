@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -20,10 +21,7 @@ use App\Form\Type\ArtistAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TwitterAPI;
 
-/**
- * Artist controller.
- *
- */
+#[Route('/admin/artist')]
 class ArtistAdminController extends AdminGenericController
 {
 	protected $entityName = 'Artist';
@@ -78,18 +76,21 @@ class ArtistAdminController extends AdminGenericController
 		$em->flush();
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Artist_Admin_Index')]
+    public function index()
     {
 		$twig = 'music/ArtistAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
-    public function showAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/show', name: 'Artist_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'music/ArtistAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Artist_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = ArtistAdminType::class;
@@ -99,7 +100,8 @@ class ArtistAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+	#[Route('/create', name: 'Artist_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = ArtistAdminType::class;
 		$entity = new Artist();
@@ -108,7 +110,8 @@ class ArtistAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-    public function editAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'Artist_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Artist::class)->find($id);
 		$formType = ArtistAdminType::class;
@@ -117,7 +120,8 @@ class ArtistAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	#[Route('/{id}/update', name: 'Artist_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = ArtistAdminType::class;
 		$twig = 'music/ArtistAdmin/edit.html.twig';
@@ -125,11 +129,13 @@ class ArtistAdminController extends AdminGenericController
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
+	#[Route('/{id}/delete', name: 'Artist_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/datatables', name: 'Artist_Admin_IndexDatatables', methods: ['GET'])]
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
@@ -153,8 +159,9 @@ class ArtistAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/autocomplete', name: 'Artist_Admin_Autocomplete')]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
@@ -180,17 +187,20 @@ class ArtistAdminController extends AdminGenericController
         return new JsonResponse(["results" => $results]);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Artist_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Artist_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'Artist_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'Artist_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = ArtistAdminType::class;
 		$entity = new Artist();
@@ -271,6 +281,7 @@ class ArtistAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
+	#[Route('/reload_by_language', name: 'Artist_Admin_ReloadByLanguage')]
 	public function reloadByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
@@ -303,7 +314,8 @@ class ArtistAdminController extends AdminGenericController
 		return new JsonResponse($translateArray);
 	}
 
-	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+	#[Route('/wikidata', name: 'Artist_Admin_Wikidata')]
+	public function wikidata(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");

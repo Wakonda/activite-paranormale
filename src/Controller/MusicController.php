@@ -4,6 +4,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -15,9 +16,11 @@ use App\Entity\Quotation;
 use App\Form\Type\ArtistSearchType;
 use App\Service\APImgSize;
 
+#[Route('/music')]
 class MusicController extends AbstractController
 {
-    public function indexAction(Request $request)
+	#[Route('/', name: 'Music_Index')]
+    public function index(Request $request)
     {
 		$form = $this->createForm(ArtistSearchType::class, null, ["locale" => $request->getLocale()]);
 		
@@ -26,7 +29,8 @@ class MusicController extends AbstractController
 		]);
     }
 
-	public function listDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APImgSize $imgSize)
+	#[Route('/listdatatables', name: 'Music_ListDatatables')]
+	public function listDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APImgSize $imgSize)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -77,7 +81,8 @@ class MusicController extends AbstractController
 		return $response;
 	}
 
-	public function albumAction(EntityManagerInterface $em, $id, $title_slug)
+	#[Route('/album/{id}/{title_slug}', name: 'Music_Album')]
+	public function album(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entities = $em->getRepository(Album::class)->getMusicsByAlbum($id);
 		$musicByArtists = $em->getRepository(Music::class)->getMusicsByArtist($id);
@@ -91,7 +96,8 @@ class MusicController extends AbstractController
 		]);
 	}
 
-	public function listenAction(EntityManagerInterface $em, $id, $artist, $artistId, $album)
+	#[Route('/listen/{id}/{artist}/{artistId}/{album}', name: 'Music_Listen')]
+	public function listen(EntityManagerInterface $em, $id, $artist, $artistId, $album)
 	{
 		$entities = $em->getRepository(Music::class)->findBy(["album" => $id]);
 		$artist = $em->getRepository(Artist::class)->find($artistId);
@@ -103,7 +109,9 @@ class MusicController extends AbstractController
 			'entities' => $entities
 		]);
 	}
-	
+
+	#[Route('/piece/{id}', name: 'Music_MusicShort')]
+	#[Route('/piece/{title_slug}/{id}', name: 'Music_Music')]
 	public function musicAction(EntityManagerInterface $em, $id, $music = null)
 	{
 		$entity = $em->getRepository(Music::class)->find($id);
@@ -120,7 +128,8 @@ class MusicController extends AbstractController
 		]);
 	}
 
-	public function downloadAction(EntityManagerInterface $em, $id)
+	#[Route('/download/{id}', name: 'Music_Download')]
+	public function download(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Music::class)->find($id);
 
@@ -135,8 +144,9 @@ class MusicController extends AbstractController
 	{
 		return new Response($em->getRepository(Artist::class)->countArtist($request->getLocale()));
 	}
-	
-	public function musicGenreAction(Request $request, EntityManagerInterface $em, Int $genreId, String $genreTitle)
+
+	#[Route('/genre/{genreId}/{genreTitle}', name: 'Music_Genre')]
+	public function musicGenre(Request $request, EntityManagerInterface $em, Int $genreId, String $genreTitle)
 	{
 		$musicGenre = $em->getRepository(MusicGenre::class)->find($genreId);
 		$entities = $em->getRepository(Artist::class)->findBy(["genre" => $musicGenre]);

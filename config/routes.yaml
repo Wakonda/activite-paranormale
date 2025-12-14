@@ -14,10 +14,6 @@ APQuotationBundle:
     resource: "../src/Routes/quotation/routing.yml"
     prefix:   /
 
-APMusicBundle:
-    resource: "../src/Routes/music/routing.yml"
-    prefix:   /
-
 APNewsBundle:
     resource: "../src/Routes/news/routing.yml"
     prefix:   /

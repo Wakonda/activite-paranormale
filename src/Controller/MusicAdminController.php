@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -21,10 +22,7 @@ use App\Service\Spotify;
 use App\Service\Identifier;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * musicGestion controller.
- *
- */
+#[Route('/admin/music')]
 class MusicAdminController extends AdminGenericController
 {
 	protected $entityName = 'Music';
@@ -86,18 +84,21 @@ class MusicAdminController extends AdminGenericController
 		$em->flush();
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Music_Admin_Index')]
+    public function index()
     {
 		$twig = 'music/MusicAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Music_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'music/MusicAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Music_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = MusicAdminType::class;
@@ -112,8 +113,9 @@ class MusicAdminController extends AdminGenericController
 		$twig = 'music/MusicAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["language" => $language]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Music_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = MusicAdminType::class;
 		$entity = new Music();
@@ -121,29 +123,33 @@ class MusicAdminController extends AdminGenericController
 		$twig = 'music/MusicAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Music_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = MusicAdminType::class;
 
 		$twig = 'music/MusicAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Music_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = MusicAdminType::class;
 		$twig = 'music/MusicAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Music_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Music_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -165,7 +171,8 @@ class MusicAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function chooseExistingFileAction()
+	#[Route('/chooseexistingfile', name: 'Music_Admin_ChooseExistingFile')]
+	public function chooseExistingFile()
     {
 		$webPath = $this->getParameter('kernel.project_dir').'/public/extended/flash/Music/MP3/';
 	
@@ -183,7 +190,7 @@ class MusicAdminController extends AdminGenericController
 		));	
     }
 
-    public function indexByAlbumAction(EntityManagerInterface $em, Int $albumId)
+    public function indexByAlbum(EntityManagerInterface $em, Int $albumId)
     {
 		$album = $em->getRepository(Album::class)->find($albumId);
 		$spotifyId = null;
@@ -200,7 +207,8 @@ class MusicAdminController extends AdminGenericController
 		return $this->render($twig, ["albumId" => $albumId, "spotifyId" => $spotifyId]);
     }
 
-	public function indexByAlbumDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $albumId)
+	#[Route('/datatables/{albumId}', name: 'Music_Admin_IndexByAlbumDatatables', methods: ['GET'])]
+	public function indexByAlbumDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $albumId)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
 
@@ -227,8 +235,9 @@ class MusicAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+
+	#[Route('/wikidata', name: 'Music_Admin_Wikidata')]
+	public function wikidata(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
@@ -238,6 +247,7 @@ class MusicAdminController extends AdminGenericController
 		return new JsonResponse($res);
 	}
 
+	#[Route('/music/spotify/track/{albumId}/{spotifyId}', name: 'Spotify_Track')]
 	public function spotifyMusic(EntityManagerInterface $em, Spotify $spotify, $albumId, $spotifyId) {
 		$album = $em->getRepository(Album::class)->find($albumId);
 		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $album->getLanguage()]);
@@ -270,7 +280,8 @@ class MusicAdminController extends AdminGenericController
 
 		return $this->redirect($this->generateUrl("Album_Admin_Show", ["id" => $album->getId()]));
 	}
-	
+
+	#[Route('/festival/autocomplete', name: 'Festival_Admin_Autocomplete')]
 	public function autocompleteFestival(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
@@ -297,6 +308,7 @@ class MusicAdminController extends AdminGenericController
         return new JsonResponse(["results" => $results]);
 	}
 
+	#[Route('/autocomplete', name: 'Music_Admin_Autocomplete')]
 	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);

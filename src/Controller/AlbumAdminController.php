@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Album;
@@ -18,10 +19,7 @@ use App\Service\Spotify;
 use App\Service\Identifier;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Album controller.
- *
- */
+#[Route('/admin/album')]
 class AlbumAdminController extends AdminGenericController
 {
 	protected $entityName = 'Album';
@@ -84,18 +82,21 @@ class AlbumAdminController extends AdminGenericController
 		}
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Album_Admin_Index')]
+    public function index()
     {
 		$twig = 'music/AlbumAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
-    public function showAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/show', name: 'Album_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'music/AlbumAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Album_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = AlbumAdminType::class;
@@ -114,7 +115,8 @@ class AlbumAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $locale]);
     }
 
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+	#[Route('/create', name: 'Album_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = AlbumAdminType::class;
 		$entity = new Album();
@@ -123,7 +125,8 @@ class AlbumAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'Album_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = AlbumAdminType::class;
 
@@ -131,6 +134,7 @@ class AlbumAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $request->getLocale()]);
     }
 
+	#[Route('/{id}/update', name: 'Album_Admin_Update', methods: ['POST'])]
 	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = AlbumAdminType::class;
@@ -139,12 +143,14 @@ class AlbumAdminController extends AdminGenericController
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $request->getLocale()]);
     }
 
+	#[Route('/{id}/delete', name: 'Album_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'Album_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -166,7 +172,8 @@ class AlbumAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
+
+	#[Route('/autocomplete', name: 'Album_Admin_Autocomplete')]
 	public function autocompleteAction(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
@@ -193,16 +200,19 @@ class AlbumAdminController extends AdminGenericController
         return new JsonResponse(["results" => $results]);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Album_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Album_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'Album_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
+
+	#[Route('/wikidata', name: 'Album_Admin_Wikidata')]
 	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
@@ -213,7 +223,7 @@ class AlbumAdminController extends AdminGenericController
 		return new JsonResponse($res);
 	}
 
-    public function indexByArtistAction(EntityManagerInterface $em, Int $artistId)
+    public function indexByArtist(EntityManagerInterface $em, Int $artistId)
     {
 		$artist = $em->getRepository(Artist::class)->find($artistId);
 		$spotifyId = null;
@@ -233,6 +243,7 @@ class AlbumAdminController extends AdminGenericController
 		return $this->render($twig, ["artistId" => $artistId, "spotifyId" => $spotifyId]);
     }
 
+	#[Route('/datatables/{artistId}', name: 'Album_Admin_IndexByArtistDatatables', methods: ['GET'])]
 	public function indexByArtistDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $artistId)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
@@ -261,6 +272,7 @@ class AlbumAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/music/spotify/album/{artistId}/{spotifyId}', name: 'Spotify_Album')]
 	public function spotifyAlbum(EntityManagerInterface $em, Spotify $spotify, $artistId, $spotifyId) {
 		$artist = $em->getRepository(Artist::class)->find($artistId);
 		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $artist->getLanguage()]);

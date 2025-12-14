@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -16,10 +17,7 @@ use App\Entity\Language;
 use App\Form\Type\MusicGenreAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * MusicGenre controller.
- *
- */
+#[Route('/admin/musicgenre')]
 class MusicGenreAdminController extends AdminGenericController
 {
 	protected $entityName = 'MusicGenre';
@@ -48,18 +46,21 @@ class MusicGenreAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'MusicGenre_Admin_Index')]
+    public function index()
     {
 		$twig = 'music/MusicGenreAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
-    public function showAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/show', name: 'MusicGenre_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'music/MusicGenreAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'MusicGenre_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = MusicGenreAdminType::class;
@@ -69,7 +70,8 @@ class MusicGenreAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+	#[Route('/create', name: 'MusicGenre_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = MusicGenreAdminType::class;
 		$entity = new MusicGenre();
@@ -78,7 +80,8 @@ class MusicGenreAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-    public function editAction(EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'MusicGenre_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(MusicGenre::class)->find($id);
 		$formType = MusicGenreAdminType::class;
@@ -87,7 +90,8 @@ class MusicGenreAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	#[Route('/{id}/update', name: 'MusicGenre_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = MusicGenreAdminType::class;
 		$twig = 'music/MusicGenreAdmin/edit.html.twig';
@@ -95,12 +99,14 @@ class MusicGenreAdminController extends AdminGenericController
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
+	#[Route('/{id}/delete', name: 'MusicGenre_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'MusicGenre_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -122,17 +128,20 @@ class MusicGenreAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'MusicGenre_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('MusicGenre_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'MusicGenre_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'MusicGenre_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = MusicGenreAdminType::class;
 		$entity = new MusicGenre();
