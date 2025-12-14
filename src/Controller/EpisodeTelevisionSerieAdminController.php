@@ -25,7 +25,7 @@ use App\Service\ConstraintControllerValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\TagsManagingGeneric;
 
-#[Route('/admin/televisionserie')]
+#[Route('/admin/episodetelevisionserie')]
 class EpisodeTelevisionSerieAdminController extends AdminGenericController
 {
 	protected $entityName = 'EpisodeTelevisionSerie';

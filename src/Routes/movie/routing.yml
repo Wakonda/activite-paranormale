@@ -1,6 +1,0 @@
-GenreAudiovisual_Admin:
-    resource: "routing/genreaudiovisualadmin.yml"
-    prefix: /admin/genreaudiovisual
-EpisodeTelevisionSerie_Admin:
-    resource: "routing/episodetelevisionserieadmin.yml"
-    prefix: /admin/episodetelevisionserie

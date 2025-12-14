@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Movies\TelevisionSerie;
@@ -24,10 +25,7 @@ use App\Service\ConstraintControllerValidator;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Service\TagsManagingGeneric;
 
-/**
- * TelevisionSerieAdmin controller.
- *
- */
+#[Route('/admin/televisionserie')]
 class TelevisionSerieAdminController extends AdminGenericController
 {
 	protected $entityName = 'TelevisionSerie';
@@ -121,18 +119,21 @@ class TelevisionSerieAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new TelevisionSerieTags(), $entityBindded);
 	}
 
+	#[Route('/', name: 'TelevisionSerie_Admin_Index')]
     public function indexAction()
     {
 		$twig = 'movie/TelevisionSerieAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'TelevisionSerie_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'movie/TelevisionSerieAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'TelevisionSerie_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = TelevisionSerieAdminType::class;
@@ -141,8 +142,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$twig = 'movie/TelevisionSerieAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'TelevisionSerie_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = TelevisionSerieAdminType::class;
 		$entity = new TelevisionSerie();
@@ -150,8 +152,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$twig = 'movie/TelevisionSerieAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'TelevisionSerie_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(TelevisionSerie::class)->find($id);
 		$formType = TelevisionSerieAdminType::class;
@@ -159,8 +162,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$twig = 'movie/TelevisionSerieAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'TelevisionSerie_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = TelevisionSerieAdminType::class;
 		$twig = 'movie/TelevisionSerieAdmin/edit.html.twig';
@@ -168,6 +172,7 @@ class TelevisionSerieAdminController extends AdminGenericController
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
+	#[Route('/{id}/delete', name: 'TelevisionSerie_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\TelevisionSerieComment")->findBy(["entity" => $id]);
@@ -179,13 +184,15 @@ class TelevisionSerieAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive/{id}', name: 'TelevisionSerie_Admin_Archive', requirements: ['id' => '\d+'])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'TelevisionSerie_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -207,17 +214,20 @@ class TelevisionSerieAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'TelevisionSerie_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('TelevisionSerie_Admin_LoadImageSelectorColorbox');
 	}
 
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+	#[Route('/loadImageSelectorColorbox', name: 'TelevisionSerie_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
+	#[Route('/reload_theme_by_language', name: 'TelevisionSerie_Admin_ReloadThemeByLanguage')]
+	public function reloadThemeByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
@@ -249,8 +259,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 
 		return new JsonResponse($translateArray);
 	}
-	
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/autocomplete', name: 'TelevisionSerie_Admin_Autocomplete')]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
@@ -275,8 +286,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 
         return new JsonResponse(["results" => $results]);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'TelevisionSerie_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = TelevisionSerieAdminType::class;
 		$entity = new TelevisionSerie();
@@ -366,8 +378,9 @@ class TelevisionSerieAdminController extends AdminGenericController
 		$twig = 'movie/TelevisionSerieAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
-	
-	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+
+	#[Route('/wikidata', name: 'TelevisionSerie_Admin_Wikidata')]
+	public function wikidata(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");

@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Movies\GenreAudiovisual;
@@ -15,10 +16,7 @@ use App\Entity\FileManagement;
 use App\Form\Type\GenreAudiovisualAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * GenreAudiovisual controller.
- *
- */
+#[Route('/admin/genreaudiovisual')]
 class GenreAudiovisualAdminController extends AdminGenericController
 {
 	protected $entityName = 'GenreAudiovisual';
@@ -47,18 +45,21 @@ class GenreAudiovisualAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'GenreAudiovisual_Admin_Index')]
+    public function index()
     {
 		$twig = 'movie/GenreAudiovisualAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'GenreAudiovisual_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'movie/GenreAudiovisualAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'GenreAudiovisual_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = GenreAudiovisualAdminType::class;
@@ -67,8 +68,9 @@ class GenreAudiovisualAdminController extends AdminGenericController
 		$twig = 'movie/GenreAudiovisualAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'GenreAudiovisual_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = GenreAudiovisualAdminType::class;
 		$entity = new GenreAudiovisual();
@@ -76,28 +78,32 @@ class GenreAudiovisualAdminController extends AdminGenericController
 		$twig = 'movie/GenreAudiovisualAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'GenreAudiovisual_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = GenreAudiovisualAdminType::class;
 
 		$twig = 'movie/GenreAudiovisualAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'GenreAudiovisual_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = GenreAudiovisualAdminType::class;
 		$twig = 'movie/GenreAudiovisualAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'GenreAudiovisual_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
+	#[Route('/datatables', name: 'GenreAudiovisual_Admin_IndexDatatables', methods: ['GET'])]
 	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
@@ -119,17 +125,20 @@ class GenreAudiovisualAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'GenreAudiovisual_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('GenreAudiovisual_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'GenreAudiovisual_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'GenreAudiovisual_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = GenreAudiovisualAdminType::class;
 		$entity = new GenreAudiovisual();
