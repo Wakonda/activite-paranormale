@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -22,6 +23,7 @@ use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
+#[Route('/admin/testimony')]
 class TestimonyAdminController extends AdminGenericController
 {
 	protected $entityName = 'Testimony';
@@ -43,18 +45,21 @@ class TestimonyAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new TestimonyTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/index/{state}/{display}', name: 'Testimony_Admin_Index', defaults: ['state' => null, 'display' => 1])]
+    public function index()
     {
 		$twig = 'testimony/TestimonyAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Testimony_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'testimony/TestimonyAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Testimony_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = TestimonyAdminType::class;
@@ -63,8 +68,9 @@ class TestimonyAdminController extends AdminGenericController
 		$twig = 'testimony/TestimonyAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Testimony_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = TestimonyAdminType::class;
 		$entity = new Testimony();
@@ -73,7 +79,8 @@ class TestimonyAdminController extends AdminGenericController
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/{id}/edit', name: 'Testimony_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = TestimonyAdminType::class;
 		$entity = $em->getRepository($this->className)->find($id);
@@ -82,14 +89,16 @@ class TestimonyAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	#[Route('/{id}/update', name: 'Testimony_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = TestimonyAdminType::class;
 
 		$twig = 'testimony/TestimonyAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Testimony_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\TestimonyComment")->findBy(["entity" => $id]);
@@ -103,8 +112,9 @@ class TestimonyAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive/{id}', name: 'Testimony_Admin_Archive', requirements: ['id' => '\d+'])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		$entities = $em->getRepository(TestimonyFileManagement::class)->getAllFilesByIdClassName($id);
 
@@ -124,7 +134,8 @@ class TestimonyAdminController extends AdminGenericController
 		return new Response($countTestimony);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+	#[Route('/datatables', name: 'Testimony_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -151,8 +162,9 @@ class TestimonyAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+
+	#[Route('/change_state/{id}/{state}', name: 'Testimony_Admin_ChangeState', requirements: ['id' => '\d+'])]
+	public function changeState(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
 
@@ -177,6 +189,7 @@ class TestimonyAdminController extends AdminGenericController
 		return $this->redirect($this->generateUrl('Testimony_Admin_Show', ['id' => $id]));
 	}
 
+	#[Route('/delete_multiple', name: 'Testimony_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));
@@ -191,6 +204,7 @@ class TestimonyAdminController extends AdminGenericController
 		return new Response();
 	}
 
+	#[Route('/reloadlistsbylanguage', name: 'Testimony_Admin_ReloadListsByLanguage')]
 	public function reloadListsByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));

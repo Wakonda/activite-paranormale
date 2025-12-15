@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -22,10 +23,7 @@ use App\Form\Type\EventMessageAdminType;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * EventMessage controller.
- *
- */
+#[Route('/admin/eventmessage')]
 class EventMessageAdminController extends AdminGenericController
 {
 	protected $entityName = 'EventMessage';
@@ -52,18 +50,21 @@ class EventMessageAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new EventMessageTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'EventMessage_Admin_Index')]
+    public function index()
     {
 		$twig = 'page/EventMessageAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'EventMessage_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'page/EventMessageAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'EventMessage_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = EventMessageAdminType::class;
@@ -72,8 +73,9 @@ class EventMessageAdminController extends AdminGenericController
 		$twig = 'page/EventMessageAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'EventMessage_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = EventMessageAdminType::class;
 		$entity = new EventMessage();
@@ -81,7 +83,8 @@ class EventMessageAdminController extends AdminGenericController
 		$twig = 'page/EventMessageAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/edit', name: 'EventMessage_Admin_Edit')]
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
@@ -90,15 +93,17 @@ class EventMessageAdminController extends AdminGenericController
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'EventMessage_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = EventMessageAdminType::class;
 		
 		$twig = 'page/EventMessageAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'EventMessage_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\EventMessageComment")->findBy(["entity" => $id]);
@@ -108,13 +113,15 @@ class EventMessageAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
+
+	#[Route('/archive/{id}', name: 'EventMessage_Admin_Archive', requirements: ['id' => '\d+'])]
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+
+	#[Route('/datatables', name: 'EventMessage_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -137,6 +144,7 @@ class EventMessageAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
+	#[Route('/change_state/{id}/{state}', name: 'EventMessage_Admin_ChangeState', requirements: ['id' => '\d+'])]
 	public function changeStateAction(Request $request, EntityManagerInterface $em, $id, $state)
 	{
 		$language = $request->getLocale();
@@ -152,12 +160,14 @@ class EventMessageAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'EventMessage_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('EventMessage_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'EventMessage_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
@@ -167,8 +177,9 @@ class EventMessageAdminController extends AdminGenericController
 		$countByStateAdmin = $em->getRepository($this->className)->countByStateAdmin($state);
 		return new Response($countByStateAdmin);
 	}
-	
-    public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'EventMessage_Admin_Internationalization')]
+    public function internationalization(Request $request, EntityManagerInterface $em, $id)
     {
 		$formType = EventMessageAdminType::class;
 		$entity = new EventMessage();
@@ -257,7 +268,8 @@ class EventMessageAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit', "locale" => $language->getAbbreviation()]);
     }
 
-	public function wikidataAction(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+	#[Route('/wikidata', name: 'EventMessage_Admin_Wikidata')]
+	public function wikidata(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
@@ -267,6 +279,7 @@ class EventMessageAdminController extends AdminGenericController
 		return new JsonResponse($res);
 	}
 
+	#[Route('/delete_multiple', name: 'EventMessage_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));
@@ -281,6 +294,7 @@ class EventMessageAdminController extends AdminGenericController
 		return new Response();
 	}
 
+	#[Route('/reload_theme_by_language', name: 'EventMessage_Admin_ReloadThemeByLanguage')]
 	public function reloadThemeByLanguageAction(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));

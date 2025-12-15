@@ -7,16 +7,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\RoleUser;
 use App\Form\Type\RoleUserAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * RoleUser controller.
- *
- */
+#[Route('/admin/roleuser')]
 class RoleUserAdminController extends AdminGenericController
 {
 	protected $entityName = 'RoleUser';
@@ -40,18 +38,21 @@ class RoleUserAdminController extends AdminGenericController
 	{
 	}
 
+	#[Route('/', name: 'RoleUser_Admin_Index')]
     public function indexAction()
     {
 		$twig = 'user/RoleUserAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'RoleUser_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'user/RoleUserAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'RoleUser_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = RoleUserAdminType::class;
@@ -60,8 +61,9 @@ class RoleUserAdminController extends AdminGenericController
 		$twig = 'user/RoleUserAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'RoleUser_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = RoleUserAdminType::class;
 		$entity = new RoleUser();
@@ -69,29 +71,33 @@ class RoleUserAdminController extends AdminGenericController
 		$twig = 'user/RoleUserAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType);
     }
-	
-    public function editAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'RoleUser_Admin_Edit')]
+    public function edit(EntityManagerInterface $em, $id)
     {
 		$formType = RoleUserAdminType::class;
 
 		$twig = 'user/RoleUserAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'RoleUser_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = RoleUserAdminType::class;
 		
 		$twig = 'user/RoleUserAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType);
     }
-	
+
+	#[Route('/{id}/delete', name: 'RoleUser_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/datatables', name: 'RoleUser_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];

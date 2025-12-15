@@ -209,5 +209,5 @@
 
 {% block sub_content %}
 	{{ render(controller("App\\Controller\\CommentController::index", { 'idClassName' : entity.id, 'className': 'Video' })) }}
-	{{ render(controller("App\\Controller\\VideoController::getSameTopicsAction", { 'id' : entity.id })) }}
+	{{ render(controller("App\\Controller\\VideoController::getSameTopics", { 'id' : entity.id })) }}
 {% endblock %}

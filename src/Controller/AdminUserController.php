@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -38,14 +39,16 @@ class AdminUserController extends AdminGenericController
 	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 	}
-	
+
+	#[Route('/admin/member', name: 'apadminuser')]
     public function index()
     {
 		$twig = 'user/AdminUser/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
-	public function indexDatatablesAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
+	#[Route('/admin/member/datatables', name: 'User_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, TranslatorInterface $translator, EntityManagerInterface $em)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -77,7 +80,8 @@ class AdminUserController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showAction(EntityManagerInterface $em, $id)
+	#[Route('/admin/member/{id}/show', name: 'apadminuser_show')]
+	public function show(EntityManagerInterface $em, $id)
     {
         $entity = $em->getRepository(User::class)->find($id);
 		
@@ -86,6 +90,7 @@ class AdminUserController extends AdminGenericController
 		]);
     }
 
+	#[Route('/admin/member/new', name: 'User_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = UserAdminType::class;
@@ -94,7 +99,8 @@ class AdminUserController extends AdminGenericController
 		$twig = 'user/AdminUser/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'new', 'locale' => $request->getLocale()]);
     }
-	
+
+	#[Route('/admin/member/create', name: 'User_Admin_Create', methods: ['POST'])]
     public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = UserAdminType::class;
@@ -103,8 +109,9 @@ class AdminUserController extends AdminGenericController
 		$twig = 'user/AdminUser/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['action' => 'new', 'locale' =>  $request->getLocale()]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/admin/member/{id}/edit', name: 'User_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(User::class)->find($id);
 		$formType = UserAdminType::class;
@@ -112,16 +119,18 @@ class AdminUserController extends AdminGenericController
 		$twig = 'user/AdminUser/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/admin/member/{id}/update', name: 'User_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = UserAdminType::class;
 		$twig = 'user/AdminUser/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['action' => 'edit', 'locale' => $request->getLocale()]);
     }
-	
-	public function userListingAction(EntityManagerInterface $em)
+
+	#[Route('/list/member/{page}', name: 'apadminuser_listUser', defaults: ['page' => 1], requirements: ['page' => '\d+'])]
+	public function userListing(EntityManagerInterface $em)
 	{
 		$users = $em->getRepository(User::class)->getMembersUser();
 		
@@ -130,14 +139,16 @@ class AdminUserController extends AdminGenericController
 		]);
 	}
 
-	public function contributionUserAction(EntityManagerInterface $em, $id, $bundleClassName, $displayState, $title, $entityName)
+	#[Route('/contribution_user/{id}/{bundleClassName}/{entityName}/{title}/{displayState}', name: 'APUserBunble_contributionuser', defaults: ['displayState' => 1])]
+	public function contributionUser(EntityManagerInterface $em, $id, $bundleClassName, $displayState, $title, $entityName)
 	{
 		$user = $em->getRepository(User::class)->find($id);
 
 		return $this->render('user/AdminUser/contribution_user.html.twig', ['id' => $id, 'bundleClassName' => $bundleClassName, 'user' => $user, 'displayState' => $displayState, "title" => $title, "entityName" => $entityName]);
 	}
-	
-	public function contributionUserDatatablesAction(Request $request, EntityManagerInterface $em, APDate $date, $id, $bundleClassName, $displayState)
+
+	#[Route('/contribution_user_datatables/{id}/{bundleClassName}/{displayState}', name: 'APUserBunble_contributionuserdatatables', defaults: ['displayState' => 1])]
+	public function contributionUserDatatables(Request $request, EntityManagerInterface $em, APDate $date, $id, $bundleClassName, $displayState)
 	{
 		$language = $request->getLocale();
 
@@ -192,8 +203,9 @@ class AdminUserController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-	public function contributionUserCommentsAction(TranslatorInterface $translator, EntityManagerInterface $em, $id)
+
+	#[Route('/contribution_user/{id}', name: 'APUserBunble_contributionusercomments')]
+	public function contributionUserComments(TranslatorInterface $translator, EntityManagerInterface $em, $id)
 	{
 		$user = $em->getRepository(User::class)->find($id);
 
@@ -212,8 +224,9 @@ class AdminUserController extends AdminGenericController
 
 		return $this->render('user/AdminUser/contribution_user_comments.html.twig', ['id' => $id, 'user' => $user, 'classArray' => $classArray]);
 	}
-	
-	public function contributionUserCommentsDatatablesAction(Request $request, EntityManagerInterface $em, APDate $date, TranslatorInterface $translator, $id)
+
+	#[Route('/contribution_user_datatables/{id}', name: 'APUserBunble_contributionusercommentsdatatables')]
+	public function contributionUserCommentsDatatables(Request $request, EntityManagerInterface $em, APDate $date, TranslatorInterface $translator, $id)
 	{
 		$language = $request->getLocale();
 
@@ -254,12 +267,15 @@ class AdminUserController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function logoutAction()
+	#[Route('/logout', name: 'Security_Logout')]
+	#[Route('/user_logout', name: 'APUserBundle_logout')]
+	public function logout()
 	{	
 		return $this->render('user/Security/logout.html.twig');		
 	}
-	
-	public function activateAction(EntityManagerInterface $em, $id, $state)
+
+	#[Route('/admin/member/activate/{id}/{state}', name: 'User_Admin_Activate', methods: ['GET'])]
+	public function activate(EntityManagerInterface $em, $id, $state)
 	{
 		$user = $em->getRepository(User::class)->find($id);
 
@@ -270,7 +286,8 @@ class AdminUserController extends AdminGenericController
 
 		return $this->redirect($this->generateUrl("apadminuser_show", ['id' => $user->getId()]));
 	}
-	
+
+	#[Route('/admin/member/remove/{id}', name: 'User_Admin_Remove', methods: ['GET'])]
 	public function remove(EntityManagerInterface $em, TranslatorInterface $translator, $id)
 	{
 		$meta = $em->getMetadataFactory()->getAllMetadata();

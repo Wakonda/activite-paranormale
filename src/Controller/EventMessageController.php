@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -24,14 +25,15 @@ use App\Service\APDate;
 
 class EventMessageController extends AbstractController
 {
-    public function sliderAction(Request $request, EntityManagerInterface $em)
+    public function slider(Request $request, EntityManagerInterface $em)
     {
 		$entities = $em->getRepository(EventMessage::class)->getLastEventsToDisplayIndex($request->getLocale());
 
         return $this->render('page/EventMessage/slider.html.twig', ['entities' => $entities]);
     }
 
-    public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
+	#[Route('/event/read/{id}/{title_slug}', name: 'EventMessage_Read', defaults: ['title_slug' => null])]
+    public function read(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
 		$entity = $em->getRepository(EventMessage::class)->find($id);
 
@@ -57,12 +59,14 @@ class EventMessageController extends AbstractController
 		return $between;
 	}
 
-	public function calendarAction()
+	#[Route('/event/calendar', name: 'EventMessage_Calendar')]
+	public function calendar()
 	{
 		return $this->render('page/EventMessage/calendar.html.twig');
 	}
 
-	public function calendarLoadEventsAction(Request $request, EntityManagerInterface $em)
+	#[Route('/event/calendar/loadevents', name: 'EventMessage_Calendar_Events')]
+	public function calendarLoadEvents(Request $request, EntityManagerInterface $em)
 	{
 		$startDate = new \DateTime($request->query->get("start"));
 		$endDate = new \DateTime($request->query->get("end"));
@@ -163,7 +167,8 @@ class EventMessageController extends AbstractController
 		return $response;
 	}
 
-	public function tabAction(Request $request, $id, $theme)
+	#[Route('/event/tab/{id}/{theme}', name: 'EventMessage_Tab', requirements: ['theme' => '.+'])]
+	public function tab(Request $request, $id, $theme)
 	{
 		return $this->render('page/EventMessage/tab.html.twig', [
 			'themeDisplay' => $theme,
@@ -171,7 +176,8 @@ class EventMessageController extends AbstractController
 		]);	
 	}
 
-	public function tabDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
+	#[Route('/tabdatatables/{themeId}', name: 'EventMessage_TabDatatables')]
+	public function tabDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -214,6 +220,7 @@ class EventMessageController extends AbstractController
 	}
 
 	// USER PARTICIPATION
+	#[Route('/event/new', name: 'EventMessage_New')]
     public function newAction(Request $request)
     {
         $entity = new EventMessage();
@@ -225,13 +232,15 @@ class EventMessageController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-	
-	public function createAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/event/create', name: 'EventMessage_Create')]
+	public function create(Request $request, EntityManagerInterface $em)
     {
 		return $this->genericCreateUpdate($request, $em);
     }
 
-	public function waitingAction(EntityManagerInterface $em, $id)
+	#[Route('/event/waiting/{id}', name: 'EventMessage_Waiting')]
+	public function waiting(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(EventMessage::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
@@ -242,7 +251,8 @@ class EventMessageController extends AbstractController
         ]);
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/event/edit/{id}', name: 'EventMessage_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$user = $this->getUser();
 
@@ -262,12 +272,14 @@ class EventMessageController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/event/update/{id}', name: 'EventMessage_Update')]
+	public function update(Request $request, EntityManagerInterface $em, $id)
     {
 		return $this->genericCreateUpdate($request, $em, $id);
     }
 
-	public function validateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/event/validate/{id}', name: 'EventMessage_Validate')]
+	public function validate(Request $request, EntityManagerInterface $em, $id)
 	{
         $entity = $em->getRepository(EventMessage::class)->find($id);
 
@@ -362,7 +374,8 @@ class EventMessageController extends AbstractController
 	}
 
 	// Event of the world
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+	#[Route('/event/world/{language}/{themeId}/{theme}', name: 'EventMessage_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -386,7 +399,8 @@ class EventMessageController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
+	#[Route('/event/selectThemeForIndexWorldAction/{language}', name: 'EventMessage_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
+	public function selectThemeForIndexWorld(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
@@ -395,7 +409,8 @@ class EventMessageController extends AbstractController
 		return new Response($this->generateUrl('EventMessage_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+	#[Route('/event/worlddatatables/{language}/{themeId}', name: 'EventMessage_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -436,7 +451,8 @@ class EventMessageController extends AbstractController
 		return $response;
 	}
 
-	public function getAllEventsByDayAndMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $apDate, $year, $month, $day)
+	#[Route('/event/day_month/{year}/{month}/{day}', name: 'EventMessage_SelectDayMonth')]
+	public function getAllEventsByDayAndMonth(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $apDate, $year, $month, $day)
 	{
 		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
 		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
@@ -655,7 +671,8 @@ class EventMessageController extends AbstractController
 		]);
 	}
 
-	public function getAllEventsByYearOrMonthAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year, $month)
+	#[Route('/event/year_month/{year}/{month}', name: 'EventMessage_SelectYearMonth')]
+	public function getAllEventsByYearOrMonth(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year, $month)
 	{
 		$month = !empty($month) ? str_pad($month, 2, "0", STR_PAD_LEFT) : "01";
 
@@ -723,8 +740,9 @@ class EventMessageController extends AbstractController
 			"currentDate" => $currentDate
 		]);
 	}
-	
-	public function getAllEventsByYearAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year)
+
+	#[Route('/event/year/{year}', name: 'EventMessage_SelectYear')]
+	public function getAllEventsByYear(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year)
 	{
 		$currentDate = new \DateTime($year."-01-01");
 

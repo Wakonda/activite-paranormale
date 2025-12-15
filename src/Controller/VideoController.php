@@ -225,7 +225,7 @@ class VideoController extends AbstractController
 	}
 
 	// INDEX
-	public function sliderAction(Request $request, EntityManagerInterface $em)
+	public function slider(Request $request, EntityManagerInterface $em)
 	{
 		$entity = $em->getRepository(Video::class)->getSliderNew($request->getLocale());
 
@@ -360,7 +360,7 @@ class VideoController extends AbstractController
 		return $response;
 	}
 	
-	public function getSameTopicsAction(EntityManagerInterface $em, $id)
+	public function getSameTopics(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Video::class)->find($id);
 		$sameTopics = $em->getRepository(Video::class)->getSameTopics($entity);

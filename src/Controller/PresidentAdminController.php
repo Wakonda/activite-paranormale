@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\President;
@@ -16,10 +17,7 @@ use App\Entity\FileManagement;
 use App\Form\Type\PresidentAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * President controller.
- *
- */
+#[Route('/admin/president')]
 class PresidentAdminController extends AdminGenericController
 {
 	protected $entityName = 'President';
@@ -42,18 +40,21 @@ class PresidentAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'President_Admin_Index')]
+    public function index()
     {
 		$twig = 'page/PresidentAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'President_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'page/PresidentAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'President_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = PresidentAdminType::class;
@@ -62,8 +63,9 @@ class PresidentAdminController extends AdminGenericController
 		$twig = 'page/PresidentAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'President_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = PresidentAdminType::class;
 		$entity = new President();
@@ -71,8 +73,9 @@ class PresidentAdminController extends AdminGenericController
 		$twig = 'page/PresidentAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'President_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = PresidentAdminType::class;
@@ -80,21 +83,24 @@ class PresidentAdminController extends AdminGenericController
 		$twig = 'page/PresidentAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'President_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = PresidentAdminType::class;
 		
 		$twig = 'page/PresidentAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'President_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+
+	#[Route('/datatables', name: 'President_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -116,50 +122,19 @@ class PresidentAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'President_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('President_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'President_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
-	{
-		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = [];
-		
-		if(!empty($language))
-		{
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
-		}
-		else
-		{
-			$states = $em->getRepository(State::class)->findAll();
-			$licences = $em->getRepository(Licence::class)->findAll();
-		}
-
-		$stateArray = [];
-		$licenceArray = [];
-
-		foreach($states as $state)
-		{
-			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle());
-		}
-		$translateArray['state'] = $stateArray;
-
-		foreach($licences as $licence)
-		{
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
-		}
-		$translateArray['licence'] = $licenceArray;
-
-		return new JsonResponse($translateArray);
-	}
-	
+	#[Route('/internationalization/{id}', name: 'President_Admin_Internationalization')]
 	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = PresidentAdminType::class;

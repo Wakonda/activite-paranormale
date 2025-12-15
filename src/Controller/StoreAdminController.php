@@ -5,6 +5,7 @@ namespace App\Controller;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 use Doctrine\ORM\Query\ResultSetMapping;
@@ -19,10 +20,7 @@ use App\Entity\Language;
 use App\Form\Type\StoreAdminType;
 use App\Service\ConstraintControllerValidator;
 
-/**
- * Store controller.
- *
- */
+#[Route('/admin/store')]
 class StoreAdminController extends AdminGenericController
 {
 	protected $entityName = 'Store';
@@ -106,18 +104,21 @@ class StoreAdminController extends AdminGenericController
 	{
 	}
 
-    public function indexAction()
+	#[Route('/index/{type}', name: 'Store_Admin_Index', defaults: ['type' => ''])]
+    public function index()
     {
 		$twig = 'store/StoreAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Store_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'store/StoreAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new/{category}', name: 'Store_Admin_New', defaults: ['category' => ''])]
     public function newAction(Request $request, EntityManagerInterface $em, String $category)
     {
 		$class = $this->getDataClass($category);
@@ -135,8 +136,9 @@ class StoreAdminController extends AdminGenericController
 		$twig = 'store/StoreAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => !empty($language) ? $language->getAbbreviation() : $request->getLocale(), "data_class" => $class]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
+
+	#[Route('/create/{category}', name: 'Store_Admin_Create', methods: ['POST'], defaults: ['category' => ''])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $category)
     {
 		$class = $this->getDataClass($category);
 		$formType = StoreAdminType::class;
@@ -146,7 +148,8 @@ class StoreAdminController extends AdminGenericController
 		$twig = 'store/StoreAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
-	
+
+	#[Route('/{id}/edit', name: 'Store_Admin_Edit')]
     public function editAction(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository(Store::class)->find($id);
@@ -156,8 +159,9 @@ class StoreAdminController extends AdminGenericController
 		$twig = 'store/StoreAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation(), "data_class" => $class]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Store_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$entity = $em->getRepository(Store::class)->find($id);
 		$class = $this->getDataClass($entity->getCategory());
@@ -166,13 +170,15 @@ class StoreAdminController extends AdminGenericController
 		$twig = 'store/StoreAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName), "data_class" => $class]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Store_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, String $type)
+
+	#[Route('/datatables', name: 'Store_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, String $type)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -221,8 +227,9 @@ class StoreAdminController extends AdminGenericController
 
 		return new JsonResponse($output);
 	}
-	
-	public function autocompleteAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/autocomplete', name: 'Store_Admin_Autocomplete', methods: ['GET'])]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{
 		$query = $request->query->get("q", null);
 		$locale = $request->query->get("locale", null);
@@ -262,11 +269,13 @@ class StoreAdminController extends AdminGenericController
         return new JsonResponse($results);
 	}
 
+	#[Route('/showImageSelectorColorbox', name: 'Store_Admin_ShowImageSelectorColorbox')]
 	public function showImageSelectorColorboxAction()
 	{
 		return $this->showImageSelectorColorboxGeneric('Store_Admin_LoadImageSelectorColorbox');
 	}
-	
+
+	#[Route('/loadImageSelectorColorbox', name: 'Store_Admin_LoadImageSelectorColorbox')]
 	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);

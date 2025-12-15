@@ -19,7 +19,7 @@
 {% endblock h2_title %}
 
 {% block APBlog_body %}
-	{{ render(controller('App\\Controller\\NewsController::mainSliderAction', { 'lang' : app.request.locale})) }}
+	{{ render(controller('App\\Controller\\NewsController::mainSlider', { 'lang' : app.request.locale})) }}
 	<br>
 	{% if is_mobile() == true %}
 		<div class="text-center mb-3">
@@ -38,19 +38,19 @@
 		<p class="image"><a href="{{ bannerArray.link }}" alt="{{ bannerArray.title }}" target="_blank"><img src="{{ asset('extended/photo/banner/') }}{{ bannerArray.name }}" width = "{{ bannerArray.width }}" height = "{{ bannerArray.height }}" alt="" class=" mx-auto d-block img-fluid"></a></p>
 	{% endif %}
 	
-	{{ render(controller('App\\Controller\\PageController::wordPresidentAction')) }}
-	{{ render(controller('App\\Controller\\StoreController::sliderAction')) }}
+	{{ render(controller('App\\Controller\\PageController::wordPresident')) }}
+	{{ render(controller('App\\Controller\\StoreController::slider')) }}
 	<br>
 	{{ "google"|advertisement|raw }}
 	<br>
-	{{ render(controller('App\\Controller\\EventMessageController::sliderAction')) }}
-	{{ render(controller('App\\Controller\\NewsController::sliderAction')) }}
+	{{ render(controller('App\\Controller\\EventMessageController::slider')) }}
+	{{ render(controller('App\\Controller\\NewsController::slider')) }}
 	<br>
-	{{ render(controller('App\\Controller\\VideoController::sliderAction')) }}
+	{{ render(controller('App\\Controller\\VideoController::slider')) }}
 	<br>
-	{{ render(controller('App\\Controller\\PhotoController::sliderAction')) }}
+	{{ render(controller('App\\Controller\\PhotoController::slider')) }}
 	<br>
-	{{ render(controller('App\\Controller\\WitchcraftController::widgetAction')) }}
+	{{ render(controller('App\\Controller\\WitchcraftController::widget')) }}
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 

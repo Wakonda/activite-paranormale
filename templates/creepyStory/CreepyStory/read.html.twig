@@ -57,5 +57,5 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller("App\\Controller\\CreepyStoryController::getSameTopicsAction", { id: entity.id })) }}
+	{{ render(controller("App\\Controller\\CreepyStoryController::getSameTopics", { id: entity.id })) }}
 {% endblock %}

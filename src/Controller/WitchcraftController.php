@@ -155,7 +155,7 @@ class WitchcraftController extends AbstractController
     }
 
 	// INDEX
-	public function widgetAction(Request $request, EntityManagerInterface $em)
+	public function widget(Request $request, EntityManagerInterface $em)
 	{
 		$entity = $em->getRepository(Grimoire::class)->getRandom($request->getLocale());
 

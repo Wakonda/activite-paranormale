@@ -7,6 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -23,10 +24,7 @@ use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 use App\Service\APImgSize;
 
-/**
- * Actualite controller.
- *
- */
+#[Route('/admin/news')]
 class NewsAdminController extends AdminGenericController
 {
 	protected $entityName = 'News';
@@ -51,18 +49,21 @@ class NewsAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new NewsTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/index/{state}/{display}', name: 'News_Admin_Index', defaults: ['state' => null, 'display' => 1])]
+    public function index()
     {
 		$twig = 'news/NewsAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'News_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'news/NewsAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'News_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = NewsAdminType::class;
@@ -71,8 +72,9 @@ class NewsAdminController extends AdminGenericController
 		$twig = 'news/NewsAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'News_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = NewsAdminType::class;
 		$entity = new News();
@@ -81,7 +83,8 @@ class NewsAdminController extends AdminGenericController
 
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/edit', name: 'News_Admin_Edit')]
     public function editAction(EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
@@ -91,14 +94,16 @@ class NewsAdminController extends AdminGenericController
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+	#[Route('/{id}/update', name: 'News_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = NewsAdminType::class;
 
 		$twig = 'news/NewsAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'News_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\NewsComment")->findBy(["entity" => $id]);
@@ -118,7 +123,8 @@ class NewsAdminController extends AdminGenericController
 		return new Response($countNewsByStateAdmin);
 	}
 
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+	#[Route('/datatables', name: 'News_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -153,11 +159,13 @@ class NewsAdminController extends AdminGenericController
 		return $response;
 	}
 
+	#[Route('/wysiwyg_uploadfile', name: 'News_Admin_WYSIWYG_UploadFile')]
     public function WYSIWYGUploadFile(Request $request, APImgSize $imgSize)
     {
 		return $this->WYSIWYGUploadFileGeneric($request, $imgSize, new News());
     }
 
+	#[Route('/reload_theme_by_language', name: 'News_Admin_ReloadThemeByLanguage')]
 	public function reloadThemeByLanguage(Request $request, EntityManagerInterface $em)
 	{
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
@@ -206,17 +214,20 @@ class NewsAdminController extends AdminGenericController
 		return $response;
 	}
 
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'News_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('News_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'News_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
 
-	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+	#[Route('/change_state/{id}/{state}', name: 'News_Admin_ChangeState', requirements: ['id' => '\d+'])]
+	public function changeState(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
 
@@ -241,13 +252,15 @@ class NewsAdminController extends AdminGenericController
 		
 		return $this->redirect($this->generateUrl('News_Admin_Show', ['id' => $id]));
 	}
-	
+
+	#[Route('/archive/{id}', name: 'News_Admin_Archive', requirements: ['id' => '\d+'])]
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
 
-	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/internationalization/{id}', name: 'News_Admin_Internationalization')]
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = NewsAdminType::class;
 		$entity = new News();
@@ -294,6 +307,7 @@ class NewsAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 
+	#[Route('/delete_multiple', name: 'News_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));

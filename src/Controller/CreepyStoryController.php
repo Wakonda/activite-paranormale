@@ -132,7 +132,7 @@ class CreepyStoryController extends AbstractController
 		return new Response($this->generateUrl('Photo_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function getSameTopicsAction(EntityManagerInterface $em, $id)
+	public function getSameTopics(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(CreepyStory::class)->find($id);
 		$sameTopics = $em->getRepository(CreepyStory::class)->getSameTopics($entity);

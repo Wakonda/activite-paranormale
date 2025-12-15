@@ -12,6 +12,7 @@ use App\Form\Type\ResettingFormType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -30,10 +31,6 @@ use App\Service\Currency;
 
 include_once(__DIR__."/../Library/QRCode.php");
 
-/**
- * User controller.
- *
- */
 class UserController extends AbstractController
 {
 	private $encoderFactory;
@@ -46,7 +43,8 @@ class UserController extends AbstractController
         $this->tokenStorage = $tokenStorage;
 	}
 
-    public function loginAction(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
+	#[Route('/login', name: 'Security_Login', methods: ['GET', 'POST'])]
+    public function login(Request $request, AuthenticationUtils $authenticationUtils, EntityManagerInterface $em)
     {
         $error = $authenticationUtils->getLastAuthenticationError();
         $lastUsername = $authenticationUtils->getLastUsername();
@@ -60,7 +58,8 @@ class UserController extends AbstractController
 		]);
     }
 
-    public function showAction()
+	#[Route('/profile', name: 'Profile_Show', methods: ['GET'])]
+    public function show()
     {
 		$user = $this->getUser();
 
@@ -72,8 +71,9 @@ class UserController extends AbstractController
             'user' => $user
         ]);
     }
-	
-	public function phpbbAction(Request $request, TranslatorInterface $translator, \App\Service\PHPBB $phpbb) {
+
+	#[Route('/phpbb', name: 'Profile_PHPBB', methods: ['GET', 'POST'])]
+	public function phpbb(Request $request, TranslatorInterface $translator, \App\Service\PHPBB $phpbb) {
 		$user = $this->getUser();
 
         if (!is_object($user)) {
@@ -115,12 +115,15 @@ class UserController extends AbstractController
         ]);
 	}
 
+	#[Route('/resetting/request', name: 'Resetting_Request', methods: ['GET'])]
     public function requestAction()
     {
         return $this->render('user/Resetting/request.html.twig');
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/profile/edit', name: 'Profile_Edit', methods: ['GET', 'POST'])]
+	#[Route('/profile/edit_profile', name: 'apuser_edit')]
+    public function edit(Request $request, EntityManagerInterface $em)
     {
 		$user = $this->getUser();
 
@@ -136,6 +139,7 @@ class UserController extends AbstractController
         ]);
     }
 
+	#[Route('/profile/update', name: 'apuser_update')]
     public function updateAction(Request $request, EntityManagerInterface $em)
     {
 		$user = $this->getUser();
@@ -170,7 +174,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function sendEmailAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
+	#[Route('/resetting/send-email', name: 'Resetting_Send_Email', methods: ['POST'])]
+    public function sendEmail(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
         $username = $request->request->get('username');
 
@@ -200,7 +205,8 @@ class UserController extends AbstractController
         return $this->redirect($this->generateUrl('Resetting_Check_Email', ['username' => $username]));
     }
 
-    public function checkEmailResettingAction(Request $request)
+	#[Route('/resetting/check-email', name: 'Resetting_Check_Email', methods: ['GET'])]
+    public function checkEmailResetting(Request $request)
     {
         $username = $request->query->get('username');
 
@@ -213,6 +219,7 @@ class UserController extends AbstractController
         ]);
     }
 
+	#[Route('/resetting/reset/{token}', name: 'Resetting_Reset', methods: ['GET', 'POST'])]
     public function resetAction(Request $request, EntityManagerInterface $em, $token)
     {
         $user = $em->getRepository(User::class)->findUserByConfirmationToken($token);
@@ -241,7 +248,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function registerAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
+	#[Route('/register', name: 'Registration_Register', methods: ['GET', 'POST'])]
+    public function register(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
     {
 		$session = $request->getSession();
 		$user = new User();
@@ -284,8 +292,9 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
-
-	public function resendEmailConfirmationAction(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerInterface $mailer, $id)
+	
+	#[Route('/resend_email_confirmation/{id}', name: 'Registration_ResendEmailConfirmation', methods: ['GET'])]
+	public function resendEmailConfirmation(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerInterface $mailer, $id)
 	{
 		$session = $request->getSession();
 		$user = $em->getRepository(User::class)->find($id);
@@ -305,10 +314,8 @@ class UserController extends AbstractController
 		return $this->redirect($this->generateUrl('Registration_Check_Email'));
 	}
 
-    /**
-     * Tell the user to check their email provider.
-     */
-    public function checkEmailAction(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router)
+	#[Route('/register/check-email', name: 'Registration_Check_Email', methods: ['GET'])]
+    public function checkEmail(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router)
     {
 		$session = $request->getSession();
         $email = $session->get('fos_user_send_confirmation_email/email');
@@ -329,7 +336,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function confirmAction(Request $request, EntityManagerInterface $em, $token)
+	#[Route('/register/confirm/{token}', name: 'Registration_Confirm', methods: ['GET'])]
+    public function confirm(Request $request, EntityManagerInterface $em, $token)
     {
         $user = $em->getRepository(User::class)->findUserByConfirmationToken($token);
 
@@ -348,7 +356,8 @@ class UserController extends AbstractController
         ]);
     }
 
-    public function changePasswordAction(Request $request, EntityManagerInterface $em)
+	#[Route('/profile/change-password', name: 'Profile_Change_Password', methods: ['GET', 'POST'])]
+    public function changePassword(Request $request, EntityManagerInterface $em)
     {
         $user = $this->getUser();
         if (!is_object($user)) {
@@ -404,7 +413,8 @@ class UserController extends AbstractController
 		]);
     }
 
-	public function viewProfileAction(EntityManagerInterface $em, APUser $apuser, $id)
+	#[Route('/view_profile/{id}', name: 'APUserBunble_otherprofile')]
+	public function viewProfile(EntityManagerInterface $em, APUser $apuser, $id)
 	{
 		$user = $em->getRepository(User::class)->find($id);
 

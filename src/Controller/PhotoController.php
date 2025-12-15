@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -21,7 +22,8 @@ use App\Form\Type\PhotoUserParticipationType;
 
 class PhotoController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em)
+	#[Route('/photo', name: 'Photo_Index')]
+    public function index(Request $request, EntityManagerInterface $em)
     {
 		$locale = $request->getLocale();
 
@@ -38,8 +40,9 @@ class PhotoController extends AbstractController
 			'nbrPicture' => $nbrPicture
 		]);
     }
-	
-	public function tabPictureAction(Request $request, $id, $theme)
+
+	#[Route('/photo/tab/{id}/{theme}', name: 'Photo_TabPicture', requirements: ['theme' => '.+'])]
+	public function tabPicture(Request $request, $id, $theme)
 	{
 		return $this->render('photo/Photo/tabPicture.html.twig', [
 			'themeDisplay' => $theme,
@@ -47,7 +50,8 @@ class PhotoController extends AbstractController
 		]);
 	}
 
-	public function tabPictureDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
+	#[Route('/photo/tabpicturedatatables/{themeId}', name: 'Photo_TabPictureDatatables')]
+	public function tabPictureDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $themeId)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
@@ -88,8 +92,9 @@ class PhotoController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
-	public function readAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
+
+	#[Route('/photo/read/{id}/{title_slug}', name: 'Photo_Read', defaults: ['title_slug' => null])]
+	public function read(Request $request, EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Photo::class)->find($id);
 
@@ -110,7 +115,7 @@ class PhotoController extends AbstractController
 	}
 
 	// INDEX
-	public function sliderAction(Request $request, EntityManagerInterface $em)
+	public function slider(Request $request, EntityManagerInterface $em)
 	{
 		$entities = $em->getRepository(Photo::class)->getSliderNew($request->getLocale());
 		return $this->render("photo/Photo/slider.html.twig", [
@@ -119,7 +124,8 @@ class PhotoController extends AbstractController
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
+	#[Route('/photo/pdfversion/{id}', name: 'Photo_Pdfversion')]
+	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(Photo::class)->find($id);
 		
@@ -135,7 +141,8 @@ class PhotoController extends AbstractController
 	}
 
 	// Photo of the world
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+	#[Route('/photo/world/{language}/{themeId}/{theme}', name: 'Photo_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -160,7 +167,8 @@ class PhotoController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
+	#[Route('/photo/selectThemeForIndexWorldAction/{language}', name: 'Photo_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
+	public function selectThemeForIndexWorld(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
@@ -169,7 +177,8 @@ class PhotoController extends AbstractController
 		return new Response($this->generateUrl('Photo_World', array('language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle())));
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+	#[Route('/photo/worlddatatables/{language}/{themeId}', name: 'Photo_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -211,7 +220,7 @@ class PhotoController extends AbstractController
 		return $response;
 	}
 	
-	public function getSameTopicsAction(EntityManagerInterface $em, $id)
+	public function getSameTopics(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Photo::class)->find($id);
 		$sameTopics = $em->getRepository(Photo::class)->getSameTopics($entity);
@@ -220,6 +229,7 @@ class PhotoController extends AbstractController
 	}
 
 	// USER PARTICIPATION
+	#[Route('/photo/new', name: 'Photo_New')]
     public function newAction(Request $request)
     {
         $entity = new Photo();
@@ -231,8 +241,9 @@ class PhotoController extends AbstractController
             'form' => $form->createView()
         ]);
     }
-	
-	public function createAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/photo/create', name: 'Photo_Create')]
+	public function create(Request $request, EntityManagerInterface $em)
     {
 		return $this->genericCreateUpdate($request, $em);
     }
@@ -304,7 +315,8 @@ class PhotoController extends AbstractController
         ]);
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/photo/edit/{id}', name: 'Photo_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$user = $this->getUser();
 
@@ -324,12 +336,14 @@ class PhotoController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/photo/update/{id}', name: 'Photo_Update')]
+	public function update(Request $request, EntityManagerInterface $em, $id)
     {
 		return $this->genericCreateUpdate($request, $em, $id);
     }
 
-	public function validateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/photo/validate/{id}', name: 'Photo_Validate')]
+	public function validate(Request $request, EntityManagerInterface $em, $id)
 	{
         $entity = $em->getRepository(Photo::class)->find($id);
 

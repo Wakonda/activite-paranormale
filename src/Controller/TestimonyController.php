@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\GoneHttpException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -28,7 +29,8 @@ class TestimonyController extends AbstractController
 		(new TagsManagingGeneric($em))->saveTags($form, Testimony::class, 'Testimony', new TestimonyTags(), $entityBindded);
 	}
 
-    public function indexAction(Request $request, EntityManagerInterface $em)
+	#[Route('/testimony', name: 'Testimony_Index')]
+    public function index(Request $request, EntityManagerInterface $em)
     {
 		$locale = $request->getLocale();
 
@@ -47,6 +49,7 @@ class TestimonyController extends AbstractController
     }
 	
 	// USER PARTICIPATION
+	#[Route('/testimony/new', name: 'Testimony_New')]
     public function newAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new Testimony();
@@ -61,12 +64,14 @@ class TestimonyController extends AbstractController
         ]);
     }
 
-    public function createAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
+	#[Route('/testimony/create', name: 'Testimony_Create')]
+    public function create(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
 		return $this->generateCreateUpdate($request, $em, $authorizationChecker);
     }
 
-	public function addFileAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
+	#[Route('/testimony/file/{id}', name: 'Testimony_AddFile')]
+	public function addFile(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
 		$entity = $em->getRepository(Testimony::class)->find($id);
@@ -79,12 +84,14 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/addFile.html.twig', array('entity' => $entity));
 	}
 
-	public function postCreateAction($id, $draft, $preview)
+	#[Route('/testimony/postcreate/{draft}/{preview}/{id}', name: 'Testimony_Postcreate', defaults: ['draft' => 0, 'preview' => 0, 'id' => 0])]
+	public function postCreate($id, $draft, $preview)
 	{
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-    public function showAction(Request $request, EntityManagerInterface $em, $id, $title_slug)
+	#[Route('/testimony/show/{id}/{title_slug}', name: 'Testimony_Show', defaults: ['title_slug' => null])]
+    public function show(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
         $entity = $em->getRepository(Testimony::class)->find($id);
 
@@ -164,8 +171,9 @@ class TestimonyController extends AbstractController
             'form'   => $form->createView()
         ));
 	}
-	
-	public function waitingAction(EntityManagerInterface $em, $id)
+
+	#[Route('/testimony/waiting/{id}', name: 'Testimony_Waiting')]
+	public function waiting(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(Testimony::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
@@ -175,8 +183,9 @@ class TestimonyController extends AbstractController
             'entity' => $entity,
         ));
 	}
-	
-	public function validateAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
+
+	#[Route('/testimony/validate/{id}', name: 'Testimony_Validate')]
+	public function validate(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
 	{
 		$session = $request->getSession();
         $entity = $em->getRepository(Testimony::class)->find($id);
@@ -199,7 +208,8 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
+	#[Route('/testimony/edit/{id}', name: 'Testimony_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
 		$user = $this->getUser();
         $entity = $em->getRepository(Testimony::class)->find($id);
@@ -218,12 +228,14 @@ class TestimonyController extends AbstractController
         ]);
     }
 
-	public function updateAction($id)
+	#[Route('/testimony/update/{id}', name: 'Testimony_Update')]
+	public function update($id)
     {
 		return $this->genericCreateUpdate($id);
     }
-	
-	public function tabAction(Request $request, EntityManagerInterface $em, $id, $theme)
+
+	#[Route('/testimony/tab/{id}/{theme}', name: 'Testimony_Tab', requirements: ['theme' => '.+'])]
+	public function tab(Request $request, EntityManagerInterface $em, $id, $theme)
 	{
 		$entities = $em->getRepository(Testimony::class)->getTabTestimony($request->getLocale(), $theme);
 		
@@ -242,7 +254,8 @@ class TestimonyController extends AbstractController
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
+	#[Route('/testimony/pdfversion/{id}', name: 'Testimony_Pdfversion')]
+	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(Testimony::class)->find($id);
 

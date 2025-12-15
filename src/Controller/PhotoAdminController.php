@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -21,10 +22,7 @@ use App\Service\APDate;
 use App\Service\ConstraintControllerValidator;
 use App\Service\TagsManagingGeneric;
 
-/**
- * Photo controller.
- *
- */
+#[Route('/admin/photo')]
 class PhotoAdminController extends AdminGenericController
 {
 	protected $entityName = 'Photo';
@@ -49,18 +47,21 @@ class PhotoAdminController extends AdminGenericController
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new PhotoTags(), $entityBindded);
 	}
 
-    public function indexAction()
+	#[Route('/', name: 'Photo_Admin_Index')]
+    public function index()
     {
 		$twig = 'photo/PhotoAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
-	
-    public function showAction(EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/show', name: 'Photo_Admin_Show')]
+    public function show(EntityManagerInterface $em, $id)
     {
 		$twig = 'photo/PhotoAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
+	#[Route('/new', name: 'Photo_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em)
     {
 		$formType = PhotoAdminType::class;
@@ -69,8 +70,9 @@ class PhotoAdminController extends AdminGenericController
 		$twig = 'photo/PhotoAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
-	
-    public function createAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
+
+	#[Route('/create', name: 'Photo_Admin_Create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator)
     {
 		$formType = PhotoAdminType::class;
 		$entity = new Photo();
@@ -78,8 +80,9 @@ class PhotoAdminController extends AdminGenericController
 		$twig = 'photo/PhotoAdmin/new.html.twig';
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
-    public function editAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/{id}/edit', name: 'Photo_Admin_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, $id)
     {
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = PhotoAdminType::class;
@@ -87,15 +90,17 @@ class PhotoAdminController extends AdminGenericController
 		$twig = 'photo/PhotoAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
-	
-	public function updateAction(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
+
+	#[Route('/{id}/update', name: 'Photo_Admin_Update', methods: ['POST'])]
+	public function update(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, $id)
     {
 		$formType = PhotoAdminType::class;
 		$twig = 'photo/PhotoAdmin/edit.html.twig';
 
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
-	
+
+	#[Route('/{id}/delete', name: 'Photo_Admin_Delete')]
     public function deleteAction(EntityManagerInterface $em, $id)
     {
 		$comments = $em->getRepository("\App\Entity\PhotoComment")->findBy(["entity" => $id]);
@@ -107,13 +112,15 @@ class PhotoAdminController extends AdminGenericController
 
 		return $this->deleteGeneric($em, $id);
     }
-	
-	public function archiveAction(EntityManagerInterface $em, $id)
+
+	#[Route('/archive/{id}', name: 'Photo_Admin_Archive', requirements: ['id' => '\d+'])]
+	public function archive(EntityManagerInterface $em, $id)
 	{
 		return $this->archiveGenericArchive($em, $id);
 	}
-	
-	public function indexDatatablesAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
+
+	#[Route('/datatables', name: 'Photo_Admin_IndexDatatables', methods: ['GET'])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, APDate $date)
 	{
 		$informationArray = $this->indexDatatablesGeneric($request, $em);
 		$output = $informationArray['output'];
@@ -142,57 +149,20 @@ class PhotoAdminController extends AdminGenericController
 		return new JsonResponse($output);
 	}
 
-	public function reloadListsByLanguageAction(Request $request, EntityManagerInterface $em)
-	{
-		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
-		$translateArray = [];
-		
-		if(!empty($language))
-		{
-			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
-			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
-		}
-		else
-		{
-			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
-			$states = $em->getRepository(State::class)->findAll();
-			$licences = $em->getRepository(Licence::class)->findAll();
-		}
-
-		$themeArray = [];
-		$stateArray = [];
-		$licenceArray = [];
-		
-		foreach($themes as $theme)
-			$themeArray[] = ["id" => $theme["id"], "title" => $theme["title"]];
-
-		$translateArray['theme'] = $themeArray;
-
-		foreach($states as $state)
-			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle());
-
-		$translateArray['state'] = $stateArray;
-
-		foreach($licences as $licence)
-			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
-
-		$translateArray['licence'] = $licenceArray;
-
-		return new JsonResponse($translateArray);
-	}
-
-	public function showImageSelectorColorboxAction()
+	#[Route('/showImageSelectorColorbox', name: 'Photo_Admin_ShowImageSelectorColorbox')]
+	public function showImageSelectorColorbox()
 	{
 		return $this->showImageSelectorColorboxGeneric('Photo_Admin_LoadImageSelectorColorbox');
 	}
-	
-	public function loadImageSelectorColorboxAction(Request $request, EntityManagerInterface $em)
+
+	#[Route('/loadImageSelectorColorbox', name: 'Photo_Admin_LoadImageSelectorColorbox')]
+	public function loadImageSelectorColorbox(Request $request, EntityManagerInterface $em)
 	{
 		return $this->loadImageSelectorColorboxGeneric($request, $em);
 	}
-	
-	public function internationalizationAction(Request $request, EntityManagerInterface $em, $id)
+
+	#[Route('/internationalization/{id}', name: 'Photo_Admin_Internationalization')]
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
 	{
 		$formType = PhotoAdminType::class;
 		$entity = new Photo();
@@ -201,7 +171,7 @@ class PhotoAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getTheme()->getInternationalName()]);
 		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
-// dd($state);
+
 		if(empty($state)) {
 			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
 			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
@@ -238,6 +208,7 @@ class PhotoAdminController extends AdminGenericController
 		return new Response($countByStateAdmin);
 	}
 
+	#[Route('/delete_multiple', name: 'Photo_Admin_DeleteMultiple')]
 	public function deleteMultiple(Request $request, EntityManagerInterface $em)
 	{
 		$ids = json_decode($request->request->get("ids"));
@@ -252,7 +223,8 @@ class PhotoAdminController extends AdminGenericController
 		return new Response();
 	}
 
-	public function changeStateAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
+	#[Route('/change_state/{id}/{state}', name: 'Photo_Admin_ChangeState', requirements: ['id' => '\d+'])]
+	public function changeState(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();
 

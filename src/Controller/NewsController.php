@@ -3,7 +3,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Request;use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use App\Form\Type\NewsType;
@@ -26,7 +26,8 @@ use App\Service\APHtml2Pdf;
 
 class NewsController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
+	#[Route('/news/{page}/{theme}', name: 'News_Index', defaults: ['theme' => null], requirements: ['page' => '\d+', 'theme' => '.+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page, $theme)
     {
 		$lang = $request->getLocale();
 
@@ -53,8 +54,11 @@ class NewsController extends AbstractController
 			'themes' => $themes
 		]);
     }
-	
-	public function readNewsAction(Request $request, EntityManagerInterface $em, $id, $title_slug = null)
+
+	#[Route('/NewRead-{id}-{title}.ap', name: 'News_ReadNews', requirements: ['title' => '.+'])]
+	#[Route('/ArchiveRead-{id}-{title}.ap', name: 'Archive_Old_ReadNews', requirements: ['title' => '.+'])]
+	#[Route('/news/read/{id}/{title_slug}', name: 'News_ReadNews_New', defaults: ['title_slug' => null], requirements: ['title_slug' => '.+'])]
+	public function readNews(Request $request, EntityManagerInterface $em, $id, $title_slug = null)
 	{
 		$entity = $em->getRepository(News::class)->findByDisplayState($id);
 
@@ -72,7 +76,8 @@ class NewsController extends AbstractController
 		]);
 	}
 
-	public function selectThemeForIndexNewAction(Request $request, EntityManagerInterface $em)
+	#[Route('/selectThemeForIndexNewAction', name: 'News_SelectThemeForIndexNew')]
+	public function selectThemeForIndexNew(Request $request, EntityManagerInterface $em)
 	{
 		$themeId = $request->request->get('theme_news');
 		$theme = $em->getRepository(Theme::class)->find($themeId);
@@ -90,7 +95,8 @@ class NewsController extends AbstractController
 	/* FIN FONCTION DE COMPTAGE */
 	
 	// News of the world
-	public function worldAction(EntityManagerInterface $em, $language, $themeId, $theme)
+	#[Route('/news/world/{language}/{themeId}/{theme}', name: 'News_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]
+	public function world(EntityManagerInterface $em, $language, $themeId, $theme)
 	{
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
@@ -113,8 +119,9 @@ class NewsController extends AbstractController
 			'theme' => empty($theme) ? null : $theme
 		]);
 	}
-	
-	public function selectThemeForIndexWorldAction(Request $request, EntityManagerInterface $em, $language)
+
+	#[Route('/news/selectThemeForIndexWorldAction/{language}', name: 'News_SelectThemeForIndexWorld', defaults: ['language' => 'all'])]
+	public function selectThemeForIndexWorld(Request $request, EntityManagerInterface $em, $language)
 	{
 		$themeId = $request->request->get('theme_id');
 		$language = $request->request->get('language', 'all');
@@ -123,7 +130,8 @@ class NewsController extends AbstractController
 		return new Response($this->generateUrl('News_World', ['language' => $language, 'themeId' => $theme->getId(), 'theme' => $theme->getTitle()]));
 	}
 
-	public function worldDatatablesAction(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
+	#[Route('/news/worlddatatables/{language}/{themeId}', name: 'News_WorldDatatables', defaults: ['language' => 'all', 'themeId' => 0])]
+	public function worldDatatables(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APDate $date, $language)
 	{
 		$themeId = $request->query->get("theme_id");
 		$iDisplayStart = $request->query->get('start');
@@ -166,7 +174,8 @@ class NewsController extends AbstractController
 	}
 	
 	// INDEX
-	public function sliderAction(EntityManagerInterface $em)
+	#[Route('/slider', name: 'News_Slider')]
+	public function slider(EntityManagerInterface $em)
 	{
 		$sliderNews = $em->getRepository(News::class)->getSliderNew();
 
@@ -174,8 +183,9 @@ class NewsController extends AbstractController
 			"worldNews" => $sliderNews
 		]);
 	}
-	
-	public function mainSliderAction(EntityManagerInterface $em, $lang)
+
+	#[Route('/mainslider/{lang}', name: 'News_MainSlider')]
+	public function mainSlider(EntityManagerInterface $em, $lang)
 	{
 		$sliderNew = $em->getRepository(News::class)->getMainSliderNew($lang);
 
@@ -185,7 +195,8 @@ class NewsController extends AbstractController
 	}
 
 	// ENREGISTREMENT PDF
-	public function pdfVersionAction(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
+	#[Route('/news/pdfversion/{id}', name: 'News_Pdfversion')]
+	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)
 	{
 		$entity = $em->getRepository(News::class)->find($id);
 		
@@ -201,6 +212,8 @@ class NewsController extends AbstractController
 	}
 	
 	// USER PARTICIPATION
+	#[Route('/news/new', name: 'News_New')]
+	#[Route('/news/published', name: 'News_User_News')]
     public function newAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
         $entity = new News();
@@ -214,13 +227,16 @@ class NewsController extends AbstractController
             'form'   => $form->createView()
         ]);
     }
-	
-	public function createAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
+
+	#[Route('/news/create', name: 'News_Create')]
+	#[Route('/news/published/create/{draft}/{preview}', name: 'News_User_Create', defaults: ['draft' => 0, 'preview' => 0])]
+	public function create(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
     {
 		return $this->genericCreateUpdate($request, $em, $authorizationChecker);
     }
-	
-	public function waitingAction(EntityManagerInterface $em, $id)
+
+	#[Route('/news/waiting/{id}', name: 'News_Waiting')]
+	public function waiting(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(News::class)->find($id);
 		if($entity->getState()->getDisplayState() == 1)
@@ -231,7 +247,8 @@ class NewsController extends AbstractController
         ]);
 	}
 
-	public function validateAction(Request $request, EntityManagerInterface $em, $id)
+	#[Route('/news/validate/{id}', name: 'News_Validate')]
+	public function validate(Request $request, EntityManagerInterface $em, $id)
 	{
         $entity = $em->getRepository(News::class)->find($id);
 		
@@ -253,7 +270,8 @@ class NewsController extends AbstractController
 		return $this->render('news/News/validate_externaluser_text.html.twig');
 	}
 
-    public function editAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
+	#[Route('/news/edit/{id}', name: 'News_Edit')]
+    public function edit(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
 		$user = $this->getUser();
 		$entity = $em->getRepository(News::class)->find($id);
@@ -274,7 +292,8 @@ class NewsController extends AbstractController
         ]);
     }
 
-	public function updateAction(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
+	#[Route('/news/update/{id}', name: 'News_Update')]
+	public function update(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
     {
 		return $this->genericCreateUpdate($request, $em, $authorizationChecker, $id);
     }
@@ -363,7 +382,7 @@ class NewsController extends AbstractController
         ]);
 	}
 	
-	public function getSameTopicsAction(EntityManagerInterface $em, $id)
+	public function getSameTopics(EntityManagerInterface $em, $id)
 	{
 		$entity = $em->getRepository(News::class)->find($id);
 		$sameTopics = $em->getRepository(News::class)->getSameTopics($entity);

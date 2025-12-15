@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -16,7 +17,8 @@ use App\Service\PHPImage;
 
 class StoreController extends AbstractController
 {
-    public function indexAction(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
+	#[Route('/store/{page}', name: 'Store_Index', defaults: ['page' => 1], requirements: ['page' => '\d+'])]
+    public function index(Request $request, EntityManagerInterface $em, PaginatorInterface $paginator, $page)
     {
 		$nbMessageByPage = 12;
 		$datas = [];
@@ -50,14 +52,15 @@ class StoreController extends AbstractController
 		return $this->render('store/Store/index.html.twig', ['pagination' => $pagination, 'form' => $form->createView()]);
     }
 
-	public function showAction(EntityManagerInterface $em, $id, $title_slug)
+	#[Route('/store/{id}/{title_slug}', name: 'Store_Show', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
+	public function show(EntityManagerInterface $em, $id, $title_slug)
 	{
 		$entity = $em->getRepository(Store::class)->find($id);
 
 		return $this->render('store/Store/show.html.twig', ['entity' => $entity]);
 	}
 	
-	public function sliderAction(Request $request, EntityManagerInterface $em)
+	public function slider(Request $request, EntityManagerInterface $em)
 	{
 		$entities = $em->getRepository(Store::class)->getSlider($request->getLocale());
 
@@ -66,7 +69,8 @@ class StoreController extends AbstractController
 		));
 	}
 
-    public function randomAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+	#[Route('/store/random', name: 'Store_Random')]
+    public function random(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
     {
 		$category = explode("|", $request->query->get("category", Store::BOOK_CATEGORY));
 		$locale = $request->query->get("locale", $request->getLocale());
@@ -99,6 +103,7 @@ class StoreController extends AbstractController
         return new Response($text);
     }
 
+	#[Route('/store/generate_embedded_code/{id}', name: 'Store_GenerateEmbeddedCode', requirements: ['id' => '\d+'])]
 	public function generateEmbeddedCode(Request $request, EntityManagerInterface $em, PHPImage $image, $id) {
 		$entity = $em->getRepository(Store::class)->find($id);
 
