@@ -1130,17 +1130,23 @@ class APExtension extends AbstractExtension
 	}
 
 	public function isURLAvailable($url) {
-		$timeout = 2;
+		$timeout = 500;
+
 		$ch = curl_init($url);
 
 		curl_setopt_array($ch, [
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_NOBODY         => true, // on ne télécharge pas le contenu
-			CURLOPT_TIMEOUT        => $timeout,
-			CURLOPT_CONNECTTIMEOUT => $timeout,
+		CURLOPT_FOLLOWLOCATION => true,
+		CURLOPT_SSL_VERIFYPEER => false,
+		CURLOPT_SSL_VERIFYHOST => false,
+		CURLOPT_RETURNTRANSFER => true,
+		CURLOPT_TIMEOUT        => $timeout,
+		CURLOPT_CONNECTTIMEOUT => $timeout,
+		CURLOPT_USERAGENT => "Mozilla/5.0 (Windows NT 10.0; Win64; x64)
+		AppleWebKit/537.36 (KHTML, like Gecko)
+		Chrome/120.0.0.0 Safari/537.36"
 		]);
 
-		curl_exec($ch);
+		$res = curl_exec($ch);
 
 		$errNo = curl_errno($ch);
 		curl_close($ch);

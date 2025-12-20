@@ -54,11 +54,15 @@
 		(async () => {
 			const textarea = document.getElementById('{{ textarea }}');
 			const chat_resp = await puter.ai.chat('Language : {{ locale }}. Write a tweet on - ' + originalValue, { stream: true, model: model });
+			let value = "";
 
 			for await (const part of chat_resp) {
-				textarea.value += part?.text;
+			console.log("ooo " + part?.text);
+				value += part?.text;
 				textarea.scrollTop = textarea.scrollHeight;
 			}
+			
+			textarea.value = value.replace(/undefined$/, '');
 
 			document.querySelector("#generate_icon{{ textarea }}").classList.add("fa-robot");
 			document.querySelector("#generate_icon{{ textarea }}").classList.remove("fa-arrows-rotate", "fa-spin");
