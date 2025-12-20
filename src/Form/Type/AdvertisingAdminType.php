@@ -18,7 +18,7 @@ use App\Entity\Advertising;
 
 class AdvertisingAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$locale = $options["locale"];
 
@@ -49,7 +49,7 @@ class AdvertisingAdminType extends AbstractType
 	/**
 	 * {@inheritdoc}
 	 */
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			"data_class" => Advertising::class,
@@ -57,7 +57,7 @@ class AdvertisingAdminType extends AbstractType
 		]);
 	}
 	
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_advertising_advertisingadmintype';
     }

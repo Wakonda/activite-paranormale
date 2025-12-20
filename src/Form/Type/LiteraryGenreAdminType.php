@@ -19,7 +19,7 @@ use App\Form\Field\SourceEditType;
 
 class LiteraryGenreAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => [new NotBlank()]))
@@ -44,12 +44,12 @@ class LiteraryGenreAdminType extends AbstractType
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_book_literarygenreadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\LiteraryGenre'

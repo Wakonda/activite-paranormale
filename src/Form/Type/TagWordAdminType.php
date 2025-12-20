@@ -19,7 +19,7 @@ use App\Form\EventListener\InternationalNameFieldListener;
 
 class TagWordAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
@@ -42,12 +42,12 @@ class TagWordAdminType extends AbstractType
 			->add('illustration', IllustrationType::class, ['required' => false, 'base_path' => 'TagWord_Admin_ShowImageSelectorColorbox', 'file_path' => $builder->getData()->getAssetImagePath()]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_tags_tagwordtype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\TagWord',

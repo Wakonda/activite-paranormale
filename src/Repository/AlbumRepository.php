@@ -104,7 +104,7 @@ class AlbumRepository extends EntityRepository
 	
 	public function getMusicsByAlbum($id)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 
 		$qb->select("al.id AS album_id, al.title AS album_title, ar.id AS artist_id, ar.title AS artist_title, al.slug AS album_slug, ar.slug AS artist_slug, COUNT(al.id) AS number_title")
 		   ->from("App\Entity\Music", "mu")

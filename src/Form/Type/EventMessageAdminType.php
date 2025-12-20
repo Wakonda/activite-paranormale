@@ -31,7 +31,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class EventMessageAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options['locale'];
 
@@ -138,12 +138,12 @@ class EventMessageAdminType extends AbstractType
 		});
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_page_eventmessageadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'App\Entity\EventMessage',

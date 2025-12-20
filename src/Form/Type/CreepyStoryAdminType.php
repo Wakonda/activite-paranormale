@@ -18,7 +18,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class CreepyStoryAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options['locale'];
 
@@ -78,12 +78,12 @@ class CreepyStoryAdminType extends AbstractType
 			]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_creepystory_creepystoryadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\CreepyStory',

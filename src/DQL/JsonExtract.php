@@ -2,7 +2,7 @@
 namespace App\DQL;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode,
-    Doctrine\ORM\Query\Lexer;
+    Doctrine\ORM\Query\TokenType;
 
 class JsonExtract extends FunctionNode
 {
@@ -11,21 +11,21 @@ class JsonExtract extends FunctionNode
     public function parse(\Doctrine\ORM\Query\Parser $parser): void
     {
         $lexer = $parser->getLexer();
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 		
         $this->parsedArguments[] = $parser->StringPrimary();
 		
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 		
 		$this->parsedArguments[] = $parser->StringPrimary();
 
-        if(Lexer::T_COMMA === $lexer->lookahead['type']){
-            $parser->match(Lexer::T_COMMA);
+        if(TokenType::T_COMMA === $lexer->lookahead['type']){
+            $parser->match(TokenType::T_COMMA);
             $this->parsedArguments[] = $parser->StringPrimary();
         }
 
-		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
+		$parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
 

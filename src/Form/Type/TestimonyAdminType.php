@@ -28,7 +28,7 @@ class TestimonyAdminType extends AbstractType
 		$this->entityManager = $entityManager;
 	}
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$locationValue = null;
 		$country = null;
@@ -103,12 +103,12 @@ class TestimonyAdminType extends AbstractType
 			->add('sightingDate', DateTimePartialType::class, ['required' => false]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_testimony_testimonyadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Testimony',

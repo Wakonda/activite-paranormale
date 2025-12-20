@@ -177,7 +177,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 			$languages[] = $data->getLanguage()->getId();
 		}
 
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		$qb->select("l")
 		   ->from(\App\Entity\Language::class, "l")
 		   ->where("l.id IN (:languages)")

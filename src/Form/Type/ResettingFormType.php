@@ -11,7 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class ResettingFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 
@@ -33,7 +33,7 @@ class ResettingFormType extends AbstractType
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_user_resetting';
     }

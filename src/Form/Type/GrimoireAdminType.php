@@ -17,7 +17,7 @@ use App\Form\Field\SourceEditType;
 
 class GrimoireAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options['locale'];
         $builder
@@ -53,12 +53,12 @@ class GrimoireAdminType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_witchcraft_grimoireadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'App\Entity\Grimoire',

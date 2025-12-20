@@ -146,7 +146,7 @@ class ClassifiedAdsRepository extends EntityRepository
 
 		$res = [];
 		$counters = $qb->getQuery()->getResult();
-		$categories = $this->_em->createQuery('SELECT a.title, pc.title AS parentCategory FROM App\Entity\ClassifiedAdsCategory a JOIN a.parentCategory pc JOIN a.language l WHERE l.abbreviation = :language ORDER BY a.title ASC')->setParameter("language", $language)->getResult();
+		$categories = $this->getEntityManager()->createQuery('SELECT a.title, pc.title AS parentCategory FROM App\Entity\ClassifiedAdsCategory a JOIN a.parentCategory pc JOIN a.language l WHERE l.abbreviation = :language ORDER BY a.title ASC')->setParameter("language", $language)->getResult();
 
 		foreach($categories as $category) {
 			$key = array_search($category["title"], array_column($counters, "title"));

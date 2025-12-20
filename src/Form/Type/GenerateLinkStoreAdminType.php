@@ -12,7 +12,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
 class GenerateLinkStoreAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('asin', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
@@ -20,7 +20,7 @@ class GenerateLinkStoreAdminType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_generatelinkstore_usefullinkadmintype';
     }

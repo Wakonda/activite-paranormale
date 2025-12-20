@@ -2,7 +2,7 @@
 namespace App\DQL;
 
 use Doctrine\ORM\Query\AST\Functions\FunctionNode,
-    Doctrine\ORM\Query\Lexer;
+    Doctrine\ORM\Query\TokenType;
 
 class JsonSearch extends FunctionNode
 {
@@ -10,33 +10,33 @@ class JsonSearch extends FunctionNode
 	
     public function parse(\Doctrine\ORM\Query\Parser $parser): void
     {
-        $parser->match(Lexer::T_IDENTIFIER);
-        $parser->match(Lexer::T_OPEN_PARENTHESIS);
+        $parser->match(TokenType::T_IDENTIFIER);
+        $parser->match(TokenType::T_OPEN_PARENTHESIS);
 		
         $this->parsedArguments[] = $parser->StringPrimary();
 		
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 		
 		$this->parsedArguments[] = $parser->StringPrimary();
 		
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 		
 		$this->parsedArguments[] = $parser->StringPrimary();
 		
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 
-        if ($parser->getLexer()->isNextToken(Lexer::T_NULL)) {
-            $parser->match(Lexer::T_NULL);
+        if ($parser->getLexer()->isNextToken(TokenType::T_NULL)) {
+            $parser->match(TokenType::T_NULL);
             $this->parsedArguments[] = null;
         } else {
             $this->parsedArguments[] = $parser->StringPrimary();
         }
 
-		$parser->match(Lexer::T_COMMA);
+		$parser->match(TokenType::T_COMMA);
 
 		$this->parsedArguments[] = $parser->StringPrimary();
 
-		$parser->match(Lexer::T_CLOSE_PARENTHESIS);
+		$parser->match(TokenType::T_CLOSE_PARENTHESIS);
     }
 
 

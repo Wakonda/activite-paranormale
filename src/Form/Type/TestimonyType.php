@@ -26,7 +26,7 @@ class TestimonyType extends AbstractType
 {
 	public function __construct(private TokenStorageInterface $token){}
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options['locale'];
 		$user = !empty($token = $this->token->getToken()) ? $token->getUser() : null;
@@ -104,12 +104,12 @@ class TestimonyType extends AbstractType
 		});
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_mobile_testimonyuserparticipationtype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Testimony',

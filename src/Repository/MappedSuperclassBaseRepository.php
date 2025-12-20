@@ -55,7 +55,7 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 	public function getAllArchivesByThemeAndLanguage($classname, $language)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 
 		$qb->select("SUM(if( s.displayState = true AND o.archive = true, 1, 0)) AS total")
 		   ->addSelect("t.title")

@@ -65,7 +65,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 	#[ORM\Column(name: 'password_requested_at', type: 'datetime', length: 255, nullable: true)]
     protected $passwordRequestedAt;
 
-	#[ORM\Column(type: 'array')]
+	#[ORM\Column(type: 'json')]
     protected $roles;
 
 	#[Assert\File(maxSize: '6000000')]

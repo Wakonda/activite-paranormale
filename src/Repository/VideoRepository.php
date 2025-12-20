@@ -26,7 +26,7 @@ class VideoRepository extends MappedSuperclassBaseRepository
 
 	public function getAllVideoByThemeAndLanguage($language)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 
 		$qb->select("SUM(if( s.displayState = 1 AND o.archive = false, 1, 0)) AS total")
 		   ->addSelect("t.title")

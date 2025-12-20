@@ -14,7 +14,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class WitchcraftToolSearchType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options['locale'];
 		$builder->setMethod('GET');
@@ -33,12 +33,12 @@ class WitchcraftToolSearchType extends AbstractType
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'form';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'locale' => 'fr',

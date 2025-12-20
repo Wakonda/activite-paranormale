@@ -25,7 +25,7 @@ use App\Form\Field\SocialNetworkEditType;
 
 class ArtistAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options['locale'];
 		
@@ -84,12 +84,12 @@ class ArtistAdminType extends AbstractType
 		});
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_music_artistadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'App\Entity\Artist',

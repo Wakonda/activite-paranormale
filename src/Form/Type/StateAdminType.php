@@ -16,7 +16,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class StateAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, array('label'=>'Titre', 'required' =>true, 'constraints' => array(new NotBlank())))
@@ -46,12 +46,12 @@ class StateAdminType extends AbstractType
 			));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_index_stateadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'App\Entity\State',

@@ -9,14 +9,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class SearchEngineType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('query', TextType::class, ["attr" => ["placeholder" => "index.leftMenu.Search"], "translation_domain" => "validators"])
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_search_searchenginetype';
     }

@@ -26,7 +26,7 @@ use App\Entity\TagWord;
 
 class EpisodeTelevisionSerieAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $builder->getData()->getTelevisionSerie()->getLanguage()->getId();
 
@@ -78,12 +78,12 @@ class EpisodeTelevisionSerieAdminType extends AbstractType
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_movie_televisionserieadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'data_class' => 'App\Entity\Movies\EpisodeTelevisionSerie'

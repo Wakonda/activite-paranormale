@@ -80,7 +80,7 @@ class AdminUserRepository extends EntityRepository
 	{
 		$aColumns = ['m.title', 's.internationalName', 'l.abbreviation', 'm.writingDate'];
 
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		$qb	->from($bundleClassName, 'm')
 			->innerjoin('m.language', 'l')
 			->innerjoin('m.state', 's')
@@ -128,7 +128,7 @@ class AdminUserRepository extends EntityRepository
 	{
 		$aColumns = ['c.messageComment', 'c.dateComment', 'c.id'];
 
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		
 		$classNameQuery = $className ? $className : 'App\Entity\Comment';
 		

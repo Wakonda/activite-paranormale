@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class StoreEditType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		foreach($options["fields"] as $key => $field) {
 			switch($field["type"]) {
@@ -20,7 +20,7 @@ class StoreEditType extends AbstractType
 		}
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'error_bubbling' => false,

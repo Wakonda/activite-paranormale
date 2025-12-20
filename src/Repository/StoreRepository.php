@@ -60,7 +60,7 @@ class StoreRepository extends EntityRepository
 	
 	public function getAutocompleteBook($locale, $query)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		
 		$qb->from("App\Entity\BookEdition", "pf")
 		   ->innerjoin("pf.book", "b");
@@ -90,7 +90,7 @@ class StoreRepository extends EntityRepository
 	
 	public function getAutocompleteAlbum($locale, $query)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		
 		$qb->from("App\Entity\Album", "pf");
 		
@@ -120,7 +120,7 @@ class StoreRepository extends EntityRepository
 	
 	public function getAutocompleteMovie($locale, $query)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		
 		$qb->from("App\Entity\Movies\Movie", "pf");
 		
@@ -149,7 +149,7 @@ class StoreRepository extends EntityRepository
 	
 	public function getAutocompleteTelevisionSerie($locale, $query)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		
 		$qb->from("App\Entity\Movies\TelevisionSerie", "pf");
 		
@@ -178,7 +178,7 @@ class StoreRepository extends EntityRepository
 	
 	public function getAutocompleteWitchcraftToolStore($locale, $query)
 	{
-		$qb = $this->_em->createQueryBuilder();
+		$qb = $this->getEntityManager()->createQueryBuilder();
 		
 		$qb->from("App\Entity\WitchcraftTool", "pf");
 		

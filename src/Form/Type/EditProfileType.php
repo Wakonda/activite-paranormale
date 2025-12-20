@@ -26,7 +26,7 @@ use App\Entity\Region;
 
 class EditProfileType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$locale = $options["locale"];
         $builder
@@ -114,12 +114,12 @@ class EditProfileType extends AbstractType
 		$event->setData($data);
 	}
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_user_editprofiletype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'locale' => 'fr',

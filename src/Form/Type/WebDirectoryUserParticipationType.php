@@ -28,7 +28,7 @@ use App\Entity\Language;
 
 class WebDirectoryUserParticipationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
@@ -170,12 +170,12 @@ class WebDirectoryUserParticipationType extends AbstractType
 		$event->setData($data);
 	}
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_webdirectory_webdirectoryuserparticipationtype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\WebDirectory'

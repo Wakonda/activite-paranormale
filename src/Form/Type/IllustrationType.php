@@ -18,7 +18,7 @@ use Symfony\Component\Validator\Constraints\Url;
 
 class IllustrationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('titleFile', FileType::class, ['data_class' => null, 'required' => true])
@@ -42,18 +42,18 @@ class IllustrationType extends AbstractType
 		});
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'illustration';
     }
 
-    public function buildView(FormView $view, FormInterface $form, array $options)
+    public function buildView(FormView $view, FormInterface $form, array $options): void
     {
         $view->vars['base_path'] = $options['base_path'];
         $view->vars['file_path'] = $options['file_path'];
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\FileManagement',

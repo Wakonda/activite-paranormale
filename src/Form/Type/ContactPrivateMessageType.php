@@ -22,7 +22,7 @@ class ContactPrivateMessageType extends AbstractType
 	   $this->token = $token;
 	}
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		if(empty($this->token->getToken()) or empty($this->token->getToken()->getUser())) {
 			$builder
@@ -38,12 +38,12 @@ class ContactPrivateMessageType extends AbstractType
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_contact_contactprivatemessagetype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Contact',

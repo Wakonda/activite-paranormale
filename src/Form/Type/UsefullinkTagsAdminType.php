@@ -10,18 +10,18 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class UsefullinkTagsAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_usefullink_usefullinktagsadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\UsefullinkTags'

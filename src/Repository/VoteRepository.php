@@ -32,7 +32,7 @@ class VoteRepository extends EntityRepository
 
 		if(!empty($sSearch)) {
 			$search = "%".$sSearch."%";
-			$parentEntityMetadata = $this->_em->getClassMetadata(Vote::class);
+			$parentEntityMetadata = $this->getEntityManager()->getClassMetadata(Vote::class);
 			$subClasses = $parentEntityMetadata->subClasses;
 
 			$where = [];
@@ -98,7 +98,7 @@ class VoteRepository extends EntityRepository
 
 		if(!empty($sSearch)) {
 			$search = "%".$sSearch."%";
-			$parentEntityMetadata = $this->_em->getClassMetadata(Vote::class);
+			$parentEntityMetadata = $this->getEntityManager()->getClassMetadata(Vote::class);
 			$subClasses = $parentEntityMetadata->subClasses;
 
 			$where = [];

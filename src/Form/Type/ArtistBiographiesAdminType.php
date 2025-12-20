@@ -18,7 +18,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class ArtistBiographiesAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$dataClass = $options["data_class"];
 		$occupationArray = [];
@@ -60,12 +60,12 @@ class ArtistBiographiesAdminType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_artist_artistbiographiestype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => null,

@@ -20,7 +20,7 @@ use App\Form\Field\SourceEditType;
 
 class GenreAudiovisualAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
@@ -45,12 +45,12 @@ class GenreAudiovisualAdminType extends AbstractType
 		;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_movie_genreaudiovisualadmintype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Movies\GenreAudiovisual'

@@ -9,12 +9,12 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 class VoteType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$builder->add('valueVote', TextType::class, ["data" => $options["averageVote"], "attr" => ["class" => "rating-loading cursor-pointer", "dir" => "ltr", "data-size" => "sm"]]);
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Vote',
@@ -22,7 +22,7 @@ class VoteType extends AbstractType
 		]);
 	}
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_vote_votetype';
     }

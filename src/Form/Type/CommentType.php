@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 
 class CommentType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$userType = $options['userType'];
 		
@@ -31,12 +31,12 @@ class CommentType extends AbstractType
 		}
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_comment_commenttype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\Comment',

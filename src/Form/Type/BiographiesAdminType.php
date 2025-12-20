@@ -19,7 +19,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 class BiographiesAdminType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$dataClass = $options["data_class"];
 		$occupationArray = [];
@@ -61,12 +61,12 @@ class BiographiesAdminType extends AbstractType
 				$builder->add('role', TextType::class, array('label' => 'biographies.admin.Role', 'translation_domain' => 'validators', 'required' => false, "attr" => ["class" => "form-control role-biography"], "label_attr" => ["class" => "role-biography"]));
 	}
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_movie_biographiestype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'data_class' => null,

@@ -30,7 +30,7 @@ use App\Entity\Region;
 
 class RegistrationFormType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
 		$locale = $options["locale"];
@@ -206,12 +206,12 @@ class RegistrationFormType extends AbstractType
 		$event->setData($data);
 	}
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_user_registration';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'locale' => 'fr',

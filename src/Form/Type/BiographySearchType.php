@@ -23,7 +23,7 @@ class BiographySearchType extends AbstractType
 		$this->translator = $translator;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$entities = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 		$occupationChoice = [];
@@ -65,12 +65,12 @@ class BiographySearchType extends AbstractType
 			->add('occupation', ChoiceType::class, ['required' => false, 'choices' => $occupationChoiceDatas, 'translation_domain' => 'validators'])
 		;
     }
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'form';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults(array(
 			'locale' => 'fr',

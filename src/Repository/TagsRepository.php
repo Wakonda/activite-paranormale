@@ -46,7 +46,7 @@ class TagsRepository extends EntityRepository
 		if(!empty($sSearch))
 		{
 			$search = "%".$sSearch."%";
-			$parentEntityMetadata = $this->_em->getClassMetadata(Tags::class);
+			$parentEntityMetadata = $this->getEntityManager()->getClassMetadata(Tags::class);
 			$subClasses = $parentEntityMetadata->subClasses;
 
 			$where = [];

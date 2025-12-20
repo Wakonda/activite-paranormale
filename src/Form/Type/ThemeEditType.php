@@ -25,12 +25,12 @@ class ThemeEditType extends AbstractType
 		$this->locale = $translator->getLocale();
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return EntityType::class;
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'locale' => 'fr',

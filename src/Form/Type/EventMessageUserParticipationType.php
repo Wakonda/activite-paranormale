@@ -27,7 +27,7 @@ class EventMessageUserParticipationType extends AbstractType
 {
 	public function __construct(private TokenStorageInterface $token){}
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$language = $options["language"];
 		$user = !empty($token = $this->token->getToken()) ? $token->getUser() : null;
@@ -96,12 +96,12 @@ class EventMessageUserParticipationType extends AbstractType
 		});
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ap_page_eventmessageuserparticipationtype';
     }
 
-	public function configureOptions(OptionsResolver $resolver)
+	public function configureOptions(OptionsResolver $resolver): void
 	{
 		$resolver->setDefaults([
 			'data_class' => 'App\Entity\EventMessage',
