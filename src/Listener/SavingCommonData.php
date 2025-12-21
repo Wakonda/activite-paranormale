@@ -9,6 +9,8 @@ use App\Service\APPurifierHTML;
 use App\Service\APParseHTML;
 use App\Entity\Interfaces\SearchEngineInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
+use Doctrine\ORM\Event\PreUpdateEventArgs;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
 
 class SavingCommonData
 {
@@ -71,7 +73,7 @@ class SavingCommonData
 		}
 	}
 
-	public function postUpdate(LifecycleEventArgs $args) {
+	public function postUpdate(PostUpdateEventArgs $args) {
 		if($args->getObject() instanceof SearchEngineInterface) {
 			$searchEngine = new \App\Service\SearchEngine();
 			$searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR.$_ENV["SEARCH_SQLITE_PATH"], null);
@@ -104,10 +106,10 @@ class SavingCommonData
 		}
 	}
 
-	public function preUpdate(LifecycleEventArgs $args)
+	public function preUpdate(PreUpdateEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
+        $entity = $args->getObject();
+        $entityManager = $args->getObjectManager();
 		$uow = $entityManager->getUnitOfWork();
 
 		if(get_parent_class($entity) == 'App\Entity\MappedSuperclassBase')

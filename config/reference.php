@@ -1707,6 +1707,26 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         },
  *     }>,
  * }
+ * @psalm-type TetranzSelect2EntityConfig = array{
+ *     minimum_input_length?: int, // Default: 1
+ *     scroll?: bool, // Default: false
+ *     page_limit?: int, // Default: 10
+ *     allow_clear?: bool, // Default: false
+ *     allow_add?: array{
+ *         enabled?: bool, // Default: false
+ *         new_tag_text?: scalar|null, // Default: " (NEW)"
+ *         new_tag_prefix?: scalar|null, // Default: "__"
+ *         tag_separators?: scalar|null, // Default: "[\",\", \" \"]"
+ *     },
+ *     delay?: int, // Default: 250
+ *     language?: scalar|null, // Default: "en"
+ *     theme?: scalar|null, // Default: "default"
+ *     cache?: bool, // Default: true
+ *     cache_timeout?: int, // Default: 60000
+ *     width?: scalar|null, // Default: null
+ *     object_manager?: scalar|null, // Default: null
+ *     render_html?: bool, // Default: false
+ * }
  * @psalm-type ConfigType = array{
  *     imports?: ImportsConfig,
  *     parameters?: ParametersConfig,
@@ -1721,6 +1741,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *     knp_paginator?: KnpPaginatorConfig,
  *     nelmio_cors?: NelmioCorsConfig,
  *     monolog?: MonologConfig,
+ *     tetranz_select2_entity?: TetranzSelect2EntityConfig,
  *     "when@dev"?: array{
  *         imports?: ImportsConfig,
  *         parameters?: ParametersConfig,
@@ -1738,6 +1759,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         nelmio_cors?: NelmioCorsConfig,
  *         maker?: MakerConfig,
  *         monolog?: MonologConfig,
+ *         tetranz_select2_entity?: TetranzSelect2EntityConfig,
  *     },
  *     "when@prod"?: array{
  *         imports?: ImportsConfig,
@@ -1753,6 +1775,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         knp_paginator?: KnpPaginatorConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         monolog?: MonologConfig,
+ *         tetranz_select2_entity?: TetranzSelect2EntityConfig,
  *     },
  *     "when@test"?: array{
  *         imports?: ImportsConfig,
@@ -1770,6 +1793,7 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
  *         knp_paginator?: KnpPaginatorConfig,
  *         nelmio_cors?: NelmioCorsConfig,
  *         monolog?: MonologConfig,
+ *         tetranz_select2_entity?: TetranzSelect2EntityConfig,
  *     },
  *     ...<string, ExtensionType|array{ // extra keys must follow the when@%env% pattern or match an extension alias
  *         imports?: ImportsConfig,

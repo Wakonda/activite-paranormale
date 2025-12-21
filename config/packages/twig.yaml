@@ -2,6 +2,9 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    # paths:
+        # On lie le dossier physique au nom de namespace Twig
+        # '%kernel.project_dir%/vendor/wakonda/moon-phase-bundle/templates': WakondaMoonPhase
     form_themes:
         - 'index/Form/fields.html.twig'
         - '@TetranzSelect2Entity/Form/fields.html.twig'

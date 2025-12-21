@@ -43,8 +43,8 @@
         "symfony/webpack-encore-bundle": "*",
         "symfony/yaml": "8.0.*",
         "tumblr/tumblr": "*",
-        "wakonda/moon-phase-bundle": "1.1",
-        "wakonda/select2entity-bundle": "*"
+        "wakonda/moon-phase-bundle": "^1.3",
+        "wakonda/select2entity-bundle": "^1.4"
     },
     "require-dev": {
         "symfony/browser-kit": "8.0.*",

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Doctrine\ORM\Event\PostUpdateEventArgs;
 
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
@@ -26,9 +27,9 @@ class HistoryListener
 		$this->authorizationChecker = $authorizationChecker;
     }
 
-    public function postUpdate (LifecycleEventArgs $args)
+    public function postUpdate (PostUpdateEventArgs $args)
     {
-		$uow = $args->getEntityManager()->getUnitOfWork();
+		$uow = $args->getObjectManager()->getUnitOfWork();
 		$entity = $args->getObject();
 		
 		if(!method_exists($entity, "getHistory"))

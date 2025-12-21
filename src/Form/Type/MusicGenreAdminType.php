@@ -19,7 +19,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\EventListener\InternationalNameFieldListener;
 
 class MusicGenreAdminType extends AbstractType
