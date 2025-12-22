@@ -63,7 +63,11 @@ class EditProfileType extends AbstractType
 				$donationArray = json_decode($builder->getData()->getDonation(), true);
 
 		foreach(array_merge(["Paypal"], Currency::getCryptoCurrencies()) as $donation) {
-			$key = array_search(ucfirst($donation), array_column($donationArray, "donation"));
+			if(empty($donationArray))
+				$key = null;
+			else
+				$key = array_search(ucfirst($donation), array_column($donationArray, "donation"));
+
 			$placeholder = 'user.donation.EmailAddress';
 
 			if($donation != "Paypal")
