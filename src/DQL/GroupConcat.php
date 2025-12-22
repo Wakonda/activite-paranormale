@@ -42,7 +42,7 @@ class GroupConcat extends FunctionNode
         }
 
         if ($lexer->isNextToken(TokenType::T_IDENTIFIER)) {
-            if (strtolower($lexer->lookahead['value']) !== 'separator') {
+            if (strtolower($lexer->lookahead->value) !== 'separator') {
                 $parser->syntaxError('separator');
             }
             $parser->match(TokenType::T_IDENTIFIER);
