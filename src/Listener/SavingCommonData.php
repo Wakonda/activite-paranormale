@@ -13,6 +13,7 @@ use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
 use Doctrine\ORM\Event\PrePersistEventArgs;
 use Doctrine\ORM\Event\PostPersistEventArgs;
+use Doctrine\ORM\Event\PreRemoveEventArgs;
 
 class SavingCommonData
 {
@@ -99,7 +100,7 @@ class SavingCommonData
 		}
 	}
 
-	public function preRemove(LifecycleEventArgs $args) {
+	public function preRemove(PreRemoveEventArgs $args) {
 		if($args->getObject() instanceof SearchEngineInterface) {
 			$searchEngine = new \App\Service\SearchEngine();
 			$searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR.$_ENV["SEARCH_SQLITE_PATH"], null);
