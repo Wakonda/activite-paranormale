@@ -20,7 +20,7 @@ class HistoryDetail
 	#[ORM\Column(type: 'datetime')]
     protected $modificationDateTime;
 
-	#[ORM\Column(type: 'json', nullable: true)]
+	#[ORM\Column(type: 'text', nullable: true)]
 	protected $diffText;
 
 	#[ORM\Column(type: 'string', length: 255)]

@@ -11,6 +11,8 @@ use App\Entity\Interfaces\SearchEngineInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Doctrine\ORM\Event\PreUpdateEventArgs;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PrePersistEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
 
 class SavingCommonData
 {
@@ -38,15 +40,15 @@ class SavingCommonData
 		return $parser->saveImageFromURL($text, $entity->getAssetImagePath());
 	}
 
-    public function prePersist(LifecycleEventArgs $args)
+    public function prePersist(PrePersistEventArgs $args)
     {
-        $entity = $args->getEntity();
-        $entityManager = $args->getEntityManager();
+        $entity = $args->getObject();
+        $entityManager = $args->getObjectManager();
 
 		$this->cleanText($entity, $entityManager);
     }
 
-	public function postPersist(LifecycleEventArgs $args): void
+	public function postPersist(PostPersistEventArgs $args): void
 	{
 		if($args->getObject() instanceof SearchEngineInterface) {
 			$searchEngine = new \App\Service\SearchEngine();

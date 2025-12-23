@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Doctrine\ORM\Event\PostUpdateEventArgs;
+use Doctrine\ORM\Event\PostPersistEventArgs;
 
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
@@ -114,13 +115,13 @@ class HistoryListener
 		
 		$history->addHistoryDetail($historyDetail);
 		
-		$args->getEntityManager()->persist($history);
-		$args->getEntityManager()->persist($historyDetail);
+		$args->getObjectManager()->persist($history);
+		$args->getObjectManager()->persist($historyDetail);
 		 
-		$args->getEntityManager()->flush();
+		$args->getObjectManager()->flush();
     }
 	
-    public function postPersist(LifecycleEventArgs $args)
+    public function postPersist(PostPersistEventArgs $args)
     {
     }
 	
