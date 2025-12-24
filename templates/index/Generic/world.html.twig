@@ -60,7 +60,7 @@
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 
-	{{ render(controller('App\\Controller\\IndexController::world', {language: app.request.attributes.get('language'), themeId: app.request.get("themeId"), currentRoute: app.request.attributes.get('_route') })) }}
+	{{ render(controller('App\\Controller\\IndexController::world', {language: app.request.attributes.get('language'), themeId: app.request.query.get('themeId'), currentRoute: app.request.attributes.get('_route')})) }}
 	<br>
 	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/world-news.jpg') }}" width="550" alt="Apocalypse world"></p>
 	<hr>

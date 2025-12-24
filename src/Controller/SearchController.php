@@ -32,13 +32,14 @@ class SearchController extends AbstractController
 		$num_results_on_page = 10;
 		$searchEngine->setParams($_ENV["DB_HOST"], $_ENV["DB_NAME"], $_ENV["DB_USER"], $_ENV["DB_PASSWORD"], $parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR."private".DIRECTORY_SEPARATOR."search".DIRECTORY_SEPARATOR.$_ENV["SEARCH_SQLITE_PATH"], $num_results_on_page);
 
-		$path = "../../private/search/".$_ENV["SEARCH_SQLITE_PATH"];
+		$path = $this->getParameter('kernel.project_dir').'/private/search/'.$_ENV["SEARCH_SQLITE_PATH"];
 
-		$connectionParams = [
-			'url' => 'sqlite://'.$path
-		];
+		$conn = \Doctrine\DBAL\DriverManager::getConnection([
+			'driver' => 'pdo_sqlite',
+			'path' => $path,
+		]);
 
-		$conn = \Doctrine\DBAL\DriverManager::getConnection($connectionParams);
+		$nativeConnection = $conn->getNativeConnection();
 
 		// Web
 		$startTimer = microtime(true);
@@ -46,7 +47,7 @@ class SearchController extends AbstractController
 			$searchEngine->getSQLQuery($keyword, $request->getLocale()),
 			($request->query->has("page") and $type == "text") ? $page : 1,
 			$num_results_on_page,
-			$conn
+			$nativeConnection
 		);
 
 		$pagination->setCustomParameters(['align' => 'center']);
@@ -72,7 +73,7 @@ class SearchController extends AbstractController
 			$searchEngine->getSQLQuery($keyword, $request->getLocale()),
 			($request->query->has("page") and $type == "image") ? $page : 1,
 			$num_results_on_page,
-			$conn,
+			$nativeConnection,
 			$searchEngine->countDatas($keyword, $request->getLocale())
 		);
 		

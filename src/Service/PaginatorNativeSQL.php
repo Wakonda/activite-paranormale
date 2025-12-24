@@ -22,23 +22,26 @@ class PaginatorNativeSQL
     function paginate($query, $page, $pagesize, $connection = null, $total = null)
     {
         $request = $this->requestStack->getCurrentRequest();
-        if ($connection instanceof Connection) {
+        // if ($connection instanceof Connection) {
             $this->connection = $connection;
-        }
+        // }
         $offset = ($page - 1) * $pagesize;
         if(is_null($total)){
             $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);
-            $total = $this->connection->executeQuery($countQuery)->fetchNumeric()[0];
+			   $stmt = $this->connection->query($countQuery);
+            $total = $stmt->fetchColumn();
         }
         $query .= ' LIMIT ' . $pagesize . ' OFFSET ' . $offset;
 
-        $list = $this->connection->executeQuery($query)->fetchAllAssociative();
+		$stmt = $this->connection->query($query);
+		$list = $stmt->fetchAll();
+
         $slidingPagination = new SlidingPagination($request->query->all());
         $slidingPagination->setCurrentPageNumber($page);
         $slidingPagination->setItemNumberPerPage($pagesize);
         $slidingPagination->setItems($list);
         $slidingPagination->setPageRange(10);
-        $slidingPagination->setUsedRoute($request->get('_route'));
+        $slidingPagination->setUsedRoute($request->attributes->get('_route'));
         $slidingPagination->setTotalItemCount($total);
         $slidingPagination->setPaginatorOptions([
             "pageParameterName" => "page",
