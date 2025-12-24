@@ -202,7 +202,7 @@ class SearchEngine {
 	}
 
 	public function insertImage(array $data) {
-		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
+		$pdo = new \PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 
 		if(!isset($data["id"]))
 			throw new Exception("Field 'id' must be specified");
@@ -246,7 +246,7 @@ class SearchEngine {
 	}
 	
 	public function insert(array $data) {
-		$pdo = new PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
+		$pdo = new \PDO("sqlite:{$this->filename}", null, null, [PDO::ATTR_PERSISTENT => true]);
 		
 		if(!isset($data["id"]))
 			throw new Exception("Field 'id' must be specified");
