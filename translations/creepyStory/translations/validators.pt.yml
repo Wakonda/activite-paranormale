@@ -1,0 +1,23 @@
+creepyStory:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Photo: "Foto"
+        Language: "Idioma"
+        Theme: "Tema"
+        PseudoUsed: "Pseudónimo usado"
+        PublicationDate: "Data de publicação"
+        State: "Estado"
+        Licence: "Licença"
+        WritingDate: "Data de redação"
+        Source: "Fonte"
+    index:
+        CreepyStory: "História assustadora"
+        CountCreepyStory: "Número total: "
+        Theme: "Tema"
+        Number: "Número"
+        Sources: "Fontes"
+    tab:
+        Photo: "Foto"
+        Title: "Título"
+        PublicationDate: "Data de publicação"

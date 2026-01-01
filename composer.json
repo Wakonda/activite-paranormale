@@ -2,7 +2,7 @@
     "name": "symfony/framework-standard-edition",
     "description": "The \"Symfony Standard Edition\" distribution",
     "require": {
-        "php": "^8.5.1",
+        "php": "^8.5.0",
         "abraham/twitteroauth": "*",
         "api-platform/core": "*",
         "ausi/slug-generator": "*",

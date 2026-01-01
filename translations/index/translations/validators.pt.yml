@@ -1,0 +1,248 @@
+index:
+    main:
+        Welcome: "Início"
+        InternationalNews: "Atualidade internacional"
+        Video: "Vídeo"
+        Gallery: "Galeria"
+        Witchcraft: "Feitiçaria"
+        GoWebsiteMobile: "Aceder à versão móvel"
+    mainMenu:
+        Welcome: "Início"
+        New: "Atualidade"
+        Witchcraft: "Feitiçaria"
+        Blog: "Blog"
+        Store: "Loja"
+    leftMenu:
+        Information: "Informação"
+        Account: "Perfil"
+        YourAccount: "Ver o seu perfil"
+        ModifyAccount: "Modificar o seu perfil"
+        ModifyPassword: "Modificar a sua palavra-passe"
+        Logout: "Terminar sessão"
+        Login: "Iniciar sessão"
+        CreateAccount: "Criar uma conta"
+        Management: "Administração"
+        Section: "Secção"
+        Archive: "Arquivo"
+        World: "Atualidade multilíngue"
+        Document: "Documento"
+        Cartography: "Cartografia"
+        Members: "Membros"
+        Music: "Música"
+        Photo: "Fotografia"
+        Download: "Transferência"
+        Testimony: "Testemunho"
+        Theme: "Tema"
+        Video: "Vídeo"
+        OfferLink: "Propor uma ligação"
+        Testify: "Testemunhar"
+        SubmitArticle: "Propor um artigo"
+        Participate: "Participar"
+        Search: "Pesquisar"
+        HelpUs: "Ajude-nos"
+        Quotations: "Citações"
+        Validation: "Validação"
+        More: "Diretório"
+        AddNews: "Propor um artigo"
+        AddRitual: "Propor um ritual"
+        AddEvent: "Propor um evento"
+        AddVideo: "Propor um vídeo"
+        AddPhoto: "Propor uma fotografia"
+        PublishClassifiedAds: "Publicar um anúncio"
+        Partner: "Parceiro"
+        Biography: "Biografia"
+        Movie: "Filme"
+        TelevisionSerie: "Série de televisão"
+        FollowUsOn: "Siga-nos em ..."
+        ClassifiedAds: "Anúncios"
+        Book: "Livro"
+        Development: "Desenvolvimento"
+        CreepyStory: "História assustadora"
+        GoodiesShop: "Loja de brindes"
+        ArtCulture: "Arte / Cultura"
+    donate:
+        DonateInCryptocurrency: "Faça um donativo em criptomoeda"
+        CryptocurrencyDonation: "Donativo em cripto"
+    development:
+        Develop: "Desenvolver"
+        CodingSkills: "Contribua com as suas competências de programação!"
+    footerMenu:
+        FollowUs: "Siga-nos"
+        About: "Sobre"
+        MobileView: "Versão móvel"
+        Tag: "Etiqueta"
+        PrivacyPolicy: "Política de privacidade"
+        Participation: "Participação"
+        Contact: "Contacto"
+    rightMenu:
+        Login: "Iniciar sessão"
+        CreateAccount: "Criar uma conta"
+        Logout: "Terminar sessão"
+        SeeAccount: "Ver o seu perfil"
+        EditAccount: "Modificar o seu perfil"
+        Admin: "Administração"
+    className:
+        Book: "Livro"
+        Cartography: "Cartografia"
+        Document: "Documento"
+        EventMessage: "Evento"
+        Movie: "Filme"
+        News: "Atualidade"
+        Photo: "Fotografia"
+        Testimony: "Testemunho"
+        Video: "Vídeo"
+        TelevisionSerie: "Série de televisão"
+        EpisodeTelevisionSerie: "Episódio (série de televisão)"
+        Grimoire: "Feitiçaria"
+        WitchcraftTool: "Ferramentas de feitiçaria"
+        CreepyStory: "História assustadora"
+        ClassifiedAds: "Anúncio"
+    archive:
+        Archive: "Arquivo"
+        DocArchive: "Número total de documentos arquivados: "
+        Theme: "Tema"
+        Number: "Número"
+        Source: "Fonte"
+        Title: "Título"
+        PublicationDate: "Data de publicação"
+        Section: "Secção"
+        Unauthorized: "Os nossos arquivos são privados. Para aceder, deve <a href='%urlAccount%'>criar uma conta</a> e <a href='%urlContact%'>solicitar acesso</a> a estas informações. Depois de autorizado, poderá consultar gratuitamente e de forma ilimitada todos os nossos arquivos."
+    application:
+        App: "Aplicação"
+        Version: "Versão:"
+        Preview: "Pré-visualização"
+        DownloadForAndroid: "Transferir para Android"
+        Text: "Mergulhe no mistério com a aplicação Android 'Activité-Paranormale'! Descubra toda a atualidade fascinante do insólito e do paranormal diretamente no seu smartphone. Explore fenómenos estranhos, histórias misteriosas e descobertas incríveis que desafiam a explicação racional. Mantenha-se sempre atualizado com as últimas investigações, vídeos intrigantes e entrevistas exclusivas com investigadores e especialistas do paranormal. Com 'Activité-Paranormale', o mistério está ao seu alcance, pronto para despertar a sua curiosidade e levá-lo ao inexplicável!"
+    search:
+        Validate: "Validar"
+        Reset: "Reinicializar"
+civility:
+    admin:
+        Title: "Título"
+        InternationalName: "Nome internacional"
+        Language: "Idioma"
+        Icon: "Ícone"
+region:
+    admin:
+        Region: "Zona geográfica"
+        Title: "Título"
+        Flag: "Bandeira"
+        Language: "Idioma"
+        InternationalName: "Nome internacional"
+        Family: "Família"
+        HigherLevel: "Nível superior"
+    form:
+        Country: "País"
+        Area: "Zona"
+        Subdivision: "Subdivisão"
+language:
+    admin:
+        Language: "Idioma"
+        Abbreviation: "Abreviação"
+        Flag: "Bandeira"
+        Direction: "Direção da escrita"
+        RightToLeft: "Da direita para a esquerda"
+        LeftToRight: "Da esquerda para a direita"
+        Current: "Idioma do site"
+licence:
+    showColorbox:
+        WhatLicensesChoose: "Que licenças escolher?"
+    showColorboxByLicence:
+        License: "Licença"
+    admin:
+        Title: "Título"
+        Logo: "Logótipo"
+        Description: "Descrição"
+        InternationalName: "Nome internacional"
+        Language: "Idioma"
+        Link: "Ligação"
+history:
+    show:
+        Title: "Título"
+        Date: "Data"
+        Author: "Autor"
+        RevisionHistory: "Histórico de versões de"
+        ViewHistory: "Ver histórico"
+        History: "Histórico"
+        Diff: "Diferença"
+state:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        DisplayState: "Apresentação"
+        Language: "Idioma"
+        InternationalName: "Nome internacional"
+theme:
+    admin:
+        Theme: "Tema"
+        Family: "Família"
+        Language: "Idioma"
+        File: "Ficheiro"
+        Photo: "Fotografia"
+        InternationalName: "Nome internacional"
+        Text: "Texto"
+        Sources: "Fontes"
+    index:
+        Theme: "Tema"
+        Read: "Consultar"
+        Sources: "Fontes"
+    read:
+        Theme: "Tema"
+generality:
+    read:
+        Previous: "Anterior"
+        Next: "Seguinte"
+        OnTheSameTopic: "Sobre o mesmo tema"
+        NoMatchingRecordsFound: "Nenhum dado disponível"
+    data:
+        LoadingInProgress: "Carregamento em curso ..."
+    page:
+        Advertisement: "Publicidade"
+    pdf:
+        Home: "Início"
+        Download: "Transferir"
+        Back: "Voltar"
+        SavePrint: "Guardar / Imprimir"
+banner:
+    admin:
+        Title: "Título"
+        Link: "Ligação"
+        Image: "Imagem"
+        Display: "Apresentação"
+        Language: "Idioma"
+captcha:
+    form:
+        RecopyCaptcha: "Reescreva a palavra apresentada na imagem"
+    error:
+        InvalidCaptcha: "Código de segurança inválido"
+twitter:
+    admin:
+        NumberOfRemainingCharacters: "Número de caracteres restantes:"
+        AddImage: "Anexar imagem"
+mastodon:
+    index:
+        PleaseEnterYourInstance: "Introduza a sua instância"
+        ChooseAnInstance: "Como o Mastodon possui vários servidores, é necessário escolher uma instância"
+        Share: "Partilhar"
+version:
+    title:
+        ActivateVersion: "Ativar a versão"
+        ReturnToVersion: "Voltar à versão"
+# Error HTTP
+"Not Found": "Página não encontrada"
+"Internal Server Error": "Erro interno do servidor"
+
+error:
+    exception:
+        Error: "Erro"
+        Deleted: "Esta página foi eliminada"
+magicTrick:
+    index:
+        MagicTrick: "Truque de magia"
+        Telepathy: "Telepatia"
+        TelepathyFirstStep: "Pense num número de dois algarismos"
+        TelepathySecondStep: "Subtraia desse número os algarismos que o compõem (exemplo: se escolheu '38', o cálculo será: '38 - 3 - 8 = 27')"
+        TelepathyThirdStep: "Encontre o símbolo correspondente na tabela abaixo"
+        TelepathyClickResult: "Clique aqui para descobrir o resultado!"
+        TelepathyClickResultText: "O símbolo correspondente ao número em que pensou é o seguinte:"
+        Retry: "Tentar novamente"

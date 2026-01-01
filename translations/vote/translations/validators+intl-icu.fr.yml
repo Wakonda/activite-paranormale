@@ -19,3 +19,6 @@ vote:
         ShowMyFavorites: "Consulter mes favoris"
         ThisArticleIsInYourFavorites: "Cet article est dans vos favoris"
         AddThisArticleToYourFavorites: "Ajouter cet article à vos favoris"
+    validate:
+        ValidationVote: "Validation de votre vote"
+        RecordedVote: "Votre vote a bien été pris en compte !"

@@ -1,0 +1,114 @@
+book:
+    index:
+        Book: "Livro"
+    admin:
+        Book: "Livro"
+        Title: "Título"
+        Photo: "Foto"
+        Text: "Resumo"
+        PublicationDate: "Data de publicação"
+        Authors: "Autores"
+        Language: "Idioma"
+        Theme: "Tema"
+        LiteraryGenre: "Género literário"
+        State: "Estado"
+        Sources: "Fontes"
+        Fiction: "Ficção"
+        Nonfiction: "Não ficção"
+        InternationalName: "Nome internacional"
+        Introduction: "Apresentação"
+        FictionalCharacters: "Personagens fictícias"
+    biography:
+        Title: "Título"
+        Language: "Idioma"
+        Read: "Ler"
+    search:
+        SearchSort: "Pesquisar / Ordenar"
+        Keywords: "Palavras-chave"
+        Theme: "Tema"
+        PublicationDate: "Data de publicação"
+        PublicationDateUp: "Data de publicação ↑"
+        PublicationDateDown: "Data de publicação ↓"
+        Sort: "Ordenar por"
+        Read: "Ler"
+        NoMatchingRecordsFound: "Nenhum elemento a apresentar"
+        LiteraryGenre: "Género"
+        Fiction: "Ficção"
+        Nonfiction: "Não ficção"
+    read:
+        Authors: "Autores"
+        PublishedOn: "Publicado em"
+        Description: "Descrição"
+        Details: "Detalhes"
+        Theme: "Tema"
+        CodeCopiedWithSuccess: "O código foi copiado com sucesso"
+        BookEditions: "Edições"
+        Sources: "Fontes"
+        LiteraryGenre: "Género literário"
+        Introduction: "Apresentação"
+        Characters: "Personagens"
+    byPublisher:
+        VisitThePublishersWebsite: "Visitar o site da editora"
+        Sources: "Fontes"
+    world:
+        WorldBook: "Livro multilingue"
+
+bookEdition:
+    admin:
+        ListOfEditions: "Lista de edições"
+        AddEdition: "Adicionar uma edição"
+        NumberPage: "Número de páginas"
+        PublicationDate: "Data de publicação"
+        Biographies: "Biografias"
+        Format: "Formato"
+        BackCover: "Quarta capa"
+        Photo: "Foto"
+        Publisher: "Editora"
+        Paperback: "Capa mole"
+        Hardcover: "Capa dura"
+        Audiobook: "Audiolivro"
+        Ebook: "E-book"
+        WholeBook: "Livro completo"
+        Subtitle: "Subtítulo"
+    generic:
+        Paperback: "Capa mole"
+        Hardcover: "Capa dura"
+        Audiobook: "Audiolivro"
+        Ebook: "E-book"
+    read:
+        BackCover: "Quarta capa"
+        NumberPage: "Número de páginas"
+        Format: "Formato"
+        PublishedOn: "Publicado em"
+        Publisher: "Editora"
+        Subtitle: "Subtítulo"
+        Photo: "Foto"
+        Translator: "Tradutor"
+        Preface: "Prefácio"
+        BookParticipation: "Participação"
+
+literaryGenre:
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        Text: "Texto"
+        Fiction: "Ficção"
+        Language: "Idioma"
+        Sources: "Fontes"
+        InternationalName: "Nome internacional"
+
+publisher:
+    admin:
+        Title: "Título"
+        Photo: "Foto"
+        Website: "Site web"
+        Text: "Texto"
+        Language: "Idioma"
+        InternationalName: "Nome internacional"
+        Source: "Fonte"
+        SocialNetworks: "Redes sociais"
+
+biographies:
+    admin:
+        Translator: "Tradutor"
+        Preface: "Prefácio"

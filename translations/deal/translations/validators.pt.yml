@@ -1,0 +1,14 @@
+deal:
+    admin:
+        Title: "Título"
+        Text: "Texto"
+        Active: "Ativo"
+        Link: "Link"
+        Language: "Idioma"
+        Photo: "Foto"
+    index:
+        Deal: "Oferta"
+        Link: "Link"
+        Read: "Ler"
+        NoMatchingRecordsFound: "Nenhum item para exibir"
+        Text: "Esta página permite-lhe descobrir ofertas especiais. Nós tomamos cuidado para testar as ofertas que propomos, de modo a eliminar ao máximo as fraudes. Se algumas ofertas escaparem à nossa vigilância, contacte-nos. Se conhecer outras ofertas, não hesite em nos informar para que as possamos publicar nesta secção."

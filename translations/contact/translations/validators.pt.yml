@@ -1,0 +1,45 @@
+contact:
+    error:
+        mailRegex: "O seu e-mail está incorreto"
+        fieldEmpty: "Este campo não pode estar vazio"
+    index:
+        ContactUs: "Contacte-nos!"
+        Name: "O seu nome"
+        Email: "O seu e-mail"
+        Subject: "Assunto"
+        Message: "A sua mensagem"
+        Send: "Enviar"
+        Cancel: "Cancelar"
+    mail:
+        MessageSentBy: "Mensagem enviada por"
+    send:
+        Confirmation: "Confirmação"
+        messageSucces: "A sua mensagem foi enviada com sucesso!"
+        messageConfirmation: "Responderemos à sua solicitação o mais rapidamente possível."
+    admin:
+        Pseudo: "Pseudónimo"
+        Email: "E-mail"
+        Message: "Mensagem"
+        PhoneNumber: "Número de telefone"
+        Recipient: "Destinatário"
+        Read: "Lido?"
+        Subject: "Assunto"
+        Date: "Data"
+
+privateMessage:
+    index:
+        MyPrivateMessages: "As minhas mensagens privadas"
+        SendPrivateMessage: "Enviar mensagem privada"
+        Inbox: "Caixa de entrada"
+        Outbox: "Caixa de saída"
+        Subject: "Assunto"
+        Author: "Autor"
+        PhoneNumber: "Número de telefone"
+        Recipient: "Destinatário"
+        Date: "Data"
+        Read: "Ler"
+    read:
+        Reply: "Responder"
+    send:
+        MessageTo: "Mensagem para"
+        Success: "Mensagem enviada com sucesso"

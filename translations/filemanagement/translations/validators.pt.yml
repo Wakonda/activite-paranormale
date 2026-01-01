@@ -1,0 +1,33 @@
+file:
+    add:
+        AttachFile: "Anexar ficheiros (opcional)"
+        Title: "Título"
+        File: "Ficheiro"
+        Upload: "Transferir"
+        Display: "Visualizar"
+        Delete: "Remover"
+        NoFile: "Ainda não existe ficheiro"
+        NoFileSelected: "Nenhum ficheiro selecionado"
+    uploadFile:
+        FileTooLarge: "O ficheiro é demasiado grande"
+        UnauthorizedExtension: "Extensão não autorizada"
+        NoFileSelected: "Nenhum ficheiro selecionado"
+        FileAddedWithSuccess: "Ficheiro adicionado com sucesso"
+        NoFile: "Nenhum ficheiro"
+    admin:
+        Files: "Ficheiros"
+        File: "Ficheiro"
+        Title: "Título"
+        Caption: "Legenda"
+        CaptionPhoto: "Legenda - Fotografia"
+        NotUsed: "Não utilizado"
+        MediaManagement: "Gestão de multimédia"
+        SortByNameDesc: "Ordenar por nome (decrescente)"
+        SortByNameAsc: "Ordenar por nome (crescente)"
+        SortBySizeDesc: "Ordenar por tamanho do ficheiro (decrescente)"
+        SortBySizeAsc: "Ordenar por tamanho do ficheiro (crescente)"
+        Other: "Outro"
+    read:
+        OtherFiles: "Outros ficheiros"
+        Title: "Título"
+        Download: "Transferir"

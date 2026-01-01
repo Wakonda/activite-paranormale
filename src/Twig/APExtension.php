@@ -278,7 +278,7 @@ class APExtension extends AbstractExtension
 			}
 			$optionString = implode(" ", $optionArray);
 		}
-// dd($optionString);
+
 		$src = $realPath.$file;
 
 		if($private) {

@@ -1,0 +1,27 @@
+mobile:
+    main:
+        News: "Atualidade"
+        Video: "Vídeo"
+        Photo: "Fotografia"
+        Testimony: "Testemunho"
+        Witchcraft: "Feitiçaria"
+        Search: "Pesquisar"
+        Desktop: "Desativar a versão móvel"
+        Older: "Anterior"
+        Newer: "Seguinte"
+        Contribute: "Participar"
+    news:
+        NoNews: "Nenhuma atualidade"
+    video:
+        AllVideos: "Todos os vídeos"
+        NoVideo: "Nenhum vídeo"
+    photo:
+        AllPhotos: "Todas as fotografias"
+        NoPhoto: "Nenhuma fotografia"
+    testimony:
+        AllTestimonials: "Todos os testemunhos"
+        NoTestimony: "Nenhum testemunho"
+        Testify: "Testemunhar"
+    witchcraft:
+        AllRituals: "Todos os rituais"
+        NoRitual: "Nenhum ritual"

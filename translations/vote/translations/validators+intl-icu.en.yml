@@ -20,3 +20,6 @@ vote:
         ShowMyFavorites: "Show my favorites"
         ThisArticleIsInYourFavorites: "This article is in your favorites"
         AddThisArticleToYourFavorites: "Add this article to your favorites"
+    validate:
+        ValidationVote: "Your vote validation"
+        RecordedVote: "Your vote has been successfully recorded!"

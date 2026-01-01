@@ -6,12 +6,14 @@ services:
             - { name: kernel.event_subscriber }
         public: true
 
-    future_publication.listener:
-        class: App\Listener\FuturePublicationListener
-        arguments: ["@doctrine.orm.entity_manager", "@router"]
-        tags:
-            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
-        public: true
+    # future_publication.listener:
+        # class: App\Listener\FuturePublicationListener
+        # arguments: 
+            # $entityManager: '@Doctrine\ORM\EntityManagerInterface'
+            # - '@router'
+        # tags:
+            # - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+        # public: true
 
     history.listener:
         class: App\Listener\HistoryListener
@@ -21,16 +23,18 @@ services:
             - { name: doctrine.event_listener, event: postPersist  }
         public: true
 
-    saving_common_data.listener:
-        class: App\Listener\SavingCommonData
-        arguments: ["@doctrine.orm.entity_manager", "@parameter_bag"]
-        tags:
-            - { name: doctrine.event_listener, event: preUpdate }
-            - { name: doctrine.event_listener, event: prePersist }
-            - { name: doctrine.event_listener, event: postPersist }
-            - { name: doctrine.event_listener, event: postUpdate }
-            - { name: doctrine.event_listener, event: preRemove }
-        public: true
+    # saving_common_data.listener:
+        # class: App\Listener\SavingCommonData
+        # arguments:
+            # $entityManager: '@Doctrine\ORM\EntityManagerInterface'
+            # $parameterBag: '@parameter_bag'
+        # tags:
+            # - { name: doctrine.event_listener, event: preUpdate }
+            # - { name: doctrine.event_listener, event: prePersist }
+            # - { name: doctrine.event_listener, event: postPersist }
+            # - { name: doctrine.event_listener, event: postUpdate }
+            # - { name: doctrine.event_listener, event: preRemove }
+        # public: true
 
     App\EventListener\LoginListener:
         tags:

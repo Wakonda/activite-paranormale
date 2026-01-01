@@ -108,13 +108,10 @@ class VoteController extends AbstractController
     {
 		list($entity, $classNameVote) = $this->getNewEntity($em, $className, $idClassName);
 
-		if(!$request->isXmlHttpRequest())
-			throw $this->createNotFoundException('Unable to find this page.');
-
 		$form = $this->createForm(VoteType::class, $entity);
 		$form->handleRequest($request);
 
-		if($request->isXmlHttpRequest())
+		if($form->isSubmitted())
 		{
 			$entity->setClassNameVote($className);
 			$entity->setIdClassVote($idClassName);
@@ -126,6 +123,10 @@ class VoteController extends AbstractController
 
 		$averageVote = $em->getRepository($classNameVote)->averageVote($classNameVote, $idClassName);
 		$countVoteByClassName = $em->getRepository($classNameVote)->countVoteByClassName($classNameVote, $idClassName);
+
+		if(!$request->isXmlHttpRequest()) {
+			return $this->render("vote/Vote/validate.html.twig");
+		}
 
 		return new JsonResponse(['averageVote' => round($averageVote, 1), 'countVoteByClassName' => $countVoteByClassName]);
     }

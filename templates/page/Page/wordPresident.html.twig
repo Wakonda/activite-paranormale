@@ -15,7 +15,7 @@
 			{% for entity in entities %}
 				<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
 					<h3>{{ entity.title }}</h3>
-					<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid", "loading": "lazy" }, entity.photoIllustrationCaption)|raw }}</p>
+					<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid", "loading": "lazy", "alt": entity.title }, entity.photoIllustrationCaption)|raw }}</p>
 
 					{{ entity.text|raw }}
 				</div>
@@ -24,5 +24,5 @@
 		</div>
 	</div>
 
-	<p class="text-center"><a href="{{ path('President_Archive_Index') }}"><img src="{{ asset('extended/photo/word-president-archive.png') }}" width="30" alt=">Message archive" class="align-middle"> {{ "president.index.ArchivedMessages"|trans([], "validators") }}</a></p>
+	<p class="text-center"><a href="{{ path('President_Archive_Index') }}"><img src="{{ asset('extended/photo/word-president-archive.png') }}" width="30" alt="Message archive" class="align-middle"> {{ "president.index.ArchivedMessages"|trans([], "validators") }}</a></p>
 {% endif %}

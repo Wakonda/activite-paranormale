@@ -744,8 +744,6 @@ class EventMessageController extends AbstractController
 	#[Route('/event/year/{year}', name: 'EventMessage_SelectYear')]
 	public function getAllEventsByYear(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $year)
 	{
-		$currentDate = new \DateTime($year."-01-01");
-
 		$res = [];
 		$currentEvent = [];
 
@@ -805,7 +803,7 @@ class EventMessageController extends AbstractController
 
 		return $this->render("page/EventMessage/yearEvent.html.twig", [
 			"res" => $res,
-			"currentDate" => $currentDate
+			"year" => $year
 		]);
 	}
 
