@@ -37,7 +37,7 @@ class Mastodon {
 		} else {
 			$data = json_decode($result);
 
-			if(property_exists($data, "error")) {
+			if(!empty($data) and property_exists($data, "error")) {
 				$res->error = new \stdClass();
 				$res->error->message = $data->error;
 			} else
