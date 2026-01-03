@@ -28,13 +28,15 @@ class PaginatorNativeSQL
         $offset = ($page - 1) * $pagesize;
         if(is_null($total)){
             $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);
-			   $stmt = $this->connection->query($countQuery);
-            $total = $stmt->fetchColumn();
+			$stmt = $this->connection->prepare($countQuery);
+			$stmt->execute();
+			$total = $stmt->fetchColumn();
         }
         $query .= ' LIMIT ' . $pagesize . ' OFFSET ' . $offset;
 
-		$stmt = $this->connection->query($query);
-		$list = $stmt->fetchAll();
+		$stmt = $this->connection->prepare($query);
+		$stmt->execute();
+		$list = $stmt->fetchAll(\PDO::FETCH_ASSOC);
 
         $slidingPagination = new SlidingPagination($request->query->all());
         $slidingPagination->setCurrentPageNumber($page);

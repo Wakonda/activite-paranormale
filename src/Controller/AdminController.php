@@ -1702,12 +1702,26 @@ class AdminController extends AbstractController
 				$sortBy = $request->query->get("sortBy", null);
 				$sortDir = $request->query->get("sortDir", "ASC");
 				$orderBy = !empty($sortBy) ? " ORDER BY ".$sortBy." ".$sortDir : "";
+				
+				$params = $conn->getParams();
+
+				$connSQL = \Doctrine\DBAL\DriverManager::getConnection([
+					'driver' => $params['driver'],
+					'host' => $params['host'],
+					'port' => $params['port'] ?? 3306,
+					'dbname' => $params['dbname'],
+					'user' => $params['user'],
+					'password' => $params['password'],
+					'charset' => $params['charset'] ?? 'utf8mb4',
+				]);
+
+				$nativeConnection = $connSQL->getNativeConnection();
 
 				$pagination = $paginator->paginate(
 					"SELECT * FROM ".$request->query->get("table").(!empty($where) ? " WHERE ".$where : "").$orderBy,
 					($request->query->has("page")) ? $page : 1,
 					$num_results_on_page,
-					$conn
+					$nativeConnection
 				);
 
 				$pagination->setCustomParameters(['align' => 'center']);

@@ -61,7 +61,7 @@ class HistoryListener
 			$history = new History();
 			$entity->setHistory($history);
 
-			$args->getEntityManager()->persist($entity);
+			$args->getObjectManager()->persist($entity);
 		}
 
 		$builder = new UnifiedDiffOutputBuilder(

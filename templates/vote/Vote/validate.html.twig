@@ -1,0 +1,16 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "vote.validate.ValidationVote"|trans([], "validators") }}{% endblock %}
+
+{% block h2_title %}
+	<h2><span class="float-start"><img src="{{ asset('extended/photo/faq.svg') }}" width="25" class="mt-1" alt="About"></span>{{ "vote.validate.ValidationVote"|trans([], "validators") }}</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/vote-validate.jpg') }}" alt="Vote validate" width="550"></p>
+	<hr>
+	<div class="alert alert-success">{{ "vote.validate.RecordedVote"|trans([], "validators") }}</div>
+	
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
