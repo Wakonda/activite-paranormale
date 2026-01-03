@@ -90,7 +90,7 @@ class TestimonyController extends AbstractController
 		return $this->render('testimony/Testimony/validate_externaluser_text.html.twig');
 	}
 
-	#[Route('/testimony/show/{id}/{title_slug}', name: 'Testimony_Show', defaults: ['title_slug' => null])]
+	#[Route('/testimony/show/{id}/{title_slug}', name: 'Testimony_Show', defaults: ['title_slug' => null], requirements: ['title_slug' => '.*'])]
     public function show(Request $request, EntityManagerInterface $em, $id, $title_slug)
     {
         $entity = $em->getRepository(Testimony::class)->find($id);
