@@ -1118,6 +1118,9 @@ class APExtension extends AbstractExtension
 
 	public function getEnv(string $varname): string
 	{
+		if(!isset($_ENV[$varname]))
+			return "";
+
 		return $_ENV[$varname];
 	}
 

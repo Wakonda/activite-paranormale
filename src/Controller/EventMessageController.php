@@ -769,11 +769,15 @@ class EventMessageController extends AbstractController
 
 			$get = "get".ucfirst($type);
 
-			$startDateArray = explode("-", $entity->getBirthDate());
+			$isBC = false;
+			if($entity->getBirthDate()[0] == "-")
+				$isBC = true;
+
+			$startDateArray = explode("-", ltrim($entity->getBirthDate(), "-"));
 			$startArray = ["year" => null, "month" => null, "day" => null];
 
 			if(isset($startDateArray[0]))
-				$startArray["year"] = $startDateArray[0];
+				$startArray["year"] = ($isBC ? "-" : "").$startDateArray[0];
 
 			if(isset($startDateArray[1]))
 				$startArray["month"] = $startDateArray[1];
@@ -781,11 +785,15 @@ class EventMessageController extends AbstractController
 			if(isset($startDateArray[2]))
 				$startArray["day"] = $startDateArray[2];
 
-			$endDateArray = explode("-", $entity->getDeathDate());
+			$isBC = false;
+			if($entity->getDeathDate()[0] == "-")
+				$isBC = true;
+
+			$endDateArray = explode("-", ltrim($entity->getDeathDate(), "-"));
 			$endArray = ["year" => null, "month" => null, "day" => null];
 
 			if(isset($endDateArray[0]))
-				$endArray["year"] = $endDateArray[0];
+				$endArray["year"] = ($isBC ? "-" : "").$endDateArray[0];
 
 			if(isset($endDateArray[1]))
 				$endArray["month"] = $endDateArray[1];

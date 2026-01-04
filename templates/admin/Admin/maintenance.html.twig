@@ -33,10 +33,19 @@
 		<textarea name="robotstxt_content" class="form-control" rows="5">{{ robotstxt }}</textarea>
 		<button type="submit" class="btn btn-success mt-2">{{ "admin.general.Update"|trans([], "validators") }}</button>
 	</form>
-	
+
 	<hr>
-	
 
 	<h3 class="mt-2"><i class="fa-solid fa-database fa-sm me-2"></i>{{ "admin.index.DatabaseMaintenance"|trans([], "validators") }}</h3>
 	<a href="{{ path('Admin_SQLExplorer') }}" class="btn btn-info mt-2">SQLExplorer</a>
+
+	<hr>
+
+	<h3 class="mt-2"><i class="fa-solid fa-database fa-sm me-2"></i>Diaspora</h3>
+	<ul>
+		<li>FR - {{ get_env("DIASPORA_FR_USERNAME") }} / {{ get_env("DIASPORA_FR_PASSWORD") }}</li>
+		<li>EN - {{ get_env("DIASPORA_EN_USERNAME") }} / {{ get_env("DIASPORA_EN_PASSWORD") }}</li>
+		<li>ES - {{ get_env("DIASPORA_ES_USERNAME") }} / {{ get_env("DIASPORA_ES_PASSWORD") }}</li>
+		<li>PT - {{ get_env("DIASPORA_PT_USERNAME") }} / {{ get_env("DIASPORA_PT_PASSWORD") }}</li>
+	</ul>
 {% endblock %}

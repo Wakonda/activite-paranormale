@@ -714,7 +714,9 @@
 						<p>{{ "twitter.admin.NumberOfRemainingCharacters"|trans([], "validators") }} <span id="limit_string_twitter_area" class="badge bg-danger">280</span></p>
 
 						{% if addPhoto == true %}
-							<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" />
+							<div class="mb-2">
+								<label class="align-middle" for="add_image">{{ "twitter.admin.AddImage"|trans([], "validators") }}</label> <input type="checkbox" id="add_image" name="add_image" class="align-middle">
+							</div>
 						{% endif %}
 
 						{{ sn("twitter_area", entity.language.title, entity.title) }}
