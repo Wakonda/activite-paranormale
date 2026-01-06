@@ -46,24 +46,11 @@ class Partner
 	}
 
 	public function getTextColor(){
-		// Retirer le caractère '#' s'il est présent
-		$hexColor = ltrim($this->color, '#');
-		
-		// Vérifier si le format est valide (6 caractères hexadécimaux)
-		if (!preg_match('/^[a-fA-F0-9]{6}$/', $hexColor)) {
-			throw new InvalidArgumentException('Format de couleur hexadécimale invalide. Utilisez #RRGGBB.');
-		}
+		$color = new \App\Service\Color();
+		$bg = $this->color;
+		$text = "#FFFFFF";
 
-		// Extraire les composantes rouge, vert et bleu
-		$r = hexdec(substr($hexColor, 0, 2));
-		$g = hexdec(substr($hexColor, 2, 2));
-		$b = hexdec(substr($hexColor, 4, 2));
-
-		// Calculer la luminosité relative (selon la formule WCAG)
-		$luminance = (0.299 * $r + 0.587 * $g + 0.114 * $b);
-
-		// Retourner noir pour une couleur lumineuse, blanc sinon
-		return ($luminance > 186) ? '#000000' : '#FFFFFF';
+		return $color->fixContrastAAA($text, $bg); 
 	}
 
     public function getId()
