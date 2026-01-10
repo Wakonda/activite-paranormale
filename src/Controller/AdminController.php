@@ -1360,7 +1360,7 @@ class AdminController extends AbstractController
 	{
 		$this->sendInstagram($request, $em, $id, $path, $router, $instagram, $translator, "instagram");
 
-		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $entity->getId()]));
+		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
 
 	// Mastodon
