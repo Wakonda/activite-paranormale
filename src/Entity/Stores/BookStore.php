@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
 use App\Filter\OrSearchFilter;
 
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 #[ApiResource(

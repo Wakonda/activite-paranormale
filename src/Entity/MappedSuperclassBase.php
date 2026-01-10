@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\MappedSuperclass;
 use Ausi\SlugGenerator\SlugGenerator;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use App\Entity\Interfaces\SearchEngineInterface;
 
 #[ORM\MappedSuperclass]

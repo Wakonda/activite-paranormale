@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Service\APPurifierHTML;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Ausi\SlugGenerator\SlugGenerator;
 
 #[ORM\Table(name: 'biography')]
