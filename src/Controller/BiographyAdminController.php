@@ -357,12 +357,16 @@ class BiographyAdminController extends AdminGenericController
 	}
 
 	#[Route('/wikidata', name: 'Biography_Admin_Wikidata')]
-	public function wikidata(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
+	public function wikidata(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, \App\Service\Wikidata $wikidata)
 	{
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 		$code = $request->query->get("code");
 
 		$res = $wikidata->getBiographyDatas($code, $language->getAbbreviation());
+
+		$data = new \App\Service\Wikipedia();
+		$data->setUrl($res["url"]);
+		$res["text"] = $data->getContentBySections([0]);
 
 		return new JsonResponse($res);
 	}

@@ -102,6 +102,10 @@
 				document.getElementById("{{ form.socialNetworkInstagram.vars.id }}").value = data.socialNetwork.instagram;
 				document.getElementById("{{ form.gender.vars.id }}").value = data.gender;
 
+				if(typeof data.text !== 'undefined') {
+					tinymce.get("{{ form.text.vars.id }}").setContent(data.text);
+				}
+
 				editor{{ form.identifiers.vars.id }}.setValue(data.identifiers)
 				document.getElementById("{{ form.identifiers.vars.id }}").value = JSON.stringify(data.identifiers);
 				reload{{ form.identifiers.vars.id }}(data);

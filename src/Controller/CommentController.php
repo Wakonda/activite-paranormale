@@ -298,8 +298,8 @@ class CommentController extends AbstractController
 		$countComment = $em->getRepository($classNameComment)->countComment($idClassName);
 		$nbrOfPages = ceil($countComment/self::$nbrMessageByPage);
 
-		if($request->get('page') != NULL)
-			$page = $request->get('page');
+		if($request->request->get("page") != NULL)
+			$page = $request->request->get('page');
 		else
 			$page = 1;
 		

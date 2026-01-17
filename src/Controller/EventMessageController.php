@@ -506,7 +506,7 @@ class EventMessageController extends AbstractController
 				$dateMonthDay = explode("-", ltrim($entity->getBirthDate(), "-"), 2);
 				$date = $yearEvent.((!empty($dateMonthDay) and isset($dateMonthDay[1])) ? "-".$dateMonthDay[1] : null);
 
-				if((new \DateTime($date))->format("m-d") == $month."-".$day)
+				if((new \DateTime(trim($date, "-")))->format("m-d") == $month."-".$day)
 					$type = EventMessage::BIRTH_DATE_TYPE;
 			} else {
 				$isBC = str_starts_with($entity->getDeathDate(), "-");
