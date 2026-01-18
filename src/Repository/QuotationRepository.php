@@ -174,7 +174,8 @@ class QuotationRepository extends EntityRepository
 			Quotation::PROVERB_FAMILY => 0,
 			Quotation::POEM_FAMILY => 0,
 			Quotation::HUMOR_FAMILY => 0,
-			Quotation::SAYING_FAMILY => 0
+			Quotation::SAYING_FAMILY => 0,
+			Quotation::LYRIC_FAMILY => 0
 		];
 		
 		foreach($qb->getQuery()->getResult() as $data)

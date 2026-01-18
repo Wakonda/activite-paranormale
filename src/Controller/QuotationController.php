@@ -22,6 +22,7 @@ class QuotationController extends AbstractController
     {
 		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
 		$family = empty($family) ? Quotation::QUOTATION_FAMILY : $family;
+
         return $this->render('quotation/Quotation/index.html.twig', ["family" => $family, "quotation_counter" => $counter]);
     }
 

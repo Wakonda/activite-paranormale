@@ -231,6 +231,10 @@ class APExtension extends AbstractExtension
 			
 			$file = "file_no_exist_".$this->translator->getLocale().".png";
 			$p = "extended/photo/".$file;
+			
+			if(!file_exists($p))
+				$p = "extended/photo/file_no_exist_en.png";
+				
 			$realPath = ($useAssetPath) ? "/extended/photo/" : "extended/photo/";
 			$options["alt"] = "Image not found";
 		}

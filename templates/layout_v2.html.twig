@@ -4,8 +4,8 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="author" content="Wakonda">
-		<meta name="keywords" content="{{ render(controller('App\\Controller\\PageController::keywordsMetaTag'))|meta_description }}">
-		<meta name="description" content="{% block meta_description %}{{ render(controller('App\\Controller\\PageController::descriptionMetaTag'))|meta_description }}{% endblock %}">
+		<meta name="keywords" content="{{ "meta.tags.Keyword"|trans([], "validators") }}">
+		<meta name="description" content="{% block meta_description %}{{ "meta.tags.Description"|trans([], "validators") }}{% endblock %}">
 		<meta name="msvalidate.01" content="FB19BE8A55C1B235B4389DE2169412FA">
 		<meta name="google-site-verification" content="Qog5JpRMIFDRk7NFb0PSxJUQRNz0hFNR0Is_WCs4Lwc">
 		{% block meta_plus %}{% endblock %}
@@ -43,6 +43,7 @@
 						<span><a href="{{ path('Index_SelectLanguage', {'lang':'fr'})}}"><img {{ app.request.locale == 'fr' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/frenchFlag.png') }}" alt="fr"></a></span>
 						<span><a href="{{ path('Index_SelectLanguage', {'lang':'en'})}}"><img {{ app.request.locale == 'en' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/englishFlag.png') }}" alt="en"></a></span>
 						<span><a href="{{ path('Index_SelectLanguage', {'lang':'es'})}}"><img {{ app.request.locale == 'es' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/spanishFlag.png') }}" alt="es"></a></span>
+						<span><a href="{{ path('Index_SelectLanguage', {'lang':'pt'})}}"><img {{ app.request.locale == 'pt' ? 'style="border: 2px #B9C322 solid;"':'' }} class="image_wrapper" src="{{ asset('extended/photo/language/portugueseFlag.png') }}" alt="pt"></a></span>
 						</div>
 					</div>
 					<div id="templatemo_menu">
