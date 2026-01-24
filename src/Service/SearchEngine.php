@@ -163,6 +163,7 @@ class SearchEngine {
 	public function getSQLQuery(?string $keyword = null, ?string $language = null, ?string $classname = null, string $select = "*"): String {
 		$params = [];
 
+		$keyword = str_replace(["'", '"'], '', $keyword);
 		if(!empty($keyword))
 			$params[] = "searchText:".SQLite3::escapeString($keyword);
 

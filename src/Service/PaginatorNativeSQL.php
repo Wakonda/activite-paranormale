@@ -22,9 +22,8 @@ class PaginatorNativeSQL
     function paginate($query, $page, $pagesize, $connection = null, $total = null)
     {
         $request = $this->requestStack->getCurrentRequest();
-        // if ($connection instanceof Connection) {
-            $this->connection = $connection;
-        // }
+        $this->connection = $connection;
+
         $offset = ($page - 1) * $pagesize;
         if(is_null($total)){
             $countQuery = preg_replace("/SELECT(.*)FROM/i", 'SELECT count(*) as total FROM', $query);

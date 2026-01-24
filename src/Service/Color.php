@@ -3,6 +3,7 @@ namespace App\Service;
 
 class Color
 {
+	// See more: https://dequeuniversity.com/rules/axe/4.11/color-contrast
 	public function getRelativeLuminance($color) {
 		$components = array_map(function($c) {
 			$c /= 255;

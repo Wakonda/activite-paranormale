@@ -17,12 +17,12 @@ use App\Entity\FileManagement;
 use App\Form\Type\TagWordAdminType;
 use App\Service\ConstraintControllerValidator;
 
-#[Route('/admin/grimoire')]
+#[Route('/admin/tagword')]
 class TagWordAdminController extends AdminGenericController
 {
 	protected $entityName = 'TagWord';
 	protected $className = TagWord::class;
-	
+
 	protected $countEntities = "countAdmin";
 	protected $getDatatablesForIndexAdmin = "getDatatablesForIndexAdmin";
 	
