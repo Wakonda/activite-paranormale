@@ -32,13 +32,13 @@
 				"classifiedAds" => $repository->getUsersContribution($user, ClassifiedAds::class, 0, 0, 0, 0, 0, true, $displayState)
 			];
 			
-			if($displayState == 1)
+			if($displayState == 1) {
 				$contributionsArray["comment"] = $repository->getUsersCommentContribution($user, null, "", 0, 0, 0, 0, true);
-
-			$contributionsArray["vote"] = $this->em->getRepository(Vote::class)->getDatatablesForIndex($user, 0, 0, null, null, null, true);
+				$contributionsArray["vote"] = $this->em->getRepository(Vote::class)->getDatatablesForIndex($user, 0, 0, null, null, null, true);
+			}
 
 			$contributionsArray['total'] = array_sum($contributionsArray);
-			
+
 			return $contributionsArray;
 		}
 	}

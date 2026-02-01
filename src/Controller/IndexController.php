@@ -70,6 +70,7 @@ class IndexController extends AbstractController
 	}
 
 	public function counter(MenuService $menuService) {
+		// dd(new \Symfony\Component\HttpFoundation\JsonResponse($menuService->getCounters()));
 		return new \Symfony\Component\HttpFoundation\JsonResponse($menuService->getCounters());
 	}
 }

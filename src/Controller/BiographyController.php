@@ -167,11 +167,4 @@ class BiographyController extends AbstractController
 		$response->headers->set('Content-Type', 'application/json');
 		return $response;
 	}
-	
-	/* FONCTION DE COMPTAGE */
-	public function countAction(Request $request, EntityManagerInterface $em)
-	{
-		$total = $em->getRepository(Biography::class)->countBiography($request->getLocale());
-		return new Response($total);
-	}
 }

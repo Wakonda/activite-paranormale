@@ -78,12 +78,6 @@ class ClassifiedAdsController extends AbstractController
 		return $this->render("classifiedAds/ClassifiedAds/read.html.twig", ["entity" => $entity]);
 	}
 
-	/* FONCTION DE COMPTAGE */
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(ClassifiedAds::class)->countByLanguage($request->getLocale()));
-	}
-
 	#[Route('/classifiedads/markas/{id}', name: 'ClassifiedAds_MarkAs', requirements: ['id' => "\d+"])]
 	public function markAs(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id) {
 		$entity = $em->getRepository(ClassifiedAds::class)->find($id);

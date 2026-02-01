@@ -191,21 +191,4 @@ class ArchiveController extends AbstractController
 			"className" => (new \ReflectionClass(new $className()))->getShortName()
 		]);
 	}
-
-	public function nbrArchiveAction(Request $request, EntityManagerInterface $em)
-	{
-		$res = [];
-
-		$entities = $em->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
-
-		foreach($entities as $entity) {
-			if(method_exists($entity, "getArchive")) {
-				$repository = $em->getRepository($entity);
-				if(method_exists($repository, "countArchived"))
-					$res[] = $em->getRepository($entity)->countArchived($request->getLocale());
-			}
-		}
-
-		return new Response(array_sum($res));
-	}
 }

@@ -109,11 +109,6 @@ class PhotoController extends AbstractController
 		]);
 	}
 
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(Photo::class)->nbrPicture($request->getLocale()));
-	}
-
 	// INDEX
 	public function slider(Request $request, EntityManagerInterface $em)
 	{

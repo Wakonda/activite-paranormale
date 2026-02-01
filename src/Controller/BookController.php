@@ -208,10 +208,4 @@ class BookController extends AbstractController
 		
 		return $response;
 	}
-
-	/* FONCTION DE COMPTAGE */
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(Book::class)->countByLanguage($request->getLocale()));
-	}
 }

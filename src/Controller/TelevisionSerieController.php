@@ -90,12 +90,6 @@ class TelevisionSerieController extends AbstractController
 		return $this->render("movie/TelevisionSerie/byGenre.html.twig", ['pagination' => $pagination, "genre" => $genre ]);
 	}
 
-	/* FONCTION DE COMPTAGE */
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(TelevisionSerie::class)->countByLanguage($request->getLocale()));
-	}
-
 	#[Route('/television_serie/{id}/{title_slug}/season/{season}', name: 'TelevisionSerie_Season', defaults: ['title_slug' => null], requirements: ['id' => '\d+'])]
 	public function season(EntityManagerInterface $em, Int $id, String $title_slug, Int $season)
 	{

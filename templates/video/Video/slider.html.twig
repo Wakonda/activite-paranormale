@@ -2,7 +2,7 @@
 	<h3>{{ "index.main.Video"|trans([], "validators") }}</h3>
 	
 	<div style="position:relative;">
-		<p><span style="font-weight: bold; font-size: 16px;">{{ entity.title }} (<a href="{{ path('Video_Read', { 'id':entity.id, 'title_slug':entity.getUrlSlug()}) }}" title="More">{{ "photo.slider.More"|trans([], "validators") }}</a>)</span></p>
+		<p><span class="fw-bold" style="font-size: 16px;">{{ entity.title }} (<a href="{{ path('Video_Read', { 'id':entity.id, 'title_slug':entity.getUrlSlug()}) }}" title="More">{{ "photo.slider.More"|trans([], "validators") }}</a>)</span></p>
 		<div class="image text-center">
 			{% if entity.mediaVideo is not empty %}
 				<video class="w-100" controls="controls" id="video_embedded">

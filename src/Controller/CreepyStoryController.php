@@ -104,11 +104,6 @@ class CreepyStoryController extends AbstractController
 		]);
 	}
 
-	public function countAction(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(CreepyStory::class)->countCreepyStory($request->getLocale()));
-	}
-
 	// ENREGISTREMENT PDF
 	#[Route('/creepy_story/pdfversion/{id}', name: 'CreepyStory_Pdfversion')]
 	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)

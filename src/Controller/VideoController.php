@@ -192,11 +192,6 @@ class VideoController extends AbstractController
 		return $response;
 	}
 
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(Video::class)->nbrVideo($request->getLocale()));
-	}
-
 	// ENREGISTREMENT PDF
 	#[Route('/video/pdfversion/{id}', name: 'Video_Pdfversion')]
 	public function pdfVersion(EntityManagerInterface $em, APHtml2Pdf $html2pdf, $id)

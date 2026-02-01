@@ -260,21 +260,28 @@ class Diaspora {
 				$this->DIASPORA_CLIENT_NAME = $_ENV["DIASPORA_PT_CLIENT_NAME"];
 				$this->DIASPORA_SCOPE = $_ENV["DIASPORA_PT_SCOPE"];
 				break;
+			case "ru":
+				$this->DIASPORA_URL = $_ENV["DIASPORA_RU_URL"];
+				$this->DIASPORA_CLIENT_ID = $_ENV["DIASPORA_RU_CLIENT_ID"];
+				$this->DIASPORA_CLIENT_SECRET = $_ENV["DIASPORA_RU_CLIENT_SECRET"];
+				$this->DIASPORA_CLIENT_NAME = $_ENV["DIASPORA_RU_CLIENT_NAME"];
+				$this->DIASPORA_SCOPE = $_ENV["DIASPORA_RU_SCOPE"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr", "en", "es", "pt"];
+		return ["fr", "en", "es", "pt", "ru"];
 	}
 
 	public function getLanguagesCanonical()
 	{
 		return [
-			"Diaspora (english)" => "mastodon_en",
-			"Diaspora (español)" => "mastodon_es",
-			"Diaspora (français)" => "mastodon_fr",
-			"Diaspora (português)" => "mastodon_pt"
+			"Diaspora (english)" => "diaspora_en",
+			"Diaspora (español)" => "diaspora_es",
+			"Diaspora (français)" => "diaspora_fr",
+			"Diaspora (português)" => "diaspora_pt"
 		];
 	}
 }

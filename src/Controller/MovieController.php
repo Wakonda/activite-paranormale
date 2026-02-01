@@ -76,10 +76,4 @@ class MovieController extends AbstractController
 	
 		return $this->render("movie/Movie/byGenre.html.twig", ['pagination' => $pagination, "genre" => $genre ]);
 	}
-
-	/* FONCTION DE COMPTAGE */
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(Movie::class)->countMovieByLanguage($request->getLocale()));
-	}
 }

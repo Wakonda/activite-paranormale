@@ -384,12 +384,6 @@ class UserController extends AbstractController
         ]);
     }
 
-	public function countUserAction(EntityManagerInterface $em)
-	{
-		$countUser = $em->getRepository(User::class)->countAdmin();
-		return new Response($countUser);
-	}
-
 	private function getUserContributions(APUser $apuser, $user)
 	{
 		$contributionsArray = $apuser->countContributionByUser($user, 1);
@@ -399,7 +393,7 @@ class UserController extends AbstractController
 		return [$contributionsArray, $contributionsInProgressArray, $contributionsUnpublishedArray];
 	}
 
-    public function viewContributionsAction(EntityManagerInterface $em, APUser $apuser, $id)
+    public function viewContributions(EntityManagerInterface $em, APUser $apuser, $id)
     {
 		$user = $em->getRepository(User::class)->find($id);
 

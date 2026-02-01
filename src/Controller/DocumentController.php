@@ -139,10 +139,4 @@ class DocumentController extends AbstractController
 			'entity' => $entity
 		]);
 	}
-
-	public function countDocumentAction(EntityManagerInterface $em)
-	{
-		$countDocument = $em->getRepository(Document::class)->countDocument();
-		return new Response($countDocument);
-	}
 }

@@ -112,6 +112,7 @@ class APExtension extends AbstractExtension
 			new TwigFunction('isDiasporaAvailable', [$this, 'isDiasporaAvailable']),
 			new TwigFunction('isTelegramAvailable', [$this, 'isTelegramAvailable']),
 			new TwigFunction('isMastodonAvailable', array($this, 'isMastodonAvailable')),
+			new TwigFunction('isFriendicaAvailable', array($this, 'isFriendicaAvailable')),
 			new TwigFunction('isMuseAvailable', array($this, 'isMuseAvailable')),
 			new TwigFunction('isTumblrAvailable', array($this, 'isTumblrAvailable')),
 			new TwigFunction('isPinterestAvailable', array($this, 'isPinterestAvailable')),
@@ -979,6 +980,15 @@ class APExtension extends AbstractExtension
 				break;
 			}
 		}
+
+		return in_array($locale, $api->getLanguages());
+	}
+
+	public function isFriendicaAvailable($entity): bool
+	{
+		$api = new \App\Service\Friendica();
+
+		$locale = $entity->getLanguage()->getAbbreviation();
 
 		return in_array($locale, $api->getLanguages());
 	}

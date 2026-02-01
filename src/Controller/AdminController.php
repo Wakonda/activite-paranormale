@@ -31,6 +31,7 @@ use App\Service\VK;
 use App\Service\Bluesky;
 use App\Service\Amazon;
 use App\Service\Flickr;
+use App\Service\Friendica;
 use App\Service\Telegram;
 use App\Entity\Stores\Store;
 use App\Twig\APExtension;
@@ -682,11 +683,11 @@ class AdminController extends AbstractController
 	#[Route('/admin/diaspora/{id}/{path}/{routeToRedirect}', name: 'Admin_Diaspora', defaults: ['method' => 'POST'])]
 	public function diaspora(Request $request, EntityManagerInterface $em, Diaspora $diaspora, UrlGeneratorInterface $router, $id, $path, $routeToRedirect)
 	{
-		// dump($diaspora->getClients("https://activite-paranormale.net/admin/diasporapost", "pt"));
+		// dd($diaspora->getClients("https://activite-paranormale.net/admin/diasporapost", "ru"));
 		// dd($diaspora->getOpenIDConfiguration("pt"));
 		$session = $request->getSession();
 		$session->set("id_diaspora", $id);
-
+// dd($path);
 		$path = urldecode($path);
 		$session->set("path_diaspora", $path);
 		$session->set("routeToRedirect_diaspora", $routeToRedirect);
@@ -720,7 +721,7 @@ class AdminController extends AbstractController
 				}
 			}
 		}
-
+// $redirectURL = "https://activite-paranormale.net/admin/diasporapost";
 		if(empty($accessToken)) {
 			$session->set("diaspora_access_token_".$locale, null);
 			$code = $diaspora->getCode($redirectURL, $locale);
@@ -734,7 +735,7 @@ class AdminController extends AbstractController
 	public function diasporaPost(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, Diaspora $diaspora, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$session = $request->getSession();
-
+// dd($session);
 		$id = $session->get("id_diaspora");
 		$path = $session->get("path_diaspora");
 		$routeToRedirect = $session->get("routeToRedirect_diaspora");
@@ -1365,7 +1366,7 @@ class AdminController extends AbstractController
 
 	// Mastodon
     #[Route('/admin/twittermastodonbluesky/{id}/{path}/{routeToRedirect}/{socialNetwork}/{family}', name: 'Admin_TwitterMastodonBluesky')]
-	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, Instagram $instagram, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
+	public function twitterMastodonBluesky(Request $request, EntityManagerInterface $em, UrlGeneratorInterface $router, TwitterAPI $twitter, Mastodon $mastodon, Bluesky $bluesky, Facebook $facebook, Instagram $instagram, Friendica $friendica, TranslatorInterface $translator, $id, $path, $routeToRedirect, $socialNetwork, $family) {
 		$socialNetworks = explode("|", $family);
 		if(in_array("twitter", $socialNetworks))
 			$this->sendTwitter($request, $em, $id, $path, $router, $twitter, $translator, $socialNetwork);
@@ -1377,6 +1378,8 @@ class AdminController extends AbstractController
 			$this->sendFacebook($request, $em, $id, $path, $router, $facebook, $translator, $socialNetwork);
 		if(in_array("instagram", $socialNetworks))
 			$this->sendInstagram($request, $em, $id, $path, $router, $instagram, $translator, $socialNetwork);
+		if(in_array("friendica", $socialNetworks))
+			$this->sendFriendica($request, $em, $id, $path, $router, $friendica, $translator, $socialNetwork);
 
 		return $this->redirect($this->generateUrl($routeToRedirect, ["id" => $id]));
 	}
@@ -1459,6 +1462,24 @@ class AdminController extends AbstractController
 		$message = (property_exists($res, "error")) ? ['state' => 'error', 'message' => $translator->trans('admin.mastodon.Failed', [], 'validators'). " (".$res->error->message.")"] : ['state' => 'success', 'message' => $translator->trans('admin.mastodon.Success', [], 'validators')];
 
 		$this->addFlash($message["state"], $message["message"], [], 'validators');
+	}
+
+	private function sendFriendica($request, $em, $id, $path, $router, $friendica, $translator, $fieldName = "friendica") {
+		$requestParams = $request->request;
+
+		$path = urldecode($path);
+
+		$entity = $em->getRepository($path)->find($id);
+		$image = false;
+		$url = $requestParams->get($fieldName."_url", null);
+
+		$currentURL = !empty($url) ? $url : $router->generate($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getTitle()], UrlGeneratorInterface::ABSOLUTE_URL);
+
+		$locale = $entity->getLanguage()->getAbbreviation();
+
+		$res = $friendica->postMessage($currentURL, $request->request->get($fieldName."_area"), $locale);
+
+		$this->addFlash($res["status"], $res["data"], [], 'validators');
 	}
 
 	#[Route('/admin/wikidata_generic', name: 'Admin_WikidataGeneric')]

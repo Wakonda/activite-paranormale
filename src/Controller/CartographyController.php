@@ -48,11 +48,6 @@ class CartographyController extends AbstractController
 			'entity' => $entity,
 		]);
     }
-	
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(Cartography::class)->nbrGMapByLang($request->getLocale()));
-	}
 
 	// Cartography of the world
     #[Route('/cartography/world/{language}/{themeId}/{theme}', name: 'Cartography_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]

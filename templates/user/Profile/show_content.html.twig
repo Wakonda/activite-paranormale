@@ -1,5 +1,5 @@
 <div class="fos_user_user_show">
-	<p style="color: #b3ff00; font-size:2.0em;font-weight:bold; text-align:center;">{{ user.username }}</p>
+	<p class="fw-bold" style="color: #b3ff00; font-size:2.0em;text-align:center;">{{ user.username }}</p>
 	
 	<p class="image">{{ user.avatar|imgsize(550, user.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</p>
 
@@ -29,7 +29,7 @@
 	</div>
 	
 	{% if user.presentation is not empty %}
-		<br />
+		<br>
 		<div class="form-table form-table-4cols form-table-collapse">
 			<div class="form-table-cell form-table-cell-head text-center">{{ "user.otherProfile.Presentation"|trans([], "validators") }}</div>
 			<div class="form-table-cell w-100">{{ user.presentation|raw }}</div>
@@ -49,11 +49,7 @@
 			</div>
 		{% endif %}
 	{% endif %}
-	
-	{#<br>
-	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-		{{ render(controller('App\\Controller\\UserController::phpbbAction')) }}
-	{% endif %}#}
+
 	<br>
 	
 	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}

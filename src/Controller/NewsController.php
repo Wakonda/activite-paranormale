@@ -84,15 +84,6 @@ class NewsController extends AbstractController
 
 		return new Response($this->generateUrl('News_Index', ['page' => 1, 'theme' => $theme->getTitle()]));
 	}
-
-	/* FONCTION DE COMPTAGE */
-	public function countWorldNewsAction(EntityManagerInterface $em)
-	{
-		$countWorldNews = $em->getRepository(News::class)->countWorldNews();
-
-		return new Response($countWorldNews);
-	}
-	/* FIN FONCTION DE COMPTAGE */
 	
 	// News of the world
 	#[Route('/news/world/{language}/{themeId}/{theme}', name: 'News_World', defaults: ['language' => 'all', 'themeId' => 0, 'theme' => null], requirements: ['theme' => '.+'])]

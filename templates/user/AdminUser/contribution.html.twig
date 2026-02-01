@@ -34,7 +34,7 @@
 				<td><a href="{{ path('Vote_ListVoteBtUser', {authorId: user.id}) }}">{{ contributionsArray['vote'] }}</a></td>
 			</tr>
 			<tr>
-				<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
+				<td class="td_form_table w-75 fw-bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 				<td><span class="badge bg-danger">{{ contributionsArray['total'] }}</span></td>
 			</tr>
 		</table>
@@ -63,7 +63,7 @@
 					<td><a href="{{ path('APUserBunble_contributionuser', {id: user.id, 'bundleClassName' : base64_encode('App\\Entity\\ClassifiedAds'), 'displayState' : 0, entityName: "user.contributionUser.ClassifiedAds"|trans([], "validators"), title: "user.contributionUser.WorkInProgress"|trans([], "validators")}) }}">{{ contributionsInProgressArray['classifiedAds'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75 fw-bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 					<td><span class="badge bg-danger">{{ contributionsInProgressArray['total'] }}</span></td>
 				</tr>
 			</table>
@@ -92,7 +92,7 @@
 					<td><a href="{{ path('APUserBunble_contributionuser', {id: user.id, 'bundleClassName' : base64_encode('App\\Entity\\ClassifiedAds'), 'displayState' : -1, entityName: "user.contributionUser.ClassifiedAds"|trans([], "validators"), title: "user.contributionUser.Unpublished"|trans([], "validators")}) }}">{{ contributionsUnpublishedArray['classifiedAds'] }}</a></td>
 				</tr>
 				<tr>
-					<td class="td_form_table w-75 bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
+					<td class="td_form_table w-75 fw-bold">{{ "user.contributionUser.Total"|trans([], "validators") }}</td>
 					<td><span class="badge bg-danger">{{ contributionsUnpublishedArray['total'] }}</span></td>
 				</tr>
 			</table>

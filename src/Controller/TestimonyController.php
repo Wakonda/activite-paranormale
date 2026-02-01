@@ -245,13 +245,6 @@ class TestimonyController extends AbstractController
 			'entities' => $entities
 		]);
 	}
-	
-	/* FONCTION DE COMPTAGE */
-	public function countAllTestimoniesAction(Request $request, EntityManagerInterface $em)
-	{
-		$nbrOfAllTestimonies = $em->getRepository(Testimony::class)->countAllTestimoniesForLeftMenu($request->getLocale());
-		return new Response($nbrOfAllTestimonies);
-	}
 
 	// ENREGISTREMENT PDF
 	#[Route('/testimony/pdfversion/{id}', name: 'Testimony_Pdfversion')]

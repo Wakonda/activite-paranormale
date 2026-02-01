@@ -23,5 +23,5 @@
 {% endblock %}
 
 {% block sub_content %}
-	{{ render(controller('App\\Controller\\UserController::viewContributionsAction', { id: user.id })) }}
+	{{ render(controller('App\\Controller\\UserController::viewContributions', { id: user.id })) }}
 {% endblock %}

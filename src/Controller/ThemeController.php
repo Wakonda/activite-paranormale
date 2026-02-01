@@ -145,10 +145,4 @@ class ThemeController extends AbstractController
 		
 		return $response;
 	}
-
-	/* FONCTION DE COMPTAGE */
-	public function countByLanguage(EntityManagerInterface $em, Request $request)
-	{
-		return new Response($em->getRepository(Theme::class)->nbrTheme($request->getLocale()));
-	}
 }
