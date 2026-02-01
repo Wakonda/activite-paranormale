@@ -19,7 +19,7 @@ class MenuService
         $request = $this->requestStack->getCurrentRequest();
         $locale = $request?->getLocale() ?? 'fr'; 
 
-        return $this->cache->get('menu_counters', function (ItemInterface $item) use ($locale) {
+        return $this->cache->get('menu_counters_'.$locale, function (ItemInterface $item) use ($locale) {
             $item->expiresAfter(24*60); // 24 hours
 			$quotationCounter = $this->em->getRepository(\App\Entity\Quotation::class)->countByFamily($locale);
 
