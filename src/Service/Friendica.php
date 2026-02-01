@@ -138,10 +138,10 @@ class Friendica {
 		$accessToken = $this->FRIENDICA_ACCESS_TOKEN;
 		
 		$data = $this->parseHTML($url);
-		$photo = !empty($i = $data["image"]) ? "<br><br>[img=$i][/img]" : "";
+		$photo = !empty($i = $data["image"]) ? " [img=$i][/img]" : "";
 
 		$data_post = [
-			'status' => $message.'<br><br>[url='.$url.'][/url]'.$photo
+			'status' => $message.' [url='.$url.'][/url]'.$photo
 		];
 
 		$ch = curl_init($instance . '/api/statuses/update');
@@ -186,19 +186,26 @@ class Friendica {
 				$this->FRIENDICA_USERNAME = $_ENV["FRIENDICA_EN_USERNAME"];
 				$this->FRIENDICA_PASSWORD = $_ENV["FRIENDICA_EN_PASSWORD"];
 				break;
+			case "es":
+				$this->FRIENDICA_ACCESS_TOKEN = $_ENV["FRIENDICA_ES_ACCESS_TOKEN"];
+				$this->FRIENDICA_URL = $_ENV["FRIENDICA_ES_URL"];
+				$this->FRIENDICA_USERNAME = $_ENV["FRIENDICA_ES_USERNAME"];
+				$this->FRIENDICA_PASSWORD = $_ENV["FRIENDICA_ES_PASSWORD"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr", "en"];
+		return ["fr", "en", "es"];
 	}
 
 	public function getLanguagesCanonical()
 	{
 		return [
 			"Friendica (français)" => "friendica_fr",
-			"Friendica (english)" => "friendica_en"
+			"Friendica (english)" => "friendica_en",
+			"Friendica (español)" => "friendica_es"
 		];
 	}
 
