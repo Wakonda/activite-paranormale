@@ -143,7 +143,7 @@ class Friendica {
 		$data_post = [
 			'status' => $message.'<br><br>[url='.$url.'][/url]'.$photo
 		];
-// dd($data_post);
+
 		$ch = curl_init($instance . '/api/statuses/update');
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_POST, true);
@@ -180,18 +180,25 @@ class Friendica {
 				$this->FRIENDICA_USERNAME = $_ENV["FRIENDICA_FR_USERNAME"];
 				$this->FRIENDICA_PASSWORD = $_ENV["FRIENDICA_FR_PASSWORD"];
 				break;
+			case "en":
+				$this->FRIENDICA_ACCESS_TOKEN = $_ENV["FRIENDICA_EN_ACCESS_TOKEN"];
+				$this->FRIENDICA_URL = $_ENV["FRIENDICA_EN_URL"];
+				$this->FRIENDICA_USERNAME = $_ENV["FRIENDICA_EN_USERNAME"];
+				$this->FRIENDICA_PASSWORD = $_ENV["FRIENDICA_EN_PASSWORD"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr"];
+		return ["fr", "en"];
 	}
 
 	public function getLanguagesCanonical()
 	{
 		return [
-			"Friendica (français)" => "friendica_fr"
+			"Friendica (français)" => "friendica_fr",
+			"Friendica (english)" => "friendica_en"
 		];
 	}
 
