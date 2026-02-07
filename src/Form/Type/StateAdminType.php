@@ -20,7 +20,7 @@ class StateAdminType extends AbstractType
     {
         $builder
             ->add('title', TextType::class, array('label'=>'Titre', 'required' =>true, 'constraints' => array(new NotBlank())))
-            ->add('text', TextareaType::class, array('label'=>'Texte', 'required' =>true, 'constraints' => array(new NotBlank())))
+            ->add('text', TextareaType::class, array('label'=>'Texte', 'required' =>true))
             ->add('internationalName', TextType::class, array('label'=>'Nom international', 'required' =>true, 'constraints' => array(new NotBlank())))
 			->add('displayState', ChoiceType::class, array(
 				'choices'   => array(

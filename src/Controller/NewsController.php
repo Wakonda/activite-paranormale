@@ -209,7 +209,7 @@ class NewsController extends AbstractController
     {
         $entity = new News();
 
-		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0"));
+		$entity->setLicence($em->getRepository(Licence::class)->getOneLicenceByLanguageAndInternationalName($request->getLocale(), "CC-BY-NC-ND 3.0") ?? null);
 
         $form = $this->createForm(NewsUserParticipationType::class, $entity, ["language" => $request->getLocale(), "securityUser" => $authorizationChecker]);
 

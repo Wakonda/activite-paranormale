@@ -17,7 +17,7 @@ class State
 	#[ORM\Column(name: 'title', type: 'string', length: 255)]
     private $title;
 
-	#[ORM\Column(name: 'text', type: 'text')]
+	#[ORM\Column(name: 'text', type: 'text', nullable: true)]
     private $text;
 
 	#[ORM\Column(name: 'internationalName', type: 'string', length: 255)]
