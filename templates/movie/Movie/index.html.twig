@@ -48,37 +48,7 @@
 	<br>
 	<br>
 	{% for entity in pagination.items %}
-		<div class="card mb-3">
-			<div class="card-body">
-				<div class="row g-0">
-					{% if entity.illustration is not empty %}
-						<div class="col-md-4 align-self-center text-center">
-							{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
-						</div>
-					{% endif %}
-					<div class="col-md-{% if entity.illustration is not empty %}8{% else %}12{% endif %}">
-						<div{% if entity.illustration is not empty %} class="ps-3"{% endif %}>
-							<h5 class="card-title text-center"><a href="{{ path('Movie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">{{ entity.title }}</a></h5>
-							<hr>
-							<div class="d-flex justify-content-around">
-								<div class="p-2"><i class="far fa-clock"></i> {{ entity.duration|default("-") }} {{ 'movie.index.Minute'|trans({ 'number': (entity.duration|default(0)) }, "validators") }}</div>
-								<div class="p-2"><i class="fas fa-calendar-day"></i> {{ (entity.releaseYear|doPartialDate(app.request.locale))|default("-") }}</div>
-								<div class="p-2"><i class="fas fa-film"></i> <a href="{{ path('ByGenreMovie_Index', {idGenre: entity.genre.id, title_slug: entity.genre.urlSlug}) }}">{{ entity.genre }}</a></div>
-							</div>
-
-							<p class="card-text mb-0 text-center my-3"></p>
-							<hr>
-							<div class="text-end">
-								<a class="btn read text-start" href="{{ path('Movie_Show', {id: entity.id, title_slug: entity.urlSlug}) }}">
-									<span class="me-2"><i class="fas fa-ticket-alt fa-fw"></i></span>
-									<b class="align-middle">{{ "movie.index.Read"|trans([], "validators") }}</b>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		{% include 'movie/Movie/_card.html.twig' %}
 		<hr class="hr2">
 	{% else %}
 		<div class="alert alert-danger fst-italic text-center">{{ "movie.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
