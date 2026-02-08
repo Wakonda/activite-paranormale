@@ -23,7 +23,7 @@
 				"processing": true,
 				"serverSide": true,
 				"ajax": {
-					"url": "{{ path('Vote_ListFavoriteByUserDatatables', {authorId: app.request.get('authorId') }) }}",
+					"url": "{{ path('Vote_ListFavoriteByUserDatatables', {authorId: app.request.attributes.get('authorId') }) }}",
 					"type": "GET"
 				},
 				"preDrawCallback": function(settings) {

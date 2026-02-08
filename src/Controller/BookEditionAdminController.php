@@ -93,7 +93,7 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->showGeneric($em, $id, $twig);
     }
 
-	#[Route('/new', name: 'BookEdition_Admin_New')]
+	#[Route('/new/{bookId}', name: 'BookEdition_Admin_New')]
     public function newAction(Request $request, EntityManagerInterface $em, Int $bookId)
     {
 		$formType = BookEditionAdminType::class;
@@ -106,7 +106,7 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $book->getLanguage()->getAbbreviation()]);
     }
 
-	#[Route('/create', name: 'BookEdition_Admin_Create', requirements: ['_method' => "post"])]
+	#[Route('/create/{bookId}', name: 'BookEdition_Admin_Create', requirements: ['_method' => "post"])]
     public function create(Request $request, EntityManagerInterface $em, ConstraintControllerValidator $ccv, TranslatorInterface $translator, Int $bookId)
     {
 		$formType = BookEditionAdminType::class;
@@ -145,7 +145,7 @@ class BookEditionAdminController extends AdminGenericController
 		return $this->deleteGeneric($em, $id);
     }
 
-	#[Route('/datatables', name: 'BookEdition_Admin_IndexDatatables', requirements: ['_method' => "get"])]
+	#[Route('/datatables/{bookId}', name: 'BookEdition_Admin_IndexDatatables', requirements: ['_method' => "get"])]
 	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, Int $bookId)
 	{
 		list($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns) = $this->datatablesParameters($request);
@@ -182,13 +182,11 @@ class BookEditionAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
-		if(!empty($language))
-		{
+		if(!empty($language)) {
 			$genres = $em->getRepository(GenreAudiovisual::class)->findByLanguage($language, array('title' => 'ASC'));
 			$countries = $em->getRepository(Region::class)->findByLanguage($language, array('title' => 'ASC'));
 		}
-		else
-		{
+		else {
 			$genres = $em->getRepository(GenreAudiovisual::class)->findAll();
 			$countries = $em->getRepository(Region::class)->findAll();
 		}

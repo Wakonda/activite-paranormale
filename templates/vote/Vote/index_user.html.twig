@@ -29,7 +29,7 @@
 					null
 				],
 				"ajax": {
-					"url": "{{ path('Vote_ListVoteByUserDatatables', {authorId: app.request.get('authorId') }) }}",
+					"url": "{{ path('Vote_ListVoteByUserDatatables', {authorId: app.request.attributes.get('authorId') }) }}",
 					"type": "GET"
 				},
 				"preDrawCallback": function(settings) {

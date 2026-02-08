@@ -1,9 +1,9 @@
 {% extends "admin/GenericAdmin/index.html.twig" %}
 
-{% block h2_title %}{{ "admin.index.Store"|trans([], "validators") }}{% if app.request.get('type') is not empty %} - {{ ("store.admin."~app.request.get('type'))|trans([], "validators") }}{% endif %}{% endblock %}
+{% block h2_title %}{{ "admin.index.Store"|trans([], "validators") }}{% if app.request.attributes.get('type') is not empty %} - {{ ("store.admin."~app.request.attributes.get('type'))|trans([], "validators") }}{% endif %}{% endblock %}
 
-{% block new_admin_route %}{{ path('Store_Admin_New', {category: app.request.get('category')}) }}{% endblock %}
-{% block indexdatatables_admin_route %}{{ path('Store_Admin_IndexDatatables', {type: app.request.get('type')}) }}{% endblock %}
+{% block new_admin_route %}{{ path('Store_Admin_New', {category: app.request.attributes.get('category')}) }}{% endblock %}
+{% block indexdatatables_admin_route %}{{ path('Store_Admin_IndexDatatables', {type: app.request.attributes.get('type')}) }}{% endblock %}
 
 {% block thead_admin_table %}
 	<th class="label_form">Id</th>
