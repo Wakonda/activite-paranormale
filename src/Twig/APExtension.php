@@ -1062,7 +1062,7 @@ class APExtension extends AbstractExtension
 	public function getLoaderVideo($entity) {
 		$videoService = new \App\Service\Video($entity->getEmbeddedCode());
 
-		$thumbnail = !empty($t = $videoService->getThumbnailVideo()) ? $t : $entity->getAssetImagePath().$entity->getPhoto();
+		$thumbnail = !empty($t = $videoService->getThumbnailVideo()) ? $t : (!empty($entity->getPhoto()) ? $entity->getAssetImagePath().$entity->getPhoto() : null);
 		$url = $videoService->getURLByCode();
 		$platform = $videoService->getPlatformByCode();
 
