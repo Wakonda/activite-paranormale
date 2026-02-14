@@ -221,8 +221,12 @@
 		
 		public function getMonthDay(string $date) {
 			$date = ltrim($date, "-");
+
+			if(count(explode("-", $date)) < 3)
+				return null;
+
 			list($year, $month, $day) = explode("-", $date);
-			
+
 			$year = str_pad($year, 4, "0", STR_PAD_LEFT);
 			$date = new \DateTime($year."-".$month."-".$day);
 			
