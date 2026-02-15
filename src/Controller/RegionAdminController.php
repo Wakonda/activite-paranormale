@@ -178,4 +178,27 @@ class RegionAdminController extends AdminGenericController
 		$twig = 'index/RegionAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
     }
+
+	#[Route('/autocomplete', name: 'Region_Admin_Autocomplete')]
+	public function autocomplete(Request $request, EntityManagerInterface $em)
+	{
+		$query = $request->query->get("q", null);
+		$locale = $request->query->get("locale", null);
+		$family = $request->query->get("family", null);
+
+		$datas =  $em->getRepository(Region::class)->getAutocomplete($locale, $query, $family);
+
+		$results = [];
+
+		foreach($datas as $data)
+		{
+			$obj = new \stdClass();
+			$obj->id = $data->getId();
+			$obj->text = $family == Region::CITY_FAMILY ? $data->getTitle()." (".$data->getHigherLevel()->getTitle().")" : $data->getTitle();
+
+			$results[] = $obj;
+		}
+
+        return new JsonResponse($results);
+	}
 }

@@ -17,8 +17,6 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
-
-use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Entity\Book;
 use App\Entity\BookEditionBiography;
 use App\Form\Field\DatePartialType;

@@ -49,6 +49,12 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	#[Groups('api_read')]
     protected $nationality;
 
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
+    protected $birthPlace;
+
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
+    protected $deathPlace;
+
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Language')]
     private $language;
 
@@ -361,5 +367,25 @@ class Biography implements Interfaces\PhotoIllustrationInterface
     public function getGender()
     {
         return $this->gender;
+    }
+
+    public function setBirthPlace($birthPlace)
+    {
+		$this->birthPlace = $birthPlace;
+    }
+
+    public function getBirthPlace()
+    {
+        return $this->birthPlace;
+    }
+
+    public function setDeathPlace($deathPlace)
+    {
+		$this->deathPlace = $deathPlace;
+    }
+
+    public function getDeathPlace()
+    {
+        return $this->deathPlace;
     }
 }

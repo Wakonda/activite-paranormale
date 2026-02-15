@@ -13,6 +13,7 @@ use App\Form\Field\SourceEditType;
 use App\Form\Field\DatePartialType;
 use App\Form\EventListener\InternationalNameFieldListener;
 use App\Entity\Biography;
+use App\Entity\Region;
 use App\Entity\EntityLinkBiography;
 use App\Form\Field\IdentifiersEditType;
 
@@ -23,6 +24,7 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -81,13 +83,41 @@ class BiographyAdminType extends AbstractType
 			->add('birthDate', DatePartialType::class, ['required' => false])
 			->add('deathDate', DatePartialType::class, ['required' => false])
 			->add('feastDay', DatePartialType::class, ['required' => false, "year" => false])
-			->add('nationality', EntityType::class, array('class'=>'App\Entity\Region',
+			->add('nationality', EntityType::class, array('class'=> Region::class,
 					'choice_label'=>'title',
 					'required' => false,
 					'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language);}))
 			->add('wikidata', TextType::class, ['required' => false])
 			->add('links', HiddenType::class, array('label' => false, 'required' => false, 'attr' => ['class' => 'invisible']))
-			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()]);
+			->add('identifiers', IdentifiersEditType::class, ['required' => false, 'enum' => \App\Service\Identifier::getBiographyIdentifiers()])
+			->add('birthPlace', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Region_Admin_Autocomplete',
+				'class' => Region::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'language' => $language,
+				'query_parameters' => ["family" => Region::CITY_FAMILY]
+			])
+			->add('deathPlace', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Region_Admin_Autocomplete',
+				'class' => Region::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'language' => $language,
+				'query_parameters' => ["family" => Region::CITY_FAMILY]
+			]);
 
 		$entities = $this->entityManager->getConfiguration()->getMetadataDriverImpl()->getAllClassNames();
 		$occupationChoice = [];

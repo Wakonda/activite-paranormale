@@ -44,7 +44,8 @@ class RegionAdminType extends AbstractType
 					"choices" => [
 						"region.form.".ucfirst(Region::COUNTRY_FAMILY) => Region::COUNTRY_FAMILY,
 						"region.form.".ucfirst(Region::SUBDIVISION_FAMILY) => Region::SUBDIVISION_FAMILY,
-						"region.form.".ucfirst(Region::AREA_FAMILY) => Region::AREA_FAMILY
+						"region.form.".ucfirst(Region::AREA_FAMILY) => Region::AREA_FAMILY,
+						"region.form.".ucfirst(Region::CITY_FAMILY) => Region::CITY_FAMILY
 					],
 					'translation_domain' => 'validators'
 			])

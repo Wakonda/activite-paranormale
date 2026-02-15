@@ -29,8 +29,14 @@
 	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.BirthDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.birthDate|doPartialDate(app.request.locale) }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.BirthPlace"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.birthPlace is not empty %}{{ entity.birthPlace.title }}{% endif %}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.DeathDate"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.deathDate|doPartialDate(app.request.locale) }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.DeathPlace"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.deathPlace is not empty %}{{ entity.deathPlace.title }}{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "biography.admin.Nationality"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.nationality is not empty %}<img src="{{ asset(entity.nationality.getAssetImagePath()) }}{{ entity.nationality.flag }}" alt="" width="20" height="13" />{% endif %}</div>

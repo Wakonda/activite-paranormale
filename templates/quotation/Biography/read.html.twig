@@ -73,6 +73,12 @@
 
 		{% set infos = infos|merge(["<b>"~"biography.index.BirthDate"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.birthDate|doPartialDate(app.request.locale) ~ "</a>"]) %}
 	{% endif %}
+
+	{% if entity.birthPlace is not empty %}
+		{% set url = "" %}
+		{% set infos = infos|merge(["<b>"~"biography.index.BirthPlace"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.birthPlace.title ~ "</a> (<a href='"~ url ~"'>"~entity.birthPlace.higherLevel.title ~ "</a>)"]) %}
+	{% endif %}
+
 	{% if entity.deathDate is not empty %}
 		{% set dateArray = entity.deathDateToArray %}
 		
@@ -86,6 +92,12 @@
 
 		{% set infos = infos|merge(["<b>"~"biography.index.DeathDate"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.deathDate|doPartialDate(app.request.locale) ~ "</a>"]) %}
 	{% endif %}
+
+	{% if entity.deathPlace is not empty %}
+		{% set url = "" %}
+		{% set infos = infos|merge(["<b>"~"biography.index.DeathPlace"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.deathPlace.title ~ "</a> (<a href='"~ url ~"'>"~entity.deathPlace.higherLevel.title ~ "</a>)"]) %}
+	{% endif %}
+
 	{% if entity.nationality is not empty %}
 		{% set infos = infos|merge(["<b>"~"biography.index.Nationality"|trans([], "validators")~"</b> <img src='"~asset(entity.nationality.getAssetImagePath())~entity.nationality.flag~"' alt='' width='20' height='13'>"~" <a href='"~path('Biography_Index')~"?country="~entity.nationality.id~"'>"~entity.nationality.title~"</a>"]) %}
 	{% endif %}

@@ -86,6 +86,8 @@ biography:
         ThisItemCannotBeDeleted: "This item cannot be deleted."
         Gender: "Gender"
         FeastDay: "Feast"
+        BirthPlace: "Place of birth"
+        DeathPlace: "Place of death"
     index:
         Quotations: "Quotations"
         NoQuotation: "No quotation"
@@ -108,6 +110,8 @@ biography:
         Occupations: "Occupations:"
         Links: "Links"
         Identifiers: "Identifiers"
+        BirthPlace: "Place of birth"
+        DeathPlace: "Place of death"
     occupation:
         Actor: "Actor"
         Producer: "Producer"

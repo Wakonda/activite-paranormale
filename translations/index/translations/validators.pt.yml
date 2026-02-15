@@ -135,6 +135,7 @@ region:
         Country: "País"
         Area: "Zona"
         Subdivision: "Subdivisão"
+        City: "Cidade"
 language:
     admin:
         Language: "Idioma"

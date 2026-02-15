@@ -96,7 +96,6 @@ class BiographyAdminController extends AdminGenericController
 			$datas["identifiers"] = array_map("unserialize", array_unique(array_map("serialize", $datas["identifiers"])));
 
 		foreach ($biographies as $biography) {
-
 			if(isset($datas["birthDate"]))
 				$biography->setBirthDate($datas["birthDate"]);
 			if(isset($datas["deathDate"]))

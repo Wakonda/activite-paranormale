@@ -13,6 +13,7 @@ class Region
 	const SUBDIVISION_FAMILY = "subdivision";
 	const COUNTRY_FAMILY = "country";
 	const AREA_FAMILY = "area";
+	const CITY_FAMILY = "city";
 
     #[ORM\Column(name: 'id', type: 'integer')]
     #[ORM\Id]
@@ -35,9 +36,15 @@ class Region
 	#[ORM\Column(name: 'family', type: 'string', length: 255)]
     private $family;
 
+	#[ORM\Column(name: 'wikidata', type: 'string', length: 20)]
+	private $wikidata;
+
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
 	#[ORM\JoinColumn(name: 'higherLevel_id')]
     protected $higherLevel;
+
+	#[ORM\Column(name: 'geoshape', type: 'text')]
+	private $geoshape;
 	
 	public function __toString()
 	{
@@ -160,5 +167,25 @@ class Region
     public function setHigherLevel($higherLevel)
     {
         $this->higherLevel = $higherLevel;
+    }
+
+    public function getWikidata()
+    {
+        return $this->wikidata;
+    }
+
+    public function setWikidata($wikidata)
+    {
+        $this->wikidata = $wikidata;
+    }
+
+    public function getGeoshape()
+    {
+        return $this->geoshape;
+    }
+
+    public function setGeoshape($geoshape)
+    {
+        $this->geoshape = $geoshape;
     }
 }

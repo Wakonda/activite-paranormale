@@ -40,14 +40,18 @@ class Wikidata {
 		if(!property_exists($datas->entities->$code->labels, $language)) {
 			$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids={$code}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
 
+			$url = $datas->entities->$code->sitelinks->{$languageWiki}->url;
+			$title = $datas->entities->$code->sitelinks->{$languageWiki}->title;
 			$datas = json_decode($content);
 			$titleArray = (array) $datas->entities->$code->labels;
 
-			if(isset($titleArray["en"]))
-				$title = $titleArray["en"]->value;
-			else
-				$title = reset($titleArray)->value;
-		} else {
+			if(empty($title)) {
+				if(isset($titleArray["en"]))
+					$title = $titleArray["en"]->value;
+				else
+					$title = reset($titleArray)->value;
+			}
+		} else {dd("eee");
 			$title = $datas->entities->$code->labels->$language->value;
 			$url = $this->getUrl($datas, $code, $languageWiki);
 		}
@@ -56,6 +60,80 @@ class Wikidata {
 		$res["url"] = $url;
 		$res["code"] = $code;
 
+		return $res;
+	}
+
+	private function buildCommonsUrl($filename) {
+		$filename = str_replace(' ', '_', $filename);
+		$hash = md5($filename);
+
+		$path = substr($hash, 0, 1) . '/' . substr($hash, 0, 2) . '/';
+
+		$baseUrl = 'https://upload.wikimedia.org/wikipedia/commons/';
+		$url = $baseUrl . $path . urlencode($filename);
+		
+		return $url;
+	}
+	
+	public function getCity(string $key, $claims, string $language, string $dateCode): array {
+		$parser = new \App\Service\APParseHTML();
+
+		$res = [
+			"id" => null,
+			"text" => null
+		];
+		
+		if(property_exists($claims, $dateCode)) {
+			$idCity = $claims->$dateCode[0]->mainsnak->datavalue->value->id;
+			$locale = $this->em->getRepository(language::class)->findOneBy(["abbreviation" => $language]);
+			$city = $this->em->getRepository(Region::class)->findOneBy(["wikidata" => $idCity, "language" => $locale]);
+
+			if(empty($city)) {
+				$data = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&ids={$idCity}&languages={$language}&format=json", null, false));
+				$wikidata = $data->entities->$idCity->claims->P17[0]->mainsnak->datavalue->value->id;
+				$country = $this->em->getRepository(Region::class)->findOneBy(["wikidata" => $wikidata, "language" => $locale]);
+
+				$title = $data->entities->$idCity->labels->$language->value;
+				$slug = (new \Ausi\SlugGenerator\SlugGenerator)->generate($title);
+
+				$city = new Region();
+				$city->setLanguage($locale);
+				$city->setTitle($title);
+				$city->setInternationalName($slug);
+				$city->setFamily(Region::CITY_FAMILY);
+				$city->setHigherLevel($country);
+				$city->setWikidata($idCity);
+				
+				if(property_exists($data->entities->$idCity->claims, "P3896")) {
+					$geoShape = urlencode($data->entities->$idCity->claims->P3896[0]->mainsnak->datavalue->value);
+					$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&format=json&titles=$geoShape&origin=*";
+					$geoDatas = json_decode($parser->getContentURL($url, null, false), true)["query"]["pages"];
+					$geoDatas = $geoDatas[array_keys($geoDatas)[0]]["revisions"];
+					
+					foreach($geoDatas as $geoData) {
+						$geoShapeData = json_encode(json_decode($geoData["slots"]["main"]["*"])->data);
+					}
+					
+					$city->setGeoshape($geoShapeData);
+				}
+				$filename = $data->entities->$idCity->claims->P41[0]->mainsnak->datavalue->value;
+				$contentFile = $parser->getContentURL($this->buildCommonsUrl($filename), null, false);
+				
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+				file_put_contents($city->getAssetImagePath().$slug."_".$wikidata.".$ext", $contentFile);
+				
+				$city->setFlag($slug."_".$wikidata.".$ext");
+
+				$this->em->persist($city);
+				$this->em->flush();
+
+				$res = [
+					"id" => $city->getId(),
+					"text" => $city->getTitle()
+				];
+			}
+		}
+		
 		return $res;
 	}
 
@@ -70,6 +148,7 @@ class Wikidata {
 
 		$datas = json_decode($content);
 
+		$res["birthPlace"] = $this->getCity("birthPlace", $datas->entities->$code->claims, $language, "P19");
 		$res["socialNetwork"] = ["link" => null, "twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
 
 		if(property_exists($datas->entities->$code->claims, "P2002")) {

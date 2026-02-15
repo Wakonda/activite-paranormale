@@ -20,8 +20,14 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.birthDate, "biography.admin.BirthDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.birthDate) }}{{ form_widget(form.birthDate, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.birthPlace, "biography.admin.BirthPlace"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.birthPlace) }}{{ form_widget(form.birthPlace, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.deathDate, "biography.admin.DeathDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.deathDate) }}{{ form_widget(form.deathDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.deathPlace, "biography.admin.DeathPlace"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.deathPlace) }}{{ form_widget(form.deathPlace, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.nationality, "biography.admin.Nationality"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.nationality) }}{{ form_widget(form.nationality, { 'attr': {'class': 'form-select'} }) }}</div>
@@ -101,6 +107,11 @@
 				document.getElementById("{{ form.socialNetworkYoutube.vars.id }}").value = data.socialNetwork.youtube;
 				document.getElementById("{{ form.socialNetworkInstagram.vars.id }}").value = data.socialNetwork.instagram;
 				document.getElementById("{{ form.gender.vars.id }}").value = data.gender;
+
+				if(data.birthPlace.id != null) {
+					var newOption = new Option(data.birthPlace.text, data.birthPlace.id, true, true);
+					$('#{{ form.birthPlace.vars.id }}').append(newOption).trigger('change');
+				}
 
 				if(typeof data.text !== 'undefined') {
 					tinymce.get("{{ form.text.vars.id }}").setContent(data.text);
