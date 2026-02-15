@@ -12,12 +12,18 @@ use Doctrine\ORM\EntityRepository;
  */
 class LanguageRepository extends EntityRepository
 {
-	public function getAllAvailableLanguages()
+	public function getAllAvailableLanguages(bool $onlyAbbreviation = false)
 	{
 		$qb = $this->createQueryBuilder('o');
 
 		$qb->where('o.current = true')
 			->orderBy('o.title', 'asc');
+
+		if($onlyAbbreviation) {
+			$qb->select("o.abbreviation");
+
+			return array_column($qb->getQuery()->getResult(), "abbreviation");
+		}
 		
 		return $qb->getQuery()->getResult();
 	}

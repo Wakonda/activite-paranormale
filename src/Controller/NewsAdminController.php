@@ -171,19 +171,16 @@ class NewsAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
-		if(!empty($language))
-		{
+		if(!empty($language)) {
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
-			
-			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
+
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
 			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
-		}
-		else
-		{
+		} else {
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$states = $em->getRepository(State::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();
@@ -270,7 +267,8 @@ class NewsAdminController extends AdminGenericController
 		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getTheme()->getInternationalName()]);
 		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
 		
-		$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+		$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
+
 		if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite)) {
 			$languageEnglish = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 			$state = $em->getRepository(State::class)->findOneBy(["language" => $languageEnglish, "internationalName" => $entityToCopy->getState()->getInternationalName()]);

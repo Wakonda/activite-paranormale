@@ -177,15 +177,13 @@ class UsefulLinkAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 
-		if(!empty($language))
-		{
-			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+		if(!empty($language)) {
+			$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
-		}
-		else
+		} else
 			$licences = $em->getRepository(Licence::class)->findAll();
 
 		$licenceArray = [];

@@ -132,8 +132,6 @@ class DealAdminController extends AdminGenericController
 		$entityToCopy = $em->getRepository(Deal::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
 
-		$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
-
 		$entity->setTitle($entityToCopy->getTitle());
 		$entity->setPhoto($entityToCopy->getPhoto());
 		$entity->setLink($entityToCopy->getLink());

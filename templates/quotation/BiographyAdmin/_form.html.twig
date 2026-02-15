@@ -112,6 +112,10 @@
 					var newOption = new Option(data.birthPlace.text, data.birthPlace.id, true, true);
 					$('#{{ form.birthPlace.vars.id }}').append(newOption).trigger('change');
 				}
+				if(data.deathPlace.id != null) {
+					var newOption = new Option(data.deathPlace.text, data.deathPlace.id, true, true);
+					$('#{{ form.deathPlace.vars.id }}').append(newOption).trigger('change');
+				}
 
 				if(typeof data.text !== 'undefined') {
 					tinymce.get("{{ form.text.vars.id }}").setContent(data.text);

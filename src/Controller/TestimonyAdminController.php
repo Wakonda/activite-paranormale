@@ -210,20 +210,17 @@ class TestimonyAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 
-		if(!empty($language))
-		{
+		if(!empty($language)) {
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
+			$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
 
-			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
 			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, ['title' => 'ASC']);
 			$countries = $em->getRepository(Region::class)->getCountryByLanguage($language->getAbbreviation())->getQuery()->getResult();
-		}
-		else
-		{
+		} else {
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$states = $em->getRepository(State::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();

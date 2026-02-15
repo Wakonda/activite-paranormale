@@ -156,18 +156,16 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
-		if(!empty($language))
-		{
+		if(!empty($language)) {
 			$categories = $em->getRepository(ClassifiedAdsCategory::class)->getClassifiedAdsCategoriesByLanguage($language);
-			
-			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
-			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
+			$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
+
+			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite)) {
 				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+			}
 
 			$states = $em->getRepository(State::class)->findByLanguage($language, ['title' => 'ASC']);
-		}
-		else
-		{
+		} else {
 			$categories = $em->getRepository(ClassifiedAdsCategory::class)->getClassifiedAdsCategoriesByLanguage(null);
 			$states = $em->getRepository(State::class)->findAll();
 		}

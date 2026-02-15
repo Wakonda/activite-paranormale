@@ -149,6 +149,8 @@ class Wikidata {
 		$datas = json_decode($content);
 
 		$res["birthPlace"] = $this->getCity("birthPlace", $datas->entities->$code->claims, $language, "P19");
+		$res["deathPlace"] = $this->getCity("deathPlace", $datas->entities->$code->claims, $language, "P20");
+
 		$res["socialNetwork"] = ["link" => null, "twitter" => null, "youtube" => null, "facebook" => null, "instagram" => null];
 
 		if(property_exists($datas->entities->$code->claims, "P2002")) {

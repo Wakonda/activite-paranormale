@@ -330,13 +330,12 @@ class QuotationAdminController extends AdminGenericController
 		$translateArray = [];
 		
 		if(!empty($language)) {
-			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
 
 			$countries = $em->getRepository(Region::class)->findByLanguage($language, ['title' => 'ASC']);
-		}
-		else {
+		} else {
 			$countries = $em->getRepository(Region::class)->findAll();
 		}
 

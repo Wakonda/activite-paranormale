@@ -161,20 +161,17 @@ class DocumentAdminController extends AdminGenericController
 		$language = $em->getRepository(Language::class)->find($request->request->get('id'));
 		$translateArray = [];
 		
-		if(!empty($language))
-		{
+		if(!empty($language)) {
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList($language->getAbbreviation(), $request->getLocale());
 			$documentFamilies = $em->getRepository(DocumentFamily::class)->findByLanguage($language, array('title' => 'ASC'));
-			
-			$currentLanguagesWebsite = explode(",", $_ENV["LANGUAGES"]);
+			$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
+
 			if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite))
 				$language = $em->getRepository(Language::class)->findOneBy(array('abbreviation' => 'en'));
 
 			$licences = $em->getRepository(Licence::class)->findByLanguage($language, array('title' => 'ASC'));
 			$states = $em->getRepository(State::class)->findByLanguage($language, array('title' => 'ASC'));
-		}
-		else
-		{
+		} else {
 			$themes = $em->getRepository(Theme::class)->getByLanguageForList(null, $request->getLocale());
 			$documentFamilies = $em->getRepository(DocumentFamily::class)->findAll();
 			$licences = $em->getRepository(Licence::class)->findAll();
@@ -190,22 +187,19 @@ class DocumentAdminController extends AdminGenericController
 
 		$translateArray['theme'] = $themeArray;
 		
-		foreach($licences as $licence)
-		{
+		foreach($licences as $licence) {
 			$licenceArray[] = array("id" => $licence->getId(), "title" => $licence->getTitle());
 		}
 		$translateArray['licence'] = $licenceArray;
 
-		foreach($states as $state)
-		{
+		foreach($states as $state) {
 			$stateArray[] = array("id" => $state->getId(), "title" => $state->getTitle(), 'intl' => $state->getInternationalName());
 		}
 		$translateArray['state'] = $stateArray;
 
 		$documentFamilyArray = [];
 		
-		foreach($documentFamilies as $documentFamily)
-		{
+		foreach($documentFamilies as $documentFamily) {
 			$documentFamilyArray[] = array("id" => $documentFamily->getId(), "title" => $documentFamily->getTitle());
 		}
 		$translateArray['documentFamily'] = $documentFamilyArray;
