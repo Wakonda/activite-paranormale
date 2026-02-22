@@ -136,6 +136,9 @@ region:
         Area: "Zona"
         Subdivision: "Subdivisão"
         City: "Cidade"
+    index:
+        BirthPlace: "Local de nascimento"
+        DeathPlace: "Local de falecimento"
 language:
     admin:
         Language: "Idioma"

@@ -1,0 +1,237 @@
+<?php
+
+namespace App\Command;
+
+use App\Repository\AdminUserRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
+
+#[AsCommand(
+    name: 'app:wikidatacountry',
+    description: 'Update wikidata into Region table',
+)]
+class WikidataCountryCommand extends Command
+{
+    public function __construct(
+        private EntityManagerInterface $entityManager
+    ) {
+        parent::__construct();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        $io = new SymfonyStyle($input, $output);
+		
+		$conn = $this->entityManager->getConnection();
+
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q889' WHERE internationalname = 'af';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q258' WHERE internationalname = 'za';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q222' WHERE internationalname = 'al';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q262' WHERE internationalname = 'dz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q183' WHERE internationalname = 'de';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q228' WHERE internationalname = 'ad';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q916' WHERE internationalname = 'ao';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q781' WHERE internationalname = 'ag';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q851' WHERE internationalname = 'sa';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q414' WHERE internationalname = 'ar';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q399' WHERE internationalname = 'am';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q21203' WHERE internationalname = 'aw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q408' WHERE internationalname = 'au';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q40' WHERE internationalname = 'at';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q227' WHERE internationalname = 'az';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q778' WHERE internationalname = 'bs';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q398' WHERE internationalname = 'bh';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q902' WHERE internationalname = 'bd';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q244' WHERE internationalname = 'bb';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q31' WHERE internationalname = 'be';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q242' WHERE internationalname = 'bz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q917' WHERE internationalname = 'bt';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q836' WHERE internationalname = 'mm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q184' WHERE internationalname = 'by';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q750' WHERE internationalname = 'bo';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q225' WHERE internationalname = 'ba';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q963' WHERE internationalname = 'bw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q921' WHERE internationalname = 'bn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q155' WHERE internationalname = 'br';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q219' WHERE internationalname = 'bg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q965' WHERE internationalname = 'bf';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q967' WHERE internationalname = 'bi';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q962' WHERE internationalname = 'bj';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q424' WHERE internationalname = 'kh';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1009' WHERE internationalname = 'cm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q16' WHERE internationalname = 'ca';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1011' WHERE internationalname = 'cv';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q298' WHERE internationalname = 'cl';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q229' WHERE internationalname = 'cy';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q739' WHERE internationalname = 'co';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q970' WHERE internationalname = 'km';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q423' WHERE internationalname = 'kp';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q884' WHERE internationalname = 'kr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q800' WHERE internationalname = 'cr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q224' WHERE internationalname = 'hr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q241' WHERE internationalname = 'cu';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q25279' WHERE internationalname = 'cw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1008' WHERE internationalname = 'ci';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q35' WHERE internationalname = 'dk';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q977' WHERE internationalname = 'dj';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q784' WHERE internationalname = 'dm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q29' WHERE internationalname = 'es';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q191' WHERE internationalname = 'ee';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1050' WHERE internationalname = 'sz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q712' WHERE internationalname = 'fj';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q33' WHERE internationalname = 'fi';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q142' WHERE internationalname = 'fr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1000' WHERE internationalname = 'ga';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1005' WHERE internationalname = 'gm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q117' WHERE internationalname = 'gh';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q769' WHERE internationalname = 'gd';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q223' WHERE internationalname = 'gl';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q41' WHERE internationalname = 'gr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q774' WHERE internationalname = 'gt';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1006' WHERE internationalname = 'gn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q983' WHERE internationalname = 'gq';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1007' WHERE internationalname = 'gw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q734' WHERE internationalname = 'gy';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q230' WHERE internationalname = 'ge';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q790' WHERE internationalname = 'ht';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q783' WHERE internationalname = 'hn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q28' WHERE internationalname = 'hu';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q668' WHERE internationalname = 'in';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q252' WHERE internationalname = 'id';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q796' WHERE internationalname = 'iq';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q794' WHERE internationalname = 'ir';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q27' WHERE internationalname = 'ie';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q189' WHERE internationalname = 'is';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q801' WHERE internationalname = 'il';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q38' WHERE internationalname = 'it';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q766' WHERE internationalname = 'jm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q17' WHERE internationalname = 'jp';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q810' WHERE internationalname = 'jo';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q232' WHERE internationalname = 'kz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q114' WHERE internationalname = 'ke';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q813' WHERE internationalname = 'kg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q710' WHERE internationalname = 'ki';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1246' WHERE internationalname = 'xk';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q817' WHERE internationalname = 'kw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q819' WHERE internationalname = 'la';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1013' WHERE internationalname = 'ls';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q211' WHERE internationalname = 'lv';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q822' WHERE internationalname = 'lb';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1014' WHERE internationalname = 'lr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1016' WHERE internationalname = 'ly';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q347' WHERE internationalname = 'li';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q37' WHERE internationalname = 'lt';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q32' WHERE internationalname = 'lu';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q221' WHERE internationalname = 'mk';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1019' WHERE internationalname = 'mg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q833' WHERE internationalname = 'my';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1020' WHERE internationalname = 'mw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q826' WHERE internationalname = 'mv';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q912' WHERE internationalname = 'ml';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q233' WHERE internationalname = 'mt';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1028' WHERE internationalname = 'ma';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1027' WHERE internationalname = 'mu';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1025' WHERE internationalname = 'mr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q96' WHERE internationalname = 'mx';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q217' WHERE internationalname = 'md';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q235' WHERE internationalname = 'mc';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q711' WHERE internationalname = 'mn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q236' WHERE internationalname = 'me';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1029' WHERE internationalname = 'mz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1030' WHERE internationalname = 'na';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q697' WHERE internationalname = 'nr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q811' WHERE internationalname = 'ni';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1032' WHERE internationalname = 'ne';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1033' WHERE internationalname = 'ng';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q34020' WHERE internationalname = 'nu';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q20' WHERE internationalname = 'no';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q664' WHERE internationalname = 'nz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q837' WHERE internationalname = 'np';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q842' WHERE internationalname = 'om';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1036' WHERE internationalname = 'ug';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q265' WHERE internationalname = 'uz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q843' WHERE internationalname = 'pk';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q695' WHERE internationalname = 'pw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q804' WHERE internationalname = 'pa';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q691' WHERE internationalname = 'pg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q733' WHERE internationalname = 'py';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q928' WHERE internationalname = 'ph';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q36' WHERE internationalname = 'pl';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q45' WHERE internationalname = 'pt';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q419' WHERE internationalname = 'pe';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q846' WHERE internationalname = 'qa';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q218' WHERE internationalname = 'ro';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q29999' WHERE internationalname = 'nl';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q145' WHERE internationalname = 'gb';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q159' WHERE internationalname = 'ru';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1037' WHERE internationalname = 'rw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q929' WHERE internationalname = 'cf';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q786' WHERE internationalname = 'do';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q971' WHERE internationalname = 'cg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q974' WHERE internationalname = 'cd';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q148' WHERE internationalname = 'cn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q763' WHERE internationalname = 'kn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q238' WHERE internationalname = 'sm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q26273' WHERE internationalname = 'sx';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q757' WHERE internationalname = 'vc';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q760' WHERE internationalname = 'lc';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q792' WHERE internationalname = 'sv';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q683' WHERE internationalname = 'ws';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1039' WHERE internationalname = 'st';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q403' WHERE internationalname = 'rs';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1042' WHERE internationalname = 'sc';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1044' WHERE internationalname = 'sl';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q334' WHERE internationalname = 'sg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q214' WHERE internationalname = 'sk';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q215' WHERE internationalname = 'si';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1045' WHERE internationalname = 'so';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1049' WHERE internationalname = 'sd';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q958' WHERE internationalname = 'ss';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q854' WHERE internationalname = 'lk';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q39' WHERE internationalname = 'ch';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q730' WHERE internationalname = 'sr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q34' WHERE internationalname = 'se';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q858' WHERE internationalname = 'sy';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q1041' WHERE internationalname = 'sn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q863' WHERE internationalname = 'tj';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q924' WHERE internationalname = 'tz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q865' WHERE internationalname = 'tw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q657' WHERE internationalname = 'td';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q213' WHERE internationalname = 'cz';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q869' WHERE internationalname = 'th';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q574' WHERE internationalname = 'tl';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q945' WHERE internationalname = 'tg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q678' WHERE internationalname = 'to';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q754' WHERE internationalname = 'tt';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q948' WHERE internationalname = 'tn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q874' WHERE internationalname = 'tm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q43' WHERE internationalname = 'tr';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q672' WHERE internationalname = 'tv';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q212' WHERE internationalname = 'ua';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q77' WHERE internationalname = 'uy';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q686' WHERE internationalname = 'vu';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q237' WHERE internationalname = 'va';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q717' WHERE internationalname = 've';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q881' WHERE internationalname = 'vn';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q805' WHERE internationalname = 'ye';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q953' WHERE internationalname = 'zm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q954' WHERE internationalname = 'zw';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q79' WHERE internationalname = 'eg';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q878' WHERE internationalname = 'ae';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q736' WHERE internationalname = 'ec';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q986' WHERE internationalname = 'er';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q219060' WHERE internationalname = 'ps';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q702' WHERE internationalname = 'fm';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q30' WHERE internationalname = 'us';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q115' WHERE internationalname = 'et';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q26988' WHERE internationalname = 'ck';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q709' WHERE internationalname = 'mh';");
+		$conn->executeQuery("UPDATE region SET wikidata = 'Q685' WHERE internationalname = 'sb';");
+
+        return Command::SUCCESS;
+    }
+}

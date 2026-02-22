@@ -75,8 +75,9 @@
 	{% endif %}
 
 	{% if entity.birthPlace is not empty %}
-		{% set url = "" %}
-		{% set infos = infos|merge(["<b>"~"biography.index.BirthPlace"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.birthPlace.title ~ "</a> (<a href='"~ url ~"'>"~entity.birthPlace.higherLevel.title ~ "</a>)"]) %}
+		{% set urlCity = path('Region_Index', {id: entity.birthPlace.id, slug: entity.birthPlace.internationalName}) %}
+		{% set urlCountry = path('Region_Index', {id: entity.birthPlace.higherLevel.id, slug: entity.birthPlace.higherLevel.internationalName}) %}
+		{% set infos = infos|merge(["<b>"~"biography.index.BirthPlace"|trans([], "validators")~"</b> <a href='"~ urlCity ~"'>"~entity.birthPlace.title ~ "</a> (<a href='"~ urlCountry ~"'>"~entity.birthPlace.higherLevel.title ~ "</a>)"]) %}
 	{% endif %}
 
 	{% if entity.deathDate is not empty %}
@@ -94,8 +95,9 @@
 	{% endif %}
 
 	{% if entity.deathPlace is not empty %}
-		{% set url = "" %}
-		{% set infos = infos|merge(["<b>"~"biography.index.DeathPlace"|trans([], "validators")~"</b> <a href='"~ url ~"'>"~entity.deathPlace.title ~ "</a> (<a href='"~ url ~"'>"~entity.deathPlace.higherLevel.title ~ "</a>)"]) %}
+		{% set urlCity = path('Region_Index', {id: entity.deathPlace.id, slug: entity.deathPlace.internationalName}) %}
+		{% set urlCountry = path('Region_Index', {id: entity.deathPlace.higherLevel.id, slug: entity.deathPlace.higherLevel.internationalName}) %}
+		{% set infos = infos|merge(["<b>"~"biography.index.DeathPlace"|trans([], "validators")~"</b> <a href='"~ urlCity ~"'>"~entity.deathPlace.title ~ "</a> (<a href='"~ urlCountry ~"'>"~entity.deathPlace.higherLevel.title ~ "</a>)"]) %}
 	{% endif %}
 
 	{% if entity.nationality is not empty %}

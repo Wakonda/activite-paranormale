@@ -1,0 +1,29 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ entity.title }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire"></span>{{ entity.title }}</h2>{% endblock h2_title %}
+
+{% block header_plus %}
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image">{{ entity.flag|imgsize(550, entity.getAssetImagePath(), true, {class: "mx-auto d-block img-fluid", alt: entity.title})|raw }}</p>
+	<hr>
+	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
+
+	{% if biographies is not empty %}
+		{% for type, bs in biographies %}
+			{% if bs is not empty %}
+				<h3>{{ ("region.index." ~ type|ucfirst)|trans([], "validators") }}</h3>
+				<ul>
+				{% for b in bs %}
+					<li><a href="{{ path('Biography_Show', {id: b.id, title_slug: b.slug}) }}">{{ b.title }}</a></li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

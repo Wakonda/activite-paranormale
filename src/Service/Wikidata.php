@@ -51,7 +51,7 @@ class Wikidata {
 				else
 					$title = reset($titleArray)->value;
 			}
-		} else {dd("eee");
+		} else {
 			$title = $datas->entities->$code->labels->$language->value;
 			$url = $this->getUrl($datas, $code, $languageWiki);
 		}
