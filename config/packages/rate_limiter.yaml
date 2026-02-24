@@ -1,0 +1,7 @@
+framework:
+    rate_limiter:
+        enabled: true # Optionnel mais force l'activation
+        form_submission: # Le nom de votre limiteur
+            policy: 'sliding_window'
+            limit: 10
+            interval: '15 minutes'

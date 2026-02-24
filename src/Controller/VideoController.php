@@ -23,6 +23,7 @@ use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
 use App\Form\Type\VideoUserParticipationType;
+use App\Service\FormRateLimiterService;
 
 class VideoController extends AbstractController
 {
@@ -397,8 +398,10 @@ class VideoController extends AbstractController
     }
 
 	#[Route('/video/create', name: 'Video_Create')]
-	public function create(Request $request, EntityManagerInterface $em)
+	public function create(Request $request, EntityManagerInterface $em, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'video');
+
 		return $this->genericCreateUpdate($request, $em);
     }
 

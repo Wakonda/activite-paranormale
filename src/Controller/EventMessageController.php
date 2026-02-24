@@ -22,6 +22,7 @@ use App\Entity\EntityLinkBiography;
 use App\Form\Type\EventMessageUserParticipationType;
 use App\Service\APImgSize;
 use App\Service\APDate;
+use App\Service\FormRateLimiterService;
 
 class EventMessageController extends AbstractController
 {
@@ -234,8 +235,10 @@ class EventMessageController extends AbstractController
     }
 
 	#[Route('/event/create', name: 'EventMessage_Create')]
-	public function create(Request $request, EntityManagerInterface $em)
+	public function create(Request $request, EntityManagerInterface $em, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'event');
+
 		return $this->genericCreateUpdate($request, $em);
     }
 

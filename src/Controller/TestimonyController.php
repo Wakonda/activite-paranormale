@@ -21,6 +21,7 @@ use App\Entity\Language;
 use App\Form\Type\TestimonyUserParticipationType;
 use App\Service\APHtml2Pdf;
 use App\Service\TagsManagingGeneric;
+use App\Service\FormRateLimiterService;
 
 class TestimonyController extends AbstractController
 {
@@ -65,8 +66,10 @@ class TestimonyController extends AbstractController
     }
 
 	#[Route('/testimony/create', name: 'Testimony_Create')]
-    public function create(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
+    public function create(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'testimony');
+
 		return $this->generateCreateUpdate($request, $em, $authorizationChecker);
     }
 

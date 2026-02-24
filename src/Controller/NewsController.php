@@ -3,7 +3,8 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 use App\Form\Type\NewsType;
@@ -23,6 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
+use App\Service\FormRateLimiterService;
 
 class NewsController extends AbstractController
 {
@@ -221,8 +223,9 @@ class NewsController extends AbstractController
 
 	#[Route('/news/create', name: 'News_Create')]
 	#[Route('/news/published/create/{draft}/{preview}', name: 'News_User_Create', defaults: ['draft' => 0, 'preview' => 0])]
-	public function create(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker)
+	public function create(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'news');
 		return $this->genericCreateUpdate($request, $em, $authorizationChecker);
     }
 
@@ -284,8 +287,10 @@ class NewsController extends AbstractController
     }
 
 	#[Route('/news/update/{id}', name: 'News_Update')]
-	public function update(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id)
+	public function update(Request $request, EntityManagerInterface $em, AuthorizationCheckerInterface $authorizationChecker, $id, FormRateLimiterService $rateLimiter)
     {
+		$rateLimiter->check($request, 'news');
+
 		return $this->genericCreateUpdate($request, $em, $authorizationChecker, $id);
     }
 	

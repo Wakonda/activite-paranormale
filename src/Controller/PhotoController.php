@@ -19,6 +19,7 @@ use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
 use App\Form\Type\PhotoUserParticipationType;
+use App\Service\FormRateLimiterService;
 
 class PhotoController extends AbstractController
 {
@@ -227,6 +228,8 @@ class PhotoController extends AbstractController
 	#[Route('/photo/new', name: 'Photo_New')]
     public function newAction(Request $request)
     {
+		$formSubmissionLimiter->check($request, 'photo');
+
         $entity = new Photo();
 
         $form = $this->createForm(PhotoUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
@@ -238,8 +241,10 @@ class PhotoController extends AbstractController
     }
 
 	#[Route('/photo/create', name: 'Photo_Create')]
-	public function create(Request $request, EntityManagerInterface $em)
+	public function create(Request $request, EntityManagerInterface $em, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'photo');
+
 		return $this->genericCreateUpdate($request, $em);
     }
 

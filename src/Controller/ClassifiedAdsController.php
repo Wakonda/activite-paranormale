@@ -21,6 +21,7 @@ use App\Entity\ClassifiedAdsCategory;
 use App\Entity\Region;
 use App\Form\Type\ClassifiedAdsType;
 use App\Form\Type\ClassifiedAdsSearchType;
+use App\Service\FormRateLimiterService;
 
 class ClassifiedAdsController extends AbstractController
 {
@@ -105,8 +106,10 @@ class ClassifiedAdsController extends AbstractController
     }
 
 	#[Route('/classifiedads/create', name: 'ClassifiedAds_Create')]
-    public function create(Request $request, EntityManagerInterface $em, TranslatorInterface $translator)
+    public function create(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'classified_ads');
+
         $entity  = new ClassifiedAds();
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);
 

@@ -22,7 +22,7 @@ use App\Service\APImgSize;
 use App\Service\APDate;
 use App\Service\APHtml2Pdf;
 use Knp\Component\Pager\PaginatorInterface;
-
+use App\Service\FormRateLimiterService;
 use App\Form\Type\WitchcraftToolSearchType;
 
 class WitchcraftController extends AbstractController
@@ -204,8 +204,10 @@ class WitchcraftController extends AbstractController
     }
 
 	#[Route('/grimoire/create', name: 'Witchcraft_Create')]
-	public function createAction(Request $request, EntityManagerInterface $em)
+	public function createAction(Request $request, EntityManagerInterface $em, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'grimoire');
+
 		$user = $this->getUser();
 		$entity = new Grimoire();
 

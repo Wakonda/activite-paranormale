@@ -14,6 +14,7 @@ use App\Entity\Language;
 use App\Entity\WebDirectory;
 use App\Service\APImgSize;
 use App\Form\Type\WebDirectoryUserParticipationType;
+use App\Service\FormRateLimiterService;
 
 class WebDirectoryController extends AbstractController
 {
@@ -93,8 +94,10 @@ class WebDirectoryController extends AbstractController
     }
 
 	#[Route('/directory/published/create', name: 'WebDirectory_User_Create')]
-	public function createAction(Request $request, EntityManagerInterface $em)
+	public function createAction(Request $request, EntityManagerInterface $em, FormRateLimiterService $formSubmissionLimiter)
     {
+		$formSubmissionLimiter->check($request, 'web_directory');
+
 		return $this->genericCreateUpdate($request, $em);
     }
 
