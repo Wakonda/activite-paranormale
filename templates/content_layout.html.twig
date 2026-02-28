@@ -26,29 +26,3 @@
 		{% endblock %}
 	</div>
 {% endblock %}
-
-{## V3 ##
-{% extends "layout_v3.html.twig" %}
-
-{% block h2_title %}{% endblock %}
-{% block title %}{% endblock %}
-
-{% block content %}
-	{{ parent() }}
-	<div class="content">
-		{% for flashMessage in app.session.flashbag.get('success') %}
-		<div class="alert alert-success text-center">
-			{{ flashMessage|raw }}
-		</div>
-		{% endfor %}
-		{% for flashMessage in app.session.flashbag.get('error') %}
-		<div class="alert alert-danger text-center">
-			{{ flashMessage|raw }}
-		</div>
-		{% endfor %}
-
-		{% block APBlog_body %}
-		{% endblock %}
-	</div>
-{% endblock %}
-## END_V3 ##}

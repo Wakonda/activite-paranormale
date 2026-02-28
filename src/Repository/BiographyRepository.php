@@ -41,7 +41,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->join("b.birthPlace", "r")
 		   ->leftjoin("r.higherLevel", "h");
 
-		$res["birthPlace"] = $qb->getQuery()->getResult();
+		$res["birth"] = $qb->getQuery()->getResult();
 
 		$qb = $this->createQueryBuilder("b");
 
@@ -50,7 +50,7 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		   ->join("b.deathPlace", "r")
 		   ->leftjoin("r.higherLevel", "h");
 
-		$res["deathPlace"] = $qb->getQuery()->getResult();
+		$res["death"] = $qb->getQuery()->getResult();
 
 		return $res;
 	}

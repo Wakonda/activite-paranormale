@@ -108,8 +108,8 @@ eventMessage:
                 other {{romanNumber}<sup>th</sup> century {bc}}
             }
         BC: "BC"
-        BirthDate: "Births"
-        DeathDate: "Deaths"
+        Birth: "Births"
+        Death: "Deaths"
         Event: "Event"
         Celebration: "Observance"
         Horoscope: "Horoscope"

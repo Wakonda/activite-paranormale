@@ -1,6 +1,6 @@
 ﻿{% if worldNews is not empty %}
 	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
-	<ul class="nav nav-tabs mb-2" id="wordNewsTab" role="tablist">
+	<ul class="nav nav-tabs mb-2" id="card_tab" role="tablist">
 		{% for language in worldNews.languages %}
 		  <li class="nav-item" role="presentation">
 			<button class="nav-link{{ language.abbreviation == app.request.locale ? ' active' : '' }} rounded-3" id="{{ language.abbreviation }}-tab" data-bs-toggle="tab" data-bs-target="#{{ language.abbreviation }}-tab-pane" type="button" role="tab" aria-controls="{{ language.abbreviation }}-tab-pane" aria-selected="true"><img class="image_wrapper" src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" title="{{ language.abbreviation }}" width="20" height="13" alt="{{ language.abbreviation }}"> - {{ language.title }} <span class="badge bg-danger">{{ worldNews.entities[language.abbreviation]|length }}</span></button>
@@ -30,18 +30,23 @@
 									<div class="card-header h-100 text-start">
 										<img class="image_wrapper" src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" title="{{ entity.language.abbreviation }}" width="20" height="13" alt="{{ entity.language.abbreviation }}" /> - <span class="fw-bold" style="font-size: 16px;">{{ entity.title }}</span>
 									</div>
-									<div class="row g-0">
-										<div class="col-md-4 mt-3">
+									<div class="row g-0 card-body">
+										<div class="col-md-4">
 											{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, {loading: 'lazy', alt: entity.title})|raw }}
 										</div>
-										<div class="col-md-8">
-											<div class="card-body">
+										<div class="col-md-8 d-flex">
+											<div class="card-body d-flex flex-column">
 												{{ entity.abstractText|raw }}
+
+												<div class="mt-auto">
+												<hr>
+													<div class="d-flex justify-content-between">
+													<div><i class="fa-solid fa-calendar-days"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</div>
+													<div><i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': entity.id, 'title_slug':entity.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a></div>
+													</div>
+												</div>
 											</div>
 										</div>
-									</div>
-									<div class="card-footer text-white-50 text-end">
-										<i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': entity.id, 'title_slug':entity.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a>
 									</div>
 								</div>
 							</div>

@@ -105,8 +105,8 @@ eventMessage:
                 other {Siglo {romanNumber} {bc}}
             }
         BC: "d. C."
-        BirthDate: "Nacimiento"
-        DeathDate: "Fallecimiento"
+        Birth: "Nacimientos"
+        Death: "Fallecimientos"
         Event: "Acontecimiento"
         Celebration: "Celebracion"
         Horoscope: "Horóscopo"

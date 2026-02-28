@@ -137,8 +137,8 @@ region:
         Subdivision: "Subdivisão"
         City: "Cidade"
     index:
-        BirthPlace: "Local de nascimento"
-        DeathPlace: "Local de falecimento"
+        Birth: "Nascimentos"
+        Death: "Falecimentos"
 language:
     admin:
         Language: "Idioma"

@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity(repositoryClass: 'App\Repository\EventMessageRepository')]
 class EventMessage extends MappedSuperclassBase
 {
-	const BIRTH_DATE_TYPE = "birthDate";
-	const DEATH_DATE_TYPE = "deathDate";
+	const BIRTH_DATE_TYPE = "birth";
+	const DEATH_DATE_TYPE = "death";
 	const EVENT_TYPE = "event";
 	const CELEBRATION_TYPE = "celebration";
 	const CONVENTION_TYPE = "convention";

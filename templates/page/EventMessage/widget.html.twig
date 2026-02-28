@@ -17,10 +17,10 @@
 		<br>
 	{% endif %}
 
-	<ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
+	<ul class="nav nav-tabs mb-3 justify-content-center" id="card_tab" role="tablist">
 		{% for key in eventKeys %}
 			<li class="nav-item" role="presentation">
-				<button class="nav-link {% if loop.first %}active{% endif %}" id="pills-{{ key }}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{ key }}" type="button" role="tab" aria-controls="pills-{{ key }}" aria-selected="true"><i class="fas fa-{{ macro_event.icon(key) }}"></i> {{ ("eventMessage.dayMonth." ~ key|ucfirst)|trans([], "validators") }}</button>
+				<button class="nav-link {% if loop.first %}active{% endif %} rounded-3" id="pills-{{ key }}-tab" data-bs-toggle="pill" data-bs-target="#pills-{{ key }}" type="button" role="tab" aria-controls="pills-{{ key }}" aria-selected="true"><i class="fas fa-{{ macro_event.icon(key) }}"></i> {{ ("eventMessage.dayMonth." ~ key|ucfirst)|trans([], "validators") }}</button>
 			</li>
 		{% endfor %}
 	</ul>
@@ -33,7 +33,7 @@
 						<h4><i>{{ "eventMessage.index.Today"|trans([], "validators") }}</i></h4>
 						<ul>
 							{% for event in data %}
-								<li><a href="{{ event.url }}">{{ event.title }}</a>{% if event.endDate is not null %} ({{ "eventMessage.index.Until"|trans([], "validators") }} {{ (event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale) }}){% endif %}{% if event.id == illustration.id %} <i class="fa-solid fa-camera-retro text-primary ms-2"></i>{% endif %}</li>
+								<li><a href="{{ event.url }}">{{ event.title }}</a>{% if event.endDate is defined and event.endDate is not null %} ({{ "eventMessage.index.Until"|trans([], "validators") }} {{ (event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale) }}){% endif %}{% if event.id == illustration.id %} <i class="fa-solid fa-camera-retro text-primary ms-2"></i>{% endif %}</li>
 							{% endfor %}
 						</ul>
 					{% endif %}

@@ -43,7 +43,7 @@ class Region
 	#[ORM\JoinColumn(name: 'higherLevel_id')]
     protected $higherLevel;
 
-	#[ORM\Column(name: 'geoshape', type: 'text')]
+	#[ORM\Column(name: 'geoshape', type: 'text', nullable: true)]
 	private $geoshape;
 	
 	public function __toString()

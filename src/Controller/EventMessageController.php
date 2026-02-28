@@ -617,7 +617,7 @@ class EventMessageController extends AbstractController
 			if(!empty($entity->getBirthDate()) and $apDate->getMonthDay($entity->getBirthDate()) == $month."-".$day)
 				$type = EventMessage::BIRTH_DATE_TYPE;
 
-			$get = "get".ucfirst($type);
+			$get = "get".ucfirst($type)."Date";
 
 			$yearEvent = (new \DateTime($entity->$get()))->format("Y");
 			$romanNumber = $this->romanNumerals($this->getCentury(abs($yearEvent)));
