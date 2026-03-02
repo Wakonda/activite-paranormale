@@ -8,6 +8,13 @@
 
 {% block APBlog_body %}
 	<p class="image">{{ entity.flag|imgsize(550, entity.getAssetImagePath(), true, {class: "mx-auto d-block img-fluid", alt: entity.title})|raw }}</p>
+	
+	{% if entity.higherLevel is not empty %}
+		<hr>
+		<ul class="fa-ul">
+			<li><span class="fa-li"><img src='{{ asset(entity.higherLevel.getAssetImagePath())~entity.higherLevel.flag }}' alt='' width='20' height='13'></span> <a href="{{ path('Region_Index', {id: entity.higherLevel.id, slug: entity.higherLevel.internationalName}) }}">{{ entity.higherLevel.title }}</a></li>
+		</ul>
+	{% endif %}
 	<hr>
 	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
 

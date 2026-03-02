@@ -16,7 +16,7 @@ class MusicBiographyRepository extends EntityRepository
 	{
 		$qb = $this->createQueryBuilder("mb");
 
-		$qb->select("m.musicPiece AS musicTitle, m.id AS musicId, GROUP_CONCAT(mb.occupation SEPARATOR '|') AS occupations")
+		$qb->select("m.musicPiece AS musicTitle, m.id AS musicId, GROUP_CONCAT(mb.occupation SEPARATOR '|') AS occupations, m.slug")
 		   ->where("mb.biography = :biography")
 		   ->setParameter("biography", $biography)
 		   ->join("mb.music", "m")

@@ -53,6 +53,7 @@ class MusicGenre
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setSlug();
     }
 
     public function getTitle()
