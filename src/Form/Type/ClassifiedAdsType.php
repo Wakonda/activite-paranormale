@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Doctrine\ORM\EntityRepository;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Email;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -57,7 +58,7 @@ class ClassifiedAdsType extends AbstractType
 		
 		if(empty($this->token->getToken())) {
 			$builder->add('contactName', TextType::class, ['required' => false])
-			        ->add('contactEmail', TextType::class, ['required' => false]);
+			        ->add('contactEmail', TextType::class, ['required' => false, 'constraints' => [new Email()]]);
 		}
     }
 

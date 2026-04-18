@@ -23,12 +23,12 @@ class Wikidata {
 
 		$res = [];
 		$languageWiki = $language."wiki";
-
+// dd("lll");
 		$code = $this->getCodeFromURL($code);
-
+// dd($code);
 		$parser = new \App\Service\APParseHTML();
 		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
-
+// dd($content);
 		$datas = json_decode($content);
 
 		if(property_exists($datas, "error"))
@@ -93,40 +93,74 @@ class Wikidata {
 				$wikidata = $data->entities->$idCity->claims->P17[0]->mainsnak->datavalue->value->id;
 				$country = $this->em->getRepository(Region::class)->findOneBy(["wikidata" => $wikidata, "language" => $locale]);
 
-				$title = $data->entities->$idCity->labels->$language->value;
-				$slug = (new \Ausi\SlugGenerator\SlugGenerator)->generate($title);
+				if(property_exists($data->entities->$idCity->labels, $language)) {
+					$title = $data->entities->$idCity->labels->$language->value;
+					$slug = (new \Ausi\SlugGenerator\SlugGenerator)->generate($title);
 
-				$city = new Region();
-				$city->setLanguage($locale);
-				$city->setTitle($title);
-				$city->setInternationalName($slug);
-				$city->setFamily(Region::CITY_FAMILY);
-				$city->setHigherLevel($country);
-				$city->setWikidata($idCity);
-				
-				if(property_exists($data->entities->$idCity->claims, "P3896")) {
-					$geoShape = urlencode($data->entities->$idCity->claims->P3896[0]->mainsnak->datavalue->value);
-					$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&format=json&titles=$geoShape&origin=*";
-					$geoDatas = json_decode($parser->getContentURL($url, null, false), true)["query"]["pages"];
-					$geoDatas = $geoDatas[array_keys($geoDatas)[0]]["revisions"];
-					
-					foreach($geoDatas as $geoData) {
-						$geoShapeData = json_encode(json_decode($geoData["slots"]["main"]["*"])->data);
+					$city = new Region();
+					$city->setLanguage($locale);
+					$city->setTitle($title);
+					$city->setInternationalName($slug);
+					$city->setFamily(Region::CITY_FAMILY);
+					$city->setHigherLevel($country);
+					$city->setWikidata($idCity);
+
+					if(property_exists($data->entities->$idCity->claims, "P3896")) {
+						$geoShape = urlencode($data->entities->$idCity->claims->P3896[0]->mainsnak->datavalue->value);
+						$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&format=json&titles=$geoShape&origin=*";
+						$geoDatas = json_decode($parser->getContentURL($url, null, false), true)["query"]["pages"];
+						$geoDatas = $geoDatas[array_keys($geoDatas)[0]]["revisions"];
+						
+						foreach($geoDatas as $geoData) {
+							$geoShapeData = json_encode(json_decode($geoData["slots"]["main"]["*"])->data);
+						}
+						
+						$city->setGeoshape($geoShapeData);
 					}
-					
-					$city->setGeoshape($geoShapeData);
+
+					if(property_exists($data->entities->$idCity->claims, "P41")) {
+						$filename = $data->entities->$idCity->claims->P41[0]->mainsnak->datavalue->value;
+						$contentFile = $parser->getContentURL($this->buildCommonsUrl($filename), null, false);
+						
+						$ext = pathinfo($filename, PATHINFO_EXTENSION);
+						file_put_contents($city->getAssetImagePath().$slug."_".$wikidata.".$ext", $contentFile);
+						
+						$city->setFlag($slug."_".$wikidata.".$ext");
+					} else if(property_exists($data->entities->$idCity->claims, "P94")) {
+						$filename = $data->entities->$idCity->claims->P94[0]->mainsnak->datavalue->value;
+						$contentFile = $parser->getContentURL($this->buildCommonsUrl($filename), null, false);
+						
+						$ext = pathinfo($filename, PATHINFO_EXTENSION);
+						file_put_contents($city->getAssetImagePath().$slug."_".$wikidata.".$ext", $contentFile);
+						
+						$city->setFlag($slug."_".$wikidata.".$ext");
+					} else if(property_exists($data->entities->$idCity->claims, "P2716")) {
+						$filename = $data->entities->$idCity->claims->P2716[0]->mainsnak->datavalue->value;
+						$contentFile = $parser->getContentURL($this->buildCommonsUrl($filename), null, false);
+						
+						$ext = pathinfo($filename, PATHINFO_EXTENSION);
+						file_put_contents($city->getAssetImagePath().$slug."_".$wikidata.".$ext", $contentFile);
+						
+						$city->setFlag($slug."_".$wikidata.".$ext");
+					} else if(property_exists($data->entities->$idCity->claims, "P18")) {
+						$filename = $data->entities->$idCity->claims->P18[0]->mainsnak->datavalue->value;
+						$contentFile = $parser->getContentURL($this->buildCommonsUrl($filename), null, false);
+						
+						$ext = pathinfo($filename, PATHINFO_EXTENSION);
+						file_put_contents($city->getAssetImagePath().$slug."_".$wikidata.".$ext", $contentFile);
+						
+						$city->setFlag($slug."_".$wikidata.".$ext");
+					}
+
+					$this->em->persist($city);
+					$this->em->flush();
+
+					$res = [
+						"id" => $city->getId(),
+						"text" => $city->getTitle()
+					];
 				}
-				$filename = $data->entities->$idCity->claims->P41[0]->mainsnak->datavalue->value;
-				$contentFile = $parser->getContentURL($this->buildCommonsUrl($filename), null, false);
-				
-				$ext = pathinfo($filename, PATHINFO_EXTENSION);
-				file_put_contents($city->getAssetImagePath().$slug."_".$wikidata.".$ext", $contentFile);
-				
-				$city->setFlag($slug."_".$wikidata.".$ext");
-
-				$this->em->persist($city);
-				$this->em->flush();
-
+			} else {
 				$res = [
 					"id" => $city->getId(),
 					"text" => $city->getTitle()
@@ -293,6 +327,8 @@ class Wikidata {
 			$url = $imageProperty->thumburl;
 		else
 			$url = $imageProperty->url;
+		
+		$url = strtok($url, '?');
 		
 		return ["url" => $url, 
 				"source" => $imageProperty->descriptionshorturl,
@@ -1269,7 +1305,7 @@ class Wikidata {
 	private function getCodeFromURL($url) {
 		if(!str_starts_with($url, "http") and !FunctionsLibrary::isUrl($url))
 			return $url;
-
+// dd($url);
 		$locale = explode(".", parse_url($url ,PHP_URL_HOST))[0];
 
 		$title = urlencode(basename(parse_url($url, PHP_URL_PATH)));
@@ -1277,7 +1313,7 @@ class Wikidata {
 		$parser = new \App\Service\APParseHTML();
 		$res = $parser->getContentURL("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title", null, false);
 		$res = json_decode($res, true);
-
+// dd($res);
 		if(empty($res["query"]["pages"])) {
 			$title = urlencode(str_replace("https://$locale.wikipedia.org/wiki/", "", $url));
 			$res = $parser->getContentURL("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title", null, false);

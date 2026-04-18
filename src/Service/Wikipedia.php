@@ -8,20 +8,26 @@ class Wikipedia {
 	public $url;
 	private $keepTitle = false;
 	
-	public function setUrl(String $url)
+	public function setUrl(?String $url)
 	{
-		$urlParse = parse_url($url);
+		if(!empty($url)) {
+			$urlParse = parse_url($url);
 
-		$this->locale = explode(".", $urlParse["host"])[0];
-		// $this->page = array_reverse(explode("/", $urlParse["path"]))[0];
-		$this->page = str_replace("https://{$this->locale}.wikipedia.org/wiki/", "", $url);
+			$this->locale = explode(".", $urlParse["host"])[0];
+			$this->page = str_replace("https://{$this->locale}.wikipedia.org/wiki/", "", $url);
+		}
 	}
 	
 	public function getContentBySection(Int $sectionIndex = null): String {
 		$url = "https://{$this->locale}.wikipedia.org/w/api.php?action=parse&format=json&page={$this->page}&prop=text".($sectionIndex !== null ? "&section={$sectionIndex}" : "");
 
 		$parser = new \App\Service\APParseHTML();
-		$content = json_decode($parser->getContentURL($url, null, false), true);
+		$contentUrl = $parser->getContentURL($url, null, false);
+		
+		if(empty($contentUrl))
+			return "";
+
+		$content = json_decode($contentUrl, true);
 
 		return $this->wikiTextToHTML($content["parse"]["text"]["*"]);
 	}

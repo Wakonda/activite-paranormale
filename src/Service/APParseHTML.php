@@ -229,6 +229,7 @@
 	
 		public function getContentURL($url, $proxy = null, $sanitizeUrl = true)
 		{
+			// $url = strtok($url, '?');
 			if($sanitizeUrl) {
 				$urlArray = explode("/", $url);
 				$urlArray[count($urlArray) - 1] = urlencode(end($urlArray));
@@ -238,15 +239,22 @@
 			}
 
 			$curl = curl_init();
-			$timeout = 30;
+			$timeout = 30;	
 			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 			curl_setopt($curl, CURLOPT_HEADER, false);
 			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 			curl_setopt($curl, CURLOPT_URL, $url);
-			curl_setopt($curl, CURLOPT_REFERER, $url);
+			curl_setopt($curl, CURLOPT_REFERER, 'https://www.google.com/');
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
-			curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US) AppleWebKit/533.4 (KHTML, like Gecko) Chrome/5.0.375.125 Safari/533.4");
-			
+			curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36");
+			curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
+
+			// curl_setopt($curl, CURLOPT_HTTPHEADER, [
+				// 'Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+				// 'Accept-Language: en-US,en;q=0.9',
+				// 'Accept-Encoding: gzip, deflate, br',
+			// ]);
+
 			if(!empty($proxy))
 			{
 				curl_setopt($curl, CURLOPT_PROXY, $proxyArray[0]);

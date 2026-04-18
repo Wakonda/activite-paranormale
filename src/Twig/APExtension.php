@@ -276,6 +276,10 @@ class APExtension extends AbstractExtension
 				$options["class"] = "img-fluid bg-light";
 		}
 		
+		
+		if($svg->isSVG())
+			$options["class"] = $options["class"]." bg-white";
+		
 		if(!empty($options)) {
 			$optionArray = [];
 			foreach($options as $key => $option) {
@@ -296,7 +300,7 @@ class APExtension extends AbstractExtension
 		}
 
 		if($svg->isSVG())
-			$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' class="w-100 bg-white" '.$optionString.'>';
+			$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' '.$optionString.'>';
 		else
 			$res = '<img src="'.$src.'"'.(!empty($newLarg) ? ' width="'.round($newLarg).'"' : ""). (!empty($newLong) ? ' height="'.round($newLong).'"' : "").' '.$optionString.'>';
 

@@ -766,18 +766,15 @@ class EventMessageController extends AbstractController
 
 		foreach($entities as $entity) {
 			$type = EventMessage::DEATH_DATE_TYPE;
-
-			if(!empty($entity->getBirthDate()) and (new \DateTime($entity->getBirthDate()))->format("Y") == $year)
-				$type = EventMessage::BIRTH_DATE_TYPE;
-
-			$get = "get".ucfirst($type);
-
-			$isBC = false;
-			if($entity->getBirthDate()[0] == "-")
-				$isBC = true;
+			$isBC = str_starts_with($entity->getBirthDate(), "-");
 
 			$startDateArray = explode("-", ltrim($entity->getBirthDate(), "-"));
 			$startArray = ["year" => null, "month" => null, "day" => null];
+
+			if(!empty($entity->getBirthDate()) and ($isBC ? "-" : "").$startDateArray[0] == $year)
+				$type = EventMessage::BIRTH_DATE_TYPE;
+
+			$get = "get".ucfirst($type);
 
 			if(isset($startDateArray[0]))
 				$startArray["year"] = ($isBC ? "-" : "").$startDateArray[0];

@@ -276,13 +276,14 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 
 		if(!empty($month)) {
 			$month = str_pad($month, 2, "0", STR_PAD_LEFT);
-			$qb->andWhere("((REGEXP(c.birthDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')) = :year AND EXTRACT(MONTH FROM CONCAT(c.birthDate, '-01')) = :month) 
+			$qb->andWhere("((REGEXP(c.birthDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')) = :year 
+			   AND EXTRACT(MONTH FROM CONCAT(c.birthDate, '-01')) = :month) 
 			   OR (REGEXP(c.birthDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.birthDate) = :year AND EXTRACT(MONTH FROM c.birthDate) = :month)
 			   OR (REGEXP(c.deathDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.deathDate, '-01')) = :year AND EXTRACT(MONTH FROM CONCAT(c.deathDate, '-01')) = :month) OR (REGEXP(c.deathDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.deathDate) = :year AND EXTRACT(MONTH FROM c.deathDate) = :month))")
 			   ->setParameter("month", $month);
 		} else {
 			$birthDateCondition = "CASE WHEN c.birthDate LIKE '-%' THEN CONCAT('-', SUBSTRING_INDEX(SUBSTRING(c.birthDate, 2), '-', 1)) ELSE SUBSTRING_INDEX(c.birthDate, '-', 1) END";
-			$deathDateCondition = "CASE WHEN c.birthDate LIKE '-%' THEN CONCAT('-', SUBSTRING_INDEX(SUBSTRING(c.birthDate, 2), '-', 1)) ELSE SUBSTRING_INDEX(c.birthDate, '-', 1) END";
+			$deathDateCondition = "CASE WHEN c.deathDate LIKE '-%' THEN CONCAT('-', SUBSTRING_INDEX(SUBSTRING(c.deathDate, 2), '-', 1)) ELSE SUBSTRING_INDEX(c.deathDate, '-', 1) END";
 			$qb->andWhere("((REGEXP(c.birthDate, :regexYearMonth) = true AND EXTRACT(YEAR FROM CONCAT(c.birthDate, '-01')) = :year) 
 						OR (REGEXP(c.birthDate, :regexYearMonthDay) = true AND EXTRACT(YEAR FROM c.birthDate) = :year) 
 						OR (REGEXP(c.birthDate, :regexYear) = true AND $birthDateCondition = :year)

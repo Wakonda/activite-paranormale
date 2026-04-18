@@ -189,7 +189,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		return $response;
 	}
 
-	#[Route('/change_state/{id}/{state}', name: 'ClassifiedAds_Admin_ReloadListsByLanguage')]
+	#[Route('/change_state/{id}/{state}', name: 'ClassifiedAds_Admin_ChangeState')]
 	public function changeState(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, $id, $state)
 	{
 		$language = $request->getLocale();

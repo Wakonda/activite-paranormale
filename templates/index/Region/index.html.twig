@@ -4,11 +4,42 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/nibble.svg') }}" width="25" class="mt-1" alt="Monster vampire"></span>{{ entity.title }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
+	{% if entity.geoShape is not empty %}
+		<link rel="stylesheet" href="{{ asset('extended/js/cartography/leaflet/leaflet.css') }}" />
+		<link href='{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/leaflet.fullscreen.css') }}' rel='stylesheet' />
+		<link rel="stylesheet" href="{{ asset('extended/css/cartography.css') }}" type="text/css" media="screen" />
+		<script src="{{ asset('extended/js/cartography/leaflet/leaflet.js') }}"></script>
+		<script src="{{ asset('extended/js/cartography/Leaflet.fullscreen/dist/Leaflet.fullscreen.min.js') }}"></script>
+
+		<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const map = L.map('map');
+
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			  attribution: '© OpenStreetMap contributors'
+			}).addTo(map);
+
+			const geojson = {{ entity.geoShape|raw}};
+
+			const layer = L.geoJSON(geojson, {
+			  style: (feature) => ({
+				color:       feature.properties['stroke'],
+				weight:      feature.properties['stroke-width'],
+				opacity:     feature.properties['stroke-opacity'],
+				fillColor:   feature.properties['fill'],
+				fillOpacity: feature.properties['fill-opacity']
+			  })
+			}).addTo(map);
+
+			map.fitBounds(layer.getBounds());
+		});
+		</script>
+	{% endif %}
 {% endblock %}
 
 {% block APBlog_body %}
 	<p class="image">{{ entity.flag|imgsize(550, entity.getAssetImagePath(), true, {class: "mx-auto d-block img-fluid", alt: entity.title})|raw }}</p>
-	
+
 	{% if entity.higherLevel is not empty %}
 		<hr>
 		<ul class="fa-ul">
@@ -66,6 +97,12 @@
 		{% endfor %}
 	{% endif %}
 	<br>
+	
+	{% if entity.geoShape is not empty %}
+		<h3>{{ 'cartography.index.Cartography'|trans([], "validators") }}</h3>
+		<div id="map" style="width:100%; height:400px"></div>
+	{% endif %}
+
 	<hr class="hr2">
 	{{ "google"|advertisement|raw }}
 {% endblock %}

@@ -228,8 +228,6 @@ class PhotoController extends AbstractController
 	#[Route('/photo/new', name: 'Photo_New')]
     public function newAction(Request $request)
     {
-		$formSubmissionLimiter->check($request, 'photo');
-
         $entity = new Photo();
 
         $form = $this->createForm(PhotoUserParticipationType::class, $entity, ["language" => $request->getLocale()]);
