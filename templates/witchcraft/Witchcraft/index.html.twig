@@ -13,16 +13,22 @@
 				<div class="col-md-4 align-self-center text-center">
 					{{ MG.entity.photo|imgsize(null, MG.entity.getAssetImagePath(), true, {alt: MG.entity.title})|raw }}
 				</div>
-				<div class="col-md-8 content-card">
-					<div class="card-body p-2 ps-3">
+				<div class="col-md-8 content-card d-flex flex-column">
+					<div class="card-body flex-grow-1 pb-0">
 						<h5 class="card-title text-center">
 							{{ MG.entity.title }}
 							<span class="badge bg-danger float-end mt-1">{{ MG.count }}</span>
 						</h5>
 						<hr>
 						<p class="card-text mb-0 text-center">{{ MG.abstract|raw }}</p>
+					</div>
+					<div class="px-125">
 						<hr>
-						<p class="card-text text-center"><a href="{{ path('Witchcraft_Theme', {'id' : MG.entity.id, slug: MG.entity.slug })}}" class="btn read"><span class="me-2"><i class="fas fa-book fa-fw"></i></span> {{ "witchcraft.index.Read"|trans([], "validators") }}</a></p>
+					</div>
+					<div class="card-footer d-flex gap-2 mt-auto">
+						<a href="{{ path('Witchcraft_Theme', {'id' : MG.entity.id, slug: MG.entity.slug })}}" class="btn read w-100">
+							<i class="fas fa-book fa-fw"></i> {{ "witchcraft.index.Read"|trans([], "validators") }}
+						</a>
 					</div>
 				</div>
 			</div>
@@ -45,8 +51,8 @@
 
 	<div class="text-center">
 		<a class="btn witchcraft" href="{{ path('WitchcraftTool_Index') }}">
-			<span class="me-2"><img src="{{ asset('extended/photo/witchcraftStore.png') }}" alt="Witchcraft store logo" width="25" height="25"></span>
-			<b class="align-text-top">{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}</b>
+			<img src="{{ asset('extended/photo/witchcraftStore.png') }}" alt="Witchcraft store logo" width="25" height="25">
+			{{ "witchcraftTool.index.WitchcraftTool"|trans([], "validators") }}
 		</a>
 	</div>
 	<br>

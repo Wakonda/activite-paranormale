@@ -18,8 +18,8 @@
 						{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath())|raw }}
 					{% endif %}
 				</div>
-				<div class="col-md-8 content-card">
-					<div class="card-body">
+				<div class="col-md-8 content-card d-flex flex-column">
+					<div class="card-body flex-grow-1 pb-0">
 						<h5 class="card-title text-center">{{ entity.title }}</h5>
 						<hr>
 						<p class="card-text mb-0 text-center">
@@ -34,13 +34,14 @@
 							{% endfor %}
 						</p>
 						<p class="card-text mb-0 text-center my-3">{% if entity.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>
-
+					</div>
+					<div class="px-125">
 						<hr>
 					</div>
-					<div class="card-footer text-center">
-						<a class="btn read" href="{{ path('Book_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
-							<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
-							<b class="align-middle">{{ "book.search.Read"|trans([], "validators") }}</b>
+					<div class="card-footer d-flex gap-2 mt-auto">
+						<a class="btn read w-100" href="{{ path('Book_Show', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
+							<i class="fas fa-book fa-fw"></i>
+							{{ "book.search.Read"|trans([], "validators") }}
 						</a>
 					</div>
 				</div>

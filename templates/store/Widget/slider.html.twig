@@ -1,25 +1,23 @@
 {% if entities is not empty %}
 <h3>{{ "store.index.Store"|trans([], "validators") }}</h3>
 
-<div id="carousel-store-index" class="carousel-pagination carousel slide" data-interval="false">
-	<ol class="carousel-indicators carousel-indicators-numbers pagination">
-	{% set i = 0 %}
-	{% set j = 1 %}
+<div id="store-container" class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
 	{% for entity in entities %}
-		<li data-bs-target="#carousel-store-index" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
-		{% set i = i + 1 %}
-		{% set j = j + 1 %}
+    <div class="col">
+        <div class="card h-100 d-flex flex-column">
+            {% include 'store/Store/_store_media.html.twig' %}
+            <div class="card-body d-flex flex-column flex-grow-1">
+                <h4 class="card-title text-center">{{ entity.title }}</h4>
+				{% include 'store/Store/_store_info.html.twig' %}
+				
+				<div class="mt-auto"><hr>
+					<div class="d-flex gap-2">
+					{% include 'store/Store/_store_button.html.twig' %}
+					</div>
+				</div>
+            </div>
+        </div>
+    </div>
 	{% endfor %}
-	</ol> 
-
-	<div class="carousel-inner">
-		{% set i = 0 %}
-		{% for entity in entities %}
-			<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-		       {% include "store/Store/_product.html.twig" with { entity: entity } %}
-			</div>
-			{% set i = i + 1 %}
-		{% endfor %}
-	</div>
 </div>
 {% endif %}

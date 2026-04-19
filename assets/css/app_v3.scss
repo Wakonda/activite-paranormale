@@ -105,6 +105,9 @@ p {
 .select2 {
 	width:100%!important;
 }
+.px-125 {
+	padding: 0 1.25rem 0 1.25rem;
+}
 	
 a:not(.btn):not(.alert-link):link, a:not(.btn):not(.alert-link):visited {
     color: #b9c322;
@@ -686,22 +689,13 @@ a.navbar-brand:hover, a.navbar-brand:focus {
 	color: black !important;
 	font-family: Comic Sans MS,Trebuchet MS,Times,Times New Roman,serif;
 }
-.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span, .temu span {
-    background: white;
-    border-radius: 5px;
-    padding: 0.23rem;
-	float: left;
-}
 .read {
-    margin-right: 15px;
     background: deepskyblue !important;
 }
 .witchcraft {
-    margin-right: 15px;
     background: #ec4a23 !important;
 }
 .aliexpress {
-    margin-right: 15px;
     background: #E52F20 !important;
 }
 .spreadshop {
@@ -710,6 +704,13 @@ a.navbar-brand:hover, a.navbar-brand:focus {
 
 .temu {
     background: #ff6d00 !important;
+}
+
+.store_embedded_image img {
+    max-width: 75%;
+    max-height: 350px;
+    margin-right: auto !important;
+    margin-left: auto !important;
 }
 
 /************ HISTORY *******/

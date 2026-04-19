@@ -340,7 +340,7 @@ h4 {
 }
 
 /********* STORE ********/
-div.store_embedded_image img, div.advertising_image a img {
+div.advertising_image a img {
 	max-width: 100%;
 	height: auto;
 }
@@ -351,6 +351,11 @@ div.store_description table
 	border: #d7e13d 1px solid;
 	border-collapse: collapse;
 	width:100%;
+}
+div#store-container .col
+{
+	margin-right: 5px;
+	margin-bottom: 5px;
 }
 
 th
@@ -869,12 +874,6 @@ div.bx-pager {
 	border-radius: .25rem;
 	display: inline-block;
 }
-.amazon span, .read span, .witchcraft span, .aliexpress span, .spreadshop span, .temu span {
-    background: white;
-    border-radius: 5px;
-    padding: 0.23rem;
-	float: left;
-}
 
 .amazon:hover, .read:hover, .witchcraft:hover, .aliexpress:hover, .spreadshop:hover, .temu:hover {
     opacity: 0.8;
@@ -897,6 +896,12 @@ div.bx-pager {
 
 .temu {
     background: #ff6d00;
+}
+.store_embedded_image img {
+    max-width: 75%;
+    max-height: 350px;
+    margin-right: auto !important;
+    margin-left: auto !important;
 }
 
 a.tags_display {
@@ -1048,6 +1053,9 @@ h2 span img {
 .d-flex {
   display: flex !important;
 }
+.gap-2 {
+    gap: .29rem !important;
+}
 .flex-column {
   flex-direction: column !important;
 }
@@ -1091,6 +1099,9 @@ h2 span img {
 .ms-1,
 .mx-1 {
   margin-left: 0.25rem !important;
+}
+.mb-2 {
+  margin-bottom: 0.5rem !important;
 }
 .me-auto,
 .mx-auto {
@@ -1144,8 +1155,15 @@ h2 span img {
 .p-3 {
   padding: 1rem !important;
 }
-.ps-3, .px-3 {
+.ps-3 {
     padding-left: 1rem!important;
+}
+.px-3 {
+    padding-right: 1rem !important;
+    padding-left: 1rem !important;
+}
+.px-125 {
+	padding: 0 1.25rem 0 1.25rem;
 }
 .me-2,
 .mx-2 {
@@ -1155,11 +1173,24 @@ h2 span img {
 .my-1 {
   margin-top: 0.25rem !important;
 }
+.mt-auto {
+    margin-top: auto !important;
+}
+.g-4,
+.gx-4 {
+  --bs-gutter-x: 1.5rem;
+}
+
+.g-4,
+.gy-4 {
+  --bs-gutter-y: 1.5rem;
+}
 /****** GRID ******/
 .row {
     display: flex;
     flex-wrap: wrap;
 }
+
 .col-sm {
 	flex-basis: 0;
     flex-grow: 1;
@@ -1381,6 +1412,9 @@ h2 span img {
 
 .w-100 {
   width: 100% !important;
+}
+.h-100 {
+    height: 100% !important;
 }
 /******* BADGE ********/
 .badge {
@@ -1729,6 +1763,8 @@ ul ol {
   border-radius: 0.25rem;
   font-size: 1rem;
   padding: 0.375rem 0.75rem;
+  text-align: center;
+  text-decoration: none;
 }
 .btn-warning {
   color: #212529 !important;
@@ -1759,6 +1795,7 @@ ul ol {
   border-color: #bd2130;
 }
 
+.btn:hover { text-decoration: none; }
 .btn-danger:focus, .btn-danger.focus {
   box-shadow: 0 0 0 0.2rem rgba(225, 83, 97, 0.5);
 }

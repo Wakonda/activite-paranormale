@@ -6,71 +6,20 @@
 			{% elseif entity.imageEmbeddedCode is not empty %}
 				{% include 'store/Store/_store_embedded_image.html.twig' with { id: entity.id, title: entity.title, embeddedCode: entity.imageEmbeddedCode } %}
 			{% else %}
-				<img src="{{ path('Store_GenerateEmbeddedCode', {id: entity.id}) }}" class="w-100">
+				<img src="{{ path('Store_GenerateEmbeddedCode', {id: entity.id}) }}" class="w-100 mx-auto d-block">
 			{% endif %}
 		</div>
 
-		<div class="col-md-8 content-card">
-			<div class="card-body pb-0">
+		<div class="col-md-8 content-card d-flex flex-column">
+			<div class="card-body flex-grow-1 pb-0">
 				<h5 class="card-title text-center">{{ entity.title }}</h5>
-				<hr>
-				{% if entity.price is not empty %}
-					<p class="card-text text-center"><span class="price">{{ entity.price|format_price(entity.currencyPrice, app.request.locale) }}</span></p>
-				{% endif %}
-				<p class="text-center"><i class="fas fa-cash-register"></i> <a href="{{ path('Store_Index', {category: entity.category}) }}">{{ ("store.index."~(entity.category|ucfirst))|trans([], "validators") }}</a></p>
-				
-				{% if entity.isBookCategory %}
-					<div class="text-center">
-						{% set book = entity.book.book %}
-						{% if book.genre is not empty %}
-							<i class="fas fa-leaf"></i> <a href="{{ path('ByGenreBook_Index', {idGenre: book.genre.id, titleGenre: book.genre.title}) }}">{{ book.genre.title }}</a><br>
-						{% endif %}
-						<i class="fas fa-calendar-alt"></i> {{ book.publicationDate|dodate(false, app.request.locale) }}
-						{% set authorsArray = [] %}
-						{% for author in book.authors %}
-							{% set correctBio = biography_correct_language(author) %}
-							{% set authorsArray = authorsArray|merge(["<a href='"~path('Biography_Show', {id: correctBio.id, title_slug: correctBio.slug})~"'>"~author.title~"</a>"]) %}
-						{% endfor %}
-						
-						<p class="card-text mb-0 text-center my-3">{% if book.authors|length > 1 %}<i class="fas fa-users"></i>{% else %}<i class="fas fa-user"></i>{% endif %} {{ (authorsArray|join(", "))|raw }}</p>
-					</div>
-				{% endif %}
-				
-				{% if entity.characteristic is not empty %}
-					{% for label, characteristic in entity.characteristic %}
-						<div class="text-center">
-						{{ ("store.index."~(label|ucfirst))|trans([], "validators") }} <b>{{ ("store.characteristic."~(characteristic|ucfirst))|trans([], "validators") }}</b>
-						</div>
-					{% endfor %}
-				{% endif %}
+				{% include 'store/Store/_store_info.html.twig' %}
+			</div>
+			<div class="px-125">
 				<hr>
 			</div>
-			<div class="card-footer text-center">
-				<a class="btn read" href="{{ path('Store_Show', {'id': entity.id, 'title_slug': entity.slug}) }}">
-					<span class="me-2"><i class="fas fa-book fa-fw"></i></span>
-					<b class="align-middle">{{ "store.search.Read"|trans([], "validators") }}</b>
-				</a>
-				{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
-					<a class="btn amazon" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
-						<span class="me-2"><i class="fab fa-amazon fa-fw"></i></span>
-						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
-					</a>
-				{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') %}
-					<a class="btn aliexpress" href="{{ entity.url }}" rel="nofollow" target="_blank">
-						<span class="me-2"><i class="fab fa-alipay fa-fw"></i></span>
-						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
-					</a>
-				{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::TEMU_PLATFORM') %}
-					<a class="btn temu text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
-						<span class="me-2"><i class="fa-solid fa-warehouse fa-fw"></i></span>
-						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
-					</a>
-				{% else %}
-					<a class="btn spreadshop" href="{{ entity.url }}" rel="nofollow" target="_blank">
-						<span class="me-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
-						<b class="align-middle">{{ "store.index.BuyOn"|trans([], "validators") }}</b>
-					</a>
-				{% endif %}
+			<div class="card-footer d-flex gap-2 mt-auto">
+				{% include 'store/Store/_store_button.html.twig' %}
 			</div>
 		</div>
 	</div>

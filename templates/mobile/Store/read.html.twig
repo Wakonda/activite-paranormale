@@ -19,23 +19,23 @@
 	<div class="text-center">
 		{% if entity.platform == constant('App\\Entity\\Stores\\Store::AMAZON_PLATFORM') %}
 			<a class="btn btn-warning text-dark" href="{{ entity.getExternalAmazonStoreLink() }}" rel="nofollow" target="_blank">
-				<span class="me-2"><i class="fab fa-amazon fa-fw"></i></span>
-				<b class="align-middle">{{ "store.index.BuyOnAmazon"|trans([], "validators") }}</b>
+				<i class="fab fa-amazon fa-fw"></i>
+				{{ "store.index.BuyOnAmazon"|trans([], "validators") }}
 			</a>
 		{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') %}
 			<a class="btn btn-danger" href="{{ entity.url }}" rel="nofollow" target="_blank">
-				<span class="me-2"><i class="fab fa-alipay fa-fw"></i></span>
-				<b class="align-middle">{{ "store.index.BuyOnAliexpress"|trans([], "validators") }}</b>
+				<i class="fab fa-alipay fa-fw"></i>
+				{{ "store.index.BuyOnAliexpress"|trans([], "validators") }}
 			</a>
 		{% elseif entity.platform == constant('App\\Entity\\Stores\\Store::TEMU_PLATFORM') %}
 			<a class="btn temu text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
-				<span class="me-2"><i class="fa-solid fa-warehouse fa-fw"></i></span>
-				<b class="align-middle">{{ "store.index.BuyOnTemu"|trans([], "validators") }}</b>
+				<i class="fa-solid fa-warehouse fa-fw"></i>
+				{{ "store.index.BuyOnTemu"|trans([], "validators") }}
 			</a>
 		{% else %}
 			<a class="btn spreadshop text-white" href="{{ entity.url }}" rel="nofollow" target="_blank">
-				<span class="me-2"><i class="fas fa-cart-shopping fa-fw"></i></span>
-				<b class="align-middle">{{ "store.index.BuyOnSpreadshop"|trans([], "validators") }}</b>
+				<i class="fas fa-cart-shopping fa-fw"></i>
+				{{ "store.index.BuyOnSpreadshop"|trans([], "validators") }}
 			</a>
 		{% endif %}
 	</div>
@@ -306,8 +306,8 @@
 	{#{% if url is not null %}
 	<div class="text-center">
 		<a class="btn read" href="{{ url }}">
-			<span class="me-2"><i class="fas fa-plus fa-fw"></i></span>
-			<b class="align-middle">{{ "store.index.MoreInformationOn"|trans([], "validators") }}</b>
+			<i class="fas fa-plus fa-fw"></i>
+			{{ "store.index.MoreInformationOn"|trans([], "validators") }}
 		</a>
 	</div>
 	{% endif %}#}
