@@ -198,6 +198,7 @@ generality:
         Next: "Siguiente"
         OnTheSameTopic: "Sobre el mismo tema"
         NoMatchingRecordsFound: "Ningún dato disponible"
+        SeeAll: "Ver todo"
     data:
         LoadingInProgress: "Cargando datos..."
     page:

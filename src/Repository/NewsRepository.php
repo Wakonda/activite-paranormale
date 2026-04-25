@@ -158,33 +158,20 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getOneOrNullResult();
 	}
 
-	public function getSliderNew()
+	public function getSliderNew($locale)
 	{
 		$qb = $this->createQueryBuilder('o');
 		
 		$qb->join('o.state', 's')
+		   ->join('o.language', 'l')
+		   ->where('l.abbreviation = :locale')
 		   ->andWhere('s.displayState = 1')
 		   ->orderBy('o.id', 'DESC')
 		   ->setMaxResults(7)
-		   ->andWhere('o.archive = false');
+		   ->andWhere('o.archive = false')
+		   ->setParameter("locale", $locale);
 
-return $qb->getQuery()->getResult();
-		/*$res = [];
-		$languages = [];
-		$datas = $qb->getQuery()->getResult();
-
-		foreach($datas as $data) {
-			$res[$data->getLanguage()->getAbbreviation()][] = $data;
-			$languages[] = $data->getLanguage()->getId();
-		}
-
-		$qb = $this->getEntityManager()->createQueryBuilder();
-		$qb->select("l")
-		   ->from(\App\Entity\Language::class, "l")
-		   ->where("l.id IN (:languages)")
-		   ->setParameter("languages", $languages);
-		
-		return ["entities" => $res, "languages" => $qb->getQuery()->getResult()];*/
+		return $qb->getQuery()->getResult();
 	}
 	
 	public function getMainSliderNew($lang)

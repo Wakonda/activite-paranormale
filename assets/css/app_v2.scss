@@ -1309,14 +1309,14 @@ h2 span img {
     width: 100%;
     object-fit: cover;
 }
-#news-container.row-cols-md-2 > * {
+.slider-container.row-cols-md-2 > * {
     flex: 0 0 auto;
     width: 49%;
 } 
-div#news-container .col:nth-child(odd) {
+div.slider-container .col:nth-child(odd) {
     margin-right: 10px;
 }
-div#news-container .col {
+div.slider-container .col {
     margin-bottom: 10px;
 }
 .flex-wrap-m {

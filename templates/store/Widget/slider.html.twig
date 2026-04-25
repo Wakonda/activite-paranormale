@@ -1,7 +1,7 @@
 {% if entities is not empty %}
-<h3>{{ "store.index.Store"|trans([], "validators") }}</h3>
+<h3>{{ "store.index.Store"|trans([], "validators") }} <a href="{{ path('Store_Index') }}" class="float-end text-info">{{ "generality.read.SeeAll"|trans([], "validators") }} <i class="fa-solid fa-arrow-right"></i></a></h3>
 
-<div id="store-container" class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+<div id="store-container" class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4 slider-container">
 	{% for entity in entities %}
     <div class="col">
         <div class="card h-100 d-flex flex-column">

@@ -168,9 +168,9 @@ class NewsController extends AbstractController
 	
 	// INDEX
 	#[Route('/slider', name: 'News_Slider')]
-	public function slider(EntityManagerInterface $em)
+	public function slider(Request $request, EntityManagerInterface $em)
 	{
-		$sliderNews = $em->getRepository(News::class)->getSliderNew();
+		$sliderNews = $em->getRepository(News::class)->getSliderNew($request->getLocale());
 
 		return $this->render("news/Widget/mainSlider.html.twig", [
 			"worldNews" => $sliderNews
