@@ -1,60 +1,102 @@
 ﻿{% if worldNews is not empty %}
-	<h3>{{ "index.main.InternationalNews"|trans([], "validators") }}</h3>
-	<ul class="nav nav-tabs mb-2" id="card_tab" role="tablist">
-		{% for language in worldNews.languages %}
-		  <li class="nav-item" role="presentation">
-			<button class="nav-link{{ language.abbreviation == app.request.locale ? ' active' : '' }} rounded-3" id="{{ language.abbreviation }}-tab" data-bs-toggle="tab" data-bs-target="#{{ language.abbreviation }}-tab-pane" type="button" role="tab" aria-controls="{{ language.abbreviation }}-tab-pane" aria-selected="true"><img class="image_wrapper" src="{{ asset(language.getAssetImagePath()) }}{{ language.logo }}" title="{{ language.abbreviation }}" width="20" height="13" alt="{{ language.abbreviation }}"> - {{ language.title }} <span class="badge bg-danger">{{ worldNews.entities[language.abbreviation]|length }}</span></button>
-		  </li>
-		{% endfor %}
-	</ul>
+	<h3>{{ "index.main.News"|trans([], "validators") }}</h3>
+	{% for entity in worldNews %}
+		{% if loop.first %}
+			<div class="carousel-world-news-index">
+				<div class="card mb-3">
+					<div class="card-header h-100 text-start">
+						<img class="image_wrapper" src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" title="{{ entity.language.abbreviation }}" width="20" height="13" alt="{{ entity.language.abbreviation }}" /> - <span class="fw-bold" style="font-size: 16px;">{{ entity.title }}</span>
+					</div>
+					<div class=" g-0 card-body">
+						{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, {loading: 'lazy', alt: entity.title, class: 'mx-auto d-block'})|raw }}
 
-	<div class="tab-content" id="wordNewsTabContent">
-		{% for language in worldNews.languages %}
-			<div class="tab-pane fade{{ language.abbreviation == app.request.locale ? ' show active' : '' }}" id="{{ language.abbreviation }}-tab-pane" role="tabpanel" aria-labelledby="{{ language.abbreviation }}-tab" tabindex="0">
-				<div id="carousel-world-news-index-{{ language.abbreviation }}" class="carousel-pagination carousel carousel-world-news-index">
-					<ol class="carousel-indicators carousel-indicators-numbers pagination">
-					{% set i = 0 %}
-					{% set j = 1 %}
-					{% for entity in worldNews.entities[language.abbreviation] %}
-						<li data-bs-target="#carousel-world-news-index-{{ language.abbreviation }}" data-bs-slide-to="{{ i }}" {{ i == 0 ? 'class="active"' : '' }}>{{ j }}</li>
-						{% set i = i + 1 %}
-						{% set j = j + 1 %}
-					{% endfor %}
-					</ol>
+						<div class="text-center mt-3">
+							<small class="text-white-50"><i class="fa-solid fa-calendar-days"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</small>
+						</div>
 
-					<div class="carousel-inner">
-						{% set i = 0 %}
-						{% for entity in worldNews.entities[language.abbreviation] %}
-							<div class="carousel-item {{ i == 0 ? 'active' : '' }}">
-								<div class="card mb-3">
-									<div class="card-header h-100 text-start">
-										<img class="image_wrapper" src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" title="{{ entity.language.abbreviation }}" width="20" height="13" alt="{{ entity.language.abbreviation }}" /> - <span class="fw-bold" style="font-size: 16px;">{{ entity.title }}</span>
-									</div>
-									<div class="row g-0 card-body">
-										<div class="col-md-4">
-											{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, {loading: 'lazy', alt: entity.title})|raw }}
-										</div>
-										<div class="col-md-8 d-flex">
-											<div class="card-body d-flex flex-column pt-0">
-												{{ entity.abstractText|raw }}
-
-												<div class="mt-auto">
-												<hr>
-													<div class="d-flex justify-content-between">
-													<div><i class="fa-solid fa-calendar-days"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</div>
-													<div><i class="fas fa-arrow-right"></i> <a href="{{ path('News_ReadNews_New', {'id': entity.id, 'title_slug':entity.getUrlSlug()}) }}">{{ "news.slider.MoreDetails"|trans([], "validators") }}</a></div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							{% set i = i + 1 %}
-						{% endfor %}
+						<div class="mt-3">{{ entity.abstractText|raw }}</div>
+					</div>
+					<div class="card-footer h-100 text-start" style="border-top: 1px solid #bbc42d;">
+						<div class="d-flex justify-content-between">
+							<div><a class="btn btn-warning d-inline-block" href="{{ path('News_Index', {page: 1, theme: entity.theme.title }) }}"><i class="fas fa-dragon"></i> {{ entity.theme.title }}</a></div>
+							<div><a class="btn read" href="{{ path('News_ReadNews_New', {'id': entity.id, 'title_slug':entity.getUrlSlug()}) }}"><i class="fas fa-book fa-fw"></i> {{ "news.slider.MoreDetails"|trans([], "validators") }}</a></div>
+						</div>
 					</div>
 				</div>
 			</div>
-		{% endfor %}
-	</div>
+		{% endif %}
+	{% endfor %}
+
+
+<style>
+.news_embedded_image img {
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+	}
+#news-container.row-cols-md-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+  } 
+
+  {% if app.session.has('v') and app.session.get('v') == 'v2' %}		
+  #news-container.row-cols-md-2 > * {
+    flex: 0 0 auto;
+    width: 49%;
+  } 
+  div#news-container .col:nth-child(odd) {
+    margin-right: 10px;
+}
+div#news-container .col {
+    margin-bottom: 10px;
+}
+  .flex-wrap-m {
+    flex-wrap: wrap !important;}
+@media (max-width: 1140px) {
+  .flex-wrap-m {
+    flex-wrap: wrap !important;}
+	}
+{% endif %}
+</style>
+
+	{% if worldNews > 1 %}
+		<div id="news-container" class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
+			{% for entity in worldNews %}
+				{% if loop.first == false %}
+					<div class="col">
+						<div class="card h-100 d-flex flex-column">
+							<div class="text-center d-block">
+								<div class="news_embedded_image d-inline-block">
+								{{ entity.photoIllustrationFilename|imgsize(null, entity.getAssetImagePath(), true, {loading: 'lazy', alt: entity.title})|raw }}
+								</div>
+							</div>
+							<div class="card-body d-flex flex-column flex-grow-1">
+								<h4 class="card-title text-center">{{ entity.title }}</h4>
+
+								<div class="text-center mt-1">
+									<small class="text-white-50"><i class="fa-solid fa-calendar-days"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}</small>
+								</div>
+								<div class="px-2">
+									<hr>
+								</div>
+								{{ (entity.abstractText|raw)|truncate_words(200) }}
+
+								<div class="mt-auto">
+									<hr>
+									<div class="d-flex flex-wrap-m gap-2">
+										<a class="btn btn-warning w-100 w-md-auto" href="{{ path('News_Index', {page: 1, theme: entity.theme.title }) }}">
+											<i class="fas fa-dragon"></i> {{ entity.theme.title }}
+										</a>
+										<a class="btn read w-100 w-md-auto" href="{{ path('News_ReadNews_New', {'id': entity.id, 'title_slug':entity.getUrlSlug()}) }}">
+											<i class="fas fa-book fa-fw"></i> {{ "news.slider.MoreDetails"|trans([], "validators") }}
+										</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
 {% endif %}

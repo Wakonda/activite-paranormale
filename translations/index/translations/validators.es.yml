@@ -1,7 +1,7 @@
 index:
     main:
         Welcome: "Bienvenido"
-        InternationalNews: "Noticias internacionales"
+        News: "Noticias"
         Video: "Vídeo"
         Gallery: "Galería"
         Witchcraft: "Brujería"

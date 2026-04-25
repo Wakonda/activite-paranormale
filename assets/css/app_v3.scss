@@ -299,6 +299,15 @@ table.dataTable tr.odd {
     color: #aaa;
 	border-bottom: rgb(187, 196, 45) solid 1px;
 }
+.news_embedded_image img {
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+	}
+#news-container.row-cols-md-2 > * {
+    flex: 0 0 auto;
+    width: 50%;
+}
 #card_tab.nav.nav-tabs {
 	border: none;
 }

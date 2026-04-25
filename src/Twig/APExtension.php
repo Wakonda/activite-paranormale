@@ -79,7 +79,8 @@ class APExtension extends AbstractExtension
 			new TwigFilter('removeStyleAttributeFromHtmlTags', array($this, 'removeStyleAttributeFromHtmlTagsFilter')),
 			new TwigFilter('ucfirst', array($this, 'UcfirstFilter')),
 			new TwigFilter('imgCaption', array($this, 'imgCaptionFilter')),
-			new TwigFilter('meta_description', [$this, 'getMetaDescription'])
+			new TwigFilter('meta_description', [$this, 'getMetaDescription']),
+			new TwigFilter('truncate_words', [$this, 'truncateWords'])
 		);
 	}
 
@@ -156,6 +157,25 @@ class APExtension extends AbstractExtension
 
 		return $string;
 	}
+
+    public function truncateWords(string $text, int $limit = 100, string $suffix = '...'): string
+    {
+        $text = trim(strip_tags($text));
+
+        if (mb_strlen($text) <= $limit) {
+            return $text;
+        }
+
+        $cut = mb_substr($text, 0, $limit);
+
+        $lastSpace = mb_strrpos($cut, ' ');
+
+        if ($lastSpace !== false) {
+            $cut = mb_substr($cut, 0, $lastSpace);
+        }
+
+        return $cut . $suffix;
+    }
 
 	public function quickEdit($entity) {
 		if(empty($entity) or empty($entity->getId()))

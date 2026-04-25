@@ -165,10 +165,11 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		$qb->join('o.state', 's')
 		   ->andWhere('s.displayState = 1')
 		   ->orderBy('o.id', 'DESC')
-		   ->setMaxResults(10)
+		   ->setMaxResults(7)
 		   ->andWhere('o.archive = false');
 
-		$res = [];
+return $qb->getQuery()->getResult();
+		/*$res = [];
 		$languages = [];
 		$datas = $qb->getQuery()->getResult();
 
@@ -183,7 +184,7 @@ class NewsRepository extends MappedSuperclassBaseRepository
 		   ->where("l.id IN (:languages)")
 		   ->setParameter("languages", $languages);
 		
-		return ["entities" => $res, "languages" => $qb->getQuery()->getResult()];
+		return ["entities" => $res, "languages" => $qb->getQuery()->getResult()];*/
 	}
 	
 	public function getMainSliderNew($lang)

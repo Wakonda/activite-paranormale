@@ -1304,6 +1304,29 @@ h2 span img {
 	padding: 5px 10px 5px 10px;
 	background-color: #000e00;
 }
+.news_embedded_image img {
+    height: 240px;
+    width: 100%;
+    object-fit: cover;
+}
+#news-container.row-cols-md-2 > * {
+    flex: 0 0 auto;
+    width: 49%;
+} 
+div#news-container .col:nth-child(odd) {
+    margin-right: 10px;
+}
+div#news-container .col {
+    margin-bottom: 10px;
+}
+.flex-wrap-m {
+    flex-wrap: wrap !important;
+}
+@media (max-width: 1140px) {
+  .flex-wrap-m {
+    flex-wrap: wrap !important;
+  }
+}
 #card_tab.nav.nav-tabs {
 	border: none;
 }

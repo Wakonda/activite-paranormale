@@ -19,7 +19,7 @@ news:
         ChooseALanguage: "Choisissez une langue"
         Photo: "Photo"
     slider:
-        MoreDetails: "Plus de détails"
+        MoreDetails: "Lire"
     new:
         AddNews: "Proposer un article"
         Title: "Titre"

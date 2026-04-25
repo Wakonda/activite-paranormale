@@ -1,7 +1,7 @@
 index:
     main:
         Welcome: "Accueil"
-        InternationalNews: "Actualité internationale"
+        News: "Actualité"
         Video: "Vidéo"
         Gallery: "Galerie"
         Witchcraft: "Sorcellerie"

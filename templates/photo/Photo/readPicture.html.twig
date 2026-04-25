@@ -33,8 +33,12 @@
 	<p>{{ entity.text|raw }}</p>
 	</div>
 
-	<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
-	{{ (entity.photoIllustrationCaption|imgCaption( asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)))|raw }}
+	{% set imageData = entity.photoIllustrationCaption %}
+
+	{% if imageData.caption is not empty or imageData.source.author is not empty or imageData.source.license is not empty or imageData.source.url is not empty %}
+		<h3>{{ "photo.read.SourcePhoto"|trans([], "validators") }}</h3>
+		{{ (entity.photoIllustrationCaption|imgCaption(asset(entity.getAssetImagePath()~entity.photoIllustrationFilename)))|raw }}
+	{% endif %}
 
 	<hr class="hr2">
 	<p>
