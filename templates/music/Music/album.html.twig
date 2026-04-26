@@ -31,7 +31,7 @@
 		<li><span class="fa-li"><i class="fas fa-volume-up"></i></span> <span class="fw-bold">{{ "music.album.NbrAlbum"|trans([], "validators") }}</span> {{ entities|length }}</li>
 		<li><span class="fa-li"><i class="fas fa-drum"></i></span> <span class="fw-bold">{{ "music.album.Genre"|trans([], "validators") }}</span> {% if artist.genre is not empty %}<a href="{{ path('Music_Genre', {genreId: artist.genre.id, genreTitle: artist.genre.urlSlug}) }}">{{ artist.genre.title }}</a>{% endif %}</li>
 		<li><span class="fa-li"><i class="fas fa-globe"></i></span> {% if artist.country is not empty %}<img src="{{ asset(artist.country.getAssetImagePath())~artist.country.flag }}" alt='' width='20' height='13'> {{ artist.country.title }}{% endif %}</li>
-		<li><span class="fa-li"><i class="fas fa-external-link-alt"></i></span> <a href="{{ artist.website }}" alt="" target="_blank" class="fw-bold">{{ "music.album.Website"|trans([], "validators") }}</a></li>
+		<li><span class="fa-li"><i class="fas fa-external-link-alt"></i></span> <a href="{{ artist.website }}" target="_blank" class="fw-bold">{{ "music.album.Website"|trans([], "validators") }}</a></li>
 	</ul>
 	
 	<hr>
@@ -123,7 +123,7 @@
 			<tbody>
 				{% for entity in musicByArtists %}
 					<tr>
-					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'title_slug' : entity.slug }) }}" alt="" class="fw-bold">{{ entity.musicPiece }}</a></td>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : entity.id, 'title_slug' : entity.slug }) }}" class="fw-bold">{{ entity.musicPiece }}</a></td>
 					<td><i class="far fa-clock"></i> {{ (entity.length|string_duration)|default('-') }}</td>
 					</tr>
 				{% endfor %}
@@ -143,7 +143,7 @@
 			{% set linkArray = json_decode(artist.socialNetwork) %}
 			{% for sn in linkArray %}
 				{% if sn.url is not empty %}
-					<a href="{{ sn.url }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" title="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/social_network/'~ (sn.socialNetwork|lower)~'.png') }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" width="50"></a>
+					<a href="{{ sn.url }}" title="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/social_network/'~ (sn.socialNetwork|lower)~'.png') }}" alt="{{ ("biography.link."~(sn.socialNetwork|ucfirst)~"Account")|trans([], "validators") }}" width="50"></a>
 				{% endif %}
 			{% endfor %}
 			<br>

@@ -99,8 +99,8 @@
 	{% endif %}
 
 	{% if entity.state.isWaiting() %}
-		<a href="{{ path('News_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "news.admin.Validate"|trans([], "validators") }}</a>
-		<a href="{{ path('News_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "news.admin.Refuse"|trans([], "validators") }}</a>
+		<a href="{{ path('News_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" class="btn btn-success">{{ "news.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('News_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" class="btn btn-danger">{{ "news.admin.Refuse"|trans([], "validators") }}</a>
 	{% endif %}
 {% endblock %}
 

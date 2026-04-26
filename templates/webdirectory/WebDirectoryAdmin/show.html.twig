@@ -15,7 +15,7 @@
 	<div class="form-table-cell">{{ entity.title }}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Link"|trans([], "validators") }}</div>
-	<div class="form-table-cell"><a href="{{ entity.link }}" alt="{{ entity.title }}" target="_blank">{{ entity.link }}</a></div>
+	<div class="form-table-cell"><a href="{{ entity.link }}" target="_blank">{{ entity.link }}</a></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Logo"|trans([], "validators") }}</div>
 	<div class="form-table-cell">
@@ -27,10 +27,10 @@
 	</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.WebsiteLanguage"|trans([], "validators") }}</div>
-	<div class="form-table-cell"><img src="{{ asset(entity.websiteLanguage.getAssetImagePath()) }}{{ entity.websiteLanguage.logo }}" alt="" width="20" height="13" /></div>
+	<div class="form-table-cell"><img src="{{ asset(entity.websiteLanguage.getAssetImagePath()) }}{{ entity.websiteLanguage.logo }}" width="20" height="13" /></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Language"|trans([], "validators") }}</div>
-	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" alt="" width="20" height="13" /></div>
+	<div class="form-table-cell"><img src="{{ asset(entity.language.getAssetImagePath()) }}{{ entity.language.logo }}" width="20" height="13" /></div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "directory.admin.Description"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
@@ -46,7 +46,7 @@
 		{% for sn in socialNetworkArray %}
 			{% if sn.url is not empty %}
 				<div class="form-table-cell form-table-cell-head">{{ sn.socialNetwork }}</div>
-				<div class="form-table-cell"><a href="{{ sn.url }}" alt="" target="_blank">{{ sn.url }}</a></div>
+				<div class="form-table-cell"><a href="{{ sn.url }}" target="_blank">{{ sn.url }}</a></div>
 			{% endif %}
 		{% endfor %}
 	{% endif %}
@@ -65,8 +65,8 @@
 
 {% block data_bottom %}
 	{% if entity.state.isWaiting() %}
-		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "directory.admin.Validate"|trans([], "validators") }}</a>
-		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "directory.admin.Refuse"|trans([], "validators") }}</a>
+		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" class="btn btn-success">{{ "directory.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('WebDirectory_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" class="btn btn-danger">{{ "directory.admin.Refuse"|trans([], "validators") }}</a>
 	{% else %}
 		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "WebDirectory_Admin_Internationalization", "showRoute": "WebDirectory_Admin_Show", "editRoute": "WebDirectory_Admin_Edit"})) }}
 	{% endif %}

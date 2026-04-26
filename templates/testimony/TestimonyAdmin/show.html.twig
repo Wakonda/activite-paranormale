@@ -72,8 +72,8 @@
 	{% endif %}
 	
 	{% if entity.state.isWaiting() %}
-		<a href="{{ path('Testimony_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "testimony.admin.Validate"|trans([], "validators") }}</a>
-		<a href="{{ path('Testimony_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "testimony.admin.Refuse"|trans([], "validators") }}</a>
+		<a href="{{ path('Testimony_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" class="btn btn-success">{{ "testimony.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('Testimony_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" class="btn btn-danger">{{ "testimony.admin.Refuse"|trans([], "validators") }}</a>
 	{% endif %}
 {% endblock %}
 

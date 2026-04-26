@@ -28,7 +28,7 @@
 			<ul>
 			{% for data in json_decode(entity.links) %}
 				{% if data.title is not empty %}
-					<li><a href="{{ data.url }}" alt="{{ data.title }}" target="_blank">{{ data.title }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
+					<li><a href="{{ data.url }}" target="_blank">{{ data.title }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
 				{% else %}
 					<li><a href="{{ data.url }}" target="_blank">{{ data.url|urlclean }}</a>{{ (data.license is defined and data.license is not empty) ? ", " ~ data.license : "" }}</li>
 				{% endif %}

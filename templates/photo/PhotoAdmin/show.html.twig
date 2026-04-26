@@ -56,8 +56,8 @@
 
 {% block data_bottom %}
 	{% if entity.state.isWaiting() %}
-		<a href="{{ path('Photo_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" alt="Validate" class="btn btn-success">{{ "eventMessage.admin.Validate"|trans([], "validators") }}</a>
-		<a href="{{ path('Photo_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" alt="Refuse" class="btn btn-danger">{{ "eventMessage.admin.Refuse"|trans([], "validators") }}</a>
+		<a href="{{ path('Photo_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Validate' }) }}" class="btn btn-success">{{ "eventMessage.admin.Validate"|trans([], "validators") }}</a>
+		<a href="{{ path('Photo_Admin_ChangeState', { 'id' : entity.id, 'state' : 'Refused' }) }}" class="btn btn-danger">{{ "eventMessage.admin.Refuse"|trans([], "validators") }}</a>
 	{% else %}
 		{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Photo_Admin_Internationalization", "showRoute": "Photo_Admin_Show", "editRoute": "Photo_Admin_Edit"})) }}
 	{% endif %}

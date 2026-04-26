@@ -73,12 +73,12 @@
 
 		<img src="{{ asset('extended/photo/calendar-event-message.png') }}" alt="Calendar" width="30" class="align-middle"> 
 		{% if entity.dateToString == entity.dateFromString %}
-			<a href="{{ urlFrom }}" alt="">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
+			<a href="{{ urlFrom }}">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
 		{% else %}
-			<a href="{{ urlFrom }}" alt="">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
+			<a href="{{ urlFrom }}">{{ entity.dayFrom|doYearMonthDayDate(entity.monthFrom, entity.yearFrom, app.request.locale) }}</a>
 			{% if entity.dateToString is not empty %}
 			- 
-			<a href="{{ urlTo }}" alt="">{{ entity.dayTo|doYearMonthDayDate(entity.monthTo, entity.yearTo, app.request.locale) }}</a>
+			<a href="{{ urlTo }}">{{ entity.dayTo|doYearMonthDayDate(entity.monthTo, entity.yearTo, app.request.locale) }}</a>
 			{% endif %}
 		{% endif %}
 		
@@ -107,7 +107,7 @@
 				{% for music in musics %}
 					<tr>
 					<td>{{ music.artist.title }}</td>
-					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : music.id, 'title_slug' : music.slug }) }}" alt="" class="fw-bold">{{ music.musicPiece }}</a></td>
+					<td class="tdGene"><a href="{{ path('Music_Music', { 'id' : music.id, 'title_slug' : music.slug }) }}" class="fw-bold">{{ music.musicPiece }}</a></td>
 					<td><i class="far fa-clock"></i> {{ (music.length|string_duration)|default('-') }}</td>
 					</tr>
 				{% endfor %}

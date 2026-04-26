@@ -38,6 +38,6 @@
 		<video controls="controls">
 			<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
 		</video>
-		<div><a href="{{ url('Video_Read', { 'id' : entity.id, 'title_slug' : entity.getUrlSlug() }) }}" alt="" target="_blank">{{ entity.title }}</a></div>
+		<div><a href="{{ url('Video_Read', { 'id' : entity.id, 'title_slug' : entity.getUrlSlug() }) }}" target="_blank">{{ entity.title }}</a></div>
     </body>
 </html>
