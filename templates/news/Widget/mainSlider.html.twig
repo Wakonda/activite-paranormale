@@ -1,5 +1,5 @@
 ﻿{% if worldNews is not empty %}
-	<h3>{{ "index.main.News"|trans([], "validators") }} <a href="{{ url('News_Index', {'page' : 1 }) }}" class="float-end text-info">{{ "generality.read.SeeAll"|trans([], "validators") }} <i class="fa-solid fa-arrow-right"></i></a></h3>
+	<h3 class="d-flex justify-content-between align-items-center">{{ "index.main.News"|trans([], "validators") }} <a href="{{ url('News_Index', {'page' : 1 }) }}" class="text-info">{{ "generality.read.SeeAll"|trans([], "validators") }} <i class="fa-solid fa-arrow-right"></i></a></h3>
 	{% for entity in worldNews %}
 		{% if loop.first %}
 			<div class="carousel-world-news-index">

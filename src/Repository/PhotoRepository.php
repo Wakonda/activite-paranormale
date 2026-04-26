@@ -95,7 +95,7 @@ class PhotoRepository extends MappedSuperclassBaseRepository
 		   ->andWhere('c.abbreviation = :language')
 		   ->orderBy('o.publicationDate', 'DESC')
 		   ->setParameter('language', $language)
-		   ->setMaxResults(5)
+		   ->setMaxResults(6)
 		   ->andWhere("o.archive = false");
 
 		return $qb->getQuery()->getResult();
