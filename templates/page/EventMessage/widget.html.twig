@@ -11,7 +11,8 @@
 		{% endif %}
 	{% endfor %}
 
-	<h3 class="mt-3">{{ "eventMessage.index.OnThisDay"|trans([], "validators") }} - {{ currentDate }}</h3>
+	<h3 class="d-flex justify-content-between align-items-center">{{ "eventMessage.index.OnThisDay"|trans([], "validators") }} - {{ currentDate }} <a href="{{ url('EventMessage_Calendar') }}" class="text-info">{{ "generality.read.SeeAll"|trans([], "validators") }} <i class="fa-solid fa-arrow-right"></i></a></h3>
+	
 	{% if illustration is not empty and illustration.illustration is not empty %}
 		{{ illustration.illustration.realNameFile|imgsize(250, illustration.path, true, {class: "mx-auto d-block", loading: "lazy", alt: illustration.title})|raw }}
 		<br>
