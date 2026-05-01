@@ -676,7 +676,13 @@ class AdminController extends AbstractController
 	// AI
 	#[Route('/admin/ai', name: 'Admin_AI')]
 	public function ai(Request $request, \App\Service\AI $ai) {
-		return new JsonResponse(["message" => $ai->gemini($request->query->get("text"), $request->query->get("format"), $request->query->get("locale"))]);
+		$type = $request->query->get("type");
+		
+		if($type == "cerebras") {
+			// return new JsonResponse(["message" => "llllll"]);
+			return new JsonResponse($ai->cerebras($request->query->get("text"), $request->query->get("format"), $request->query->get("locale")));
+		}
+		return new JsonResponse($ai->gemini($request->query->get("text"), $request->query->get("format"), $request->query->get("locale")));
 	}
 
 	// Diaspora
