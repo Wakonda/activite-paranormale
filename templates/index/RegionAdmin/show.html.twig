@@ -14,6 +14,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "region.admin.Title"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.title }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "region.admin.Text"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.text|raw }}</div>
+
 	{% if entity.flag is not empty %}
 		<div class="form-table-cell form-table-cell-head">{{ "region.admin.Flag"|trans([], "validators") }}</div>
 		<div class="form-table-cell"><img src="{{ asset(entity.getAssetImagePath()) }}{{ entity.flag }}" alt="" width="20" height="13" /></div>

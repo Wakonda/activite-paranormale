@@ -116,6 +116,8 @@ class Wikidata {
 						}
 						
 						$city->setGeoshape($geoShapeData);
+					} elseif (property_exists($data->entities->$idCity->claims, "P625")) {
+						$geoShape = urlencode($data->entities->$idCity->claims->P625[0]->mainsnak->datavalue->value);
 					}
 
 					if(property_exists($data->entities->$idCity->claims, "P41")) {

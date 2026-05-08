@@ -188,9 +188,9 @@ class AdminUserController extends AdminGenericController
 				$url = $this->generateUrl($entity->getWaitingRoute(), ['id' => $entity->getId()]);
 			
 			$title = $entity->getTitle();
-			$row[] = '<a href="'.$url.'">'.((!empty($title)) ? $title : "---").'</a>';
+			$row[] = '<a href="'.$url.'">'.((!empty($title)) ? $title : "-").'</a>';
 			$row[] = $entity->getState()->getTitle();
-			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="'.$entity->getLanguage()->getAbbreviation().'">';
+			$row[] = '<img src="'.$request->getBasePath().'/'.$entity->getLanguage()->getAssetImagePath().$entity->getLanguage()->getLogo().'" alt="'.$entity->getLanguage()->getAbbreviation().'" width="20px" height="13px">';
 
 			$state = $em->getRepository(State::class)->findOneBy(['internationalName' => $entity->getState()->getInternationalName(), 'language' => $language]);
 

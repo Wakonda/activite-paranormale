@@ -12,6 +12,8 @@
 	{% import "index/RegionAdmin/macro_region.html.twig" as macro_region %}
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.select2_autocomplete() }}
+	{{ macro_index.tinymce_init_js() }}
+	{{ macro_index.tinymce_admin_js(form.text.vars.id) }}
 
 	<script>
 		$("#{{ form.higherLevel.vars.id }}").select2();

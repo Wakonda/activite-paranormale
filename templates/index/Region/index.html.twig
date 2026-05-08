@@ -47,6 +47,12 @@
 		</ul>
 	{% endif %}
 	<hr>
+	
+	{% if entity.text is not empty %}
+		{{ entity.text|raw }}
+		<hr>
+	{% endif %}
+
 	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
 
 	{% if biographies is not empty %}

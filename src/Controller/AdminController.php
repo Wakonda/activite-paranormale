@@ -679,7 +679,6 @@ class AdminController extends AbstractController
 		$type = $request->query->get("type");
 		
 		if($type == "cerebras") {
-			// return new JsonResponse(["message" => "llllll"]);
 			return new JsonResponse($ai->cerebras($request->query->get("text"), $request->query->get("format"), $request->query->get("locale")));
 		}
 		return new JsonResponse($ai->gemini($request->query->get("text"), $request->query->get("format"), $request->query->get("locale")));

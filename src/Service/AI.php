@@ -44,7 +44,7 @@ class AI
 	}
 
 	public function cerebras($text, $format, $locale) {
-		$apiKey = "csk-fd8mednjwp3hrfvwk5exhmyk54m32vdjwn98k5trm8k4694k";
+		$apiKey = $_ENV["CEREBRAS_AI_APIKEY"];
 
 		$error = false;
 		$result = null;

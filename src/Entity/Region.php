@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Ausi\SlugGenerator\SlugGenerator;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'region')]
@@ -45,6 +46,9 @@ class Region
 
 	#[ORM\Column(name: 'geoshape', type: 'text', nullable: true)]
 	private $geoshape;
+
+	#[ORM\Column(name: 'text', type: 'text', nullable: true)]
+    private $text;
 	
 	public function __toString()
 	{
@@ -59,6 +63,7 @@ class Region
     public function setTitle($title)
     {
         $this->title = $title;
+		$this->setInternationalName(null);
     }
 
     public function getTitle()
@@ -130,8 +135,13 @@ class Region
     }
 
     public function setInternationalName($internationalName)
-    {
+    {//dd("oo");
         $this->internationalName = $internationalName;
+
+		if(empty($this->internationalName)) {
+			$generator = new SlugGenerator;
+			$this->internationalName = $generator->generate($this->title);
+		}
     }
 
     public function getInternationalName()
@@ -187,5 +197,15 @@ class Region
     public function setGeoshape($geoshape)
     {
         $this->geoshape = $geoshape;
+    }
+
+    public function setText($text)
+    {
+        $this->text = $text;
+    }
+
+    public function getText()
+    {
+        return $this->text;
     }
 }

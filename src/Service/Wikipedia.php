@@ -23,7 +23,7 @@ class Wikipedia {
 
 		$parser = new \App\Service\APParseHTML();
 		$contentUrl = $parser->getContentURL($url, null, false);
-		
+
 		if(empty($contentUrl))
 			return "";
 

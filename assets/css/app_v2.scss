@@ -2019,6 +2019,10 @@ figure.image p {
 	text-align: center;
     margin-bottom: 1px;
 }
+
+.image img {
+	max-width: 100%;
+}
  
 figcaption {
     display: table-caption;

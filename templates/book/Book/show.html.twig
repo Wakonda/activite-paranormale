@@ -15,7 +15,7 @@
 
 	{% set dataStore = (entity.bookEditions is not empty ? image_embedded_code(entity.bookEditions[0], "book", "BookStore") : null) %}
 	{% if dataStore is not empty %}
-		<p class="text-center">{{ dataStore|raw }}</p>
+		<p class="text-center image">{{ dataStore|raw }}</p>
 	{% else %}
 		<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'}, entity.photoIllustrationCaption)|raw }}</p>
 	{% endif %}
