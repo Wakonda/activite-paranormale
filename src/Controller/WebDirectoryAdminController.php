@@ -182,6 +182,13 @@ class WebDirectoryAdminController extends AdminGenericController
 		if(!empty($entityToCopy->getLicence()))
 			$licence = $em->getRepository(Licence::class)->findOneBy(["internationalName" => $entityToCopy->getLicence()->getInternationalName(), "language" => $language]);
 
+		if(empty($state)) {
+			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
+		}
+
+		$entity->setState($state);
+
 		$entity->setInternationalName($entityToCopy->getInternationalName());
 		$entity->setTitle($entityToCopy->getTitle());
 		$entity->setLink($entityToCopy->getLink());
