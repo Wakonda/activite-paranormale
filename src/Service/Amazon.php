@@ -9,7 +9,7 @@ class Amazon {
     private $REGION_NAME = null;
     private $HOST = null;
 	
-	public function __construct(private AwsV4 $aws) {}
+	public function __construct(private ?AwsV4 $aws = null) {}
 
 	public function getItem(string $itemId) {
 		$this->setConfig();
@@ -58,6 +58,19 @@ class Amazon {
 			return $response->ItemsResult->Items[0];
 
 		return null;
+	}
+
+	public function resizeAmazonImage(string $url, int $size = 300): string
+	{
+		if (!str_contains($url, 'media-amazon.com')) {
+			return $url;
+		}
+
+		return preg_replace(
+			'/\._[^.]+_\./',
+			'._SL' . $size . '_.' ,
+			$url
+		);
 	}
 
 	private function setConfig()

@@ -8,6 +8,7 @@
 	use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 	use Symfony\Component\HttpFoundation\RequestStack;
 	
+	use App\Service\Amazon;
 	use App\Service\Currency;
 	use App\Entity\Stores\Store;
 	use App\Entity\Stores\MovieStore;
@@ -20,7 +21,8 @@
 		public function getFilters()
 		{
 			return [
-				new TwigFilter('format_price', [$this, 'formatPriceFilter'])
+				new TwigFilter('format_price', [$this, 'formatPriceFilter']),
+				new TwigFilter('resize_amazon_image', [$this, 'resizeAmazonImage'])
 			];
 		}
 
@@ -75,6 +77,22 @@
 			}
 
 			return null;
+		}
+
+		public function resizeAmazonImage($embeddedImage, $width) {
+			if($width == "default") {
+				return $embeddedImage;
+			}
+			$amazon = new Amazon();
+			preg_match('/src="([^"]+)"/', $embeddedImage, $matches);
+
+			$src = $matches[1] ?? null;
+
+			if(empty($src)) {
+				return $embeddedImage;
+			}
+
+			return str_replace($src, $amazon->resizeAmazonImage($src), $embeddedImage);
 		}
 
 		private function getSymbolByCurrency($currency) {

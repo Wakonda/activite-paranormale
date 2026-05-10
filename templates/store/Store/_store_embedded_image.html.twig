@@ -1,5 +1,14 @@
 <div class="text-center d-block">
 	<div class="store_embedded_image d-inline-block">
-		<div class="container-store-{{ id }}" style="position: relative; display: grid">{{ embeddedCode|raw }}</div>
+		<div class="container-store-{{ id }}" style="position: relative; display: grid">
+			{% if entity.isAmazonPlatform() %}
+				{% if width is not defined %}
+					{% set width = "default" %}
+				{% endif %}
+				{{ (embeddedCode|resize_amazon_image(width))|raw }}
+			{% else %}
+				{{ embeddedCode|raw }}
+			{% endif %}
+		</div>
 	</div>
 </div>

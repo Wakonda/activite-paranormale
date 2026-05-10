@@ -158,6 +158,10 @@ class Store
 	public function isSpreadShopPlatform(): bool {
 		return $this->platform == self::SPREADSHOP_PLATFORM;
 	}
+	
+	public function isAmazonPlatform(): bool {
+		return $this->platform == self::AMAZON_PLATFORM;
+	}
 
 	public function getTitleSlug() {
 		return $this->slug;
