@@ -63,7 +63,7 @@ class StoreController extends AbstractController
 	public function slider(Request $request, EntityManagerInterface $em)
 	{
 		$entities = $em->getRepository(Store::class)->getSlider($request->getLocale());
-
+// dd($entities);
 		return $this->render("store/Widget/slider.html.twig", array(
 			"entities" => $entities
 		));

@@ -10,7 +10,6 @@
 </div>
 
 {{ macro_admin.wikidata_html_generic(form) }}
-{{ macro_admin.import_wikidata_generic(form.wikidata.vars.id, form.language.vars.id, form.title.vars.id, form.text.vars.id, form.flag) }}
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.flag, "region.admin.Flag"|trans([], "validators")) }}</div>
 <div class="form-table-cell">
@@ -30,3 +29,44 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.higherLevel, "region.admin.HigherLevel"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.higherLevel) }}{{ form_widget(form.higherLevel, { 'attr': {'class': 'form-select'} }) }}</div>
+
+<script>
+	document.getElementById("wikidata").addEventListener("click", (e) => {
+		e.preventDefault();
+		let locale = document.getElementById("{{ form.language.vars.id }}").value;
+		let code = document.getElementById("{{ form.wikidata.vars.id }}").value;
+
+		if (code == "")
+			return;
+
+		let xmlHttp = new XMLHttpRequest();
+		
+		document.querySelector('#wikidata .fa-arrows-rotate').classList.add("fa-spin");
+		
+		xmlHttp.onreadystatechange = function() {
+			if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+				let data = JSON.parse(xmlHttp.responseText);
+
+				document.getElementById("{{ form.title.vars.id }}").value = data.title;
+				document.getElementById("{{ form.geoshape.vars.id }}").value = data.geoshape;
+
+				if(document.getElementById("{{ form.photo_selector.vars.id }}").value == "") {
+					document.getElementById("{{ form.photo_selector.vars.id }}").value = data.image.url;
+				}
+
+
+				if(typeof data.text !== 'undefined') {
+					tinymce.get("{{ form.text.vars.id }}").setContent(data.text);
+				}
+
+
+
+				document.querySelector('#wikidata .fa-arrows-rotate').classList.remove("fa-spin");
+			}
+		};
+		
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.open("GET", "{{ path('Region_Admin_Wikidata') }}?locale=" + locale + "&code=" + code, true);
+		xmlHttp.send();
+	});
+</script>

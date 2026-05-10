@@ -100,7 +100,7 @@ class Region
 
 	#[ORM\PrePersist]
 	#[ORM\PreUpdate]
-    public function uploadFlagCountry() {
+    public function uploadFlagCountry() {//dd($this->flag);
         if (null === $this->flag) {
             return;
         }
@@ -135,7 +135,7 @@ class Region
     }
 
     public function setInternationalName($internationalName)
-    {//dd("oo");
+    {
         $this->internationalName = $internationalName;
 
 		if(empty($this->internationalName)) {

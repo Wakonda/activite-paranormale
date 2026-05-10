@@ -13,7 +13,7 @@
 {% block h2_title %}
 	<h2>
 	<span class="float-start">
-		<img src="{{ asset('extended/photo/anger.png') }}" width="25" class="mt-1" alt="Anger ghost">
+		<img src="{{ asset('extended/photo/anger.webp') }}" width="25" class="mt-1" alt="Anger ghost">
 	</span>Activité-Paranormale
 	</h2>
 {% endblock h2_title %}
@@ -21,9 +21,9 @@
 {% block APBlog_body %}
 	{{ render(controller('App\\Controller\\NewsController::mainSlider', { 'lang' : app.request.locale})) }}
 	<br>
-	{% if is_mobile() == true %}
+	{% if is_mobile() == true and app.session.get("v") == "v2" %}
 		<div class="text-center mb-3">
-			<a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" alt=""><img src="{{ asset('extended/photo/mobile-version.png') }}" alt="Mobile version" width="30" class="align-middle"> {{ "index.main.GoWebsiteMobile"|trans([], "validators") }}</a>
+			<a href="{{ path('ap_newsmobile_index', { 'page' : 1 }) }}" alt=""><img src="{{ asset('extended/photo/mobile-version.webp') }}" alt="Mobile version" width="30" class="align-middle"> {{ "index.main.GoWebsiteMobile"|trans([], "validators") }}</a>
 			<br>
 		</div>
 	{% endif %}

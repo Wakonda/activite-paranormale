@@ -74,7 +74,69 @@ class Wikidata {
 		
 		return $url;
 	}
-	
+
+	public function createGeoJSON(float $longitude, float $latitude, array $properties = []): string
+	{
+		$geojson = [
+			"type" => "FeatureCollection",
+			"features" => [
+				[
+					"type" => "Feature",
+					"geometry" => [
+						"type" => "Point",
+						"coordinates" => [$longitude, $latitude]
+					],
+					"properties" => $properties
+				]
+			]
+		];
+
+		return json_encode($geojson, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+	}
+
+	public function getCityDatas(string $code, string $language) {
+		$res = $this->getTitleAndUrl($code, $language);
+
+		$languageWiki = $language."wiki";
+
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
+
+		$datas = json_decode($content);
+// dd($datas);
+		if(property_exists($datas->entities->$code->claims, "P3896")) {
+			$geoShape = urlencode($datas->entities->$code->claims->P3896[0]->mainsnak->datavalue->value);
+			$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&format=json&titles=$geoShape&origin=*";
+			$geoDatas = json_decode($parser->getContentURL($url, null, false), true)["query"]["pages"];
+			$geoDatas = $geoDatas[array_keys($geoDatas)[0]]["revisions"];
+			
+			foreach($geoDatas as $geoData) {
+				$geoShapeData = json_encode(json_decode($geoData["slots"]["main"]["*"])->datas);
+			}
+			
+			$res["geoshape"] = $geoShapeData;
+		} elseif (property_exists($datas->entities->$code->claims, "P625")) {
+			$geoShape = $datas->entities->$code->claims->P625[0]->mainsnak->datavalue->value;
+
+			if(!empty($geoShape)) {
+				$res["geoshape"] = $this->createGeoJSON($geoShape->longitude, $geoShape->latitude);
+			}
+			// dd($geoShape);
+		}
+
+		if(property_exists($datas->entities->$code->claims, "P41")) {
+			$res["image"] = $this->getImage($datas, $code, "P41");
+		} else if(property_exists($datas->entities->$code->claims, "P94")) {
+			$res["image"] = $this->getImage($datas, $code, "P94");
+		} else if(property_exists($datas->entities->$code->claims, "P2716")) {
+			$res["image"] = $this->getImage($datas, $code, "P2716");
+		} else if(property_exists($datas->entities->$code->claims, "P18")) {
+			$res["image"] = $this->getImage($datas, $code, "P18");
+		}
+		
+		return $res;
+	}
+
 	public function getCity(string $key, $claims, string $language, string $dateCode): array {
 		$parser = new \App\Service\APParseHTML();
 
@@ -82,7 +144,7 @@ class Wikidata {
 			"id" => null,
 			"text" => null
 		];
-		
+
 		if(property_exists($claims, $dateCode)) {
 			$idCity = $claims->$dateCode[0]->mainsnak->datavalue->value->id;
 			$locale = $this->em->getRepository(language::class)->findOneBy(["abbreviation" => $language]);
@@ -118,6 +180,7 @@ class Wikidata {
 						$city->setGeoshape($geoShapeData);
 					} elseif (property_exists($data->entities->$idCity->claims, "P625")) {
 						$geoShape = urlencode($data->entities->$idCity->claims->P625[0]->mainsnak->datavalue->value);
+						dd($geoShape);
 					}
 
 					if(property_exists($data->entities->$idCity->claims, "P41")) {
@@ -1307,7 +1370,7 @@ class Wikidata {
 	private function getCodeFromURL($url) {
 		if(!str_starts_with($url, "http") and !FunctionsLibrary::isUrl($url))
 			return $url;
-// dd($url);
+
 		$locale = explode(".", parse_url($url ,PHP_URL_HOST))[0];
 
 		$title = urlencode(basename(parse_url($url, PHP_URL_PATH)));
@@ -1315,7 +1378,7 @@ class Wikidata {
 		$parser = new \App\Service\APParseHTML();
 		$res = $parser->getContentURL("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title", null, false);
 		$res = json_decode($res, true);
-// dd($res);
+
 		if(empty($res["query"]["pages"])) {
 			$title = urlencode(str_replace("https://$locale.wikipedia.org/wiki/", "", $url));
 			$res = $parser->getContentURL("https://$locale.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item&redirects=1&titles=$title", null, false);

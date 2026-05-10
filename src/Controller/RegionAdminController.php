@@ -179,6 +179,21 @@ class RegionAdminController extends AdminGenericController
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['action' => 'edit']);
     }
 
+	#[Route('/wikidata', name: 'Region_Admin_Wikidata')]
+	public function wikidata(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, \App\Service\Wikidata $wikidata)
+	{
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$code = $request->query->get("code");
+
+		$res = $wikidata->getCityDatas($code, $language->getAbbreviation());
+
+		$data = new \App\Service\Wikipedia();
+		$data->setUrl($res["url"]);
+		$res["text"] = $data->getContentBySections([0]);
+
+		return new JsonResponse($res);
+	}
+
 	#[Route('/autocomplete', name: 'Region_Admin_Autocomplete')]
 	public function autocomplete(Request $request, EntityManagerInterface $em)
 	{

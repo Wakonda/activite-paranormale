@@ -131,6 +131,7 @@ region:
         InternationalName: "International name"
         Family: "Family"
         HigherLevel: "Higher level"
+        Text: "Text"
     form:
         Country: "Country"
         Area: "Area"

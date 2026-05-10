@@ -226,15 +226,17 @@
 
 			return (bool) preg_match($pattern, $url);
 		}
+		
+		public function isUrlEncoded(string $str): bool {
+			return urldecode($str) !== $str;
+		}
 	
 		public function getContentURL($url, $proxy = null, $sanitizeUrl = true)
 		{
-			// $url = strtok($url, '?');
 			if($sanitizeUrl) {
 				$urlArray = explode("/", $url);
-				$urlArray[count($urlArray) - 1] = urlencode(end($urlArray));
+				$urlArray[count($urlArray) - 1] = $this->isUrlEncoded(end($urlArray)) ? end($urlArray) : urlencode(end($urlArray));
 				$url = implode("/", $urlArray);
-				
 				$proxyArray = explode(":", $proxy);
 			}
 
@@ -248,12 +250,6 @@
 			curl_setopt($curl, CURLOPT_RETURNTRANSFER, TRUE);
 			curl_setopt($curl, CURLOPT_USERAGENT, "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36");
 			curl_setopt($curl, CURLOPT_TIMEOUT, $timeout);
-
-			// curl_setopt($curl, CURLOPT_HTTPHEADER, [
-				// 'Accept: image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-				// 'Accept-Language: en-US,en;q=0.9',
-				// 'Accept-Encoding: gzip, deflate, br',
-			// ]);
 
 			if(!empty($proxy))
 			{
