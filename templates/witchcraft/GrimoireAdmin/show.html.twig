@@ -56,7 +56,7 @@
 
 			{% if entity.surTheme is not empty %}
 				{{ macro_index.blogger_form(entity, entity.surTheme.parentTheme.internationalName, entity.surTheme.title) }}
-				{{ macro_index.twitter_form(entity) }}
+				{{ macro_index.twitter_form(entity, true) }}
 				{{ macro_index.mastodon_form(entity) }}
 				{{ macro_index.bluesky_form(entity) }}
 				{{ macro_index.instagram_form(entity) }}

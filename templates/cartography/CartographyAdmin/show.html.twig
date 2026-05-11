@@ -76,7 +76,7 @@
 		
 		{% if entity.archive == false %}
 			{{ macro_index.blogger_form(entity, "news", entity.theme.title) }}
-			{{ macro_index.twitter_form(entity) }}
+			{{ macro_index.twitter_form(entity, true) }}
 			{{ macro_index.mastodon_form(entity) }}
 			{{ macro_index.facebook_form(entity, entity.text) }}
 			{{ macro_index.diaspora_form(entity, entity.text) }}

@@ -87,7 +87,7 @@
 			{% else %}
 				{{ macro_index.blogger_multi_form(entity, "news") }}
 			{% endif %}
-			{{ macro_index.twitter_form(entity) }}
+			{{ macro_index.twitter_form(entity, true) }}
 			{{ macro_index.facebook_form(entity, entity.abstractText) }}
 			{{ macro_index.vk_form(entity, entity.abstractText) }}
 			{{ macro_index.mastodon_form(entity) }}
