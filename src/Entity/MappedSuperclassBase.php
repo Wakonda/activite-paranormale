@@ -66,6 +66,9 @@ class MappedSuperclassBase implements SearchEngineInterface
 	#[ORM\Column(name: 'socialNetworkIdentifiers', type: 'json', nullable: true)]
     private $socialNetworkIdentifiers;
 
+	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
+    protected $region;
+
 	public function __construct()
 	{
 		$this->writingDate = new \DateTime();
@@ -258,5 +261,15 @@ class MappedSuperclassBase implements SearchEngineInterface
     public function getSocialNetworkIdentifiers()
     {
         return $this->socialNetworkIdentifiers;
+    }
+
+    public function setRegion($region)
+    {
+        $this->region = $region;
+    }
+
+    public function getRegion()
+    {
+        return $this->region;
     }
 }

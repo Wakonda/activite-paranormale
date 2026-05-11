@@ -103,7 +103,7 @@ class Wikidata {
 		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
 
 		$datas = json_decode($content);
-// dd($datas);
+
 		if(property_exists($datas->entities->$code->claims, "P3896")) {
 			$geoShape = urlencode($datas->entities->$code->claims->P3896[0]->mainsnak->datavalue->value);
 			$url = "https://commons.wikimedia.org/w/api.php?action=query&prop=revisions&rvslots=*&rvprop=content&format=json&titles=$geoShape&origin=*";
@@ -121,7 +121,6 @@ class Wikidata {
 			if(!empty($geoShape)) {
 				$res["geoshape"] = $this->createGeoJSON($geoShape->longitude, $geoShape->latitude);
 			}
-			// dd($geoShape);
 		}
 
 		if(property_exists($datas->entities->$code->claims, "P41")) {
@@ -179,8 +178,11 @@ class Wikidata {
 						
 						$city->setGeoshape($geoShapeData);
 					} elseif (property_exists($data->entities->$idCity->claims, "P625")) {
-						$geoShape = urlencode($data->entities->$idCity->claims->P625[0]->mainsnak->datavalue->value);
-						dd($geoShape);
+						$geoShape = $data->entities->$idCity->claims->P625[0]->mainsnak->datavalue->value;
+
+						if(!empty($geoShape)) {
+							$res["geoshape"] = $this->createGeoJSON($geoShape->longitude, $geoShape->latitude);
+						}
 					}
 
 					if(property_exists($data->entities->$idCity->claims, "P41")) {

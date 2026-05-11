@@ -421,7 +421,7 @@ class WitchcraftController extends AbstractController
 	#[Route('/grimoire/theme/{id}/{slug}', name: 'Witchcraft_Theme', requirements: ['id' => '\d+'])]
 	public function theme(EntityManagerInterface $em, $id) {
 		$menuGrimoire = $em->getRepository(SurThemeGrimoire::class)->find($id);
-		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->findBy(["parentTheme" => $menuGrimoire]);
+		$surThemeGrimoires = $em->getRepository(SurThemeGrimoire::class)->findBy(["parentTheme" => $menuGrimoire], ['title' => 'ASC']);
 
 		return $this->render('witchcraft/Witchcraft/theme.html.twig', [
 			'surThemeGrimoires' => $surThemeGrimoires,
