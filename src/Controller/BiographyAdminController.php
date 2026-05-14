@@ -171,9 +171,10 @@ class BiographyAdminController extends AdminGenericController
 		
 		$country = null;
 		$entity->setTitle($entityToCopy->getTitle());
+		
+		$wikidata = new \App\Service\Wikidata($em);
 
 		if(!empty($wikicode = $entityToCopy->getWikidata())) {
-			$wikidata = new \App\Service\Wikidata($em);
 			$data = $wikidata->getTitleAndUrl($wikicode, $language->getAbbreviation());
 
 			if(!empty($data) and !empty($data["url"]))
@@ -189,6 +190,15 @@ class BiographyAdminController extends AdminGenericController
 				if(!empty($title = $data["title"]))
 					$entity->setTitle($title);
 			}
+		}
+		
+		$citiesData = $wikidata->setCityBiography($wikicode, $language->getAbbreviation());
+// dd($citiesData);
+		if(isset($citiesData["birthPlace"]) && !empty($citiesData["birthPlace"]) && !empty($citiesData["birthPlace"]["id"])) {
+			$entity->setBirthPlace($em->getRepository(Region::class)->find($citiesData["birthPlace"]["id"]));
+		}
+		if(isset($citiesData["deathPlace"]) && !empty($citiesData["deathPlace"]) && !empty($citiesData["deathPlace"]["id"])) {
+			$entity->setDeathPlace($em->getRepository(Region::class)->find($citiesData["deathPlace"]["id"]));
 		}
 		
 		if(!empty($entityToCopy->getNationality()))

@@ -49,6 +49,9 @@ class Region
 
 	#[ORM\Column(name: 'text', type: 'text', nullable: true)]
     private $text;
+
+	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
+    protected $slug;
 	
 	public function __toString()
 	{
@@ -64,6 +67,7 @@ class Region
     {
         $this->title = $title;
 		$this->setInternationalName(null);
+		$this->setSlug();
     }
 
     public function getTitle()
@@ -139,8 +143,12 @@ class Region
         $this->internationalName = $internationalName;
 
 		if(empty($this->internationalName)) {
-			$generator = new SlugGenerator;
-			$this->internationalName = $generator->generate($this->title);
+			if(!empty($this->wikidata)) {
+				$this->internationalName = $this->wikidata;
+			} else {
+				$generator = new SlugGenerator;
+				$this->internationalName = $generator->generate($this->title);
+			}
 		}
     }
 
@@ -207,5 +215,18 @@ class Region
     public function getText()
     {
         return $this->text;
+    }
+
+    public function setSlug()
+    {
+		if(empty($this->slug)) {
+			$generator = new \Ausi\SlugGenerator\SlugGenerator;
+			$this->slug = $generator->generate($this->title);
+		}
+    }
+
+    public function getSlug()
+    {
+        return $this->slug;
     }
 }

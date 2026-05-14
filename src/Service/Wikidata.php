@@ -161,7 +161,8 @@ class Wikidata {
 					$city = new Region();
 					$city->setLanguage($locale);
 					$city->setTitle($title);
-					$city->setInternationalName($slug);
+					
+					$city->setInternationalName($idCity);
 					$city->setFamily(Region::CITY_FAMILY);
 					$city->setHigherLevel($country);
 					$city->setWikidata($idCity);
@@ -234,6 +235,23 @@ class Wikidata {
 				];
 			}
 		}
+		
+		return $res;
+	}
+	
+	public function setCityBiography(string $code, string $language): array
+	{
+		$res = $this->getTitleAndUrl($code, $language);
+
+		$languageWiki = $language."wiki";
+
+		$parser = new \App\Service\APParseHTML();
+		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
+
+		$datas = json_decode($content);
+
+		$res["birthPlace"] = $this->getCity("birthPlace", $datas->entities->$code->claims, $language, "P19");
+		$res["deathPlace"] = $this->getCity("deathPlace", $datas->entities->$code->claims, $language, "P20");
 		
 		return $res;
 	}

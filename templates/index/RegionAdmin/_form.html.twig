@@ -49,6 +49,7 @@
 
 				document.getElementById("{{ form.title.vars.id }}").value = data.title;
 				document.getElementById("{{ form.geoshape.vars.id }}").value = data.geoshape;
+				document.getElementById("{{ form.wikidata.vars.id }}").value = data.code;
 
 				if(document.getElementById("{{ form.photo_selector.vars.id }}").value == "") {
 					document.getElementById("{{ form.photo_selector.vars.id }}").value = data.image.url;
