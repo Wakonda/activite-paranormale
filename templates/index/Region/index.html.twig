@@ -90,13 +90,18 @@
 
 						{% set dates = dates|merge(["<a href='"~ url ~"'>"~b.deathDate|doPartialDate(app.request.locale) ~ "</a>"]) %}
 					{% endif %}
+					
+					
 
 					{% set nationality = "" %}
 					{% if b.nationality is not empty %}
 						{% set nationality = "<a href='"~path('Biography_Index')~"?country="~b.nationality.id~"'><img src='"~asset(b.nationality.getAssetImagePath())~b.nationality.flag~"' alt='' width='20' height='13'></a> " %}
 					{% endif %}
 				
-					<li>{{ nationality|raw }}<a href="{{ path('Biography_Show', {id: b.id, title_slug: b.slug}) }}">{{ b.title }}</a>{% if dates|length is not empty %} ({{ (dates|join(" - "))|raw }}){% endif %}</li>
+					<li>{{ nationality|raw }}<a href="{{ path('Biography_Show', {id: b.id, title_slug: b.slug}) }}">{{ b.title }}</a>{% if dates|length is not empty %} ({{ (dates|join(" - "))|raw }}){% endif %}
+					{% if b.birthPlace is not empty and entity.title != b.birthPlace.title and b.birthPlace.isCityFamily() and type == 'birth' %} <br> {{ "biography.admin.BirthPlace"|trans([], "validators") }} : <a href="{{ path('Region_Index', {id: b.birthPlace.id, slug: b.birthPlace.slug}) }}">{{ b.birthPlace.title }}</a>{% endif %}
+					{% if b.deathPlace is not empty and entity.title != b.deathPlace.title and b.deathPlace.isCityFamily() and type == 'death' %} <br> {{ "biography.admin.DeathPlace"|trans([], "validators") }} : <a href="{{ path('Region_Index', {id: b.deathPlace.id, slug: b.deathPlace.slug}) }}">{{ b.deathPlace.title }}</a>{% endif %}
+					</li>
 				{% endfor %}
 				</ul>
 			{% endif %}

@@ -53,6 +53,10 @@ class Region
 	#[ORM\Column(name: 'slug', type: 'string', length: 255, nullable: true)]
     protected $slug;
 	
+	public function isCityFamily(): bool {
+		return $this->family == self::CITY_FAMILY;
+	}
+	
 	public function __toString()
 	{
 		return $this->title;
@@ -104,7 +108,7 @@ class Region
 
 	#[ORM\PrePersist]
 	#[ORM\PreUpdate]
-    public function uploadFlagCountry() {//dd($this->flag);
+    public function uploadFlagCountry() {
         if (null === $this->flag) {
             return;
         }
