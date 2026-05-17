@@ -17,6 +17,7 @@ use App\Entity\Language;
 use App\Entity\Licence;
 use App\Entity\State;
 use App\Entity\Theme;
+use App\Entity\Region;
 use App\Entity\FileManagement;
 use App\Form\Type\NewsAdminType;
 use App\Service\APDate;
@@ -277,6 +278,14 @@ class NewsAdminController extends AdminGenericController
 		if(empty($state)) {
 			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
 			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
+		}
+
+		if(!empty($entityToCopy->getRegion())) {
+			$region = $em->getRepository(Region::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getRegion()->getInternationalName()]);
+
+			if(!empty($region)) {
+				$entity->setRegion($region);
+			}
 		}
 
 		$entity->setState($state);

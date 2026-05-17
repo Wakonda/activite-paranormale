@@ -174,6 +174,14 @@ class RegionAdminController extends AdminGenericController
 		$entity->setFlag($entityToCopy->getFlag());
 		$entity->setFamily($entityToCopy->getFamily());
 
+		if(!empty($entityToCopy->getHigherLevel())) {
+			$higherLevel = $em->getRepository(Region::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getHigherLevel()->getInternationalName()]);
+
+			if(!empty($higherLevel)) {
+				$entity->setHigherLevel($higherLevel);
+			}
+		}
+
 		$request->setLocale($language->getAbbreviation());
 
 		$twig = 'index/RegionAdmin/new.html.twig';
