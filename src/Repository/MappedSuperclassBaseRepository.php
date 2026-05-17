@@ -75,7 +75,7 @@ class MappedSuperclassBaseRepository extends EntityRepository
 		return $qb->getQuery()->getResult();
 	}
 
-	public function getAllByRegion($classname, $language)
+	public function getAllByRegion($classname, $language, $region)
 	{
 		$qb = $this->getEntityManager()->createQueryBuilder();
 
@@ -87,6 +87,8 @@ class MappedSuperclassBaseRepository extends EntityRepository
 		   ->leftjoin('t.higherLevel', 'pt')
 		   ->where('l.abbreviation = :language')
 		   ->setParameter('language', $language)
+		   ->andWhere("o.region = :region")
+		   ->setParameter("region", $region)
 		   ->orderBy("o.title");
 
 		return $qb->getQuery()->getResult();

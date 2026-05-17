@@ -29,7 +29,7 @@ class RegionController extends AbstractController
 
 		foreach($entities as $className) {
 			if(is_subclass_of($className, MappedSuperclassBase::class) && method_exists($em->getRepository($className), "getAllByRegion")) {
-				$entities = $em->getRepository($className)->getAllByRegion($className, $locale);
+				$entities = $em->getRepository($className)->getAllByRegion($className, $locale, $region);
 				
 				if(!empty($entities)) {
 					$res[$translator->trans("index.className.".(new \ReflectionClass(new $className()))->getShortName(), [], 'validators')] = $entities;
