@@ -15,6 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 use App\Form\Type\FileSelectorType;
 
 use App\Entity\Region;
@@ -54,13 +55,19 @@ class RegionAdminType extends AbstractType
 					],
 					'translation_domain' => 'validators'
 			])
-			->add('higherLevel', EntityType::class, ['class'=>'App\Entity\Region', 
-				'choice_label'=>'title', 
-				'required' => false,
-				'choice_value' => function ($entity) {
-					return $entity ? $entity->getInternationalName() : '';
-				},
-				'query_builder' => function(\App\Repository\RegionRepository $repository) use ($language) { return $repository->getCountryByLanguage($language, null);}]);
+			->add('higherLevel', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Region_Admin_Autocomplete',
+				'class' => Region::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'language' => $language
+			]);
     }
 
     public function getBlockPrefix(): string

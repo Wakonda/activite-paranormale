@@ -140,6 +140,7 @@ region:
     index:
         Birth: "Nascimentos"
         Death: "Falecimentos"
+        Location: "Localização"
 language:
     admin:
         Language: "Idioma"
