@@ -68,6 +68,9 @@
 
 	<div class="form-table-cell form-table-cell-head">{{ "news.admin.State"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.state }}</div>
+	
+	<div class="form-table-cell form-table-cell-head">{{ "region.index.Location"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{% if entity.region is not empty %}{{ entity.region.title }}{% endif %}</div>
 
 	<div class="form-table-cell form-table-cell-head">{{ "tag.admin.Tags"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ get_tags(entity, true, false, true) }}</div>

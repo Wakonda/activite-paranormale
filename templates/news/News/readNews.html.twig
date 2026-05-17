@@ -43,6 +43,14 @@
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {class: "mx-auto d-block img-fluid", alt: entity.title}, entity.photoIllustrationCaption)|raw }}</p>
 	<br>
+	{% if entity.region is not empty %}
+		{% set urlCity = path('Region_Index', {id: entity.region.id, slug: entity.region.slug}) %}
+		{% set urlCountry = path('Region_Index', {id: entity.region.higherLevel.id, slug: entity.region.higherLevel.slug}) %}
+		{% set infos = "<a href='"~ urlCity ~"'>"~entity.region.title ~ "</a> (<a href='"~ urlCountry ~"'>"~entity.region.higherLevel.title ~ "</a>)" %}
+		<div class="alert border">
+			<i class="fa-solid fa-thumbtack"></i> {{ infos|raw }}
+		</div>
+	{% endif %}
 	{% set dir = entity.language.direction %}
 	<div dir="{{ dir }}">{{ entity.abstractText|raw }}</div>
 	<div dir="{{ dir }}">{{ entity.text|raw }}</div>

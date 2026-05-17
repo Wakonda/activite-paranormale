@@ -74,6 +74,23 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
+
+	public function getAllByRegion($classname, $language)
+	{
+		$qb = $this->getEntityManager()->createQueryBuilder();
+
+		$qb->select("o")
+		   ->from($classname, "o")
+		   ->join("\App\Entity\Region", "t", \Doctrine\ORM\Query\Expr\Join::WITH, "o.region = t.id")
+		   ->leftjoin("o.state", "s")
+		   ->leftjoin('t.language', 'l')
+		   ->leftjoin('t.higherLevel', 'pt')
+		   ->where('l.abbreviation = :language')
+		   ->setParameter('language', $language)
+		   ->orderBy("o.title");
+
+		return $qb->getQuery()->getResult();
+	}
 	
 	public function getTabArchive($themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{

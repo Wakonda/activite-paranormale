@@ -109,6 +109,15 @@
 	{% endif %}
 	<br>
 	
+	{% for title, data in datas %}
+		<h3>{{ title }}</h3>
+		<ul>
+		{% for d in data %}
+			<li><a href="{{ path(d.showRoute, {id: d.id, title_slug: d.urlSlug}) }}">{{ d.title }}</a></li>
+		{% endfor %}
+		</ul>
+	{% endfor %}
+	
 	{% if entity.geoShape is not empty %}
 		<h3>{{ 'cartography.index.Cartography'|trans([], "validators") }}</h3>
 		<div id="map" style="width:100%; height:400px"></div>

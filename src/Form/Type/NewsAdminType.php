@@ -20,6 +20,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\TagWord;
+use App\Entity\Region;
 
 class NewsAdminType extends AbstractType
 {
@@ -84,6 +85,20 @@ class NewsAdminType extends AbstractType
 				'mapped' => false,
 				'data' => $builder->getData(),
 				"transformer" => \App\Form\DataTransformer\TagWordTransformer::class
+			])
+			->add('region', Select2EntityType::class, [
+				'multiple' => false,
+				'remote_route' => 'Region_Admin_Autocomplete',
+				'class' => Region::class,
+				'req_params' => ['locale' => 'parent.children[language]'],
+				'page_limit' => 10,
+				'primary_key' => 'id',
+				'text_property' => 'title',
+				'allow_clear' => true,
+				'delay' => 250,
+				'cache' => false,
+				'language' => $language,
+				'query_parameters' => ["family" => Region::CITY_FAMILY]
 			])
 		;
     }
