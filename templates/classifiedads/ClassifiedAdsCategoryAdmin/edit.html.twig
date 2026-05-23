@@ -8,7 +8,7 @@
 {% block update_admin_route %}{{ path('ClassifiedAdsCategory_Admin_Update', { 'id': entity.id }) }}{% endblock %}
 
 {% block js_specific %}
-	{% import "classifiedAds/ClassifiedAdsCategoryAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
+	{% import "classifiedads/ClassifiedAdsCategoryAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
 
 	<script>
 		{{ macro_classifiedads.updateListForm(form) }}

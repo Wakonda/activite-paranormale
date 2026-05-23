@@ -6,7 +6,7 @@
 {% block create_admin_route %}{{ path('ClassifiedAdsCategory_Admin_Create') }}{% endblock %}
 
 {% block js_specific %}
-	{% import "classifiedAds/ClassifiedAdsCategoryAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
+	{% import "classifiedAads/ClassifiedAdsCategoryAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
 
 	<script>
 		{{ macro_classifiedads.updateListForm(form) }}

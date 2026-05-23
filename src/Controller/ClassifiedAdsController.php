@@ -69,14 +69,14 @@ class ClassifiedAdsController extends AbstractController
 		$pagination->setCustomParameters(['align' => 'center']);
 		$form = $this->createForm(ClassifiedAdsSearchType::class, $datas, ["locale" => $request->getLocale()]);
 
-		return $this->render('classifiedAds/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView(), "counters" => $counters]);
+		return $this->render('classifiedads/ClassifiedAds/index.html.twig', ['pagination' => $pagination, "form" => $form->createView(), "counters" => $counters]);
     }
 
 	#[Route('/classifiedads/read/{id}/{title_slug}', name: 'ClassifiedAds_Read', defaults: ['title_slug' => null], requirements: ['id' => "\d+"])]
 	public function read(EntityManagerInterface $em, $id, $title_slug) {
 		$entity = $em->getRepository(ClassifiedAds::class)->find($id);
 		
-		return $this->render("classifiedAds/ClassifiedAds/read.html.twig", ["entity" => $entity]);
+		return $this->render("classifiedads/ClassifiedAds/read.html.twig", ["entity" => $entity]);
 	}
 
 	#[Route('/classifiedads/markas/{id}', name: 'ClassifiedAds_MarkAs', requirements: ['id' => "\d+"])]
@@ -99,7 +99,7 @@ class ClassifiedAdsController extends AbstractController
         $entity = new ClassifiedAds();
         $form = $this->createForm(ClassifiedAdsType::class, $entity, ['locale' => $request->getLocale()]);
 
-        return $this->render('classifiedAds/ClassifiedAds/new.html.twig', [
+        return $this->render('classifiedads/ClassifiedAds/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
         ]);
@@ -145,7 +145,7 @@ class ClassifiedAdsController extends AbstractController
 			return $this->redirect($this->generateUrl("ClassifiedAds_Validate"));
         }
 
-        return $this->render('classifiedAds/ClassifiedAds/new.html.twig', [
+        return $this->render('classifiedads/ClassifiedAds/new.html.twig', [
             'entity' => $entity,
             'form'   => $form->createView()
         ]);
@@ -154,7 +154,7 @@ class ClassifiedAdsController extends AbstractController
 	#[Route('/classifiedads/validate', name: 'ClassifiedAds_Validate')]
     public function validate()
     {
-		return $this->render('classifiedAds/ClassifiedAds/validate.html.twig');
+		return $this->render('classifiedads/ClassifiedAds/validate.html.twig');
     }
 
 	#[Route('/classifiedads/state/{id}/{state}', name: 'ClassifiedAds_State')]
@@ -180,6 +180,6 @@ class ClassifiedAdsController extends AbstractController
     }
 
 	public function indexOsClass(Request $request, EntityManagerInterface $em) {
-		return $this->render('classifiedAds/ClassifiedAds/indexOsClass.html.twig');
+		return $this->render('classifiedads/ClassifiedAds/indexOsClass.html.twig');
 	}
 }

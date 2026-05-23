@@ -48,14 +48,14 @@ class ClassifiedAdsAdminController extends AdminGenericController
 	#[Route('/index/{state}/{display}', name: 'ClassifiedAds_Admin_Index', defaults: ['state' => null, "display" => 1])]
     public function index()
     {
-		$twig = 'classifiedAds/ClassifiedAdsAdmin/index.html.twig';
+		$twig = 'classifiedads/ClassifiedAdsAdmin/index.html.twig';
 		return $this->indexGeneric($twig);
     }
 
 	#[Route('/{id}/show', name: 'ClassifiedAds_Admin_Show')]
     public function show(EntityManagerInterface $em, $id)
     {
-		$twig = 'classifiedAds/ClassifiedAdsAdmin/show.html.twig';
+		$twig = 'classifiedads/ClassifiedAdsAdmin/show.html.twig';
 		return $this->showGeneric($em, $id, $twig);
     }
 
@@ -65,7 +65,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		$formType = ClassifiedAdsAdminType::class;
 		$entity = new ClassifiedAds();
 
-		$twig = 'classifiedAds/ClassifiedAdsAdmin/new.html.twig';
+		$twig = 'classifiedads/ClassifiedAdsAdmin/new.html.twig';
 		return $this->newGeneric($request, $em, $twig, $entity, $formType, ['locale' => $request->getLocale()]);
     }
 
@@ -75,7 +75,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		$formType = ClassifiedAdsAdminType::class;
 		$entity = new ClassifiedAds();
 
-		$twig = 'classifiedAds/ClassifiedAdsAdmin/new.html.twig';
+		$twig = 'classifiedads/ClassifiedAdsAdmin/new.html.twig';
 
 		return $this->createGeneric($request, $em, $ccv, $translator, $twig, $entity, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
@@ -86,7 +86,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
 		$entity = $em->getRepository($this->className)->find($id);
 		$formType = ClassifiedAdsAdminType::class;
 
-		$twig = 'classifiedAds/ClassifiedAdsAdmin/edit.html.twig';
+		$twig = 'classifiedads/ClassifiedAdsAdmin/edit.html.twig';
 		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
@@ -95,7 +95,7 @@ class ClassifiedAdsAdminController extends AdminGenericController
     {
 		$formType = ClassifiedAdsAdminType::class;
 
-		$twig = 'classifiedAds/ClassifiedAdsAdmin/edit.html.twig';
+		$twig = 'classifiedads/ClassifiedAdsAdmin/edit.html.twig';
 		return $this->updateGeneric($request, $em, $ccv, $translator, $id, $twig, $formType, ['locale' => $this->getLanguageByDefault($request, $em, $this->formName)]);
     }
 

@@ -50,6 +50,6 @@
 <div class="form-table-cell">{{ form_errors(form.state) }}{{ form_widget(form.state, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <script>
-	{% import "classifiedAds/ClassifiedAdsAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
+	{% import "classifiedads/ClassifiedAdsAdmin/macro_classifiedads.html.twig" as macro_classifiedads %}
 	{{ macro_classifiedads.map(form.location.vars.id) }}
 </script>
