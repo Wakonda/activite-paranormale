@@ -111,7 +111,7 @@ class Wikidata {
 			$geoDatas = $geoDatas[array_keys($geoDatas)[0]]["revisions"];
 			
 			foreach($geoDatas as $geoData) {
-				$geoShapeData = json_encode(json_decode($geoData["slots"]["main"]["*"])->datas);
+				$geoShapeData = json_encode(json_decode($geoData["slots"]["main"]["*"])->data);
 			}
 			
 			$res["geoshape"] = $geoShapeData;

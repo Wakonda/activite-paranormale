@@ -141,7 +141,7 @@
 		{% set linkArray = json_decode(entity.links) %}
 		{% for sn in linkArray %}
 			{% if sn.url is not empty %}
-				<a href="{{ sn.url }}" title="{{ ("biography.link."~sn.label)|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/social_network/'~ (sn.link|lower)~'.png') }}" alt="{{ sn.link }}" width="50"></a>
+				<a href="{{ sn.url }}" title="{{ ("biography.link."~sn.label)|trans([], "validators") }}" target="_blank"><img src="{{ asset('extended/photo/social_network/'~ (sn.link|lower)~'.webp') }}" alt="{{ sn.link }}" width="50"></a>
 			{% endif %}
 		{% endfor %}
 		<br>
@@ -172,7 +172,7 @@
 				{% for document in documents %}
 					<tr class="trGene">
 						<td class='tdGene'><a href="{{ url('DocumentBundle_AbstractDocument', { 'id' : document.id, 'title_slug' : document.getUrlSlug() }) }}"><span class="italic">{{ document.title }}</span></a></td>
-						<td class='tdGene'><img src="{{ asset(document.language.getAssetImagePath()) }}{{ document.language.logo }}" alt="" width="20" height="13" /></td></tr>
+						<td class='tdGene'><img src="{{ asset(document.language.getAssetImagePath()) }}{{ document.language.logo }}" alt="" width="20" height="13"></td></tr>
 					</tr>
 				{% endfor %}
 			</tbody>

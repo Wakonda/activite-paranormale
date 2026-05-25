@@ -39,12 +39,12 @@
 	{% endif %}
 	
 	{{ render(controller('App\\Controller\\PageController::wordPresident')) }}
-	{{ render(controller('App\\Controller\\StoreController::slider')) }}
+	{{ render(controller('App\\Controller\\EventMessageController::slider')) }}
+	{{ render(controller('App\\Controller\\NewsController::slider')) }}
 	<br>
 	{{ "google"|advertisement|raw }}
 	<br>
-	{{ render(controller('App\\Controller\\EventMessageController::slider')) }}
-	{{ render(controller('App\\Controller\\NewsController::slider')) }}
+	{{ render(controller('App\\Controller\\StoreController::slider')) }}
 	<br>
 	{{ render(controller('App\\Controller\\VideoController::slider')) }}
 	<br>

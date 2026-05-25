@@ -40,7 +40,7 @@
 	<p class="text-center">{{ entity.websiteLanguage.logo|imgsize(20, entity.websiteLanguage.getAssetImagePath())|raw }} - {{ entity.websiteLanguage.title }}</p>
 	<table class="table">
 		<tr>
-			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/link.png" alt="{{ "directory.read.Link"|trans([], "validators") }}" src="{{ "directory.read.Link"|trans([], "validators") }}" style="height: 50px" /></td>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/link.webp" alt="{{ "directory.read.Link"|trans([], "validators") }}" src="{{ "directory.read.Link"|trans([], "validators") }}" style="height: 50px" /></td>
 			<td class="tdGene"><a href="{{ entity.link }}">{{ 'directory.read.Link'|trans([], 'validators') }}</a></td>
 			<td class="tdGene"><a href="{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
 		</tr>
@@ -49,7 +49,7 @@
 			{% for sn in socialNetworkArray %}
 				{% if sn.url is not empty %}
 				<tr>
-					<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/{{ sn.socialNetwork|lower }}.png" alt="{{ sn.socialNetwork }}" style="height: 50px" /></td>
+					<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/{{ sn.socialNetwork|lower }}.webp" alt="{{ sn.socialNetwork }}" style="height: 50px" /></td>
 					<td class="tdGene"><a href="{{ sn.url }}">{{ sn.socialNetwork }}</a></td>
 					<td class="tdGene"><a href="{{ sn.url }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
 				</tr>
@@ -63,22 +63,22 @@
 	
 	<table class="table">
 		<tr>
-			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/wayback-machine.png" alt="Wayback Machine Logo" width="250" /></td>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/wayback-machine.webp" alt="Wayback Machine Logo" width="250" /></td>
 			<td class="tdGene">Wayback Machine</td>
 			<td class="tdGene"><a href="https://web.archive.org/web/{{ "now"|date("YmdHis") }}/{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
 		</tr>
 		<tr>
-			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/archive-vn.jpg" alt="Archive.vn Logo" width="250" /></td>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/archive-vn.webp" alt="Archive.vn Logo" width="250" /></td>
 			<td class="tdGene">archive.today</td>
 			<td class="tdGene"><a href="https://archive.vn/{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
 		</tr>
 		<tr>
-			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/time-travel.png" alt="Time Travel Logo" width="250" /></td>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/time-travel.webp" alt="Time Travel Logo" width="250" /></td>
 			<td class="tdGene">Time Travel</td>
 			<td class="tdGene"><a href="http://timetravel.mementoweb.org/list/{{ "now"|date("YmdHis") }}/{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
 		</tr>
 		<tr>
-			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/google.png" alt="Google Logo" width="250" /></td>
+			<td class="td_form_table"><img src="{{ asset('extended/photo/webdirectory/social_network') }}/google.webp" alt="Google Logo" width="250" /></td>
 			<td class="tdGene">Webcache</td>
 			<td class="tdGene"><a href="http://webcache.googleusercontent.com/search?q=cache:{{ entity.link }}" target="_blank" class="btn btn-warning text-dark"><i class="fas fa-external-link-square-alt"></i></a></td>
 		</tr>

@@ -1,5 +1,5 @@
 {% if entity.photo is not empty %}
-	<div class="store_embedded_image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid'})|raw }}</div>
+	<div class="store_embedded_image">{{ entity.photo|imgsize(550, entity.getAssetImagePath(), true, { 'class': 'mx-auto d-block img-fluid', alt: entity.title})|raw }}</div>
 {% elseif entity.imageEmbeddedCode is not empty %}
 	{% include 'store/Store/_store_embedded_image.html.twig' with { id: entity.id, title: entity.title, embeddedCode: entity.imageEmbeddedCode, width: width } %}
 {% else %}
