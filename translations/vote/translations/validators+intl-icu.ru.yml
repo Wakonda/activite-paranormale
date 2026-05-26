@@ -1,0 +1,27 @@
+vote:
+    edit:
+        Vote: >-
+            {number, plural,
+                =0   {голос}
+                one   {голос}
+                few   {голоса}
+                many  {голосов}
+                other {голосов}
+            }
+        VoteSubmit: "Отправить"
+    index:
+        AverageScore: "Оценка:"
+        Section: "Раздел"
+        Title: "Заголовок"
+        Value: "Значение"
+        Vote: "Голос"
+        NumberOf: "Количество голосов:"
+        TotalVotes: "Всего голосов"
+        Favorite: "Избранное"
+        NumberOfFavorites: "Количество избранных:"
+        ShowMyFavorites: "Показать мои избранные"
+        ThisArticleIsInYourFavorites: "Эта статья в ваших избранных"
+        AddThisArticleToYourFavorites: "Добавить эту статью в избранное"
+    validate:
+        ValidationVote: "Подтверждение вашего голоса"
+        RecordedVote: "Ваш голос успешно записан!"

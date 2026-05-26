@@ -1,0 +1,14 @@
+directorySEO:
+    admin:
+        ReturnLink: "Обратная ссылка"
+        Title: "Название"
+        Text: "Текст"
+        Link: "Ссылка"
+        Language: "Язык"
+    index:
+        DirectorySEO: "SEO-каталог"
+        ReturnLink: "Обратная ссылка"
+        Title: "Название"
+        Text: "Описание"
+        Link: "Ссылка"
+        Language: "Язык"

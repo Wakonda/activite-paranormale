@@ -1,0 +1,253 @@
+index:
+    main:
+        Welcome: "Добро пожаловать"
+        News: "Новости"
+        Video: "Видео"
+        Gallery: "Галерея"
+        Witchcraft: "Колдовство"
+        GoWebsiteMobile: "Перейти на мобильную версию сайта"
+    mainMenu:
+        Welcome: "Добро пожаловать"
+        New: "Новое"
+        Witchcraft: "Колдовство"
+        Blog: "Блог"
+        Store: "Магазин"
+    leftMenu:
+        Information: "Информация"
+        Account: "Аккаунт"
+        YourAccount: "Ваш аккаунт"
+        ModifyAccount: "Изменить аккаунт"
+        ModifyPassword: "Изменить пароль"
+        Logout: "Выйти"
+        Login: "Войти"
+        CreateAccount: "Создать аккаунт"
+        Management: "Управление"
+        Section: "Раздел"
+        Archive: "Архив"
+        World: "Многоязычные новости"
+        Document: "Документ"
+        Cartography: "Картография"
+        Members: "Участники"
+        Music: "Музыка"
+        Photo: "Фото"
+        Download: "Скачать"
+        Testimony: "Отзыв"
+        Theme: "Тема"
+        Video: "Видео"
+        OfferLink: "Предложить ссылку"
+        Testify: "Свидетельствовать"
+        SubmitArticle: "Отправить статью"
+        Participate: "Участвовать"
+        Search: "Поиск"
+        HelpUs: "Помогите нам"
+        Quotations: "Цитаты"
+        Validation: "Проверка"
+        More: "Каталог"
+        AddNews: "Предложить новость"
+        AddRitual: "Предложить ритуал"
+        AddEvent: "Предложить событие"
+        AddVideo: "Предложить видео"
+        AddPhoto: "Предложить фото"
+        PublishClassifiedAds: "Разместить объявление"
+        Partner: "Партнёр"
+        Biography: "Биография"
+        Movie: "Фильм"
+        TelevisionSerie: "Телесериал"
+        FollowUsOn: "Следите за нами в..."
+        ClassifiedAds: "Объявления"
+        Book: "Книга"
+        Development: "Разработка"
+        CreepyStory: "Жуткая история"
+        GoodiesShop: "Магазин сувениров"
+        ArtCulture: "Искусство / Культура"
+    donate:
+        DonateInCryptocurrency: "Пожертвовать в криптовалюте"
+        CryptocurrencyDonation: "Крипто-пожертвование"
+    development:
+        Develop: "Разрабатывать"
+        CodingSkills: "Внесите свой вклад в разработку!"
+    footerMenu:
+        FollowUs: "Следите за нами"
+        About: "О нас"
+        MobileView: "Мобильная версия"
+        Tag: "Теги"
+        PrivacyPolicy: "Политика конфиденциальности"
+        Participation: "Участие"
+        Contact: "Контакты"
+    rightMenu:
+        Login: "Войти"
+        CreateAccount: "Создать аккаунт"
+        Logout: "Выйти"
+        SeeAccount: "Посмотреть аккаунт"
+        EditAccount: "Редактировать аккаунт"
+        Admin: "Админ"
+    className:
+        Book: "Книга"
+        Cartography: "Картография"
+        Document: "Документ"
+        EventMessage: "Событие"
+        Movie: "Фильм"
+        News: "Новости"
+        Photo: "Фото"
+        Testimony: "Отзыв"
+        Video: "Видео"
+        TelevisionSerie: "Телесериал"
+        EpisodeTelevisionSerie: "Эпизод (телесериал)"
+        Grimoire: "Колдовство"
+        WitchcraftTool: "Инструмент колдовства"
+        CreepyStory: "Жуткая история"
+        ClassifiedAds: "Объявление"
+    archive:
+        Archive: "Архив"
+        DocArchive: "Общее количество архивных документов: "
+        Theme: "Тема"
+        Number: "Количество"
+        Source: "Источник"
+        Title: "Заголовок"
+        PublicationDate: "Дата публикации"
+        Section: "Раздел"
+        Unauthorized: "Наши архивы являются закрытыми. Чтобы получить доступ, вам нужно <a href='%urlAccount%'>создать аккаунт</a> и <a href='%urlContact%'>запросить доступ</a>. После одобрения вы сможете свободно просматривать все архивы."
+    application:
+        App: "Приложение"
+        Version: "Версия:"
+        Preview: "Предпросмотр"
+        DownloadForAndroid: "Скачать для Android"
+        Text: "Погрузитесь в тайну с Android-приложением 'Activité-Paranormale'! Откройте для себя удивительные новости о паранормальном прямо со смартфона..."
+    search:
+        Validate: "Подтвердить"
+        Reset: "Сбросить"
+civility:
+    admin:
+        Title: "Заголовок"
+        InternationalName: "Международное название"
+        Language: "Язык"
+        Icon: "Иконка"
+region:
+    admin:
+        Region: "Регион"
+        Flag: "Флаг"
+        Title: "Заголовок"
+        Language: "Язык"
+        InternationalName: "Международное название"
+        Family: "Семейство"
+        HigherLevel: "Высший уровень"
+        Text: "Текст"
+    form:
+        Country: "Страна"
+        Area: "Область"
+        Subdivision: "Подразделение"
+        City: "Город"
+    index:
+        Birth: "Рождения"
+        Death: "Смерти"
+        Location: "Местоположение"
+language:
+    admin:
+        Language: "Язык"
+        Abbreviation: "Аббревиатура"
+        Flag: "Флаг"
+        Direction: "Направление письма"
+        RightToLeft: "Справа налево"
+        LeftToRight: "Слева направо"
+        Current: "Язык сайта"
+licence:
+    showColorbox:
+        WhatLicensesChoose: "Какую лицензию выбрать?"
+    showColorboxByLicence:
+        License: "Лицензия"
+    admin:
+        Title: "Заголовок"
+        Logo: "Логотип"
+        Description: "Описание"
+        Language: "Язык"
+        InternationalName: "Международное название"
+        Link: "Ссылка"
+history:
+    show:
+        Title: "Заголовок"
+        Date: "Дата"
+        Author: "Автор"
+        RevisionHistory: "История изменений: "
+        ViewHistory: "Просмотреть историю"
+        History: "История"
+        Diff: "Различия"
+state:
+    admin:
+        Title: "Заголовок"
+        Text: "Текст"
+        DisplayState: "Отображается"
+        Language: "Язык"
+        InternationalName: "Международное название"
+theme:
+    admin:
+        Theme: "Тема"
+        Family: "Семейство"
+        Language: "Язык"
+        File: "Файл"
+        Photo: "Фото"
+        InternationalName: "Международное название"
+        Text: "Текст"
+        Sources: "Источники"
+    index:
+        Theme: "Тема"
+        Read: "Читать"
+        Sources: "Источники"
+    read:
+        Theme: "Тема"
+generality:
+    read:
+        Previous: "Предыдущая"
+        Next: "Следующая"
+        OnTheSameTopic: "По той же теме"
+        NoMatchingRecordsFound: "Совпадений не найдено"
+        SeeAll: "Смотреть все"
+    data:
+        LoadingInProgress: "Загрузка..."
+    page:
+        Advertisement: "Реклама"
+    pdf:
+        Home: "Главная"
+        Download: "Скачать"
+        Back: "Назад"
+        SavePrint: "Сохранить / Печать"
+banner:
+    admin:
+        Title: "Заголовок"
+        Link: "Ссылка"
+        Image: "Изображение"
+        Display: "Показывать"
+        Language: "Язык"
+captcha:
+    form:
+        RecopyCaptcha: "Введите символы с изображения"
+    error:
+        InvalidCaptcha: "Неверный код! Попробуйте снова"
+twitter:
+    admin:
+        NumberOfRemainingCharacters: "Осталось символов:"
+        AddImage: "Добавить изображение"
+mastodon:
+    index:
+        PleaseEnterYourInstance: "Введите ваш инстанс"
+        ChooseAnInstance: "Выберите сервер Mastodon"
+        Share: "Поделиться"
+version:
+    title:
+        ActivateVersion: "Активировать версию"
+        ReturnToVersion: "Вернуться к версии"
+"Not Found": "Не найдено"
+"Internal Server Error": "Внутренняя ошибка сервера"
+error:
+    exception:
+        Error: "Ошибка"
+        Deleted: "Эта страница была удалена"
+magicTrick:
+    index:
+        MagicTrick: "Фокус"
+        Telepathy: "Телепатия"
+        TelepathyFirstStep: "Загадайте двузначное число"
+        TelepathySecondStep: "Вычтите из него его цифры"
+        TelepathyThirdStep: "Найдите символ в таблице"
+        TelepathyClickResult: "Нажмите, чтобы увидеть результат!"
+        TelepathyClickResultText: "Символ вашего числа:"
+        Retry: "Повторить"

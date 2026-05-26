@@ -1,0 +1,27 @@
+mobile:
+    main:
+        News: "Новости"
+        Video: "Видео"
+        Photo: "Фото"
+        Testimony: "Отзыв"
+        Witchcraft: "Колдовство"
+        Search: "Поиск"
+        Desktop: "Версия для ПК"
+        Older: "Старее"
+        Newer: "Новее"
+        Contribute: "Внести вклад"
+    news:
+        NoNews: "Нет новостей"
+    video:
+        AllVideos: "Все видео"
+        NoVideo: "Нет видео"
+    photo:
+        AllPhotos: "Все фото"
+        NoPhoto: "Нет фото"
+    testimony:
+        AllTestimonials: "Все отзывы"
+        NoTestimony: "Нет отзывов"
+        Testify: "Оставить отзыв"
+    witchcraft:
+        AllRituals: "Все ритуалы"
+        NoRitual: "Нет ритуалов"

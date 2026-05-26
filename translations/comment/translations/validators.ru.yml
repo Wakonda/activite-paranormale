@@ -1,0 +1,24 @@
+comment:
+    index:
+        Comment: "Комментарий"
+        Comments: "Комментарии"
+    edit:
+        Pseudo: "Псевдоним"
+        MailDisplay: "Email (необязательно: не будет отображаться)"
+        Comment: "Комментарий"
+        LoggedAs: "Вы вошли как "
+        Validate: "Подтвердить"
+        CommentDeleted: "Этот комментарий был удалён"
+    error:
+        NotBlank: "Это поле не может быть пустым"
+        Email: "Недопустимый email-адрес"
+    admin:
+        Approved: "Одобрено"
+        Denied: "Отклонено"
+        NotChecked: "Не проверено"
+        Author: "Автор"
+        Email: "Email"
+        Date: "Дата"
+        State: "Состояние"
+        Message: "Сообщение"
+        Link: "Ссылка"

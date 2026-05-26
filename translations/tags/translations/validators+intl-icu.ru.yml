@@ -1,0 +1,28 @@
+tag:
+    index:
+        Tag: "Тег"
+        Photo: "Фото"
+        Number: "Количество: "
+        Total: "Всего"
+    search:
+        ArticleTagged: >-
+            {number, plural,
+                =0   {статей с тегом}
+                one   {статья с тегом}
+                other {статей с тегом}
+            }
+        Section: "Раздел"
+        Title: "Заголовок"
+        Theme: "Тема"
+        PublicationDate: "Дата публикации"
+        Sources: "Источники"
+    admin:
+        Tags: "Теги"
+tagWord:
+    admin:
+        Title: "Заголовок"
+        Language: "Язык"
+        InternationalName: "Международное название"
+        Text: "Текст"
+        Photo: "Фото"
+        Sources: "Источники"

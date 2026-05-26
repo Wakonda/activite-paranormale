@@ -1,0 +1,8 @@
+advertising:
+    admin:
+        Title: "Заголовок"
+        Text: "Текст"
+        Width: "Ширина"
+        Height: "Высота"
+        Language: "Язык"
+        Active: "Включить"

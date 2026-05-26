@@ -1,0 +1,14 @@
+partner:
+    index:
+        Partner: "Подписывайтесь на нас"
+        Inactive: "Неактивный"
+        Display: "Отображение"
+    admin:
+        Title: "Заголовок"
+        Link: "Ссылка"
+        Logo: "Логотип"
+        Language: "Язык"
+        Active: "Активный"
+        DisplayPage: "Показывать на главной странице"
+        Color: "Цвет"
+        Icon: "Иконка"

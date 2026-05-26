@@ -1,0 +1,150 @@
+page:
+    admin:
+        Title: "Заголовок"
+        Text: "Текст"
+        InternationalName: "Международное название"
+        Language: "Язык"
+        WritingDate: "Дата написания"
+        PublicationDate: "Дата публикации"
+        Licence: "Лицензия"
+        State: "Состояние"
+        PseudoUsed: "Используемый псевдоним"
+    participation:
+        Charter: "Участвуя в <b>Activité-Paranormale</b>, вы принимаете его публикационную хартию. Вы можете ознакомиться с ней, <a href='%url%' class='text-danger' target='_blank'>нажав здесь <i class='fa-solid fa-arrow-up-right-from-square'></i></a>"
+president:
+    admin:
+        Title: "Заголовок"
+        Text: "Текст"
+        Photo: "Фото"
+        Language: "Язык"
+        Licence: "Лицензия"
+        State: "Состояние"
+        PseudoUsed: "Используемый псевдоним"
+        WritingDate: "Дата написания"
+        PublicationDate: "Дата публикации"
+        NumberOfDays: "Количество дней"
+        Logo: "Логотип"
+    index:
+        ArchivedMessages: "Архивированные сообщения"
+    tab:
+        Title: "Заголовок"
+        PublicationDate: "Дата публикации"
+        ArchivedMessage: "Архивированное сообщение"
+eventMessage:
+    menu:
+        Events: "События"
+        Calendar: "Календарь"
+    calendar:
+        Events: "События"
+        List: "Список"
+    index:
+        Event: "Событие"
+        Sources: "Источники"
+        OnThisDay: "В этот день"
+        Today: "Сегодня"
+        Until: "до"
+    tab:
+        Photo: "Фото"
+        Title: "Заголовок"
+        Date: "Дата"
+    admin:
+        Title: "Заголовок"
+        AbstractText: "Аннотация"
+        Text: "Текст"
+        Language: "Язык"
+        DateFrom: "Дата начала"
+        DateTo: "Дата окончания"
+        PseudoUsed: "Используемый псевдоним"
+        Licence: "Лицензия"
+        State: "Состояние"
+        Photo: "Фото"
+        Thumbnail: "Миниатюра"
+        Theme: "Тема"
+        Type: "Тип"
+        Longitude: "Долгота"
+        Latitude: "Широта"
+        Source: "Источники"
+        Country: "Страна"
+        Validate: "Подтвердить"
+        Refuse: "Отклонить"
+    slider:
+        MoreInformation: "Подробнее"
+    new:
+        AddEvents: "Предложить событие"
+        Title: "Заголовок"
+        Text: "Текст"
+        Photo: "Фото"
+        Pseudo: "Псевдоним"
+        DateFrom: "Дата начала"
+        DateTo: "Дата окончания"
+        Location: "Местоположение"
+        FileSizeLimit: "Ограничение размера файла"
+        AcceptedFormat: "Поддерживаемый формат"
+        IsAnonymous: "Опубликовать анонимно?"
+        Validate: "Подтвердить"
+        ClickHereToLocateOnMap: "Нажмите на карту, чтобы указать место события"
+        PublishedAnonymously: "Опубликовано анонимно"
+        PostedWithMyUserAccount: "Опубликовано с моего аккаунта"
+        AnonymousMessage: "При анонимной публикации ваш материал не появится в профиле после модерации."
+    error:
+        FileSizeError: "Файл слишком большой"
+        FileFormat: "Недопустимый формат файла"
+        StartDateSuperiorEndDate: "Дата начала не может быть больше даты окончания"
+    waiting:
+        Edit: "Редактировать"
+        Validate: "Подтвердить"
+    validate:
+        Validation: "Проверка"
+        ThankForYourParticipation: "Спасибо за участие!"
+        ThankForYourParticipationText: "Ваше событие отправлено нам. Оно будет опубликовано после проверки модератором."
+    world:
+        WorldEventMessage: "Многоязычное событие"
+    dayMonth:
+        Century: >-
+            {number, plural,
+                =1 {{romanNumber}<sup>век</sup> {bc}}
+                =2 {{romanNumber}<sup>век</sup> {bc}}
+                =3 {{romanNumber}<sup>век</sup> {bc}}
+                other {{romanNumber}<sup>век</sup> {bc}}
+            }
+        BC: "до н.э."
+        Birth: "Рождения"
+        Death: "Смерти"
+        Event: "Событие"
+        Celebration: "Памятная дата"
+        Horoscope: "Гороскоп"
+        Convention: "Конвенция"
+        Festival: "Фестиваль"
+        Saint: "Святой"
+        Saying: "Изречение"
+        NoEventToday: "Сегодня нет событий"
+        NoEvent: "Нет события"
+rssFeed:
+    menu:
+        RSSFeeds: "RSS-ленты"
+        SubscribeToRSSFeeds: "Подписаться на RSS-ленты"
+    index:
+        SubscribeToRSSFeeds: "Подписаться на RSS-ленты"
+        WhatIsItTitle: "Что это?"
+        WhatIsItText: "Подписка на RSS позволяет автоматически получать обновления сайта без ручной проверки."
+        CustomizeYourRSSFeed: "Настроить RSS-ленту"
+        RSSFeedCreatedTitle: "RSS-лента создана"
+        RSSFeedCreatedText: "Скопируйте ссылку ниже и добавьте её в ваш RSS-ридер."
+        Category: "Категория"
+        Language: "Язык"
+        Number: "Количество"
+        News: "Новости"
+        Document: "Документ"
+        Photo: "Фото"
+        Testimony: "Отзыв"
+        Video: "Видео"
+    read:
+        CopyToClipboard: "Скопировать в буфер"
+        CodeCopiedWithSuccess: "Код успешно скопирован"
+copyright:
+    table:
+        UsedPhotos: "Использованные фотографии"
+        Photo: "Фото"
+        License: "Лицензия"
+        Author: "Автор"
+        Link: "Ссылка"

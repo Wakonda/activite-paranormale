@@ -1,0 +1,33 @@
+usefullink:
+    admin:
+        UsefulLink: "Полезная ссылка"
+        Title: "Заголовок"
+        Text: "Текст"
+        Link: "Ссылка"
+        Category: "Категория"
+        Tags: "Теги"
+        Development: "Разработка"
+        Resource: "Ресурс"
+        GenerateLinkProduct: "Сгенерировать ссылку на продукт"
+        Search: "Поиск"
+        Language: "Язык"
+        Licence: "Лицензия"
+        Photo: "Фото"
+        Website: "Веб-сайт"
+        Technical: "Техническая информация"
+        Tool: "Инструмент"
+    index:
+        Copy: "Копировать"
+        Copied: "Скопировано!"
+        Error: "Нажмите Ctrl+C для копирования"
+        Licence: "Лицензия"
+        TipsAndTricks: "Советы и рекомендации"
+        Sources: "Источники"
+        NoMatchingRecordsFound: "Совпадений не найдено"
+        ShowAll: "Показать всё"
+        Title: "Заголовок"
+        Tags: "Теги"
+usefullinktags:
+    admin:
+        UsefullinkTags: "Полезные ссылки - Теги"
+        Title: "Заголовок"

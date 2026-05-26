@@ -1,0 +1,35 @@
+photo:
+    index:
+        Photo: "Фото"
+        NbrPhoto: "Общее количество фотографий: "
+        Theme: "Тема"
+        Number: "Количество"
+    tab:
+        Title: "Заголовок"
+        PublicationDate: "Дата публикации"
+        Photo: "Фото"
+    admin:
+        Title: "Заголовок"
+        Text: "Текст"
+        Photo: "Фото"
+        Language: "Язык"
+        Theme: "Тема"
+        PseudoUsed: "Используемый псевдоним"
+        PublicationDate: "Дата публикации"
+        State: "Состояние"
+        Licence: "Лицензия"
+        WritingDate: "Дата написания"
+    new:
+        AddPhoto: "Предложить фото"
+        Photo: "Фото"
+        Text: "Текст"
+    read:
+        SourcePhoto: "Источник фото"
+    slider:
+        More: "Подробнее"
+    world:
+        WorldPhoto: "Многоязычное фото"
+    validate:
+        Validation: "Проверка"
+        ThankForYourParticipation: "Спасибо за участие!"
+        ThankForYourParticipationText: "Ваше фото отправлено нам. Оно будет опубликовано после проверки модератором."

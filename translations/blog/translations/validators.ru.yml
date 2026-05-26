@@ -1,0 +1,20 @@
+blog:
+    index:
+        VisitThisBlog: "Посетить этот блог"
+        Inactive: "Неактивный"
+        RSSFeed: "RSS-лента"
+    admin:
+        Title: "Заголовок"
+        Banner: "Баннер"
+        Link: "Ссылка"
+        Rss: "RSS"
+        Text: "Текст"
+        Language: "Язык"
+        LanguageOfBlog: "Язык блога"
+        WritingDate: "Дата написания"
+        Active: "Активен"
+        Category: "Категория"
+        Blog: "Блог"
+        Website: "Веб-сайт"
+        Forum: "Форум"
+        Store: "Магазин"

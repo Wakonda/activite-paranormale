@@ -1,0 +1,97 @@
+grimoire:
+    admin:
+        Title: "Название"
+        Text: "Текст"
+        Theme: "Тема"
+        WritingDate: "Дата написания"
+        Source: "Источник"
+        State: "Статус"
+        Language: "Язык"
+        Photo: "Фото"
+        Author: "Автор"
+        Validate: "Подтвердить"
+        Refuse: "Отклонить"
+        RitualPublished: "Ритуал опубликован"
+        RitualRefused: "Ритуал отклонён"
+magicbookmenu:
+    admin:
+        Title: "Название"
+        Text: "Текст"
+        Picture: "Изображение"
+        Language: "Язык"
+        InternationalName: "Международное название"
+magicbooktheme:
+    admin:
+        Title: "Название"
+        Theme: "Тема"
+        Definition: "Определение"
+        Picture: "Изображение"
+        Language: "Язык"
+        InternationalName: "Международное название"
+        WitchcraftMenu: "Меню магии"
+witchcraft:
+    admin:
+        Witchcraft: "Колдовство"
+    index:
+        Witchcraft: "Колдовство"
+        MagicPrayer: "Магия - молитва"
+        MoonPhase: "Фаза луны на %date%"
+        Read: "Читать"
+    tabGrimoire:
+        Title: "Название"
+        Source: "Источник"
+        Language: "Язык"
+        Photo: "Фото"
+    read:
+        Source: "Источник"
+    new:
+        AddRitual: "Предложить ритуал"
+        Title: "Название"
+        Text: "Текст"
+        Theme: "Тема"
+        Pseudo: "Псевдоним"
+        IsAnonymous: "Опубликовать анонимно?"
+        Validate: "Подтвердить"
+        PublishedAnonymously: "Опубликовано анонимно"
+        PostedWithMyUserAccount: "Опубликовано с моего аккаунта"
+        AnonymousMessage: "При анонимной публикации ваш ритуал не появится в вашем профиле после модерации."
+    validate:
+        Validation: "Проверка"
+        ThankForYourParticipation: "Спасибо за участие!"
+        ThankForYourParticipationText: "Ваш материал отправлен нам. Он будет опубликован после одобрения модератором."
+witchcraftTool:
+    index:
+        WitchcraftTool: "Инструмент колдовства"
+        Sources: "Источники"
+    admin:
+        Title: "Название"
+        Photo: "Фото"
+        Text: "Текст"
+        PublicationDate: "Дата публикации"
+        WitchcraftThemeTool: "Тема"
+        Language: "Язык"
+        State: "Статус"
+        Source: "Источник"
+        InternationalName: "Международное название"
+        Licence: "Лицензия"
+    search:
+        SearchSort: "Поиск / сортировка"
+        Keywords: "Ключевые слова"
+        Theme: "Тема"
+        PublicationDate: "Дата публикации"
+        PublicationDateUp: "Дата публикации ↑"
+        PublicationDateDown: "Дата публикации ↓"
+        Sort: "Сортировать"
+        Read: "Читать"
+        NoMatchingRecordsFound: "Ничего не найдено"
+        MoreDetails: "Подробнее"
+    read:
+        Theme: "Категория"
+        Description: "Описание"
+        PublishedOn: "Опубликовано"
+witchcraftThemeTool:
+    admin:
+        Title: "Название"
+        Photo: "Фото"
+        InternationalName: "Международное название"
+        Language: "Язык"

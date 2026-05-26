@@ -1,0 +1,44 @@
+contact:
+    error:
+        mailRegex: "Ваш email некорректен"
+        fieldEmpty: "Это поле не может быть пустым"
+    index:
+        ContactUs: "Свяжитесь с нами!"
+        Name: "Ваше имя"
+        Email: "Ваш email"
+        Subject: "Тема"
+        Message: "Ваше сообщение"
+        Send: "Отправить"
+        Cancel: "Отмена"
+    mail:
+        MessageSentBy: "Сообщение отправлено от"
+    send:
+        Confirmation: "Подтверждение"
+        messageSucces: "Ваше сообщение успешно отправлено!"
+        messageConfirmation: "Мы ответим вам как можно скорее."
+    admin:
+        Pseudo: "Псевдоним"
+        Email: "Email"
+        Message: "Сообщение"
+        PhoneNumber: "Номер телефона"
+        Recipient: "Получатель"
+        Read: "Прочитано?"
+        Subject: "Тема"
+        Date: "Дата"
+privateMessage:
+    index:
+        MyPrivateMessages: "Мои личные сообщения"
+        SendPrivateMessage: "Отправить личное сообщение"
+        Inbox: "Входящие"
+        Outbox: "Исходящие"
+        Subject: "Тема"
+        Author: "Автор"
+        PhoneNumber: "Номер телефона"
+        Recipient: "Получатель"
+        Date: "Дата"
+        Read: "Прочитано"
+    read:
+        Reply: "Ответить"
+    send:
+        MessageTo: "Сообщение для"
+        Success: "Сообщение успешно отправлено"

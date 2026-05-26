@@ -1,0 +1,7 @@
+search:
+    index:
+        Search: "Поиск"
+        NoResult: "Ваш поиск не дал результатов"
+        Results: "результатов"
+        Read: "Читать"
+        Image: "Изображение"

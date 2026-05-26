@@ -1,0 +1,23 @@
+creepyStory:
+    admin:
+        Title: "Заголовок"
+        Text: "Текст"
+        Photo: "Фото"
+        Language: "Язык"
+        Theme: "Тема"
+        PseudoUsed: "Используемый псевдоним"
+        PublicationDate: "Дата публикации"
+        State: "Состояние"
+        Licence: "Лицензия"
+        WritingDate: "Дата написания"
+        Source: "Источник"
+    index:
+        CreepyStory: "Жуткая история"
+        CountCreepyStory: "Общее количество: "
+        Theme: "Тема"
+        Number: "Номер"
+        Sources: "Источники"
+    tab:
+        Photo: "Фото"
+        Title: "Заголовок"
+        PublicationDate: "Дата публикации"

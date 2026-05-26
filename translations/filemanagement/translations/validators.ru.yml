@@ -1,0 +1,36 @@
+file:
+    add:
+        AttachFile: "Прикрепить файлы"
+        Title: "Заголовок"
+        File: "Файл"
+        Upload: "Загрузить"
+        Display: "Отображать"
+        Delete: "Удалить"
+        NoFile: "Файл ещё не загружен"
+        NoFileSelected: "Файл не выбран"
+
+    uploadFile:
+        FileTooLarge: "Файл слишком большой"
+        UnauthorizedExtension: "Недопустимое расширение"
+        NoFileSelected: "Файл не выбран"
+        FileAddedWithSuccess: "Файл успешно добавлен"
+        NoFile: "Нет файла"
+
+    admin:
+        Files: "Файлы"
+        File: "Файл"
+        Title: "Заголовок"
+        Caption: "Подпись"
+        CaptionPhoto: "Подпись - Фото"
+        NotUsed: "Не используется"
+        MediaManagement: "Управление медиа"
+        SortByNameDesc: "Сортировать по имени (по убыванию)"
+        SortByNameAsc: "Сортировать по имени (по возрастанию)"
+        SortBySizeDesc: "Сортировать по размеру (по убыванию)"
+        SortBySizeAsc: "Сортировать по размеру (по возрастанию)"
+        Other: "Другое"
+
+    read:
+        OtherFiles: "Другие файлы"
+        Title: "Заголовок"
+        Download: "Скачать"
