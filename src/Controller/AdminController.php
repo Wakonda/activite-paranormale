@@ -295,7 +295,7 @@ class AdminController extends AbstractController
 
 			if(!empty($tagsLinks))
 				$tagsLinkString = "<fieldset style='border: 1px solid black;border-radius: 0.3em;padding: 6px;'><legend style='padding: 3px;'><b>".$translator->trans('tag.admin.Tags', [], 'validators', $request->getLocale())."</b></legend>".implode(", ", $tagsLinks)."</fieldset>";
-
+// dd($entity->getRealClass());
 			switch($entity->getRealClass())
 			{
 				case "Photo":
@@ -402,17 +402,21 @@ class AdminController extends AbstractController
 					$text .= "<br>→ <a href='".$this->generateUrl($entity->getShowRoute(), ['id' => $entity->getId(), "title_slug" => $entity->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$translator->trans('admin.source.MoreInformationOn', [], 'validators', $entity->getLanguage()->getAbbreviation())."</a>".$tagsLinkString;
 					break;
 				case "Store":
-					if(!empty($entity->getPhoto())) {
+					$text = "";
+					if(!empty($entity->getPhoto())) {//dump("o");
 						$imgProperty = $entity->getPhoto();
 						$img = $entity->getAssetImagePath().$imgProperty;
-					} elseif($entity->isSpreadShopPlatform()) {
+					} elseif($entity->isSpreadShopPlatform()) {//dump("p");
 						$imgProperty = $img = null;
+					} elseif(!empty($entity->getImageEmbeddedCode())) {
+						$imgProperty = $img = null;
+						$text .= $entity->getImageEmbeddedCode();//dump($text);
 					} else {
 						$imgProperty = strtolower($entity->getCategory()).".jpg";
 						$img = $entity->getAssetImagePath()."category/".$imgProperty;
 					}
-
-					$text = $entity->getText()."<br>";
+// 
+					$text .= $entity->getText()."<br>";
 					$text .= $entity->getImageEmbeddedCode()."<br>";
 					break;
 				case "BookStore":

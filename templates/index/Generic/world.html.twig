@@ -62,7 +62,7 @@
 
 	{{ render(controller('App\\Controller\\IndexController::world', {language: app.request.attributes.get('language'), themeId: app.request.query.get('themeId'), currentRoute: app.request.attributes.get('_route')})) }}
 	<br>
-	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/world-news.jpg') }}" width="550" alt="Apocalypse world"></p>
+	<p class="image"><img class="mx-auto d-block img-fluid" src="{{ asset('extended/photo/world-news.webp') }}" width="550" alt="Apocalypse world"></p>
 	<hr>
 	{{ "news.world.ChooseALanguage"|trans([], "validators") }} :
 	<a href="{{ path(block('world_flag'), {'language': 'all'}) }}" title="World"><img class="flagLang {% if app.request.attributes.get('language') == 'all' %}select_language_language{% endif %}" src="{{ asset('extended/photo/language/earthFlag.png') }}" alt="World earth" width="20" height="13" /></a>
