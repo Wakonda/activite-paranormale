@@ -12,7 +12,7 @@
 {% endblock %}
 
 {% block APBlog_body %}
-	<p><img src="{{ asset('extended/photo/error404.jpg') }}" class="mx-auto d-block img-fluid" alt="Error"></p>
+	<p><img src="{{ asset('extended/photo/error404.webp') }}" class="mx-auto d-block img-fluid" alt="Error"></p>
 	<br>
 	<div class="alert alert-danger">{{ status_text|trans([], "validators") }}</div>
 	{% if app.user.lastlogin is defined and is_granted('ROLE_ADMIN') %}

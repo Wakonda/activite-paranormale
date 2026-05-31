@@ -49,7 +49,7 @@
 		{% if entity.photoIllustrationFilename is not empty %}
 			{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}
 		{% else %}
-			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.jpg') }}" width="550" alt="" />
+			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.webp') }}" width="550" alt="" />
 		{% endif %}
 	</p>
 	

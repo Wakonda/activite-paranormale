@@ -14,7 +14,7 @@ use App\Entity\Language;
 use App\Form\Type\SurThemeGrimoireAdminType;
 use App\Service\ConstraintControllerValidator;
 
-#[Route('/admin/grimoire')]
+#[Route('/admin/theme_grimoire')]
 class SurThemeGrimoireAdminController extends AdminGenericController
 {
 	protected $entityName = 'SurThemeGrimoire';

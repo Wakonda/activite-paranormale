@@ -250,11 +250,11 @@ class APExtension extends AbstractExtension
 			if(!$displayIfFileNotExist)
 				return null;
 			
-			$file = "file_no_exist_".$this->translator->getLocale().".png";
+			$file = "file_no_exist_".$this->translator->getLocale().".webp";
 			$p = "extended/photo/".$file;
 			
 			if(!file_exists($p))
-				$p = "extended/photo/file_no_exist_en.png";
+				$p = "extended/photo/file_no_exist_en.webp";
 				
 			$realPath = ($useAssetPath) ? "/extended/photo/" : "extended/photo/";
 			$options["alt"] = "Image not found";
@@ -405,7 +405,7 @@ class APExtension extends AbstractExtension
 				$img = realPath($this->parameterBag->get('kernel.project_dir').DIRECTORY_SEPARATOR.$privateDir.$item->getAttribute("src"));
 
 				if($img === false) {
-					$file = "file_no_exist_".$this->translator->getLocale().".png";
+					$file = "file_no_exist_".$this->translator->getLocale().".webp";
 					$img = "extended/photo/".$file;
 				}
 
@@ -893,7 +893,7 @@ class APExtension extends AbstractExtension
 
 		if(empty($file) or !file_exists($pf))
 		{
-			$file = "file_no_exist_".$this->translator->getLocale().".png";
+			$file = "file_no_exist_".$this->translator->getLocale().".webp";
 			$pf = "extended/photo/".$file;
 		}
 

@@ -61,13 +61,13 @@ class APMobileExtension extends AbstractExtension
 		$realPath = ($useAssetPath) ? '/'.$path : $path;
 
 		if($file == "")
-			$p = "file_no_exist_".$this->translator->getLocale().".png";
+			$p = "file_no_exist_".$this->translator->getLocale().".webp";
 		else
 			$p = $path.$file;
 
 		if(!file_exists($p))
 		{
-			$file = "file_no_exist_".$this->translator->getLocale().".png";
+			$file = "file_no_exist_".$this->translator->getLocale().".webp";
 			$p = "extended/photo/".$file;
 			$realPath = ($useAssetPath) ? "/extended/photo/" : "extended/photo/";
 		}

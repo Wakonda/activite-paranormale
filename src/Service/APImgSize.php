@@ -28,7 +28,7 @@
 
 			if(!is_file($file) or empty($file) or (!FunctionsLibrary::isUrl($file) and !file_exists($file))) {
 				$locale = $this->translator->getLocale();
-				$file = "extended/photo/file_no_exist_".$locale.".png";
+				$file = "extended/photo/file_no_exist_".$locale.".webp";
 			}
 
 			$svg = new \App\Service\ImageSVG($file);
