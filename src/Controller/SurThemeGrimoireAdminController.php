@@ -82,7 +82,7 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$formType = SurThemeGrimoireAdminType::class;
 
 		$twig = 'witchcraft/SurThemeGrimoireAdmin/edit.html.twig';
-		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $request->getLocale()]);
+		return $this->editGeneric($em, $id, $twig, $formType, ['locale' => $entity->getLanguage()->getAbbreviation()]);
     }
 
 	#[Route('/{id}/update', name: 'SurThemeGrimoire_Admin_Update', requirements: ['_method' => "post"])]
@@ -144,12 +144,6 @@ class SurThemeGrimoireAdminController extends AdminGenericController
 		$translateArray['parentTheme'] = $menuGrimoireArray;
 
 		return new JsonResponse($translateArray);
-	}
-
-	protected function defaultValueForMappedSuperclassBase(Request $request, EntityManagerInterface $em, $entity)
-	{
-		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
-		$entity->setLanguage($language);
 	}
 
 	#[Route('/internationalization/{id}', name: 'SurThemeGrimoire_Admin_Internationalization')]

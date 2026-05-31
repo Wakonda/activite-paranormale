@@ -23,7 +23,7 @@ class SurThemeGrimoireAdminType extends AbstractType
 
         $builder
             ->add('title', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
-            ->add('theme', TextType::class, array('required' => true, 'constraints' => array(new NotBlank())))
+            ->add('theme', TextType::class, array('required' => false))
             ->add('text', TextareaType::class, array('required' => true, 'constraints' => array(new NotBlank())))
 			->add('internationalName', TextType::class, array('label'=>'Nom international', 'required' =>true, 'constraints' => array(new NotBlank())))
             ->add('photo', FileType::class, array('data_class' => null, 'required' => true))

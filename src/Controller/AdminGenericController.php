@@ -42,7 +42,7 @@ abstract class AdminGenericController extends AbstractController
 
 	protected function defaultValueForMappedSuperclassBase(Request $request, EntityManagerInterface $em, $entity)
 	{
-		if((is_subclass_of($entity, "App\Entity\MappedSuperclassBase") || method_exists($entity, "setLanguage")) and empty($entity->getLanguage()))
+		if(method_exists($entity, "setLanguage") and empty($entity->getLanguage()))
 		{
 			$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
 			$entity->setLanguage($language);
@@ -153,7 +153,7 @@ abstract class AdminGenericController extends AbstractController
         $form->handleRequest($request);
 
 		$this->validationForm($request, $em, $ccv, $translator, $form, $entity, $entity);
-
+// dd($form->isValid());
         if ($form->isValid()) {
 			$this->uploadFile($entity, $form);
 			$this->defaultValueForMappedSuperclassBase($request, $em, $entity);

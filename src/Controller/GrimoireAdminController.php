@@ -210,12 +210,6 @@ class GrimoireAdminController extends AdminGenericController
 		return $response;
 	}
 
-	protected function defaultValueForMappedSuperclassBase(Request $request, EntityManagerInterface $em, $entity)
-	{
-		$language = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $request->getLocale()]);
-		$entity->setLanguage($language);
-	}
-
 	#[Route('/archive/{id}', name: 'Grimoire_Admin_Archive', requirements: ['id' => "\d+"])]
 	public function archiveAction(EntityManagerInterface $em, $id)
 	{
