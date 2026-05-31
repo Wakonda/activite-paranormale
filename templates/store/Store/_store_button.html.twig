@@ -8,17 +8,14 @@
 	</a>
 {% elseif entity.platform == constant('App\\Entity\\Stores\\Store::ALIEXPRESS_PLATFORM') %}
 	<a class="btn aliexpress w-100" href="{{ entity.url }}" rel="nofollow" target="_blank">
-		<i class="fab fa-alipay fa-fw"></i>
-		{{ "store.index.BuyOn"|trans([], "validators") }}
+		<i class="fab fa-alipay fa-fw"></i>{{ "store.index.BuyOn"|trans([], "validators") }}
 	</a>
 {% elseif entity.platform == constant('App\\Entity\\Stores\\Store::TEMU_PLATFORM') %}
 	<a class="btn temu text-white w-100" href="{{ entity.url }}" rel="nofollow" target="_blank">
-		<i class="fa-solid fa-warehouse fa-fw"></i>
-		{{ "store.index.BuyOn"|trans([], "validators") }}
+		<i class="fa-solid fa-warehouse fa-fw"></i>{{ "store.index.BuyOn"|trans([], "validators") }}
 	</a>
 {% else %}
 	<a class="btn spreadshop w-100" href="{{ entity.url }}" rel="nofollow" target="_blank">
-		<i class="fas fa-cart-shopping fa-fw"></i>
-		{{ "store.index.BuyOn"|trans([], "validators") }}
+		<i class="fas fa-cart-shopping fa-fw"></i>{{ "store.index.BuyOn"|trans([], "validators") }}
 	</a>
 {% endif %}
