@@ -23,12 +23,12 @@ class Wikidata {
 
 		$res = [];
 		$languageWiki = $language."wiki";
-// dd("lll");
+
 		$code = $this->getCodeFromURL($code);
-// dd($code);
+
 		$parser = new \App\Service\APParseHTML();
 		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}&props=sitelinks%2Furls%7Caliases%7Cdescriptions%7Clabels", null, false);
-// dd($content);
+
 		$datas = json_decode($content);
 
 		if(property_exists($datas, "error"))
@@ -247,11 +247,18 @@ class Wikidata {
 
 		$parser = new \App\Service\APParseHTML();
 		$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
-
 		$datas = json_decode($content);
 
-		$res["birthPlace"] = $this->getCity("birthPlace", $datas->entities->$code->claims, $language, "P19");
-		$res["deathPlace"] = $this->getCity("deathPlace", $datas->entities->$code->claims, $language, "P20");
+		if(empty($datas)) {
+			$languageWiki = $language."ewiki";
+			$content = $parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&languages={$language}&ids={$code}&sitefilter={$languageWiki}", null, false);
+			$datas = json_decode($content);
+		}
+
+		if(!empty($datas)) {
+			$res["birthPlace"] = $this->getCity("birthPlace", $datas->entities->$code->claims, $language, "P19");
+			$res["deathPlace"] = $this->getCity("deathPlace", $datas->entities->$code->claims, $language, "P20");
+		}
 		
 		return $res;
 	}
