@@ -177,8 +177,8 @@ class StoreAdminController extends AdminGenericController
 		return $this->deleteGeneric($em, $id);
     }
 
-	#[Route('/datatables/{type}', name: 'Store_Admin_IndexDatatables', methods: ['GET'])]
-	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, String $type)
+	#[Route('/datatables/{type}', name: 'Store_Admin_IndexDatatables', methods: ['GET'], defaults: ['type' => null])]
+	public function indexDatatables(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, ?String $type)
 	{
 		$iDisplayStart = $request->query->get('start');
 		$iDisplayLength = $request->query->get('length');
