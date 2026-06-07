@@ -11,6 +11,7 @@ artist:
         AlbumList: "Список альбомов"
         Identifiers: "Идентификаторы"
         SynchronizeWithSpotify: "Синхронизировать с Spotify"
+        SynchronizeWithLastFM: "Синхронизировать с LastFM"
         SocialNetworks: "Социальные сети"
     biography:
         Title: "Заголовок"

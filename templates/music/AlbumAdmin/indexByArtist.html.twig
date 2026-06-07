@@ -21,6 +21,10 @@
 	<a href="{{ path('Spotify_Album', { artistId: artistId, spotifyId: spotifyId }) }}" class="btn btn-info">{{ "artist.admin.SynchronizeWithSpotify"|trans([], "validators") }}</a>
 {% endif %}
 
+{% if mbId is not empty %}
+	<a href="{{ path('LastFM_Album', { artistId: artistId, lastfmId: mbId }) }}" class="btn btn-info">{{ "artist.admin.SynchronizeWithLastFM"|trans([], "validators") }}</a>
+{% endif %}
+
 <hr>
 
 <script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>

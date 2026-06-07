@@ -16,6 +16,7 @@ use App\Entity\Language;
 use App\Entity\Licence;
 use App\Form\Type\AlbumAdminType;
 use App\Service\Spotify;
+use App\Service\LastFM;
 use App\Service\Identifier;
 use App\Service\ConstraintControllerValidator;
 
@@ -236,11 +237,15 @@ class AlbumAdminController extends AdminGenericController
 
 				if($key !== false)
 					$spotifyId = $identifiers[$key]["value"];
+				$key = array_search(Identifier::MUSICBRAINZ_ARTIST_ID , array_column($identifiers, "identifier"));
+
+				if($key !== false)
+					$mbId = $identifiers[$key]["value"];
 			}
 		}
 
 		$twig = 'music/AlbumAdmin/indexByArtist.html.twig';
-		return $this->render($twig, ["artistId" => $artistId, "spotifyId" => $spotifyId]);
+		return $this->render($twig, ["artistId" => $artistId, "spotifyId" => $spotifyId, "mbId" => $mbId]);
     }
 
 	#[Route('/datatables/{artistId}', name: 'Album_Admin_IndexByArtistDatatables', methods: ['GET'])]
@@ -313,6 +318,53 @@ class AlbumAdminController extends AdminGenericController
 
 				$music->setLength(sprintf('%02d:%02d:%02d', $hours, $minutes, $remainingSeconds));
 				$music->setIdentifiers(json_encode([["identifier" => Identifier::SPOTIFY_TRACK_ID, "value" => $track["id"]]]));
+
+				$em->persist($music);
+			}
+		}
+
+		$em->flush();
+
+		return $this->redirect($this->generateUrl("Artist_Admin_Show", ["id" => $artist->getId()]));
+	}
+
+	#[Route('/music/lastfm/album/{artistId}/{lastfmId}', name: 'LastFM_Album')]
+	public function lastFMAlbum(EntityManagerInterface $em, LastFM $lastFM, $artistId, $lastfmId) {
+		$artist = $em->getRepository(Artist::class)->find($artistId);
+		$licence = $em->getRepository(Licence::class)->findOneBy(["title" => "CC-BY-NC-ND 3.0", "language" => $artist->getLanguage()]);
+		$language = $artist->getLanguage();
+
+		$datas = $lastFM->getAlbumsByArtist($artist->getTitle(), $lastfmId);
+
+		foreach($datas as $data) {
+			$album = $em->getRepository(Album::class)->findOneBy(["artist" => $artist, "language" => $language, "title" => $data["name"]]);
+
+			if(!empty($album))
+				continue;
+
+			$album = new Album();
+			$album->setArtist($artist);
+			$album->setLicence($licence);
+			$album->setLanguage($language);
+			$album->setTitle($data["name"]);
+
+			if(!empty($data["id"])) {
+				$album->setIdentifiers(json_encode([["identifier" => Identifier::MUSICBRAINZ_ARTIST_ID, "value" => $data["id"]]]));
+			}
+
+			$em->persist($album);
+			
+			foreach($data["tracks"] as $track) {
+				$music = $em->getRepository(Music::class)->findOneBy(["album" => $album, "musicPiece" => $track["name"]]);
+
+				if(!empty($music))
+					continue;
+
+				$music = new Music();
+				$music->setAlbum($album);
+				$music->setMusicPiece($track["name"]);
+
+				$music->setLength($track["duration"]);
 
 				$em->persist($music);
 			}

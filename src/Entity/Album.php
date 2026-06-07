@@ -25,7 +25,7 @@ class Album
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Artist')]
     private $artist;
 
-	#[ORM\Column(name: 'releaseYear', type: 'string', length: 255)]
+	#[ORM\Column(name: 'releaseYear', type: 'string', length: 255, nullable: true)]
     private $releaseYear;
 
 	#[ORM\OneToOne(targetEntity: 'FileManagement', cascade: ['persist', 'remove'])]
