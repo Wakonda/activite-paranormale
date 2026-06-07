@@ -8,7 +8,7 @@ deal:
         Photo: "Фото"
 
     index:
-        Deal: "Выгодное предложение"
+        Deal: "Хорошая сделка"
         Link: "Ссылка"
         Read: "Читать"
         NoMatchingRecordsFound: "Совпадений не найдено"

@@ -1,13 +1,13 @@
 index:
     main:
-        Welcome: "Добро пожаловать"
+        Welcome: "Заглавная"
         News: "Новости"
         Video: "Видео"
         Gallery: "Галерея"
         Witchcraft: "Колдовство"
         GoWebsiteMobile: "Перейти на мобильную версию сайта"
     mainMenu:
-        Welcome: "Добро пожаловать"
+        Welcome: "Заглавная"
         New: "Новое"
         Witchcraft: "Колдовство"
         Blog: "Блог"
@@ -71,7 +71,7 @@ index:
         About: "О нас"
         MobileView: "Мобильная версия"
         Tag: "Теги"
-        PrivacyPolicy: "Политика конфиденциальности"
+        PrivacyPolicy: "Право"
         Participation: "Участие"
         Contact: "Контакты"
     rightMenu:
