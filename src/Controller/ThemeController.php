@@ -17,6 +17,7 @@ use App\Entity\Photo;
 use App\Entity\Testimony;
 use App\Entity\Video;
 use App\Entity\Document;
+use App\Entity\Language;
 use App\Entity\CreepyStory;
 use App\Entity\Movies\Movie;
 use App\Entity\Movies\TelevisionSerie;
@@ -55,6 +56,7 @@ class ThemeController extends AbstractController
 		$childEntities = !empty($childEntities) ? $childEntities : [$entity];
 
 		$abbreviationLanguage = $entity->getLanguage()->getAbbreviation();
+		$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
 
 		foreach($childEntities as $childEntity) {
 			$id = $childEntity->getId();
@@ -63,7 +65,7 @@ class ThemeController extends AbstractController
 			$childArray = [
 				$translator->trans('news.index.Actualite', [], 'validators') => [
 					"number" => $em->getRepository(News::class)->countAllEntitiesPublicationByTheme($id),
-					"path" => (!in_array($abbreviationLanguage, explode(",", $_ENV["LANGUAGES"]))) ? $this->generateUrl("News_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("News_Index", ["page" => 1, "theme" => $theme])
+					"path" => (!in_array($abbreviationLanguage, $currentLanguagesWebsite)) ? $this->generateUrl("News_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("News_Index", ["page" => 1, "theme" => $theme])
 				],
 				$translator->trans('book.index.Book', [], 'validators') => [
 					"number" => $em->getRepository(Book::class)->countAllEntitiesPublicationByTheme($id),
@@ -79,7 +81,7 @@ class ThemeController extends AbstractController
 				],
 				$translator->trans('photo.index.Photo', [], 'validators') => [
 					"number" => $em->getRepository(Photo::class)->countAllEntitiesPublicationByTheme($id),
-					"path" => (!in_array($abbreviationLanguage, explode(",", $_ENV["LANGUAGES"]))) ? $this->generateUrl("Photo_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("Photo_TabPicture", ["id" => $id, "theme" => $theme])
+					"path" => (!in_array($abbreviationLanguage, $currentLanguagesWebsite)) ? $this->generateUrl("Photo_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("Photo_TabPicture", ["id" => $id, "theme" => $theme])
 				],
 				$translator->trans('testimony.index.Testimony', [], 'validators') => [
 					"number" => $em->getRepository(Testimony::class)->countAllEntitiesPublicationByTheme($id),
@@ -87,7 +89,7 @@ class ThemeController extends AbstractController
 				],
 				$translator->trans('video.index.Video', [], 'validators') => [
 					"number" => $em->getRepository(Video::class)->countAllEntitiesPublicationByTheme($id),
-					"path" => (!in_array($abbreviationLanguage, explode(",", $_ENV["LANGUAGES"]))) ? $this->generateUrl("Video_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("Video_Tab", ["id" => $id, "theme" => $theme])
+					"path" => (!in_array($abbreviationLanguage, $currentLanguagesWebsite)) ? $this->generateUrl("Video_World", ["language" => $abbreviationLanguage, "themeId" => $id, "theme" => $theme]) : $this->generateUrl("Video_Tab", ["id" => $id, "theme" => $theme])
 				],
 				$translator->trans('document.index.Document', [], 'validators') => [
 					"number" => $em->getRepository(Document::class)->countAllEntitiesPublicationByTheme($id),
@@ -106,7 +108,7 @@ class ThemeController extends AbstractController
 					"path" => $this->generateUrl("CreepyStory_Tab", ["id" => $id, "theme" => $theme])
 				]
 			];
-			
+
 			uksort($childArray, function($a, $b) { $generator = new SlugGenerator; return $generator->generate($a) <=> $generator->generate($b); });
 			$publications[$childEntity->getTitle()] = $childArray;
 		}

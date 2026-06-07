@@ -337,7 +337,7 @@ class WitchcraftController extends AbstractController
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
-		$themes = $em->getRepository(SurThemeGrimoire::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
+		$themes = $em->getRepository(SurThemeGrimoire::class)->getAllThemesWorld();
 
 		$theme = $em->getRepository(SurThemeGrimoire::class)->find($themeId);
 

@@ -94,7 +94,7 @@ class NewsController extends AbstractController
 		$flags = $em->getRepository(Language::class)->displayFlagWithoutWorld();
 		$currentLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => $language]);
 
-		$themes = $em->getRepository(Theme::class)->getAllThemesWorld(explode(",", $_ENV["LANGUAGES"]));
+		$themes = $em->getRepository(Theme::class)->getAllThemesWorld();
 		$theme = $em->getRepository(Theme::class)->find($themeId);
 
 		$title = [];

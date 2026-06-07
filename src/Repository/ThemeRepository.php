@@ -46,8 +46,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb ->join('c.language', 'l')
-			->where('l.abbreviation NOT IN (:excludeLanguages)')
-			->setParameter('excludeLanguages', $excludeLanguages)
+		    ->andWhere('l.abbreviation NOT IN ('.$this->currentLanguages().')')
 			->orderBy("c.title");
 
 		$res = [];
