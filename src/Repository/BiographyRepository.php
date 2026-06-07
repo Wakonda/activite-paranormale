@@ -340,13 +340,9 @@ class BiographyRepository extends MappedSuperclassBaseRepository
 		$qb->join('c.language', 'l')
 		   ->leftjoin("c.illustration", "il");
 
-		if($language == "all")
-		{
-			$qb->andWhere('l.abbreviation NOT IN (:currentLanguages)')
-			   ->setParameter("currentLanguages", $this->currentLanguages());
-		}
-		else
-		{
+		if($language == "all") {
+			$qb->andWhere('l.abbreviation NOT IN ('.$this->currentLanguages().')');
+		} else {
 			$qb->andWhere('l.abbreviation = :language');
 			$qb->setParameter('language', $language);
 		}
