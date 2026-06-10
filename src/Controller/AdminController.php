@@ -123,6 +123,11 @@ class AdminController extends AbstractController
 		return $this->render("admin/Admin/maintenance.html.twig", ["mode" => $mode, "robotstxt" => file_get_contents($robotstxt), "sitemaps" => $sitemaps]);
 	}
 
+	#[Route('/admin/maintenance/facebook/longlivetoken/{locale}', name: 'Admin_Maintenance_Facebook_LongLiveToken', defaults: ['locale' => 'fr'])]
+	public function getFacebookLongLiveToken(Facebook $facebook, $locale) {
+		return new JsonResponse($facebook->getLongLiveAccessToken($locale));
+	}
+
 	private function get_ip(): string {
 		$ip = '';
 		if (isset($_SERVER['HTTP_CLIENT_IP']))

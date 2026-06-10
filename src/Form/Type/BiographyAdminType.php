@@ -167,10 +167,10 @@ class BiographyAdminType extends AbstractType
 		$socialNetworkInstagramDefault = "";
 		$socialNetworkPinterestDefault = "";
 		$socialNetworkLinkedinDefault = "";
+		$socialNetworkTikTokDefault = "";
 
 		if($builder->getData()->getLinks() != null)
 		{
-			// dd($builder->getData()->getLinks());
 			$socialNetworkArray = json_decode(strip_tags($builder->getData()->getLinks()));
 
 			foreach($socialNetworkArray as $socialNetwork)
@@ -198,18 +198,22 @@ class BiographyAdminType extends AbstractType
 					case "Linkedin":
 						$socialNetworkLinkedinDefault = $socialNetwork->url;
 						break;
+					case "TikTok":
+						$socialNetworkTikTokDefault = $socialNetwork->url;
+						break;
 				}
 			}
 		}
 
 		$builder
-			->add('socialNetworkFacebook', TextType::class, array('label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Facebook', 'class' => 'social_network_select'), 'data' => $socialNetworkFacebookDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkTwitter', TextType::class, array('label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Twitter', 'class' => 'social_network_select'), 'data' => $socialNetworkTwitterDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkWebsite', TextType::class, array('label' => 'biography.admin.Link', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Link', 'class' => 'social_network_select'), 'data' => $socialNetworkWebsiteDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkYoutube', TextType::class, array('label' => 'Youtube', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Youtube', 'class' => 'social_network_select'), 'data' => $socialNetworkYoutubeDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkInstagram', TextType::class, array('label' => 'Instagram', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Instagram', 'class' => 'social_network_select'), 'data' => $socialNetworkInstagramDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkPinterest', TextType::class, array('label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Pinterest', 'class' => 'social_network_select'), 'data' => $socialNetworkPinterestDefault, 'constraints' => array(new Url())))
-			->add('socialNetworkLinkedin', TextType::class, array('label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Linkedin', 'class' => 'social_network_select'), 'data' => $socialNetworkLinkedinDefault, 'constraints' => array(new Url())))
+			->add('socialNetworkFacebook', TextType::class, array('label' => 'Facebook', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Facebook', 'class' => 'social_network_select'), 'data' => $socialNetworkFacebookDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkTwitter', TextType::class, array('label' => 'Twitter', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Twitter', 'class' => 'social_network_select'), 'data' => $socialNetworkTwitterDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkWebsite', TextType::class, array('label' => 'biography.admin.Link', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Link', 'class' => 'social_network_select'), 'data' => $socialNetworkWebsiteDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkYoutube', TextType::class, array('label' => 'Youtube', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Youtube', 'class' => 'social_network_select'), 'data' => $socialNetworkYoutubeDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkInstagram', TextType::class, array('label' => 'Instagram', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Instagram', 'class' => 'social_network_select'), 'data' => $socialNetworkInstagramDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkPinterest', TextType::class, array('label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Pinterest', 'class' => 'social_network_select'), 'data' => $socialNetworkPinterestDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkLinkedin', TextType::class, array('label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Linkedin', 'class' => 'social_network_select'), 'data' => $socialNetworkLinkedinDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkTikTok', TextType::class, array('label' => 'TikTok', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'TikTok', 'class' => 'social_network_select'), 'data' => $socialNetworkTikTokDefault, 'constraints' => [new Url()]))
 
 			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'))
 		;
@@ -228,7 +232,8 @@ class BiographyAdminType extends AbstractType
 			["link" => "Youtube", "url" => $data['socialNetworkYoutube'], "label" => "YoutubeAccount"],
 			["link" => "Instagram", "url" => $data['socialNetworkInstagram'], "label" => "InstagramAccount"],
 			["link" => "Pinterest", "url" => $data['socialNetworkPinterest'], "label" => "PinterestAccount"],
-			["link" => "Linkedin", "url" => $data['socialNetworkLinkedin'], "label" => "LinkedInAccount"]
+			["link" => "Linkedin", "url" => $data['socialNetworkLinkedin'], "label" => "LinkedInAccount"],
+			["link" => "TikTok", "url" => $data['socialNetworkTikTok'], "label" => "TikTokAccount"]
 		];
 
 		$data["links"] = json_encode($linkJson);

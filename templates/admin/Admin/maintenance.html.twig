@@ -48,4 +48,14 @@
 		<li>ES - {{ get_env("DIASPORA_ES_USERNAME") }} / {{ get_env("DIASPORA_ES_PASSWORD") }}</li>
 		<li>PT - {{ get_env("DIASPORA_PT_USERNAME") }} / {{ get_env("DIASPORA_PT_PASSWORD") }}</li>
 	</ul>
+	<hr>
+
+	<h3 class="mt-2"><i class="fa-solid fa-database fa-sm me-2"></i>Facebook</h3>
+	<ul>
+		<li>FR - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'fr'}) }}">Get long live token</a></li>
+		<li>EN - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'en'}) }}">Get long live token</a></li>
+		<li>ES - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'es'}) }}">Get long live token</a></li>
+		<li>PT - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'pt'}) }}">Get long live token</a></li>
+		<li>RU - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'ru'}) }}">Get long live token</a></li>
+	</ul>
 {% endblock %}
