@@ -68,7 +68,7 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 	#[ORM\Column(type: 'json')]
     protected $roles;
 
-	#[Assert\File(maxSize: '6000000')]
+	#[Assert\File(maxSize: '6000000', groups: ['profile_edit'])]
 	#[ORM\Column(type: 'string', length: 255, nullable: true)]
 	 private $avatar;
 
