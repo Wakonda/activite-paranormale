@@ -19,6 +19,7 @@
         "spipu/html2pdf": "*",
         "sunra/php-simple-html-dom-parser": "*",
         "symfony/asset": "8.0.*",
+        "symfony/brevo-mailer": "8.0.*",
         "symfony/console": "8.0.*",
         "symfony/dotenv": "8.0.*",
         "symfony/expression-language": "8.0.*",

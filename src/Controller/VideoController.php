@@ -168,21 +168,6 @@ class VideoController extends AbstractController
 			$entity->setMessageContact("Avertissement : Vidéo potentiellement supprimée => <a href='".$this->generateUrl('Video_Read', ["id" => $video->getId(), "title_slug" => $video->getUrlSlug()], UrlGeneratorInterface::ABSOLUTE_URL)."'>".$video->getTitle()."</a>");
 			$entity->setEmailContact($_ENV["MAILER_CONTACT"]);
 			$entity->setSubjectContact("Suppression d'une vidéo");
-
-			try {
-				$email = (new Email())
-					->from($_ENV["MAILER_CONTACT"])
-					->to($_ENV["MAILER_CONTACT"])
-					->subject("Suppression d'une vidéo")
-					->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
-
-				$mailer->send($email);
-			} catch (TransportException $e) {
-			}
-
-			$em->persist($entity);
-			$em->flush();
-			$response->setStatusCode(200);
 		}
 
 		$response->setContent($this->render('video/Video/_notify_video.html.twig', [

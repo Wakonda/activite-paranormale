@@ -7,7 +7,7 @@ use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Symfony\Component\Mailer\MailerInterface;
+use App\Service\MailerService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -35,7 +35,7 @@ class ContactController extends AbstractController
     }
 
 	#[Route('/contact/send', name: 'Contact_Send')]
-    public function sendAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
+    public function sendAction(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerService $mailer)
     {
         $entity  = new Contact();
         $form = $this->createForm(ContactType::class, $entity);
@@ -54,13 +54,12 @@ class ContactController extends AbstractController
 			
 			if(!in_array($entity->getEmailContact(), $blackLists)) {
 				try {
-					$email = (new Email())
-						->from($entity->getEmailContact())
-						->to($_ENV["MAILER_CONTACT"])
-						->subject($entity->getSubjectContact())
-						->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
-
-					$mailer->send($email);
+					$mailer->sendContactMail(
+						$_ENV["MAILER_CONTACT"],
+						$entity->getSubjectContact(),
+						'contact/Contact/mail.html.twig',
+						['entity' => $entity]
+					);
 				} catch (TransportException $e) {
 				}
 
@@ -80,7 +79,7 @@ class ContactController extends AbstractController
     }
 
 	#[Route('/contact/sendPrivateMessage/{userId}/{initialMessageId}/{idClassName}/{className}', name: 'Contact_SendPrivateMessage', defaults: ['initialMessageId' => null, 'idClassName' => null, 'className' => null])]
-	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer, $userId, $initialMessageId = null, $idClassName = null, $className = null) {
+	public function sendPrivateMessage(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerService $mailer, $userId, $initialMessageId = null, $idClassName = null, $className = null) {
         $entity = new Contact();
 		$recipient = $em->getRepository(User::class)->find($userId);
 
@@ -142,13 +141,12 @@ class ContactController extends AbstractController
 					$entity->setMessageContact($entity->getMessageContact()."<br><br>".$link);
 
 				if(!empty($entity->getEmailContact()) and !empty($recipientEmail)) {
-					$email = (new Email())
-						->from($entity->getEmailContact())
-						->to($recipientEmail)
-						->subject("Activité-Paranormale - ".$entity->getSubjectContact())
-						->html($this->renderView('contact/Contact/mail.html.twig', ['entity' => $entity]));
-
-					$mailer->send($email);
+					$mailer->sendContactMail(
+						$recipientEmail,
+						"Activité-Paranormale - ".$entity->getSubjectContact(),
+						'contact/Contact/mail.html.twig',
+						['entity' => $entity]
+					);
 				}
 
 				$session->getFlashBag()->add('success', $translator->trans('privateMessage.send.Success', [], 'validators'));

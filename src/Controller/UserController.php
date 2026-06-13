@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Mailer\MailerInterface;
+use App\Service\MailerService;
 use Symfony\Component\Mime\Email;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -175,7 +175,7 @@ class UserController extends AbstractController
     }
 
 	#[Route('/resetting/send-email', name: 'Resetting_Send_Email', methods: ['POST'])]
-    public function sendEmail(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
+    public function sendEmail(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerService $mailer)
     {
         $username = $request->request->get('username');
 
@@ -193,13 +193,12 @@ class UserController extends AbstractController
 			
 			$url = $this->generateUrl('Resetting_Reset', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-			$email = (new Email())
-				->from($_ENV["MAILER_USER"])
-				->to($user->getEmail())
-				->subject($translator->trans("resetting.email.subject", [], 'FOSUserBundle'))
-				->html($this->renderView('user/Resetting/email.txt.twig', ['user' => $user, 'confirmationUrl' => $url]));
-
-			$mailer->send($email);
+			$mailer->sendContactMail(
+				$user->getEmail(),
+				$translator->trans("resetting.email.subject", [], 'FOSUserBundle'),
+				'user/Resetting/email.txt.twig',
+				['user' => $user, 'confirmationUrl' => $url]
+			);
         }
 
         return $this->redirect($this->generateUrl('Resetting_Check_Email', ['username' => $username]));
@@ -249,7 +248,7 @@ class UserController extends AbstractController
     }
 
 	#[Route('/register', name: 'Registration_Register', methods: ['GET', 'POST'])]
-    public function register(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerInterface $mailer)
+    public function register(Request $request, EntityManagerInterface $em, TranslatorInterface $translator, MailerService $mailer)
     {
 		$session = $request->getSession();
 		$user = new User();
@@ -274,13 +273,12 @@ class UserController extends AbstractController
 
 				$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-				$email = (new Email())
-					->from($_ENV["MAILER_USER"])
-					->to($user->getEmail())
-					->subject($translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle'))
-					->html($this->renderView('user/Registration/email.html.twig', ['user' => $user, 'confirmationUrl' => $url]));
-
-				$mailer->send($email);
+				$mailer->sendContactMail(
+					$user->getEmail(),
+					$translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle'),
+					'user/Registration/email.html.twig',
+					['user' => $user, 'confirmationUrl' => $url]
+				);
 
 				$session->set('fos_user_send_confirmation_email/email', $user->getEmail());
 
@@ -294,20 +292,19 @@ class UserController extends AbstractController
     }
 	
 	#[Route('/resend_email_confirmation/{id}', name: 'Registration_ResendEmailConfirmation', methods: ['GET'])]
-	public function resendEmailConfirmation(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerInterface $mailer, $id)
+	public function resendEmailConfirmation(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerService $mailer, $id)
 	{
 		$session = $request->getSession();
 		$user = $em->getRepository(User::class)->find($id);
 
 		$url = $this->generateUrl('Registration_Confirm', ['token' => $user->getConfirmationToken()], UrlGeneratorInterface::ABSOLUTE_URL);
 
-		$email = (new Email())
-			->from($_ENV["MAILER_USER"])
-			->to($user->getEmail())
-			->subject($translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle'))
-			->html($this->renderView('user/Registration/email.html.twig', ['user' => $user, 'confirmationUrl' => $url]));
-
-		$mailer->send($email);
+		$mailer->sendContactMail(
+			$user->getEmail(),
+			$translator->trans("registration.email.subject", ['%username%' => $user->getUsername(), '%confirmationUrl%' => $url], 'FOSUserBundle'),
+			'user/Registration/email.html.twig',
+			['user' => $user, 'confirmationUrl' => $url]
+		);
 
 		$session->set('fos_user_send_confirmation_email/email', $user->getEmail());
 
