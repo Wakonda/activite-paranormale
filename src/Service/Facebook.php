@@ -15,17 +15,17 @@ class Facebook {
 	public function getLongLiveAccessToken(string $locale) {
 		$this->setLanguage($locale);
 
-		$accessToken = "EAAGMLrRKP6QBRhcmwiUI303EdrcQ1TtwJZA90If7l2pR2sFYFzrKKv3sisfxWwesZCKDx7UkAZBaRrhqTJrSPGDoCg8TTabk9YpnEox15stXN3ig9kWXfKWgZB2CbhPmqEZAZCZA5hAozO8WcTnZAGv2vEUqQkNaBmTDGZC2jQ6XyOqzWDfORQYfbDqnAbOCaWiTTY2ZB0W5zLZCwF7DwYRtLBP7ZCBGRqOwDZCzsbflXSRkKOgl9rU5XLjXXPCrCzKhBG6mmQUszHUd6tfHJatI8TJNc655kp5HD2hDQgqYdPrvUBSxtXV17XlmxLGpZASN9aqncZD"; // Token généré à partir de la page : https://developers.facebook.com/tools/explorer/
+		$accessToken = ""; // Token généré à partir de la page : https://developers.facebook.com/tools/explorer/
 		$pageId = $this->FACEBOOK_PAGE_ID;
 		$appId = $this->FACEBOOK_APP_ID;
 		$secretKey = $this->FACEBOOK_SECRET_KEY;
 		$apiGraphVersion = $this->FACEBOOK_GRAPH_VERSION;
 		$userId = $this->FACEBOOK_USER_ID; // GET me?fields=id,name
-$apiGraphVersion = "v25.0";
+
 		$ch = curl_init();
 
 		curl_setopt($ch, CURLOPT_URL, "https://graph.facebook.com/{$apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id={$appId}&client_secret={$secretKey}&fb_exchange_token={$accessToken}");
-dump("https://graph.facebook.com/{$apiGraphVersion}/oauth/access_token?grant_type=fb_exchange_token&client_id={$appId}&client_secret={$secretKey}&fb_exchange_token={$accessToken}");
+			
 		// Only on dev
 		if($_ENV["APP_ENV"] == "dev") {
 			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, TRUE);
@@ -41,17 +41,6 @@ dump("https://graph.facebook.com/{$apiGraphVersion}/oauth/access_token?grant_typ
 		curl_close($ch);
 
 		$result = json_decode($result);
-		
-		
-dump($result, $apiGraphVersion);
-
-$response = file_get_contents(
-    "https://graph.facebook.com/{$apiGraphVersion}/{$pageId}?fields=access_token&access_token=" . $result->access_token
-);
-$data = json_decode($response, true);
-
-dd($data);
-dump("https://graph.facebook.com/{$apiGraphVersion}/{$userId}/accounts?access_token=".$result->access_token);
 
 		$ch = curl_init();
 
@@ -69,7 +58,7 @@ dump("https://graph.facebook.com/{$apiGraphVersion}/{$userId}/accounts?access_to
 			echo 'Error:' . curl_error($ch);
 		}
 		curl_close($ch);
-dd($result);
+
 		return json_decode($result);
 	}
 
