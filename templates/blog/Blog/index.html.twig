@@ -1,11 +1,11 @@
 {% extends "content_layout.html.twig" %}
 
-{% block title %}Blog{% endblock %}
+{% block title %}{{ 'index.mainMenu.Blog'|trans([], "validators") }}{% endblock %}
 
 {% block h2_title %}
 	<h2>
 		<span class="float-start"><img src="{{ asset('extended/photo/alien-blog.png') }}" width="25" class="mt-1" alt="Blog icon"></span>
-		Blog
+		{{ 'index.mainMenu.Blog'|trans([], "validators") }}
 	</h2>
 {% endblock h2_title %}
 
