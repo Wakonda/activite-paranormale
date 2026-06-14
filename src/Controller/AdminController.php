@@ -300,7 +300,7 @@ class AdminController extends AbstractController
 
 			if(!empty($tagsLinks))
 				$tagsLinkString = "<fieldset style='border: 1px solid black;border-radius: 0.3em;padding: 6px;'><legend style='padding: 3px;'><b>".$translator->trans('tag.admin.Tags', [], 'validators', $request->getLocale())."</b></legend>".implode(", ", $tagsLinks)."</fieldset>";
-// dd($entity->getRealClass());
+
 			switch($entity->getRealClass())
 			{
 				case "Photo":
@@ -749,7 +749,7 @@ class AdminController extends AbstractController
 	public function diasporaPost(Request $request, EntityManagerInterface $em, APImgSize $imgSize, APParseHTML $parser, Diaspora $diaspora, TranslatorInterface $translator, UrlGeneratorInterface $router)
 	{
 		$session = $request->getSession();
-// dd($session);
+
 		$id = $session->get("id_diaspora");
 		$path = $session->get("path_diaspora");
 		$routeToRedirect = $session->get("routeToRedirect_diaspora");

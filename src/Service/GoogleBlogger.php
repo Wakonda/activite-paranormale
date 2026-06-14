@@ -1,6 +1,8 @@
 <?php
 
 	namespace App\Service;
+	
+	use App\Entity\Theme;
 
 	class GoogleBlogger
 	{
@@ -20,6 +22,7 @@
 			"TheTempleOfZebuleon" => "3619394577589453859",
 			"ElGrimorioDeAstaroth" => "6143285371855196758",
 			"AtividadeParanormal" => "8199576214386227021",
+			"ParanormalVault" => "4127569377526393730",
 			"IronTV" => "4299576435212041218",
 			"Test" => "2865018866226462436"
 		];
@@ -38,6 +41,7 @@
 				"ElGrimorioDeAstaroth" => "https://elgrimoriodeastaroth.blogspot.fr",
 				"AtividadeParanormal" => "https://paranormalactividade.blogspot.com/",
 				"IronTV" => "https://iron-tv.blogspot.com/",
+				"ParanormalVault" => "https://paranormal-vault.blogspot.com/",
 				"Test" => "https://testap7.blogspot.fr"
 			][$blogName];
 		}
@@ -206,6 +210,10 @@
 				case "news_es":
 					$res = "Amatukami";
 					break;
+				case "news_ru":
+				case "test_ru":
+					$res = "ParanormalVault";
+					break;
 				case "news_pt":
 				case "irontv_pt":
 					$res = "AtividadeParanormal";
@@ -241,15 +249,25 @@
 					$res = "Test";
 					break;
 			}
-			
+
 			return $res;
+		}
+
+		public function getSourceTags($type): string {
+			switch($type) {
+				case "news_ru":
+				case "test_ru":
+					return Theme::class;
+			}
+
+			return "blogger";
 		}
 
 		public function getTypes()
 		{
 			if($_ENV["APP_ENV"] == "dev")
-				return ["test_en", "test_fr", "test_es", "test_pt"];
+				return ["test_en", "test_fr", "test_es", "test_pt", "test_ru"];
 
-			return ["news_en", "news_es", "news_fr", "news_pt", "irontv_pt", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es", "test_pt"];
+			return ["news_en", "news_es", "news_fr", "news_pt", "news_ru", "irontv_pt", "magic_fr", "magic_en", "catholicism_fr", "catholicism_en", "magic_es", "phytotherapy_fr", "phytotherapy_en", "phytotherapy_es", "irontv_fr", "test_en", "test_fr", "test_es", "test_pt", "test_ru"];
 		}
 	}

@@ -799,11 +799,17 @@ class APExtension extends AbstractExtension
 	{
 		$bloggerAPI = new GoogleBlogger();
 		$blogName = $bloggerAPI->getCorrectBlog($type);
-		
+
 		if(empty($blogName))
 			return null;
 		
+		if(($class = $bloggerAPI->getSourceTags($type)) != "blogger") {
+			list($f, $l) = explode("_", $type);
+			return $this->em->getRepository($class)->getThemeForBlog($l);
+		}
+		
 		$blogURL = $bloggerAPI->getBlogURLArray($blogName);
+
 		$url = $blogURL."/feeds/posts/summary?alt=json&max-results=0&callback=cat";
 
 		$ch = curl_init();
@@ -817,7 +823,7 @@ class APExtension extends AbstractExtension
 		curl_close($ch);
 
 		preg_match("/cat\((.*?)\)/s", $tags, $matches);
-// dd("ooo", !isset($matches[1]));
+
 		if(!isset($matches[1]))
 			return [];
 		
@@ -829,7 +835,7 @@ class APExtension extends AbstractExtension
 		
 		foreach($tagsObject->feed->category as $tag)
 			$tagsArray[] = $tag->term;
-// dd($tagsArray, $tagsObject, !property_exists($tagsObject->feed, "category"));		
+
 		sort($tagsArray);
 
 		return $tagsArray;
@@ -840,7 +846,7 @@ class APExtension extends AbstractExtension
 		$bloggerAPI = new GoogleBlogger();
 		
 		$datas = [];
-		
+
 		foreach($bloggerAPI->getTypes() as $type) {
 			list($f, $l) = explode("_", $type);
 			
@@ -1128,7 +1134,7 @@ class APExtension extends AbstractExtension
 		}
 
 		if($platform == "twitter") {
-			$destImage = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.base64_decode(base64_encode($thumbnail));//dd(file_get_contents($destImage));
+			$destImage = realpath(__DIR__."/../../public").DIRECTORY_SEPARATOR.base64_decode(base64_encode($thumbnail));
 			$file = empty($thumbnail) ? "/extended/photo/twitter-video.webp" : $this->router->generate("Video_DisplayImage", ["file" => base64_encode($thumbnail)]);
 
 			return "<img src='{$file}' id='tweet-img' class='cursor-pointer' style='max-width: 550px;width: 100%' title='".$this->translator->trans("video.read.WatchTheVideo", [], "validators")."'><div id='tweet-container'></div>

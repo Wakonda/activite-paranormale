@@ -18,24 +18,37 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getSingleScalarResult();
 	}
 
-	public function getTheme($lang)
+	public function getThemeForBlog($locale)
+	{
+		$qb = $this->createQueryBuilder('c');
+		$qb->select("c.title")
+			->join('c.language', 'l')
+			->where('l.abbreviation = :locale')
+			->setParameter('locale', $locale)
+			->andWHere("c.parentTheme IS NOT NULL")
+			->orderBy('c.title', 'ASC');
+
+		return array_column($qb->getQuery()->getResult(), "title");
+	}
+
+	public function getTheme($locale)
 	{
 		$qb = $this->createQueryBuilder('o');
 		$qb->join('o.language', 'l')
-			->where('l.abbreviation = :lang')
-			->setParameter('lang', $lang)
+			->where('l.abbreviation = :locale')
+			->setParameter('locale', $locale)
 			->andWHere("o.parentTheme IS NOT NULL")
 			->orderBy('o.title');
 
 		return $qb->getQuery()->getResult();	
 	}
 
-	public function getThemeParent($lang)
+	public function getThemeParent($locale)
 	{
 		$qb = $this->createQueryBuilder('o');
 		$qb->join('o.language', 'l')
-			->where('l.abbreviation = :lang')
-			->setParameter('lang', $lang)
+			->where('l.abbreviation = :locale')
+			->setParameter('locale', $locale)
 			->andWHere("o.parentTheme IS NULL")
 			->orderBy('o.title');
 
