@@ -102,6 +102,15 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
 	#[ORM\Column(name:'socialNetwork', type: 'text', nullable: true)]
     private $socialNetwork;
 
+	#[ORM\Column(length: 6, nullable: true)]
+	private ?string $twoFactorCode = null;
+
+	#[ORM\Column(nullable: true)]
+	private ?\DateTimeImmutable $twoFactorCodeExpiresAt = null;
+
+	#[ORM\Column]
+	private bool $twoFactorEnabled = false;
+
 	public function __construct()
 	{
         $this->enabled = false;
@@ -579,5 +588,40 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface
     public function getSocialNetwork()
     {
         return $this->socialNetwork;
+    }
+
+    public function setTwoFactorCode($twoFactorCode)
+    {
+        $this->twoFactorCode = $twoFactorCode;
+    }
+
+    public function getTwoFactorCode()
+    {
+        return $this->twoFactorCode;
+    }
+
+    public function setTwoFactorCodeExpiresAt($twoFactorCodeExpiresAt)
+    {
+        $this->twoFactorCodeExpiresAt = $twoFactorCodeExpiresAt;
+    }
+
+    public function getTwoFactorCodeExpiresAt()
+    {
+        return $this->twoFactorCodeExpiresAt;
+    }
+
+    public function setTwoFactorEnabled($twoFactorEnabled)
+    {
+        $this->twoFactorEnabled = $twoFactorEnabled;
+    }
+
+    public function getTwoFactorEnabled()
+    {
+        return $this->twoFactorEnabled;
+    }
+
+    public function isTwoFactorEnabled()
+    {
+        return $this->twoFactorEnabled;
     }
 }

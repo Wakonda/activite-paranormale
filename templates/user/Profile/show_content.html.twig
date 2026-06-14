@@ -54,6 +54,18 @@
 	
 	{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
 		{% if user.id == app.user.id %}
+			<h3>{{ "2fa.verification.Security"|trans([], "security") }}</h3>
+				<div class="form-table form-table-4cols form-table-collapse mb-3">
+					<div class="form-table-cell form-table-cell-head">{{ "2fa.verification.2faActivated"|trans([], "security") }}</div>
+					<div class="form-table-cell">
+						{% if app.user.isTwoFactorEnabled() %}
+							<i class="fa-solid fa-check text-success"></i>
+						{% else %}
+							<i class="fa-solid fa-xmark text-danger"></i>
+						{% endif %}
+					</div>
+				</div>
+			
 			<h3>{{ "user.donation.ReceiveRewards"|trans([], "validators") }}</h3>
 			<p>{{ ("user.donation.ReceiveRewardsSentence"|trans({'%url%' : path('apuser_edit') }, "validators"))|raw }}</p>
 			{% if user.donation is not empty %}

@@ -28,6 +28,8 @@ security:
             http_basic: ~
             entry_point: form_login
             provider: app_user_provider
+            custom_authenticator:
+                - App\Security\LoginAuthenticator
             form_login:
                 always_use_default_target_path: true
                 default_target_path : /profile/

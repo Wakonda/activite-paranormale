@@ -1,0 +1,30 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "2fa.verification.VerificationCode"|trans([], "security") }}{% endblock %}
+
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/connectYou.png') }}" width="25" class="mt-1" alt="Connect you"></span>{{ "2fa.verification.VerificationCode"|trans([], "security") }}</h2>{% endblock %}
+{% block APBlog_body %}
+	{% block fos_user_content %}
+		<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/verification-code.webp') }}" alt="Ange" width=350"></p>
+		<div class="text-center">
+			{% if errors %}
+				<div class="alert alert-danger">
+					{% for error in errors %}
+						<p>{{ error|raw }}</p>
+					{% endfor %}
+				</div>
+			{% endif %}
+
+			<form action="{{ path("app_2fa_check") }}" method="post" class="mb-2">
+				<div class="form-table form-table-4cols form-table-collapse mb-3">
+					<div class="form-table-cell form-table-cell-head"><label for="2fa_code">{{ "2fa.verification.VerificationCode"|trans([], "security") }}</label></div>
+					<div class="form-table-cell"><input type="text" class="form-control" id="2fa_code" name="2fa_code" /></div>
+				</div>
+				<input class="submitcomment btn" type="submit" id="_submit" name="_submit" value="{{ "2fa.verification.Validate"|trans([], "security") }}" />
+			</form>
+		</div>
+	{% endblock fos_user_content %}
+	
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

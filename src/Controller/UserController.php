@@ -58,6 +58,64 @@ class UserController extends AbstractController
 		]);
     }
 
+	#[Route('/2fa', name: 'app_2fa', methods: ['GET'])]
+    public function validation2fa(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerService $mailer)
+    {
+		$user = $this->getUser();
+		
+		if(empty($user)) {
+			return $this->redirect($this->generateUrl("Index_Index"));
+		}
+
+		$code = $this->generate2faCode();
+		$mailer->sendContactMail(
+			$user->getEmail(),
+			$translator->trans("2fa.verification.VerificationCode", [], 'security'),
+			'user/Security/2fa_email.html.twig',
+			['code' => $code]
+		);
+		
+		$user->setTwoFactorCodeExpiresAt((new \DateTimeImmutable())->modify("+10 minutes"));
+		$user->setTwoFactorCode($code);
+
+		$em->persist($user);
+		$em->flush();
+
+		return $this->render('user/Security/2fa.html.twig', ["errors" => []]);
+    }
+
+	#[Route('/2fa/check', name: 'app_2fa_check', methods: ['POST'])]
+    public function check2fa(Request $request, TranslatorInterface $translator, EntityManagerInterface $em, MailerService $mailer)
+    {
+		$user = $this->getUser();
+
+		if(empty($user)) {
+			return $this->redirect($this->generateUrl("Index_Index"));
+		}
+
+		$error = [];
+
+		if(new \DateTimeImmutable() > $user->getTwoFactorCodeExpiresAt()) {
+			$error[] = $translator->trans("2fa.verification.YourVerificationCodeHasExpired", [], 'security')."<a href='".$this->generateUrl("app_2fa")."'>".$translator->trans("2fa.verification.ResendVerificationCode", [], 'security')."</a>";
+		}
+
+		if($request->request->get("2fa_code") != $user->getTwoFactorCode()) {
+			$error[] = $translator->trans("2fa.verification.YourVerificationCodeIncorrect", [], 'security');
+		}
+
+		if(!empty($error)) {
+			return $this->render('user/Security/2fa.html.twig', ["errors" => $error]);
+		}
+		
+		$user->setTwoFactorCodeExpiresAt(null);
+		$user->setTwoFactorCode(null);
+
+		$em->persist($user);
+		$em->flush();
+		
+		return $this->redirect($this->generateUrl("Index_Index"));
+    }
+
 	#[Route('/profile', name: 'Profile_Show', methods: ['GET'])]
     public function show()
     {
@@ -447,4 +505,14 @@ class UserController extends AbstractController
     {
         return rtrim(strtr(base64_encode(random_bytes(32)), '+/', '-_'), '=');
     }
+
+	private function generate2faCode(): string
+	{
+		return str_pad(
+			(string) random_int(0, 999999),
+			6,
+			'0',
+			STR_PAD_LEFT
+		);
+	}
 }

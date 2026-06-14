@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
@@ -51,6 +52,7 @@ class RegistrationFormType extends AbstractType
                 'invalid_message' => 'fos_user.password.mismatch',
 				'constraints' => [new NotBlank()]
             ])
+			->add('twoFactorEnabled', CheckboxType::class, ["required" => false, 'label' => '2fa.verification.Activate', 'translation_domain' => 'security'])
 			->add('country', EntityType::class, ['class'=>'App\Entity\Region', 
 					'choice_label' => 'title', 
 					'required' => true,

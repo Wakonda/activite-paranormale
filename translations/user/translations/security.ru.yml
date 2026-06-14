@@ -1,1 +1,20 @@
 "Your account has been deactivated or you have not confirmed your email address.": "Ваш аккаунт был деактивирован или вы не подтвердили свой адрес электронной почты."
+2fa:
+    verification:
+        Activate: "Включить 2FA"
+        Security: "Безопасность"
+        2faActivated: "2FA включена"
+        VerificationCode: "Код подтверждения"
+        Validate: "Подтвердить"
+        YourVerificationCodeHasExpired: "Срок действия вашего кода подтверждения истёк."
+        ResendVerificationCode: "Отправить новый код подтверждения"
+        YourVerificationCodeIncorrect: "Ваш код подтверждения неверен"
+    two_factor:
+        subject: "Ваш код безопасности"
+        title: "Ваш код подтверждения"
+        greeting: "Здравствуйте"
+        message: "Была обнаружена попытка входа в вашу учётную запись."
+        code_label: "Ваш код подтверждения:"
+        expiration: "Этот код действителен в течение 10 минут."
+        warning: "Если вы не запрашивали этот код, вы можете проигнорировать это письмо."
+        signature: "С уважением,"

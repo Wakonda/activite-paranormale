@@ -17,6 +17,7 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -48,6 +49,7 @@ class EditProfileType extends AbstractType
 							  ->orderBy('u.title', 'ASC');
 				},
 			))
+			->add('twoFactorEnabled', CheckboxType::class, ["required" => false, 'label' => '2fa.verification.Activate', 'translation_domain' => 'security'])
 			->add('birthDate', DateType::class, ['required' => false, 'widget' => 'choice', 'format' => 'dd/MM/yyyy', 'placeholder' => '', 'html5' => false, 'years' => range(1902, date('Y'))])
             ->add('avatar', FileType::class, array('data_class' => null, 'required' => true))
             ->add('city')

@@ -1,1 +1,20 @@
 "Your account has been deactivated or you have not confirmed your email address.": "Your account has been deactivated or you have not confirmed your email address."
+2fa:
+    verification:
+        Activate: "Enable 2FA"
+        Security: "Security"
+        2faActivated: "2FA enabled"
+        VerificationCode: "Verification code"
+        Validate: "Validate"
+        YourVerificationCodeHasExpired: "Your verification code has expired."
+        ResendVerificationCode: "Resend a verification code"
+        YourVerificationCodeIncorrect: "Your verification code is incorrect"
+    two_factor:
+        subject: "Your security code"
+        title: "Your verification code"
+        greeting: "Hello"
+        message: "A login attempt to your account has been detected."
+        code_label: "Your verification code is:"
+        expiration: "This code is valid for 10 minutes."
+        warning: "If you did not request this code, you can ignore this email."
+        signature: "Regards,"

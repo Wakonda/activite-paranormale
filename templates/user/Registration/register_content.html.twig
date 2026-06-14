@@ -149,7 +149,17 @@
 			{{ form_widget(form.zilliqa, {'attr':{'class' : 'form-control'}}) }}
 		</div>
 	</div>
-	
+
+	<br>
+	<h3>{{ "2fa.verification.Security"|trans([], "security") }}</h3>
+	<div class="form-table form-table-4cols form-table-collapse">
+		<div class="form-table-cell form-table-cell-head">{{ form_label(form.twoFactorEnabled) }}</div>
+		<div class="form-table-cell">
+			{{ form_errors(form.twoFactorEnabled) }}
+			{{ form_widget(form.twoFactorEnabled) }}
+		</div>
+	</div>
+
 	{{ form_rest(form) }}
 	{{ form_errors(form) }}
 	<div class="clearfix">
