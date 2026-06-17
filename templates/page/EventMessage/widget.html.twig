@@ -15,7 +15,7 @@
 	
 	{% if illustration is not empty and illustration.illustration is not empty %}
 		{{ illustration.illustration.realNameFile|imgsize(250, illustration.path, true, {class: "mx-auto d-block", loading: "lazy", alt: illustration.title})|raw }}
-		<br>
+		<p class="text-center mb-3 mt-1"><i>{{ illustration.title }}</i></p>
 	{% endif %}
 
 	<ul class="nav nav-tabs mb-3 justify-content-center" id="card_tab" role="tablist">
