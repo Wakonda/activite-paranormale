@@ -1,0 +1,10 @@
+Dropzone.prototype.defaultOptions.dictDefaultMessage = "Solte os ficheiros aqui para enviar";
+Dropzone.prototype.defaultOptions.dictFallbackMessage = "O seu navegador não suporta o envio de ficheiros por arrastar e soltar.";
+Dropzone.prototype.defaultOptions.dictFallbackText = "Por favor, utilize o formulário abaixo para enviar os seus ficheiros como antigamente.";
+Dropzone.prototype.defaultOptions.dictFileTooBig = "O ficheiro é demasiado grande ({{filesize}}MiB). Tamanho máximo permitido: {{maxFilesize}}MiB.";
+Dropzone.prototype.defaultOptions.dictInvalidFileType = "Não pode enviar ficheiros deste tipo.";
+Dropzone.prototype.defaultOptions.dictResponseError = "O servidor respondeu com o código {{statusCode}}.";
+Dropzone.prototype.defaultOptions.dictCancelUpload = "Cancelar envio";
+Dropzone.prototype.defaultOptions.dictCancelUploadConfirmation = "Tem a certeza de que pretende cancelar este envio?";
+Dropzone.prototype.defaultOptions.dictRemoveFile = "Remover ficheiro";
+Dropzone.prototype.defaultOptions.dictMaxFilesExceeded = "Não pode enviar mais ficheiros.";
