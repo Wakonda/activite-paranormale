@@ -122,10 +122,17 @@ class Region
 			$ExtFile = strrev($explodeNF[0]);
 			$NewNameFile = uniqid().'-'.$NNFile.".".$ExtFile;
 			if(!$this->id){
-				$this->flag->move($this->getTmpUploadRootDir(), $NewNameFile);
-			}else{
-				if (is_object($this->flag))
-					$this->flag->move($this->getUploadRootDir(), $NewNameFile);
+				list($filename, $content) = \App\Service\APImgSize::convertToWebP($this->flag, $NewNameFile);
+
+				file_put_contents($this->getTmpUploadRootDir().$filename, $content);
+				$this->setFlag($filename);
+			} else {
+				if (is_object($this->flag)) {
+					list($filename, $content) = \App\Service\APImgSize::convertToWebP($this->flag, $NewNameFile);
+
+					file_put_contents($this->getTmpUploadRootDir().$filename, $content);
+					$this->setFlag($filename);
+				}
 			}
 			if (is_object($this->flag))
 				$this->setFlag($NewNameFile);
@@ -137,7 +144,9 @@ class Region
 			$filename = preg_replace('#\W#', '', $pi["filename"]).".".$extension;
 			$filename = uniqid()."_".$filename;
 
-			file_put_contents($this->getTmpUploadRootDir().$filename, $html);
+			list($filename, $content) = \App\Service\APImgSize::convertToWebP($html, $filename);
+
+			file_put_contents($this->getTmpUploadRootDir().$filename, $content);
 			$this->setFlag($filename);
 		}
     }
