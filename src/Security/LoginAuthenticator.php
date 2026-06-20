@@ -10,11 +10,15 @@ use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class LoginAuthenticator extends AbstractLoginFormAuthenticator
 {
     public function __construct(
-        private RouterInterface $router
+        private RouterInterface $router,
+		private RequestStack $requestStack,
+		private TranslatorInterface $translator
     ) {
     }
 
@@ -49,6 +53,11 @@ class LoginAuthenticator extends AbstractLoginFormAuthenticator
                 $this->router->generate('app_2fa')
             );
         }
+
+        $this->requestStack->getSession()->getFlashBag()->add(
+            'success',
+            $this->translator->trans("layout.logged_in_as", ['%username%' => $user->getUsername()], 'FOSUserBundle', $request->getLocale())
+        );
 
         return new RedirectResponse(
             $this->router->generate('Index_Index')
