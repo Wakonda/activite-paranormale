@@ -1,0 +1,42 @@
+{% extends "admin/GenericAdmin/show.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.LoginHistory"|trans([], "validators") }}{% endblock %}
+
+{% block index_admin_route %}{{ path('LoginHistory_Admin_Index') }}{% endblock %}
+{% block delete_admin_route %}{% endblock %}
+
+{% block tbody_admin_table %}
+	<div class="form-table-cell form-table-cell-head">Id</div>
+	<div class="form-table-cell">{{ entity.id }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.AttemptedIdentifier"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.attemptedIdentifier }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.Success"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+		{% if entity.success %}
+			<span class="center text-success"><i class="fas fa-check" aria-hidden="true"></i></span>
+		{% else %}
+			<span class="text-danger"><i class="fas fa-times" aria-hidden="true"></i></span>
+		{% endif %}
+	</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.IpAddress"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.ipAddress }}</div>
+
+	<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.UserAgent"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.userAgent }}</div>
+
+	{% if entity.failureReason is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.FailureReason"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.failureReason }}</div>
+	{% endif %}
+
+	<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.CreatedAt"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.createdAt|dodate(entity.createdAt, app.request.locale) }}</div>
+
+	{% if entity.user is not empty %}
+		<div class="form-table-cell form-table-cell-head">{{ "loginHistory.admin.User"|trans([], "validators") }}</div>
+		<div class="form-table-cell">{{ entity.user }}</div>
+	{% endif %}
+{% endblock %}

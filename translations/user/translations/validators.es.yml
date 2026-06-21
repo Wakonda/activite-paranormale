@@ -172,3 +172,11 @@ role:
     admin:
         Title: "Titulo"
         InternationalName: "Nombre internacional"
+loginHistory:
+    admin:
+        AttemptedIdentifier: 'Identificador utilizado'
+        Success: 'Estado'
+        IpAddress: 'Dirección IP'
+        UserAgent: 'Navegador / Dispositivo'
+        FailureReason: 'Motivo del fallo'
+        CreatedAt: 'Fecha de conexión'

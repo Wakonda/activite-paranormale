@@ -1,0 +1,23 @@
+{% extends "admin/GenericAdmin/index.html.twig" %}
+
+{% block h2_title %}{{ "admin.index.LoginHistory"|trans([], "validators") }}{% endblock %}
+
+{% block indexdatatables_admin_route %}{{ path('LoginHistory_Admin_IndexDatatables') }}{% endblock %}
+
+{% block thead_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "loginHistory.admin.AttemptedIdentifier"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "loginHistory.admin.Success"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "loginHistory.admin.IpAddress"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "loginHistory.admin.CreatedAt"|trans([], "validators") }}</th>
+	<th class="label_form">Actions</th>
+{% endblock %}
+
+{% block tfoot_admin_table %}
+	<th class="label_form">Id</th>
+	<th class="label_form">{{ "loginHistory.admin.AttemptedIdentifier"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "loginHistory.admin.Success"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "loginHistory.admin.IpAddress"|trans([], "validators") }}</th>
+	<th class="label_form">{{ "loginHistory.admin.CreatedAt"|trans([], "validators") }}</th>
+	<th class="label_form">Actions</th>
+{% endblock %}

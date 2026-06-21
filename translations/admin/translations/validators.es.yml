@@ -106,6 +106,7 @@ admin:
         Account: "Cuenta"
         Tools: "Herramientas"
         Password: "Contraseña"
+        LoginHistory: "Historial de conexiones"
     show:
         Internationalization: "Internacionalización"
         ReallyWantRemoveDatas: "¿Está seguro de que desea eliminar estos datos?"

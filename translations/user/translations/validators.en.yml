@@ -172,3 +172,11 @@ role:
     admin:
         Title: "Title"
         InternationalName: "International name"
+loginHistory:
+    admin:
+        AttemptedIdentifier: 'Attempted Identifier'
+        Success: 'Status'
+        IpAddress: 'IP Address'
+        UserAgent: 'User Agent'
+        FailureReason: 'Failure Reason'
+        CreatedAt: 'Login Date'

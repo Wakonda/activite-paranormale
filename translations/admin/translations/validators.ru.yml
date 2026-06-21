@@ -106,6 +106,7 @@ admin:
         Account: "Аккаунт"
         Tools: "Инструменты"
         Password: "Пароль"
+        LoginHistory: "История входов"
     show:
         Internationalization: "Интернационализация"
         ReallyWantRemoveDatas: "Вы уверены, что хотите удалить эти данные?"

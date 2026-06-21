@@ -172,3 +172,11 @@ role:
     admin:
         Title: "Название"
         InternationalName: "Международное название"
+loginHistory:
+    admin:
+        AttemptedIdentifier: 'Использованный идентификатор'
+        Success: 'Статус'
+        IpAddress: 'IP-адрес'
+        UserAgent: 'Браузер / Устройство'
+        FailureReason: 'Причина ошибки'
+        CreatedAt: 'Дата входа'

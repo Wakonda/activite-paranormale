@@ -106,6 +106,7 @@ admin:
         Account: "Conta"
         Tools: "Ferramentas"
         Password: "Palavra-passe"
+        LoginHistory: "Histórico de logins"
     show:
         Internationalization: "Internacionalização"
         ReallyWantRemoveDatas: "Deseja realmente eliminar estes dados?"

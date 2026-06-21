@@ -168,8 +168,15 @@ user:
         CurrentPassword: "Senha atual"
         Password: "Nova senha"
         RepeatPassword: "Repita a senha"
-
 role:
     admin:
         Title: "Título"
         InternationalName: "Nome internacional"
+loginHistory:
+    admin:
+        AttemptedIdentifier: 'Identificador utilizado'
+        Success: 'Status'
+        IpAddress: 'Endereço IP'
+        UserAgent: 'Navegador / Dispositivo'
+        FailureReason: 'Motivo da falha'
+        CreatedAt: 'Data de login'
