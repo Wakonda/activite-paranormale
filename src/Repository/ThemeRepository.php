@@ -55,7 +55,7 @@ class ThemeRepository extends MappedSuperclassBaseRepository
 		return $qb->getQuery()->getResult();	
 	}
 	
-	public function getAllThemesWorld($excludeLanguages)
+	public function getAllThemesWorld()
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb ->join('c.language', 'l')
