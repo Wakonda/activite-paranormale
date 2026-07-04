@@ -35,8 +35,6 @@
             {{ encore_entry_link_tags('app_v3') }}
         {% endblock %}
 
-		{{ encore_entry_script_tags('app_v3') }}
-
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}">
 	</head>
@@ -343,4 +341,7 @@
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.analytics_gtags() }}
 	</body>
+	{{ encore_entry_script_tags('app_v3') }}
+	{% block footer_script %}
+	{% endblock %}
 </html>

@@ -18,8 +18,6 @@
 
 		<link rel="stylesheet" href="{{ asset('extended/css/style_print_v2.min.css') }}" type="text/css" media="print">
 
-		{{ encore_entry_script_tags('app_v2') }}
-
 		{% block header_plus %}{% endblock %}
 		<link rel="shortcut icon" type="image/x-icon" href="{{ asset('extended/photo/devil.png') }}">
 
@@ -292,4 +290,7 @@
 		</script>
 		{{ macro_index.analytics_gtags() }}
 	</body>
+	{{ encore_entry_script_tags('app_v2') }}
+	{% block footer_script %}
+	{% endblock %}
 </html>
