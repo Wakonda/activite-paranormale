@@ -116,6 +116,9 @@ index:
     search:
         Validate: "Подтвердить"
         Reset: "Сбросить"
+    form:
+        DateOfOccurrence: "Дата происшествия"
+        Location: "Место происшествия"
 civility:
     admin:
         Title: "Заголовок"

@@ -290,6 +290,7 @@ class NewsAdminController extends AdminGenericController
 
 		$entity->setState($state);
 		$entity->setSource($entityToCopy->getSource());
+		$entity->setDateOccurrence($entityToCopy->getDateOccurrence());
 
 		if(!empty($theme))
 			$entity->setTheme($theme);

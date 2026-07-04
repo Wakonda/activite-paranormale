@@ -69,6 +69,9 @@ class MappedSuperclassBase implements SearchEngineInterface
 	#[ORM\ManyToOne(targetEntity: 'App\Entity\Region')]
     protected $region;
 
+	#[ORM\Column(name: 'dateOccurrence', type: 'string', length:12, nullable: true)]
+    protected $dateOccurrence;
+
 	public function __construct()
 	{
 		$this->writingDate = new \DateTime();
@@ -90,6 +93,17 @@ class MappedSuperclassBase implements SearchEngineInterface
 			else
 				return $this->author->getUsername();
 		}
+	}
+
+	public function getDateOccurrenceToArray() {
+		$isBC = str_starts_with($this->dateOccurrence, "-");
+		$date = explode("-", trim($this->dateOccurrence, "-"));
+
+		return [
+			"day" => (isset($date[2]) and !empty($date[2])) ? intval($date[2]) : null,
+			"month" => (isset($date[1]) and !empty($date[1])) ? intval($date[1]) : null,
+			"year" => (isset($date[0]) and !empty($date[0])) ? ($isBC ? "-" : "").intval($date[0]) : null, 
+		];
 	}
 
     public function setTitle($title)
@@ -271,5 +285,15 @@ class MappedSuperclassBase implements SearchEngineInterface
     public function getRegion()
     {
         return $this->region;
+    }
+
+    public function setDateOccurrence($dateOccurrence)
+    {
+        $this->dateOccurrence = $dateOccurrence;
+    }
+
+    public function getDateOccurrence()
+    {
+        return $this->dateOccurrence;
     }
 }

@@ -43,14 +43,36 @@
 	{% include 'index/Licence/showColorboxByLicenceModal.html.twig' with { 'entity': entity } %}
 	<p class="image">{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {class: "mx-auto d-block img-fluid", alt: entity.title}, entity.photoIllustrationCaption)|raw }}</p>
 	<br>
-	{% if entity.region is not empty %}
-		{% set urlCity = path('Region_Index', {id: entity.region.id, slug: entity.region.slug}) %}
-		{% set urlCountry = path('Region_Index', {id: entity.region.higherLevel.id, slug: entity.region.higherLevel.slug}) %}
-		{% set infos = "<a href='"~ urlCity ~"'>"~entity.region.title ~ "</a> (<a href='"~ urlCountry ~"'>"~entity.region.higherLevel.title ~ "</a>)" %}
-		<div class="alert border">
-			<i class="fa-solid fa-thumbtack"></i> {{ infos|raw }}
-		</div>
-	{% endif %}
+	
+	{% if entity.region is not empty and entity.dateOccurrence is not empty %}<table class="table"><tbody>{% endif %}
+		{% if entity.region is not empty %}
+			{% set urlCity = path('Region_Index', {id: entity.region.id, slug: entity.region.slug}) %}
+			{% set urlCountry = path('Region_Index', {id: entity.region.higherLevel.id, slug: entity.region.higherLevel.slug}) %}
+			{% set infos = "<a href='"~ urlCity ~"'>"~entity.region.title ~ "</a> (<a href='"~ urlCountry ~"'>"~entity.region.higherLevel.title ~ "</a>)" %}
+			<tr>
+				<td class="td_form_table">{{ "index.form.Location"|trans([], "validators") }}</td>
+				<td class="tdGene">{{ infos|raw }}</td>
+			</tr>
+		{% endif %}
+		
+		{% if entity.dateOccurrence is not empty %}
+			{% set dateArray = entity.dateOccurrenceToArray %}
+
+			{% if dateArray.day is not empty and dateArray.month is not empty and dateArray.year is not empty %}
+				{% set url = path('EventMessage_SelectDayMonth', {year: dateArray.year, month: dateArray.month, day: dateArray.day}) %}
+			{% elseif dateArray.day is empty and dateArray.month is not empty and dateArray.year is not empty %}
+				{% set url = path('EventMessage_SelectYearMonth', {year: dateArray.year, month: dateArray.month}) %}
+			{% elseif dateArray.day is empty and dateArray.month is empty and dateArray.year is not empty %}
+				{% set url = path('EventMessage_SelectYear', {year: dateArray.year}) %}
+			{% endif %}
+		
+			<tr>
+				<td class="td_form_table">{{ "index.form.DateOfOccurrence"|trans([], "validators") }}</td>
+				<td class="tdGene"><a href="{{ url }}">{{ entity.dateOccurrence|dodate(false, app.request.locale) }}</a></td>
+			</tr>
+		{% endif %}
+	{% if entity.region is not empty and entity.dateOccurrence is not empty %}</tbody></table>{% endif %}
+
 	{% set dir = entity.language.direction %}
 	<div dir="{{ dir }}">{{ entity.abstractText|raw }}</div>
 	<div dir="{{ dir }}">{{ entity.text|raw }}</div>

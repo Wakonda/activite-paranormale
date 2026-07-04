@@ -62,7 +62,7 @@
 
 	{% if entity.birthDate is not empty %}
 		{% set dateArray = entity.birthDateToArray %}
-		
+
 		{% if dateArray.day is not empty and dateArray.month is not empty and dateArray.year is not empty %}
 			{% set url = path('EventMessage_SelectDayMonth', {year: dateArray.year, month: dateArray.month, day: dateArray.day}) %}
 		{% elseif dateArray.day is empty and dateArray.month is not empty and dateArray.year is not empty %}

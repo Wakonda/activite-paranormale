@@ -192,12 +192,18 @@ class Friendica {
 				$this->FRIENDICA_USERNAME = $_ENV["FRIENDICA_ES_USERNAME"];
 				$this->FRIENDICA_PASSWORD = $_ENV["FRIENDICA_ES_PASSWORD"];
 				break;
+			case "pt":
+				$this->FRIENDICA_ACCESS_TOKEN = $_ENV["FRIENDICA_PT_ACCESS_TOKEN"];
+				$this->FRIENDICA_URL = $_ENV["FRIENDICA_PT_URL"];
+				$this->FRIENDICA_USERNAME = $_ENV["FRIENDICA_PT_USERNAME"];
+				$this->FRIENDICA_PASSWORD = $_ENV["FRIENDICA_PT_PASSWORD"];
+				break;
 		}
 	}
 
 	public function getLanguages()
 	{
-		return ["fr", "en", "es"];
+		return ["fr", "en", "es", "pt"];
 	}
 
 	public function getLanguagesCanonical()
@@ -205,7 +211,8 @@ class Friendica {
 		return [
 			"Friendica (français)" => "friendica_fr",
 			"Friendica (english)" => "friendica_en",
-			"Friendica (español)" => "friendica_es"
+			"Friendica (español)" => "friendica_es",
+			"Friendica (português)" => "friendica_pt"
 		];
 	}
 

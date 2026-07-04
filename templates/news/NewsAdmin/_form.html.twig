@@ -34,5 +34,8 @@
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.region, "region.index.Location"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.region) }}{{ form_widget(form.region, { 'attr': {'class': 'form-control'} }) }}</div>
 
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.dateOccurrence, "index.form.DateOfOccurrence"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.dateOccurrence) }}{{ form_widget(form.dateOccurrence, { 'attr': {'class': 'form-control'} }) }}</div>
+
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.tags, "tag.admin.Tags"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.tags) }}{{ form_widget(form.tags, { 'attr': {'class': 'form-control', 'value': get_tags(entity, false) } }) }}</div>

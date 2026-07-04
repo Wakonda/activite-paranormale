@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use App\Form\Field\DatePartialType;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
@@ -100,6 +101,7 @@ class NewsAdminType extends AbstractType
 				'language' => $language,
 				'query_parameters' => ["family" => Region::CITY_FAMILY]
 			])
+			->add('dateOccurrence', DatePartialType::class, ['required' => false])
 		;
     }
 

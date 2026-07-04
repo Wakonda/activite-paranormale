@@ -116,6 +116,9 @@ index:
     search:
         Validate: "Validar"
         Reset: "Reinicializar"
+    form:
+        DateOfOccurrence: "Data da ocorrência"
+        Location: "Local"
 civility:
     admin:
         Title: "Título"

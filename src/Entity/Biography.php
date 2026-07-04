@@ -124,7 +124,7 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	public function getBirthDateToArray() {
 		$isBC = str_starts_with($this->birthDate, "-");
 		$date = explode("-", trim($this->birthDate, "-"));
-		
+
 		return [
 			"day" => (isset($date[2]) and !empty($date[2])) ? intval($date[2]) : null,
 			"month" => (isset($date[1]) and !empty($date[1])) ? intval($date[1]) : null,
