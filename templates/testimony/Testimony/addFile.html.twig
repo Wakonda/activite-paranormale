@@ -4,30 +4,155 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"></span>{{ "testimony.addFile.NewTestimony"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
-<script>
-	$(function()
-	{
-		$('#submit').click(function()
-		{
-			$('#form_testimony').attr("action", "{{ path('Testimony_Postcreate') }}");
-			$('#form_testimony').submit();
-		});
-		
-		$('.add_file_testimony').click(function()
-		{
-			window.location = "{{ path('Testimony_Postcreate', {'id':entity.id}) }}";
-		});
+{% endblock %}
 
-		$("div#tab_resources a").click(function()
+{% block footer_script %}
+	<script>
+		$(function()
 		{
-			$("div#tab_resources a").removeClass("active");
-			$(this).addClass("active");
+			$('#submit').click(function()
+			{
+				$('#form_testimony').attr("action", "{{ path('Testimony_Postcreate') }}");
+				$('#form_testimony').submit();
+			});
 			
-			$("div#tab_content > div").hide();
-			$("div#tab_content div#" + $(this).data('id')).show();
+			$('.add_file_testimony').click(function()
+			{
+				window.location = "{{ path('Testimony_Postcreate', {'id':entity.id}) }}";
+			});
+
+			$("div#tab_resources a").click(function()
+			{
+				$("div#tab_resources a").removeClass("active");
+				$(this).addClass("active");
+				
+				$("div#tab_content > div").hide();
+				$("div#tab_content div#" + $(this).data('id')).show();
+			});
 		});
-	});
-</script>
+	</script>
+
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.core.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.widget.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.mouse.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.draggable.1.10.3.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/lib/wColorPicker.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/wPaint.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/main/wPaint.menu.main.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/text/wPaint.menu.text.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/shapes/wPaint.menu.main.shapes.min.js') }}"></script>
+	<script src="{{ asset('extended/js/wPaint-master/plugins/file/wPaint.menu.main.file.min.js') }}"></script><script>
+		$(function () {
+			$('.doc_datatables_drawing').DataTable({
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
+				},
+				"paging": false,
+				"lengthChange": false,
+				"searching": false,
+				"ordering": true,
+				"info": false,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"bAutoWidth": false
+			});
+
+			document.querySelectorAll('.displayInColorboxDrawing').forEach(function(element) {
+				element.addEventListener('click', function(e) {
+					e.preventDefault();
+
+					document.querySelector('#displayDrawing p.image').innerHTML = '<img src="' + e.target.getAttribute("id") + '" style="width: 100%">';
+					document.querySelector('#displayDrawing .modal-title').innerHTML = e.target.dataset.title;
+
+					var modal = new bootstrap.Modal(document.getElementById('displayDrawing'));
+					modal.show();
+				});
+			});
+
+			$('#wPaint').wPaint({
+				path: "{{ asset('extended/js/wPaint-master/') }}",
+				menuOrientation: 'horizontal',
+				menuHandle: false, 
+				saveImg: saveImg,
+				bg: "#ffffff",
+				strokeStyle: '#000000'
+			});
+
+			function saveImg(image) {
+				var _this = this;
+
+				$.ajax({
+					type: 'POST',
+					url: '{{ path("FileManagement_SaveImagePaint", { "idClassName" : entity.id, "className" : 'Testimony'  }) }}',
+					data: {image: image},
+					success: function (data) {
+						$('#drawing_management_control').html(data);
+						$("#add_drawing_section").show();
+					}
+				});
+			}
+
+			$(".add_draw_testimony").click(function(e) {
+				e.preventDefault();
+				$('.wPaint-menu-icon-name-save').click();
+			});
+
+			if($("#add_drawing_section_button").hasClass("active") == false)
+				$("div#add_drawing_section").hide();
+		});
+	</script>
+
+	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
+	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			$('.doc_datatables').DataTable({
+				"language": {
+					"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
+				},
+				"paging": false,
+				"lengthChange": false,
+				"searching": false,
+				"ordering": true,
+				"info": false,
+				"responsive": {
+					"details": {
+						display: $.fn.dataTable.Responsive.display.childRowImmediate,
+						type: 'none',
+						target: ''
+					}
+				},
+				"bAutoWidth": false
+			});
+
+			document.querySelectorAll('.displayInColorbox').forEach(function(element) {
+				element.addEventListener('click', function(e) {
+					e.preventDefault();
+
+					let regex = new RegExp('[^.]+$');
+					extension = e.target.getAttribute("id").match(regex);
+
+					if(["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp"].includes(extension[0]))
+						document.querySelector('#displayPicture p.image').innerHTML = '<img src="' + e.target.getAttribute("id") + '" style="width: 100%">';
+					else if (extension[0] == "pdf")
+						document.querySelector('#displayPicture p.image').innerHTML = '<iframe src="' + e.target.getAttribute("id") + '" width="100%"></iframe>';
+
+					document.querySelector('#displayPicture .modal-title').innerHTML = e.target.dataset.title;
+
+					var modal = new bootstrap.Modal(document.getElementById('displayPicture'));
+					modal.show();
+				});
+			});
+		});
+	</script>
 {% endblock %}
 
 {% block APBlog_body %}

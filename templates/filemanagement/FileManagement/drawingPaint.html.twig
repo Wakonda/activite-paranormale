@@ -1,83 +1,9 @@
-<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.core.1.10.3.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.widget.1.10.3.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.mouse.1.10.3.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/lib/jquery.ui.draggable.1.10.3.min.js') }}"></script>
+
 
 <link rel="stylesheet" type="text/css" href="{{ asset('extended/js/wPaint-master/lib/wColorPicker.min.css') }}" />
-<script src="{{ asset('extended/js/wPaint-master/lib/wColorPicker.min.js') }}"></script>
 
 <link rel="Stylesheet" type="text/css" href="{{ asset('extended/js/wPaint-master/wPaint.min.css') }}" />
-<script src="{{ asset('extended/js/wPaint-master/wPaint.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/plugins/main/wPaint.menu.main.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/plugins/text/wPaint.menu.text.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/plugins/shapes/wPaint.menu.main.shapes.min.js') }}"></script>
-<script src="{{ asset('extended/js/wPaint-master/plugins/file/wPaint.menu.main.file.min.js') }}"></script>
 
-<script>
-	$(function () {
-		$('.doc_datatables_drawing').DataTable({
-			"language": {
-				"url": "{{ asset('extended/js/DataTables/language/') }}dataTables.{{ app.request.locale }}.txt"
-			},
-			"paging": false,
-			"lengthChange": false,
-			"searching": false,
-			"ordering": true,
-			"info": false,
-			"responsive": {
-				"details": {
-					display: $.fn.dataTable.Responsive.display.childRowImmediate,
-					type: 'none',
-					target: ''
-				}
-			},
-			"bAutoWidth": false
-		});
-
-		document.querySelectorAll('.displayInColorboxDrawing').forEach(function(element) {
-			element.addEventListener('click', function(e) {
-				e.preventDefault();
-
-				document.querySelector('#displayDrawing p.image').innerHTML = '<img src="' + e.target.getAttribute("id") + '" style="width: 100%">';
-				document.querySelector('#displayDrawing .modal-title').innerHTML = e.target.dataset.title;
-
-				var modal = new bootstrap.Modal(document.getElementById('displayDrawing'));
-				modal.show();
-			});
-		});
-
-		$('#wPaint').wPaint({
-			path: "{{ asset('extended/js/wPaint-master/') }}",
-			menuOrientation: 'horizontal',
-			menuHandle: false, 
-			saveImg: saveImg,
-			bg: "#ffffff",
-			strokeStyle: '#000000'
-		});
-
-		function saveImg(image) {
-			var _this = this;
-
-			$.ajax({
-				type: 'POST',
-				url: '{{ path("FileManagement_SaveImagePaint", { "idClassName" : idClassName, "className" : className }) }}',
-				data: {image: image},
-				success: function (data) {
-					$('#drawing_management_control').html(data);
-					$("#add_drawing_section").show();
-				}
-			});
-		}
-
-		$(".add_draw_testimony").click(function(e) {
-			e.preventDefault();
-			$('.wPaint-menu-icon-name-save').click();
-		});
-
-		if($("#add_drawing_section_button").hasClass("active") == false)
-			$("div#add_drawing_section").hide();
-	});
-</script>
 <div class="modal black_modal fade" tabindex="-1" role="dialog" id="displayDrawing">
   <div class="modal-dialog" role="document">
 	<div class="modal-content">

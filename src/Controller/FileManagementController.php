@@ -163,7 +163,7 @@ class FileManagementController extends AbstractController
 		return new Response();
     }
 
-    public function drawingPaintAction(EntityManagerInterface $em, $idClassName, $className)
+    public function drawingPaint(EntityManagerInterface $em, $idClassName, $className)
     {
 		list($entity, $classNameFileManagement) = $this->getNewEntity($em, $className, $idClassName);
 		$entities = $em->getRepository($classNameFileManagement)->getAllFilesByIdClassName($idClassName, "drawing");

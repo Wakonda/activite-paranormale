@@ -112,14 +112,14 @@
 									</ul>
 									<h3>{{ "index.leftMenu.ArtCulture"|trans([], "validators") }}</h3>
 									<ul>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY')}) }}">{{ "quotation.index.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'quotation_' ~ app.request.locale) }}</span></li>
+										<li><a href="{{ path('Quotation_Index_Quotation') }}">{{ "quotation.index.Quotation"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'quotation_' ~ app.request.locale) }}</span></li>
 										<li><a href="{{ path('Movie_Index') }}">{{ "index.leftMenu.Movie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'movie_' ~ app.request.locale) }}</span></li>
 										<li><a href="{{ path('Book_Index') }}">{{ "index.leftMenu.Book"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'book_' ~ app.request.locale) }}</span></li>
 										<li><a href="{{ path('Music_Index') }}">{{ "index.leftMenu.Music"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'music_' ~ app.request.locale) }}</span></li>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::POEM_FAMILY')}) }}">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'poem_' ~ app.request.locale) }}</span></li>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY')}) }}">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'proverb_' ~ app.request.locale) }}</span></li>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::HUMOR_FAMILY')}) }}">{{ "quotation.index.Humor"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'humor_' ~ app.request.locale) }}</span></li>
-										<li><a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::SAYING_FAMILY')}) }}">{{ "quotation.index.Saying"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'saying_' ~ app.request.locale) }}</span></li>
+										<li><a href="{{ path('Quotation_Index_Poem') }}">{{ "quotation.index.Poem"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'poem_' ~ app.request.locale) }}</span></li>
+										<li><a href="{{ path('Quotation_Index_Proverb') }}">{{ "quotation.index.Proverb"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'proverb_' ~ app.request.locale) }}</span></li>
+										<li><a href="{{ path('Quotation_Index_Humor') }}">{{ "quotation.index.Humor"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'humor_' ~ app.request.locale) }}</span></li>
+										<li><a href="{{ path('Quotation_Index_Saying') }}">{{ "quotation.index.Saying"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'saying_' ~ app.request.locale) }}</span></li>
 										<li><a href="{{ path('TelevisionSerie_Index') }}">{{ "index.leftMenu.TelevisionSerie"|trans([], "validators") }}</a> <span class="badge bg-secondary">{{ attribute(counter, 'television_serie_' ~ app.request.locale) }}</span></li>
 									</ul>
 									<h3>{{ "index.leftMenu.Participate"|trans([], "validators") }}</h3>

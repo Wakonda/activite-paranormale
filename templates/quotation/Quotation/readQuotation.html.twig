@@ -72,7 +72,7 @@
 		<fieldset class="p-2">
 			<legend class="ml-2 float-none"> Tags </legend>
 			{% for tag in tags %}
-				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::QUOTATION_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+				<a href="{{ path('Quotation_Index_Quotation', { keyword: tag }) }}" class="tags_display">{{ tag }}</a>
 			{% endfor %}
 		</fieldset>
 	{% endif %}

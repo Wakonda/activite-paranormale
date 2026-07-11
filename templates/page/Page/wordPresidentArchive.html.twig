@@ -4,6 +4,11 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bat-icon.png') }}" width="30" class="mt-1" alt="Bat"></span>{{ "president.tab.ArchivedMessage"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+{% endblock %}
+
+{% block footer_script %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
@@ -15,8 +20,6 @@
 			dt.page.len( 10 ).order( [ 1, 'desc' ] ).draw();
 		});
 	</script>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 {% endblock %}
 
 {% block APBlog_body %}

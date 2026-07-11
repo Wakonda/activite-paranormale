@@ -14,6 +14,9 @@
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+{% endblock %}
+
+{% block footer_script %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
@@ -44,12 +47,13 @@
 		});
 	</script>
 {% endblock %}
+
 {% block APBlog_body %}
 	<p class="image">
 		{% if entity.photoIllustrationFilename is not empty %}
 			{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}
 		{% else %}
-			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.webp') }}" width="550" alt="" />
+			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.webp') }}" width="550" alt="">
 		{% endif %}
 	</p>
 	

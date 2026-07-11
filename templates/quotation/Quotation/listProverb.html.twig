@@ -1,25 +1,48 @@
-<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/' ~ family ~ '.jpg') }}" alt="Angel sword" width="550" /></p>
-<hr>
-{% include 'quotation/Quotation/_search.html.twig' with { route: 'Proverb_listDatatables' } %}
+{% extends "content_layout.html.twig" %}
 
-<table class="doc_datatables dt-responsive w-100">
-	<thead>
-		<tr>
-			<th class="label_form d-none"></th>
-			<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
-			<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
-			<th class="label_form">{{ "quotation.list.Read"|trans([], "validators") }}</th>
-		</tr>
-	</thead>
-	<tbody>
+{% block title %}{{ ("quotation.index." ~ (family|ucfirst))|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/avengers-hawkeye-icon.png') }}" width="25" class="mt-1" alt="Werewolf"></span>{{ ("quotation.index." ~ (family|ucfirst))|trans([], "validators") }}</h2>{% endblock h2_title %}
 
-	</tbody>
-	<tfoot>
-		<tr>
-			<th class="label_form d-none"></th>
-			<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
-			<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
-			<th class="label_form">{{ "quotation.list.Read"|trans([], "validators") }}</th>
-		</tr>
-	</tfoot>
-</table>
+{% block footer_script %}
+	{% include 'quotation/Quotation/_search.html.twig' with { route: 'Proverb_listDatatables' } %}
+{% endblock %}
+
+{% block APBlog_body %}
+	<div id="tab_resources" class="d-flex justify-content-between flex-wrap">
+		<a href="{{ path('Quotation_Index_Quotation') }}" class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::QUOTATION_FAMILY') ? "active" : "" }}">{{ "quotation.index.Quotation"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ quotation_counter[constant('App\\Entity\\Quotation::QUOTATION_FAMILY')] }}</span></a>
+		<a href="{{ path('Quotation_Index_Proverb') }}" class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::PROVERB_FAMILY') ? "active" : "" }}">{{ "quotation.index.Proverb"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ quotation_counter[constant('App\\Entity\\Quotation::PROVERB_FAMILY')] }}</span></a>
+		<a href="{{ path('Quotation_Index_Poem') }}" class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::POEM_FAMILY') ? "active" : "" }}">{{ "quotation.index.Poem"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ quotation_counter[constant('App\\Entity\\Quotation::POEM_FAMILY')] }}</span></a>
+		<a href="{{ path('Quotation_Index_Humor') }}" class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::HUMOR_FAMILY') ? "active" : "" }}">{{ "quotation.index.Humor"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ quotation_counter[constant('App\\Entity\\Quotation::HUMOR_FAMILY')] }}</span></a>
+		<a href="{{ path('Quotation_Index_Saying') }}" class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::SAYING_FAMILY') ? "active" : "" }}">{{ "quotation.index.Saying"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ quotation_counter[constant('App\\Entity\\Quotation::SAYING_FAMILY')] }}</span></a>
+		<a href="{{ path('Quotation_Index_Lyric') }}" class="btn btn-outline-primary position-relative rounded-pill {{ family == constant('App\\Entity\\Quotation::LYRIC_FAMILY') ? "active" : "" }}">{{ "quotation.index.Lyric"|trans([], "validators") }}<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{ quotation_counter[constant('App\\Entity\\Quotation::LYRIC_FAMILY')] }}</span></a>
+	</div>
+
+	<p class="image"><img class="image_wrapper mx-auto d-block img-fluid" src="{{ asset('extended/photo/' ~ family ~ '.jpg') }}" alt="Angel sword" width="550" /></p>
+	<hr>
+
+	<table class="doc_datatables dt-responsive w-100">
+		<thead>
+			<tr>
+				<th class="label_form d-none"></th>
+				<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "quotation.list.Read"|trans([], "validators") }}</th>
+			</tr>
+		</thead>
+		<tbody>
+
+		</tbody>
+		<tfoot>
+			<tr>
+				<th class="label_form d-none"></th>
+				<th class="label_form">{{ "quotation.list.Proverb"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "quotation.list.Region"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "quotation.list.Read"|trans([], "validators") }}</th>
+			</tr>
+		</tfoot>
+	</table>
+	<br>
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

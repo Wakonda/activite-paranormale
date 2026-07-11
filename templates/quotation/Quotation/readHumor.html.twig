@@ -35,7 +35,7 @@
 		<fieldset class="p-2">
 			<legend class="ml-2 float-none"> {{ "quotation.read.Tags"|trans([], "validators") }} </legend>
 			{% for tag in tags %}
-				<a href="{{ path('Quotation_Index', { family: constant('App\\Entity\\Quotation::PROVERB_FAMILY'), keyword: tag }) }}" class="tags_display">{{ tag }}</a>
+				<a href="{{ path('Quotation_Index_Humor', { keyword: tag }) }}" class="tags_display">{{ tag }}</a>
 			{% endfor %}
 		</fieldset>
 	{% endif %}

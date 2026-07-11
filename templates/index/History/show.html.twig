@@ -5,6 +5,25 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span>{{ "history.show.History"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
+	<style>
+	.pl-md {
+		color: #b31d28;
+		background-color: #ffeef0;
+	}
+	.pl-mi1 {
+		color: #22863a;
+		background-color: #f0fff4;
+	}
+	.pl-mdr {
+		font-weight: 700;
+		color: #6f42c1;
+	}
+	</style>
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+{% endblock %}
+
+{% block footer_script %}
 	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
 	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
@@ -23,23 +42,6 @@
 			e.preventDefault();
 		}
 	</script>
-	
-	<style>
-	.pl-md {
-		color: #b31d28;
-		background-color: #ffeef0;
-	}
-	.pl-mi1 {
-		color: #22863a;
-		background-color: #f0fff4;
-	}
-	.pl-mdr {
-		font-weight: 700;
-		color: #6f42c1;
-	}
-	</style>
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
 {% endblock %}
 
 {% block APBlog_body %}

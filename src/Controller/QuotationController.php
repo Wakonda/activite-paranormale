@@ -17,49 +17,52 @@ use Knp\Component\Pager\PaginatorInterface;
 
 class QuotationController extends AbstractController
 {
-	#[Route('/quotation/index/{family}', name: 'Quotation_Index', defaults: ['family' => null])]
-    public function index(Request $request, EntityManagerInterface $em, $family)
+	#[Route('/quotation/index/quotation', name: 'Quotation_Index_Quotation')]
+    public function listQuotation(Request $request, EntityManagerInterface $em)
     {
 		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
-		$family = empty($family) ? Quotation::QUOTATION_FAMILY : $family;
-
-        return $this->render('quotation/Quotation/index.html.twig', ["family" => $family, "quotation_counter" => $counter]);
-    }
-
-    public function listQuotation(Request $request)
-    {
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::QUOTATION_FAMILY]);
-        return $this->render('quotation/Quotation/listQuotation.html.twig', ["family" => Quotation::QUOTATION_FAMILY, "form" => $form->createView()]);
+        return $this->render('quotation/Quotation/listQuotation.html.twig', ["family" => Quotation::QUOTATION_FAMILY, "form" => $form->createView(), "quotation_counter" => $counter]);
     }
 
-    public function listProverb(Request $request)
+	#[Route('/quotation/index/proverb', name: 'Quotation_Index_Proverb')]
+    public function listProverb(Request $request, EntityManagerInterface $em)
     {
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::PROVERB_FAMILY]);
-        return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY, "form" => $form->createView()]);
+        return $this->render('quotation/Quotation/listProverb.html.twig', ["family" => Quotation::PROVERB_FAMILY, "form" => $form->createView(), "quotation_counter" => $counter]);
     }
 
-    public function listPoem(Request $request)
+	#[Route('/quotation/index/poem', name: 'Quotation_Index_Poem')]
+    public function listPoem(Request $request, EntityManagerInterface $em)
     {
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::POEM_FAMILY]);
-        return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY, "form" => $form->createView()]);
+        return $this->render('quotation/Quotation/listPoem.html.twig', ["family" => Quotation::POEM_FAMILY, "form" => $form->createView(), "quotation_counter" => $counter]);
     }
 
-    public function listHumor(Request $request)
+	#[Route('/quotation/index/humor', name: 'Quotation_Index_Humor')]
+    public function listHumor(Request $request, EntityManagerInterface $em)
     {
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::HUMOR_FAMILY]);
-        return $this->render('quotation/Quotation/listHumor.html.twig', ["family" => Quotation::HUMOR_FAMILY, "form" => $form->createView()]);
+        return $this->render('quotation/Quotation/listHumor.html.twig', ["family" => Quotation::HUMOR_FAMILY, "form" => $form->createView(), "quotation_counter" => $counter]);
     }
 
-    public function listSaying(Request $request)
+	#[Route('/quotation/index/saying', name: 'Quotation_Index_Saying')]
+    public function listSaying(Request $request, EntityManagerInterface $em)
     {
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::SAYING_FAMILY]);
-        return $this->render('quotation/Quotation/listSaying.html.twig', ["family" => Quotation::SAYING_FAMILY, "form" => $form->createView()]);
+        return $this->render('quotation/Quotation/listSaying.html.twig', ["family" => Quotation::SAYING_FAMILY, "form" => $form->createView(), "quotation_counter" => $counter]);
     }
 
-    public function listLyric(Request $request)
+	#[Route('/quotation/index/lyric', name: 'Quotation_Index_Lyric')]
+    public function listLyric(Request $request, EntityManagerInterface $em)
     {
+		$counter = $em->getRepository(Quotation::class)->countByFamily($request->getLocale());
 		$form = $this->createForm(QuotationSearchType::class, [], ["locale" => $request->getLocale(), "family" => Quotation::LYRIC_FAMILY]);
-        return $this->render('quotation/Quotation/listLyric.html.twig', ["family" => Quotation::LYRIC_FAMILY, "form" => $form->createView()]);
+        return $this->render('quotation/Quotation/listLyric.html.twig', ["family" => Quotation::LYRIC_FAMILY, "form" => $form->createView(), "quotation_counter" => $counter]);
     }
 
 	#[Route('/listhumordatatables', name: 'Humor_listDatatables')]

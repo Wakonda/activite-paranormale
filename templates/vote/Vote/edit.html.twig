@@ -1,16 +1,15 @@
-<link href="{{ asset('extended/js/bootstrap-star-rating/css/star-rating.min.css') }}" media="all" rel="stylesheet" type="text/css">
-<script src="{{ asset('extended/js/bootstrap-star-rating/js/star-rating.min.js') }}"></script>
-<script src="{{ asset('extended/js/bootstrap-star-rating/js/locales/' ~ app.request.locale ~ '.js') }}"></script>
-<link rel="stylesheet" href="{{ asset('extended/js/bootstrap-star-rating/css/theme.min.css') }}">
-<script src="{{ asset('extended/js/bootstrap-star-rating/js/theme.min.js') }}"></script>
+<script src="{{ asset('extended/js/rater/rater.min.js') }}"></script>
+<link rel="stylesheet" href="{{ asset('extended/js/rater/rater.min.css') }}">
 
 <div class="star_rate mt-2">
 	{{ form_start(form, {'attr': {'class' : 'star_rating d-flex', 'id' : form.vars.id, novalidate: 'novalidate'}}) }}
-		<div class="row alert alert-dark g-0 w-100">
+		<div class="row alert bg-dark text-light g-0 w-100 me-2">
 			<div class="col-sm mt-1">
+			<div id="rater"></div>
 			{{ form_widget(form.valueVote) }}
 			</div>
 			<div class="col-sm text-end">
+				<span class="live-rating badge me-3"></span>
 				<span id="resultVote">
 					{% apply spaceless %}
 						(<span class="badge bg-danger countVoteByClassName">{{ countVoteByClassName }}</span>
@@ -20,87 +19,129 @@
 				<button type="submit" title="rating" id="rate" class="btn btn-secondary text-white">{{ "vote.edit.VoteSubmit"|trans([], "validators") }}</button>
 			</div>
 		</div>
-		<div class="alert alert-dark g-0 p-3"><a href="#" class="btn btn-danger" id="post_favorite" title="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}{{ 'vote.index.ThisArticleIsInYourFavorites'|trans([], 'validators') }}{% else %}{{ 'vote.index.AddThisArticleToYourFavorites'|trans([], 'validators') }}{% endif %}"><i class="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}fa-solid{% else %}fa-regular{% endif %} fa-heart" id="favorite_icon"></i> </a></div>
+		<div class="alert bg-dark g-0 p-3"><a href="#" class="btn btn-danger" id="post_favorite" title="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}{{ 'vote.index.ThisArticleIsInYourFavorites'|trans([], 'validators') }}{% else %}{{ 'vote.index.AddThisArticleToYourFavorites'|trans([], 'validators') }}{% endif %}"><i class="{% if favoriteEntity is not empty and favoriteEntity.favorite == true and is_granted('IS_AUTHENTICATED_FULLY') %}fa-solid{% else %}fa-regular{% endif %} fa-heart" id="favorite_icon"></i> </a></div>
 	{{ form_end(form) }}
 </div>
-
 <script>
-	$(function() {
-		$('#{{ form.valueVote.vars.id }}').rating({
-			hoverOnClear: false,
-			theme: 'krajee-fas',
-			containerClass: 'is-star',
-			language: "{{ app.request.locale }}",
-			defaultCaption: "{rating}",
-			showClear: false,
-			starCaptions: function(val) {
-				val
-			}
-		});
+	function setColorRating() {
+		var liveRating = document.querySelector('.live-rating');
 
-		document.getElementById("{{ form.vars.id }}").addEventListener("submit", (e) => {
-			e.preventDefault();
+		liveRating.classList.remove("bg-danger", "bg-warning", "bg-info", "bg-primary", "bg-success");
 
-			let form = document.querySelector('#{{ form.vars.id }}');
-			let formData = new FormData(form);
+		switch(Number(liveRating.textContent)) {
+			case 0:
+			case 0.5:
+			case 1:
+				liveRating.classList.add("bg-danger");
+				break;
+			case 1.5:
+			case 2:
+				liveRating.classList.add("bg-warning");
+				break;
+			case 2.5:
+			case 3:
+				liveRating.classList.add("bg-info");
+				break;
+			case 3.5:
+			case 4:
+				liveRating.classList.add("bg-primary");
+				break;
+			case 4.5:
+			case 5:
+				liveRating.classList.add("bg-success");
+				break;
+		}
+	}
+	
+	document.querySelector('.live-rating').textContent = Math.round(document.getElementById("{{ form.valueVote.vars.id }}").value * 2) / 2;
+	setColorRating();
 
-			var xmlHttp = new XMLHttpRequest();
+	var rater = raterJs({
+		element: document.querySelector("#rater"),
+		rateCallback: function rateCallback(rating, done) {
+			this.setRating(Math.round(rating * 2) / 2);
+			done();
+		},
+		rating: Math.round(Number(document.getElementById("{{ form.valueVote.vars.id }}").value) * 2) / 2,
+		starSize:32,
+		step:0.5,
+		onHover: function(currentIndex, currentRating){
+			setColorRating();
+			liveRating.textContent = currentIndex;
+		},
+		onLeave: function(currentIndex, currentRating){				
+			document.querySelector('.live-rating').textContent = Math.round(currentRating * 2) / 2;
+			setColorRating();
+		}
+	});
 
-			let contentButton = document.getElementById("rate").innerHTML.trim();
-			document.getElementById("rate").innerHTML = '<i class="fa-solid fa-arrows-rotate fa-spin"></i>';
+	document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
+		var currentRating = rater.getRating();
+		
+		document.getElementById("{{ form.valueVote.vars.id }}").value = currentRating;
 
-			xmlHttp.onreadystatechange = function()
+		e.preventDefault();
+
+		let form = document.querySelector('#{{ form.vars.id }}');
+		let formData = new FormData(form);
+
+		var xmlHttp = new XMLHttpRequest();
+
+		let contentButton = document.getElementById("rate").innerHTML.trim();
+		document.getElementById("rate").innerHTML = '<i class="fa-solid fa-arrows-rotate fa-spin"></i>';
+
+		xmlHttp.onreadystatechange = function()
+		{
+			if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
 			{
-				if(xmlHttp.readyState == 4 && xmlHttp.status == 200)
-				{
-					var data = JSON.parse(xmlHttp.responseText);
-					document.querySelector('.countVoteByClassName').innerHTML = data.countVoteByClassName;
-					$("#{{ form.valueVote.vars.id }}").rating('update', data.averageVote);
-					document.getElementById("rate").innerHTML = contentButton;
-				}
+				var data = JSON.parse(xmlHttp.responseText);
+				document.querySelector('.countVoteByClassName').innerHTML = data.countVoteByClassName;
+				rater.setRating(Math.round(data.averageVote * 2) / 2);
+				document.querySelector('.live-rating').textContent = Math.round(data.averageVote * 2) / 2;
+				document.getElementById("rate").innerHTML = contentButton;
 			}
+		}
 
-			xmlHttp.open("post", "{{ path('Vote_Edit', { 'idClassName' : idClassName, 'className': className }) }}"); 
-			xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-			xmlHttp.overrideMimeType("application/json");
-			xmlHttp.send(formData);
-		});
+		xmlHttp.open("post", "{{ path('Vote_Edit', { 'idClassName' : idClassName, 'className': className }) }}"); 
+		xmlHttp.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+		xmlHttp.overrideMimeType("application/json");
+		xmlHttp.send(formData);
+	});
 
-		document.getElementById("post_favorite").addEventListener("click", (e) => {
-			e.preventDefault();
+	document.getElementById("post_favorite").addEventListener("click", (e) => {
+		e.preventDefault();
 
-			{% if is_granted("IS_AUTHENTICATED_FULLY") %}
-				var xhr = new XMLHttpRequest();
-				xhr.open("POST", "{{ path('Vote_PostFavorite', { 'idClassName' : idClassName, 'className': className }) }}", true);
+		{% if is_granted("IS_AUTHENTICATED_FULLY") %}
+			var xhr = new XMLHttpRequest();
+			xhr.open("POST", "{{ path('Vote_PostFavorite', { 'idClassName' : idClassName, 'className': className }) }}", true);
 
-				document.querySelector("#favorite_icon").classList.remove("fa-solid", "fa-regular", "fa-heart");
-				document.querySelector("#favorite_icon").classList.add("fa-solid", "fa-arrows-rotate", "fa-spin");
+			document.querySelector("#favorite_icon").classList.remove("fa-solid", "fa-regular", "fa-heart");
+			document.querySelector("#favorite_icon").classList.add("fa-solid", "fa-arrows-rotate", "fa-spin");
 
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState === 4 && xhr.status === 200) {
-						var data = JSON.parse(xhr.responseText);
-						var icon = document.getElementById("favorite_icon");
-						var link = document.getElementById("post_favorite");
+			xhr.onreadystatechange = function() {
+				if (xhr.readyState === 4 && xhr.status === 200) {
+					var data = JSON.parse(xhr.responseText);
+					var icon = document.getElementById("favorite_icon");
+					var link = document.getElementById("post_favorite");
 
-						document.querySelector("#favorite_icon").classList.remove("fa-arrows-rotate", "fa-spin");
-						document.querySelector("#favorite_icon").classList.add("fa-heart");
+					document.querySelector("#favorite_icon").classList.remove("fa-arrows-rotate", "fa-spin");
+					document.querySelector("#favorite_icon").classList.add("fa-heart");
 
-						if(data.favorite == true) {
-							icon.classList.remove("fa-regular");
-							icon.classList.add("fa-solid");
-							link.setAttribute("title", '{{ "vote.index.ThisArticleIsInYourFavorites"|trans([], "validators") }}');
-						} else {
-							icon.classList.remove("fa-solid");
-							icon.classList.add("fa-regular");
-							link.setAttribute("title", '{{ "vote.index.AddThisArticleToYourFavorites"|trans([], "validators") }}');
-						}
+					if(data.favorite == true) {
+						icon.classList.remove("fa-regular");
+						icon.classList.add("fa-solid");
+						link.setAttribute("title", '{{ "vote.index.ThisArticleIsInYourFavorites"|trans([], "validators") }}');
+					} else {
+						icon.classList.remove("fa-solid");
+						icon.classList.add("fa-regular");
+						link.setAttribute("title", '{{ "vote.index.AddThisArticleToYourFavorites"|trans([], "validators") }}');
 					}
-				};
+				}
+			};
 
-				xhr.send();
-			{% else %}
-				alert("{{ 'user.index.YouMustBeLoggedIn'|trans([], 'validators') }}");
-			{% endif %}
-		});
+			xhr.send();
+		{% else %}
+			alert("{{ 'user.index.YouMustBeLoggedIn'|trans([], 'validators') }}");
+		{% endif %}
 	});
 </script>

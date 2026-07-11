@@ -1,9 +1,24 @@
-module.exports = {
-    plugins: {
-        // include whatever plugins you want
-        // but make sure you install these via yarn or npm!
+const purgecss = require('@fullhuman/postcss-purgecss');
 
-        // add browserslist config to package.json (see below)
-        autoprefixer: {}
-    }
-}
+module.exports = ({ env }) => ({
+    plugins: [
+        require('autoprefixer'),
+        purgecss({
+            content: [
+                './templates/**/*.html.twig',
+                './assets/js/**/*.js',
+                // ajoute tout fichier qui génère des classes dynamiquement
+            ],
+            defaultExtractor: content => content.match(/[\w-/:%.]+(?<!:)/g) || [],
+            safelist: {
+                standard: [
+					/^fa-/, /^fas$/, /^far$/, /^fab$/, /^fa$/,
+					/^modal/, /^collapse/, /^fade/, /^show/, /^active/,
+					/^dropdown/, /^tooltip/, /^popover/, /^carousel/,
+					/^btn-/, /^alert-/, /^badge-/,
+                ],
+                deep: [/^data-bs-/],
+            },
+        }),
+    ].filter(Boolean),
+});

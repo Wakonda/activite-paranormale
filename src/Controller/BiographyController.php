@@ -25,7 +25,7 @@ class BiographyController extends AbstractController
     public function index(Request $request, EntityManagerInterface $em)
     {
 		$datas = [];
-		
+
 		if($request->query->has("country") and !empty($c = $request->query->get("country")))
 			$datas["country"] = $em->getRepository(\App\Entity\Region::class)->find($c);
 
