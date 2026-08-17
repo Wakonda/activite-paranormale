@@ -1,0 +1,109 @@
+{% extends "admin/admin.html.twig" %}
+
+{% block h2_title %}{{ "compressResize.index.CompressResize"|trans([], "validators") }}{% endblock %}
+
+{% block new_entry %}
+	<li class="nav-item"><a class="nav-link" href="{{ path('Admin_Phpinfo') }}"><i class="fas fa-exclamation-circle"></i> PHP Info</a></li>
+	<li class="nav-item"><a class="nav-link" href="{{ path('api_entrypoint') }}"><i class="fas fa-plug"></i> A.P.I.</a></li>
+	<li class="nav-item"><a class="nav-link" href="https://github.com/Wakonda/activite-paranormale"><i class="fab fa-github-alt"></i> Github</a></li>
+{% endblock %}
+
+{% block body_main %}
+	<h3>{{ "compressResize.index.CurrentImage"|trans([], "validators") }}</h3>
+
+	<form method="post" name="compressResizeForm" enctype="multipart/form-data" action="{{ path('Admin_CompressResize') }}">
+
+	<div class="form-table form-table-4cols form-table-collapse">
+	<div class="form-table-cell form-table-cell-head">{{ "compressResize.index.Width"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+	<div class="input-group mb-3">
+	<input type="integer" id="widthImg" name="width" class="form-control">
+	  <div class="input-group-append">
+		<span class="input-group-text" id="basic-addon2">px</span>
+	  </div>
+	</div>
+	</div>
+	<div class="form-table-cell form-table-cell-head">{{ "compressResize.index.CompressionRate"|trans([], "validators") }}</div>
+	<div class="form-table-cell">
+	<div class="input-group mb-3">
+	<input type="integer" name="compressionRate" value="70" class="form-control">
+	  <div class="input-group-append">
+		<span class="input-group-text" id="basic-addon2">%</span>
+	  </div>
+	</div>
+	</div>
+	<div class="form-table-cell form-table-cell-head">{{ "compressResize.index.File"|trans([], "validators") }}</div>
+	<div class="form-table-cell"><input type="file" id="imageInput" accept="image/*" name="file" class=""></div>
+	</div>
+
+	<img id="preview" style="display:none; margin-top:10px;">
+
+	<script>
+	const input = document.getElementById('imageInput');
+	const preview = document.getElementById('preview');
+
+	input.addEventListener('change', function () {
+
+		const file = this.files[0];
+
+		if (!file) return;
+
+		if (!file.type.startsWith('image/')) {
+			alert('Fichier invalide');
+			return;
+		}
+
+		preview.src = URL.createObjectURL(file);
+		preview.style.display = 'block';
+
+		preview.onload = function () {
+			console.log('Largeur :', preview.naturalWidth, 'px');
+			console.log('Hauteur :', preview.naturalHeight, 'px');
+
+			// Exemple
+			const width = preview.naturalWidth;
+			const height = preview.naturalHeight;
+
+			document.getElementById("widthImg").value = width;
+		};
+	});
+	</script>
+
+	<input type="submit" class="btn btn-success mt-3" value="{{ "compressResize.index.Submit"|trans([], "validators") }}">
+
+	</form>
+
+	<h3 class="mt-3">Result</h3>
+	{% if newFileDatas is not empty %}
+		<p><b>{{ "compressResize.index.FormerSize"|trans([], "validators") }} = </b>{{ newFileDatas.formerSize }}</p>
+		<p><b>{{ "compressResize.index.NewSize"|trans([], "validators") }} = </b>{{ newFileDatas.size }}</p>
+		<p><b>{{ "compressResize.index.ImageCompressedTo"|trans([], "validators") }} </b> {{ newFileDatas.ratio }}</p>
+		
+		<!-- Image originale : <img src="{{ newFileDatas.formerFile }}"> -->
+		<p><img src="{{ newFileDatas.newFile }}" id="newFile"></p>
+		
+	<button id="download" class="btn btn-primary">{{ "compressResize.index.Download"|trans([], "validators") }}</button>
+
+	<script>
+	const base64 = document.getElementById('newFile').src;
+
+	document.getElementById('download').addEventListener('click', () => {
+		const now = new Date();
+
+		const date =
+			now.getFullYear() +
+			String(now.getMonth() + 1).padStart(2, '0') +
+			String(now.getDate()).padStart(2, '0') +
+			String(now.getHours()).padStart(2, '0') +
+			String(now.getMinutes()).padStart(2, '0') +
+			String(now.getSeconds()).padStart(2, '0');
+		const link = document.createElement('a');
+
+		link.href = base64;
+		link.download = 'image' + date + '.webp';
+
+		link.click();
+	});
+	</script>
+	{% endif %}
+{% endblock %}

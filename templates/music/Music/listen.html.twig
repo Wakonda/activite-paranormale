@@ -5,19 +5,23 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/indexDatatables.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			toDatatables("{{ app.request.locale }}", "{{ asset('extended/js/DataTables/language') }}");
+		    new SimpleDataTable('table.doc_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: false,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }}
+			});
 		});
 	</script>
 {% endblock %}

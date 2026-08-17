@@ -41,7 +41,7 @@ class LoginHistoryRepository extends ServiceEntityRepository
 
 	public function getDatatablesForIndexAdmin($iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $searchByColumns, $count = false)
 	{
-		$aColumns = array( 'c.id', 'c.attemptedIdentifier', 'c.succes', 'c.ipAddress', 'c.createdAt', 'c.id');
+		$aColumns = array( 'c.id', 'c.attemptedIdentifier', 'c.success', 'c.ipAddress', 'c.createdAt', 'c.id');
 
 		$qb = $this->createQueryBuilder('c');
 		$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);

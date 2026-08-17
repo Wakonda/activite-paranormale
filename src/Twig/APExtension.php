@@ -298,7 +298,7 @@ class APExtension extends AbstractExtension
 		
 		
 		if($svg->isSVG())
-			$options["class"] = $options["class"]." bg-white";
+			$options["class"] = (isset($options["class"]) ? $options["class"] : "")." bg-white";
 		
 		if(!empty($options)) {
 			$optionArray = [];

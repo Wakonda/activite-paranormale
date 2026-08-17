@@ -5,42 +5,27 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			oTable = $('table.doc_datatables').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"lengthChange": true,
-				"order": [[ 3, "desc" ]],
-				"pagingType": "full_numbers",
-				"pageLength": 35,
-				"processing": true,
-				"serverSide": true,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
-				"ajax": "{{ path('APUserBunble_contributionuserdatatables', { 'id' : id, 'bundleClassName' : bundleClassName, 'displayState' : displayState }) }}",
-				"aoColumns": [
-				  { "sClass": "longType" },
-				  null,
-				  null,
-				  null
-				]
+			const dt = new SimpleDataTable('table.doc_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[ 3, "desc" ]],
+			  ajax: {
+				url: "{{ path('APUserBunble_contributionuserdatatables', { 'id' : id, 'bundleClassName' : bundleClassName, 'displayState' : displayState }) }}",
+				type: 'GET'
+			  }
 			});
 		});
 	</script>
@@ -80,6 +65,18 @@
 		<tbody>
 		</tbody>
 		<tfoot>
+			<tr>
+				<th class="label_form">{{ "user.contributionUser.Title"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "user.contributionUser.State"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "user.contributionUser.Language"|trans([], "validators") }}</th>
+				<th class="label_form">
+					{% if displayState == 0 %}
+						{{ "user.contributionUser.WritingDate"|trans([], "validators") }}
+					{% else %}
+						{{ "user.contributionUser.PublicationDate"|trans([], "validators") }}
+					{% endif %}
+				</th>
+			</tr>
 		</tfoot>
 	</table>
 	<br>

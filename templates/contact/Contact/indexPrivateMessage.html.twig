@@ -4,66 +4,45 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			oTable = $('table#inbox_datatables').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": true,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"order": [[ 2, "desc" ]],
-				"processing": true,
-				"serverSide": true,
-				"columns": [
-					null,
-					{ "orderable": false },
-					null,
-					{ "orderable": false }
-				],
-				"ajax": {
-					"url": "{{ path('Contact_PrivateMessageDatatables', {type: 'inbox'}) }}",
-					"type": "GET"
-				}
+			new SimpleDataTable('table#inbox_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[0, 'asc']],
+			  columnDefs: [{target: 1, orderable: false},{target: 3,orderable: false}],
+			  ajax: {
+				url: "{{ path('Contact_PrivateMessageDatatables', {type: 'inbox'}) }}",
+				type: 'GET'
+			  }
 			});
-		});
 
-		document.addEventListener('DOMContentLoaded', () => {
-			oTable = $('table#outbox_datatables').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": true,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"order": [[ 2, "desc" ]],
-				"processing": true,
-				"serverSide": true,
-				"columns": [
-					null,
-					{ "orderable": false },
-					null,
-					{ "orderable": false }
-				],
-				"ajax": {
-					"url": "{{ path('Contact_PrivateMessageDatatables', {type: 'outbox'}) }}",
-					"type": "GET"
-				}
+			new SimpleDataTable('table#outbox_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[0, 'asc']],
+			  columnDefs: [{target: 1, orderable: false},{target: 3,orderable: false}],
+			  ajax: {
+				url: "{{ path('Contact_PrivateMessageDatatables', {type: 'outbox'}) }}",
+				type: 'GET'
+			  }
 			});
 		});
 	</script>

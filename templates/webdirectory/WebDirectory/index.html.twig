@@ -8,42 +8,28 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
-
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			oTable = $('table.index_directories').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": true,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"processing": true,
-				"serverSide": true,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
-				"order": [[ 1, "asc" ]],
-				"ajax": "{{ path('WebDirectory_SearchDatatables') }}",
-				"columnDefs" : [{
-					'orderable' : false,
-					'targets' : [ 0, 2, 3 ]
-				}]
+			new SimpleDataTable('table.index_directories', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[ 1, "asc" ]],
+			  ajax: {
+				url: "{{ path('WebDirectory_SearchDatatables') }}",
+				type: 'GET'
+			  },
+			  columnDefs: [{target: 0, orderable: false},{target: 2,orderable: false},{target: 3,orderable: false}]
 			});
 		});
 	</script>

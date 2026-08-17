@@ -1507,6 +1507,44 @@ class AdminController extends AbstractController
 		return new JsonResponse($res);
 	}
 
+	#[Route('/admin/compress-resize', name: 'Admin_CompressResize')]
+	public function compressResize(Request $request, EntityManagerInterface $em, \App\Service\CompressResize $compressResize)
+	{
+		$newFileDatas = [];
+		if ($request->isMethod(Request::METHOD_POST)) {
+			$datas = $request->request->all();
+			$maxWidth = $datas["width"];
+			$compressionRate = isset($datas["compressionRate"]) ? $datas["compressionRate"] : 70;
+
+			// $converter = new ImageWebpConverter($compressionRate);
+			// $src = "C:\Users\Rémi\Downloads\compress\medium-development.png";
+			// $dest = "C:\Users\Rémi\Downloads\compress\\rrrrr.webp";
+			$src = $request->files->all()["file"]->getRealPath();
+			$newFileDatas = $compressResize->convert($src, maxWidth: $maxWidth); 
+			// $newFileDatas = []; 
+			// dd();
+			
+			$data = base64_decode($newFileDatas["base64"], true);
+			$finfo = new \finfo(FILEINFO_MIME_TYPE);
+			$mime = $finfo->buffer($data);
+			$newFileDatas["newFile"] = 'data:' . $mime . ';base64,' . $newFileDatas["base64"];
+			
+			$newFileDatas["formerSize"] = $request->files->all()["file"]->getSize();
+
+			$data = file_get_contents($src);
+			$finfo = new \finfo(FILEINFO_MIME_TYPE);
+			$mime = $finfo->buffer($data);
+			$newFileDatas["formerFile"] = 'data:' . $mime . ';base64,' . base64_encode($data);
+			
+			// $newFileDatas["formerFile"] = ;
+// dd($request->files->all()["file"], $newFileDatas);
+			
+			// dd($request->request->all());
+			// dd("ooo");
+		}
+		return $this->render("admin/Admin/compressResize.html.twig", ["newFileDatas" => $newFileDatas]);
+	}
+
 	#[Route('/admin/wikidata_generic_load_image', name: 'Admin_WikidataGenericLoadImage')]
 	public function wikidataGenericLoadImage(Request $request, EntityManagerInterface $em, \App\Service\Wikidata $wikidata)
 	{

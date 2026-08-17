@@ -778,8 +778,9 @@ class Wikidata {
 				$rolesArray = [];
 				$occupations = \App\Entity\MusicBiography::getOccupations();
 				
-				foreach($datasMember->entities->{$codeMember}->claims->P106 as $roleProperties)
-					$rolesArray[] = $this->getPropertyValue($roleProperties->mainsnak->datavalue->value->id, "en");
+				if(!empty($datasMember))
+					foreach($datasMember->entities->{$codeMember}->claims->P106 as $roleProperties)
+						$rolesArray[] = $this->getPropertyValue($roleProperties->mainsnak->datavalue->value->id, "en");
 				
 				$role = null;
 				
@@ -1292,7 +1293,12 @@ class Wikidata {
 
 	private function getPageTitle(string $id, string $language) {
 		$parser = new \App\Service\APParseHTML();
+		// dump(json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json", null, false)));
 		$data = json_decode($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json", null, false));
+
+if(empty($data))
+			dd($parser->getContentURL("https://www.wikidata.org/w/api.php?action=wbgetentities&props=labels&ids={$id}&languages={$language}&format=json", null, false));
+
 
 		return (property_exists($data->entities->$id->labels, $language)) ? $data->entities->$id->labels->$language->value : null;
 	}
@@ -1412,6 +1418,11 @@ class Wikidata {
 			$res = json_decode($res, true);
 		}
 
+$p = $res["query"];
+$res["query"]["pages"];
+// array_key_first($res["query"]["pages"])]["pageprops"];
+$res["query"]["pages"][array_key_first($res["query"]["pages"])];
+$res["query"]["pages"][array_key_first($res["query"]["pages"])]["pageprops"];
 		return $res["query"]["pages"][array_key_first($res["query"]["pages"])]["pageprops"]["wikibase_item"];
 	}
 }

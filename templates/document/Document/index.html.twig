@@ -18,51 +18,46 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		var action = null;
 
 		document.addEventListener('DOMContentLoaded', function (e) {
-			oTable = $('table.document_datatables').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": true,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"processing": true,
-				"serverSide": true,
-				"order": [[ 0, "asc" ]],
-				"ajax": {
-					"url": "{{ path('Document_ListDatatables') }}",
-					"type": "GET",
-					"data": function(d) {
-						d.form = $("#{{ form.vars.id }}").serialize(),
-						d.action = action
-					}
-				},
-				"preDrawCallback": function( settings ) {
-					document.getElementById("count_document").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
-				},
-				"drawCallback": function( settings ) {
-					document.getElementById("count_document").innerHTML = settings.json.recordsTotal;
+			const dt = new SimpleDataTable('table.document_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[0, 'asc']],
+			  ajax: {
+				url: "{{ path('Document_ListDatatables') }}",
+				type: 'GET',
+				data: function (d) {
+				  const form = document.getElementById('{{ form.vars.id }}');
+				  d.form = new URLSearchParams(new FormData(form)).toString();
+				  d.action = action;
 				}
+			  },
+			  preDrawCallback: function( settings ) {
+				document.getElementById("count_document").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+			  },
+			  drawCallback: function( settings ) {
+				document.getElementById("count_document").innerHTML = settings.json.recordsTotal;
+			  }
 			});
 
 			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
 				action = e.submitter.getAttribute("name");
 				e.preventDefault();
-				oTable.ajax.reload();
+				dt.reload();
 			});
 		});
 	</script>

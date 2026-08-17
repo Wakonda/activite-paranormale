@@ -83,6 +83,7 @@
 			<p class="text-center text-light pt-2"><i class="far fa-copyright fa-sm"></i> Activité-Paranormale 2009-{{ 'now'|date("Y") }}</p>
 		</footer>
 
+		<script src="{{ asset('extended/js/jquery.js') }}"></script>
 		<script>
 			{% if entity.extensionFile == "pdf" and (is_mobile() or is_tablet()) %}
 				function resizeIframe()

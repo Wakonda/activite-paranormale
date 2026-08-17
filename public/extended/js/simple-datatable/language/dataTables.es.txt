@@ -1,0 +1,15 @@
+{
+    "processing":     "Procesando...",
+    "search":         "Buscar:",
+    "lengthMenu":     "Mostrar _MENU_ registros",
+    "info":           "Mostrando desde _START_ hasta _END_ de _TOTAL_ registros",
+    "infoEmpty":      "Mostrando desde 0 hasta 0 de 0 registros",
+    "infoFiltered":   "(filtrado de _MAX_ registros en total)",
+    "zeroRecords":    "No se encontraron resultados",
+    "paginate": {
+        "first":    "Primero",
+        "previous": "Anterior",
+        "next":     "Siguiente",
+        "last":     "Último"
+    }
+}

@@ -41,7 +41,12 @@
 
 	<hr>
 
-	<h3 class="mt-2"><i class="fa-solid fa-database fa-sm me-2"></i>Diaspora</h3>
+	<h3 class="mt-2"><i class="fa-solid fa-image fa-sm me-2"></i>{{ "compressResize.index.CompressResize"|trans([], "validators") }}</h3>
+	<a href="{{ path('Admin_CompressResize') }}" class="btn btn-info mt-2">{{ "compressResize.index.CompressResize"|trans([], "validators") }}</a>
+
+	<hr>
+
+	<h3 class="mt-2"><i class="fa-brands fa-diaspora fa-sm me-2"></i>Diaspora</h3>
 	<ul>
 		<li>FR - {{ get_env("DIASPORA_FR_USERNAME") }} / {{ get_env("DIASPORA_FR_PASSWORD") }}</li>
 		<li>EN - {{ get_env("DIASPORA_EN_USERNAME") }} / {{ get_env("DIASPORA_EN_PASSWORD") }}</li>
@@ -50,7 +55,7 @@
 	</ul>
 	<hr>
 
-	<h3 class="mt-2"><i class="fa-solid fa-database fa-sm me-2"></i>Facebook</h3>
+	<h3 class="mt-2"><i class="fa-brands fa-facebook fa-sm me-2"></i>Facebook</h3>
 	<ul>
 		<li>FR - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'fr'}) }}">Get long live token</a></li>
 		<li>EN - <a href="{{ path('Admin_Maintenance_Facebook_LongLiveToken', {locale: 'en'}) }}">Get long live token</a></li>

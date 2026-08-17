@@ -10,6 +10,7 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 		$qb->join('c.language', 'l')
+		   ->join("c.theme", "t")
 	       ->where('l.abbreviation = :language')
 	       ->setParameter('language', $language)
 		   ->andWhere("c.archive = false");
@@ -21,7 +22,7 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 			   ->setParameter('search', $search);
 		}
 		if(isset($datas["theme"]) and !empty($theme = $datas["theme"])) {
-			$qb->join("c.theme", "t")
+			$qb
 		       ->andWhere('t.internationalName = :internationalName')
 			   ->setParameter('internationalName', $theme->getInternationalName());
 		}
@@ -32,6 +33,11 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 		}
 		else
 			$qb->setFirstResult($iDisplayStart)->setMaxResults($iDisplayLength);
+
+		if(!empty($sortDirColumn)) {
+			$aColumns = ['c.photo', 'c.title', 't.title', 'c.coordYMap', 'c.coordXMap'];
+			$qb->orderBy($aColumns[$sortByColumn[0]], $sortDirColumn[0]);
+		}
 
 		return $qb->getQuery()->getResult();
 	}
@@ -97,7 +103,7 @@ class CartographyRepository extends MappedSuperclassBaseRepository
 	{
 		$qb = $this->createQueryBuilder('c');
 
-		$aColumns = array( 'l.abbreviation', 'c.photo', 'c.title', 'c.publicationDate');
+		$aColumns = ['l.abbreviation', 'c.photo', 'c.title', 'c.publicationDate'];
 
 		$qb->join('c.language', 'l')
 		   ->leftjoin('c.state', 's')

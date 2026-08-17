@@ -1,0 +1,15 @@
+{
+    "processing":     "Traitement en cours...",
+    "search":         "Rechercher :",
+    "lengthMenu":     "Afficher _MENU_ éléments",
+    "info":           "Affichage de l'élément _START_ à _END_ sur _TOTAL_ éléments",
+    "infoEmpty":      "Affichage de l'élément 0 &agrave; 0 sur 0 éléments",
+    "infoFiltered":   "(filtré de _MAX_ éléments au total)",
+    "zeroRecords":    "Aucune donnée disponible dans le tableau",
+    "paginate": {
+        "first":      "Premier",
+        "previous":   "Précédent",
+        "next":       "Suivant",
+        "last":       "Dernier"
+    }
+}

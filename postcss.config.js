@@ -6,15 +6,15 @@ module.exports = ({ env }) => ({
         purgecss({
             content: [
                 './templates/**/*.html.twig',
-                './assets/js/**/*.js',
-                // ajoute tout fichier qui génère des classes dynamiquement
+                './src/**/*.php',
+                './assets/js/**/*.js'
             ],
             defaultExtractor: content => content.match(/[\w-/:%.]+(?<!:)/g) || [],
             safelist: {
                 standard: [
 					/^fa-/, /^fas$/, /^far$/, /^fab$/, /^fa$/,
 					/^modal/, /^collapse/, /^fade/, /^show/, /^active/,
-					/^dropdown/, /^tooltip/, /^popover/, /^carousel/,
+					/^dropdown/, /^tooltip/, /^popover/, /^carousel/, /^image/,
 					/^btn-/, /^alert-/, /^badge-/,
                 ],
                 deep: [/^data-bs-/],

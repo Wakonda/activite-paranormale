@@ -1,55 +1,46 @@
-<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 
 {% if columnDefs is not defined %}
 	{% set columnDefs = '[{target: 0, visible: false},{target: 3,orderable: false}]' %}
 {% endif %}
 
+
+ 
 <script>
 	var action = null;
 
 	document.addEventListener('DOMContentLoaded', function () {
-		table = $('table.doc_datatables').DataTable( {
-			"language": {
-				"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-			},
-			"searching": true,
-			"info": true,
-			"lengthChange": true,
-			"order": [[ 1, "desc" ]],
-			"pagingType": "full_numbers",
-			"pageLength": {{ total_line_display }},
-			"processing": true,
-			"serverSide": true,
-			"columnDefs": {{ columnDefs }},
-			"responsive": {
-				"details": {
-					display: $.fn.dataTable.Responsive.display.childRowImmediate,
-					type: 'none',
-					target: ''
-				}
-			},
-			"ajax": {
-				"url": "{{ path(route) }}",
-				"type": "GET",
-				"data": function(d) {
-					d.form = $("#{{ form.vars.id }}").serialize(),
-					d.action = action
-				}
-			},
-				"preDrawCallback": function(settings) {
-					document.getElementById("count_quotation").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
-				},
-				"drawCallback": function(settings) {
-					document.getElementById("count_quotation").innerHTML = settings.json.recordsTotal;
-				}
+		const dt = new SimpleDataTable('table.doc_datatables', {
+		  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+		  searching: true,
+		  info: false,
+		  ordering: true,
+		  responsive: true,
+		  lengthChange: true,
+		  pageLength: {{ total_line_display }},
+		  processing: true,
+		  order: [[ 1, "desc" ]],
+		  columnDefs: {{ columnDefs }},
+		  ajax: {
+			url: "{{ path(route) }}",
+			type: 'GET',
+			data: function (d) {
+			  const form = document.getElementById('{{ form.vars.id }}');
+			  d.form = new URLSearchParams(new FormData(form)).toString();
+			  d.action = action;
+			}
+		  },
+		  preDrawCallback: function(settings) {
+			document.getElementById("count_quotation").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+		  },
+		  drawCallback: function(settings) {
+			document.getElementById("count_quotation").innerHTML = settings.json.recordsTotal;
+		  }
 		});
 		
 		{% if main_request().query.get("keyword") is not empty %}
 			document.getElementById("{{ form.keywords.vars.id }}").value = "{{ main_request().query.get('keyword') }}";
-			table.rows({ search: "{{ main_request().query.get('keyword') }}" }).draw();
+			dt.rows({ search: "{{ main_request().query.get('keyword') }}" }).draw();
 		{% endif %}
 
 		document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
@@ -62,18 +53,18 @@
 				sort = valSort.split("#")
 				
 				if(valFilter != "")
-					table.rows({ search: valFilter });
+					dt.rows({ search: valFilter });
 
 				if(sort[0] == "id")
-					table.order([0, sort[1]]);
+					dt.order([0, sort[1]]);
 			} else
-				table.rows({ search: valFilter });
-			table.draw();
+				dt.rows({ search: valFilter });
+			dt.draw();
 		});
 	});
 </script>
 <link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 
 <p>{{ "quotation.search.TotalNumber"|trans([], "validators") }} <span class="badge bg-danger" id="count_quotation"><i class="fas fa-spinner fa-pulse fa-fw"></i></span></p>
 <hr>

@@ -8,12 +8,6 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import '../css/app_v2.scss';
 
-// Need jQuery? Install it with "yarn add jquery", then uncomment to import it.
-// import $ from 'jquery';
-
-// jQuery
-global.$ = global.jQuery = window.$ = window.jQuery = require('jquery');
-
 window.bootstrap = require('bootstrap/dist/js/bootstrap.bundle.js');
 
 require('@fortawesome/fontawesome-free/css/all.min.css');

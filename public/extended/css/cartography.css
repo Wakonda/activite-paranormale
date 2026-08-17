@@ -32,9 +32,15 @@ a.link_map
 	color: black !important;
 }
 
-.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+.leaflet-popup-content-wrapper, .leaflet-popup-tip, .leaflet-control-attribution {
 	background-color: black !important;
+}
+.leaflet-control-attribution {
+	color: white;
 }
 .leaflet-popup-close-button {
 	color: red !important;
+}
+.leaflet-container a {
+	color: #b9c322;
 }

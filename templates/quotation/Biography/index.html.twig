@@ -5,51 +5,64 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		var action = null;
 
 		document.addEventListener('DOMContentLoaded', () => {
-			oTable = $('table.biography_datatables').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": true,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"order": [[ 0, "asc" ]],
-				"processing": true,
-				"serverSide": true,
-				"ajax": {
-					"url": "{{ path('Biography_ListDatatables') }}",
-					"type": "GET",
-					"data": function(d) {
-						d.form = $("#{{ form.vars.id }}").serialize(),
-						d.action = action
-					}
-				},
-				"preDrawCallback": function(settings) {
-					document.getElementById("count_biography").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
-				},
-				"drawCallback": function(settings) {
-					document.getElementById("count_biography").innerHTML = settings.json.recordsTotal;
+			const dt = new SimpleDataTable('table.biography_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[0, 'asc']],
+			  ajax: {
+				url: "{{ path('Biography_ListDatatables') }}",
+				type: 'GET',
+				data: function (d) {
+				  const form = document.getElementById('{{ form.vars.id }}');
+				  d.form = new URLSearchParams(new FormData(form)).toString();
+				  d.action = action;
 				}
+			  },
+			  drawCallback: function (settings) {
+				map.eachLayer((layer) => {
+				  if (layer['_latlng'] != undefined) layer.remove();
+				});
+				for (const data in settings.json.data) {
+				  let item = settings.json.data[data];
+				  markersArray[item.id] = L.marker([item.latitud, item.longitud]).addTo(map)
+					.bindPopup(item.infoWindow, { maxWidth: 500 });
+				}
+				document.getElementById("count_document").innerHTML = settings.json.recordsTotal;
+				document.querySelectorAll(".location_coordinates").forEach(lc => {
+				  lc.addEventListener('click', (e) => {
+					let id = e.target.getAttribute("id");
+					map.setView(markersArray[id].getLatLng(), 15);
+					markersArray[id].openPopup();
+				  });
+				});
+			  },
+			  preDrawCallback: function () {
+				document.getElementById("count_biography").innerHTML = '<i class="fas fa-spinner fa-pulse fa-fw"></i>';
+			  },
+			  drawCallback: function(settings) {
+				document.getElementById("count_biography").innerHTML = settings.json.recordsTotal;
+			  }
 			});
 
 			document.querySelector("#{{ form.vars.id }}").addEventListener("submit", (e) => {
 				action = e.submitter.getAttribute("name");
 				e.preventDefault();
-				oTable.ajax.reload();
+				dt.reload();
 			});
 		});
 	</script>

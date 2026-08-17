@@ -5,45 +5,32 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', () => {
-			oTable = $('table.doc_datatables').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"lengthChange": true,
-				"order": [[ 0, "desc" ]],
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"processing": true,
-				"serverSide": true,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
-				"ajax": "{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=" + document.getElementById("comments_entity").value,
-				"aoColumns": [
-				  { "sclass": "longType" },
-				  null,
-				  null
-				]
+			const dt = new SimpleDataTable('table.doc_datatables', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  order: [[ 0, "desc" ]],
+			  columnDefs: [{target: 0, orderable: false},{target: 1,orderable: false}],
+			  ajax: {
+				url: "{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=" + document.getElementById("comments_entity").value,
+				type: 'GET'
+			  }
 			});
-			
 			document.getElementById("comments_entity").addEventListener("change", (e) => {
-				oTable.ajax.url('{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=' + e.target.value).load();
+			  dt.options.ajax.url = '{{ path('APUserBunble_contributionusercommentsdatatables', {'id' : id}) }}?className=' + e.target.value;
+			  dt.reload();
 			});
 		});
 	</script>
@@ -58,9 +45,8 @@
 			<option value="{{ key }}">{{ value }}</option>
 		{% endfor %}
 	</select>
-	
-	<br>
-	<br>
+
+	<br><br>
 
 	<table class="doc_datatables dt-responsive w-100">
 		<thead>
@@ -73,6 +59,11 @@
 		<tbody>
 		</tbody>
 		<tfoot>
+			<tr>
+				<th class="label_form">{{ "user.contributionUserComments.Comment"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "user.contributionUserComments.PublicationDate"|trans([], "validators") }}</th>
+				<th class="label_form">{{ "user.contributionUserComments.Link"|trans([], "validators") }}</th>
+			</tr>
 		</tfoot>
 	</table>
 	<br>

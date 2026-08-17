@@ -7,6 +7,7 @@
 {% endblock %}
 
 {% block footer_script %}
+	<script src="{{ asset('extended/js/jquery.js') }}"></script>
 	<script>
 		$(function()
 		{
@@ -74,14 +75,35 @@
 				});
 			});
 
-			$('#wPaint').wPaint({
-				path: "{{ asset('extended/js/wPaint-master/') }}",
-				menuOrientation: 'horizontal',
-				menuHandle: false, 
-				saveImg: saveImg,
-				bg: "#ffffff",
-				strokeStyle: '#000000'
-			});
+			function resetWPaintMenuPaths(pathPrefix) {
+				$.each($.fn.wPaint.menus, function (menuName, menu) {
+					if (!menu || !menu.items) return;
+
+					$.each(menu.items, function (key, item) {
+						if (item.img && item.img.indexOf(pathPrefix) === 0) {
+							while (item.img.indexOf(pathPrefix) === 0) {
+								item.img = item.img.substring(pathPrefix.length);
+							}
+						}
+					});
+				});
+			}
+
+			function initWPaint($el) {
+				var wpaintPath = "{{ asset('extended/js/wPaint-master/') }}";
+
+				resetWPaintMenuPaths(wpaintPath);
+
+				$el.wPaint({
+					path: wpaintPath,
+					menuOrientation: 'horizontal',
+					menuHandle: false,
+					saveImg: saveImg,
+					bg: "#ffffff",
+					strokeStyle: '#000000'
+				});
+			}
+			initWPaint($('#wPaint'));
 
 			function saveImg(image) {
 				var _this = this;
@@ -93,6 +115,7 @@
 					success: function (data) {
 						$('#drawing_management_control').html(data);
 						$("#add_drawing_section").show();
+						initWPaint($('#wPaint'));
 					}
 				});
 			}

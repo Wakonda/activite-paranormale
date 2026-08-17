@@ -5,36 +5,26 @@
 {% endblock h2_title %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			var lengthTd = $(".index_world thead th").length - 1;
+			var lengthTd = document.querySelectorAll(".index_world thead th").length - 1;
 
-			oTable = $('table.index_world').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": true,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"processing": true,
-				"serverSide": true,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
-				"order": [[ lengthTd, "desc" ]],
-				"ajax": "{% block world_datatables %}{% endblock %}{% if theme is defined and theme is not empty %}?theme_id={{ theme.id }}{% endif %}"
+			new SimpleDataTable('table.index_tags', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  order: [[ lengthTd, "desc" ]],
+			  processing: true,
+			  ajax: {
+				url: "{% block world_datatables %}{% endblock %}{% if theme is defined and theme is not empty %}?theme_id={{ theme.id }}{% endif %}",
+				type: 'GET'
+			  }
 			});
 
 			{% if block("select_theme_for_index_world") is not empty %}
@@ -60,7 +50,7 @@
 
 {% block APBlog_body %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 
 	{{ render(controller('App\\Controller\\IndexController::world', {language: app.request.attributes.get('language'), themeId: app.request.query.get('themeId'), currentRoute: app.request.attributes.get('_route')})) }}
 	<br>

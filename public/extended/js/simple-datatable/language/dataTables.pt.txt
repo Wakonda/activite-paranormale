@@ -1,0 +1,15 @@
+{
+    "processing":     "A processar...",
+    "search":         "Procurar:",
+    "lengthMenu": "Mostrar _MENU_ registos",
+    "info": "Mostrando os registos _START_ a _END_ num total de _TOTAL_",
+    "infoEmpty": "Mostrando 0 registos num total de 0",
+    "infoFiltered": "(filtrado num total de _MAX_ registos)",
+    "zeroRecords":    "Não foram encontrados resultados",
+    "paginate": {
+        "first":    "Primeiro",
+        "previous": "Anterior",
+        "next":     "Seguinte",
+        "last":     "Último"
+    }
+}

@@ -50,9 +50,10 @@
 		
 		public function getImageEmbeddedCodeByEntity($entity, string $category, string $className, string $store = "asc"): ?string
 		{
-			foreach($this->em->getRepository("\App\Entity\Stores\\$className")->findBy([$category => $entity], ["id" => $store]) as $store)
+			foreach($this->em->getRepository("\App\Entity\Stores\\$className")->findBy([$category => $entity], ["id" => $store]) as $store) {
 				if(!empty($iec = $store->getImageEmbeddedCode()))
 					return $iec;
+			}
 				
 			return null;
 		}

@@ -13,36 +13,26 @@
 
 {% block header_plus %}
 	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/dataTables.bootstrap5.min.css') }}" type="text/css" media="screen">
-	<link rel="stylesheet" href="{{ asset('extended/js/DataTables/media/css/responsive.bootstrap.min.css') }}" type="text/css" media="screen">
+	<link rel="stylesheet" href="{{ asset('extended/js/simple-datatable/simple-datatable.min.css') }}">
 {% endblock %}
 
 {% block footer_script %}
-	<script src="{{ asset('extended/js/DataTables/media/js/jquery.dataTables.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.bootstrap5.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/dataTables.responsive.min.js') }}"></script>
-	<script src="{{ asset('extended/js/DataTables/media/js/responsive.bootstrap.min.js') }}"></script>
+	<script src="{{ asset('extended/js/simple-datatable/simple-datatable.min.js') }}"></script>
 	<script>
 		document.addEventListener('DOMContentLoaded', function () {
-			oTable = $('table.index_tags').DataTable( {
-				"language": {
-					"url": "{{ asset('extended/js/DataTables/language/dataTables.'~app.request.locale~'.txt') }}"
-				},
-				"searching": true,
-				"info": true,
-				"ordering": false,
-				"lengthChange": true,
-				"pagingType": "full_numbers",
-				"pageLength": {{ total_line_display }},
-				"processing": true,
-				"serverSide": true,
-				"responsive": {
-					"details": {
-						display: $.fn.dataTable.Responsive.display.childRowImmediate,
-						type: 'none',
-						target: ''
-					}
-				},
-				"ajax": "{{ path('ap_tags_searchdatatables', { id: entity.id, title: entity.title }) }}",
+			new SimpleDataTable('table.index_tags', {
+			  language: { url: "{{ asset('extended/js/simple-datatable/language/dataTables.'~app.request.locale~'.txt') }}" },
+			  searching: true,
+			  info: false,
+			  ordering: true,
+			  responsive: true,
+			  lengthChange: true,
+			  pageLength: {{ total_line_display }},
+			  processing: true,
+			  ajax: {
+				url: "{{ path('ap_tags_searchdatatables', { id: entity.id, title: entity.title }) }}",
+				type: 'GET'
+			  }
 			});
 		});
 	</script>
@@ -53,7 +43,7 @@
 		{% if entity.photoIllustrationFilename is not empty %}
 			{{ entity.photoIllustrationFilename|imgsize(550, entity.getAssetImagePath(), true, {"class": "mx-auto d-block img-fluid" }, entity.photoIllustrationCaption)|raw }}
 		{% else %}
-			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.webp') }}" width="550" alt="">
+			<img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/tags-photo-introduction.webp') }}" width="550" alt="Tag image">
 		{% endif %}
 	</p>
 	
