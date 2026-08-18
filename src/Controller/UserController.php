@@ -146,7 +146,7 @@ class UserController extends AbstractController
 		
 		$form = $form->getForm();
 		
-		if($request->isMethod('post')) {
+		if($request->isMethod(Request::METHOD_POST)) {
 			$form->handleRequest($request);
 			$language = key($request->request->get("language"));
 			$password = $form->get("password".$language)->getData();

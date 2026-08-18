@@ -104,7 +104,7 @@ class ContactController extends AbstractController
 
         $form = $this->createForm(ContactPrivateMessageType::class, $entity, ["initialMessage" => $initialMessageEntity]);
 
-		if ($request->isMethod('POST')) {
+		if ($request->isMethod(Request::METHOD_POST)) {
 			$form->handleRequest($request);
 			$session = $request->getSession();
 

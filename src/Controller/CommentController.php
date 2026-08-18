@@ -225,7 +225,7 @@ class CommentController extends AbstractController
 		
 		$commentType = $formFactory->createNamed("reply_comment", CommentType::class, $entity, ['userType' => $anonymousComment]);
 
-		if($request->isXmlHttpRequest() and $request->isMethod('POST'))
+		if($request->isXmlHttpRequest() and $request->isMethod(Request::METHOD_POST))
 		{
 			$commentType->handleRequest($request);
             if($commentType->isValid())
