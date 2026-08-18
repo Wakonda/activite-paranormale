@@ -228,3 +228,16 @@ backup:
         FileDeleted: "Файл удалён"
         FileGenerated: "Файл создан"
         No: "Нет резервной копии"
+compressResize:
+    index:
+        CompressResize: "Сжать и изменить размер"
+        Width: "Ширина"
+        CurrentImage: "Текущее изображение"
+        Result: "Результат"
+        Download: "Скачать"
+        CompressionRate: "Степень сжатия"
+        File: "Файл"
+        FormerSize: "Исходный размер"
+        NewSize: "Новый размер"
+        Submit: "Отправить"
+        ImageCompressedTo: "Изображение сжато до"

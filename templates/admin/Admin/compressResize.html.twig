@@ -57,29 +57,23 @@
 		preview.style.display = 'block';
 
 		preview.onload = function () {
-			console.log('Largeur :', preview.naturalWidth, 'px');
-			console.log('Hauteur :', preview.naturalHeight, 'px');
-
-			// Exemple
 			const width = preview.naturalWidth;
-			const height = preview.naturalHeight;
 
 			document.getElementById("widthImg").value = width;
 		};
 	});
 	</script>
 
-	<input type="submit" class="btn btn-success mt-3" value="{{ "compressResize.index.Submit"|trans([], "validators") }}">
+	<input type="submit" class="btn btn-success mt-3" value="{{ 'compressResize.index.Submit'|trans([], 'validators') }}">
 
 	</form>
 
-	<h3 class="mt-3">Result</h3>
+	<h3 class="mt-3">{{ 'compressResize.index.Result'|trans([], 'validators') }}</h3>
 	{% if newFileDatas is not empty %}
 		<p><b>{{ "compressResize.index.FormerSize"|trans([], "validators") }} = </b>{{ newFileDatas.formerSize }}</p>
 		<p><b>{{ "compressResize.index.NewSize"|trans([], "validators") }} = </b>{{ newFileDatas.size }}</p>
 		<p><b>{{ "compressResize.index.ImageCompressedTo"|trans([], "validators") }} </b> {{ newFileDatas.ratio }}</p>
-		
-		<!-- Image originale : <img src="{{ newFileDatas.formerFile }}"> -->
+
 		<p><img src="{{ newFileDatas.newFile }}" id="newFile"></p>
 		
 	<button id="download" class="btn btn-primary">{{ "compressResize.index.Download"|trans([], "validators") }}</button>

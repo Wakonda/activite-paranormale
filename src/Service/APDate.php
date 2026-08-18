@@ -44,10 +44,11 @@
 
 			if(empty(array_filter($dateArray)))
 				return null;
-
+// dd(is_int("2025-06"));
+// dd(is_int($partialDate));
 			if (!preg_match('/^(-?\d{1,4})(-\d{2})?(-\d{2})?$/', $partialDate) and !preg_match('/^(-?\d{1,4})(-\d{2})?$/', $partialDate))
 				return $partialDate;
-
+// dd("eee");
 			$bc = "";
 			if($isBC)
 				$bc = " G";
@@ -67,16 +68,16 @@
 				}
 			} else {
 				if(count($dateArray) == 1) {
-					$skeleton = "YYYY".$bc;
+					$skeleton = "yyyy".$bc;
 					$year = $dateArray[0];
 					$partialDate = $partialDate."-01-01";
 				} elseif(isset($dateArray[2]) and !empty($dateArray[2])) {
-					$skeleton = 'YYYYMMMMd'.$bc;
+					$skeleton = 'yyyyMMMMd'.$bc;
 					$day = $dateArray[2];
 					$month = $dateArray[1];
 					$year = $dateArray[0];
 				} else {
-					$skeleton = 'YYYYMMMM'.$bc;
+					$skeleton = 'yyyyMMMM'.$bc;
 					$month = $dateArray[1];
 					$year = $dateArray[0];
 				}

@@ -30,6 +30,7 @@ use Tetranz\Select2EntityBundle\Form\Type\Select2EntityType;
 
 use App\Entity\TagWord;
 use App\Entity\Video;
+use App\Entity\Biography;
 use App\Service\Video as VideoService;
 
 class VideoAdminType extends AbstractType
@@ -132,6 +133,7 @@ class VideoAdminType extends AbstractType
 				],
 				'cache' => false,
 				'req_params' => ['locale' => 'parent.children[language]'],
+				"query_parameters" => ["kinds" => [Biography::PERSON, Biography::OTHER]],
 				'language' => $language,
 				"required" => false
 			])

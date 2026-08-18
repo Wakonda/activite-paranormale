@@ -228,3 +228,16 @@ backup:
         FileDeleted: "File deleted"
         FileGenerated: "File generated"
         No: "No backup"
+compressResize:
+    index:
+        CompressResize: "Compress and resize"
+        Width : "Width"
+        CurrentImage: "Current image"
+        Result: "Result"
+        Download: "Download"
+        CompressionRate: "Compression rate"
+        File: "File"
+        FormerSize: "Former size"
+        NewSize: "New size"
+        Submit: "Soumettre"
+        ImageCompressedTo: "Image compressed to"

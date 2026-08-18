@@ -66,22 +66,18 @@ class CompressResize
             $image = $this->resize($image, $targetWidth, $targetHeight);
         }
 
-        // Préserve la transparence (PNG/GIF -> WebP)
         imagepalettetotruecolor($image);
         imagealphablending($image, true);
         imagesavealpha($image, true);
 
 		ob_start();
 
-		// imagewebp($image, null, 80);
-// dd(imagewebp($image, null, $this->quality));
         if (imagewebp($image, null, $this->quality)) {
 
 		$webpData = ob_get_clean();
 
 		$base64 = base64_encode($webpData);
-		
-		// dd($base64);
+
             imagedestroy($image);
             // throw new RuntimeException('Échec de l\'écriture du fichier WebP.');
         }

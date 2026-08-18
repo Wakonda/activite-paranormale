@@ -222,7 +222,6 @@ admin:
         Waiting: "Em espera"
         Warned: "Avisado"
         UnreadPosts: "Mensagens não lidas"
-
 backup:
     index:
         File: "Ficheiro"
@@ -230,3 +229,16 @@ backup:
         FileDeleted: "Ficheiro eliminado"
         FileGenerated: "Ficheiro gerado"
         No: "Nenhuma cópia de segurança"
+compressResize:
+    index:
+        CompressResize: "Comprimir e redimensionar"
+        Width: "Largura"
+        CurrentImage: "Imagem atual"
+        Result: "Resultado"
+        Download: "Baixar"
+        CompressionRate: "Taxa de compressão"
+        File: "Arquivo"
+        FormerSize: "Tamanho original"
+        NewSize: "Novo tamanho"
+        Submit: "Enviar"
+        ImageCompressedTo: "Imagem comprimida para"
