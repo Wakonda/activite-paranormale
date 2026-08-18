@@ -15,6 +15,7 @@ use App\Entity\WebDirectory;
 use App\Entity\Language;
 use App\Entity\Licence;
 use App\Entity\State;
+use App\Entity\FileManagement;
 use App\Form\Type\WebDirectoryAdminType;
 use App\Service\ConstraintControllerValidator;
 
@@ -171,6 +172,7 @@ class WebDirectoryAdminController extends AdminGenericController
 
 		$entityToCopy = $em->getRepository(WebDirectory::class)->find($id);
 		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
 		
 		$websiteLanguage = null;
 		
@@ -218,6 +220,18 @@ class WebDirectoryAdminController extends AdminGenericController
 				if(!empty($title = $data["title"]))
 					$entity->setTitle($title);
 			}
+		}
+
+		if(!empty($ci = $entityToCopy->getIllustration())) {
+			$illustration = new FileManagement();
+			$illustration->setTitleFile($ci->getTitleFile());
+			$illustration->setRealNameFile($ci->getRealNameFile());
+			$illustration->setCaption($ci->getCaption());
+			$illustration->setLicense($ci->getLicense());
+			$illustration->setAuthor($ci->getAuthor());
+			$illustration->setUrlSource($ci->getUrlSource());
+
+			$entity->setIllustration($illustration);
 		}
 
 		$twig = 'webdirectory/WebDirectoryAdmin/new.html.twig';

@@ -43,6 +43,24 @@ class TestimonyAdminController extends AdminGenericController
 	public function postValidation($form, EntityManagerInterface $em, $entityBindded)
 	{
 		(new TagsManagingGeneric($em))->saveTags($form, $this->className, $this->entityName, new TestimonyTags(), $entityBindded);
+		
+		if(isset($_GET["fromId"])) {
+			$previousTestimony = $em->getRepository(Testimony::class)->find($_GET["fromId"]);
+
+			$fms = $em->getRepository("\App\Entity\TestimonyFileManagement")->findBy(["testimony" => $previousTestimony->getId()]);
+			foreach($fms as $fm) {
+				$tfm = new TestimonyFileManagement();
+				$tfm->setTestimony($entityBindded);
+
+				$tfm->setTitleFile($fm->getTitleFile());
+				$tfm->setRealNameFile($fm->getRealNameFile());
+				$tfm->setExtensionFile($fm->getExtensionFile());
+				$tfm->setKindFile($fm->getKindFile());
+				$em->persist($tfm);
+			}
+
+			$em->flush();
+		}
 	}
 
 	#[Route('/index/{state}/{display}', name: 'Testimony_Admin_Index', defaults: ['state' => null, 'display' => 1])]
@@ -253,5 +271,89 @@ class TestimonyAdminController extends AdminGenericController
 		$translateArray['country'] = $countryArray;
 
 		return new JsonResponse($translateArray);
+	}
+
+	#[Route('/internationalization/{id}', name: 'Testimony_Admin_Internationalization')]
+	public function internationalization(Request $request, EntityManagerInterface $em, $id)
+	{
+		$formType = TestimonyAdminType::class;
+		$entity = new Testimony();
+
+		$entityToCopy = $em->getRepository(Testimony::class)->find($id);
+		$language = $em->getRepository(Language::class)->find($request->query->get("locale"));
+		$theme = $em->getRepository(Theme::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getTheme()->getInternationalName()]);
+		$state = $em->getRepository(State::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
+		$licence = $em->getRepository(Licence::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getLicence()->getInternationalName()]);
+		
+		$currentLanguagesWebsite = $em->getRepository(Language::class)->getAllAvailableLanguages(true);
+
+		if(!in_array($language->getAbbreviation(), $currentLanguagesWebsite)) {
+			$languageEnglish = $em->getRepository(Language::class)->findOneBy(['abbreviation' => 'en']);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $languageEnglish, "internationalName" => $entityToCopy->getState()->getInternationalName()]);
+			$licence = $em->getRepository(Licence::class)->findOneBy(["language" => $languageEnglish, "internationalName" => $entityToCopy->getLicence()->getInternationalName()]);
+		}
+
+		if(empty($state)) {
+			$defaultLanguage = $em->getRepository(Language::class)->findOneBy(["abbreviation" => "en"]);
+			$state = $em->getRepository(State::class)->findOneBy(["language" => $defaultLanguage, "internationalName" => "Validate"]);
+		}
+
+		if(!empty($entityToCopy->getRegion())) {
+			$region = $em->getRepository(Region::class)->findOneBy(["language" => $language, "internationalName" => $entityToCopy->getRegion()->getInternationalName()]);
+
+			if(!empty($region)) {
+				$entity->setRegion($region);
+			}
+		}
+
+		$entity->setLicence($licence);
+		$entity->setState($state);
+		$entity->setSource($entityToCopy->getSource());
+		$entity->setDateOccurrence($entityToCopy->getDateOccurrence());
+		$entity->setEmailAuthor($entityToCopy->getEmailAuthor());
+		
+		$entity->setAuthor($entityToCopy->getAuthor());
+		$entity->setWritingDate($entityToCopy->getWritingDate());
+		$entity->setPublicationDate($entityToCopy->getPublicationDate());
+		$entity->setIsAnonymous($entityToCopy->getIsAnonymous());
+		$entity->setPseudoUsed($entityToCopy->getPseudoUsed());
+		$entity->setSource($entityToCopy->getSource());
+		$entity->setArchive($entityToCopy->getArchive());
+		$entity->setLocation($entityToCopy->getLocation());
+		$entity->setSightingDate($entityToCopy->getSightingDate());
+		$entity->setDateOccurrence($entityToCopy->getDateOccurrence());
+
+		if(!empty($theme))
+			$entity->setTheme($theme);
+
+		$entity->setLanguage($language);
+
+		$fms = $em->getRepository("\App\Entity\TestimonyFileManagement")->findBy(["testimony" => $entityToCopy->getId()]);
+		foreach($fms as $fm) {
+			$tfm = new TestimonyFileManagement();
+			$tfm->setTestimony($entityToCopy);
+
+			$tfm->setTitleFile($fm->getTitleFile());
+			$tfm->setRealNameFile($fm->getRealNameFile());
+			$tfm->setExtensionFile($fm->getExtensionFile());
+			$tfm->setKindFile($fm->getKindFile());
+		}
+
+		// if(!empty($ci = $entityToCopy->getIllustration())) {
+			// $illustration = new FileManagement();
+			// $illustration->setTitleFile($ci->getTitleFile());
+			// $illustration->setRealNameFile($ci->getRealNameFile());
+			// $illustration->setCaption($ci->getCaption());
+			// $illustration->setLicense($ci->getLicense());
+			// $illustration->setAuthor($ci->getAuthor());
+			// $illustration->setUrlSource($ci->getUrlSource());
+
+			// $entity->setIllustration($illustration);
+		// }
+
+		$request->setLocale($language->getAbbreviation());
+
+		$twig = 'testimony/TestimonyAdmin/new.html.twig';
+		return $this->newGeneric($request, $em, $twig, $entity, $formType, ["locale" => $language->getAbbreviation(), 'action' => 'new']);
 	}
 }

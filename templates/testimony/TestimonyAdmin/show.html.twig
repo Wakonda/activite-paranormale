@@ -60,6 +60,8 @@
 	{{ render(controller("App\\Controller\\FileManagementAdminController::showImage", { 'idClassName' : entity.id, 'className': 'Testimony' })) }}
 	
 	{% if entity.state.isStateDisplayed() %}
+	{{ render(controller('App\\Controller\\AdminController::internationalizationSelectGeneric', {entity: entity, route: "Testimony_Admin_Internationalization", "showRoute": "Testimony_Admin_Show", "editRoute": "Testimony_Admin_Edit"})) }}
+	<hr>
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 
 		{% if entity.archive == false %}

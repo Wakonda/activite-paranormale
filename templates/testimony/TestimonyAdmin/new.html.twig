@@ -4,7 +4,7 @@
 
 {% block index_admin_route %}{{ path('Testimony_Admin_Index') }}{% endblock %}
 
-{% block create_admin_route %}{{ path('Testimony_Admin_Create') }}{% endblock %}
+{% block create_admin_route %}{{ path('Testimony_Admin_Create') }}{% if app.request.query.has("fromId") %}?fromId={{ app.request.query.get("fromId") }}{% endif %}{% endblock %}
 
 {% block js_specific %}
 	{% import "testimony/TestimonyAdmin/macro_testimony.html.twig" as macro_testimony %}

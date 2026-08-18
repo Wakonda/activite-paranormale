@@ -1708,7 +1708,7 @@ class AdminController extends AbstractController
 			foreach($columnDatas as $columnData)
 				$columns[$columnData["COLUMN_NAME"]] = ["foreign_key" => trim($columnData["foreign_key"], "#"), "data_type" => $columnData["DATA_TYPE"], "primary_key" => $columnData["COLUMN_KEY"] == "PRI"];
 
-			if($action == "edit" and $request->isMethod('post')) {
+			if($action == "edit" and $request->isMethod(Request::METHOD_POST)) {
 				$updateData = $request->request->all();
 				unset($updateData["save_form"]);
 				$primaryKeys = json_decode($request->query->get("primary_keys"), true);
@@ -1842,7 +1842,7 @@ class AdminController extends AbstractController
 		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
 		$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
 
-		if($request->isMethod('post')) {
+		if($request->isMethod(Request::METHOD_POST)) {
 			$form->handleRequest($request);
 			$data = $form->getData();
 			$socialNetworks = $data["socialNetwork"];
@@ -1895,7 +1895,7 @@ class AdminController extends AbstractController
 		$form = $this->createForm(\App\Form\Type\SocialNetworkAdminType::class);
 		$rePostForm = $this->createForm(\App\Form\Type\RePostAdminType::class);
 
-		if($request->isMethod('post')) {
+		if($request->isMethod(Request::METHOD_POST)) {
 			$rePostForm->handleRequest($request);
 			$data = $rePostForm->getData();
 			$socialNetworks = $data["socialNetwork"];

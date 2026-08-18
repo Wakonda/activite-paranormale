@@ -107,6 +107,10 @@
 
 			$dateString = $this->doPartialDate($dateTimeArray[0], $locale);
 
+			if (isset($dateTimeArray[1]) && !empty($dateTimeArray[1]) && !preg_match('/^\d{2}:\d{2}(:\d{2})?$/', $dateTimeArray[1])) {
+				return $dateString;
+			}
+
 			if(empty($dateTimeArray[1]))
 				return $dateString;
 
