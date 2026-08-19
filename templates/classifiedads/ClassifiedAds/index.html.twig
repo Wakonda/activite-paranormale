@@ -18,8 +18,8 @@
 	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-be-mill-en.js') }}"></script>
 	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-ch-mill-en.js') }}"></script>
 	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-ca-lcc-en.js') }}"></script>
-	<script src="{{ asset('extended/js/jvectormap/jquery.vmap.france.js') }}" charset="utf-8" ></script>
-	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-es-merc.js') }}" charset="utf-8" ></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery.vmap.france.js') }}"></script>
+	<script src="{{ asset('extended/js/jvectormap/jquery-jvectormap-es-merc.js') }}"></script>
 	<script>
 		$(function() {
 			var belgium_colors = {"BE-BRU":"#fa9e58","BE-VAN":"#5BC4ED","BE-WLX":"#97C00D", "BE-WBR":"#94F900", "BE-VBR":"#FCED0D", "BE-VOV":"#f8cf5b", "BE-WLG":"#F19DAC", "BE-VLI":"#A8CEEF", "BE-WHT":"#A3A9B3", "BE-WNA":"#3878FF", "BE-VWV":"#dca0c2"};
@@ -157,10 +157,10 @@
 {% block APBlog_body %}
 	<ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
 		<li class="nav-item" role="presentation">
-			<button id="geographic_area_selector" type="button" class="btn btn-secondary nav-link active" data-bs-toggle="pill" data-bs-target="#pills-geographic-area" type="button" role="tab" aria-controls="pills-geographic-area" aria-selected="false" tabindex="-1"><i class="fas fa-globe-europe"></i> {{ "classifiedAds.search.ByGeographicArea"|trans([], "validators") }}</button>
+			<button id="geographic_area_selector" type="button" class="btn btn-secondary nav-link active" data-bs-toggle="pill" data-bs-target="#pills-geographic-area" role="tab" aria-controls="pills-geographic-area" aria-selected="false" tabindex="-1"><i class="fas fa-globe-europe"></i> {{ "classifiedAds.search.ByGeographicArea"|trans([], "validators") }}</button>
 		</li>
 		<li class="nav-item" role="presentation">
-			<button id="category_selector" type="button" class="btn btn-light nav-link" data-bs-toggle="pill" data-bs-target="#pills-category" type="button" role="tab" aria-controls="pills-category" aria-selected="false" tabindex="-1"><i class="fas fa-list"></i> {{ "classifiedAds.search.ByCategory"|trans([], "validators") }}</button>
+			<button id="category_selector" type="button" class="btn btn-light nav-link" data-bs-toggle="pill" data-bs-target="#pills-category" role="tab" aria-controls="pills-category" aria-selected="false" tabindex="-1"><i class="fas fa-list"></i> {{ "classifiedAds.search.ByCategory"|trans([], "validators") }}</button>
 		</li>
 	</ul>
 	<div class="tab-content" id="pills-tabContent">
