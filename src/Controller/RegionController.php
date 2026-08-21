@@ -10,6 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 use App\Entity\Region;
 use App\Entity\Biography;
+use App\Entity\EventMessage;
 use App\Entity\MappedSuperclassBase;
 
 #[Route('/region')]
@@ -19,6 +20,8 @@ class RegionController extends AbstractController
 	public function index(EntityManagerInterface $em, Request $request, TranslatorInterface $translator, $id, $slug)
 	{
 		$region = $em->getRepository(Region::class)->find($id);
+		
+		$eventMessages = $em->getRepository(EventMessage::class)->findBy(["country" => $region]);
 
 		$biographies = $em->getRepository(Biography::class)->getEntitiesByRegion($region);
 
@@ -42,6 +45,7 @@ class RegionController extends AbstractController
 		return $this->render('index/Region/index.html.twig', [
 			'entity' => $region,
 			'biographies' => $biographies,
+			'eventMessages' => $eventMessages,
 			'datas' => $res
 		]);
 	}

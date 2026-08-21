@@ -83,7 +83,7 @@
 		{% endif %}
 		
 		{% if entity.country is not empty %}
-			- <img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="{{ entity.country.title }} flag" width="35"> {{ entity.country.title }}
+			- <img src="{{ asset(entity.country.getAssetImagePath()) }}{{ entity.country.flag }}" alt="{{ entity.country.title }} flag" width="35"> <a href="{{ path('Region_Index', {id: entity.country.id, slug: entity.country.slug}) }}">{{ entity.country.title}}</a>
 		{% endif %}
 	</p>
 	<hr>

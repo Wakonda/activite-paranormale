@@ -44,11 +44,10 @@
 
 			if(empty(array_filter($dateArray)))
 				return null;
-// dd(is_int("2025-06"));
-// dd(is_int($partialDate));
+
 			if (!preg_match('/^(-?\d{1,4})(-\d{2})?(-\d{2})?$/', $partialDate) and !preg_match('/^(-?\d{1,4})(-\d{2})?$/', $partialDate))
 				return $partialDate;
-// dd("eee");
+
 			$bc = "";
 			if($isBC)
 				$bc = " G";

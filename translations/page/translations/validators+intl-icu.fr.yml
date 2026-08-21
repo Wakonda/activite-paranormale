@@ -118,6 +118,10 @@ eventMessage:
         Saying: "Dicton"
         NoEventToday: "Aucun événement ce jour-là"
         NoEvent: "Aucun événement"
+        News: "Actualité"
+        Photo: "Photo"
+        Testimony: "Témoignage"
+        Video: "Vidéo"
 rssFeed:
     menu:
         RSSFeeds: "Flux RSS"

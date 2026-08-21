@@ -93,7 +93,25 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 		return $qb->getQuery()->getResult();
 	}
-	
+
+	public function getAllOccurencesByDayAndMonth($day, $month, $language)
+	{
+		$day = str_pad($day, 2, "0", STR_PAD_LEFT);
+		$month = str_pad($month, 2, "0", STR_PAD_LEFT);
+
+		$qb = $this->createQueryBuilder('c');
+
+		$qb ->join('c.language', 'l')
+			->where('l.abbreviation = :lang')
+			->setParameter('lang', $language)
+			->andWhere("REGEXP(c.dateOccurrence, :regexp) = true AND CONCAT(LPAD(EXTRACT(MONTH FROM TRIM(LEADING '-' FROM c.dateOccurrence)), 2, '0'), '-', LPAD(EXTRACT(DAY FROM TRIM(LEADING '-' FROM c.dateOccurrence)), 2, '0')) = :monthDay")
+			->setParameter("regexp", "^(-[0-9]{3,4}|[0-9]{3,4})-[0-9]{2}-[0-9]{2}$")
+			->setParameter('monthDay', $month."-".$day)
+			->orderBy("EXTRACT(YEAR FROM c.dateOccurrence)", "DESC");
+
+		return $qb->getQuery()->getResult();
+	}
+
 	public function getTabArchive($themeId, $iDisplayStart, $iDisplayLength, $sortByColumn, $sortDirColumn, $sSearch, $count = false)
 	{
 		$qb = $this->createQueryBuilder('o');

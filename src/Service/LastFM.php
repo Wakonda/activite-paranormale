@@ -54,14 +54,14 @@ class LastFM {
 		);
 	}
 
-	public function getAlbumsByArtist($artist, $mbid) {
+	public function getAlbumsByArtist($artist, $mbid = null) {
 		$data = $this->lastfmRequest([
 			"method" => "artist.gettopalbums",
 			"artist" => $artist,
-			"mbid" => $mbid,
+			"mbid" => $this->getLastFmArtistMbid($artist),
 			"limit" => 100
 		]);
-
+// dd($data, $mbid, $artist);
 		$res = [];
 		$albums = $data["topalbums"]["album"] ?? [];
 
@@ -89,32 +89,48 @@ class LastFM {
 		return $res;
 	}
 
-	public function getAlbumTracks($albumId, $accessToken = null) {
-		if(empty($accessToken))
-			$accessToken = $this->getToken();
-		
-		$url = "https://api.spotify.com/v1/albums/$albumId/tracks";
+	public function getLastFmArtistMbid(string $artist): ?string {
+		$url = 'https://ws.audioscrobbler.com/2.0/'
+			 . '?method=artist.getinfo'
+			 . '&artist=' . urlencode($artist)
+			 . '&api_key=' . urlencode($this->apiKey)
+			 . '&format=json';
 
-		$ch = curl_init();
+		$ch = curl_init($url);
 
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($ch, CURLOPT_HTTPHEADER, [
-			"Authorization: Bearer $accessToken"
+		curl_setopt_array($ch, [
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_TIMEOUT => 10,
+			CURLOPT_USERAGENT => 'MyWebsite/1.0',
 		]);
 
-		$response = json_decode(curl_exec($ch));
+		$response = curl_exec($ch);
 
-		$tracks = [];
-
-		foreach($response->items as $item) {
-			$tracks[] = [
-				"id" => $item->id,
-				"name" => $item->name,
-				"duration_ms" => $item->duration_ms
-			];
+		if ($response === false) {
+			curl_close($ch);
+			return null;
 		}
 
-		return $tracks;
+		$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+		curl_close($ch);
+
+		if ($httpCode !== 200) {
+			return null;
+		}
+
+		$data = json_decode($response, true);
+
+		if (!is_array($data)) {
+			return null;
+		}
+
+		if (isset($data['error'])) {
+			return null;
+		}
+
+		$mbid = $data['artist']['mbid'] ?? '';
+
+		return $mbid !== '' ? $mbid : null;
 	}
 }

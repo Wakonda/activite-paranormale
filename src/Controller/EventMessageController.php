@@ -540,6 +540,37 @@ class EventMessageController extends AbstractController
 				];
 			}
 		}
+		
+		$metadataFactory = $em->getMetadataFactory();
+		foreach ($metadataFactory->getAllMetadata() as $metadata) {
+			$className = $metadata->getName();
+
+            if (is_subclass_of($className, \App\Entity\MappedSuperclassBase::class)) {
+				if(method_exists($em->getRepository($className), 'getAllOccurencesByDayAndMonth')) {
+					$entities = $em->getRepository($className)->getAllOccurencesByDayAndMonth($day, $month, $request->getLocale());
+					
+					foreach($entities as $entity) {
+						$dateOccurence = $entity->getDateOccurrenceToArray();
+						$yearEvent = $dateOccurence["year"];
+						$shortName = strtolower((new \ReflectionClass($className))->getShortName());
+						
+						if($yearEvent != $year) {
+							$res[][empty($yearEvent) ? "noYear" : $centuryText][$dateOccurence["year"]][] = [
+								"title" => $entity->getTitle(),
+								"theme" => $shortName,
+								"url" => $this->generateUrl($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
+							];
+						} else {
+							$currentEvent[$shortName][] = [
+								"title" => $entity->getTitle(),
+								"theme" => $shortName,
+								"url" => $this->generateUrl($entity->getShowRoute(), ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ])
+							];
+						}
+					}
+				}
+            }
+		}
 
 		$previous = (clone $currentDate)->modify("-1 day");
 		$next = (clone $currentDate)->modify("+1 day");
@@ -591,6 +622,7 @@ class EventMessageController extends AbstractController
 					"id" => $entity->getId(), 
 					"title" => $entity->getTitle(),
 					"theme" => $entity->getTheme()->getTitle(),
+					"country" => !empty($c = $entity->getCountry()) ? $c->getTitle() : null,
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];
@@ -601,6 +633,7 @@ class EventMessageController extends AbstractController
 					"id" => $entity->getId(),
 					"title" => $entity->getTitle(),
 					"theme" => !empty($t = $entity->getTheme()) ? $t->getTitle() : null,
+					"country" => !empty($c = $entity->getCountry()) ? $c->getTitle() : null,
 					"url" => $this->generateUrl("EventMessage_Read", ["id" => $entity->getId(), "title_slug" => $entity->getUrlSlug() ]),
 					"endDate" => ($entity->getDayFrom() == $entity->getDayTo() or empty($entity->getDayTo())) ? null : ["year" => $entity->getYearTo(), "month" => $entity->getMonthTo(), "day" => $entity->getDayTo()]
 				];

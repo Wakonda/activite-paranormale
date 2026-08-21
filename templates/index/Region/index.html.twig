@@ -56,6 +56,14 @@
 
 	{% import "page/EventMessage/macro_event.html.twig" as macro_event %}
 
+	{% if eventMessages is not empty %}
+		<h3><i class="fas fa-"></i> {{ "eventMessage.calendar.Events"|trans([], "validators") }}</h3>
+		<ul>
+		{% for eventMessage in eventMessages %}
+			<li><a href="{{ path('EventMessage_Read', { id: eventMessage.id, title_slug: eventMessage.urlSlug }) }}">{{ eventMessage.title }}</a> ({{ eventMessage.dayFrom|doYearMonthDayDate(eventMessage.monthFrom, eventMessage.yearFrom, app.request.locale) }})</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
 	{% if biographies is not empty %}
 		{% for type, bs in biographies %}
 			{% if bs is not empty %}

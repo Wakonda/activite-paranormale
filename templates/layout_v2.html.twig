@@ -289,8 +289,8 @@
 			async function detectAdBlock(){let e=!1;try{await fetch(new Request("https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js")).catch((t=>e=!0))}catch(t){e=!0}finally{if(0==e){for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.add("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.remove("d-none")}else{for(let e of document.getElementsByClassName("advertising-alternative"))e.classList.remove("d-none");for(let e of document.getElementsByClassName("adsbygoogle"))e.classList.add("d-none")}}}detectAdBlock();
 		</script>
 		{{ macro_index.analytics_gtags() }}
+		{{ encore_entry_script_tags('app_v2') }}
+		{% block footer_script %}
+		{% endblock %}
 	</body>
-	{{ encore_entry_script_tags('app_v2') }}
-	{% block footer_script %}
-	{% endblock %}
 </html>

@@ -340,8 +340,8 @@
 		</script>
 		{% import "index/macro/macro_index.html.twig" as macro_index %}
 		{{ macro_index.analytics_gtags() }}
+		{{ encore_entry_script_tags('app_v3') }}
+		{% block footer_script %}
+		{% endblock %}
 	</body>
-	{{ encore_entry_script_tags('app_v3') }}
-	{% block footer_script %}
-	{% endblock %}
 </html>

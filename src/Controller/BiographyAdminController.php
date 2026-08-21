@@ -193,7 +193,7 @@ class BiographyAdminController extends AdminGenericController
 		}
 		
 		$citiesData = $wikidata->setCityBiography($wikicode, $language->getAbbreviation());
-// dd($citiesData);
+
 		if(isset($citiesData["birthPlace"]) && !empty($citiesData["birthPlace"]) && !empty($citiesData["birthPlace"]["id"])) {
 			$entity->setBirthPlace($em->getRepository(Region::class)->find($citiesData["birthPlace"]["id"]));
 		}
