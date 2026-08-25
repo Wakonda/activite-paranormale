@@ -72,6 +72,9 @@ class MappedSuperclassBase implements SearchEngineInterface
 	#[ORM\Column(name: 'dateOccurrence', type: 'string', length:12, nullable: true)]
     protected $dateOccurrence;
 
+	#[ORM\Column(type: 'integer', options: ['default' => 0])]
+	private int $viewCount = 0;
+
 	public function __construct()
 	{
 		$this->writingDate = new \DateTime();
@@ -296,4 +299,9 @@ class MappedSuperclassBase implements SearchEngineInterface
     {
         return $this->dateOccurrence;
     }
+
+	public function getViewCount(): int
+	{
+		return $this->viewCount;
+	}
 }

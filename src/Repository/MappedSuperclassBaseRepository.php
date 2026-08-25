@@ -211,4 +211,15 @@ class MappedSuperclassBaseRepository extends EntityRepository
 
 		return $qb->getQuery()->getSingleScalarResult();
 	}
+
+	public function incrementViewCount(int $articleId): void
+	{
+		$this->createQueryBuilder('a')
+			->update()
+			->set('a.viewCount', 'a.viewCount + 1')
+			->where('a.id = :id')
+			->setParameter('id', $articleId)
+			->getQuery()
+			->execute();
+	}
 }

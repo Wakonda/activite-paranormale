@@ -119,6 +119,7 @@ class SimpleDataTable {
         data: def.data !== undefined ? def.data : (th.getAttribute('data-data') || index),
         render: def.render || null,
         orderable: (def.orderable !== undefined ? def.orderable : true),
+        visible: (def.visible !== undefined ? def.visible : true),
         searchable: th.getAttribute('data-searchable') !== 'false',
         priority: th.hasAttribute('data-priority') ? parseInt(th.getAttribute('data-priority'), 10) : index,
         hidden: false,
@@ -423,7 +424,7 @@ class SimpleDataTable {
       ? this.options.data
       : (this._domRows || []);
     const recordsTotal = source.length;
-console.log(this._domRows)
+
     // Valeur "recherchable / triable" d'une cellule : le texte visible pour
     // une ligne issue du DOM, ou row[col.data] pour une ligne "objet" classique.
     const cellValue = (row, col) => (row && row.__domRow) ? (row.text[col.index] ?? '') : row[col.data];

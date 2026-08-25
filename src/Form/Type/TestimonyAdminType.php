@@ -38,7 +38,7 @@ class TestimonyAdminType extends AbstractType
 			$country = $this->entityManager->getRepository(\App\Entity\Region::class)->findOneBy(["internationalName" => $location->country_code]);
 			$locationValue = $location->value;
 		}
-// dd($locationValue);
+
 		$language = $options["locale"];
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])

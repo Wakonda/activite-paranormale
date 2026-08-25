@@ -71,6 +71,8 @@ class NewsController extends AbstractController
 			return $this->redirect($this->generateUrl("Archive_Read", ["id" => $entity->getId(), "className" => base64_encode(get_class($entity))]));
 
 		$previousAndNextEntities = $em->getRepository(News::class)->getPreviousAndNextEntities($entity, $request->getLocale());
+		
+		$em->getRepository(News::class)->incrementViewCount($entity->getId());
 
 		return $this->render('news/News/readNews.html.twig', [
 			'entity' => $entity,
