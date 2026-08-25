@@ -18,6 +18,9 @@
 	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Text"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{{ entity.text|raw }}</div>
 
+	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Analysis"|trans([], "validators") }}</div>
+	<div class="form-table-cell">{{ entity.analysis|raw }}</div>
+
 	<div class="form-table-cell form-table-cell-head">{{ "testimony.admin.Theme"|trans([], "validators") }}</div>
 	<div class="form-table-cell">{% if entity.theme is not empty %}{{ entity.theme.title }}{% endif %}</div>
 

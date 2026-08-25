@@ -116,6 +116,16 @@ class Biography implements Interfaces\PhotoIllustrationInterface
 	{
 		return "Biography_Show";
 	}
+	
+	public function getAlternativeIllustration() {
+		if($this->isMale()) {
+			return "male.jpg";
+		} elseif($this->isFemale()) {
+			return "female.jpg";
+		}
+		
+		return null;
+	}
 
 	public function getUrlSlug() {
 		return $this->slug;

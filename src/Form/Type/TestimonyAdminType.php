@@ -32,17 +32,18 @@ class TestimonyAdminType extends AbstractType
     {
 		$locationValue = null;
 		$country = null;
-		
+
 		if(!empty($location = $builder->getData()->getLocation())) {
 			$location = json_decode($location);
 			$country = $this->entityManager->getRepository(\App\Entity\Region::class)->findOneBy(["internationalName" => $location->country_code]);
 			$locationValue = $location->value;
 		}
-
+// dd($locationValue);
 		$language = $options["locale"];
         $builder
             ->add('title', TextType::class, ['required' => true, 'constraints' => [new NotBlank()]])
             ->add('text', TextareaType::class, ['required' => true, 'constraints' => [new NotBlank()]])
+            ->add('analysis', TextareaType::class, ['required' => false])
 			->add('pseudoUsed', TextType::class)
 			->add('publicationDate', DateType::class, ['required' => true, 'widget' => 'single_text'])
             ->add('theme', ThemeEditType::class, ['locale' => $language, 'label' => 'Thème', 'class'=>'App\Entity\Theme', 'constraints' => [new NotBlank()], 'required' => true])
@@ -98,7 +99,7 @@ class TestimonyAdminType extends AbstractType
 					'constraints' => [new NotBlank()],
 					'query_builder' => function(\App\Repository\LicenceRepository $repository) use ($language) { return $repository->getLicenceByLanguage($language);}
 			))
-			->add('location_selector', ChoiceType::class, ['choices' => [$locationValue => $locationValue], 'data' => $locationValue, 'multiple' => false, 'expanded' => false, "required" => false, "mapped" => false])
+			->add('location_selector', TextType::class, ['data' => $locationValue, "required" => false, "mapped" => false])
 			->add('location', HiddenType::class)
 			->add('sightingDate', DateTimePartialType::class, ['required' => false]);
     }

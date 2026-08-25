@@ -22,15 +22,21 @@ trait GenericEntityTrait
 	
     public function getPhotoIllustrationFilename(): ?String
     {
-		if(method_exists($this, "getIllustration") and !empty($this->getIllustration()) and !empty($file = $this->getIllustration()->getRealNameFile()))
+		$filename = null;
+		if(method_exists($this, "getIllustration") && !empty($this->getIllustration()) && !empty($file = $this->getIllustration()->getRealNameFile())) {
 			return $file;
+		}
+
+		if(empty($file) && method_exists($this, "getAlternativeIllustration")) {
+			$filename = $this->getAlternativeIllustration();
+		}
 		
-		return null;
+		return $filename;
     }
 	
     public function getPhotoIllustrationCaption(): ?Array
     {
-		if(method_exists($this, "getIllustration") and !empty($this->getIllustration()))
+		if(method_exists($this, "getIllustration") && !empty($this->getIllustration()))
 			return [
 				"caption" => $this->getIllustration()->getCaption(),
 				"source" => ["author" => $this->getIllustration()->getAuthor(), "license" => $this->getIllustration()->getLicense(), "url" => $this->getIllustration()->getUrlSource()]

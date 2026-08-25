@@ -14,7 +14,7 @@
 <div class="form-table-cell">{{ form_errors(form.country) }}{{ form_widget(form.country, { 'attr': {'class': 'form-select'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.location_selector, "testimony.admin.Location"|trans([], "validators")) }}</div>
-<div class="form-table-cell">{{ form_errors(form.location_selector) }}{{ form_widget(form.location_selector, {'attr':{'class':'form-control'}} ) }}</div>
+<div class="form-table-cell">{{ entity.location }}{{ form_errors(form.location_selector) }}{{ form_widget(form.location_selector, {'attr':{'class':'form-control'}} ) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.sightingDate, "testimony.admin.SightingDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.sightingDate) }}{{ form_widget(form.sightingDate, {'attr':{'class':'form-control'}} ) }}</div>
@@ -27,6 +27,9 @@
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.publicationDate, "testimony.admin.PublicationDate"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.publicationDate) }}{{ form_widget(form.publicationDate, { 'attr': {'class': 'form-control'} }) }}</div>
+
+<div class="form-table-cell form-table-cell-head">{{ form_label(form.analysis, "testimony.admin.Analysis"|trans([], "validators")) }}</div>
+<div class="form-table-cell">{{ form_errors(form.analysis) }}{{ form_widget(form.analysis, { 'attr': {'class': 'form-control'} }) }}</div>
 
 <div class="form-table-cell form-table-cell-head">{{ form_label(form.licence, "testimony.admin.Licence"|trans([], "validators")) }}</div>
 <div class="form-table-cell">{{ form_errors(form.licence) }}{{ form_widget(form.licence, { 'attr': {'class': 'form-select'} }) }}</div>

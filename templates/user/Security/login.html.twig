@@ -5,6 +5,18 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/connectYou.png') }}" width="25" class="mt-1" alt="Connect you"></span>{{ "user.index.Login"|trans([], "validators") }}</h2>{% endblock %}
 {% block APBlog_body %}
 	{% block fos_user_content %}
+		{% if app.user %}
+			<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/logged.webp') }}" alt="Ange" width="350"></p>
+			<div class="text-center">
+				{% if app.user.lastlogin != "" %}
+					<a href="{{ path('Profile_Show') }}" class="btn btn-success">{{ "index.leftMenu.YourAccount"|trans([], "validators") }}</a>
+				{% endif %}
+
+				{% if app.user.lastlogin is defined and is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('Admin_Index') }}" class="btn btn-info">{{ "index.leftMenu.Management"|trans([], "validators") }}</a>
+				{% endif %}
+			</div>
+		{% else %}
 		<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/login.jpg') }}" alt="Ange"></p>
 		<div class="text-center">
 			{% if error %}
@@ -29,6 +41,7 @@
 				<a href="{{ path('Registration_ResendEmailConfirmation', {id: last_user.id}) }}">{{ "user.index.CheckEmailAddress"|trans([], "validators") }}</a>
 			{% endif %}
 		</div>
+		{% endif %}
 	{% endblock fos_user_content %}
 	
 	<hr class="hr2">

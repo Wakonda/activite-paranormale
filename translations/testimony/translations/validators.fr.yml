@@ -6,6 +6,7 @@ testimony:
         State: "Etat"
         PublicationDate: "Date de publication"
         Text: "Texte"
+        Analysis: "Analyse"
         Theme: "Thème"
         Language: "Langue"
         EmailAuthor: "Email"

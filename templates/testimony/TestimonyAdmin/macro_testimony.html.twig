@@ -90,21 +90,17 @@
 						return query;
 					},
 					processResults: function (data) {
-						res = []
-
-						for(var i = 0; i < data.length; i++) {
-							let obj = new Object();
-							obj.id = i;
-							obj.text = data[i].display_name;
-							obj.address = JSON.stringify(data[i].address);
-							obj.lat = data[i].lat;
-							obj.lon = data[i].lon;
-							res.push(obj)
-						 }
-
-						return {
-							results: res
-						};
+						var res = [];
+						for (var i = 0; i < data.length; i++) {
+							res.push({
+								id: data[i].place_id || (data[i].osm_type + '_' + data[i].osm_id), // identifiant unique et stable
+								text: data[i].display_name,
+								address: JSON.stringify(data[i].address),
+								lat: data[i].lat,
+								lon: data[i].lon
+							});
+						}
+						return { results: res };
 					}
 				}
 			});
@@ -116,7 +112,7 @@
 				address.value = data.text;
 				address.lon = data.lon;
 				address.lat = data.lat;
-				
+
 				document.getElementById("{{ form.location.vars.id }}").value = JSON.stringify(address);
 			});
 

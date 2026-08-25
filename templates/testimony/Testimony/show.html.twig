@@ -63,6 +63,11 @@
 			<div id="map-canvas" style="width:100%; height:400px"></div>
 		{% endif %}
 	{% endif %}
+	
+	{% if entity.analysis is not empty %}
+		<h3>{{ "testimony.admin.Analysis"|trans([], "validators") }}</h3>
+		{{ entity.analysis|raw }}
+	{% endif %}
 
 	<hr class="hr2">
 	<p>

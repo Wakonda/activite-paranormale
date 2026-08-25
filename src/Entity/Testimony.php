@@ -21,6 +21,9 @@ class Testimony extends MappedSuperclassBase
 
 	#[ORM\Column(name: 'sightingDate', type: 'string', length: 18, nullable: true)]
     private $sightingDate;
+
+	#[ORM\Column(type: 'text', nullable: true)]
+	protected $analysis;
 	
 	public function __construct()
 	{
@@ -112,5 +115,15 @@ class Testimony extends MappedSuperclassBase
     public function getSightingDate()
     {
         return $this->sightingDate;
+    }
+
+    public function setAnalysis($analysis)
+    {
+        $this->analysis = $analysis;
+    }
+
+    public function getAnalysis()
+    {
+        return $this->analysis;
     }
 }

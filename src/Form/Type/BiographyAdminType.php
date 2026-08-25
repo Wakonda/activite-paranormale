@@ -168,6 +168,7 @@ class BiographyAdminType extends AbstractType
 		$socialNetworkPinterestDefault = "";
 		$socialNetworkLinkedinDefault = "";
 		$socialNetworkTikTokDefault = "";
+		$socialNetworkThreadsDefault = "";
 
 		if($builder->getData()->getLinks() != null)
 		{
@@ -201,6 +202,9 @@ class BiographyAdminType extends AbstractType
 					case "TikTok":
 						$socialNetworkTikTokDefault = $socialNetwork->url;
 						break;
+					case "Threads":
+						$socialNetworkThreadsDefault = $socialNetwork->url;
+						break;
 				}
 			}
 		}
@@ -214,6 +218,7 @@ class BiographyAdminType extends AbstractType
 			->add('socialNetworkPinterest', TextType::class, array('label' => 'Pinterest', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Pinterest', 'class' => 'social_network_select'), 'data' => $socialNetworkPinterestDefault, 'constraints' => [new Url()]))
 			->add('socialNetworkLinkedin', TextType::class, array('label' => 'Linkedin', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Linkedin', 'class' => 'social_network_select'), 'data' => $socialNetworkLinkedinDefault, 'constraints' => [new Url()]))
 			->add('socialNetworkTikTok', TextType::class, array('label' => 'TikTok', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'TikTok', 'class' => 'social_network_select'), 'data' => $socialNetworkTikTokDefault, 'constraints' => [new Url()]))
+			->add('socialNetworkThreads', TextType::class, array('label' => 'Threads', 'required' => false, 'mapped' => false, 'attr' => array('data-name' => 'Threads', 'class' => 'social_network_select'), 'data' => $socialNetworkTikTokDefault, 'constraints' => [new Url()]))
 
 			->addEventListener(FormEvents::PRE_SUBMIT, array($this, 'onPreSubmitData'))
 		;
@@ -233,7 +238,8 @@ class BiographyAdminType extends AbstractType
 			["link" => "Instagram", "url" => $data['socialNetworkInstagram'], "label" => "InstagramAccount"],
 			["link" => "Pinterest", "url" => $data['socialNetworkPinterest'], "label" => "PinterestAccount"],
 			["link" => "Linkedin", "url" => $data['socialNetworkLinkedin'], "label" => "LinkedInAccount"],
-			["link" => "TikTok", "url" => $data['socialNetworkTikTok'], "label" => "TikTokAccount"]
+			["link" => "TikTok", "url" => $data['socialNetworkTikTok'], "label" => "TikTokAccount"],
+			["link" => "Threads", "url" => $data['socialNetworkThreads'], "label" => "ThreadsAccount"]
 		];
 
 		$data["links"] = json_encode($linkJson);

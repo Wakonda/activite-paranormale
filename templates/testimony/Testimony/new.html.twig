@@ -4,19 +4,13 @@
 {% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/yellow_monster.png') }}" width="25" class="mt-1" alt="Anger"></span>{{ "testimony.new.NewTestimony"|trans([], "validators") }}</h2>{% endblock h2_title %}
 
 {% block header_plus %}
+	<script src="{{ asset('extended/js/jquery.js') }}"></script>
 	{% import "index/macro/macro_index.html.twig" as macro_index %}
 	{{ macro_index.tinymce_init_js() }}
 	{{ macro_index.tinymce_js(form.text.vars.id) }}
 	{{ macro_index.select2_autocomplete() }}
 	
 	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			document.getElementById('help_licence_link').addEventListener("click", (e) => {
-				new bootstrap.Modal(document.getElementById('showColorboxLicencesModal')).show();
-				e.preventDefault();
-			});
-		});
-		
 		{% if form.isAnonymous is defined %}
 		document.addEventListener('DOMContentLoaded', function() {
 			function publishAnonymously(value)
