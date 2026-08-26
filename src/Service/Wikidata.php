@@ -144,7 +144,7 @@ class Wikidata {
 			"text" => null
 		];
 
-		if(property_exists($claims, $dateCode)) {
+		if(property_exists($claims, $dateCode) && property_exists($claims->$dateCode[0]->mainsnak, 'datavalue')) {
 			$idCity = $claims->$dateCode[0]->mainsnak->datavalue->value->id;
 			$locale = $this->em->getRepository(language::class)->findOneBy(["abbreviation" => $language]);
 			$city = $this->em->getRepository(Region::class)->findOneBy(["wikidata" => $idCity, "language" => $locale]);

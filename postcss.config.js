@@ -15,7 +15,7 @@ module.exports = ({ env }) => ({
 					/^fa-/, /^fas$/, /^far$/, /^fab$/, /^fa$/,
 					/^modal/, /^collapse/, /^fade/, /^show/, /^active/,
 					/^dropdown/, /^tooltip/, /^popover/, /^carousel/, /^image/,
-					/^btn-/, /^alert-/, /^badge-/,
+					/^btn-/, /^alert-/, /^badge-/, /^row-cols-/, /^col-/, /^select2/
                 ],
                 deep: [/^data-bs-/],
             },

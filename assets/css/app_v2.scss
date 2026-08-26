@@ -1309,7 +1309,7 @@ h2 span img {
     width: 100%;
     object-fit: cover;
 }
-.slider-container.row-cols-md-2 > * {
+.slider-container.row-cols-md-2 > *, #news-container > * {
     flex: 0 0 auto;
     width: 49%;
 } 
