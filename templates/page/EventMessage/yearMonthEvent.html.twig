@@ -27,11 +27,11 @@
 		<ul>
 			{% for event in data %}
 				{% set dateArray  = [] %}
-				{% if event.startDate is not null %}
+				{% if event.startDate is defined and event.startDate is not null %}
 					{% set dateArray = dateArray|merge([(event.startDate.day)|doYearMonthDayDate(event.startDate.month, event.startDate.year, app.request.locale)]) %}
 				{% endif %}
 
-				{% if event.endDate is not null %}
+				{% if event.endDate is defined and event.endDate is not null %}
 					{% set dateArray = dateArray|merge([(event.endDate.day)|doYearMonthDayDate(event.endDate.month, event.endDate.year, app.request.locale)]) %}
 				{% endif %}
 

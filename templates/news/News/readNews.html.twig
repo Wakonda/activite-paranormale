@@ -67,7 +67,7 @@
 			{% endif %}
 			<tr>
 				<td class="td_form_table">{{ "index.form.DateOfOccurrence"|trans([], "validators") }}</td>
-				<td class="tdGene"><a href="{{ url }}">{{ entity.dateOccurrence|dodate(false, app.request.locale) }}</a></td>
+				<td class="tdGene"><a href="{{ url }}">{{ entity.dateOccurrence|doPartialDate(app.request.locale) }}</a></td>
 			</tr>
 		{% endif %}
 	{% if entity.region is not empty or entity.dateOccurrence is not empty %}</tbody></table>{% endif %}

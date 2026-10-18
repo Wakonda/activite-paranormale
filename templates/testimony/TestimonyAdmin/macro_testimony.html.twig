@@ -75,10 +75,10 @@
 			$('#{{ form.location_selector.vars.id }}').select2({
 				allowClear: true,
 				placeholder: "",
+				minimumInputLength: 3,
 				ajax: {
-					url: ' https://nominatim.openstreetmap.org/search?',
+					url: 'https://nominatim.openstreetmap.org/search?',
 					dataType: 'json',
-					minimumInputLength: 3,
 					data: function (params) {
 						var query = {
 							q: params.term,

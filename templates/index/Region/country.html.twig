@@ -1,0 +1,52 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}{{ "region.index.Country"|trans([], "validators") }}{% endblock %}
+{% block h2_title %}<h2><span class="float-start"><img src="{{ asset('extended/photo/bender.png') }}" width="25" class="mt-1" alt="Robot"></span>{{ "region.index.Country"|trans([], "validators") }}</h2>{% endblock h2_title %}
+{% block meta_description %}{% endblock %}
+
+{% block meta_plus %}
+{% endblock %}
+
+{% block header_plus %}
+{% endblock %}
+
+{% block APBlog_body %}
+	<p class="image"><img class="image_wrapper fl_image mx-auto d-block img-fluid" src="{{ asset('extended/photo/woman-earth.webp') }}" width="550" alt="A woman sitting on the Earth"></p>
+	<hr>
+	<div id="accordion">
+		{% for key, data in datas %} 
+			<h3 class="cursor-pointer mt-2" data-bs-toggle="collapse" data-bs-target="#collapse_{{ slug(key) }}" aria-expanded="false" aria-controls="collapse_{{ slug(key) }}"><img src="{{ data.flag }}" class="me-2" width="20">{{ data.title }} <span class="number_theme">{{ data.cities|length }}</span></h3>
+			<div id="collapse_{{ slug(key) }}" class="collapse" data-parent="#accordion">
+				{% if data.cities is not empty %}
+					<ul class="fa-ul">
+						<li><span class="fa-li"><i class="fa-solid fa-earth-americas"></i></span> <a href="{{ path('Region_Index', {id: data.id, slug: data.slug}) }}">{{ "region.index.Country"|trans([], "validators") }}</a></li>
+						{% for city in data.cities %}
+							<li><span class="fa-li"><i class="fa-solid fa-angle-right"></i></span> <a href="{{ path('Region_Index', {id: city[0], slug: city[2]}) }}">{{ city[1] }}</a></li>
+						{% endfor%}
+					</ul>
+				{% else %}
+					<ul class="fa-ul">
+						<li><span class="fa-li"><i class="fa-solid fa-earth-americas"></i></span> <a href="{{ path('Region_Index', {id: data.id, slug: data.slug}) }}">{{ "region.index.Country"|trans([], "validators") }}</a></li>
+					</ul>
+				{% endif %}
+				{#<br>
+				<table class="table table-bordered">
+				<tr class="trGene">
+					<th class="label_form">{{ "creepyStory.index.Theme"|trans([], "validators") }}</th>
+					<th class="label_form">{{ "creepyStory.index.Number"|trans([], "validators") }}</th>
+				</tr>
+				{% for T in data %}
+					<tr><td class="td_form_table w-75"><a href="{{ path('CreepyStory_Tab', {'id' : T.id, 'theme' : T.title })}}" >{{ T.title }}</a></td>
+					<td class="tdGene"><span class="badge bg-info">{{ T.total }}</span></td></tr>
+				{% endfor %}
+				</table>#}
+			</div>
+		{% endfor %}
+	</div>
+
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}
+
+{% block sub_content %}
+{% endblock %}

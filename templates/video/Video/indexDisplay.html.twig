@@ -1,0 +1,60 @@
+{% extends "content_layout.html.twig" %}
+
+{% block title %}
+	{{ "video.index.Video"|trans([], "validators") }}
+{% endblock %}
+
+{% block h2_title %}
+	<h2>
+		<span class="float-start"><img src="{{ asset('extended/photo/movie.svg') }}" width="25" class="mt-1" alt="Movie"></span>{{ "video.index.Video"|trans([], "validators") }}
+	</h2>
+{% endblock h2_title %}
+
+{% block APBlog_body %}
+	<p>{{ "video.index.NbrTotalVideo"|trans([], "validators") }}<span class="badge bg-danger">{{ pagination.totalItemCount }}</span>
+	<a href="{{ path('Video_Index') }}" class="btn btn-primary btn-sm float-end"><i class="fa-solid fa-table-list"></i></a></p>
+	<hr>
+	{% for entity in pagination.items %}
+		<div class="card mb-3">
+				<div class="content-card">
+					<div class="card-body flex-grow-1 pb-0">
+					{% if entity.mediaVideo is not empty %}
+						<video class="w-100" controls id="video_embedded">
+							<source src="{{ asset('extended/flash/Video/KAWAplayer_v1/videos/'~entity.mediaVideo) }}" type="video/mp4" />
+						</video>
+					{% else %}
+						<div class="embed-responsive embed-responsive-16by9">
+							{{ loader_video(entity) }}
+						</div>
+					{% endif %}
+						<h5 class="card-title text-center mt-3">{{ entity.title }}</h5>
+						<hr>
+						<p class="card-text mb-0 text-center">
+							<i class="fas fa-calendar-alt"></i> {{ entity.publicationDate|dodate(false, app.request.locale) }}
+						</p>
+					</div>
+					<div class="px-125">
+						<hr>
+					</div>
+					<div class="card-footer d-flex gap-2 mt-auto">
+						<a class="btn read w-100" href="{{ path('Video_Read', {'id': entity.id, 'title_slug': entity.getUrlSlug()}) }}">
+							<i class="fas fa-book fa-fw"></i>
+							{{ "admin.general.Read"|trans([], "validators") }}
+						</a>
+					</div>
+				</div>
+		</div>
+		<hr class="hr2">
+	{% else %}
+		<div class="alert alert-danger fst-italic text-center">{{ "book.search.NoMatchingRecordsFound"|trans([], "validators") }}</div>
+		<br>
+	{% endfor %}
+
+	<div class="mt-3 justify-content-center">
+		{{ knp_pagination_render(pagination) }}
+	</div>
+
+	<br>
+	<hr class="hr2">
+	{{ "google"|advertisement|raw }}
+{% endblock %}

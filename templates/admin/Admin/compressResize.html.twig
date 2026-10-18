@@ -72,7 +72,7 @@
 	{% if newFileDatas is not empty %}
 		<p><b>{{ "compressResize.index.FormerSize"|trans([], "validators") }} = </b>{{ newFileDatas.formerSize }}</p>
 		<p><b>{{ "compressResize.index.NewSize"|trans([], "validators") }} = </b>{{ newFileDatas.size }}</p>
-		<p><b>{{ "compressResize.index.ImageCompressedTo"|trans([], "validators") }} </b> {{ newFileDatas.ratio }}</p>
+		<p><b>{{ "compressResize.index.ImageCompressedTo"|trans([], "validators") }} </b> <b>{% if newFileDatas.ratio > 0 %}<span class="text-success">{{ newFileDatas.ratio }} %</span>{% else %}<span class="text-danger">{{ newFileDatas.ratio }} %</span>{% endif %}</b></p>
 
 		<p><img src="{{ newFileDatas.newFile }}" id="newFile"></p>
 		
